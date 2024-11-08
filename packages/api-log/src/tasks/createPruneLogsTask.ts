@@ -18,9 +18,23 @@ export const createPruneLogsTask = () => {
                 /* webpackChunkName: "PruneLogs" */ "./pruneLogs/PruneLogs"
             );
 
+            const { DynamoDbLoggerKeys } = await import(
+                /* webpackChunkName: "DynamoDbLoggerKeys" */ "~/logger/dynamodb/DynamoDbLoggerKeys"
+            );
+
             try {
-                const prune = new PruneLogs();
-                return await prune.execute(params);
+                const prune = new PruneLogs({
+                    // @ts-expect-error
+                    documentClient: params.context.db.driver.documentClient,
+                    keys: new DynamoDbLoggerKeys()
+                });
+                return await prune.execute({
+                    input: params.input,
+                    list: params.context.logger.listLogs,
+                    response: params.response,
+                    isAborted: params.isAborted,
+                    isCloseToTimeout: params.isCloseToTimeout
+                });
             } catch (ex) {
                 console.log("Error executing the task.", ex);
                 return params.response.error({
@@ -36,12 +50,20 @@ export const createPruneLogsTask = () => {
                 source: validator.string().optional(),
                 keys: validator.object({}).passthrough(),
                 type: validator.enum(Object.keys(LogType) as NonEmptyArray<LogType>).optional(),
-                createdOn: validator
+                createdAfter: validator
                     .string()
                     .optional()
                     .transform(value => {
-                        return value;
-                    })
+                        if (!value) {
+                            return undefined;
+                        }
+                        try {
+                            return new Date(value).toISOString();
+                        } catch (ex) {
+                            return undefined;
+                        }
+                    }),
+                items: validator.number().optional()
             };
         }
     });

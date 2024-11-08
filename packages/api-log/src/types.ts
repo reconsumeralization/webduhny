@@ -100,9 +100,13 @@ export interface ILoggerWithSource {
     flush(): Promise<ILoggerLog[]>;
 }
 
+export interface ILoggerCrudListLogsCallable {
+    (params: ILoggerCrudListLogsParams): Promise<ILoggerCrudListLogsResponse>;
+}
+
 export interface ILoggerCrud {
     withSource(source: string): ILoggerWithSource;
-    listLogs(params: ILoggerCrudListLogsParams): Promise<ILoggerCrudListLogsResponse>;
+    listLogs: ILoggerCrudListLogsCallable;
     getLog(params: ILoggerCrudGetLogsParams): Promise<ILoggerCrudGetLogResponse>;
     deleteLog(params: ILoggerCrudDeleteLogParams): Promise<ILoggerCrudDeleteLogResponse>;
     deleteLogs(params: ILoggerCrudDeleteLogsParams): Promise<ILoggerLog[]>;
@@ -112,9 +116,13 @@ export interface ILoggerStorageOperationsInsertParams {
     items: ILoggerLog[];
 }
 
+export interface ILoggerStorageOperationsListLogsCallable {
+    (params: ILoggerCrudListLogsParams): Promise<ILoggerCrudListLogsResponse>;
+}
+
 export interface ILoggerStorageOperations {
     insert(params: ILoggerStorageOperationsInsertParams): Promise<ILoggerLog[]>;
-    listLogs(params: ILoggerCrudListLogsParams): Promise<ILoggerCrudListLogsResponse>;
+    listLogs: ILoggerStorageOperationsListLogsCallable;
     getLog(params: ILoggerCrudGetLogsParams): Promise<ILoggerLog | null>;
     deleteLog(params: ILoggerCrudDeleteLogParams): Promise<ILoggerLog | null>;
     deleteLogs(params: ILoggerCrudDeleteLogsParams): Promise<ILoggerLog[]>;

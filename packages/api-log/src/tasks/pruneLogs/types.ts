@@ -5,10 +5,13 @@ export interface IPruneLogsInput {
     tenant?: string;
     source?: string;
     type?: LogType;
-    createdOn?: string;
+    createdAfter?: string;
     keys?: string;
+    items?: number;
 }
 
-export type IPruneLogsOutput = ITaskResponseDoneResultOutput;
+export interface IPruneLogsOutput extends ITaskResponseDoneResultOutput {
+    items: number;
+}
 
 export interface Context extends LoggerContext, TaskContext {}
