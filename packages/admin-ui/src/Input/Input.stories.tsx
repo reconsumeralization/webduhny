@@ -46,7 +46,7 @@ const meta: Meta<typeof Input> = {
     },
     decorators: [
         Story => (
-            <div className="w-[60%] h-32 mx-auto flex justify-center items-center">
+            <div className="w-1/3 h-32 mx-auto flex justify-center items-center">
                 <Story />
             </div>
         )
@@ -79,25 +79,25 @@ export const ExtraLargeSize: Story = {
     }
 };
 
-export const WithLeadingIcon: Story = {
+export const WithStartIcon: Story = {
     args: {
         placeholder: "Custom placeholder",
-        leadingIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />
+        startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />
     }
 };
 
-export const WithTrailingIcon: Story = {
+export const WithEndIcon: Story = {
     args: {
         placeholder: "Custom placeholder",
-        trailingIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
+        endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
     }
 };
 
-export const WithLeadingAndTrailingIcons: Story = {
+export const WithStartAndEndIcons: Story = {
     args: {
         placeholder: "Custom placeholder",
-        leadingIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />,
-        trailingIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
+        startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />,
+        endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
     }
 };
 

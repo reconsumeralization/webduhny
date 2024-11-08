@@ -8,15 +8,15 @@ import { cn, makeDecoratable } from "~/utils";
  */
 const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutral-xstrong", {
     variants: {
-        // Let's create dummy variants to use in combination. See `compoundVariants` here below.
+        // Define dummy variants to be used in combination with `compoundVariants` below.
         inputSize: {
             md: "",
             lg: "",
             xl: ""
         },
         position: {
-            leading: "",
-            trailing: ""
+            start: "",
+            end: ""
         },
         disabled: {
             true: "fill-neutral-disabled"
@@ -24,37 +24,38 @@ const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutr
     },
     defaultVariants: {
         inputSize: "md",
-        position: "leading"
+        position: "start"
     },
     compoundVariants: [
+        // The icon position is `absolute` and is adjusted horizontally across its parent using left and right.
         {
             inputSize: "md",
-            position: "leading",
+            position: "start",
             class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "md",
-            position: "trailing",
+            position: "end",
             class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
-            position: "leading",
+            position: "start",
             class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
-            position: "trailing",
+            position: "end",
             class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
-            position: "leading",
+            position: "start",
             class: "left-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
-            position: "trailing",
+            position: "end",
             class: "right-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         }
     ]
@@ -70,7 +71,7 @@ const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
         <div className={cn(iconVariants({ position, disabled, inputSize }))}>
             {React.cloneElement(icon, {
                 ...icon.props,
-                size: inputSize === "xl" ? "lg" : "sm"
+                size: inputSize === "xl" ? "lg" : "sm" // Map icon size based on the input size.
             })}
         </div>
     );
@@ -123,8 +124,8 @@ const inputVariants = cva(
                 ]
             },
             iconPosition: {
-                leading: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                trailing: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                start: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                end: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
                 both: [
                     "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
                     "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
@@ -143,12 +144,12 @@ const inputVariants = cva(
             // Prevent text overlap with icons, add extra padding for icons.
             {
                 size: "lg",
-                iconPosition: "leading",
+                iconPosition: "start",
                 class: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
                 size: "lg",
-                iconPosition: "trailing",
+                iconPosition: "end",
                 class: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
@@ -161,12 +162,12 @@ const inputVariants = cva(
             },
             {
                 size: "xl",
-                iconPosition: "leading",
+                iconPosition: "start",
                 class: "pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
                 size: "xl",
-                iconPosition: "trailing",
+                iconPosition: "end",
                 class: "pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
@@ -199,52 +200,42 @@ const inputVariants = cva(
 interface InputProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
         VariantProps<typeof inputVariants> {
-    leadingIcon?: React.ReactElement<typeof BaseIcon>;
-    trailingIcon?: React.ReactElement<typeof BaseIcon>;
+    startIcon?: React.ReactElement<typeof BaseIcon>;
+    endIcon?: React.ReactElement<typeof BaseIcon>;
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
 }
 
 const getIconPosition = (
-    leadingIcon?: InputProps["leadingIcon"],
-    trailingIcon?: InputProps["trailingIcon"]
-): "leading" | "trailing" | "both" | undefined => {
-    if (leadingIcon && trailingIcon) {
+    startIcon?: InputProps["startIcon"],
+    endIcon?: InputProps["endIcon"]
+): "start" | "end" | "both" | undefined => {
+    if (startIcon && endIcon) {
         return "both";
     }
-    if (leadingIcon) {
-        return "leading";
+    if (startIcon) {
+        return "start";
     }
-    if (trailingIcon) {
-        return "trailing";
+    if (endIcon) {
+        return "end";
     }
     return;
 };
 
 const DecoratableInput = React.forwardRef<HTMLInputElement, InputProps>(
     (
-        {
-            className,
-            disabled,
-            invalid,
-            leadingIcon,
-            maxLength,
-            size,
-            trailingIcon,
-            variant,
-            ...props
-        },
+        { className, disabled, invalid, startIcon, maxLength, size, endIcon, variant, ...props },
         ref
     ) => {
-        const iconPosition = getIconPosition(leadingIcon, trailingIcon);
+        const iconPosition = getIconPosition(startIcon, endIcon);
 
         return (
-            <div className={"relative flex items-center"}>
-                {leadingIcon && (
+            <div className={"relative flex items-center w-full"}>
+                {startIcon && (
                     <Icon
                         disabled={disabled}
-                        icon={leadingIcon}
+                        icon={startIcon}
                         inputSize={size}
-                        position={"leading"}
+                        position={"start"}
                     />
                 )}
                 <input
@@ -256,13 +247,8 @@ const DecoratableInput = React.forwardRef<HTMLInputElement, InputProps>(
                     size={maxLength}
                     {...props}
                 />
-                {trailingIcon && (
-                    <Icon
-                        disabled={disabled}
-                        icon={trailingIcon}
-                        inputSize={size}
-                        position={"trailing"}
-                    />
+                {endIcon && (
+                    <Icon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
                 )}
             </div>
         );
