@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Toast, ToastTitle, ToastAction, ToastActionProps } from "@webiny/admin-ui";
-import { ButtonProps } from "~/Button";
+import { Toast, Button, ButtonProps } from "@webiny/admin-ui";
 
 type CustomEventT<T> = CustomEvent<T> & React.SyntheticEvent<EventTarget>;
 
@@ -11,7 +10,7 @@ type SnackbarActionProps = ButtonProps & {
     action?: string;
 };
 
-type ToastActionWithDataActionProps = ToastActionProps & {
+type ToastActionWithDataActionProps = ButtonProps & {
     "data-action"?: string;
 };
 
@@ -54,39 +53,45 @@ const createCustomEvent = <T = any,>(eventType: string, detail: T): CustomEvent<
  */
 const Snackbar = ({ onOpen, onClose, action, dismissesOnAction, open, message }: SnackbarProps) => {
     // Function to map Snackbar actions to Toast actions
-    const renderActions = useMemo(() => {
+    const renderActions: React.ReactElement<typeof Toast.Actions> | null = useMemo(() => {
         if (!action) {
-            return [];
+            return null;
         }
 
         const actions = Array.isArray(action) ? action : [action];
 
-        return actions
-            .filter(action => React.isValidElement(action))
-            .map((action, index) => {
-                return React.cloneElement(action, {
-                    key: `action-${index}`,
-                    onClick: (e: React.MouseEvent<any, MouseEvent>) => {
-                        // Fire onClose event if dismissesOnAction is true
-                        if (dismissesOnAction && typeof onClose === "function") {
-                            const closeEvent = new CustomEvent("snackbarClose", {
-                                detail: {
-                                    reason: action.props["data-action"]
+        return (
+            <Toast.Actions>
+                {actions
+                    .filter(action => React.isValidElement(action))
+                    .map((action, index) => {
+                        return React.cloneElement(action, {
+                            key: `action-${index}`,
+                            onClick: (e: React.MouseEvent<any, MouseEvent>) => {
+                                // Fire onClose event if dismissesOnAction is true
+                                if (dismissesOnAction && typeof onClose === "function") {
+                                    const closeEvent = new CustomEvent("snackbarClose", {
+                                        detail: {
+                                            reason: action.props["data-action"]
+                                        }
+                                    });
+                                    onClose(
+                                        closeEvent as unknown as CustomEventT<{ reason?: string }>
+                                    );
                                 }
-                            });
-                            onClose(closeEvent as unknown as CustomEventT<{ reason?: string }>);
-                        }
 
-                        // Call any onClick handler defined on the action
-                        if (
-                            React.isValidElement(action) &&
-                            typeof action.props?.onClick === "function"
-                        ) {
-                            action.props.onClick(e);
-                        }
-                    }
-                });
-            });
+                                // Call any onClick handler defined on the action
+                                if (
+                                    React.isValidElement(action) &&
+                                    typeof action.props?.onClick === "function"
+                                ) {
+                                    action.props.onClick(e);
+                                }
+                            }
+                        });
+                    })}
+            </Toast.Actions>
+        );
     }, [action, dismissesOnAction, onClose]);
 
     // Function to map Snackbar actions to Toast actions
@@ -114,8 +119,8 @@ const Snackbar = ({ onOpen, onClose, action, dismissesOnAction, open, message }:
 
     return (
         <Toast
-            title={<ToastTitle text={message} />}
-            actions={renderActions}
+            title={<Toast.Title text={message} />}
+            actions={renderActions ? renderActions : undefined}
             open={open}
             onOpenChange={handleOpenChange}
         />
@@ -124,21 +129,14 @@ const Snackbar = ({ onOpen, onClose, action, dismissesOnAction, open, message }:
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `ToastAction` component from the `@webiny/admin-ui` package instead.
+ * Please use the `Button` component from the `@webiny/admin-ui` package instead.
  */
 const SnackbarAction = ({
     label,
     action,
     onClick
-}: SnackbarActionProps): React.ReactElement<ToastActionProps & { "data-action"?: string }> => {
-    return (
-        <ToastAction
-            text={label}
-            altText={React.isValidElement(label) ? "Custom action" : String(label)}
-            onClick={onClick}
-            data-action={action}
-        />
-    );
+}: SnackbarActionProps): React.ReactElement<ButtonProps & { "data-action"?: string }> => {
+    return <Button variant={"primary"} onClick={onClick} data-action={action} text={label} />;
 };
 
 export { Snackbar, SnackbarAction };
