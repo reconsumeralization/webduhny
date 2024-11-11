@@ -41,6 +41,7 @@ import { configurations as cmsConfigurations } from "@webiny/api-headless-cms-dd
 import { SEARCH_RECORD_MODEL_ID } from "@webiny/api-aco/record/record.model";
 import { FOLDER_MODEL_ID } from "@webiny/api-aco/folder/folder.model";
 import { LambdaContext } from "@webiny/handler-aws/types";
+// @ts-expect-error
 import { createMockApiLogContextPlugin } from "@webiny/project-utils/testing/mockApiLog";
 
 interface Params {
@@ -101,6 +102,7 @@ export const useHandler = (params: Params) => {
         createHandler({
             plugins: [
                 elasticsearchClientContext,
+                createMockApiLogContextPlugin(),
                 createDynamoDBToElasticsearchHandler(),
                 createGzipCompression()
             ]
