@@ -100,7 +100,7 @@ interface TooltipProps extends Omit<TooltipPrimitive.TooltipContentProps, "conte
     onOpenChange?: TooltipPrimitive.TooltipProps["onOpenChange"];
     showArrow?: boolean;
     side?: TooltipPrimitive.TooltipContentProps["side"];
-    variant: TooltipContentProps["variant"];
+    variant?: TooltipContentProps["variant"];
     trigger: React.ReactNode;
 }
 
