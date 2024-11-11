@@ -55,6 +55,13 @@ export const generateId = (initialId?: string) => {
     return "wby-" + baseGenerateId(4);
 };
 
+export const withStaticProps = <TComponent extends React.ComponentType<any>, TProps>(
+    component: TComponent,
+    props: TProps
+) => {
+    return Object.assign(component, props) as TComponent & TProps;
+};
+
 export { cva, type VariantProps };
 
 export const withStaticProps = <TComponent extends React.ComponentType<any>, TProps>(
