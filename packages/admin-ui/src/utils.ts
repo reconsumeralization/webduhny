@@ -63,10 +63,3 @@ export const withStaticProps = <TComponent extends React.ComponentType<any>, TPr
 };
 
 export { cva, type VariantProps };
-
-export const withStaticProps = <TComponent extends React.ComponentType<any>, TProps>(
-    component: TComponent,
-    props: TProps
-) => {
-    return Object.assign(component, props) as TComponent & TProps;
-};
