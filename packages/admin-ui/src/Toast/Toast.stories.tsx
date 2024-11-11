@@ -1,15 +1,9 @@
 import React from "react";
 import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-    Toast,
-    ToastProvider,
-    ToastViewport,
-    ToastAction,
-    ToastTitle,
-    ToastDescription
-} from "./Toast";
+import { Toast } from "./Toast";
 import { Button } from "~/Button";
+import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Toast> = {
     title: "Components/Toast",
@@ -20,7 +14,8 @@ const meta: Meta<typeof Toast> = {
     },
     argTypes: {
         // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onOpenChange argument.
-        onOpenChange: { action: "onOpenChange" }
+        onOpenChange: { action: "onOpenChange" },
+        variant: { control: "select", options: ["default", "subtle"] }
     },
     decorators: [
         (Story, context) => {
@@ -33,7 +28,7 @@ const meta: Meta<typeof Toast> = {
             }, []);
 
             return (
-                <ToastProvider>
+                <Toast.Provider>
                     <div className="w-full h-64 flex justify-center items-center">
                         <Button
                             text={"Display Toast"}
@@ -57,9 +52,9 @@ const meta: Meta<typeof Toast> = {
                                 }
                             }}
                         />
-                        <ToastViewport />
+                        <Toast.Viewport />
                     </div>
-                </ToastProvider>
+                </Toast.Provider>
             );
         }
     ]
@@ -71,7 +66,7 @@ type Story = StoryObj<typeof Toast>;
 
 export const Default: Story = {
     args: {
-        title: <ToastTitle text={"New entry created"} />
+        title: <Toast.Title text={"New entry created"} />
     }
 };
 
@@ -85,27 +80,60 @@ export const SubtleVariant: Story = {
 export const WithDescription: Story = {
     args: {
         ...Default.args,
-        description: <ToastDescription text={'Entry "Article One" has been successfully created'} />
+        description: (
+            <Toast.Description text={'Entry "Article One" has been successfully created'} />
+        )
     }
 };
 
 export const WithActions: Story = {
     args: {
         ...Default.args,
-        actions: [
-            <ToastAction
-                key={"open"}
-                text={"Open"}
-                altText={"Open Entry"}
-                onClick={e => console.log("open", e)}
-            />
-        ]
+        actions: (
+            <Toast.Actions>
+                <Button
+                    key={"action-1"}
+                    text={"Do the action"}
+                    onClick={() => console.log("doTheAction")}
+                />
+                <Button
+                    key={"action-2"}
+                    text={"Dismiss"}
+                    onClick={() => console.log("dismiss")}
+                    variant={"secondary"}
+                />
+            </Toast.Actions>
+        )
+    }
+};
+
+export const WithDescriptionAndActions: Story = {
+    args: {
+        ...Default.args,
+        description: (
+            <Toast.Description text={'Entry "Article One" has been successfully created'} />
+        ),
+        actions: (
+            <Toast.Actions>
+                <Button
+                    key={"action-1"}
+                    text={"Do the action"}
+                    onClick={() => console.log("doTheAction")}
+                />
+                <Button
+                    key={"action-2"}
+                    text={"Dismiss"}
+                    onClick={() => console.log("dismiss")}
+                    variant={"secondary"}
+                />
+            </Toast.Actions>
+        )
     }
 };
 
 export const WithCustomIcon: Story = {
     args: {
         ...Default.args,
-        icon: <SettingsIcon />
+        icon: <Icon icon={<SettingsIcon />} label={"Settings"} />
     }
 };

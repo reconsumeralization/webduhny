@@ -1,21 +1,19 @@
 import * as React from "react";
 import { ReactComponent as CloseIcon } from "@material-design-icons/svg/outlined/close.svg";
-import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications_active.svg";
+import { ReactComponent as NotificationsIconActive } from "@material-design-icons/svg/outlined/notifications_active.svg";
 import * as ToastPrimitives from "@radix-ui/react-toast";
-import { makeDecoratable } from "@webiny/react-composition";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "~/utils";
+import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Heading } from "~/Heading";
 import { Text } from "~/Text";
-import { Button } from "~/Button";
+import { Icon, IconProps } from "~/Icon";
 
 const ToastProvider = ToastPrimitives.Provider;
 
 /**
  * Toast Viewport
  */
-const ToastViewportBase = React.forwardRef<
+const DecoratableToastViewport = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Viewport>,
     React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
 >(({ className, ...props }, ref) => (
@@ -28,20 +26,26 @@ const ToastViewportBase = React.forwardRef<
         {...props}
     />
 ));
-ToastViewportBase.displayName = ToastPrimitives.Viewport.displayName;
+DecoratableToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
-const ToastViewport = makeDecoratable("ToastViewport", ToastViewportBase);
+const ToastViewport = makeDecoratable("ToastViewport", DecoratableToastViewport);
 
 /**
  * Toast Root
  */
 const toastVariants = cva(
-    "group pointer-events-auto relative flex w-full items-start justify-start p-md gap-sm-extra self-stretch overflow-hidden rounded-md border-sm border-neutral-dimmed shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full",
+    [
+        "group pointer-events-auto relative flex w-full items-center justify-start p-md gap-sm-extra self-stretch overflow-hidden rounded-md border-sm border-neutral-dimmed shadow-lg transition-all",
+        "data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full"
+    ],
     {
         variants: {
             variant: {
-                default: "bg-neutral-dark text-neutral-light fill-neutral-base",
-                subtle: "bg-white fill-neutral-xstrong"
+                default: "default-variant bg-neutral-dark",
+                subtle: "subtle-variant bg-white"
+            },
+            hasDescription: {
+                true: "items-start justify-start"
             }
         },
         defaultVariants: {
@@ -50,79 +54,79 @@ const toastVariants = cva(
     }
 );
 
-const ToastRootBase = React.forwardRef<
+const DecoratableToastRoot = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Root>,
     React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, hasDescription, variant, ...props }, ref) => {
     return (
         <ToastPrimitives.Root
             ref={ref}
-            className={cn(toastVariants({ variant }), className)}
+            className={cn(toastVariants({ variant, hasDescription }), className)}
             {...props}
         />
     );
 });
-ToastRootBase.displayName = ToastPrimitives.Root.displayName;
+DecoratableToastRoot.displayName = ToastPrimitives.Root.displayName;
 
-const ToastRoot = makeDecoratable("ToastRoot", ToastRootBase);
+const ToastRoot = makeDecoratable("ToastRoot", DecoratableToastRoot);
 
 /**
- * Toast Action
+ * Toast Actions
  */
-type ToastActionProps = ToastPrimitives.ToastActionProps & {
-    text: React.ReactNode;
-};
-
-const ToastActionBase = React.forwardRef<
-    React.ElementRef<typeof ToastPrimitives.Action>,
-    ToastActionProps
->(({ onClick, text, ...props }, ref) => (
-    <ToastPrimitives.ToastAction asChild {...props}>
-        <Button ref={ref} onClick={onClick} text={text} variant={"primary"} size={"sm"} />
-    </ToastPrimitives.ToastAction>
+const DecoratableToastActions = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ children, ...props }, ref) => (
+    <div {...props} className={"mt-md flex w-full items-center justify-start gap-sm"} ref={ref}>
+        {children}
+    </div>
 ));
-ToastActionBase.displayName = ToastPrimitives.Action.displayName;
+DecoratableToastActions.displayName = "ToastActions";
 
-const ToastAction = makeDecoratable("ToastAction", ToastActionBase);
+const ToastActions = makeDecoratable("ToastActions", DecoratableToastActions);
 
 /**
  * Toast Close Icon
  */
-const ToastCloseBase = React.forwardRef<
+const DecoratableToastClose = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Close>,
     React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
 >(({ className, ...props }, ref) => (
     <ToastPrimitives.Close
         ref={ref}
-        className={cn("p-xs focus:outline-none", className)}
-        aria-label="Close"
+        className={cn(
+            "focus:outline-none group-[.default-variant]:fill-neutral-base group-[.subtle-variant]:fill-neutral-xstrong",
+            className
+        )}
         {...props}
     >
-        <span className="h-4 w-4" aria-hidden>
-            <CloseIcon />
-        </span>
+        <Icon label={"Close"} icon={<CloseIcon />} aria-hidden={true} />
     </ToastPrimitives.Close>
 ));
-ToastCloseBase.displayName = ToastPrimitives.Close.displayName;
+DecoratableToastClose.displayName = ToastPrimitives.Close.displayName;
 
-const ToastClose = makeDecoratable("ToastClose", ToastCloseBase);
+const ToastClose = makeDecoratable("ToastClose", DecoratableToastClose);
 
 /**
  * Toast Icon
  */
 type ToastIconProps = {
-    icon?: React.ReactNode;
+    icon?: React.ReactElement<IconProps>;
 };
 
-const ToastIconBase = ({ icon = <NotificationsIcon /> }: ToastIconProps) => (
+const DecoratableNotificationIcon = () => (
+    <Icon icon={<NotificationsIconActive />} label={"Notification"} aria-hidden={true} />
+);
+
+const NotificationIcon = makeDecoratable("NotificationIcon", DecoratableNotificationIcon);
+
+const DecoratableToastIcon = ({ icon = <NotificationIcon /> }: ToastIconProps) => (
     <div className={"fill-accent-default"}>
-        <span className="h-4 w-4" aria-hidden>
-            {icon}
-        </span>
+        <span className="h-3 w-3">{icon}</span>
     </div>
 );
 
-const ToastIcon = makeDecoratable("ToastIcon", ToastIconBase);
+const ToastIcon = makeDecoratable("ToastIcon", DecoratableToastIcon);
 
 /**
  * Toast Title
@@ -131,17 +135,25 @@ type ToastTitleProps = Omit<ToastPrimitives.ToastTitleProps, "children"> & {
     text: React.ReactNode;
 };
 
-const ToastTitleBase = React.forwardRef<
+const DecoratableToastTitle = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Title>,
     ToastTitleProps
->(({ text, ...props }, ref) => (
-    <ToastPrimitives.Title ref={ref} asChild {...props}>
+>(({ text, className, ...props }, ref) => (
+    <ToastPrimitives.Title
+        ref={ref}
+        {...props}
+        asChild
+        className={cn(
+            "group-[.default-variant]:text-neutral-light group-[.subtle-variant]:text-neutral-primary",
+            className
+        )}
+    >
         <Heading level={6} text={text} />
     </ToastPrimitives.Title>
 ));
-ToastTitleBase.displayName = ToastPrimitives.Title.displayName;
+DecoratableToastTitle.displayName = ToastPrimitives.Title.displayName;
 
-const ToastTitle = makeDecoratable("ToastTitle", ToastTitleBase);
+const ToastTitle = makeDecoratable("ToastTitle", DecoratableToastTitle);
 
 /**
  * Toast Description
@@ -150,17 +162,25 @@ type ToastDescriptionProps = Omit<ToastPrimitives.ToastDescriptionProps, "childr
     text: React.ReactNode;
 };
 
-const ToastDescriptionBase = React.forwardRef<
+const DecoratableToastDescription = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Description>,
     ToastDescriptionProps
->(({ text, ...props }, ref) => (
-    <ToastPrimitives.Description ref={ref} asChild {...props}>
-        <Text text={text} as={"div"} size={"sm"} className={"text-neutral-dimmed"} />
+>(({ text, className, ...props }, ref) => (
+    <ToastPrimitives.Description
+        ref={ref}
+        {...props}
+        asChild
+        className={cn(
+            "mt-xs-plus group-[.default-variant]:text-neutral-dimmed group-[.subtle-variant]:text-neutral-strong",
+            className
+        )}
+    >
+        <Text text={text} as={"div"} size={"md"} className={"text-neutral-dimmed"} />
     </ToastPrimitives.Description>
 ));
-ToastDescriptionBase.displayName = ToastPrimitives.Description.displayName;
+DecoratableToastDescription.displayName = ToastPrimitives.Description.displayName;
 
-const ToastDescription = makeDecoratable("ToastDescription", ToastDescriptionBase);
+const ToastDescription = makeDecoratable("ToastDescription", DecoratableToastDescription);
 
 /**
  * Toast
@@ -170,13 +190,13 @@ type ToastRootProps = React.ComponentPropsWithoutRef<typeof ToastRoot>;
 interface ToastProps extends Omit<ToastRootProps, "title" | "content" | "children"> {
     title: React.ReactElement<ToastTitleProps>;
     description?: React.ReactElement<ToastDescriptionProps>;
-    icon?: React.ReactNode;
-    actions?: React.ReactElement<ToastActionProps> | React.ReactElement<ToastActionProps>[];
+    icon?: React.ReactElement<IconProps>;
+    actions?: React.ReactElement<typeof ToastActions>;
 }
 
-const ToastBase = ({ title, description, icon, actions, ...props }: ToastProps) => {
+const DecoratableToast = ({ title, description, icon, actions, ...props }: ToastProps) => {
     return (
-        <ToastRoot {...props}>
+        <ToastRoot hasDescription={!!description || !!actions} {...props}>
             <ToastIcon icon={icon} />
             <div className="w-64">
                 {title}
@@ -188,16 +208,12 @@ const ToastBase = ({ title, description, icon, actions, ...props }: ToastProps) 
     );
 };
 
-const Toast = makeDecoratable("Toast", ToastBase);
+const Toast = withStaticProps(makeDecoratable("Toast", DecoratableToast), {
+    Title: ToastTitle,
+    Description: ToastDescription,
+    Actions: ToastActions,
+    Provider: ToastProvider,
+    Viewport: ToastViewport
+});
 
-export {
-    type ToastRootProps,
-    type ToastActionProps,
-    type ToastProps,
-    Toast,
-    ToastAction,
-    ToastDescription,
-    ToastProvider,
-    ToastTitle,
-    ToastViewport
-};
+export { Toast, type ToastRootProps, type ToastProps };
