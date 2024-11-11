@@ -15,7 +15,7 @@ export interface AvatarProps {
     /**
      * Avatar image source.
      */
-    src?: string;
+    src?: string | null;
 
     /**
      * "alt" text.
@@ -56,7 +56,7 @@ export const Avatar = (props: AvatarProps) => {
         <AdminUiAvatar
             className={className}
             style={{ width, height, ...style }}
-            image={<AdminUiAvatar.Image src={src} alt={alt} width={width} height={height} />}
+            image={<AdminUiAvatar.Image src={src || ""} alt={alt} width={width} height={height} />}
             fallback={<AdminUiAvatar.Fallback delayMs={0}>{fallbackText}</AdminUiAvatar.Fallback>}
         />
     );
