@@ -45,7 +45,7 @@ const toastVariants = cva(
                 subtle: "subtle-variant bg-white"
             },
             hasDescription: {
-                true: "items-start justify-start"
+                true: "has-description items-start justify-start"
             }
         },
         defaultVariants: {
@@ -144,7 +144,7 @@ const DecoratableToastTitle = React.forwardRef<
         {...props}
         asChild
         className={cn(
-            "group-[.default-variant]:text-neutral-light group-[.subtle-variant]:text-neutral-primary",
+            "group-[.default-variant]:text-neutral-light group-[.subtle-variant]:text-neutral-primary font-normal group-[.has-description]:font-semibold",
             className
         )}
     >
