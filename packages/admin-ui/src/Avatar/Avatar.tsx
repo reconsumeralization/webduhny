@@ -10,11 +10,7 @@ const AvatarImageBase = React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Image>,
     AvatarImageProps
 >(({ className, ...props }, ref) => (
-    <AvatarPrimitive.Image
-        ref={ref}
-        className={cn("aspect-square h-full w-full", className)}
-        {...props}
-    />
+    <AvatarPrimitive.Image ref={ref} className={cn("aspect-square", className)} {...props} />
 ));
 AvatarImageBase.displayName = AvatarPrimitive.Image.displayName;
 
@@ -28,10 +24,7 @@ const AvatarFallbackBase = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Fallback
         ref={ref}
-        className={cn(
-            "flex h-full w-full items-center justify-center rounded-full bg-muted",
-            className
-        )}
+        className={cn("flex h-full w-full items-center justify-center rounded-sm", className)}
         {...props}
     />
 ));
@@ -47,38 +40,42 @@ interface AvatarProps
     fallback?: React.ReactElement<AvatarFallbackProps>;
 }
 
-const avatarVariants = cva("rounded", {
+const avatarVariants = cva("relative flex shrink-0 overflow-hidden border-sm border-transparent", {
     variants: {
         size: {
-            sm: "w-6 h-6",
-            md: "w-8 h-8",
-            lg: "w-10 h-10",
-            xl: "w-12 h-12 rounded-lg"
+            sm: "text-h6 rounded-sm p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-md",
+            md: "text-h6 rounded-sm p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-lg",
+            lg: "text-h6 rounded-sm p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-lg",
+            xl: "text-h4 rounded-md p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-xl"
         },
         variant: {
-            image: ""
+            strong: "bg-primary text-neutral-light [&_svg]:fill-neutral-base",
+            subtle: "bg-neutral-light text-neutral-primary [&_svg]:fill-neutral-xstrong",
+            light: "bg-neutral-dimmed text-neutral-primary [&_svg]:fill-neutral-xstrong",
+            quiet: "bg-transparent text-neutral-primary [&_svg]:fill-neutral-xstrong",
+            outlined:
+                "bg-neutral-base !border-neutral-muted border-sm text-accent-primary [&_svg]:fill-neutral-xstrong"
         }
     },
     defaultVariants: {
         size: "md",
-        variant: "image"
+        variant: "strong"
     }
 });
 
 const AvatarBase = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, AvatarProps>(
-    ({ image, fallback, className, size, variant, ...props }, ref) => (
-        <AvatarPrimitive.Root
-            ref={ref}
-            className={cn(
-                "relative flex shrink-0 overflow-hidden",
-                avatarVariants({ variant, size, className })
-            )}
-            {...props}
-        >
-            {image}
-            {fallback}
-        </AvatarPrimitive.Root>
-    )
+    ({ image, fallback, className, size, variant, ...props }, ref) => {
+        return (
+            <AvatarPrimitive.Root
+                ref={ref}
+                className={avatarVariants({ variant, size, className })}
+                {...props}
+            >
+                {image}
+                {fallback}
+            </AvatarPrimitive.Root>
+        );
+    }
 );
 
 AvatarBase.displayName = AvatarPrimitive.Root.displayName;
