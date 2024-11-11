@@ -8,6 +8,10 @@ const meta: Meta<typeof Tooltip> = {
     component: Tooltip,
     tags: ["autodocs"],
     argTypes: {
+        variant: {
+            control: "select",
+            options: ["accent", "subtle"]
+        },
         align: {
             control: "select",
             options: ["start", "center", "end"]
@@ -15,6 +19,10 @@ const meta: Meta<typeof Tooltip> = {
         side: {
             control: "select",
             options: ["top", "right", "bottom", "left"]
+        },
+        showArrow: {
+            control: "boolean",
+            defaultValue: true
         }
     },
     decorators: [
