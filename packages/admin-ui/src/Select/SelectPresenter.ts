@@ -36,7 +36,10 @@ class SelectPresenter implements ISelectPresenter {
             selectTriggerVm: {
                 placeholder: this.props?.placeholder || "Select an option",
                 size: this.props?.size,
-                variant: this.props?.variant
+                variant: this.props?.variant,
+                startIcon: this.props?.startIcon,
+                endIcon: this.props?.endIcon,
+                invalid: this.props?.invalid
             },
             selectOptionsVm: {
                 options: this.options?.map(option => SelectOptionMapper.toFormatted(option)) ?? []

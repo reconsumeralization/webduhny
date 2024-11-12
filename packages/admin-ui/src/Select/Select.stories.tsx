@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as ChevronRight } from "@material-design-icons/svg/outlined/chevron_right.svg";
 import { Select } from "./Select";
 
 const meta: Meta<typeof Select> = {
@@ -11,7 +13,8 @@ const meta: Meta<typeof Select> = {
         onOpenChange: { action: "onOpenChange" },
         variant: { control: "select", options: ["primary", "secondary", "ghost"] },
         size: { control: "select", options: ["md", "lg", "xl"] },
-        disabled: { control: "boolean" }
+        disabled: { control: "boolean" },
+        invalid: { control: "boolean" }
     }
 };
 
@@ -38,27 +41,6 @@ export const Default: Story = {
             "Bolivia Time (BOT)",
             "Brasilia Time (BRT)"
         ]
-    }
-};
-
-export const PrimaryVariant: Story = {
-    args: {
-        ...Default.args,
-        variant: "primary"
-    }
-};
-
-export const SecondaryVariant: Story = {
-    args: {
-        ...Default.args,
-        variant: "secondary"
-    }
-};
-
-export const GhostVariant: Story = {
-    args: {
-        ...Default.args,
-        variant: "ghost"
     }
 };
 
@@ -90,10 +72,88 @@ export const WithCustomPlaceholder: Story = {
     }
 };
 
-export const Disabled: Story = {
+export const WithStartIcon: Story = {
     args: {
         ...Default.args,
+        startIcon: <SearchIcon />
+    }
+};
+
+export const WithEndIconIcon: Story = {
+    args: {
+        ...Default.args,
+        endIcon: <SearchIcon />
+    }
+};
+
+export const WithStartAndEndIcons: Story = {
+    args: {
+        ...Default.args,
+        startIcon: <SearchIcon />,
+        endIcon: <ChevronRight />
+    }
+};
+
+export const PrimaryVariant: Story = {
+    args: {
+        ...Default.args,
+        variant: "primary"
+    }
+};
+
+export const PrimaryVariantDisabled: Story = {
+    args: {
+        ...PrimaryVariant.args,
         disabled: true
+    }
+};
+
+export const PrimaryVariantInvalid: Story = {
+    args: {
+        ...PrimaryVariant.args,
+        invalid: true
+    }
+};
+
+export const SecondaryVariant: Story = {
+    args: {
+        variant: "secondary",
+        placeholder: "Custom placeholder"
+    }
+};
+
+export const SecondaryVariantDisabled: Story = {
+    args: {
+        ...SecondaryVariant.args,
+        disabled: true
+    }
+};
+
+export const SecondaryVariantInvalid: Story = {
+    args: {
+        ...SecondaryVariant.args,
+        invalid: true
+    }
+};
+
+export const GhostVariant: Story = {
+    args: {
+        variant: "ghost",
+        placeholder: "Custom placeholder"
+    }
+};
+
+export const GhostVariantDisabled: Story = {
+    args: {
+        ...GhostVariant.args,
+        disabled: true
+    }
+};
+
+export const GhostVariantInvalid: Story = {
+    args: {
+        ...GhostVariant.args,
+        invalid: true
     }
 };
 

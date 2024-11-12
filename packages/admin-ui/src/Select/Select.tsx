@@ -18,13 +18,24 @@ const SelectGroup = SelectPrimitive.Group;
 
 const SelectValue = SelectPrimitive.Value;
 
+interface IconWrapperProps {
+    icon: React.ReactElement;
+}
+
+const Icon = ({ icon }: IconWrapperProps) => {
+    return (
+        <SelectPrimitive.Icon asChild className={"h-4 w-4"}>
+            {React.cloneElement(icon, {})}
+        </SelectPrimitive.Icon>
+    );
+};
+
 /**
  * Trigger
  */
-
 const triggerVariants = cva(
     [
-        "w-full flex items-center justify-between gap-sm border-sm text-md focus:outline-none disabled:cursor-not-allowed"
+        "w-full flex items-center justify-between gap-sm border-sm text-md relative focus:outline-none disabled:cursor-not-allowed"
     ],
     {
         variants: {
@@ -61,8 +72,39 @@ const triggerVariants = cva(
                     "rounded-md leading-6",
                     "py-[calc(theme(padding.md)-theme(borderWidth.sm))] px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
                 ]
+            },
+            invalid: {
+                true: [
+                    "border-destructive-default",
+                    "hover:border-destructive-default",
+                    "focus:border-destructive-default",
+                    "disabled:border-destructive-default"
+                ]
             }
         },
+        compoundVariants: [
+            // Add specific classNames in case of invalid variant.
+            {
+                variant: "secondary",
+                invalid: true,
+                class: [
+                    "bg-neutral-base border-destructive-default",
+                    "hover:bg-neutral-dimmed hover:border-destructive-default",
+                    "focus:bg-neutral-base focus:border-destructive-default",
+                    "disabled:bg-neutral-disabled disabled:border-destructive-default"
+                ]
+            },
+            {
+                variant: "ghost",
+                invalid: true,
+                class: [
+                    "border-none bg-destructive-subtle",
+                    "hover:bg-destructive-subtle",
+                    "focus:bg-destructive-subtle",
+                    "disabled:bg-destructive-subtle"
+                ]
+            }
+        ],
         defaultVariants: {
             variant: "primary",
             size: "md"
@@ -72,23 +114,41 @@ const triggerVariants = cva(
 
 interface TriggerProps
     extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
-        VariantProps<typeof triggerVariants> {}
+        VariantProps<typeof triggerVariants> {
+    startIcon?: React.ReactElement;
+    endIcon?: React.ReactElement;
+}
 
 const DecoratableTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
     TriggerProps
->(({ className, children, size, variant, ...props }, ref) => (
-    <SelectPrimitive.Trigger
-        ref={ref}
-        className={cn(triggerVariants({ variant, size, className }))}
-        {...props}
-    >
-        {children}
-        <SelectPrimitive.Icon asChild>
-            <ChevronDown className="h-4 w-4" />
-        </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-));
+>(
+    (
+        {
+            className,
+            children,
+            size,
+            variant,
+            startIcon,
+            endIcon = <ChevronDown />,
+            disabled,
+            invalid,
+            ...props
+        },
+        ref
+    ) => (
+        <SelectPrimitive.Trigger
+            ref={ref}
+            className={cn(triggerVariants({ variant, size, invalid, className }))}
+            disabled={disabled}
+            {...props}
+        >
+            {startIcon && <Icon icon={startIcon} />}
+            {children}
+            <Icon icon={endIcon} />
+        </SelectPrimitive.Trigger>
+    )
+);
 DecoratableTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const Trigger = makeDecoratable("Trigger", DecoratableTrigger);
@@ -242,11 +302,27 @@ const SelectSeparator = makeDecoratable("SelectSeparator", DecoratableSelectSepa
 type SelectTriggerVm = SelectPrimitive.SelectValueProps & {
     size: VariantProps<typeof triggerVariants>["size"];
     variant: VariantProps<typeof triggerVariants>["variant"];
+    invalid: VariantProps<typeof triggerVariants>["invalid"];
+    startIcon?: React.ReactElement;
+    endIcon?: React.ReactElement;
 };
 
-const DecoratableSelectTrigger = ({ size, variant, ...props }: SelectTriggerVm) => {
+const DecoratableSelectTrigger = ({
+    size,
+    variant,
+    startIcon,
+    endIcon,
+    invalid,
+    ...props
+}: SelectTriggerVm) => {
     return (
-        <Trigger size={size} variant={variant}>
+        <Trigger
+            size={size}
+            variant={variant}
+            invalid={invalid}
+            startIcon={startIcon}
+            endIcon={endIcon}
+        >
             <SelectValue {...props} />
         </Trigger>
     );
@@ -340,6 +416,9 @@ type SelectProps = SelectPrimitive.SelectProps & {
     options?: SelectOption[];
     size?: VariantProps<typeof triggerVariants>["size"];
     variant?: VariantProps<typeof triggerVariants>["variant"];
+    invalid?: VariantProps<typeof triggerVariants>["invalid"];
+    startIcon?: React.ReactElement;
+    endIcon?: React.ReactElement;
 };
 
 const DecoratableSelect = (props: SelectProps) => {
