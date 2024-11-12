@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import omit from "lodash/omit";
 import { SwitchProps, SwitchVm } from "./Switch";
 
 interface ISwitchPresenter<TProps extends SwitchProps = SwitchProps> {
@@ -24,6 +25,7 @@ class SwitchPresenter implements ISwitchPresenter {
     get vm() {
         return {
             switchVm: {
+                ...omit(this.props, ["onCheckedChange"]),
                 checked: this.props?.checked ?? false,
                 disabled: this.props?.disabled ?? false
             }
