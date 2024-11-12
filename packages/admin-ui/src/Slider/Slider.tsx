@@ -20,7 +20,7 @@ const DecoratableSliderRoot = React.forwardRef<
     <SliderPrimitive.Root
         ref={ref}
         className={cn(
-            "relative flex w-full touch-none select-none items-center cursor-pointer data-[disabled]:cursor-auto",
+            "relative flex w-full touch-none select-none items-center cursor-pointer data-[disabled]:cursor-not-allowed",
             className
         )}
         {...props}
@@ -50,7 +50,7 @@ const sliderTooltipVariants = cva(
     {
         variants: {
             side: {
-                top: "bottom-8",
+                top: "bottom-6",
                 bottom: "top-8"
             }
         },
@@ -73,7 +73,7 @@ const DecoratableSliderTooltip = ({ value, showTooltip, tooltipSide }: SliderToo
 
     return (
         <div className={cn(sliderTooltipVariants({ side: tooltipSide }))}>
-            <Text text={value} size={"sm"} />
+            <Text text={value} size={"sm"} as={"div"} />
         </div>
     );
 };
@@ -86,7 +86,7 @@ const SliderTooltip = makeDecoratable("SliderTooltip", DecoratableSliderTooltip)
 type SliderThumbVm = SliderTooltipProps;
 
 const DecoratableSliderThumb = ({ value, showTooltip, tooltipSide }: SliderThumbVm) => (
-    <SliderPrimitive.Thumb className="inline-block mt-xs-plus h-md w-md rounded-xxl border-md border-white bg-primary-default transition-colors outline-none hover:bg-primary-strong active:bg-primary-default data-[disabled]:pointer-events-none data-[disabled]:bg-primary-disabled">
+    <SliderPrimitive.Thumb className="inline-block mt-xs-plus h-4 w-4 rounded-xxl border-md border-white transition-colors bg-primary-default outline-none hover:bg-primary-strong active:bg-primary-default data-[disabled]:pointer-events-none data-[disabled]:bg-primary-disabled">
         <SliderTooltip showTooltip={showTooltip} value={value} tooltipSide={tooltipSide} />
     </SliderPrimitive.Thumb>
 );
