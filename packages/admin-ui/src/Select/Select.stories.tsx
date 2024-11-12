@@ -8,7 +8,10 @@ const meta: Meta<typeof Select> = {
     tags: ["autodocs"],
     argTypes: {
         onValueChange: { action: "onValueChange" },
-        onOpenChange: { action: "onOpenChange" }
+        onOpenChange: { action: "onOpenChange" },
+        variant: { control: "select", options: ["primary", "secondary", "ghost"] },
+        size: { control: "select", options: ["md", "lg", "xl"] },
+        disabled: { control: "boolean" }
     }
 };
 
@@ -52,10 +55,10 @@ export const SecondaryVariant: Story = {
     }
 };
 
-export const QuietVariant: Story = {
+export const GhostVariant: Story = {
     args: {
         ...Default.args,
-        variant: "quiet"
+        variant: "ghost"
     }
 };
 

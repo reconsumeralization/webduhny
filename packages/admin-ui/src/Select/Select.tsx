@@ -23,20 +23,44 @@ const SelectValue = SelectPrimitive.Value;
  */
 
 const triggerVariants = cva(
-    "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+    [
+        "w-full flex items-center justify-between gap-sm border-sm text-md focus:outline-none disabled:cursor-not-allowed"
+    ],
     {
         variants: {
             variant: {
-                primary:
-                    "bg-primary text-primary-foreground hover:bg-primary/90 [&>svg]:fill-white",
-                secondary:
-                    "bg-gray-200 text-gray-900 fill-gray-900 border border-gray-200 hover:bg-gray-300 hover:border-gray-300 hover:text-gray-800",
-                quiet: "bg-white text-gray-900 fill-gray-900 border border-gray-400 hover:bg-gray-100 hover:text-gray-900"
+                primary: [
+                    "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed fill-neutral-xstrong",
+                    "hover:border-neutral-strong",
+                    "focus:border-neutral-black",
+                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled disabled:fill-neutral-disabled"
+                ],
+                secondary: [
+                    "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-muted fill-neutral-xstrong",
+                    "hover:bg-neutral-dimmed",
+                    "focus:border-neutral-black focus:bg-neutral-base",
+                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled disabled:fill-neutral-disabled"
+                ],
+                ghost: [
+                    "bg-neutral-base border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
+                    "hover:bg-neutral-light",
+                    "focus:bg-neutral-light",
+                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled disabled:fill-neutral-disabled"
+                ]
             },
             size: {
-                md: "py-1.5 px-2 rounded text-md font-normal",
-                lg: "py-2.5 px-3 rounded-lg text-base font-medium",
-                xl: "py-3.5 px-4 rounded-lg text-lg font-medium"
+                md: [
+                    "rounded-sm",
+                    "py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                ],
+                lg: [
+                    "rounded-sm",
+                    "py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                ],
+                xl: [
+                    "rounded-md leading-6",
+                    "py-[calc(theme(padding.md)-theme(borderWidth.sm))] px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
+                ]
             }
         },
         defaultVariants: {
@@ -61,7 +85,7 @@ const DecoratableTrigger = React.forwardRef<
     >
         {children}
         <SelectPrimitive.Icon asChild>
-            <ChevronDown className="h-4 w-4 opacity-50" />
+            <ChevronDown className="h-4 w-4" />
         </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
 ));
