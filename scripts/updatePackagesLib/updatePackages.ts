@@ -4,7 +4,6 @@ import { BasicPackages } from "./BasicPackages";
 import { LatestVersionPackages } from "./LatestVersionPackages";
 import { ResolutionPackages } from "./ResolutionPackages";
 import { UpPackages } from "./UpPackages";
-import { IPreset } from "./createPreset";
 
 const getAllPackages = (): string[] => {
     const workspaces = allWorkspaces() as string[];
@@ -18,51 +17,13 @@ const getAllPackages = (): string[] => {
 };
 
 interface IUpdatePackagesParams {
-    presets: IPreset[];
     dryRun: boolean;
-    skipResolutions: boolean;
-    matching?: RegExp;
-    preset?: string;
-}
-
-interface IConfigurationParams {
-    matching?: RegExp;
-    preset?: string;
-    skipResolutions?: boolean;
-    dryRun?: boolean;
-    presets: IPreset[];
-}
-
-interface IConfiguration {
     skipResolutions: boolean;
     matching: RegExp;
-    dryRun: boolean;
 }
 
-const getConfiguration = (params: IConfigurationParams): IConfiguration => {
-    if (!params.preset && !params.matching) {
-        throw new Error(`Missing both preset and matching parameters.`);
-    } else if (params.preset && params.matching) {
-        throw new Error(`Cannot have both preset and matching parameters.`);
-    } else if (params.matching) {
-        return {
-            matching: params.matching,
-            dryRun: !!params.dryRun,
-            skipResolutions: !!params.skipResolutions
-        };
-    }
-    const preset = params.presets.find(p => p.name === params.preset);
-    if (!preset) {
-        throw new Error(`There is no preset "${params.preset}".`);
-    }
-    return {
-        ...preset,
-        dryRun: !!params.dryRun
-    };
-};
-
-const updatePackages = async (params: IUpdatePackagesParams) => {
-    const { matching, skipResolutions, dryRun } = getConfiguration(params);
+export const updatePackages = async (params: IUpdatePackagesParams) => {
+    const { matching, skipResolutions, dryRun } = params;
     /**
      * Basic packages container with all packages that match the regex and their versions in the package.json files.
      */
@@ -106,17 +67,4 @@ const updatePackages = async (params: IUpdatePackagesParams) => {
     await updatePackages.process();
 
     await resolutions.removeFromPackageJson();
-};
-
-export interface ICreateUpdatePackagesParams {
-    presets: IPreset[];
-}
-
-export const createUpdatePackages = ({ presets }: ICreateUpdatePackagesParams) => {
-    return (params: Omit<IUpdatePackagesParams, "presets">) => {
-        return updatePackages({
-            ...params,
-            presets
-        });
-    };
 };

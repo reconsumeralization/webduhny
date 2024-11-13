@@ -5,11 +5,11 @@ require("ts-node").register({
 });
 
 const { presets } = require("./presets");
-const { createUpdatePackages } = require("./updatePackages");
+const { updatePackages } = require("./updatePackages");
+const { getUserInput } = require("./getUserInput");
 
 module.exports = {
-    updatePackages: createUpdatePackages({
-        presets
-    }),
-    presets: presets.map(p => p.name)
+    updatePackages,
+    getUserInput,
+    presets
 };

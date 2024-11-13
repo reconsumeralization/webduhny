@@ -10622,7 +10622,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/inquirer@npm:8.2.10":
+"@types/inquirer@npm:8.2.10, @types/inquirer@npm:^8.2.10":
   version: 8.2.10
   resolution: "@types/inquirer@npm:8.2.10"
   dependencies:
@@ -14899,7 +14899,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/cli-plugin-scaffold-admin-app-module@workspace:packages/cli-plugin-scaffold-admin-app-module"
   dependencies:
-    "@types/inquirer": 8.2.10
+    "@types/inquirer": ^8.2.10
     "@types/ncp": ^2.0.4
     "@types/pluralize": ^0.0.29
     "@webiny/cli": 0.0.0
