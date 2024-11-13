@@ -11,7 +11,9 @@ export interface IUserInputParams {
     matching: RegExp;
 }
 
-export const getUserInput = async ({ presets }: IGetUserInputParams): Promise<IUserInputParams> => {
+export const getUserInput = async ({
+    presets
+}: IGetUserInputParams): Promise<IUserInputParams | null> => {
     const prompt = inquirer.createPromptModule();
 
     const { dryRun } = await prompt({
@@ -23,10 +25,11 @@ export const getUserInput = async ({ presets }: IGetUserInputParams): Promise<IU
 
     const { preset } = await prompt({
         name: "preset",
+        message: "Do you want to use a preset?",
         default: null,
         type: "list",
         choices: [
-            { name: "Use custom matching", value: null },
+            { name: "I will write my own custom matching", value: null },
 
             ...presets.map(p => {
                 return {
@@ -50,15 +53,46 @@ export const getUserInput = async ({ presets }: IGetUserInputParams): Promise<IU
     const { matching } = await prompt({
         name: "matching",
         type: "input",
-        message: "Enter a regex to match package names."
+        message: "Enter a regex to match package names.",
+        validate(input: string) {
+            try {
+                if (!input || input.length < 3) {
+                    return "Please enter a regex.";
+                }
+                new RegExp(input);
+                return true;
+            } catch (e) {
+                return `Invalid regex: ${input}`;
+            }
+        }
     });
 
     const { skipResolutions } = await prompt({
         name: "skipResolutions",
-        type: "confirm",
-        default: true,
-        message: "Skip adding packages to main package.json resolutions?"
+        type: "list",
+        default: null,
+        message: "Skip adding packages to main package.json resolutions?",
+        choices: [
+            { name: "No", value: false },
+            { name: "Yes", value: true }
+        ]
     });
+
+    const { confirm } = await prompt({
+        name: "confirm",
+        default: false,
+        type: "list",
+        message: `Confirm settings: matching - ${matching}, dry run - ${
+            dryRun ? "yes" : "no"
+        }, skip resolutions - ${skipResolutions ? "yes" : "no"})`,
+        choices: [
+            { name: "Not correct, exit.", value: false },
+            { name: "Correct, continue.", value: true }
+        ]
+    });
+    if (!confirm) {
+        return null;
+    }
 
     return {
         matching,

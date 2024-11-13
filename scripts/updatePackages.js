@@ -1,13 +1,12 @@
 const { updatePackages, presets, getUserInput } = require("./updatePackagesLib/index");
 
 (async () => {
-    const { dryRun, matching, skipResolutions } = await getUserInput({
+    const input = await getUserInput({
         presets
     });
+    if (!input) {
+        return;
+    }
 
-    return updatePackages({
-        matching,
-        dryRun,
-        skipResolutions
-    });
+    return updatePackages(input);
 })();
