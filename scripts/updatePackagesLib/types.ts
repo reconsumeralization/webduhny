@@ -11,17 +11,7 @@ export interface IVersionedPackage extends IBasicPackage {
     isLatest: boolean;
 }
 
-export type IUpdateablePackage = Omit<IVersionedPackage, "isLatest">;
-
-// export interface IPackageCollectionItem {
-//     name: string;
-//     version: SemVer | null;
-//     latest: SemVer | null;
-//     updateToLatest?: boolean;
-// }
-// export interface IPackageCollection {
-//     [name: string]: IPackageCollectionItem;
-// }
+export type IUpdatablePackage = Omit<IVersionedPackage, "isLatest">;
 
 export interface IPackageJson extends BasePackageJson {
     resolutions: Record<string, string>;

@@ -1,6 +1,6 @@
 import execa from "execa";
 import semver from "semver";
-import { IBasicPackage, IUpdateablePackage, IVersionedPackage } from "./types";
+import { IBasicPackage, IUpdatablePackage, IVersionedPackage } from "./types";
 
 export interface ILatestVersionPackagesParams {
     packages: IBasicPackage[];
@@ -13,7 +13,7 @@ export class LatestVersionPackages {
         this.packages = packages;
     }
 
-    public getUpdateable(): IUpdateablePackage[] {
+    public getUpdatable(): IUpdatablePackage[] {
         return this.packages
             .filter(pkg => !pkg.isLatest)
             .map(pkg => {

@@ -10,5 +10,6 @@ const { createUpdatePackages } = require("./updatePackages");
 module.exports = {
     updatePackages: createUpdatePackages({
         presets
-    })
+    }),
+    presets: presets.map(p => p.name)
 };

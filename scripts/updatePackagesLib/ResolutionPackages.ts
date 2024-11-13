@@ -1,19 +1,22 @@
-import { IPackageJson, IUpdateablePackage } from "./types";
+import { IPackageJson, IUpdatablePackage } from "./types";
 import loadJsonFile from "load-json-file";
 import writeJsonFile from "write-json-file";
 import execa from "execa";
 
 export interface IResolutionPackagesParams {
-    packages: IUpdateablePackage[];
+    packages: IUpdatablePackage[];
     path: string;
+    skip: boolean;
 }
 
 export class ResolutionPackages {
-    private readonly packages: IUpdateablePackage[];
+    private readonly skip: boolean;
+    private readonly packages: IUpdatablePackage[];
     private readonly path: string;
-    private addedToResolutions: IUpdateablePackage[] | undefined;
+    private addedToResolutions: IUpdatablePackage[] | undefined;
 
     private constructor(params: IResolutionPackagesParams) {
+        this.skip = params.skip;
         this.path = params.path;
         this.packages = params.packages;
     }
@@ -23,7 +26,9 @@ export class ResolutionPackages {
     }
 
     public async addToPackageJson(): Promise<void> {
-        if (this.addedToResolutions) {
+        if (this.skip) {
+            return;
+        } else if (this.addedToResolutions) {
             throw new Error(`Cannot execute addToPackageJson() twice.`);
         }
         this.addedToResolutions = [];
@@ -46,7 +51,7 @@ export class ResolutionPackages {
     }
 
     public async removeFromPackageJson(): Promise<void> {
-        if (!this.addedToResolutions?.length) {
+        if (this.skip || !this.addedToResolutions?.length) {
             return;
         }
         const rootPackageJsonUp = loadJsonFile.sync<IPackageJson>(this.path);

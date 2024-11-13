@@ -20,35 +20,49 @@ const getAllPackages = (): string[] => {
 interface IUpdatePackagesParams {
     presets: IPreset[];
     dryRun: boolean;
+    skipResolutions: boolean;
     matching?: RegExp;
     preset?: string;
 }
 
-interface IGetMatchingParams {
+interface IConfigurationParams {
     matching?: RegExp;
     preset?: string;
+    skipResolutions?: boolean;
+    dryRun?: boolean;
     presets: IPreset[];
 }
 
-const getMatching = (params: IGetMatchingParams): RegExp => {
+interface IConfiguration {
+    skipResolutions: boolean;
+    matching: RegExp;
+    dryRun: boolean;
+}
+
+const getConfiguration = (params: IConfigurationParams): IConfiguration => {
     if (!params.preset && !params.matching) {
         throw new Error(`Missing both preset and matching parameters.`);
     } else if (params.preset && params.matching) {
         throw new Error(`Cannot have both preset and matching parameters.`);
     } else if (params.matching) {
-        return params.matching;
+        return {
+            matching: params.matching,
+            dryRun: !!params.dryRun,
+            skipResolutions: !!params.skipResolutions
+        };
     }
     const preset = params.presets.find(p => p.name === params.preset);
     if (!preset) {
         throw new Error(`There is no preset "${params.preset}".`);
     }
-    return preset.matching;
+    return {
+        ...preset,
+        dryRun: !!params.dryRun
+    };
 };
 
 const updatePackages = async (params: IUpdatePackagesParams) => {
-    const { dryRun } = params;
-
-    const matching = getMatching(params);
+    const { matching, skipResolutions, dryRun } = getConfiguration(params);
     /**
      * Basic packages container with all packages that match the regex and their versions in the package.json files.
      */
@@ -64,28 +78,29 @@ const updatePackages = async (params: IUpdatePackagesParams) => {
         packages: packages.packages
     });
 
-    const updateable = latestVersionPackages.getUpdateable();
-    if (updateable.length === 0) {
+    const updatable = latestVersionPackages.getUpdatable();
+    if (updatable.length === 0) {
         console.log("All packages are up-to-date. Exiting...");
         return;
     }
     if (dryRun !== false) {
-        console.log("Dry run mode enabled. Packages which will be updated:");
-        for (const pkg of updateable) {
+        console.log("Dry run mode enabled. Packages which will get updated:");
+        for (const pkg of updatable) {
             console.log(`${pkg.name}: ${pkg.version.raw} -> ${pkg.latestVersion.raw}`);
         }
         return;
     }
 
     const resolutions = await ResolutionPackages.create({
+        skip: skipResolutions,
         path: path.resolve(process.cwd(), "package.json"),
-        packages: updateable
+        packages: updatable
     });
 
     await resolutions.addToPackageJson();
 
     const updatePackages = await UpPackages.create({
-        packages: updateable
+        packages: updatable
     });
 
     await updatePackages.process();
