@@ -10,8 +10,6 @@ import { useSelect } from "./useSelect";
 import { SelectOptionDto } from "~/Select/SelectOptionDto";
 import { SelectOptionFormatted } from "~/Select/SelectOptionFormatted";
 
-type SelectVm = SelectPrimitive.SelectProps;
-
 const SelectRoot = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
@@ -334,7 +332,9 @@ const DecoratableSelectTrigger = ({
             startIcon={startIcon}
             endIcon={endIcon}
         >
-            <SelectValue {...props} />
+            <div className={"flex-1 text-left truncate"}>
+                <SelectValue {...props} />
+            </div>
         </Trigger>
     );
 };
@@ -393,6 +393,8 @@ const SelectOptions = makeDecoratable("SelectOptions", DecoratableSelectOptions)
 /**
  * SelectRenderer
  */
+type SelectVm = SelectPrimitive.SelectProps;
+
 interface SelectRendererProps {
     selectVm: SelectVm;
     selectTriggerVm: SelectTriggerVm;

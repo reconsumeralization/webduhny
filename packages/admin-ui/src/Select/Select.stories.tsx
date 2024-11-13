@@ -15,7 +15,17 @@ const meta: Meta<typeof Select> = {
         size: { control: "select", options: ["md", "lg", "xl"] },
         disabled: { control: "boolean" },
         invalid: { control: "boolean" }
-    }
+    },
+    parameters: {
+        layout: "fullscreen"
+    },
+    decorators: [
+        Story => (
+            <div className="w-1/3 h-32 mx-auto flex justify-center items-center">
+                <Story />
+            </div>
+        )
+    ]
 };
 
 export default meta;
