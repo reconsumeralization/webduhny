@@ -74,11 +74,11 @@ const updatePackages = async (params: IUpdatePackagesParams) => {
      * Versioned packages container.
      * All packages with latest versions
      */
-    const latestVersionPackages = await LatestVersionPackages.create({
+    const latestVersionPackages = await LatestVersionPackages.create();
+
+    const updatable = await latestVersionPackages.getUpdatable({
         packages: packages.packages
     });
-
-    const updatable = latestVersionPackages.getUpdatable();
     if (updatable.length === 0) {
         console.log("All packages are up-to-date. Exiting...");
         return;

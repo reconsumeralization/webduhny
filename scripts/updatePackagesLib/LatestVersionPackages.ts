@@ -1,36 +1,23 @@
 import execa from "execa";
 import semver from "semver";
-import { IBasicPackage, IUpdatablePackage, IVersionedPackage } from "./types";
+import { IBasicPackage, IVersionedPackage } from "./types";
 
-export interface ILatestVersionPackagesParams {
+export interface IGetUpdatableParams {
     packages: IBasicPackage[];
 }
 
 export class LatestVersionPackages {
-    public readonly packages: IVersionedPackage[];
+    private readonly cache: WeakMap<IBasicPackage[], IVersionedPackage[]> = new WeakMap();
 
-    public constructor(packages: IVersionedPackage[]) {
-        this.packages = packages;
-    }
-
-    public getUpdatable(): IUpdatablePackage[] {
-        return this.packages
-            .filter(pkg => !pkg.isLatest)
-            .map(pkg => {
-                return {
-                    name: pkg.name,
-                    version: pkg.version,
-                    latestVersion: pkg.latestVersion
-                };
-            });
-    }
-
-    public static async create(params: ILatestVersionPackagesParams) {
-        const { packages: localPackages } = params;
+    public async getUpdatable(params: IGetUpdatableParams): Promise<IVersionedPackage[]> {
+        const cache = this.cache.get(params.packages);
+        if (cache) {
+            return cache;
+        }
 
         const results: IVersionedPackage[] = [];
 
-        for (const localPackage of localPackages) {
+        for (const localPackage of params.packages) {
             try {
                 const result = await execa("npm", ["show", localPackage.name, "version"]);
                 if (!result.stdout) {
@@ -45,25 +32,24 @@ export class LatestVersionPackages {
                     continue;
                 }
                 if (semver.gte(localPackage.version, npmPackageVersion)) {
-                    results.push({
-                        ...localPackage,
-                        version: localPackage.version,
-                        latestVersion: localPackage.version,
-                        isLatest: true
-                    });
                     continue;
                 }
 
                 results.push({
                     ...localPackage,
                     version: localPackage.version,
-                    latestVersion: npmPackageVersion,
-                    isLatest: false
+                    latestVersion: npmPackageVersion
                 });
             } catch (ex) {
                 console.error(`Could not find "${localPackage}" latest version on npm.`, ex);
             }
         }
-        return new LatestVersionPackages(results);
+
+        this.cache.set(params.packages, results);
+        return results;
+    }
+
+    public static async create() {
+        return new LatestVersionPackages();
     }
 }

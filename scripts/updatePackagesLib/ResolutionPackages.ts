@@ -1,19 +1,19 @@
-import { IPackageJson, IUpdatablePackage } from "./types";
+import { IPackageJson, IVersionedPackage } from "./types";
 import loadJsonFile from "load-json-file";
 import writeJsonFile from "write-json-file";
 import execa from "execa";
 
 export interface IResolutionPackagesParams {
-    packages: IUpdatablePackage[];
+    packages: IVersionedPackage[];
     path: string;
     skip: boolean;
 }
 
 export class ResolutionPackages {
     private readonly skip: boolean;
-    private readonly packages: IUpdatablePackage[];
+    private readonly packages: IVersionedPackage[];
     private readonly path: string;
-    private addedToResolutions: IUpdatablePackage[] | undefined;
+    private addedToResolutions: IVersionedPackage[] | undefined;
 
     private constructor(params: IResolutionPackagesParams) {
         this.skip = params.skip;

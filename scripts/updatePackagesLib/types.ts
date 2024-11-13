@@ -8,10 +8,7 @@ export interface IBasicPackage {
 
 export interface IVersionedPackage extends IBasicPackage {
     latestVersion: SemVer;
-    isLatest: boolean;
 }
-
-export type IUpdatablePackage = Omit<IVersionedPackage, "isLatest">;
 
 export interface IPackageJson extends BasePackageJson {
     resolutions: Record<string, string>;

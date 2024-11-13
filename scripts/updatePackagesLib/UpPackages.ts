@@ -1,12 +1,12 @@
-import { IUpdatablePackage } from "./types";
+import { IVersionedPackage } from "./types";
 import execa from "execa";
 
 export interface IUpPackagesParams {
-    packages: IUpdatablePackage[];
+    packages: IVersionedPackage[];
 }
 
 export class UpPackages {
-    private readonly packages: IUpdatablePackage[];
+    private readonly packages: IVersionedPackage[];
 
     private constructor(params: IUpPackagesParams) {
         this.packages = params.packages;
