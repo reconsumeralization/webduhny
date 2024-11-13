@@ -22,12 +22,12 @@ export interface ISynchronizationBuilder {
 
 export interface ISynchronizationBuilderParams {
     timer: ITimer;
-    context: Pick<Context, "elasticsearch">;
+    context: Pick<Context, "elasticsearch" | "logger">;
 }
 
 export class SynchronizationBuilder implements ISynchronizationBuilder {
     private readonly timer: ITimer;
-    private readonly context: Pick<Context, "elasticsearch">;
+    private readonly context: Pick<Context, "elasticsearch" | "logger">;
     private readonly operations: IOperations;
 
     public constructor(params: ISynchronizationBuilderParams) {

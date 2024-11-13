@@ -12,8 +12,9 @@ import { ITaskResponse } from "@webiny/tasks/response/abstractions";
 import { ITaskManagerStore } from "@webiny/tasks/runner/abstractions";
 import { BatchWriteItem, BatchWriteResult } from "@webiny/db-dynamodb";
 import { ITimer } from "@webiny/handler-aws";
+import { Context as LoggerContext } from "@webiny/api-log/types";
 
-export interface Context extends ElasticsearchContext, TasksContext {}
+export interface Context extends ElasticsearchContext, TasksContext, LoggerContext {}
 
 export interface IElasticsearchTaskConfig {
     documentClient?: DynamoDBDocument;

@@ -30,7 +30,7 @@ export interface IExecuteParams {
     timer: ITimer;
     maxRunningTime: number;
     maxProcessorPercent: number;
-    context: Pick<Context, "elasticsearch">;
+    context: Pick<Context, "elasticsearch" | "logger">;
     operations: Pick<IOperations, "items" | "total">;
 }
 
