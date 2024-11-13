@@ -35,7 +35,9 @@ const Icon = ({ icon }: IconWrapperProps) => {
  */
 const triggerVariants = cva(
     [
-        "w-full flex items-center justify-between gap-sm border-sm text-md relative focus:outline-none disabled:cursor-not-allowed"
+        "w-full flex items-center justify-between gap-sm border-sm text-md relative",
+        "focus:outline-none",
+        "disabled:cursor-not-allowed"
     ],
     {
         variants: {
@@ -201,10 +203,9 @@ const SelectScrollDownButton = makeDecoratable(
  * SelectContent
  */
 const selectContentVariants = cva([
-    "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-sm border-sm border-neutral-muted bg-neutral-base text-neutral-strong shadow-lg p-sm",
+    "relative z-50 max-h-96 min-w-56 shadow-lg py-sm overflow-hidden rounded-sm border-sm border-neutral-muted bg-neutral-base text-neutral-strong",
     "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-    "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-    "bg-primary-default"
+    "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1"
 ]);
 
 interface SelectContentProps
@@ -248,7 +249,10 @@ const DecoratableSelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <SelectPrimitive.Label
         ref={ref}
-        className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+        className={cn(
+            ["py-sm px-md text-neutral-strong text-sm font-semibold uppercase"],
+            className
+        )}
         {...props}
     />
 ));
@@ -266,18 +270,20 @@ const DecoratableSelectItem = React.forwardRef<
     <SelectPrimitive.Item
         ref={ref}
         className={cn(
-            "relative flex w-full cursor-default select-none items-center rounded-sm p-sm pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+            [
+                "flex items-center justify-between gap-3 cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none",
+                "bg-neutral-base text-neutral-primary fill-neutral-xstrong",
+                "focus:bg-neutral-dimmed focus:font-semibold",
+                "data-[disabled]:text-neutral-disabled data-[disabled]:cursor-not-allowed"
+            ],
             className
         )}
         {...props}
     >
-        <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-            <SelectPrimitive.ItemIndicator>
-                <Check className="h-4 w-4" />
-            </SelectPrimitive.ItemIndicator>
-        </span>
-
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemIndicator>
+            <Check className="h-4 w-4" />
+        </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
 ));
 DecoratableSelectItem.displayName = SelectPrimitive.Item.displayName;
@@ -293,7 +299,7 @@ const DecoratableSelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <SelectPrimitive.Separator
         ref={ref}
-        className={cn("-mx-1 my-1 h-px bg-muted", className)}
+        className={cn("-mx-sm my-sm h-px bg-neutral-strong", className)}
         {...props}
     />
 ));
