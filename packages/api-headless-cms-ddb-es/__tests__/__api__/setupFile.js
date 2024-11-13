@@ -78,6 +78,7 @@ module.exports = () => {
                 documentClient,
                 elasticsearch: elasticsearchClient,
                 plugins: [
+                    ...initializedDbPlugins,
                     getElasticsearchOperators(),
                     createCmsEntryElasticsearchBodyModifierPlugin({
                         modifyBody: ({ body }) => {
