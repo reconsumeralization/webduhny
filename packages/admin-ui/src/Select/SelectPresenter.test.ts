@@ -45,6 +45,13 @@ describe("SelectPresenter", () => {
             expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Custom placeholder");
         }
 
+        // `hasValue`
+        {
+            const presenter = new SelectPresenter();
+            presenter.init({ onValueChange, value: "value" });
+            expect(presenter.vm.selectTriggerVm.hasValue).toEqual(true);
+        }
+
         // `size`
         {
             const presenter = new SelectPresenter();
@@ -64,6 +71,7 @@ describe("SelectPresenter", () => {
             const presenter = new SelectPresenter();
             presenter.init({ onValueChange });
             expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Select an option");
+            expect(presenter.vm.selectTriggerVm.hasValue).toEqual(false);
             expect(presenter.vm.selectTriggerVm.size).toEqual(undefined);
             expect(presenter.vm.selectTriggerVm.variant).toEqual(undefined);
         }
@@ -179,5 +187,14 @@ describe("SelectPresenter", () => {
         presenter.init({ onValueChange, value: "value" });
         presenter.changeValue("value-2");
         expect(onValueChange).toHaveBeenCalledWith("value-2");
+    });
+
+    it("should call `onValueChange` and `onValueReset` callbacks when `resetValue` is called", () => {
+        const onValueReset = jest.fn();
+        const presenter = new SelectPresenter();
+        presenter.init({ onValueChange, onValueReset, value: "value" });
+        presenter.resetValue();
+        expect(onValueChange).toHaveBeenCalledWith("");
+        expect(onValueReset).toHaveBeenCalled();
     });
 });

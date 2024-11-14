@@ -12,6 +12,7 @@ interface ISelectPresenter<TProps extends SelectProps = SelectProps> {
     };
     init: (props: TProps) => void;
     changeValue: (value: string) => void;
+    resetValue: () => void;
 }
 
 class SelectPresenter implements ISelectPresenter {
@@ -35,6 +36,7 @@ class SelectPresenter implements ISelectPresenter {
             },
             selectTriggerVm: {
                 placeholder: this.props?.placeholder || "Select an option",
+                hasValue: !!this.props?.value,
                 size: this.props?.size,
                 variant: this.props?.variant,
                 startIcon: this.props?.startIcon,
@@ -49,6 +51,11 @@ class SelectPresenter implements ISelectPresenter {
 
     public changeValue = (value: string) => {
         this.props?.onValueChange(value);
+    };
+
+    public resetValue = () => {
+        this.props?.onValueChange?.("");
+        this.props?.onValueReset?.();
     };
 
     private transformOptions(options: SelectProps["options"]): SelectOption[] {

@@ -25,7 +25,11 @@ const meta: Meta<typeof Select> = {
                 <Story />
             </div>
         )
-    ]
+    ],
+    render: args => {
+        const [value, setValue] = useState(args.value);
+        return <Select {...args} value={value} onValueChange={setValue} />;
+    }
 };
 
 export default meta;
@@ -305,7 +309,7 @@ export const WithExternalValueControl: Story = {
         ]
     },
     render: args => {
-        const [value, setValue] = useState("");
+        const [value, setValue] = useState(args.value);
         return (
             <div className={"w-full"}>
                 <div>

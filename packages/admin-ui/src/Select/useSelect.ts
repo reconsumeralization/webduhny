@@ -18,5 +18,5 @@ export const useSelect = (props: SelectProps) => {
         });
     }, [presenter]);
 
-    return { vm, changeValue: presenter.changeValue };
+    return { vm, changeValue: presenter.changeValue, resetValue: presenter.resetValue };
 };
