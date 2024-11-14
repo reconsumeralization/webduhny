@@ -147,9 +147,6 @@ const DecoratableTrigger = React.forwardRef<
             ref={ref}
             className={cn(triggerVariants({ variant, size, invalid, className }))}
             disabled={disabled}
-            onClick={() => console.log("Button onClick")}
-            onKeyDown={() => console.log("Button onKeyDown")}
-            onKeyUp={() => console.log("Button onKeyUp")}
             {...props}
         >
             {startIcon && <Icon icon={startIcon} />}
