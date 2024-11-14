@@ -21,7 +21,7 @@ const meta: Meta<typeof Select> = {
     },
     decorators: [
         Story => (
-            <div className="w-1/3 h-32 mx-auto flex justify-center items-center">
+            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
                 <Story />
             </div>
         )

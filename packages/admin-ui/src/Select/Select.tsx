@@ -162,7 +162,10 @@ const DecoratableSelectScrollUpButton = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <SelectPrimitive.ScrollUpButton
         ref={ref}
-        className={cn("flex cursor-default items-center justify-center py-xs", className)}
+        className={cn(
+            "flex cursor-default items-center justify-center pb-sm fill-neutral-xstrong",
+            className
+        )}
         {...props}
     >
         <ChevronUp className="h-4 w-4" />
@@ -184,7 +187,10 @@ const DecoratableSelectScrollDownButton = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <SelectPrimitive.ScrollDownButton
         ref={ref}
-        className={cn("flex cursor-default items-center justify-center py-xs", className)}
+        className={cn(
+            "flex cursor-default items-center justify-center pt-sm fill-neutral-xstrong",
+            className
+        )}
         {...props}
     >
         <ChevronDown className="h-4 w-4" />
@@ -271,8 +277,9 @@ const DecoratableSelectItem = React.forwardRef<
             [
                 "flex items-center justify-between gap-3 cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none",
                 "bg-neutral-base text-neutral-primary fill-neutral-xstrong",
-                "focus:bg-neutral-dimmed focus:font-semibold",
-                "data-[disabled]:text-neutral-disabled data-[disabled]:cursor-not-allowed"
+                "focus:bg-neutral-dimmed",
+                "data-[disabled]:text-neutral-disabled data-[disabled]:cursor-not-allowed",
+                "data-[state=checked]:font-semibold"
             ],
             className
         )}
