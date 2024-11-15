@@ -7,7 +7,7 @@ export const createListRecords = (model: AcoModel, mode: AcoAppMode, fieldIds: s
     if (mode === "cms") {
         /**
          * We will include only the simplest fields.
-         * // TODO: remove default fields in a future release, as field selection will be injected by ACO configs.
+         * TODO: remove default fields in a future release, as field selection will be injected by ACO configs.
          */
         const defaultFields = model.fields.filter(field => {
             return ["text", "number", "boolean", "file", "long-text", "ref", "datetime"].includes(

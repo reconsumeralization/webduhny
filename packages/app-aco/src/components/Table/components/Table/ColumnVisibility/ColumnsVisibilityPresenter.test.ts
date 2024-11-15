@@ -31,7 +31,8 @@ describe("ColumnsVisibilityPresenter", () => {
             resizable: true,
             size: 200,
             sortable: true,
-            visible: true
+            visible: true,
+            fieldIds: []
         },
         {
             cell: "Title Cell Content",
@@ -42,7 +43,8 @@ describe("ColumnsVisibilityPresenter", () => {
             resizable: true,
             size: 200,
             sortable: true,
-            visible: true
+            visible: true,
+            fieldIds: []
         },
         {
             cell: "Date Cell Content",
@@ -53,7 +55,8 @@ describe("ColumnsVisibilityPresenter", () => {
             resizable: true,
             size: 200,
             sortable: true,
-            visible: false
+            visible: false,
+            fieldIds: []
         }
     ];
 

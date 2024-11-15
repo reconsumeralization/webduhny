@@ -113,9 +113,23 @@ export const SearchRecordsProvider = ({ children }: Props) => {
     const { app, client, mode } = useAcoApp();
     const { model } = app;
 
-    // Let's retrieve all fieldIds from ACO configs.
+    /**
+     * Retrieve all `fieldIds` from the ACO configuration, considering both:
+     * - `name`: for backward compatibility with previously registered fields (single string).
+     * - `fieldIds`: an array of field IDs explicitly defined in the configuration.
+     *
+     * The result is a deduplicated flat array of unique field IDs.
+     */
     const { table } = useAcoConfig();
-    const fieldIds = table.columns.map(field => field.name).filter(Boolean);
+    const fieldIds = Array.from(
+        new Set(
+            table.columns
+                .flatMap(({ name, fieldIds }) => {
+                    return [name, ...fieldIds];
+                })
+                .filter(Boolean)
+        )
+    );
 
     const [records, setRecords] = useStateIfMounted<SearchRecordItem[]>([]);
     const [tags, setTags] = useStateIfMounted<TagItem[]>([]);
