@@ -16,8 +16,18 @@ accounts:
         - "s3://webiny-ci"
       IAMRole:
         - "GitHubActionsWebinyJs"
+        - "GitHubActionsWebinyJsAdminAccess"
+      IAMPolicy:
+        - "DeployWebinyProjectGroup1"
+        - "DeployWebinyProjectGroup2"
+        - "DeployWebinyProjectGroup3"
+        - "DeployWebinyProjectExtra"
       IAMRolePolicyAttachment:
-        - "GitHubActionsWebinyJs -> AdministratorAccess"
+        - "GitHubActionsWebinyJs -> DeployWebinyProjectGroup1"
+        - "GitHubActionsWebinyJs -> DeployWebinyProjectGroup2"
+        - "GitHubActionsWebinyJs -> DeployWebinyProjectGroup3"
+        - "GitHubActionsWebinyJs -> DeployWebinyProjectExtra"
+        - "GitHubActionsWebinyJsAdminAccess -> AdministratorAccess"
 
 resource-types:
   # These resource types will be destroyed.
