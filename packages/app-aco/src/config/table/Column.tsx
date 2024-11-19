@@ -6,7 +6,6 @@ import { FolderTableItem, BaseTableItem } from "~/types";
 export interface ColumnConfig {
     cell: string | ReactElement;
     className: string;
-    fieldIds: string[];
     header: string | ReactElement;
     hideable: boolean;
     name: string;
@@ -21,7 +20,6 @@ export interface ColumnProps {
     before?: string;
     cell?: string | ReactElement;
     className?: string;
-    fieldIds?: string[];
     header?: string | ReactElement;
     hideable?: boolean;
     name: string;
@@ -37,7 +35,6 @@ const BaseColumn: React.FC<ColumnProps> = ({
     before = undefined,
     cell,
     className = undefined,
-    fieldIds = [],
     header = undefined,
     hideable = true,
     name,
@@ -68,7 +65,6 @@ const BaseColumn: React.FC<ColumnProps> = ({
                 <Property id={getId(name, "hideable")} name={"hideable"} value={hideable} />
                 <Property id={getId(name, "size")} name={"size"} value={size} />
                 <Property id={getId(name, "visible")} name={"visible"} value={visible} />
-                <Property id={getId(name, "fieldIds")} name={"fieldIds"} value={fieldIds} />
                 {header ? (
                     <Property id={getId(name, "header")} name={"header"} value={header} />
                 ) : null}

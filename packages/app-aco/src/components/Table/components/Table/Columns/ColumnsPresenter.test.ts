@@ -14,8 +14,7 @@ describe("ColumnsPresenter", () => {
             resizable: true,
             size: 200,
             sortable: true,
-            visible: true,
-            fieldIds: []
+            visible: true
         },
         {
             cell: "Title Cell Content",
@@ -26,8 +25,7 @@ describe("ColumnsPresenter", () => {
             resizable: false,
             size: 100,
             sortable: false,
-            visible: false,
-            fieldIds: []
+            visible: false
         }
     ];
 
