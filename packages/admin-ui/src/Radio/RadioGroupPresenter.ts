@@ -18,9 +18,9 @@ class RadioGroupPresenter implements IRadioGroupPresenter {
         makeAutoObservable(this);
     }
 
-    init(props: RadioGroupProps) {
+    public init = (props: RadioGroupProps) => {
         this.props = props;
-    }
+    };
 
     get vm() {
         return {
@@ -29,9 +29,9 @@ class RadioGroupPresenter implements IRadioGroupPresenter {
         };
     }
 
-    changeValue(value: string) {
-        this.props?.onValueChange?.(value);
-    }
+    public changeValue = (value: string) => {
+        this.props?.onValueChange(value);
+    };
 
     private get items() {
         if (!this.props?.items) {
