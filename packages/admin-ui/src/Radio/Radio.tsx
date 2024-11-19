@@ -128,4 +128,11 @@ const DecoratableRadioGroup = React.forwardRef<
 DecoratableRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
 
-export { RadioGroup, RadioItem, type RadioGroupProps, type RadioGroupVm, type RadioItemProps };
+export {
+    RadioGroup,
+    RadioGroupRoot,
+    RadioItem,
+    type RadioGroupProps,
+    type RadioGroupVm,
+    type RadioItemProps
+};
