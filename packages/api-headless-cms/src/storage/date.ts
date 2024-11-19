@@ -2,8 +2,9 @@
  * File is @internal
  */
 import WebinyError from "@webiny/error";
-import { StorageTransformPlugin } from "@webiny/api-headless-cms";
-import { CmsModelField } from "@webiny/api-headless-cms/types";
+import { CmsModelField } from "~/types";
+import { GenericRecord } from "@webiny/api/types";
+import { StorageTransformPlugin } from "~/plugins";
 
 const excludeTypes = ["time", "dateTimeWithTimezone"];
 
@@ -31,8 +32,8 @@ const convertFromStorage = (
     }
 };
 
-const convertValueToStorage = (field: CmsModelField, value: any): string => {
-    if (value instanceof Date || (value as Record<string, any>).toISOString) {
+const convertValueToStorage = (field: CmsModelField, value: Date | string | unknown): string => {
+    if (value instanceof Date || (value as GenericRecord)?.toISOString) {
         return (value as Date).toISOString();
     } else if (typeof value === "string") {
         return value as string;
@@ -47,6 +48,7 @@ const convertValueToStorage = (field: CmsModelField, value: any): string => {
 export const createDateStorageTransformPlugin = () => {
     return new StorageTransformPlugin({
         fieldType: "datetime",
+        name: "headless-cms.storage-transform.date.default",
         fromStorage: async ({ value, field }) => {
             const { type } = field.settings || {};
             if (!value || !type || excludeTypes.includes(type)) {
@@ -62,10 +64,10 @@ export const createDateStorageTransformPlugin = () => {
             if (field.multipleValues) {
                 const multipleValues = value as (string | Date | null | undefined)[];
                 return (multipleValues || [])
-                    .filter(v => !!v)
                     .map(v => {
                         return convertValueToStorage(field, v);
-                    });
+                    })
+                    .filter(v => !!v);
             }
             return convertValueToStorage(field, value);
         }

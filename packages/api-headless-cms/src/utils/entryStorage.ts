@@ -3,11 +3,11 @@ import { StorageTransformPlugin } from "~/plugins/StorageTransformPlugin";
 import { CmsContext, CmsEntry, CmsModel, CmsModelField } from "~/types";
 import { getBaseFieldType } from "~/utils/getBaseFieldType";
 
-interface GetStoragePluginFactory {
+export interface GetStoragePluginFactory {
     (context: Pick<CmsContext, "plugins">): (fieldType: string) => StorageTransformPlugin<any>;
 }
 
-const getStoragePluginFactory: GetStoragePluginFactory = context => {
+export const getStoragePluginFactory: GetStoragePluginFactory = context => {
     let defaultStoragePlugin: StorageTransformPlugin;
 
     const plugins = context.plugins
@@ -32,9 +32,11 @@ const getStoragePluginFactory: GetStoragePluginFactory = context => {
             return collection;
         }, {} as Record<string, StorageTransformPlugin>);
 
-    return (fieldType: string) => {
+    const fn = (fieldType: string) => {
         return plugins[fieldType] || defaultStoragePlugin;
     };
+    fn.plugins = plugins;
+    return fn;
 };
 
 /**

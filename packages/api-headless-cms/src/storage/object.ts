@@ -4,17 +4,18 @@ import { CmsModel, CmsModelField } from "~/types";
 import { PluginsContainer } from "@webiny/plugins";
 import { StorageTransformPlugin } from "~/plugins/StorageTransformPlugin";
 import { getBaseFieldType } from "~/utils/getBaseFieldType";
+import { GenericRecord } from "@webiny/api/types";
 
 interface ProcessValueParams {
     fields: CmsModelField[];
-    sourceValue: Record<string, any>;
+    sourceValue: GenericRecord;
     getStoragePlugin: (fieldType: string) => StorageTransformPlugin;
     plugins: PluginsContainer;
     model: CmsModel;
     operation: "toStorage" | "fromStorage";
 }
 interface ProcessValue {
-    (params: ProcessValueParams): Promise<Record<string, any>>;
+    (params: ProcessValueParams): Promise<GenericRecord>;
 }
 
 const processValue: ProcessValue = async params => {
@@ -52,7 +53,7 @@ export const createObjectStorageTransform = (): StorageTransformPlugin => {
             const fields = (field.settings?.fields || []) as CmsModelField[];
 
             if (field.multipleValues) {
-                return await pMap(value as Record<string, any>[], value =>
+                return await pMap(value as GenericRecord[], value =>
                     processValue({
                         sourceValue: value,
                         getStoragePlugin,
@@ -81,7 +82,7 @@ export const createObjectStorageTransform = (): StorageTransformPlugin => {
             const fields = (field.settings?.fields || []) as CmsModelField[];
 
             if (field.multipleValues) {
-                return pMap(value as Record<string, any>[], value =>
+                return pMap(value as GenericRecord[], value =>
                     processValue({
                         sourceValue: value,
                         getStoragePlugin,
