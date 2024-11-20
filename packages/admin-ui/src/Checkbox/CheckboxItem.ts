@@ -26,7 +26,7 @@ export class CheckboxItem {
         return new CheckboxItem({
             id: generateId(data.id),
             label: data.label,
-            checked: data.checked,
+            checked: Boolean(data.checked),
             indeterminate: data.indeterminate ?? false,
             disabled: data.disabled ?? false
         });

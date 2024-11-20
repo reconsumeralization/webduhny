@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import omit from "lodash/omit";
 import { CheckboxProps, CheckboxVm } from "./Checkbox";
 import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
@@ -16,6 +15,7 @@ export class CheckboxPresenter implements ICheckboxPresenter {
 
     constructor() {
         this.props = undefined;
+        this.item = undefined;
         makeAutoObservable(this);
     }
 
@@ -32,8 +32,7 @@ export class CheckboxPresenter implements ICheckboxPresenter {
 
     get vm() {
         return {
-            ...omit(this.props, ["onCheckedChange"]),
-            ...(this.item && CheckboxItemMapper.toFormatted(this.item))
+            item: this.item ? CheckboxItemMapper.toFormatted(this.item) : undefined
         };
     }
 

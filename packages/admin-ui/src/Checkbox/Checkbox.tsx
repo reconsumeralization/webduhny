@@ -4,6 +4,8 @@ import { ReactComponent as CheckIcon } from "@material-design-icons/svg/outlined
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn, makeDecoratable } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
+import { CheckboxFormatted } from "./CheckboxFormatted";
+import { CheckboxItemDto } from "./CheckboxItemDto";
 
 /**
  * Indeterminate Icon
@@ -49,38 +51,34 @@ const checkboxVariants = cva(
 
 type CheckboxProps = Omit<
     React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
-    "defaultChecked" | "checked" | "onCheckedChange"
+    "defaultChecked"
 > &
-    VariantProps<typeof checkboxVariants> & {
-        id: string;
-        label: string | React.ReactNode;
-        checked: boolean;
-        disabled: boolean;
-        indeterminate: boolean;
+    VariantProps<typeof checkboxVariants> &
+    CheckboxItemDto & {
         onCheckedChange: (checked: boolean) => void;
     };
 
-type CheckboxVm = Omit<CheckboxProps, "onCheckedChange">;
-
-interface CheckboxRendererProps {
-    vm: CheckboxVm;
-    changeChecked: (checked: boolean) => void;
+interface CheckboxVm {
+    item?: CheckboxFormatted;
 }
+
+type CheckboxRendererProps = Omit<CheckboxProps, "onCheckedChange"> &
+    NonNullable<CheckboxVm["item"]> & {
+        changeChecked: (checked: boolean) => void;
+    };
 
 const DecoratableCheckboxRenderer = React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitive.Root>,
     CheckboxRendererProps
->(({ vm, changeChecked }, ref) => {
-    const { indeterminate, className, label, id, ...props } = vm;
-
+>(({ label, id, indeterminate, changeChecked, className, ...props }, ref) => {
     return (
         <div className="flex items-start space-x-sm-extra">
             <CheckboxPrimitive.Root
                 ref={ref}
+                {...props}
                 id={id}
                 className={cn(checkboxVariants({ indeterminate }), className)}
                 onCheckedChange={changeChecked}
-                {...props}
             >
                 <CheckboxPrimitive.Indicator
                     className={cn("flex items-center justify-center text-current")}
@@ -112,8 +110,12 @@ const DecoratableCheckbox = React.forwardRef<
     CheckboxProps
 >((props, ref) => {
     const { vm, changeChecked } = useCheckbox(props);
-    console.log("vm", vm);
-    return <CheckboxRenderer vm={vm} changeChecked={changeChecked} ref={ref} />;
+
+    if (!vm.item) {
+        return null;
+    }
+
+    return <CheckboxRenderer {...props} {...vm.item} changeChecked={changeChecked} ref={ref} />;
 });
 DecoratableCheckbox.displayName = CheckboxPrimitive.Root.displayName;
 const Checkbox = makeDecoratable("Checkbox", DecoratableCheckbox);
