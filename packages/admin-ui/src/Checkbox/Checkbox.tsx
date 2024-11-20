@@ -51,7 +51,7 @@ const checkboxVariants = cva(
 
 type CheckboxProps = Omit<
     React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
-    "defaultChecked"
+    "defaultChecked" | "onCheckedChange"
 > &
     VariantProps<typeof checkboxVariants> &
     CheckboxItemDto & {
@@ -80,11 +80,12 @@ const DecoratableCheckboxRenderer = React.forwardRef<
                 className={cn(checkboxVariants({ indeterminate }), className)}
                 onCheckedChange={changeChecked}
             >
-                <CheckboxPrimitive.Indicator
-                    className={cn("flex items-center justify-center text-current")}
-                >
-                    {indeterminate ? <IndeterminateIcon /> : <CheckIcon className={"h-3 w-3"} />}
-                </CheckboxPrimitive.Indicator>
+                <span className={cn("flex items-center justify-center")}>
+                    {indeterminate && <IndeterminateIcon />}
+                    <CheckboxPrimitive.Indicator>
+                        <CheckIcon className={"h-3 w-3"} />
+                    </CheckboxPrimitive.Indicator>
+                </span>
             </CheckboxPrimitive.Root>
             <label
                 htmlFor={id}
