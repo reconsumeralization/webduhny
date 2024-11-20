@@ -4,6 +4,7 @@ import { generateId } from "~/utils";
 export class CheckboxItem {
     private readonly _id: string;
     private readonly _label: any;
+    private readonly _value: any;
     private readonly _checked: boolean;
     private readonly _indeterminate: boolean;
     private readonly _disabled: boolean;
@@ -11,12 +12,14 @@ export class CheckboxItem {
     protected constructor(data: {
         id: string;
         label: any;
+        value: any;
         checked: boolean;
         disabled: boolean;
         indeterminate: boolean;
     }) {
         this._id = data.id;
         this._label = data.label;
+        this._value = data.value;
         this._checked = data.checked;
         this._indeterminate = data.indeterminate;
         this._disabled = data.disabled;
@@ -26,6 +29,7 @@ export class CheckboxItem {
         return new CheckboxItem({
             id: generateId(data.id),
             label: data.label,
+            value: data.value,
             checked: Boolean(data.checked),
             indeterminate: data.indeterminate ?? false,
             disabled: data.disabled ?? false
@@ -38,6 +42,10 @@ export class CheckboxItem {
 
     get label() {
         return this._label;
+    }
+
+    get value() {
+        return this._value;
     }
 
     get checked() {

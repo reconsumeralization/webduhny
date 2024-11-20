@@ -4,7 +4,7 @@ import { ReactComponent as CheckIcon } from "@material-design-icons/svg/outlined
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn, makeDecoratable } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
-import { CheckboxFormatted } from "./CheckboxFormatted";
+import { CheckboxItemFormatted } from "./CheckboxItemFormatted";
 import { CheckboxItemDto } from "./CheckboxItemDto";
 
 /**
@@ -59,7 +59,7 @@ type CheckboxProps = Omit<
     };
 
 interface CheckboxVm {
-    item?: CheckboxFormatted;
+    item?: CheckboxItemFormatted;
 }
 
 type CheckboxRendererProps = Omit<CheckboxProps, "onCheckedChange"> &
