@@ -2,32 +2,32 @@ import { makeAutoObservable } from "mobx";
 import { CheckboxGroupVm } from "./CheckboxGroup";
 import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
-import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
+import { CheckboxItemDto } from "./CheckboxItemDto";
 
-interface CheckboxGroupPresenterParams<TValue = any> {
+interface CheckboxGroupPresenterParams<TValue extends NonNullable<unknown> = string> {
     items: CheckboxItemDto<TValue>[];
     values: TValue[];
     onCheckedChange: (values: TValue[]) => void;
 }
 
-interface ICheckboxGroupPresenter<
-    TParams extends CheckboxGroupPresenterParams = CheckboxGroupPresenterParams
-> {
+interface ICheckboxGroupPresenter<TValue extends NonNullable<unknown> = string> {
     vm: CheckboxGroupVm;
-    init: (props: TParams) => void;
-    changeChecked: (checked: boolean) => void;
+    init: (params: CheckboxGroupPresenterParams<TValue>) => void;
+    changeChecked: (value: TValue) => void;
 }
 
-class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
-    private params?: CheckboxGroupPresenterParams;
-    private items: CheckboxItem[] = [];
+class CheckboxGroupPresenter<TValue extends NonNullable<unknown> = string>
+    implements ICheckboxGroupPresenter<TValue>
+{
+    private params?: CheckboxGroupPresenterParams<TValue>;
+    private items: CheckboxItem<TValue>[] = [];
 
     constructor() {
         this.params = undefined;
         makeAutoObservable(this);
     }
 
-    public init(params: CheckboxGroupPresenterParams): void {
+    public init(params: CheckboxGroupPresenterParams<TValue>) {
         this.params = params;
         this.items = this.getItems(params.items, params.values);
     }
@@ -38,21 +38,18 @@ class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
         };
     }
 
-    public changeChecked = (value: unknown) => {
+    public changeChecked = (value: TValue) => {
         if (!this.params?.items) {
             return;
         }
 
-        const currentValues = Array.isArray(this.params?.values ?? [])
-            ? [...(this.params?.values ?? [])]
-            : [];
-
+        const currentValues = [...this.params.values];
         const newValues = this.updateValues(currentValues, value);
         this.items = this.getItems(this.params.items, newValues);
-        this.params?.onCheckedChange(newValues);
+        this.params.onCheckedChange(newValues);
     };
 
-    private updateValues(currentValues: unknown[], value: unknown): unknown[] {
+    private updateValues(currentValues: TValue[], value: TValue): TValue[] {
         const index = currentValues.indexOf(value);
 
         if (index > -1) {
@@ -62,15 +59,15 @@ class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
         return [...currentValues, value];
     }
 
-    private getItems(items?: CheckboxItemDto[], values?: unknown[]): CheckboxItem[] {
-        if (!items?.length || !Array.isArray(values)) {
+    private getItems(items: CheckboxItemDto<TValue>[], values: TValue[]): CheckboxItem<TValue>[] {
+        if (!items.length) {
             return [];
         }
 
         return items.map(item =>
             CheckboxItem.create({
                 ...item,
-                checked: values.includes(item.value)
+                checked: values.some(value => value === item.value)
             })
         );
     }

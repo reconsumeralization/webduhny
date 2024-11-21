@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { CheckboxGroup } from "./CheckboxGroup";
+import { Button } from "~/Button";
 
 const meta: Meta<typeof CheckboxGroup> = {
     title: "Components/CheckboxGroup",
@@ -89,5 +90,31 @@ export const WithDisabledValue: Story = {
             }
         ],
         values: ["value-2"]
+    }
+};
+
+export const WithExternalValueControl: Story = {
+    args: {
+        ...Default.args
+    },
+    render: args => {
+        const [values, setValues] = useState(args.values);
+        return (
+            <div className={"w-full"}>
+                <div>
+                    <CheckboxGroup
+                        {...args}
+                        values={values}
+                        onCheckedChange={values => setValues(values)}
+                    />
+                </div>
+                <div className={"mt-4 text-center"}>
+                    <Button text={"Reset"} onClick={() => setValues([])} />
+                </div>
+                <div className={"mt-4 text-center"}>
+                    Current selected value: <pre>{values.join()}</pre>
+                </div>
+            </div>
+        );
     }
 };

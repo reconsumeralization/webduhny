@@ -1,10 +1,10 @@
 import { CheckboxItemDto } from "./CheckboxItemDto";
 import { generateId } from "~/utils";
 
-export class CheckboxItem {
+export class CheckboxItem<TValue = any> {
     private readonly _id: string;
     private readonly _label: any;
-    private readonly _value: any;
+    private readonly _value: TValue;
     private readonly _checked: boolean;
     private readonly _indeterminate: boolean;
     private readonly _disabled: boolean;
