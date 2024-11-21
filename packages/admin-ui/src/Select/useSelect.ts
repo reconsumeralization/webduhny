@@ -1,16 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
+import { SelectPresenter, SelectPresenterParams } from "./SelectPresenter";
 import { SelectProps } from "./Select";
-import { SelectPresenter } from "./SelectPresenter";
 
 export const useSelect = (props: SelectProps) => {
     const presenter = useMemo(() => new SelectPresenter(), []);
 
+    const params: SelectPresenterParams = useMemo(
+        () => ({
+            options: props.options,
+            value: props.value,
+            placeholder: props.placeholder,
+            onValueChange: props.onValueChange,
+            onValueReset: props.onValueReset
+        }),
+        [props.options, props.value, props.placeholder, props.onValueChange, props.onValueReset]
+    );
+
     const [vm, setVm] = useState(presenter.vm);
 
     useEffect(() => {
-        presenter.init(props);
-    }, [props]);
+        presenter.init(params);
+    }, [params, presenter]);
 
     useEffect(() => {
         return autorun(() => {
@@ -18,5 +29,9 @@ export const useSelect = (props: SelectProps) => {
         });
     }, [presenter]);
 
-    return { vm, changeValue: presenter.changeValue, resetValue: presenter.resetValue };
+    return {
+        vm,
+        changeValue: presenter.changeValue,
+        resetValue: presenter.resetValue
+    };
 };

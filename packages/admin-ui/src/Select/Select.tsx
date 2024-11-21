@@ -20,9 +20,9 @@ const SelectValue = SelectPrimitive.Value;
 /**
  * Icon
  */
-interface IconWrapperProps {
+type IconWrapperProps = {
     icon: React.ReactElement;
-}
+};
 
 const Icon = ({ icon }: IconWrapperProps) => {
     return (
@@ -322,18 +322,20 @@ const SelectSeparator = makeDecoratable("SelectSeparator", DecoratableSelectSepa
 /**
  * Trigger
  */
-type SelectTriggerVm = SelectPrimitive.SelectValueProps & {
+type SelectTriggerVm = {
+    placeholder: string;
     hasValue: boolean;
-    size: VariantProps<typeof triggerVariants>["size"];
-    variant: VariantProps<typeof triggerVariants>["variant"];
-    invalid: VariantProps<typeof triggerVariants>["invalid"];
-    startIcon?: React.ReactElement;
-    endIcon?: React.ReactElement;
 };
 
-type SelectTriggerProps = SelectTriggerVm & {
-    onValueReset: () => void;
-};
+type SelectTriggerProps = SelectPrimitive.SelectValueProps &
+    SelectTriggerVm & {
+        size: VariantProps<typeof triggerVariants>["size"];
+        variant: VariantProps<typeof triggerVariants>["variant"];
+        invalid: VariantProps<typeof triggerVariants>["invalid"];
+        startIcon?: React.ReactElement;
+        endIcon?: React.ReactElement;
+        onValueReset: () => void;
+    };
 
 const DecoratableSelectTrigger = ({
     hasValue,
@@ -384,11 +386,13 @@ const SelectTrigger = makeDecoratable("SelectTrigger", DecoratableSelectTrigger)
 /**
  * SelectOptions
  */
-interface SelectOptionsVm {
+type SelectOptionsVm = {
     options: SelectOptionFormatted[];
-}
+};
 
-const DecoratableSelectOptions = (props: SelectOptionsVm) => {
+type SelectOptionsProps = SelectOptionsVm;
+
+const DecoratableSelectOptions = (props: SelectOptionsProps) => {
     const renderOptions = React.useCallback((items: SelectOptionFormatted[]) => {
         return items.map((item, index) => {
             const elements = [];
@@ -433,27 +437,27 @@ const SelectOptions = makeDecoratable("SelectOptions", DecoratableSelectOptions)
 /**
  * SelectRenderer
  */
-type SelectVm = SelectPrimitive.SelectProps;
+type SelectRootProps = SelectPrimitive.SelectProps;
 
-interface SelectRendererProps {
-    selectVm: SelectVm;
-    selectTriggerVm: SelectTriggerVm;
-    selectOptionsVm: SelectOptionsVm;
+type SelectRendererProps = {
+    selectRootProps: Omit<SelectRootProps, "onValueChange">;
+    selectTriggerProps: Omit<SelectTriggerProps, "onValueReset">;
+    selectOptionsProps: SelectOptionsProps;
     onValueChange: (value: string) => void;
     onValueReset: () => void;
-}
+};
 
 const DecoratableSelectRenderer = ({
-    selectVm,
-    selectTriggerVm,
-    selectOptionsVm,
+    selectRootProps,
+    selectTriggerProps,
+    selectOptionsProps,
     onValueChange,
     onValueReset
 }: SelectRendererProps) => {
     return (
-        <SelectRoot {...selectVm} onValueChange={onValueChange}>
-            <SelectTrigger {...selectTriggerVm} onValueReset={onValueReset} />
-            <SelectOptions {...selectOptionsVm} />
+        <SelectRoot {...selectRootProps} onValueChange={onValueChange}>
+            <SelectTrigger {...selectTriggerProps} onValueReset={onValueReset} />
+            <SelectOptions {...selectOptionsProps} />
         </SelectRoot>
     );
 };
@@ -479,12 +483,20 @@ type SelectProps = SelectPrimitive.SelectProps & {
 
 const DecoratableSelect = (props: SelectProps) => {
     const { vm, changeValue, resetValue } = useSelect(props);
+    const { size, variant, startIcon, endIcon, invalid, ...selectRootProps } = props;
 
     return (
         <SelectRenderer
-            selectVm={vm.selectVm}
-            selectTriggerVm={vm.selectTriggerVm}
-            selectOptionsVm={vm.selectOptionsVm}
+            selectRootProps={{ ...selectRootProps }}
+            selectTriggerProps={{
+                ...vm.selectTriggerVm,
+                size,
+                variant,
+                startIcon,
+                endIcon,
+                invalid
+            }}
+            selectOptionsProps={vm.selectOptionsVm}
             onValueChange={changeValue}
             onValueReset={resetValue}
         />
@@ -496,8 +508,11 @@ const Select = makeDecoratable("Select", DecoratableSelect);
 export {
     Select,
     SelectRenderer,
-    type SelectOptionsVm,
+    type SelectOption,
+    type SelectRootProps,
+    type SelectTriggerProps,
+    type SelectOptionsProps,
     type SelectProps,
     type SelectTriggerVm,
-    type SelectVm
+    type SelectOptionsVm
 };

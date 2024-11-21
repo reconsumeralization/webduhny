@@ -3,38 +3,6 @@ import { SelectPresenter } from "./SelectPresenter";
 describe("SelectPresenter", () => {
     const onValueChange = jest.fn();
 
-    it("should return the compatible `selectVm` based on props", () => {
-        // `value`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, value: "Value 1" });
-            expect(presenter.vm.selectVm.value).toEqual("Value 1");
-        }
-
-        // `open`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, open: true });
-            expect(presenter.vm.selectVm.open).toEqual(true);
-        }
-
-        // `disabled`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, disabled: true });
-            expect(presenter.vm.selectVm.disabled).toEqual(true);
-        }
-
-        {
-            // default: no props
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange });
-            expect(presenter.vm.selectVm.value).toEqual(undefined);
-            expect(presenter.vm.selectVm.open).toEqual(undefined);
-            expect(presenter.vm.selectVm.disabled).toEqual(undefined);
-        }
-    });
-
     it("should return the compatible `selectTriggerVm` based on props", () => {
         const onValueChange = jest.fn();
 
@@ -45,35 +13,12 @@ describe("SelectPresenter", () => {
             expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Custom placeholder");
         }
 
-        // `hasValue`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, value: "value" });
-            expect(presenter.vm.selectTriggerVm.hasValue).toEqual(true);
-        }
-
-        // `size`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, size: "xl" });
-            expect(presenter.vm.selectTriggerVm.size).toEqual("xl");
-        }
-
-        // `variant`
-        {
-            const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, variant: "secondary" });
-            expect(presenter.vm.selectTriggerVm.variant).toEqual("secondary");
-        }
-
         {
             // default: no props
             const presenter = new SelectPresenter();
             presenter.init({ onValueChange });
             expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Select an option");
             expect(presenter.vm.selectTriggerVm.hasValue).toEqual(false);
-            expect(presenter.vm.selectTriggerVm.size).toEqual(undefined);
-            expect(presenter.vm.selectTriggerVm.variant).toEqual(undefined);
         }
     });
 

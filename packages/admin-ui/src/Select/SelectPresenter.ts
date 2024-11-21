@@ -1,47 +1,45 @@
 import { makeAutoObservable } from "mobx";
-import omit from "lodash/omit";
-import { SelectOptionsVm, SelectProps, SelectTriggerVm, SelectVm } from "./Select";
+import { SelectOptionsVm, SelectTriggerVm, SelectOption as SelectOptionParams } from "./Select";
 import { SelectOption } from "./SelectOption";
 import { SelectOptionMapper } from "~/Select/SelectOptionMapper";
 
-interface ISelectPresenter<TProps extends SelectProps = SelectProps> {
+interface SelectPresenterParams {
+    options?: SelectOptionParams[];
+    value?: string;
+    placeholder?: string;
+    onValueChange: (value: string) => void;
+    onValueReset?: () => void;
+}
+
+interface ISelectPresenter<TParams extends SelectPresenterParams = SelectPresenterParams> {
     vm: {
-        selectVm: SelectVm;
         selectTriggerVm: SelectTriggerVm;
         selectOptionsVm: SelectOptionsVm;
     };
-    init: (props: TProps) => void;
+    init: (params: TParams) => void;
     changeValue: (value: string) => void;
     resetValue: () => void;
 }
 
 class SelectPresenter implements ISelectPresenter {
-    private props?: SelectProps;
+    private params?: SelectPresenterParams;
     private options?: SelectOption[];
 
     constructor() {
-        this.props = undefined;
+        this.params = undefined;
         makeAutoObservable(this);
     }
 
-    init(props: SelectProps) {
-        this.props = props;
-        this.options = this.transformOptions(props.options);
+    init(params: SelectPresenterParams) {
+        this.params = params;
+        this.options = this.transformOptions(params.options);
     }
 
     get vm() {
         return {
-            selectVm: {
-                ...omit(this.props, ["placeholder", "options"])
-            },
             selectTriggerVm: {
-                placeholder: this.props?.placeholder || "Select an option",
-                hasValue: !!this.props?.value,
-                size: this.props?.size,
-                variant: this.props?.variant,
-                startIcon: this.props?.startIcon,
-                endIcon: this.props?.endIcon,
-                invalid: this.props?.invalid
+                placeholder: this.params?.placeholder || "Select an option",
+                hasValue: !!this.params?.value
             },
             selectOptionsVm: {
                 options: this.options?.map(option => SelectOptionMapper.toFormatted(option)) ?? []
@@ -50,15 +48,15 @@ class SelectPresenter implements ISelectPresenter {
     }
 
     public changeValue = (value: string) => {
-        this.props?.onValueChange(value);
+        this.params?.onValueChange(value);
     };
 
     public resetValue = () => {
-        this.props?.onValueChange?.("");
-        this.props?.onValueReset?.();
+        this.params?.onValueChange?.("");
+        this.params?.onValueReset?.();
     };
 
-    private transformOptions(options: SelectProps["options"]): SelectOption[] {
+    private transformOptions(options: SelectPresenterParams["options"]): SelectOption[] {
         if (!options) {
             return [];
         }
@@ -72,4 +70,4 @@ class SelectPresenter implements ISelectPresenter {
     }
 }
 
-export { SelectPresenter, type ISelectPresenter };
+export { SelectPresenter, type ISelectPresenter, type SelectPresenterParams };
