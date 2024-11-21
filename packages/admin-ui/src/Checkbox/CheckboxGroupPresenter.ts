@@ -1,27 +1,35 @@
 import { makeAutoObservable } from "mobx";
-import { CheckboxGroupProps, CheckboxGroupVm } from "./CheckboxGroup";
+import { CheckboxGroupVm } from "./CheckboxGroup";
 import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
 import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
 
-interface ICheckboxGroupPresenter<TProps extends CheckboxGroupProps = CheckboxGroupProps> {
+interface CheckboxGroupPresenterParams<TValue = any> {
+    items: CheckboxItemDto<TValue>[];
+    values: TValue[];
+    onCheckedChange: (values: TValue[]) => void;
+}
+
+interface ICheckboxGroupPresenter<
+    TParams extends CheckboxGroupPresenterParams = CheckboxGroupPresenterParams
+> {
     vm: CheckboxGroupVm;
-    init: (props: TProps) => void;
+    init: (props: TParams) => void;
     changeChecked: (checked: boolean) => void;
 }
 
 class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
-    private props?: CheckboxGroupProps;
+    private params?: CheckboxGroupPresenterParams;
     private items: CheckboxItem[] = [];
 
     constructor() {
-        this.props = undefined;
+        this.params = undefined;
         makeAutoObservable(this);
     }
 
-    public init(props: CheckboxGroupProps): void {
-        this.props = props;
-        this.items = this.getItems(props.items, props.values);
+    public init(params: CheckboxGroupPresenterParams): void {
+        this.params = params;
+        this.items = this.getItems(params.items, params.values);
     }
 
     get vm(): CheckboxGroupVm {
@@ -31,17 +39,17 @@ class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
     }
 
     public changeChecked = (value: unknown) => {
-        if (!this.props?.items) {
+        if (!this.params?.items) {
             return;
         }
 
-        const currentValues = Array.isArray(this.props?.values ?? [])
-            ? [...(this.props?.values ?? [])]
+        const currentValues = Array.isArray(this.params?.values ?? [])
+            ? [...(this.params?.values ?? [])]
             : [];
 
         const newValues = this.updateValues(currentValues, value);
-        this.items = this.getItems(this.props.items, newValues);
-        this.props?.onCheckedChange(newValues);
+        this.items = this.getItems(this.params.items, newValues);
+        this.params?.onCheckedChange(newValues);
     };
 
     private updateValues(currentValues: unknown[], value: unknown): unknown[] {
@@ -68,4 +76,4 @@ class CheckboxGroupPresenter implements ICheckboxGroupPresenter {
     }
 }
 
-export { CheckboxGroupPresenter, type ICheckboxGroupPresenter };
+export { CheckboxGroupPresenter, type ICheckboxGroupPresenter, type CheckboxGroupPresenterParams };

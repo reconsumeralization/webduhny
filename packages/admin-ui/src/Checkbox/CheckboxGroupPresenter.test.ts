@@ -122,17 +122,6 @@ describe("CheckboxGroupPresenter", () => {
         expect(mockProps.onCheckedChange).toHaveBeenCalledWith(["item1"]);
     });
 
-    it("handles empty or undefined items gracefully", () => {
-        const mockProps = {
-            items: undefined,
-            values: [],
-            onCheckedChange
-        };
-        presenter.init(mockProps);
-
-        expect(presenter.vm.items).toEqual([]);
-    });
-
     it("handles items with missing values correctly", () => {
         const mockProps = {
             items: [
