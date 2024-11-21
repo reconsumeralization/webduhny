@@ -4,8 +4,6 @@ import { SelectPresenter, SelectPresenterParams } from "./SelectPresenter";
 import { SelectProps } from "./Select";
 
 export const useSelect = (props: SelectProps) => {
-    const presenter = useMemo(() => new SelectPresenter(), []);
-
     const params: SelectPresenterParams = useMemo(
         () => ({
             options: props.options,
@@ -16,6 +14,12 @@ export const useSelect = (props: SelectProps) => {
         }),
         [props.options, props.value, props.placeholder, props.onValueChange, props.onValueReset]
     );
+
+    const presenter = useMemo(() => {
+        const presenter = new SelectPresenter();
+        presenter.init(params);
+        return presenter;
+    }, []);
 
     const [vm, setVm] = useState(presenter.vm);
 

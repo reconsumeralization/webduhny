@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
 import { ReactComponent as ChevronRight } from "@material-design-icons/svg/outlined/chevron_right.svg";
 import { Select } from "./Select";
+import { Button } from "~/Button";
 
 const meta: Meta<typeof Select> = {
     title: "Components/Select",
@@ -316,7 +317,7 @@ export const WithExternalValueControl: Story = {
                     <Select {...args} value={value} onValueChange={value => setValue(value)} />
                 </div>
                 <div className={"mt-4 text-center"}>
-                    <button onClick={() => setValue("")}>{"Reset"}</button>
+                    <Button text={"Reset"} onClick={() => setValue("")} />
                 </div>
                 <div className={"mt-4 text-center"}>
                     Current selected value: <pre>{value}</pre>
