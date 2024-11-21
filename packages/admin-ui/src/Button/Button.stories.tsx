@@ -11,7 +11,10 @@ const meta: Meta<typeof Button> = {
     tags: ["autodocs"],
     // More on argTypes: https://storybook.js.org/docs/api/argtypes
     argTypes: {
-        variant: { control: "select", options: ["primary", "secondary", "tertiary", "ghost"] },
+        variant: {
+            control: "select",
+            options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"]
+        },
         size: { control: "select", options: ["sm", "md", "lg", "xl"] },
         disabled: { control: "boolean" },
         text: { control: "text" },
@@ -23,7 +26,6 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
     args: {
         variant: "primary",
@@ -49,6 +51,20 @@ export const Ghost: Story = {
     args: {
         ...Primary.args,
         variant: "ghost"
+    }
+};
+
+export const GhostNegative: Story = {
+    decorators: [
+        Story => (
+            <div className="bg-[#25292e] p-[300px] rounded-[5px]">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Primary.args,
+        variant: "ghost-negative"
     }
 };
 
