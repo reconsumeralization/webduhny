@@ -13,8 +13,8 @@ interface SelectPresenterParams {
 
 interface ISelectPresenter<TParams extends SelectPresenterParams = SelectPresenterParams> {
     vm: {
-        selectTriggerVm: SelectTriggerVm;
-        selectOptionsVm: SelectOptionsVm;
+        selectTrigger: SelectTriggerVm;
+        selectOptions: SelectOptionsVm;
     };
     init: (params: TParams) => void;
     changeValue: (value: string) => void;
@@ -37,11 +37,11 @@ class SelectPresenter implements ISelectPresenter {
 
     get vm() {
         return {
-            selectTriggerVm: {
+            selectTrigger: {
                 placeholder: this.params?.placeholder || "Select an option",
                 hasValue: !!this.params?.value
             },
-            selectOptionsVm: {
+            selectOptions: {
                 options: this.options?.map(option => SelectOptionMapper.toFormatted(option)) ?? []
             }
         };

@@ -3,31 +3,31 @@ import { SelectPresenter } from "./SelectPresenter";
 describe("SelectPresenter", () => {
     const onValueChange = jest.fn();
 
-    it("should return the compatible `selectTriggerVm` based on props", () => {
+    it("should return the compatible `vm.selectTrigger` based on props", () => {
         const onValueChange = jest.fn();
 
         // `placeholder`
         {
             const presenter = new SelectPresenter();
             presenter.init({ onValueChange, placeholder: "Custom placeholder" });
-            expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Custom placeholder");
+            expect(presenter.vm.selectTrigger.placeholder).toEqual("Custom placeholder");
         }
 
         {
             // default: no props
             const presenter = new SelectPresenter();
             presenter.init({ onValueChange });
-            expect(presenter.vm.selectTriggerVm.placeholder).toEqual("Select an option");
-            expect(presenter.vm.selectTriggerVm.hasValue).toEqual(false);
+            expect(presenter.vm.selectTrigger.placeholder).toEqual("Select an option");
+            expect(presenter.vm.selectTrigger.hasValue).toEqual(false);
         }
     });
 
-    it("should return the compatible `selectOptionsVm` based on props", () => {
+    it("should return the compatible `vm.selectOptions` based on props", () => {
         // with `options` as string
         {
             const presenter = new SelectPresenter();
             presenter.init({ onValueChange, options: ["Option 1", "Option 2"] });
-            expect(presenter.vm.selectOptionsVm.options).toEqual([
+            expect(presenter.vm.selectOptions.options).toEqual([
                 {
                     value: "Option 1",
                     label: "Option 1",
@@ -78,7 +78,7 @@ describe("SelectPresenter", () => {
                     }
                 ]
             });
-            expect(presenter.vm.selectOptionsVm.options).toEqual([
+            expect(presenter.vm.selectOptions.options).toEqual([
                 {
                     value: "option-1",
                     label: "Option 1",

@@ -489,14 +489,14 @@ const DecoratableSelect = (props: SelectProps) => {
         <SelectRenderer
             selectRootProps={{ ...selectRootProps }}
             selectTriggerProps={{
-                ...vm.selectTriggerVm,
+                ...vm.selectTrigger,
                 size,
                 variant,
                 startIcon,
                 endIcon,
                 invalid
             }}
-            selectOptionsProps={vm.selectOptionsVm}
+            selectOptionsProps={vm.selectOptions}
             onValueChange={changeValue}
             onValueReset={resetValue}
         />
