@@ -1,32 +1,38 @@
 import { makeAutoObservable } from "mobx";
-import { CheckboxProps, CheckboxVm } from "./Checkbox";
+import { CheckboxVm } from "./Checkbox";
 import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
+import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
 
-interface ICheckboxPresenter<TProps extends CheckboxProps = CheckboxProps> {
+type CheckboxPresenterParams = CheckboxItemDto & {
+    onCheckedChange: (checked: boolean) => void;
+};
+
+interface ICheckboxPresenter<TParams extends CheckboxPresenterParams = CheckboxPresenterParams> {
     vm: CheckboxVm;
-    init: (props: TProps) => void;
+    init: (params: TParams) => void;
     changeChecked: (checked: boolean) => void;
 }
 
-export class CheckboxPresenter implements ICheckboxPresenter {
-    private props?: CheckboxProps;
+class CheckboxPresenter implements ICheckboxPresenter {
+    private params?: CheckboxPresenterParams;
     private item?: CheckboxItem;
 
     constructor() {
-        this.props = undefined;
+        this.params = undefined;
         this.item = undefined;
         makeAutoObservable(this);
     }
 
-    public init = (props: CheckboxProps) => {
-        this.props = props;
+    public init = (params: CheckboxPresenterParams) => {
+        this.params = params;
         this.item = CheckboxItem.create({
-            id: props.id,
-            label: props.label,
-            checked: props.checked,
-            indeterminate: props.indeterminate,
-            disabled: props.disabled
+            id: params.id,
+            label: params.label,
+            value: params.value,
+            checked: params.checked,
+            indeterminate: params.indeterminate,
+            disabled: params.disabled
         });
     };
 
@@ -37,6 +43,8 @@ export class CheckboxPresenter implements ICheckboxPresenter {
     }
 
     public changeChecked = (checked: boolean) => {
-        this.props?.onCheckedChange(checked);
+        this.params?.onCheckedChange(checked);
     };
 }
+
+export { CheckboxPresenter, type CheckboxPresenterParams, type ICheckboxPresenter };
