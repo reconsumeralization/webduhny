@@ -45,10 +45,16 @@ export const createDateStorageTransformPlugin = () => {
                 if (!Array.isArray(value)) {
                     return [];
                 }
-                const multipleValues = value as string[];
+                const multipleValues = value as unknown[];
                 const results: (Date | unknown)[] = [];
                 for (const input of multipleValues) {
-                    if (!input || (typeof input === "object" && Object.keys(input).length === 0)) {
+                    if (input instanceof Date) {
+                        results.push(input);
+                        continue;
+                    } else if (
+                        !input ||
+                        (typeof input === "object" && Object.keys(input).length === 0)
+                    ) {
                         continue;
                     }
                     const output = convertFromStorage(input);
