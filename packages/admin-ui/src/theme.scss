@@ -249,3 +249,9 @@
     --text-4xl-weight: normal;
   }
 }
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+}
