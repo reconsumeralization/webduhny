@@ -2,6 +2,7 @@ import WebinyError from "@webiny/error";
 import { StorageTransformPlugin } from "~/plugins/StorageTransformPlugin";
 import { CmsContext, CmsEntry, CmsModel, CmsModelField } from "~/types";
 import { getBaseFieldType } from "~/utils/getBaseFieldType";
+import ucFirst from "lodash/upperFirst";
 
 export interface GetStoragePluginFactory {
     (context: Pick<CmsContext, "plugins">): (fieldType: string) => StorageTransformPlugin<any>;
@@ -49,6 +50,10 @@ const entryStorageTransform = async (
     entry: CmsEntry
 ): Promise<CmsEntry> => {
     const getStoragePlugin = getStoragePluginFactory(context);
+
+    const key = `__transformed${ucFirst(operation)}`;
+    // @ts-expect-error
+    entry[key] = (entry[key] || 0) + 1;
 
     const transformedValues: Record<string, any> = {};
     for (const field of model.fields) {

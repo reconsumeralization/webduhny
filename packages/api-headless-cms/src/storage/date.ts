@@ -10,13 +10,24 @@ const excludeTypes = ["time", "dateTimeWithTimezone"];
 
 const convertFromStorage = (value: unknown): Date | unknown => {
     if (!value) {
-        return value;
+        return value === null ? null : undefined;
     }
     try {
-        return new Date(value as string);
+        const output = new Date(value as string);
+        if (isNaN(output.getTime())) {
+            if (process.env.DEBUG !== "true") {
+                return null;
+            }
+            console.warn(`Could not transform "${value}" to date.`);
+            return null;
+        }
+        return output;
     } catch {
+        if (process.env.DEBUG !== "true") {
+            return null;
+        }
         console.warn(`Could not transform "${value}" from storage for date field type.`);
-        return value;
+        return null;
     }
 };
 
@@ -49,6 +60,9 @@ export const createDateStorageTransformPlugin = () => {
                 const results: (Date | unknown)[] = [];
                 for (const input of multipleValues) {
                     if (input instanceof Date) {
+                        if (isNaN(input.getTime())) {
+                            continue;
+                        }
                         results.push(input);
                         continue;
                     } else if (
