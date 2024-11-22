@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RadioGroup } from "./Radio";
+import { RadioGroup } from "./RadioGroup";
 import { Text } from "~/Text";
 import { Button } from "~/Button";
 
@@ -30,6 +30,28 @@ type Story = StoryObj<typeof RadioGroup>;
 
 export const Default: Story = {
     args: {
+        items: [
+            {
+                value: "value-1",
+                label: "Value 1"
+            },
+            {
+                value: "value-2",
+                label: "Value 2"
+            },
+            {
+                value: "value-3",
+                label: "Value 3"
+            }
+        ]
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        value: "value-2",
+        disabled: true,
         items: [
             {
                 value: "value-1",

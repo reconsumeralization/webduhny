@@ -1,45 +1,49 @@
 import { makeAutoObservable } from "mobx";
-import { RadioGroupProps, RadioGroupVm } from "./Radio";
-import omit from "lodash/omit";
+import { RadioGroupVm } from "./RadioGroup";
 import { RadioItem } from "~/Radio/RadioItem";
 import { RadioItemMapper } from "~/Radio/RadioItemMapper";
+import { RadioItemDto } from "~/Radio/RadioItemDto";
 
-interface IRadioGroupPresenter<TProps extends RadioGroupProps = RadioGroupProps> {
-    vm: RadioGroupVm;
-    init: (props: TProps) => void;
-    changeValue: (value: string) => void;
+interface RadioGroupPresenterParams<TValue = string> {
+    items: RadioItemDto[];
+    onValueChange: (value: TValue) => void;
 }
 
-class RadioGroupPresenter implements IRadioGroupPresenter {
-    private props?: RadioGroupProps;
+interface IRadioGroupPresenter<TValue = string> {
+    vm: RadioGroupVm;
+    init: (props: RadioGroupPresenterParams<TValue>) => void;
+    changeValue: (value: TValue) => void;
+}
+
+class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValue> {
+    private params?: RadioGroupPresenterParams<TValue>;
 
     constructor() {
-        this.props = undefined;
+        this.params = undefined;
         makeAutoObservable(this);
     }
 
-    public init = (props: RadioGroupProps) => {
-        this.props = props;
+    public init = (params: RadioGroupPresenterParams<TValue>) => {
+        this.params = params;
     };
 
     get vm() {
         return {
-            ...omit(this.props, ["items", "onValueChange"]),
             items: this.items.map(item => RadioItemMapper.toFormatted(item))
         };
     }
 
-    public changeValue = (value: string) => {
-        this.props?.onValueChange(value);
+    public changeValue = (value: TValue) => {
+        this.params?.onValueChange(value);
     };
 
     private get items() {
-        if (!this.props?.items) {
+        if (!this.params?.items) {
             return [];
         }
 
-        return this.props.items.map(item => RadioItem.create(item));
+        return this.params.items.map(item => RadioItem.create(item));
     }
 }
 
-export { RadioGroupPresenter, type IRadioGroupPresenter };
+export { RadioGroupPresenter, type RadioGroupPresenterParams, type IRadioGroupPresenter };

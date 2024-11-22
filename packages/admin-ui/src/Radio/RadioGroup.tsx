@@ -1,0 +1,81 @@
+import * as React from "react";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { cn, makeDecoratable } from "~/utils";
+import { Radio } from "./Radio";
+import { RadioItemDto } from "./RadioItemDto";
+import { RadioItemFormatted } from "./RadioItemFormatted";
+import { useRadioGroup } from "./useRadioGroup";
+
+/**
+ * Radio Group Root
+ */
+const DecoratableRadioGroupRoot = React.forwardRef<
+    React.ElementRef<typeof RadioGroupPrimitive.Root>,
+    React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+>(({ className, ...props }, ref) => {
+    return (
+        <RadioGroupPrimitive.Root
+            className={cn("grid gap-sm-extra", className)}
+            {...props}
+            ref={ref}
+        />
+    );
+});
+DecoratableRadioGroupRoot.displayName = RadioGroupPrimitive.Root.displayName;
+const RadioGroupRoot = makeDecoratable("RadioGroupRoot", DecoratableRadioGroupRoot);
+
+/**
+ * Radio Group Renderer
+ */
+type RadioGroupProps = Omit<
+    RadioGroupPrimitive.RadioGroupProps,
+    "defaultValue" | "onValueChange"
+> & {
+    items: RadioItemDto[];
+    onValueChange: (value: string) => void;
+};
+
+type RadioGroupVm = {
+    items: RadioItemFormatted[];
+};
+
+type RadioGroupRendererProps = Omit<RadioGroupProps, "onValueChange"> & {
+    items: RadioItemFormatted[];
+    changeValue: (value: string) => void;
+};
+
+const DecoratableRadioGroupRenderer = React.forwardRef<
+    React.ElementRef<typeof RadioGroupPrimitive.Root>,
+    RadioGroupRendererProps
+>(({ items, changeValue, ...props }, ref) => {
+    return (
+        <RadioGroupRoot {...props} ref={ref} onValueChange={value => changeValue(value)}>
+            {items.map(item => (
+                <Radio
+                    id={item.id}
+                    value={item.value}
+                    key={item.id}
+                    label={item.label}
+                    disabled={item.disabled}
+                />
+            ))}
+        </RadioGroupRoot>
+    );
+});
+DecoratableRadioGroupRenderer.displayName = "DecoratableRadioGroupRenderer";
+const RadioGroupRenderer = makeDecoratable("RadioGroupRenderer", DecoratableRadioGroupRenderer);
+
+/**
+ * Radio Group
+ */
+const DecoratableRadioGroup = React.forwardRef<
+    React.ElementRef<typeof RadioGroupPrimitive.Root>,
+    RadioGroupProps
+>((props, ref) => {
+    const { vm, changeValue } = useRadioGroup(props);
+    return <RadioGroupRenderer {...props} items={vm.items} changeValue={changeValue} ref={ref} />;
+});
+DecoratableRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
+
+export { RadioGroup, RadioGroupRoot, type RadioGroupProps, type RadioGroupVm };
