@@ -14689,6 +14689,7 @@ __metadata:
     "@material-design-icons/svg": ^0.14.3
     "@radix-ui/react-accessible-icon": ^1.1.0
     "@radix-ui/react-avatar": ^1.1.0
+    "@radix-ui/react-checkbox": ^1.1.2
     "@radix-ui/react-label": ^2.1.0
     "@radix-ui/react-select": ^2.1.2
     "@radix-ui/react-slider": ^1.2.0
@@ -38908,7 +38909,6 @@ __metadata:
     "@commitlint/config-conventional": ^11.0.0
     "@grpc/grpc-js": ^1.11.1
     "@octokit/rest": ^20.0.2
-    "@radix-ui/react-checkbox": ^1.1.2
     "@types/fs-extra": ^11.0.4
     "@types/hoist-non-react-statics": ^3.3.5
     "@types/jest": ^29.5.11
