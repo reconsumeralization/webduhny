@@ -1,7 +1,7 @@
-export interface CheckboxItemDto<TValue = any> {
+export interface CheckboxItemDto {
     id?: string;
     label: string | React.ReactNode;
-    value?: TValue;
+    value?: number | string;
     checked?: boolean;
     indeterminate?: boolean;
     disabled?: boolean;

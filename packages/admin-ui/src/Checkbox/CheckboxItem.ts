@@ -1,10 +1,10 @@
 import { CheckboxItemDto } from "./CheckboxItemDto";
 import { generateId } from "~/utils";
 
-export class CheckboxItem<TValue = any> {
+export class CheckboxItem {
     private readonly _id: string;
     private readonly _label: any;
-    private readonly _value: TValue;
+    private readonly _value: string | number;
     private readonly _checked: boolean;
     private readonly _indeterminate: boolean;
     private readonly _disabled: boolean;
@@ -25,7 +25,7 @@ export class CheckboxItem<TValue = any> {
         this._disabled = data.disabled;
     }
 
-    static create(data: CheckboxItemDto) {
+    static create(data: CheckboxItemDto): CheckboxItem {
         return new CheckboxItem({
             id: generateId(data.id),
             label: data.label,

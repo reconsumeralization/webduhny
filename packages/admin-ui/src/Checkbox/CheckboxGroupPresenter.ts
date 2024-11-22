@@ -4,30 +4,28 @@ import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
 import { CheckboxItemDto } from "./CheckboxItemDto";
 
-interface CheckboxGroupPresenterParams<TValue extends string | number = string> {
-    items: CheckboxItemDto<TValue>[];
+interface CheckboxGroupPresenterParams<TValue = string | number> {
+    items: CheckboxItemDto[];
     values: TValue[];
     onCheckedChange: (values: TValue[]) => void;
 }
 
-interface ICheckboxGroupPresenter<TValue extends string | number = string> {
+interface ICheckboxGroupPresenter<TValue = string | number> {
     vm: CheckboxGroupVm;
     init: (params: CheckboxGroupPresenterParams<TValue>) => void;
     changeChecked: (value: TValue) => void;
 }
 
-class CheckboxGroupPresenter<TValue extends string | number = string>
-    implements ICheckboxGroupPresenter<TValue>
-{
+class CheckboxGroupPresenter<TValue = string | number> implements ICheckboxGroupPresenter<TValue> {
     private params?: CheckboxGroupPresenterParams<TValue>;
-    private items: CheckboxItem<TValue>[] = [];
+    private items: CheckboxItem[] = [];
 
     constructor() {
         this.params = undefined;
         makeAutoObservable(this);
     }
 
-    public init(params: CheckboxGroupPresenterParams<TValue>) {
+    public init(params: CheckboxGroupPresenterParams<TValue>): void {
         this.params = params;
         this.items = this.getItems(params.items, params.values);
     }
@@ -59,7 +57,7 @@ class CheckboxGroupPresenter<TValue extends string | number = string>
         return [...currentValues, value];
     }
 
-    private getItems(items: CheckboxItemDto<TValue>[], values: TValue[]): CheckboxItem<TValue>[] {
+    private getItems(items: CheckboxItemDto[], values: TValue[]): CheckboxItem[] {
         if (!items.length) {
             return [];
         }
