@@ -4,19 +4,19 @@ import { CheckboxItem } from "./CheckboxItem";
 import { CheckboxItemMapper } from "./CheckboxItemMapper";
 import { CheckboxItemDto } from "./CheckboxItemDto";
 
-interface CheckboxGroupPresenterParams<TValue extends NonNullable<unknown> = string> {
+interface CheckboxGroupPresenterParams<TValue extends string | number = string> {
     items: CheckboxItemDto<TValue>[];
     values: TValue[];
     onCheckedChange: (values: TValue[]) => void;
 }
 
-interface ICheckboxGroupPresenter<TValue extends NonNullable<unknown> = string> {
+interface ICheckboxGroupPresenter<TValue extends string | number = string> {
     vm: CheckboxGroupVm;
     init: (params: CheckboxGroupPresenterParams<TValue>) => void;
     changeChecked: (value: TValue) => void;
 }
 
-class CheckboxGroupPresenter<TValue extends NonNullable<unknown> = string>
+class CheckboxGroupPresenter<TValue extends string | number = string>
     implements ICheckboxGroupPresenter<TValue>
 {
     private params?: CheckboxGroupPresenterParams<TValue>;
