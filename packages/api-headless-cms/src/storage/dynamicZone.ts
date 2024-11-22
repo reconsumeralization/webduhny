@@ -1,4 +1,3 @@
-import pMap from "p-map";
 import { StorageTransformPlugin, ToStorageParams } from "~/plugins";
 import { GenericRecord } from "@webiny/api/types";
 import { CmsModel, CmsModelDynamicZoneField, CmsModelField } from "~/types";
@@ -100,52 +99,59 @@ export const createDynamicZoneStorageTransform = (): StorageTransformPlugin => {
     return new StorageTransformPlugin({
         name: "headless-cms.storage-transform.dynamicZone.default",
         fieldType: "dynamicZone",
-        toStorage: async ({ field, value, getStoragePlugin, model, plugins }) => {
-            if (!value) {
-                return value;
+        toStorage: async ({ field, value: input, getStoragePlugin, model, plugins }) => {
+            if (!input) {
+                return input;
             } else if (field.multipleValues) {
-                if (!Array.isArray(value)) {
-                    return value;
+                if (!Array.isArray(input)) {
+                    return input;
                 }
-                return await pMap(value as GenericRecord[], async value => {
-                    return await processToStorage({
-                        model,
-                        field: field as CmsModelDynamicZoneField,
-                        value,
-                        getStoragePlugin,
-                        plugins
-                    });
-                });
+                const values = input as GenericRecord[];
+                return Promise.all(
+                    values.map(async value => {
+                        return await processToStorage({
+                            model,
+                            field: field as CmsModelDynamicZoneField,
+                            value,
+                            getStoragePlugin,
+                            plugins
+                        });
+                    })
+                );
             }
             return await processToStorage({
                 model,
                 field: field as CmsModelDynamicZoneField,
-                value,
+                value: input,
                 getStoragePlugin,
                 plugins
             });
         },
-        fromStorage: async ({ field, value, getStoragePlugin, model, plugins }) => {
-            if (!value) {
-                return value;
+        fromStorage: async ({ field, value: input, getStoragePlugin, model, plugins }) => {
+            if (!input) {
+                return input;
             } else if (field.multipleValues) {
-                if (!Array.isArray(value)) {
-                    return value;
+                if (!Array.isArray(input)) {
+                    return input;
                 }
-                return await pMap(value as GenericRecord[], async value => {
-                    return await processFromStorage({
-                        model,
-                        field: field as CmsModelDynamicZoneField,
-                        value,
-                        getStoragePlugin,
-                        plugins
-                    });
-                });
+                const values = input as GenericRecord[];
+
+                return await Promise.all(
+                    values.map(async value => {
+                        return await processFromStorage({
+                            model,
+                            field: field as CmsModelDynamicZoneField,
+                            value,
+                            getStoragePlugin,
+                            plugins
+                        });
+                    })
+                );
             }
             return await processFromStorage({
                 model,
                 field: field as CmsModelDynamicZoneField,
-                value,
+                value: input,
                 getStoragePlugin,
                 plugins
             });

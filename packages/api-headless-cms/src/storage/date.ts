@@ -8,26 +8,14 @@ import { StorageTransformPlugin } from "~/plugins";
 
 const excludeTypes = ["time", "dateTimeWithTimezone"];
 
-const convertFromStorage = (
-    field: Pick<CmsModelField, "multipleValues">,
-    value: string | string[]
-) => {
+const convertFromStorage = (value: unknown): Date | unknown => {
+    if (!value) {
+        return value;
+    }
     try {
-        if (field.multipleValues) {
-            const result: Date[] = [];
-            for (const v of value) {
-                if (!v) {
-                    continue;
-                }
-                try {
-                    result.push(new Date(v));
-                } catch {}
-            }
-            return result;
-        }
         return new Date(value as string);
     } catch {
-        console.log(`Could not transform from storage for field type`);
+        console.warn(`Could not transform "${value}" from storage for date field type.`);
         return value;
     }
 };
@@ -53,8 +41,25 @@ export const createDateStorageTransformPlugin = () => {
             const { type } = field.settings || {};
             if (!value || !type || excludeTypes.includes(type)) {
                 return value;
+            } else if (field.multipleValues) {
+                if (!Array.isArray(value)) {
+                    return [];
+                }
+                const multipleValues = value as string[];
+                const results: (Date | unknown)[] = [];
+                for (const input of multipleValues) {
+                    if (!input || (typeof input === "object" && Object.keys(input).length === 0)) {
+                        continue;
+                    }
+                    const output = convertFromStorage(input);
+                    if (!output) {
+                        continue;
+                    }
+                    results.push(output);
+                }
+                return results;
             }
-            return convertFromStorage(field, value);
+            return convertFromStorage(value);
         },
         toStorage: async ({ value, field }) => {
             const { type } = field.settings || {};
@@ -63,11 +68,18 @@ export const createDateStorageTransformPlugin = () => {
             }
             if (field.multipleValues) {
                 const multipleValues = value as (string | Date | null | undefined)[];
-                return (multipleValues || [])
-                    .map(v => {
-                        return convertValueToStorage(field, v);
-                    })
-                    .filter(v => !!v);
+                const results: string[] = [];
+                for (const input of multipleValues) {
+                    if (!input) {
+                        continue;
+                    }
+                    const output = convertValueToStorage(field, input);
+                    if (!output) {
+                        continue;
+                    }
+                    results.push(output);
+                }
+                return results;
             }
             return convertValueToStorage(field, value);
         }

@@ -15,17 +15,17 @@ const initialValue = [
     {
         title: "Hero Title #1",
         date: "2024-11-05",
-        time: "11:05:59",
-        dateTimeWithoutTimezone: new Date("2024-11-05T11:05:59.000Z"),
-        dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00",
+        time: "11:01:01",
+        dateTimeWithoutTimezone: new Date("2024-11-05T11:01:01.000Z"),
+        dateTimeWithTimezone: "2024-11-05T11:01:01.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
         title: "Hero Title #2",
-        date: "2024-11-05",
-        time: "11:05:59",
-        dateTimeWithoutTimezone: new Date("2024-11-06T11:05:59.000Z"),
-        dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00",
+        date: "2024-11-06",
+        time: "11:02:02",
+        dateTimeWithoutTimezone: new Date("2024-11-06T11:02:02.000Z"),
+        dateTimeWithTimezone: "2024-11-06T11:02:02.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
@@ -34,17 +34,17 @@ const initialValue = [
             objectNestedObject: [
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #1",
-                    date: "2024-11-05",
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: new Date("2024-11-05T11:05:59.000Z"),
-                    dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00"
+                    date: "2024-11-07",
+                    time: "11:03:03",
+                    dateTimeWithoutTimezone: new Date("2024-11-07T11:03:03.000Z"),
+                    dateTimeWithTimezone: "2024-11-07T11:03:03.000+01:00"
                 },
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #2",
-                    date: "2024-11-05",
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: new Date("2024-11-06T11:05:59.000Z"),
-                    dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00"
+                    date: "2024-11-08",
+                    time: "11:04:04",
+                    dateTimeWithoutTimezone: new Date("2024-11-08T11:04:04.000Z"),
+                    dateTimeWithTimezone: "2024-11-08T11:04:04.000+01:00"
                 }
             ]
         },
@@ -84,17 +84,17 @@ const expectedInitialValue = [
     {
         title: "Hero Title #1",
         date: new Date("2024-11-05"),
-        time: "11:05:59",
-        dateTimeWithoutTimezone: new Date("2024-11-05T11:05:59.000Z"),
-        dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00",
+        time: "11:01:01",
+        dateTimeWithoutTimezone: new Date("2024-11-05T11:01:01.000Z"),
+        dateTimeWithTimezone: "2024-11-05T11:01:01.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
         title: "Hero Title #2",
-        date: new Date("2024-11-05"),
-        time: "11:05:59",
-        dateTimeWithoutTimezone: new Date("2024-11-06T11:05:59.000Z"),
-        dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00",
+        date: new Date("2024-11-06"),
+        time: "11:02:02",
+        dateTimeWithoutTimezone: new Date("2024-11-06T11:02:02.000Z"),
+        dateTimeWithTimezone: "2024-11-06T11:02:02.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
@@ -103,17 +103,17 @@ const expectedInitialValue = [
             objectNestedObject: [
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #1",
-                    date: new Date("2024-11-05"),
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: new Date("2024-11-05T11:05:59.000Z"),
-                    dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00"
+                    date: new Date("2024-11-07"),
+                    time: "11:03:03",
+                    dateTimeWithoutTimezone: new Date("2024-11-07T11:03:03.000Z"),
+                    dateTimeWithTimezone: "2024-11-07T11:03:03.000+01:00"
                 },
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #2",
-                    date: new Date("2024-11-05"),
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: new Date("2024-11-06T11:05:59.000Z"),
-                    dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00"
+                    date: new Date("2024-11-08"),
+                    time: "11:04:04",
+                    dateTimeWithoutTimezone: new Date("2024-11-08T11:04:04.000Z"),
+                    dateTimeWithTimezone: "2024-11-08T11:04:04.000+01:00"
                 }
             ]
         },
@@ -153,36 +153,37 @@ const expectedToStorageValue = [
     {
         title: "Hero Title #1",
         date: "2024-11-05",
-        time: "11:05:59",
-        dateTimeWithoutTimezone: "2024-11-05T11:05:59.000Z",
-        dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00",
+        time: "11:01:01",
+        dateTimeWithoutTimezone: "2024-11-05T11:01:01.000Z",
+        dateTimeWithTimezone: "2024-11-05T11:01:01.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
         title: "Hero Title #2",
-        date: "2024-11-05",
-        time: "11:05:59",
-        dateTimeWithoutTimezone: "2024-11-06T11:05:59.000Z",
-        dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00",
+        date: "2024-11-06",
+        time: "11:02:02",
+        dateTimeWithoutTimezone: "2024-11-06T11:02:02.000Z",
+        dateTimeWithTimezone: "2024-11-06T11:02:02.000+01:00",
         _templateId: "cv2zf965v324ivdc7e1vt"
     },
     {
+        emptyDynamicZone: undefined,
         nestedObject: {
             objectTitle: "Objective title #1",
             objectNestedObject: [
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #1",
-                    date: "2024-11-05",
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: "2024-11-05T11:05:59.000Z",
-                    dateTimeWithTimezone: "2024-11-05T11:05:59.000+01:00"
+                    date: "2024-11-07",
+                    time: "11:03:03",
+                    dateTimeWithoutTimezone: "2024-11-07T11:03:03.000Z",
+                    dateTimeWithTimezone: "2024-11-07T11:03:03.000+01:00"
                 },
                 {
                     nestedObjectNestedTitle: "Content Objecting nested title #2",
-                    date: "2024-11-05",
-                    time: "11:05:59",
-                    dateTimeWithoutTimezone: "2024-11-06T11:05:59.000Z",
-                    dateTimeWithTimezone: "2024-11-06T11:05:59.000+01:00"
+                    date: "2024-11-08",
+                    time: "11:04:04",
+                    dateTimeWithoutTimezone: "2024-11-08T11:04:04.000Z",
+                    dateTimeWithTimezone: "2024-11-08T11:04:04.000+01:00"
                 }
             ]
         },
