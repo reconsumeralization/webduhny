@@ -78,4 +78,18 @@ const DecoratableRadioGroup = React.forwardRef<
 DecoratableRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
 
-export { RadioGroup, RadioGroupRoot, type RadioGroupProps, type RadioGroupVm };
+/**
+ * @deprecated
+ * This component is retained in @webiny/admin-ui and used in  @webiny/ui solely as a compatibility layer.
+ * It is marked as deprecated because nesting `Radio` components inside `RadioGroup` is no longer the recommended approach.
+ * Instead, we now pass an array of `RadioItemDto` directly to `RadioGroup` for better maintainability.
+ */
+const DeprecatedRadioGroup = makeDecoratable("DeprecatedRadioGroup", RadioGroupRoot);
+
+export {
+    RadioGroup,
+    RadioGroupRenderer,
+    DeprecatedRadioGroup,
+    type RadioGroupProps,
+    type RadioGroupVm
+};

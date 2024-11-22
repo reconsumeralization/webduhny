@@ -53,6 +53,6 @@ const DecoratableRadio = React.forwardRef<
     );
 });
 DecoratableRadio.displayName = RadioGroupPrimitive.Item.displayName;
-const Radio = makeDecoratable("RadioItem", DecoratableRadio);
+const Radio = makeDecoratable("Radio", DecoratableRadio);
 
 export { Radio, type RadioProps };
