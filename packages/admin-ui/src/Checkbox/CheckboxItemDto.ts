@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface CheckboxItemDto {
     id?: string;
     label: string | React.ReactNode;
