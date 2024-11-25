@@ -32,11 +32,9 @@ export const getStoragePluginFactory: GetStoragePluginFactory = context => {
             return collection;
         }, {} as Record<string, StorageTransformPlugin>);
 
-    const fn = (fieldType: string) => {
+    return (fieldType: string) => {
         return plugins[fieldType] || defaultStoragePlugin;
     };
-    fn.plugins = plugins;
-    return fn;
 };
 
 /**
