@@ -379,7 +379,7 @@ export const createContentEntryCrud = (params: CreateContentEntryCrudParams): Cm
         if (!entry) {
             throw new NotFoundError(`Entry by ID "${id}" not found.`);
         }
-        return await entryFromStorageTransform(context, model, entry);
+        return entry;
     };
     const createEntry: CmsEntryContext["createEntry"] = async <T = CmsEntryValues>(
         model: CmsModel,
