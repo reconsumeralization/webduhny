@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface CheckboxItemFormatted {
     id: string;
     label: string | React.ReactNode;

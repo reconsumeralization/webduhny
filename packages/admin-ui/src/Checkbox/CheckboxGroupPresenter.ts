@@ -17,11 +17,10 @@ interface ICheckboxGroupPresenter<TValue = string | number> {
 }
 
 class CheckboxGroupPresenter<TValue = string | number> implements ICheckboxGroupPresenter<TValue> {
-    private params?: CheckboxGroupPresenterParams<TValue>;
+    private params?: CheckboxGroupPresenterParams<TValue> = undefined;
     private items: CheckboxItem[] = [];
 
     constructor() {
-        this.params = undefined;
         makeAutoObservable(this);
     }
 
@@ -42,12 +41,12 @@ class CheckboxGroupPresenter<TValue = string | number> implements ICheckboxGroup
         }
 
         const currentValues = [...this.params.values];
-        const newValues = this.updateValues(currentValues, value);
+        const newValues = this.getUpdatedValues(currentValues, value);
         this.items = this.getItems(this.params.items, newValues);
         this.params.onCheckedChange(newValues);
     };
 
-    private updateValues(currentValues: TValue[], value: TValue): TValue[] {
+    private getUpdatedValues(currentValues: TValue[], value: TValue): TValue[] {
         const index = currentValues.indexOf(value);
 
         if (index > -1) {

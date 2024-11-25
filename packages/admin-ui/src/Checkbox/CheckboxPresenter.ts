@@ -15,12 +15,10 @@ interface ICheckboxPresenter<TParams extends CheckboxPresenterParams = CheckboxP
 }
 
 class CheckboxPresenter implements ICheckboxPresenter {
-    private params?: CheckboxPresenterParams;
-    private item?: CheckboxItem;
+    private params?: CheckboxPresenterParams = undefined;
+    private item?: CheckboxItem = undefined;
 
     constructor() {
-        this.params = undefined;
-        this.item = undefined;
         makeAutoObservable(this);
     }
 

@@ -33,8 +33,8 @@ export const useCheckbox = (props: CheckboxProps) => {
     const [vm, setVm] = useState(presenter.vm);
 
     useEffect(() => {
-        presenter.init(props);
-    }, [params, presenter]);
+        presenter.init(params);
+    }, [params]);
 
     useEffect(() => {
         return autorun(() => {

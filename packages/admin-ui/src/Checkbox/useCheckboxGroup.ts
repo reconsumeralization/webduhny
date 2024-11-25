@@ -23,7 +23,7 @@ export const useCheckboxGroup = (props: CheckboxGroupProps) => {
 
     useEffect(() => {
         presenter.init(params);
-    }, [params, presenter]);
+    }, [params]);
 
     useEffect(() => {
         return autorun(() => {
