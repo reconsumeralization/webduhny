@@ -16,10 +16,9 @@ interface IRadioGroupPresenter<TValue = string> {
 }
 
 class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValue> {
-    private params?: RadioGroupPresenterParams<TValue>;
+    private params?: RadioGroupPresenterParams<TValue> = undefined;
 
     constructor() {
-        this.params = undefined;
         makeAutoObservable(this);
     }
 
