@@ -183,10 +183,10 @@ const inputVariants = cva(
                 variant: "ghost",
                 invalid: true,
                 class: [
-                    "border-none bg-destructive-subtle",
-                    "hover:bg-destructive-subtle",
-                    "focus:bg-destructive-subtle",
-                    "disabled:bg-destructive-subtle"
+                    "border-destructive-subtle bg-destructive-subtle",
+                    "hover:border-destructive-subtle",
+                    "focus:border-destructive-subtle",
+                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
                 ]
             }
         ],
