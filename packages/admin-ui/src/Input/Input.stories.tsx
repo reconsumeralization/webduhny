@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications.svg";
-import { ReactComponent as CalendarIcon } from "@material-design-icons/svg/outlined/calendar_month.svg";
 import { Input } from "~/Input";
-import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Input> = {
     title: "Components/Input",
@@ -56,43 +53,26 @@ export const Default: Story = {};
 
 export const WithLabel: Story = {
     args: {
-        label: "Label"
+        label: "Any field label"
     }
 };
 
 export const WithLabelRequired: Story = {
     args: {
-        label: "Label",
+        label: "Any field label",
         required: true
-    }
-};
-
-export const WithStartIcon: Story = {
-    args: {
-        label: "Label",
-        placeholder: "Custom placeholder",
-        startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />
-    }
-};
-
-export const WithEndIcon: Story = {
-    args: {
-        label: "Label",
-        placeholder: "Custom placeholder",
-        endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
     }
 };
 
 export const WithDescription: Story = {
     args: {
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference."
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
-        note: "Note: Please do not use your middle name."
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
@@ -100,22 +80,21 @@ export const WithErrors: Story = {
     args: {
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
 
 export const FullExample: Story = {
     args: {
-        label: "First and Last name",
+        ...Default.args,
+        label: "Any field label",
         required: true,
-        placeholder: "John Doe",
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
