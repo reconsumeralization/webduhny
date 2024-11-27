@@ -22,181 +22,110 @@ const meta: Meta<typeof Slider> = {
 export default meta;
 type Story = StoryObj<typeof Slider>;
 
-export const Default: Story = {
-    args: {
-        label: "Label"
-    }
-};
-
-export const WithNegativeMinValue: Story = {
-    args: {
-        label: "Label",
-        min: -100,
-        max: 100,
-        value: 0
-    }
-};
-
-export const WithSteps: Story = {
-    args: {
-        label: "Label",
-        step: 10
-    }
-};
-
-export const Disabled: Story = {
-    args: {
-        label: "Label",
-        disabled: true,
-        value: 50
-    }
-};
-
-export const WithTooltip: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true
-    }
-};
-
-export const WithTooltipSideTop: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true,
-        tooltipSide: "top"
-    }
-};
-
-export const WithSideLabelAndTooltip: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true,
-        labelPosition: "side"
-    }
-};
-
-export const WithCustomValueConverter: Story = {
-    args: {
-        label: "Label",
-        transformValue: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
-
-export const WithCustomValueConverterAndTooltip: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true,
-        transformValue: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
+export const Default: Story = {};
 
 export const WithLabel: Story = {
     args: {
-        label: "Label"
+        ...Default.args,
+        label: "Any field label"
     }
 };
 
 export const WithLabelRequired: Story = {
     args: {
-        label: "Label",
+        ...Default.args,
+        label: "Any field label",
         required: true
     }
 };
 
 export const WithDescription: Story = {
     args: {
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference."
+        ...Default.args,
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
-        note: "Note: Please do not use your middle name."
+        ...Default.args,
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
 export const WithErrors: Story = {
     args: {
+        ...Default.args,
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
 
 export const FullExample: Story = {
     args: {
-        label: "First and Last name",
+        ...Default.args,
+        label: "Any field label",
         required: true,
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
 
 export const WithSideLabel: Story = {
     args: {
-        label: "Label",
+        ...Default.args,
+        label: "Any field label",
         labelPosition: "side"
     }
 };
 
 export const WithSideLabelRequired: Story = {
     args: {
-        label: "Label",
-        required: true,
-        labelPosition: "side"
+        ...WithSideLabel.args,
+        required: true
     }
 };
 
 export const WithSideLabelAndDescription: Story = {
     args: {
-        label: "Label",
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        labelPosition: "side"
+        ...WithSideLabel.args,
+        description: "Provide the required information for processing your request."
     }
 };
 
-export const WithSideLabelAndNote: Story = {
+export const WithSideLabelAndNotes: Story = {
     args: {
-        label: "Label",
-        note: "Note: Please do not use your middle name.",
-        labelPosition: "side"
+        ...WithSideLabel.args,
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
 export const WithSideLabelAndErrors: Story = {
     args: {
-        label: "Label",
+        ...WithSideLabel.args,
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
-        },
-        labelPosition: "side"
+            message: "This field is required."
+        }
     }
 };
 
 export const WithSideLabelFullExample: Story = {
     args: {
-        label: "First and Last name",
+        ...WithSideLabel.args,
+        label: "Any field label",
         required: true,
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
-        },
-        labelPosition: "side"
+            message: "This field is required."
+        }
     }
 };
