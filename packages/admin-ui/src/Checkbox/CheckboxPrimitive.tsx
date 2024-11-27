@@ -13,7 +13,7 @@ const IndeterminateIcon = () => {
     return (
         <span
             className={
-                "block w-2 h-0.5 rounded-sm bg-primary-default group-disabled:bg-primary-disabled"
+                "block w-sm h-xxs rounded-sm bg-primary-default group-disabled:bg-primary-disabled"
             }
         />
     );
@@ -24,7 +24,7 @@ const IndeterminateIcon = () => {
  */
 const checkboxVariants = cva(
     [
-        "group peer h-4 w-4 shrink-0 rounded-sm border-sm mt-xxs",
+        "group peer h-md w-md shrink-0 rounded-sm border-sm mt-xxs",
         "border-neutral-muted bg-neutral-base fill-neutral-base ring-offset-background",
         "hover:border-neutral-dark",
         "focus:outline-none focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
@@ -82,7 +82,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                 <span className={cn("flex items-center justify-center")}>
                     {indeterminate && <IndeterminateIcon />}
                     <CheckboxPrimitives.Indicator>
-                        <CheckIcon className={"h-3 w-3"} />
+                        <CheckIcon className={"h-sm-extra w-sm-extra"} />
                     </CheckboxPrimitives.Indicator>
                 </span>
             </CheckboxPrimitives.Root>
