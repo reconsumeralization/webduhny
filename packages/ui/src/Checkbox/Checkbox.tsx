@@ -1,6 +1,6 @@
 import React from "react";
 import { FormComponentProps } from "~/types";
-import { Checkbox as FormCheckbox } from "@webiny/admin-ui/Form";
+import { Checkbox as AdminCheckbox } from "@webiny/admin-ui";
 
 interface Props extends FormComponentProps {
     // Component id.
@@ -41,7 +41,7 @@ class Checkbox extends React.Component<Props> {
             this.props;
 
         return (
-            <FormCheckbox
+            <AdminCheckbox
                 id={id}
                 indeterminate={indeterminate}
                 disabled={disabled}

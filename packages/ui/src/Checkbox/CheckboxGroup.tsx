@@ -1,6 +1,6 @@
 import React from "react";
 import { FormComponentProps } from "./../types";
-import { FormComponent } from "@webiny/admin-ui/Form";
+import { FormComponent } from "@webiny/admin-ui";
 
 export interface ChildrenRenderProp {
     onChange: (id: string | number) => () => void;

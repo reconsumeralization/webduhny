@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications.svg";
 import { ReactComponent as CalendarIcon } from "@material-design-icons/svg/outlined/calendar_month.svg";
-
-import { Input } from "./Input";
+import { Input } from "~/Input";
 import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Input> = {
@@ -46,11 +45,17 @@ const meta: Meta<typeof Input> = {
     },
     decorators: [
         Story => (
-            <div className="w-1/3 h-32 mx-auto flex justify-center items-center">
-                <Story />
+            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
+                <div className="w-full">
+                    <Story />
+                </div>
             </div>
         )
-    ]
+    ],
+    render: args => {
+        const [value, setValue] = useState(args.value);
+        return <Input {...args} value={value} onChange={e => setValue(e.target.value)} />;
+    }
 };
 
 export default meta;
@@ -58,29 +63,22 @@ type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {};
 
-export const MediumSize: Story = {
+export const WithLabel: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        size: "md"
+        label: "Label"
     }
 };
 
-export const LargeSize: Story = {
+export const WithLabelRequired: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        size: "lg"
-    }
-};
-
-export const ExtraLargeSize: Story = {
-    args: {
-        placeholder: "Custom placeholder",
-        size: "xl"
+        label: "Label",
+        required: true
     }
 };
 
 export const WithStartIcon: Story = {
     args: {
+        label: "Label",
         placeholder: "Custom placeholder",
         startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />
     }
@@ -88,78 +86,45 @@ export const WithStartIcon: Story = {
 
 export const WithEndIcon: Story = {
     args: {
+        label: "Label",
         placeholder: "Custom placeholder",
         endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
     }
 };
 
-export const WithStartAndEndIcons: Story = {
+export const WithDescription: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />,
-        endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference."
     }
 };
 
-export const PrimaryVariant: Story = {
+export const WithNotes: Story = {
     args: {
-        variant: "primary",
-        placeholder: "Custom placeholder"
+        note: "Note: Please do not use your middle name."
     }
 };
 
-export const PrimaryVariantDisabled: Story = {
+export const WithErrors: Story = {
     args: {
-        ...PrimaryVariant.args,
-        disabled: true
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };
 
-export const PrimaryVariantInvalid: Story = {
+export const FullExample: Story = {
     args: {
-        ...PrimaryVariant.args,
-        invalid: true
-    }
-};
-
-export const SecondaryVariant: Story = {
-    args: {
-        variant: "secondary",
-        placeholder: "Custom placeholder"
-    }
-};
-
-export const SecondaryVariantDisabled: Story = {
-    args: {
-        ...SecondaryVariant.args,
-        disabled: true
-    }
-};
-
-export const SecondaryVariantInvalid: Story = {
-    args: {
-        ...SecondaryVariant.args,
-        invalid: true
-    }
-};
-
-export const GhostVariant: Story = {
-    args: {
-        variant: "ghost",
-        placeholder: "Custom placeholder"
-    }
-};
-
-export const GhostVariantDisabled: Story = {
-    args: {
-        ...GhostVariant.args,
-        disabled: true
-    }
-};
-
-export const GhostVariantInvalid: Story = {
-    args: {
-        ...GhostVariant.args,
-        invalid: true
+        label: "First and Last name",
+        required: true,
+        placeholder: "John Doe",
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference.",
+        note: "Note: Please do not use your middle name.",
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };

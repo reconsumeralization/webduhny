@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox } from "./Checkbox";
+import { Checkbox } from "~/Checkbox";
 
 const meta: Meta<typeof Checkbox> = {
     title: "Components/Checkbox",
     component: Checkbox,
     tags: ["autodocs"],
+    parameters: {
+        layout: "fullscreen"
+    },
+    decorators: [
+        Story => (
+            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
+                <div className="w-full">
+                    <Story />
+                </div>
+            </div>
+        )
+    ],
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return (
@@ -27,23 +39,41 @@ export const Default: Story = {
     }
 };
 
-export const Checked: Story = {
+export const WithDescription: Story = {
     args: {
         ...Default.args,
-        checked: true
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference."
     }
 };
 
-export const Indeterminate: Story = {
+export const WithNotes: Story = {
     args: {
         ...Default.args,
-        indeterminate: true
+        note: "Note: Please do not use your middle name."
     }
 };
 
-export const Disabled: Story = {
+export const WithErrors: Story = {
     args: {
         ...Default.args,
-        disabled: true
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
+    }
+};
+
+export const FullExample: Story = {
+    args: {
+        ...Default.args,
+        label: "First and Last name",
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference.",
+        note: "Note: Please do not use your middle name.",
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };

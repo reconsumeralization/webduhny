@@ -1,6 +1,6 @@
 import React from "react";
 import { FormComponentProps } from "~/types";
-import { Switch as FormSwitch } from "@webiny/admin-ui/Form";
+import { Switch as AdminSwitch } from "@webiny/admin-ui";
 
 type SwitchProps = {
     /** A DOM ID for the toggle. */
@@ -37,7 +37,7 @@ class Switch extends React.Component<Props> {
         const { value, description, validation, label } = this.props;
 
         return (
-            <FormSwitch
+            <AdminSwitch
                 label={label}
                 note={description}
                 validation={validation}

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { SwitchVm } from "./Switch";
+import { SwitchPrimitivVm } from "./SwitchPrimitive";
 import { SwitchItem } from "~/Switch/SwitchItem";
 import { SwitchItemDto } from "~/Switch/SwitchItemDto";
 import { SwitchItemMapper } from "~/Switch/SwitchItemMapper";
@@ -9,7 +9,7 @@ type SwitchPresenterParams = SwitchItemDto & {
 };
 
 interface ISwitchPresenter<TParams extends SwitchPresenterParams = SwitchPresenterParams> {
-    vm: SwitchVm;
+    vm: SwitchPrimitivVm;
     init: (params: TParams) => void;
     changeChecked: (checked: boolean) => void;
 }

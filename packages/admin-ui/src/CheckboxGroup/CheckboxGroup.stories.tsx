@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { CheckboxGroup } from "~/Form";
+import { CheckboxGroup } from "~/CheckboxGroup";
 
 const meta: Meta<typeof CheckboxGroup> = {
-    title: "Components/Form/CheckboxGroup",
+    title: "Components/CheckboxGroup",
     component: CheckboxGroup,
     tags: ["autodocs"],
     parameters: {

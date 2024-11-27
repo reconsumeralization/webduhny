@@ -1,5 +1,5 @@
 import { CheckboxGroupPresenter } from "./CheckboxGroupPresenter";
-import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
+import { CheckboxItemDto } from "~/Checkbox";
 
 describe("CheckboxGroupPresenter", () => {
     let presenter: CheckboxGroupPresenter;

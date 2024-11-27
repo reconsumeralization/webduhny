@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
-import { CheckboxGroupProps } from "./CheckboxGroup";
+import { CheckboxGroupPrimitiveProps } from "./CheckboxGroupPrimitive";
 import { CheckboxGroupPresenter, CheckboxGroupPresenterParams } from "./CheckboxGroupPresenter";
 
-export const useCheckboxGroup = (props: CheckboxGroupProps) => {
+export const useCheckboxGroup = (props: CheckboxGroupPrimitiveProps) => {
     const params: CheckboxGroupPresenterParams = useMemo(
         () => ({
             items: props.items,

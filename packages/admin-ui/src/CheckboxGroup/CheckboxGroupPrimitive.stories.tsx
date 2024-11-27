@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { CheckboxGroup } from "./CheckboxGroup";
+import { CheckboxGroupPrimitive } from "./CheckboxGroupPrimitive";
 import { Button } from "~/Button";
 
-const meta: Meta<typeof CheckboxGroup> = {
-    title: "Components/CheckboxGroup",
-    component: CheckboxGroup,
+const meta: Meta<typeof CheckboxGroupPrimitive> = {
+    title: "Components/Primitives/CheckboxGroup",
+    component: CheckboxGroupPrimitive,
     tags: ["autodocs"],
     parameters: {
         layout: "fullscreen"
@@ -20,7 +20,7 @@ const meta: Meta<typeof CheckboxGroup> = {
     render: args => {
         const [values, setValues] = useState(args.values);
         return (
-            <CheckboxGroup
+            <CheckboxGroupPrimitive
                 {...args}
                 values={values}
                 onCheckedChange={values => setValues(values)}
@@ -30,7 +30,7 @@ const meta: Meta<typeof CheckboxGroup> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof CheckboxGroup>;
+type Story = StoryObj<typeof CheckboxGroupPrimitive>;
 
 export const Default: Story = {
     args: {
@@ -102,7 +102,7 @@ export const WithExternalValueControl: Story = {
         return (
             <div className={"w-full"}>
                 <div>
-                    <CheckboxGroup
+                    <CheckboxGroupPrimitive
                         {...args}
                         values={values}
                         onCheckedChange={values => setValues(values)}

@@ -1,8 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { CheckboxGroupVm } from "./CheckboxGroup";
-import { CheckboxItem } from "./CheckboxItem";
-import { CheckboxItemMapper } from "./CheckboxItemMapper";
-import { CheckboxItemDto } from "./CheckboxItemDto";
+import { CheckboxGroupPrimitiveVm } from "./CheckboxGroupPrimitive";
+import { CheckboxItem, CheckboxItemDto, CheckboxItemMapper } from "~/Checkbox";
 
 interface CheckboxGroupPresenterParams<TValue = string | number> {
     items: CheckboxItemDto[];
@@ -11,7 +9,7 @@ interface CheckboxGroupPresenterParams<TValue = string | number> {
 }
 
 interface ICheckboxGroupPresenter<TValue = string | number> {
-    vm: CheckboxGroupVm;
+    vm: CheckboxGroupPrimitiveVm;
     init: (params: CheckboxGroupPresenterParams<TValue>) => void;
     changeChecked: (value: TValue) => void;
 }
@@ -29,7 +27,7 @@ class CheckboxGroupPresenter<TValue = string | number> implements ICheckboxGroup
         this.items = this.getItems(params.items, params.values);
     }
 
-    get vm(): CheckboxGroupVm {
+    get vm(): CheckboxGroupPrimitiveVm {
         return {
             items: this.items.map(item => CheckboxItemMapper.toFormatted(item))
         };

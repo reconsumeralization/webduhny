@@ -1,12 +1,9 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import {
-    CheckboxGroup as CheckboxGroupRenderer,
-    CheckboxGroupProps as CheckboxGroupRendererProps
-} from "~/Checkbox";
-import { FormComponent, FormComponentProps } from "../FormComponent";
+import { CheckboxGroupPrimitive, CheckboxGroupPrimitiveProps } from "~/CheckboxGroup";
+import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type CheckboxGroupProps = FormComponentProps & CheckboxGroupRendererProps;
+type CheckboxGroupProps = FormComponentProps & CheckboxGroupPrimitiveProps;
 
 const DecoratableFormCheckboxGroup = ({
     label,
@@ -14,6 +11,7 @@ const DecoratableFormCheckboxGroup = ({
     note,
     validation,
     validate,
+    required,
     ...props
 }: CheckboxGroupProps) => {
     return (
@@ -23,8 +21,9 @@ const DecoratableFormCheckboxGroup = ({
             note={note}
             validation={validation}
             validate={validate}
+            required={required}
         >
-            <CheckboxGroupRenderer {...props} />
+            <CheckboxGroupPrimitive {...props} />
         </FormComponent>
     );
 };

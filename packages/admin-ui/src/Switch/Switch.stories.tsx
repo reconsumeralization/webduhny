@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Switch } from "./Switch";
+import { Switch } from "~/Switch";
 
 const meta: Meta<typeof Switch> = {
     title: "Components/Switch",
     component: Switch,
     tags: ["autodocs"],
+    parameters: {
+        layout: "fullscreen"
+    },
+    decorators: [
+        Story => (
+            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
+                <div className="w-full">
+                    <Story />
+                </div>
+            </div>
+        )
+    ],
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return <Switch {...args} checked={checked} onCheckedChange={value => setChecked(value)} />;
@@ -35,15 +47,41 @@ export const WithTrailingLabel: Story = {
     }
 };
 
-export const Checked: Story = {
+export const WithDescription: Story = {
     args: {
-        checked: true
+        ...Default.args,
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference."
     }
 };
 
-export const Disabled: Story = {
+export const WithNotes: Story = {
     args: {
-        label: "Label",
-        disabled: true
+        ...Default.args,
+        note: "Note: Please do not use your middle name."
+    }
+};
+
+export const WithErrors: Story = {
+    args: {
+        ...Default.args,
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
+    }
+};
+
+export const FullExample: Story = {
+    args: {
+        ...Default.args,
+        label: "First and Last name",
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference.",
+        note: "Note: Please do not use your middle name.",
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };

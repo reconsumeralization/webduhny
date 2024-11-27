@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, ReactElement } from "react";
 import pick from "lodash/pick";
 import { FormComponentProps } from "~/types";
 import classNames from "classnames";
-import { Input as FormInput } from "@webiny/admin-ui/Form";
+import { Input as AdminInput } from "@webiny/admin-ui";
 
 export interface TextFieldHelperTextProps {
     /** Make the help text always visible */
@@ -172,6 +172,7 @@ export const Input = (props: InputProps) => {
         // icon,
         // trailingIcon,
         onEnter,
+        required,
         ...rest
     } = props;
 
@@ -206,7 +207,7 @@ export const Input = (props: InputProps) => {
     }, [props.size]);
 
     return (
-        <FormInput
+        <AdminInput
             {...pick(rest, rmwcProps)}
             onKeyDown={inputOnKeyDown}
             autoFocus={autoFocus}
@@ -222,6 +223,7 @@ export const Input = (props: InputProps) => {
             data-testid={props["data-testid"]}
             validation={validation}
             note={description}
+            required={required}
         />
     );
 };
