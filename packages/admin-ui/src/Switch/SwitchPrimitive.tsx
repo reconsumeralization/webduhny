@@ -9,11 +9,11 @@ import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
  * Switch Renderer
  */
 
-const switchVariants = cva("flex items-center space-x-2", {
+const switchVariants = cva("flex items-start space-x-sm-extra", {
     variants: {
         labelPosition: {
             start: "",
-            end: "flex-row-reverse space-x-reverse "
+            end: "flex-row-reverse space-x-reverse"
         }
     },
     defaultVariants: {
@@ -60,7 +60,7 @@ const DecoratableSwitchRenderer = React.forwardRef<
                 {...props}
                 id={id}
                 className={cn([
-                    "peer inline-flex h-4 w-[26px] shrink-0 cursor-pointer items-center rounded-xxl border-sm transition-colors",
+                    "peer inline-flex h-md w-[26px] mt-xxs shrink-0 cursor-pointer items-center rounded-xxl border-sm transition-colors",
                     "border-transparent data-[state=checked]:bg-secondary-default data-[state=unchecked]:bg-neutral-strong",
                     "focus-visible:outline-none focus-visible:border-success-default focus-visible:ring-lg focus-visible:ring-primary-dimmed",
                     "disabled:cursor-not-allowed disabled:bg-neutral-muted disabled:data-[state=checked]:bg-neutral-muted"
@@ -69,7 +69,7 @@ const DecoratableSwitchRenderer = React.forwardRef<
             >
                 <SwitchPrimitives.Thumb
                     className={cn(
-                        "pointer-events-none block h-2.5 w-2.5 rounded-xxl bg-neutral-base shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0.5"
+                        "pointer-events-none block h-sm-plus w-sm-plus rounded-xxl bg-neutral-base shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-sm-extra data-[state=unchecked]:translate-x-xxs"
                     )}
                 />
             </SwitchPrimitives.Root>

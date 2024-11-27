@@ -37,9 +37,23 @@ export const WithLeadingLabel: Story = {
     }
 };
 
+export const WithLongLeadingLabel: Story = {
+    args: {
+        label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu aliquam lacus. Morbi eleifend, eros et vestibulum lobortis, mi elit scelerisque neque, sit amet dictum orci sem ac ante. In hac habitasse platea dictumst. Pellentesque molestie nisl tortor, eu dictum velit mollis vitae. Maecenas nec risus sit amet ante efficitur venenatis id eget eros. Aenean mollis vel dolor vitae vestibulum. Integer consectetur id diam eget iaculis. Praesent egestas ullamcorper libero vel eleifend.",
+        labelPosition: "start"
+    }
+};
+
 export const WithTrailingLabel: Story = {
     args: {
         label: "Trailing label",
+        labelPosition: "end"
+    }
+};
+
+export const WithLongTrailingLabel: Story = {
+    args: {
+        label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu aliquam lacus. Morbi eleifend, eros et vestibulum lobortis, mi elit scelerisque neque, sit amet dictum orci sem ac ante. In hac habitasse platea dictumst. Pellentesque molestie nisl tortor, eu dictum velit mollis vitae. Maecenas nec risus sit amet ante efficitur venenatis id eget eros. Aenean mollis vel dolor vitae vestibulum. Integer consectetur id diam eget iaculis. Praesent egestas ullamcorper libero vel eleifend.",
         labelPosition: "end"
     }
 };
