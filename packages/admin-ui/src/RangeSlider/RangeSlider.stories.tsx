@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { RangeSlider } from "./RangeSlider";
-import { Button } from "~/Button";
 
 const meta: Meta<typeof RangeSlider> = {
     title: "Components/RangeSlider",
@@ -27,118 +26,26 @@ type Story = StoryObj<typeof RangeSlider>;
 
 export const Default: Story = {
     args: {
-        label: "Label"
-    }
-};
-
-export const WithDefaultValues: Story = {
-    args: {
-        label: "Label",
-        values: [25, 75]
-    }
-};
-
-export const WithMinAndMaxValues: Story = {
-    args: {
-        label: "Label",
-        min: 25,
-        max: 75
-    }
-};
-
-export const WithSteps: Story = {
-    args: {
-        label: "Label",
-        step: 10
-    }
-};
-
-export const Disabled: Story = {
-    args: {
-        label: "Label",
-        disabled: true,
-        values: [25, 75]
-    }
-};
-
-export const WithTooltip: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true
-    }
-};
-
-export const WithTooltipSideTop: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true,
-        tooltipSide: "top"
-    }
-};
-
-export const WithCustomValueConverter: Story = {
-    args: {
-        label: "Label",
-        transformValues: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
-
-export const WithCustomValueConverterAndTooltip: Story = {
-    args: {
-        label: "Label",
-        showTooltip: true,
-        transformValues: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
-
-export const WithExternalValueControl: Story = {
-    args: {
-        label: "Label"
-    },
-    render: args => {
-        const defaultValues = args.values ?? [25, 75];
-        const [values, setValues] = useState(defaultValues);
-        return (
-            <div className={"w-full"}>
-                <div>
-                    <RangeSlider
-                        {...args}
-                        values={values}
-                        onValuesChange={values => setValues(values)}
-                    />
-                </div>
-                <div className={"mt-4 text-center"}>
-                    <Button text={"Reset"} onClick={() => setValues(defaultValues)} />
-                </div>
-                <div className={"mt-4 text-center"}>
-                    Current value: <code>{values.toString()}</code>
-                </div>
-            </div>
-        );
+        label: "Any field label"
     }
 };
 
 export const WithLabelRequired: Story = {
     args: {
-        label: "Label",
+        ...Default.args,
         required: true
     }
 };
 
 export const WithDescription: Story = {
     args: {
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference."
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
-        note: "Note: Please do not use your middle name."
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
@@ -146,21 +53,21 @@ export const WithErrors: Story = {
     args: {
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
 
 export const FullExample: Story = {
     args: {
-        label: "First and Last name",
+        ...Default.args,
+        label: "Any field label",
         required: true,
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };

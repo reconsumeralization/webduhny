@@ -40,7 +40,7 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
             validation={props.validation}
         >
             <div className={"flex flex-row items-center justify-between"}>
-                <div className={"basis-1/12 pr-2"}>
+                <div className={"basis-1/12 pr-xxs"}>
                     <RangeSliderValue value={vm.labelVm.values[0]} />
                 </div>
                 <div className={"basis-10/12"}>
@@ -51,7 +51,7 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
                         onValuesCommit={commitValues}
                     />
                 </div>
-                <div className={"basis-1/12 pl-2 text-right"}>
+                <div className={"basis-1/12 pl-xxs text-right"}>
                     <RangeSliderValue value={vm.labelVm.values[1]} />
                 </div>
             </div>
