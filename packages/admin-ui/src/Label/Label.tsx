@@ -48,7 +48,6 @@ const LabelDescription = makeDecoratable("LabelDescription", DecoratableLabelDes
 /**
  * Label Hint
  */
-
 interface LabelHintProps {
     content: React.ReactNode;
 }
@@ -128,7 +127,7 @@ const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>,
             {...props}
         >
             <span>
-                <span className={"flex items-center gap-0.5"}>
+                <span className={"flex items-center gap-xxs"}>
                     {text}
                     {description && <LabelDescription content={description} disabled={disabled} />}
                     {hint && <LabelHint content={hint} />}
