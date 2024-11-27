@@ -12,6 +12,7 @@ const DecoratableTextarea = ({
     validation,
     validate,
     required,
+    disabled,
     ...props
 }: TextareaProps) => {
     return (
@@ -22,6 +23,7 @@ const DecoratableTextarea = ({
             validation={validation}
             validate={validate}
             required={required}
+            disabled={disabled}
         >
             <TextareaPrimitive {...props} />
         </FormComponent>

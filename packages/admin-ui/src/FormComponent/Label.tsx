@@ -20,7 +20,7 @@ const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
         });
     }
 
-    return <Label text={props.text} required={props.required} />;
+    return <Label text={props.text} required={props.required} disabled={props.disabled} />;
 };
 
 const FormComponentLabel = makeDecoratable("FormComponentLabel", DecoratableFormComponentLabel);

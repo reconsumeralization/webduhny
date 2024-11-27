@@ -25,56 +25,67 @@ export const Default: Story = {};
 
 export const WithLabel: Story = {
     args: {
-        label: "Label"
+        label: "Any field label"
     }
 };
 
 export const WithLabelRequired: Story = {
     args: {
-        label: "Label",
+        ...Default.args,
+        label: "Any field label",
         required: true
+    }
+};
+
+export const WithLabelDisabled: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        disabled: true
     }
 };
 
 export const WithValue: Story = {
     args: {
+        ...Default.args,
         value: "Earth is the third planet from the Sun and the only astronomical object known to harbor life. According to radiometric dating estimation and other evidence, Earth formed 4.5 billion years ago."
     }
 };
 
 export const WithDescription: Story = {
     args: {
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference."
+        ...Default.args,
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
-        note: "Note: Please do not use your middle name."
+        ...Default.args,
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
 export const WithErrors: Story = {
     args: {
+        ...Default.args,
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
 
 export const FullExample: Story = {
     args: {
-        label: "First and Last name",
+        ...Default.args,
+        label: "Any field label",
         required: true,
-        placeholder: "John Doe",
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
