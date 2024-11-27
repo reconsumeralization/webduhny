@@ -45,6 +45,26 @@ export const Default: Story = {
     }
 };
 
+export const WithLongLabels: Story = {
+    args: {
+        items: [
+            {
+                label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu aliquam lacus. Morbi eleifend, eros et vestibulum lobortis, mi elit scelerisque neque, sit amet dictum orci sem ac ante. In hac habitasse platea dictumst. Pellentesque molestie nisl tortor, eu dictum velit mollis vitae. Integer consectetur id diam eget iaculis. Praesent egestas ullamcorper libero vel eleifend.",
+                value: "value-1"
+            },
+            {
+                label: "Ut pretium ex vel auctor bibendum. In hac habitasse platea dictumst. Etiam varius felis mi, eu sagittis erat congue vel. Phasellus dui eros, dignissim quis quam pulvinar, tincidunt venenatis felis.",
+                value: "value-2"
+            },
+            {
+                label: "Nullam gravida consequat volutpat. Ut faucibus imperdiet lobortis. Nullam tempus accumsan metus, vel fermentum lacus dignissim vitae. Sed vitae nunc ante. Cras sollicitudin id dolor sit amet imperdiet.",
+                value: "value-3"
+            }
+        ],
+        values: []
+    }
+};
+
 export const WithSelectedValues: Story = {
     args: {
         items: [
