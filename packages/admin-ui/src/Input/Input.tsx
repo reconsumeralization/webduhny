@@ -118,8 +118,8 @@ const inputVariants = cva(
                 ],
                 ghost: [
                     "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed-a1",
-                    "focus:bg-neutral-dimmed-a1",
+                    "hover:bg-neutral-dimmed/95",
+                    "focus:bg-neutral-base focus:border-neutral-black",
                     "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
                 ]
             },

@@ -1,10 +1,9 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn, makeDecoratable } from "~/utils";
+import { makeDecoratable, cva, type VariantProps } from "~/utils";
 
 const textareaVariants = cva(
     [
-        "flex min-h-[80px] w-full border-sm px-3 py-2 text-md focus-visible:outline-none disabled:cursor-not-allowed"
+        "flex min-h-[80px] w-full border-sm text-md focus-visible:outline-none disabled:cursor-not-allowed"
     ],
     {
         variants: {
@@ -23,15 +22,15 @@ const textareaVariants = cva(
                 ],
                 ghost: [
                     "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed-a1",
-                    "focus:bg-neutral-dimmed-a1",
+                    "hover:bg-neutral-dimmed/95",
+                    "focus:bg-neutral-base focus:border-neutral-black",
                     "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
                 ]
             },
             size: {
                 md: ["px-sm-extra py-xs-plus rounded-sm"],
                 lg: ["px-sm-extra py-sm-plus rounded-sm"],
-                xl: ["px-md-extra py-md rounded-md"]
+                xl: ["px-md-extra p-md rounded-md"]
             },
             invalid: {
                 true: [
@@ -68,7 +67,7 @@ const DecoratableTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>
     ({ className, variant, invalid, size, ...props }, ref) => {
         return (
             <textarea
-                className={cn(textareaVariants({ variant, invalid, size, className }))}
+                className={textareaVariants({ variant, invalid, size, className })}
                 ref={ref}
                 {...props}
             />
