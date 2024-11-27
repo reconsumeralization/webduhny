@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications.svg";
-import { ReactComponent as CalendarIcon } from "@material-design-icons/svg/outlined/calendar_month.svg";
 import { Select } from "~/Select";
-import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Select> = {
     title: "Components/Select",
@@ -50,40 +47,21 @@ export const Default: Story = {
 export const WithLabel: Story = {
     args: {
         ...Default.args,
-        label: "Timezone"
-    }
-};
-
-export const WithStartIcon: Story = {
-    args: {
-        ...Default.args,
-        label: "Timezone",
-        placeholder: "Pick a timezone",
-        startIcon: <Icon label={"Bell"} icon={<NotificationsIcon />} />
-    }
-};
-
-export const WithEndIcon: Story = {
-    args: {
-        ...Default.args,
-        label: "Timezone",
-        placeholder: "Pick a timezone",
-        endIcon: <Icon label={"Calendar"} icon={<CalendarIcon />} />
+        label: "Any field label"
     }
 };
 
 export const WithDescription: Story = {
     args: {
         ...Default.args,
-        description:
-            "We need your timezone to make the press cards ready for your pickup at the conference."
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
         ...Default.args,
-        note: "Note: Please select only a valid timezone."
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
@@ -92,7 +70,7 @@ export const WithErrors: Story = {
         ...Default.args,
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
@@ -100,14 +78,13 @@ export const WithErrors: Story = {
 export const FullExample: Story = {
     args: {
         ...Default.args,
-        label: "Timezone",
-        placeholder: "Pick a timezone",
-        description:
-            "We need your timezone to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please select only a valid timezone.",
+        label: "Any field label",
+        required: true,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };

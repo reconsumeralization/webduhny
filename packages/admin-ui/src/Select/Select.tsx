@@ -12,6 +12,7 @@ const DecoratableFormSelect = ({
     validation,
     validate,
     required,
+    disabled,
     ...props
 }: InputProps) => {
     return (
@@ -22,6 +23,7 @@ const DecoratableFormSelect = ({
             validation={validation}
             validate={validate}
             required={required}
+            disabled={disabled}
         >
             <SelectPrimitive {...props} />
         </FormComponent>

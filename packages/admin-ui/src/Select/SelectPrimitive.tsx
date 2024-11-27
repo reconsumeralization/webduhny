@@ -280,7 +280,7 @@ const DecoratableSelectItem = React.forwardRef<
         ref={ref}
         className={cn(
             [
-                "flex items-center justify-between gap-3 cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none",
+                "flex items-center justify-between gap-sm-extra cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none",
                 "bg-neutral-base text-neutral-primary fill-neutral-xstrong",
                 "focus:bg-neutral-dimmed",
                 "data-[disabled]:text-neutral-disabled data-[disabled]:cursor-not-allowed",
@@ -292,7 +292,7 @@ const DecoratableSelectItem = React.forwardRef<
     >
         <SelectPrimitives.ItemText>{children}</SelectPrimitives.ItemText>
         <SelectPrimitives.ItemIndicator>
-            <Check className="h-4 w-4" />
+            <Check className="h-md w-h-md" />
         </SelectPrimitives.ItemIndicator>
     </SelectPrimitives.Item>
 ));
