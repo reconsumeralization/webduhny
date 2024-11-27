@@ -20,36 +20,21 @@ type Story = StoryObj<typeof Switch>;
 
 export const Default: Story = {
     args: {
-        label: "Label"
-    }
-};
-
-export const WithLeadingLabel: Story = {
-    args: {
-        label: "Leading label",
-        labelPosition: "start"
-    }
-};
-
-export const WithTrailingLabel: Story = {
-    args: {
-        label: "Trailing label",
-        labelPosition: "end"
+        label: "Any field label"
     }
 };
 
 export const WithDescription: Story = {
     args: {
         ...Default.args,
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference."
+        description: "Provide the required information for processing your request."
     }
 };
 
 export const WithNotes: Story = {
     args: {
         ...Default.args,
-        note: "Note: Please do not use your middle name."
+        note: "Note: Ensure your selection or input is accurate before proceeding."
     }
 };
 
@@ -58,7 +43,7 @@ export const WithErrors: Story = {
         ...Default.args,
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
@@ -66,13 +51,13 @@ export const WithErrors: Story = {
 export const FullExample: Story = {
     args: {
         ...Default.args,
-        label: "First and Last name",
-        description:
-            "We need your first and last name to make the press cards ready for your pickup at the conference.",
-        note: "Note: Please do not use your middle name.",
+        label: "Any field label",
+        required: true,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "Numerical values are not allowed."
+            message: "This field is required."
         }
     }
 };
