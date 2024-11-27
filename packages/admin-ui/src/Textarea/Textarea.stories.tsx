@@ -1,29 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Textarea } from "./Textarea";
+import { Textarea } from "~/Textarea";
 
 const meta: Meta<typeof Textarea> = {
     title: "Components/Textarea",
     component: Textarea,
     tags: ["autodocs"],
     argTypes: {
-        onChange: { action: "onChange" },
-        rows: {
-            control: {
-                type: "number"
-            }
-        }
+        onChange: { action: "onChange" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-auto mx-auto p-6 flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ]
+    render: args => {
+        const [value, setValue] = useState(args.value);
+        return <Textarea {...args} value={value} onChange={e => setValue(e.target.value)} />;
+    }
 };
 
 export default meta;
@@ -31,86 +23,58 @@ type Story = StoryObj<typeof Textarea>;
 
 export const Default: Story = {};
 
-export const MediumSize: Story = {
+export const WithLabel: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        size: "md"
+        label: "Label"
     }
 };
 
-export const LargeSize: Story = {
+export const WithLabelRequired: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        size: "lg"
+        label: "Label",
+        required: true
     }
 };
 
-export const ExtraLargeSize: Story = {
+export const WithValue: Story = {
     args: {
-        placeholder: "Custom placeholder",
-        size: "xl"
+        value: "Earth is the third planet from the Sun and the only astronomical object known to harbor life. According to radiometric dating estimation and other evidence, Earth formed 4.5 billion years ago."
     }
 };
 
-export const PrimaryVariant: Story = {
+export const WithDescription: Story = {
     args: {
-        variant: "primary",
-        placeholder: "Custom placeholder"
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference."
     }
 };
 
-export const PrimaryVariantDisabled: Story = {
+export const WithNotes: Story = {
     args: {
-        ...PrimaryVariant.args,
-        disabled: true
+        note: "Note: Please do not use your middle name."
     }
 };
 
-export const PrimaryVariantInvalid: Story = {
+export const WithErrors: Story = {
     args: {
-        ...PrimaryVariant.args,
-        invalid: true
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };
 
-export const SecondaryVariant: Story = {
+export const FullExample: Story = {
     args: {
-        variant: "secondary",
-        placeholder: "Custom placeholder"
-    }
-};
-
-export const SecondaryVariantDisabled: Story = {
-    args: {
-        ...SecondaryVariant.args,
-        disabled: true
-    }
-};
-
-export const SecondaryVariantInvalid: Story = {
-    args: {
-        ...SecondaryVariant.args,
-        invalid: true
-    }
-};
-
-export const GhostVariant: Story = {
-    args: {
-        variant: "ghost",
-        placeholder: "Custom placeholder"
-    }
-};
-
-export const GhostVariantDisabled: Story = {
-    args: {
-        ...GhostVariant.args,
-        disabled: true
-    }
-};
-
-export const GhostVariantInvalid: Story = {
-    args: {
-        ...GhostVariant.args,
-        invalid: true
+        label: "First and Last name",
+        required: true,
+        placeholder: "John Doe",
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference.",
+        note: "Note: Please do not use your middle name.",
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };

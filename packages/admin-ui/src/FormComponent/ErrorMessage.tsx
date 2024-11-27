@@ -17,7 +17,7 @@ const DecoratableFormComponentErrorMessage = (props: FormComponentErrorMessagePr
             text={props.text}
             size={"sm"}
             as={"div"}
-            className={"py-xs text-destructive-primary font-semibold"}
+            className={"mt-xs text-destructive-primary font-semibold"}
         />
     );
 };

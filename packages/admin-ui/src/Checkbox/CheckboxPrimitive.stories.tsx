@@ -3,9 +3,12 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { CheckboxPrimitive } from "./CheckboxPrimitive";
 
 const meta: Meta<typeof CheckboxPrimitive> = {
-    title: "Components/Primitives/Checkbox",
+    title: "Components/Form Primitives/Checkbox",
     component: CheckboxPrimitive,
     tags: ["autodocs"],
+    parameters: {
+        layout: "padded"
+    },
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return (

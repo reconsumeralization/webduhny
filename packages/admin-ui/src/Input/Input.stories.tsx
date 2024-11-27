@@ -41,17 +41,8 @@ const meta: Meta<typeof Input> = {
         }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
-                <div className="w-full">
-                    <Story />
-                </div>
-            </div>
-        )
-    ],
     render: args => {
         const [value, setValue] = useState(args.value);
         return <Input {...args} value={value} onChange={e => setValue(e.target.value)} />;

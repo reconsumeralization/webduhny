@@ -11,7 +11,9 @@ const DecoratableFormComponentNote = (props: FormComponentNoteProps) => {
         return null;
     }
 
-    return <Text text={props.text} size={"sm"} as={"div"} className={"text-neutral-strong"} />;
+    return (
+        <Text text={props.text} size={"sm"} as={"div"} className={"mt-sm text-neutral-strong"} />
+    );
 };
 
 const FormComponentNote = makeDecoratable("FormComponentNote", DecoratableFormComponentNote);

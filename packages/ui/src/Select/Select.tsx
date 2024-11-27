@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { FormComponentProps } from "~/types";
-import { Select as FormSelect } from "@webiny/admin-ui/Form";
+import { Select as AdminSelect } from "@webiny/admin-ui";
 import { SelectOptionDto } from "@webiny/admin-ui/Select/SelectOptionDto";
 
 export interface FormattedOption extends Omit<React.AllHTMLAttributes<any>, "label"> {
@@ -124,7 +124,7 @@ const getRmwcProps = (props: SelectProps): FormComponentProps & RmwcSelectProps 
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Select` component from the `@webiny/admin-ui/Form` package instead.
+ * Please use the `Select` component from the `@webiny/admin-ui` package instead.
  */
 export const Select = (props: SelectProps) => {
     const { value: initialValue, ...other } = props;
@@ -168,7 +168,7 @@ export const Select = (props: SelectProps) => {
     }, [props.size]);
 
     return (
-        <FormSelect
+        <AdminSelect
             {...getRmwcProps(other)}
             options={options}
             value={value}

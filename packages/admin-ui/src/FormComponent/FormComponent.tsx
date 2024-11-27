@@ -14,6 +14,8 @@ interface FormComponentProps {
 
     required?: boolean;
 
+    disabled?: boolean;
+
     validation?: {
         /* Is form element's value valid? */
         isValid: boolean | null;
@@ -32,12 +34,13 @@ interface FormComponentRendererProps extends FormComponentProps {
 }
 
 const FormComponent = ({
-    label,
-    description,
-    note,
-    validation,
     children,
-    required
+    description,
+    disabled,
+    label,
+    note,
+    required,
+    validation
 }: FormComponentRendererProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
@@ -45,8 +48,8 @@ const FormComponent = ({
     const renderChildrenWithInvalidProp = () =>
         React.Children.map(children, child => {
             if (React.isValidElement(child)) {
-                // Ensure TypeScript knows `invalid` can be added
                 return React.cloneElement(child as React.ReactElement<any>, {
+                    disabled,
                     invalid,
                     child
                 });
@@ -55,13 +58,13 @@ const FormComponent = ({
         });
 
     return (
-        <>
-            <FormComponentLabel text={label} required={required} />
+        <div className={"w-full"}>
+            <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
             {renderChildrenWithInvalidProp()}
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
-        </>
+        </div>
     );
 };
 

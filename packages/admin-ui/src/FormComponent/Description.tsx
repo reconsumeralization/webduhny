@@ -12,12 +12,7 @@ const DecoratableFormComponentDescription = (props: FormComponentDescriptionProp
     }
 
     return (
-        <Text
-            text={props.text}
-            size={"sm"}
-            as={"div"}
-            className={"pt-xs pb-sm text-neutral-strong"}
-        />
+        <Text text={props.text} size={"sm"} as={"div"} className={"mb-sm text-neutral-strong"} />
     );
 };
 

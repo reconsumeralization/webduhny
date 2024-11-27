@@ -5,6 +5,7 @@ import { Label, LabelProps } from "~/Label";
 interface FormComponentLabelProps {
     text?: React.ReactElement<typeof Label> | React.ReactNode;
     required?: boolean;
+    disabled?: boolean;
 }
 
 const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
@@ -14,7 +15,8 @@ const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
 
     if (React.isValidElement(props.text) && props.text.type === Label) {
         return React.cloneElement(props.text as React.ReactElement<LabelProps>, {
-            required: props.required
+            required: props.required,
+            disabled: props.disabled
         });
     }
 

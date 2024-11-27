@@ -28,7 +28,7 @@ const LabelRequired = makeDecoratable("LabelRequired", DecoratableLabelRequired)
 /**
  * Label Description
  */
-const labelDescriptionVariants = cva("font-normal text-neutral-muted", {
+const labelDescriptionVariants = cva("font-normal text-neutral-strong", {
     variants: {
         disabled: {
             true: "text-neutral-disabled"
@@ -90,7 +90,7 @@ const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
 
 const labelVariants = cva(
     [
-        "inline-flex items-center justify-between w-full text-sm leading-none",
+        "inline-flex py-xs pr-xs items-center justify-between w-full text-sm leading-none",
         "text-neutral-primary"
     ],
     {

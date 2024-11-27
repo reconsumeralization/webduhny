@@ -7,7 +7,7 @@ import { InputPrimitive } from "./InputPrimitive";
 import { Icon } from "~/Icon";
 
 const meta: Meta<typeof InputPrimitive> = {
-    title: "Components/Primitives/Input",
+    title: "Components/Form Primitives/Input",
     component: InputPrimitive,
     tags: ["autodocs"],
     argTypes: {
@@ -42,15 +42,8 @@ const meta: Meta<typeof InputPrimitive> = {
         }
     },
     parameters: {
-        layout: "fullscreen"
-    },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-32 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ]
+        layout: "padded"
+    }
 };
 
 export default meta;

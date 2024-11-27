@@ -30,7 +30,7 @@ type Props = Omit<SwitchProps, "value"> &
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Switch` component from the `@webiny/admin-ui/Form` package instead.
+ * Please use the `Switch` component from the `@webiny/admin-ui` package instead.
  */
 class Switch extends React.Component<Props> {
     public override render() {

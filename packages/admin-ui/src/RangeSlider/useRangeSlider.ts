@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
 import { RangeSliderProps } from "./RangeSlider";
+import { RangeSliderPrimitivePresenter } from "./RangeSliderPrimitivePresenter";
 import { RangeSliderPresenter } from "./RangeSliderPresenter";
 
 export const useRangeSlider = (props: RangeSliderProps) => {
-    const presenter = useMemo(() => new RangeSliderPresenter(), []);
+    const presenter = useMemo(() => {
+        const rangeSliderPrimitivePresenter = new RangeSliderPrimitivePresenter();
+        return new RangeSliderPresenter(rangeSliderPrimitivePresenter);
+    }, []);
 
     const [vm, setVm] = useState(presenter.vm);
 

@@ -4,19 +4,12 @@ import { CheckboxGroupPrimitive } from "./CheckboxGroupPrimitive";
 import { Button } from "~/Button";
 
 const meta: Meta<typeof CheckboxGroupPrimitive> = {
-    title: "Components/Primitives/CheckboxGroup",
+    title: "Components/Form Primitives/CheckboxGroup",
     component: CheckboxGroupPrimitive,
     tags: ["autodocs"],
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-[60%] h-48 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [values, setValues] = useState(args.values);
         return (

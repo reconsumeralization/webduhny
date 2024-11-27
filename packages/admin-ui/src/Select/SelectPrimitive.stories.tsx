@@ -6,7 +6,7 @@ import { SelectPrimitive } from "./SelectPrimitive";
 import { Button } from "~/Button";
 
 const meta: Meta<typeof SelectPrimitive> = {
-    title: "Components/Primitives/Select",
+    title: "Components/Form Primitives/Select",
     component: SelectPrimitive,
     tags: ["autodocs"],
     argTypes: {
@@ -18,15 +18,8 @@ const meta: Meta<typeof SelectPrimitive> = {
         invalid: { control: "boolean" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [value, setValue] = useState(args.value);
         return <SelectPrimitive {...args} value={value} onValueChange={setValue} />;

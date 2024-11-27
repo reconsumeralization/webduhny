@@ -1,76 +1,56 @@
 import { makeAutoObservable } from "mobx";
 import omit from "lodash/omit";
-import { SliderProps, SliderThumbVm, SliderVm } from "./Slider";
+import { ISliderPrimitivePresenter } from "./SliderPrimitivePresenter";
+import { SliderLabelVm, SliderProps } from "./Slider";
 
-interface ISliderPresenter<TProps extends SliderProps = SliderProps> {
-    get vm(): {
-        sliderVm: SliderVm;
-        thumbVm: SliderThumbVm;
-    };
-    init: (props: TProps) => void;
-    changeValue: (values: number[]) => void;
-    commitValue: (values: number[]) => void;
+interface ISliderPresenter<TProps extends SliderProps = SliderProps>
+    extends ISliderPrimitivePresenter<TProps> {
+    get vm(): ISliderPrimitivePresenter<TProps>["vm"] & { labelVm: SliderLabelVm };
 }
 
 class SliderPresenter implements ISliderPresenter {
+    private sliderPresenter: ISliderPrimitivePresenter;
     private props?: SliderProps;
-    private showTooltip: boolean;
 
-    constructor() {
+    constructor(sliderPresenter: ISliderPrimitivePresenter) {
+        this.sliderPresenter = sliderPresenter;
         this.props = undefined;
-        this.showTooltip = false;
         makeAutoObservable(this);
     }
 
     init(props: SliderProps) {
         this.props = props;
+        this.sliderPresenter.init(omit(props, ["label", "labelPosition"]));
     }
 
     get vm() {
         return {
             sliderVm: {
-                ...omit(this.props, [
-                    "showTooltip",
-                    "tooltipSide",
-                    "transformValue",
-                    "onValueChange",
-                    "onValueCommit"
-                ]),
-                value: this.value,
-                min: this.min
+                ...this.sliderPresenter.vm.sliderVm
             },
             thumbVm: {
-                value: this.transformToLabelValue(this.value?.[0]),
-                showTooltip: this.showTooltip,
-                tooltipSide: this.props?.tooltipSide
+                ...this.sliderPresenter.vm.thumbVm
+            },
+            labelVm: {
+                label: this.props?.label ?? "",
+                position: this.props?.labelPosition ?? "top",
+                value: this.transformToLabelValue(
+                    this.sliderPresenter.vm.sliderVm.value?.[0] ??
+                        this.sliderPresenter.vm.sliderVm.min
+                )
             }
         };
     }
 
-    public changeValue = (values: number[]) => {
-        const [newValue] = values;
-        this.showTooltip = !!this.props?.showTooltip;
-        this.props?.onValueChange(newValue);
+    public changeValue = (values: number[]): void => {
+        this.sliderPresenter.changeValue(values);
     };
 
-    public commitValue = (values: number[]) => {
-        const [newValue] = values;
-        this.showTooltip = false;
-        this.props?.onValueCommit?.(newValue);
+    public commitValue = (values: number[]): void => {
+        this.sliderPresenter.commitValue(values);
     };
 
-    private get value() {
-        return this.props?.value !== undefined ? [this.props.value] : undefined;
-    }
-
-    private get min() {
-        return this.props?.min ?? 0;
-    }
-
-    private transformToLabelValue(value?: number) {
-        if (typeof value === "undefined") {
-            return;
-        }
+    private transformToLabelValue(value: number): string {
         return this.props?.transformValue ? this.props.transformValue(value) : String(value);
     }
 }

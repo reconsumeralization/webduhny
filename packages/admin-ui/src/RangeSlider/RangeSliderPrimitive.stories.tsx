@@ -1,52 +1,44 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RangeSlider } from "./RangeSlider";
+import { RangeSliderPrimitive } from "./RangeSliderPrimitive";
+import { Button } from "~/Button";
 
-const meta: Meta<typeof RangeSlider> = {
-    title: "Components/Form/RangeSlider",
-    component: RangeSlider,
+const meta: Meta<typeof RangeSliderPrimitive> = {
+    title: "Components/Form Primitives/RangeSlider",
+    component: RangeSliderPrimitive,
     tags: ["autodocs"],
     argTypes: {
         onValuesChange: { action: "onValuesChange" },
         onValuesCommit: { action: "onValuesCommit" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-[60%] h-32 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [values, setValues] = useState(args.values);
         return (
-            <RangeSlider {...args} values={values} onValuesChange={values => setValues(values)} />
+            <RangeSliderPrimitive
+                {...args}
+                values={values}
+                onValuesChange={values => setValues(values)}
+            />
         );
     }
 };
 
 export default meta;
-type Story = StoryObj<typeof RangeSlider>;
+type Story = StoryObj<typeof RangeSliderPrimitive>;
 
-export const Default: Story = {
-    args: {
-        label: "Label"
-    }
-};
+export const Default: Story = {};
 
 export const WithDefaultValues: Story = {
     args: {
-        label: "Label",
         values: [25, 75]
     }
 };
 
 export const WithMinAndMaxValues: Story = {
     args: {
-        label: "Label",
         min: 25,
         max: 75
     }
@@ -54,14 +46,12 @@ export const WithMinAndMaxValues: Story = {
 
 export const WithSteps: Story = {
     args: {
-        label: "Label",
         step: 10
     }
 };
 
 export const Disabled: Story = {
     args: {
-        label: "Label",
         disabled: true,
         values: [25, 75]
     }
@@ -69,31 +59,19 @@ export const Disabled: Story = {
 
 export const WithTooltip: Story = {
     args: {
-        label: "Label",
         showTooltip: true
     }
 };
 
 export const WithTooltipSideTop: Story = {
     args: {
-        label: "Label",
         showTooltip: true,
         tooltipSide: "top"
     }
 };
 
-export const WithCustomValueConverter: Story = {
+export const WithTooltipAndCustomValueTransformer: Story = {
     args: {
-        label: "Label",
-        transformValues: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
-
-export const WithCustomValueConverterAndTooltip: Story = {
-    args: {
-        label: "Label",
         showTooltip: true,
         transformValues: (value: number) => {
             return `${Math.round(value)}%`;
@@ -103,7 +81,10 @@ export const WithCustomValueConverterAndTooltip: Story = {
 
 export const WithExternalValueControl: Story = {
     args: {
-        label: "Label"
+        showTooltip: true,
+        transformValues: (value: number) => {
+            return `${Math.round(value)}%`;
+        }
     },
     render: args => {
         const defaultValues = args.values ?? [25, 75];
@@ -111,14 +92,14 @@ export const WithExternalValueControl: Story = {
         return (
             <div className={"w-full"}>
                 <div>
-                    <RangeSlider
+                    <RangeSliderPrimitive
                         {...args}
                         values={values}
                         onValuesChange={values => setValues(values)}
                     />
                 </div>
                 <div className={"mt-4 text-center"}>
-                    <button onClick={() => setValues(defaultValues)}>{"Reset"}</button>
+                    <Button text={"Reset"} onClick={() => setValues(defaultValues)} />
                 </div>
                 <div className={"mt-4 text-center"}>
                     Current value: <code>{values.toString()}</code>

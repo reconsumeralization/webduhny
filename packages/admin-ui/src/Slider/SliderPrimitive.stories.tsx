@@ -1,50 +1,38 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Slider } from "./Slider";
+import { SliderPrimitive } from "./SliderPrimitive";
+import { Button } from "~/Button";
 
-const meta: Meta<typeof Slider> = {
-    title: "Components/Form/Slider",
-    component: Slider,
+const meta: Meta<typeof SliderPrimitive> = {
+    title: "Components/Form Primitives/Slider",
+    component: SliderPrimitive,
     tags: ["autodocs"],
     argTypes: {
         onValueChange: { action: "onValueChange" },
         onValueCommit: { action: "onValueCommit" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-[60%] h-32 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <Slider {...args} value={value} onValueChange={value => setValue(value)} />;
+        return <SliderPrimitive {...args} value={value} onValueChange={value => setValue(value)} />;
     }
 };
 
 export default meta;
-type Story = StoryObj<typeof Slider>;
+type Story = StoryObj<typeof SliderPrimitive>;
 
-export const Default: Story = {
-    args: {
-        label: "Label"
-    }
-};
+export const Default: Story = {};
 
 export const WithDefaultValue: Story = {
     args: {
-        label: "Label",
         value: 50
     }
 };
 
 export const WithMinAndMaxValues: Story = {
     args: {
-        label: "Label",
         min: 10,
         max: 20
     }
@@ -52,7 +40,6 @@ export const WithMinAndMaxValues: Story = {
 
 export const WithNegativeMinValue: Story = {
     args: {
-        label: "Label",
         min: -100,
         max: 100,
         value: 0
@@ -61,61 +48,32 @@ export const WithNegativeMinValue: Story = {
 
 export const WithSteps: Story = {
     args: {
-        label: "Label",
         step: 10
     }
 };
 
 export const Disabled: Story = {
     args: {
-        label: "Label",
         disabled: true,
         value: 50
     }
 };
 
-export const WithSideLabel: Story = {
-    args: {
-        label: "Label",
-        labelPosition: "side"
-    }
-};
-
 export const WithTooltip: Story = {
     args: {
-        label: "Label",
         showTooltip: true
     }
 };
 
 export const WithTooltipSideTop: Story = {
     args: {
-        label: "Label",
         showTooltip: true,
         tooltipSide: "top"
     }
 };
 
-export const WithSideLabelAndTooltip: Story = {
+export const WithTooltipAndCustomValueTransformer: Story = {
     args: {
-        label: "Label",
-        showTooltip: true,
-        labelPosition: "side"
-    }
-};
-
-export const WithCustomValueConverter: Story = {
-    args: {
-        label: "Label",
-        transformValue: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
-    }
-};
-
-export const WithCustomValueConverterAndTooltip: Story = {
-    args: {
-        label: "Label",
         showTooltip: true,
         transformValue: (value: number) => {
             return `${Math.round(value)}%`;
@@ -125,7 +83,10 @@ export const WithCustomValueConverterAndTooltip: Story = {
 
 export const WithExternalValueControl: Story = {
     args: {
-        label: "Label"
+        showTooltip: true,
+        transformValue: (value: number) => {
+            return `${Math.round(value)}%`;
+        }
     },
     render: args => {
         const defaultValue = 50;
@@ -133,10 +94,14 @@ export const WithExternalValueControl: Story = {
         return (
             <div className={"w-full"}>
                 <div>
-                    <Slider {...args} value={value} onValueChange={value => setValue(value)} />
+                    <SliderPrimitive
+                        {...args}
+                        value={value}
+                        onValueChange={value => setValue(value)}
+                    />
                 </div>
                 <div className={"mt-4 text-center"}>
-                    <button onClick={() => setValue(defaultValue)}>{"Reset"}</button>
+                    <Button text={"Reset"} onClick={() => setValue(defaultValue)} />
                 </div>
                 <div className={"mt-4 text-center"}>
                     Current value: <code>{value}</code>

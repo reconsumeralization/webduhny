@@ -14,17 +14,8 @@ const meta: Meta<typeof Select> = {
         onOpenChange: { action: "onOpenChange" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
-                <div className="w-full">
-                    <Story />
-                </div>
-            </div>
-        )
-    ],
     render: args => {
         const [value, setValue] = useState(args.value);
         return <Select {...args} value={value} onValueChange={setValue} />;

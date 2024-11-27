@@ -131,7 +131,7 @@ const rmwcProps = [
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Input` component from the `@webiny/admin-ui/Form` package instead.
+ * Please use the `Input` component from the `@webiny/admin-ui` package instead.
  */
 export const Input = (props: InputProps) => {
     const onChange = useCallback(
@@ -206,6 +206,30 @@ export const Input = (props: InputProps) => {
         return "lg";
     }, [props.size]);
 
+    // if (Boolean(rows)) {
+    //     return (
+    //         <AdminTextarea
+    //             {...pick(rest, rmwcProps)}
+    //             onKeyDown={inputOnKeyDown}
+    //             autoFocus={autoFocus}
+    //             value={inputValue}
+    //             onChange={onChange}
+    //             onBlur={onBlur}
+    //             label={label}
+    //             // startIcon={icon}
+    //             placeholder={placeholder}
+    //             //trailingIcon={trailingIcon}
+    //             size={size}
+    //             className={classNames("webiny-ui-input")}
+    //             data-testid={props["data-testid"]}
+    //             validation={validation}
+    //             note={description}
+    //             required={required}
+    //             rows={rows}
+    //         />
+    //     );
+    // }
+
     return (
         <AdminInput
             {...pick(rest, rmwcProps)}
@@ -217,7 +241,7 @@ export const Input = (props: InputProps) => {
             label={label}
             // startIcon={icon}
             placeholder={placeholder}
-            //trailingIcon={trailingIcon}
+            // trailingIcon={trailingIcon}
             size={size}
             className={classNames("webiny-ui-input")}
             data-testid={props["data-testid"]}

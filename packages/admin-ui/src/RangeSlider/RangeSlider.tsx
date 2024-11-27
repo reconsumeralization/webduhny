@@ -1,89 +1,64 @@
 import * as React from "react";
-import * as SliderPrimitive from "@radix-ui/react-slider";
 import { makeDecoratable } from "@webiny/react-composition";
-import { SliderRoot, SliderThumb, SliderThumbVm, SliderTrack } from "~/Slider";
+import { RangeSliderPrimitiveProps, RangeSliderPrimitiveRenderer } from "./RangeSliderPrimitive";
 import { useRangeSlider } from "./useRangeSlider";
+import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type RangeSliderVm = Omit<
-    SliderPrimitive.SliderProps,
-    "value" | "min" | "max" | "onValueChange" | "onValueCommit"
-> & {
-    values: number[];
-    min: number;
-    max: number;
-};
-
-type RangeSliderThumbsVm = Omit<SliderThumbVm, "value"> & {
+type RangeSliderLabelVm = {
+    label: React.ReactNode;
     values: string[];
 };
 
 /**
- * RangeSliderRenderer
+ * Range Slider Value
  */
-interface RangeSliderRendererProps {
-    sliderVm: RangeSliderVm;
-    thumbsVm: RangeSliderThumbsVm;
-    onValuesChange: (values: number[]) => void;
-    onValuesCommit: (values: number[]) => void;
+interface RangeSliderValueProps extends React.HTMLAttributes<HTMLSpanElement> {
+    value: string;
 }
 
-const DecoratableRangeSliderRenderer = ({
-    sliderVm,
-    thumbsVm,
-    onValuesChange,
-    onValuesCommit
-}: RangeSliderRendererProps) => {
-    return (
-        <SliderRoot
-            {...sliderVm}
-            value={sliderVm.values}
-            onValueChange={onValuesChange}
-            onValueCommit={onValuesCommit}
-        >
-            <SliderTrack />
-            <SliderThumb {...thumbsVm} value={thumbsVm.values[0]} />
-            <SliderThumb {...thumbsVm} value={thumbsVm.values[1]} />
-        </SliderRoot>
-    );
-};
+const RangeSliderBaseValue = (props: RangeSliderValueProps) => (
+    <span className={"font-normal text-sm leading-none"}>{props.value}</span>
+);
 
-const RangeSliderRenderer = makeDecoratable("RangeSliderRenderer", DecoratableRangeSliderRenderer);
+const RangeSliderValue = makeDecoratable("RangeSliderValue", RangeSliderBaseValue);
 
-/**
- * RangeSlider
- */
-interface RangeSliderProps
-    extends Omit<
-        SliderPrimitive.SliderProps,
-        "defaultValue" | "value" | "onValueChange" | "onValueCommit"
-    > {
-    onValuesChange: (values: number[]) => void;
-    onValuesCommit?: (values: number[]) => void;
-    showTooltip?: boolean;
-    tooltipSide?: "top" | "bottom";
-    transformValues?: (value: number) => string;
-    values?: number[] | undefined;
+interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
+    label: React.ReactNode;
+    valueConverter?: (value: number) => string;
 }
 
 const DecoratableRangeSlider = (props: RangeSliderProps) => {
     const { vm, changeValues, commitValues } = useRangeSlider(props);
 
     return (
-        <RangeSliderRenderer
-            sliderVm={vm.sliderVm}
-            thumbsVm={vm.thumbsVm}
-            onValuesChange={changeValues}
-            onValuesCommit={commitValues}
-        />
+        <FormComponent
+            required={props.required}
+            label={vm.labelVm.label}
+            note={props.note}
+            description={props.description}
+            validate={props.validate}
+            validation={props.validation}
+        >
+            <div className={"flex flex-row items-center justify-between"}>
+                <div className={"basis-1/12 pr-2"}>
+                    <RangeSliderValue value={vm.labelVm.values[0]} />
+                </div>
+                <div className={"basis-10/12"}>
+                    <RangeSliderPrimitiveRenderer
+                        sliderVm={vm.sliderVm}
+                        thumbsVm={vm.thumbsVm}
+                        onValuesChange={changeValues}
+                        onValuesCommit={commitValues}
+                    />
+                </div>
+                <div className={"basis-1/12 pl-2 text-right"}>
+                    <RangeSliderValue value={vm.labelVm.values[1]} />
+                </div>
+            </div>
+        </FormComponent>
     );
 };
 
 const RangeSlider = makeDecoratable("RangeSlider", DecoratableRangeSlider);
 
-export {
-    RangeSlider,
-    RangeSliderRenderer,
-    type RangeSliderProps,
-    type RangeSliderVm,
-    type RangeSliderThumbsVm
-};
+export { RangeSlider, type RangeSliderProps, type RangeSliderLabelVm };

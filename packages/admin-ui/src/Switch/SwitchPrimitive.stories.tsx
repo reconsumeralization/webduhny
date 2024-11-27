@@ -3,9 +3,12 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { SwitchPrimitive } from "./SwitchPrimitive";
 
 const meta: Meta<typeof SwitchPrimitive> = {
-    title: "Components/Primitives/Switch",
+    title: "Components/Form Primitives/Switch",
     component: SwitchPrimitive,
     tags: ["autodocs"],
+    parameters: {
+        layout: "padded"
+    },
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return (

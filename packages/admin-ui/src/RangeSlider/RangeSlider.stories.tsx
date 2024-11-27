@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { RangeSlider } from "./RangeSlider";
+import { Button } from "~/Button";
 
 const meta: Meta<typeof RangeSlider> = {
     title: "Components/RangeSlider",
@@ -11,15 +12,8 @@ const meta: Meta<typeof RangeSlider> = {
         onValuesCommit: { action: "onValuesCommit" }
     },
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-[60%] h-32 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [values, setValues] = useState(args.values);
         return (
@@ -31,16 +25,22 @@ const meta: Meta<typeof RangeSlider> = {
 export default meta;
 type Story = StoryObj<typeof RangeSlider>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        label: "Label"
+    }
+};
 
 export const WithDefaultValues: Story = {
     args: {
+        label: "Label",
         values: [25, 75]
     }
 };
 
 export const WithMinAndMaxValues: Story = {
     args: {
+        label: "Label",
         min: 25,
         max: 75
     }
@@ -48,12 +48,14 @@ export const WithMinAndMaxValues: Story = {
 
 export const WithSteps: Story = {
     args: {
+        label: "Label",
         step: 10
     }
 };
 
 export const Disabled: Story = {
     args: {
+        label: "Label",
         disabled: true,
         values: [25, 75]
     }
@@ -61,19 +63,31 @@ export const Disabled: Story = {
 
 export const WithTooltip: Story = {
     args: {
+        label: "Label",
         showTooltip: true
     }
 };
 
 export const WithTooltipSideTop: Story = {
     args: {
+        label: "Label",
         showTooltip: true,
         tooltipSide: "top"
     }
 };
 
-export const WithTooltipAndCustomValueTransformer: Story = {
+export const WithCustomValueConverter: Story = {
     args: {
+        label: "Label",
+        transformValues: (value: number) => {
+            return `${Math.round(value)}%`;
+        }
+    }
+};
+
+export const WithCustomValueConverterAndTooltip: Story = {
+    args: {
+        label: "Label",
         showTooltip: true,
         transformValues: (value: number) => {
             return `${Math.round(value)}%`;
@@ -83,10 +97,7 @@ export const WithTooltipAndCustomValueTransformer: Story = {
 
 export const WithExternalValueControl: Story = {
     args: {
-        showTooltip: true,
-        transformValues: (value: number) => {
-            return `${Math.round(value)}%`;
-        }
+        label: "Label"
     },
     render: args => {
         const defaultValues = args.values ?? [25, 75];
@@ -101,12 +112,55 @@ export const WithExternalValueControl: Story = {
                     />
                 </div>
                 <div className={"mt-4 text-center"}>
-                    <button onClick={() => setValues(defaultValues)}>{"Reset"}</button>
+                    <Button text={"Reset"} onClick={() => setValues(defaultValues)} />
                 </div>
                 <div className={"mt-4 text-center"}>
                     Current value: <code>{values.toString()}</code>
                 </div>
             </div>
         );
+    }
+};
+
+export const WithLabelRequired: Story = {
+    args: {
+        label: "Label",
+        required: true
+    }
+};
+
+export const WithDescription: Story = {
+    args: {
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference."
+    }
+};
+
+export const WithNotes: Story = {
+    args: {
+        note: "Note: Please do not use your middle name."
+    }
+};
+
+export const WithErrors: Story = {
+    args: {
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
+    }
+};
+
+export const FullExample: Story = {
+    args: {
+        label: "First and Last name",
+        required: true,
+        description:
+            "We need your first and last name to make the press cards ready for your pickup at the conference.",
+        note: "Note: Please do not use your middle name.",
+        validation: {
+            isValid: false,
+            message: "Numerical values are not allowed."
+        }
     }
 };

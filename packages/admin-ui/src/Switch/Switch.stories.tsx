@@ -7,17 +7,8 @@ const meta: Meta<typeof Switch> = {
     component: Switch,
     tags: ["autodocs"],
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-1/3 h-64 mx-auto flex justify-center items-center">
-                <div className="w-full">
-                    <Story />
-                </div>
-            </div>
-        )
-    ],
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return <Switch {...args} checked={checked} onCheckedChange={value => setChecked(value)} />;
