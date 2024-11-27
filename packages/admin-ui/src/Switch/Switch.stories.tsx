@@ -15,7 +15,25 @@ const meta: Meta<typeof Switch> = {
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        label: "Label"
+    }
+};
+
+export const WithLeadingLabel: Story = {
+    args: {
+        label: "Leading label",
+        labelPosition: "start"
+    }
+};
+
+export const WithTrailingLabel: Story = {
+    args: {
+        label: "Trailing label",
+        labelPosition: "end"
+    }
+};
 
 export const Checked: Story = {
     args: {
@@ -25,6 +43,7 @@ export const Checked: Story = {
 
 export const Disabled: Story = {
     args: {
+        label: "Label",
         disabled: true
     }
 };

@@ -200,8 +200,8 @@ const inputVariants = cva(
 interface InputProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
         VariantProps<typeof inputVariants> {
-    startIcon?: React.ReactElement<typeof BaseIcon>;
-    endIcon?: React.ReactElement<typeof BaseIcon>;
+    startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+    endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
 }
 

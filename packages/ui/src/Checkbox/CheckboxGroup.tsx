@@ -1,7 +1,6 @@
 import React from "react";
 import { FormComponentProps } from "./../types";
-import { webinyCheckboxTitle } from "./Checkbox.styles";
-import { FormElementMessage } from "../FormElementMessage";
+import { FormComponent } from "@webiny/admin-ui/Form";
 
 export interface ChildrenRenderProp {
     onChange: (id: string | number) => () => void;
@@ -19,23 +18,21 @@ type Props = FormComponentProps & {
     children: (props: ChildrenRenderProp) => React.ReactNode;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `CheckboxGroup` component from the `@webiny/admin-ui/CheckboxGroup` package instead.
+ */
 class CheckboxGroup extends React.Component<Props> {
     public override render() {
-        const { description, label, validation = { isValid: null, message: null } } = this.props;
+        const { description, label, validation, validate } = this.props;
 
         return (
-            <React.Fragment>
-                {label && (
-                    <div
-                        className={
-                            "mdc-text-field-helper-text mdc-text-field-helper-text--persistent " +
-                            webinyCheckboxTitle
-                        }
-                    >
-                        {label}
-                    </div>
-                )}
-
+            <FormComponent
+                label={label}
+                validation={validation}
+                note={description}
+                validate={validate}
+            >
                 {this.props.children({
                     onChange: value => {
                         return () => {
@@ -57,15 +54,7 @@ class CheckboxGroup extends React.Component<Props> {
                         return values.includes(id);
                     }
                 })}
-
-                {validation.isValid === false && (
-                    <FormElementMessage error>{validation.message}</FormElementMessage>
-                )}
-
-                {validation.isValid !== false && description && (
-                    <FormElementMessage>{description}</FormElementMessage>
-                )}
-            </React.Fragment>
+            </FormComponent>
         );
     }
 }

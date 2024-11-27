@@ -1,11 +1,62 @@
-import React, { useCallback } from "react";
-import { TextField, TextFieldProps } from "@rmwc/textfield";
-import { FormElementMessage } from "~/FormElementMessage";
+import React, { useCallback, useMemo, ReactElement } from "react";
 import pick from "lodash/pick";
 import { FormComponentProps } from "~/types";
-import { ReactElement } from "react";
 import classNames from "classnames";
-import { webinyInputStyles } from "./styled";
+import { Input as FormInput } from "@webiny/admin-ui/Form";
+
+export interface TextFieldHelperTextProps {
+    /** Make the help text always visible */
+    persistent?: boolean;
+    /** Make the help a validation message style */
+    validationMsg?: boolean;
+    /** Content for the help text */
+    children: React.ReactNode;
+}
+
+export interface TextFieldProps {
+    /** Sets the value for controlled TextFields. */
+    value?: string | number;
+    /** Adds help text to the field */
+    helpText?: React.ReactNode | TextFieldHelperTextProps;
+    /** Shows the character count, must be used in conjunction with maxLength. */
+    characterCount?: boolean;
+    /** Makes the TextField visually invalid. This is sometimes automatically applied in cases where required or pattern is used.  */
+    invalid?: boolean;
+    /** Makes the Textfield disabled. */
+    disabled?: boolean;
+    /** Makes the Textfield required. */
+    required?: boolean;
+    /** Outline the TextField. */
+    outlined?: boolean;
+    /** How to align the text inside the TextField. Defaults to 'start'. */
+    align?: "start" | "end";
+    /** A label for the input. */
+    label?: React.ReactNode;
+    /** The label floats automatically based on value, but you can use this prop for manual control. */
+    floatLabel?: boolean;
+    /** Makes a multiline TextField. */
+    textarea?: boolean;
+    /** Makes the TextField fullwidth. */
+    fullwidth?: boolean;
+    /** Add a leading icon. */
+    icon?: React.ReactNode;
+    /** Add a trailing icon. */
+    trailingIcon?: React.ReactNode;
+    /** By default, props spread to the input. These props are for the component's root container. */
+    // rootProps?: Object;
+    /** A reference to the native input or textarea. */
+    inputRef?: React.Ref<HTMLInputElement | HTMLTextAreaElement | null>;
+    /** The type of input field to render, search, number, etc */
+    type?: string;
+    /** Add prefix. */
+    prefix?: string;
+    /** Add suffix. */
+    suffix?: string;
+    /** Advanced: A reference to the MDCFoundation. */
+    // foundationRef?: React.Ref<MDCTextFieldFoundation | null>;
+    /** Make textarea resizeable */
+    resizeable?: boolean;
+}
 
 export type InputProps<TValue = any> = FormComponentProps<TValue> &
     TextFieldProps & {
@@ -78,6 +129,10 @@ const rmwcProps = [
     "characterCount"
 ];
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Input` component from the `@webiny/admin-ui/Form` package instead.
+ */
 export const Input = (props: InputProps) => {
     const onChange = useCallback(
         (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -89,7 +144,7 @@ export const Input = (props: InputProps) => {
             // @ts-expect-error
             onChange(rawOnChange ? e : e.target.value);
         },
-        [props.onChange, props.rawOnChange]
+        [props.onChange]
     );
 
     const onBlur = useCallback(
@@ -112,12 +167,11 @@ export const Input = (props: InputProps) => {
         label,
         description,
         placeholder,
-        rows,
+        // rows,
         validation,
-        icon,
-        trailingIcon,
+        // icon,
+        // trailingIcon,
         onEnter,
-        size,
         ...rest
     } = props;
 
@@ -125,8 +179,6 @@ export const Input = (props: InputProps) => {
     if (value === null || typeof value === "undefined") {
         inputValue = "";
     }
-
-    const { isValid: validationIsValid, message: validationMessage } = validation || {};
 
     const inputOnKeyDown = useCallback(
         (e: InputOnKeyDownProps) => {
@@ -141,35 +193,35 @@ export const Input = (props: InputProps) => {
         [rest.onKeyDown, onEnter]
     );
 
-    return (
-        <React.Fragment>
-            <TextField
-                {...pick(rest, rmwcProps)}
-                onKeyDown={inputOnKeyDown}
-                autoFocus={autoFocus}
-                textarea={Boolean(rows)}
-                value={inputValue}
-                onChange={onChange}
-                onBlur={onBlur}
-                label={label}
-                icon={icon}
-                placeholder={placeholder}
-                trailingIcon={trailingIcon}
-                rows={rows}
-                className={classNames(
-                    "webiny-ui-input",
-                    webinyInputStyles,
-                    props.size ? `webiny-ui-input--size-${size}` : null
-                )}
-                data-testid={props["data-testid"]}
-            />
+    const size = useMemo(() => {
+        if (props.size === "medium") {
+            return "md";
+        }
 
-            {validationIsValid === false && (
-                <FormElementMessage error>{validationMessage}</FormElementMessage>
-            )}
-            {validationIsValid !== false && description && (
-                <FormElementMessage>{description}</FormElementMessage>
-            )}
-        </React.Fragment>
+        if (props.size === "large") {
+            return "lg";
+        }
+
+        return "lg";
+    }, [props.size]);
+
+    return (
+        <FormInput
+            {...pick(rest, rmwcProps)}
+            onKeyDown={inputOnKeyDown}
+            autoFocus={autoFocus}
+            value={inputValue}
+            onChange={onChange}
+            onBlur={onBlur}
+            label={label}
+            // startIcon={icon}
+            placeholder={placeholder}
+            //trailingIcon={trailingIcon}
+            size={size}
+            className={classNames("webiny-ui-input")}
+            data-testid={props["data-testid"]}
+            validation={validation}
+            note={description}
+        />
     );
 };

@@ -513,6 +513,7 @@ export {
     type SelectTriggerProps,
     type SelectOptionsProps,
     type SelectProps,
+    type SelectRendererProps,
     type SelectTriggerVm,
     type SelectOptionsVm
 };

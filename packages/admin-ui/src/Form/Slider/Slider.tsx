@@ -1,7 +1,7 @@
 import * as React from "react";
-import { makeDecoratable } from "@webiny/react-composition";
 import { Label } from "~/Label";
 import { SliderRenderer, SliderProps as BaseSliderProps, SliderVm, SliderThumbVm } from "~/Slider";
+import { makeDecoratable } from "~/utils";
 import { useSlider } from "./useSlider";
 
 type LabelPosition = "top" | "side";
