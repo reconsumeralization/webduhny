@@ -7,6 +7,7 @@ import { cn, makeDecoratable } from "~/utils";
  */
 interface RadioProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
     label: string | React.ReactNode;
+    id: string;
 }
 
 const DecoratableRadio = React.forwardRef<
@@ -20,7 +21,7 @@ const DecoratableRadio = React.forwardRef<
                 id={id}
                 className={cn(
                     [
-                        "group peer aspect-square h-4 w-4 rounded-xl mt-xxs",
+                        "group peer aspect-square h-md w-md rounded-xl mt-xxs",
                         "bg-neutral-base border-sm border-neutral-muted ring-offset-background",
                         "focus:outline-none  focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
                         "disabled:cursor-not-allowed disabled:border-neutral-muted disabled:bg-neutral-disabled"
@@ -32,7 +33,7 @@ const DecoratableRadio = React.forwardRef<
                 <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
                     <span
                         className={cn([
-                            "h-2 w-2 rounded-xl",
+                            "h-sm w-sm rounded-xl",
                             "bg-primary-default",
                             "group-disabled:bg-neutral-strong"
                         ])}
