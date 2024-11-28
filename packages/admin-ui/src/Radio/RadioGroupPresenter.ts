@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import { RadioGroupVm } from "./RadioGroup";
-import { RadioItem } from "~/Radio/RadioItem";
-import { RadioItemMapper } from "~/Radio/RadioItemMapper";
-import { RadioItemDto } from "~/Radio/RadioItemDto";
+import { RadioItem } from "./RadioItem";
+import { RadioItemFormatter } from "./RadioItemFormatter";
+import { RadioItemDto } from "./RadioItemDto";
 
 interface RadioGroupPresenterParams<TValue = string> {
     items: RadioItemDto[];
@@ -28,7 +28,7 @@ class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValu
 
     get vm() {
         return {
-            items: this.items.map(item => RadioItemMapper.toFormatted(item))
+            items: this.items.map(item => RadioItemFormatter.format(item))
         };
     }
 
