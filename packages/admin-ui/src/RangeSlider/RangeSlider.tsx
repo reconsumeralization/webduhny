@@ -1,12 +1,14 @@
 import * as React from "react";
-import {
-    RangeSliderPrimitive,
-    RangeSliderPrimitiveProps,
-    RangeSliderPrimitiveRenderer
-} from "./RangeSliderPrimitive";
-import { useRangeSlider } from "./useRangeSlider";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
 import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { RangeSliderPrimitiveProps, RangeSliderPrimitiveRenderer } from "./RangeSliderPrimitive";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
+import { useRangeSlider } from "./useRangeSlider";
 
 type RangeSliderLabelVm = {
     label: React.ReactNode;
@@ -39,44 +41,43 @@ const DecoratableRangeSliderValue = ({ value, disabled, className }: RangeSlider
 
 const RangeSliderValue = makeDecoratable("RangeSliderValue", DecoratableRangeSliderValue);
 
-interface RangeSliderProps
-    extends RangeSliderPrimitiveProps,
-        FormComponentProps<typeof RangeSliderPrimitive> {
+interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
     label: React.ReactNode;
     valueConverter?: (value: number) => string;
 }
 
 const DecoratableRangeSlider = (props: RangeSliderProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = props.validation || {};
+    const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
     const { vm, changeValues, commitValues } = useRangeSlider(props);
 
     return (
-        <FormComponent
-            required={props.required}
-            disabled={props.disabled}
-            label={vm.labelVm.label}
-            note={props.note}
-            description={props.description}
-            validate={props.validate}
-            validation={props.validation}
-            element={
-                <div className={"flex flex-row items-center justify-between"}>
-                    <div className={"basis-1/12 pr-xxs"}>
-                        <RangeSliderValue value={vm.labelVm.values[0]} disabled={props.disabled} />
-                    </div>
-                    <div className={"basis-10/12"}>
-                        <RangeSliderPrimitiveRenderer
-                            sliderVm={vm.sliderVm}
-                            thumbsVm={vm.thumbsVm}
-                            onValuesChange={changeValues}
-                            onValuesCommit={commitValues}
-                        />
-                    </div>
-                    <div className={"basis-1/12 pl-xxs text-right"}>
-                        <RangeSliderValue value={vm.labelVm.values[1]} disabled={props.disabled} />
-                    </div>
+        <div className={"w-full"}>
+            <FormComponentLabel
+                text={vm.labelVm.label}
+                required={props.required}
+                disabled={props.disabled}
+            />
+            <FormComponentDescription text={props.description} />
+            <div className={"flex flex-row items-center justify-between"}>
+                <div className={"basis-1/12 pr-xxs"}>
+                    <RangeSliderValue value={vm.labelVm.values[0]} disabled={props.disabled} />
                 </div>
-            }
-        ></FormComponent>
+                <div className={"basis-10/12"}>
+                    <RangeSliderPrimitiveRenderer
+                        sliderVm={vm.sliderVm}
+                        thumbsVm={vm.thumbsVm}
+                        onValuesChange={changeValues}
+                        onValuesCommit={commitValues}
+                    />
+                </div>
+                <div className={"basis-1/12 pl-xxs text-right"}>
+                    <RangeSliderValue value={vm.labelVm.values[1]} disabled={props.disabled} />
+                </div>
+            </div>
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={props.note} />
+        </div>
     );
 };
 

@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { CheckboxGroupPrimitive } from "~/CheckboxGroup";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
+import { CheckboxGroupPrimitive, CheckboxGroupPrimitiveProps } from "~/CheckboxGroup";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 
-const DecoratableCheckboxGroup = (props: FormComponentProps<typeof CheckboxGroupPrimitive>) => {
+type CheckboxGroupProps = CheckboxGroupPrimitiveProps & FormComponentProps;
+
+const DecoratableCheckboxGroup = ({
+    label,
+    description,
+    note,
+    required,
+    disabled,
+    validation,
+    ...props
+}: CheckboxGroupProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
+
     return (
-        <FormComponent
-            label={props.label}
-            description={props.description}
-            note={props.note}
-            validation={props.validation}
-            validate={props.validate}
-            required={props.required}
-            disabled={props.disabled}
-            element={<CheckboxGroupPrimitive {...props} />}
-        />
+        <div className={"w-full"}>
+            <FormComponentLabel text={label} required={required} disabled={disabled} />
+            <FormComponentDescription text={description} />
+            <CheckboxGroupPrimitive {...props} />
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={note} />
+        </div>
     );
 };
 const CheckboxGroup = makeDecoratable("CheckboxGroup", DecoratableCheckboxGroup);

@@ -87,6 +87,23 @@ export const Disabled: Story = {
     args: {
         ...Default.args,
         label: "Any field label",
+        items: [
+            {
+                label: "Value 1",
+                value: "value-1",
+                disabled: true
+            },
+            {
+                label: "Value 2",
+                value: "value-2",
+                disabled: true
+            },
+            {
+                label: "Value 3",
+                value: "value-3",
+                disabled: true
+            }
+        ],
         disabled: true
     }
 };

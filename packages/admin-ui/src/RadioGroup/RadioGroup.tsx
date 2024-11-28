@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { RadioGroupPrimitive } from "~/RadioGroup";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
+import { RadioGroupPrimitive, RadioGroupPrimitiveProps } from "~/RadioGroup";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 
-const DecoratableRadioGroup = (props: FormComponentProps<typeof RadioGroupPrimitive>) => {
+type RadioGroupProps = RadioGroupPrimitiveProps & FormComponentProps;
+
+const DecoratableRadioGroup = ({
+    label,
+    description,
+    note,
+    required,
+    disabled,
+    validation,
+    ...props
+}: RadioGroupProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
+
     return (
-        <FormComponent
-            label={props.label}
-            description={props.description}
-            note={props.note}
-            validation={props.validation}
-            validate={props.validate}
-            required={props.required}
-            disabled={props.disabled}
-            element={<RadioGroupPrimitive {...props} />}
-        />
+        <div className={"w-full"}>
+            <FormComponentLabel text={label} required={required} disabled={disabled} />
+            <FormComponentDescription text={description} />
+            <RadioGroupPrimitive {...props} />
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={note} />
+        </div>
     );
 };
 const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);

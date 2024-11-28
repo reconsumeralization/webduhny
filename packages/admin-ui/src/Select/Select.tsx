@@ -1,21 +1,39 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { SelectPrimitive } from "~/Select";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
+import { SelectPrimitive, SelectPrimitiveProps } from "~/Select";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 
-const DecoratableSelect = (props: FormComponentProps<typeof SelectPrimitive>) => {
-    return (
-        <FormComponent
-            label={props.label}
-            description={props.description}
-            note={props.note}
-            validation={props.validation}
-            validate={props.validate}
-            required={props.required}
-            disabled={props.disabled}
-            element={<SelectPrimitive {...props} />}
-        />
-    );
+type SelectGroupProps = SelectPrimitiveProps & FormComponentProps;
+
+const DecoratableSelect = ({
+    label,
+    description,
+    note,
+    required,
+    disabled,
+    validation,
+    ...props
+}: SelectGroupProps) => {
+    {
+        const { isValid: validationIsValid, message: validationMessage } = validation || {};
+        const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
+
+        return (
+            <div className={"w-full"}>
+                <FormComponentLabel text={label} required={required} disabled={disabled} />
+                <FormComponentDescription text={description} />
+                <SelectPrimitive {...props} />
+                <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+                <FormComponentNote text={note} />
+            </div>
+        );
+    }
 };
 const Select = makeDecoratable("Select", DecoratableSelect);
 

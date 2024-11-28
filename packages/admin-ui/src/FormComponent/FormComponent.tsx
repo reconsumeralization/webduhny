@@ -1,11 +1,7 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { Label } from "~/Label";
-import { FormComponentDescription } from "./Description";
-import { FormComponentErrorMessage } from "./ErrorMessage";
-import { FormComponentNote } from "./Note";
-import { FormComponentLabel } from "./Label";
 
-interface FormComponentBaseProps {
+interface FormComponentProps {
     /**
      * Label for the form component, which can be a React element of type `Label` or any React node.
      */
@@ -60,43 +56,4 @@ interface FormComponentBaseProps {
     validate?: () => Promise<boolean | any>;
 }
 
-type FormComponentProps<T extends React.ElementType> = FormComponentBaseProps & {
-    element: React.ReactElement<React.ComponentProps<T>>;
-} & Omit<React.ComponentPropsWithoutRef<T>, keyof FormComponentBaseProps>;
-
-const FormComponent = <T extends React.ElementType>({
-    element,
-    description,
-    disabled,
-    label,
-    note,
-    required,
-    validation,
-    ...props
-}: FormComponentProps<T>) => {
-    const { isValid: validationIsValid, message: validationMessage } = validation || {};
-
-    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
-
-    const renderElementWithProps = useCallback(() => {
-        return React.cloneElement(element as React.ReactElement<any>, {
-            invalid,
-            disabled,
-            required,
-            validation,
-            ...props
-        });
-    }, [element, invalid, required, validation, props]);
-
-    return (
-        <div className="w-full">
-            <FormComponentLabel text={label} required={required} disabled={disabled} />
-            <FormComponentDescription text={description} />
-            {renderElementWithProps()}
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
-        </div>
-    );
-};
-
-export { FormComponent, type FormComponentProps };
+export { type FormComponentProps };

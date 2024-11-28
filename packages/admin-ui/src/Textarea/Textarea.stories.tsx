@@ -37,14 +37,6 @@ export const WithLabelRequired: Story = {
     }
 };
 
-export const WithLabelDisabled: Story = {
-    args: {
-        ...Default.args,
-        label: "Any field label",
-        disabled: true
-    }
-};
-
 export const WithValue: Story = {
     args: {
         ...Default.args,
@@ -73,6 +65,14 @@ export const WithErrors: Story = {
             isValid: false,
             message: "This field is required."
         }
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        disabled: true
     }
 };
 

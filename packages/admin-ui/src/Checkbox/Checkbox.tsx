@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { CheckboxPrimitive } from "~/Checkbox";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
+import { CheckboxPrimitive, CheckboxPrimitiveProps } from "~/Checkbox";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 
-const DecoratableCheckbox = (props: FormComponentProps<typeof CheckboxPrimitive>) => {
+type CheckboxProps = CheckboxPrimitiveProps & FormComponentProps;
+
+const DecoratableCheckbox = ({ description, note, validation, ...props }: CheckboxProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
+
     return (
-        <FormComponent
-            description={props.description}
-            note={props.note}
-            validation={props.validation}
-            validate={props.validate}
-            required={props.required}
-            disabled={props.disabled}
-            element={<CheckboxPrimitive {...props} label={props.label} />}
-        />
+        <div className={"w-full"}>
+            <FormComponentDescription text={description} />
+            <CheckboxPrimitive {...props} />
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={note} />
+        </div>
     );
 };
 const Checkbox = makeDecoratable("Checkbox", DecoratableCheckbox);

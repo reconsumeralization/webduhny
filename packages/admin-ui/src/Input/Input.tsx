@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { InputPrimitive } from "./InputPrimitive";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
+import { InputPrimitive, InputPrimitiveProps } from "./InputPrimitive";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 
-const DecoratableInput = (props: FormComponentProps<typeof InputPrimitive>) => {
+type InputProps = InputPrimitiveProps & FormComponentProps;
+
+const DecoratableInput = ({
+    label,
+    description,
+    note,
+    required,
+    disabled,
+    validation,
+    ...props
+}: InputProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
+
     return (
-        <FormComponent
-            label={props.label}
-            description={props.description}
-            note={props.note}
-            validation={props.validation}
-            validate={props.validate}
-            required={props.required}
-            disabled={props.disabled}
-            element={<InputPrimitive {...props} />}
-        />
+        <div className={"w-full"}>
+            <FormComponentLabel text={label} required={required} disabled={disabled} />
+            <FormComponentDescription text={description} />
+            <InputPrimitive {...props} disabled={disabled} />
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={note} />
+        </div>
     );
 };
 const Input = makeDecoratable("Input", DecoratableInput);

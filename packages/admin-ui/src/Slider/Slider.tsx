@@ -7,8 +7,14 @@ import {
     SliderPrimitiveVm,
     SliderPrimitiveThumbProps
 } from "~/Slider";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    FormComponentNote,
+    FormComponentProps
+} from "~/FormComponent";
 import { useSlider } from "./useSlider";
-import { FormComponent, FormComponentProps } from "~/FormComponent";
 
 type LabelPosition = "top" | "side";
 
@@ -47,7 +53,6 @@ const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
 
 type SliderProps = SliderPrimitiveProps &
     FormComponentProps & {
-        label: SliderLabelVm["label"];
         labelPosition?: LabelPosition;
     };
 
@@ -120,19 +125,15 @@ const SliderWithSideValue = makeDecoratable("SliderWithSideValue", DecoratableSl
 /**
  * Slider
  */
-const DecoratableSlider = (props: SliderProps) => {
+const DecoratableSlider = ({ description, note, required, validation, ...props }: SliderProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
     const { vm, changeValue, commitValue } = useSlider(props);
 
     if (vm.labelVm.position === "side") {
         return (
-            <FormComponent
-                required={props.required}
-                note={props.note}
-                description={props.description}
-                disabled={props.disabled}
-                validate={props.validate}
-                validation={props.validation}
-            >
+            <div className={"w-full"}>
+                <FormComponentDescription text={description} />
                 <SliderWithSideValue
                     sliderVm={vm.sliderVm}
                     thumbVm={vm.thumbVm}
@@ -140,20 +141,20 @@ const DecoratableSlider = (props: SliderProps) => {
                     onValueChange={changeValue}
                     onValueCommit={commitValue}
                 />
-            </FormComponent>
+                <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+                <FormComponentNote text={note} />
+            </div>
         );
     }
 
     return (
-        <FormComponent
-            label={<Label text={vm.labelVm.label} value={vm.labelVm.value} />}
-            required={props.required}
-            disabled={props.disabled}
-            note={props.note}
-            description={props.description}
-            validate={props.validate}
-            validation={props.validation}
-        >
+        <div className={"w-full"}>
+            <FormComponentLabel
+                text={vm.labelVm.label}
+                required={required}
+                disabled={props.disabled}
+            />
+            <FormComponentDescription text={description} />
             <SliderWithTopValue
                 sliderVm={vm.sliderVm}
                 thumbVm={vm.thumbVm}
@@ -161,7 +162,9 @@ const DecoratableSlider = (props: SliderProps) => {
                 onValueChange={changeValue}
                 onValueCommit={commitValue}
             />
-        </FormComponent>
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <FormComponentNote text={note} />
+        </div>
     );
 };
 
