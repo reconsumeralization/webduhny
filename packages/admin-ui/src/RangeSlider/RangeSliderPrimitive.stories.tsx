@@ -73,7 +73,7 @@ export const WithTooltipSideTop: Story = {
 export const WithTooltipAndCustomValueTransformer: Story = {
     args: {
         showTooltip: true,
-        transformValues: (value: number) => {
+        transformValue: (value: number) => {
             return `${Math.round(value)}%`;
         }
     }
@@ -82,7 +82,7 @@ export const WithTooltipAndCustomValueTransformer: Story = {
 export const WithExternalValueControl: Story = {
     args: {
         showTooltip: true,
-        transformValues: (value: number) => {
+        transformValue: (value: number) => {
             return `${Math.round(value)}%`;
         }
     },

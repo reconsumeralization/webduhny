@@ -7,48 +7,50 @@ import {
     SliderPrimitiveTrack
 } from "~/Slider";
 import { makeDecoratable } from "~/utils";
-import { useRangeSliderPrimitive } from "./useRangeSliderPrimitive";
+import { useRangeSlider } from "./useRangeSlider";
 
-type RangeSliderPrimitiveVm = Omit<
-    SliderPrimitives.SliderProps,
-    "value" | "min" | "max" | "onValueChange" | "onValueCommit"
-> & {
+interface RangeSliderPrimitiveRootProps
+    extends Omit<SliderPrimitives.SliderProps, "min" | "max" | "value"> {
     values: number[];
     min: number;
     max: number;
-};
+}
 
-type RangeSliderPrimitiveThumbsVm = Omit<SliderPrimitiveThumbProps, "value"> & {
-    values: string[];
-};
+interface RangeSliderPrimitiveThumbProps extends Omit<SliderPrimitiveThumbProps, "labelValue"> {
+    textValues: string[];
+}
+
+interface RangeSliderPrimitiveVm
+    extends RangeSliderPrimitiveRootProps,
+        Omit<RangeSliderPrimitiveThumbProps, "textValue"> {
+    textValues: string[];
+}
 
 /**
  * RangeSliderRenderer
  */
-interface RangeSliderPrimitiveRendererProps {
-    sliderVm: RangeSliderPrimitiveVm;
-    thumbsVm: RangeSliderPrimitiveThumbsVm;
-    onValuesChange: (values: number[]) => void;
-    onValuesCommit: (values: number[]) => void;
-}
 
 const DecoratableRangeSliderPrimitiveRenderer = ({
-    sliderVm,
-    thumbsVm,
-    onValuesChange,
-    onValuesCommit
-}: RangeSliderPrimitiveRendererProps) => {
+    tooltipSide,
+    textValues,
+    showTooltip,
+    values,
+    ...sliderProps
+}: RangeSliderPrimitiveVm) => {
     return (
         <div className={"flex h-md w-full"}>
-            <SliderPrimitiveRoot
-                {...sliderVm}
-                value={sliderVm.values}
-                onValueChange={onValuesChange}
-                onValueCommit={onValuesCommit}
-            >
+            <SliderPrimitiveRoot {...sliderProps} value={values}>
                 <SliderPrimitiveTrack />
-                <SliderPrimitiveThumb {...thumbsVm} value={thumbsVm.values[0]} />
-                <SliderPrimitiveThumb {...thumbsVm} value={thumbsVm.values[1]} />
+                <SliderPrimitiveThumb
+                    showTooltip={showTooltip}
+                    tooltipSide={tooltipSide}
+                    textValue={textValues[0]}
+                />
+                <SliderPrimitiveThumb
+                    showTooltip={showTooltip}
+                    tooltipSide={tooltipSide}
+                    textValue={textValues[1]}
+                />
             </SliderPrimitiveRoot>
         </div>
     );
@@ -71,19 +73,19 @@ interface RangeSliderPrimitiveProps
     onValuesCommit?: (values: number[]) => void;
     showTooltip?: boolean;
     tooltipSide?: "top" | "bottom";
-    transformValues?: (value: number) => string;
-    values?: number[] | undefined;
+    transformValue?: (value: number) => string;
+    values?: number[];
 }
 
 const DecoratableRangeSliderPrimitive = (props: RangeSliderPrimitiveProps) => {
-    const { vm, changeValues, commitValues } = useRangeSliderPrimitive(props);
+    const { vm, changeValues, commitValues } = useRangeSlider(props);
 
     return (
         <RangeSliderPrimitiveRenderer
-            sliderVm={vm.sliderVm}
-            thumbsVm={vm.thumbsVm}
-            onValuesChange={changeValues}
-            onValuesCommit={commitValues}
+            {...props}
+            {...vm}
+            onValueChange={changeValues}
+            onValueCommit={commitValues}
         />
     );
 };
@@ -97,6 +99,5 @@ export {
     RangeSliderPrimitive,
     RangeSliderPrimitiveRenderer,
     type RangeSliderPrimitiveProps,
-    type RangeSliderPrimitiveVm,
-    type RangeSliderPrimitiveThumbsVm
+    type RangeSliderPrimitiveVm
 };

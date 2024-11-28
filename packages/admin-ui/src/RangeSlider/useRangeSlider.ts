@@ -1,20 +1,41 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
-import { RangeSliderProps } from "./RangeSlider";
-import { RangeSliderPrimitivePresenter } from "./RangeSliderPrimitivePresenter";
-import { RangeSliderPresenter } from "./RangeSliderPresenter";
+import { RangeSliderPrimitiveProps } from "./RangeSliderPrimitive";
+import { RangeSliderPresenter, RangeSliderPresenterParams } from "./RangeSliderPresenter";
 
-export const useRangeSlider = (props: RangeSliderProps) => {
+export const useRangeSlider = (props: RangeSliderPrimitiveProps) => {
+    const params: RangeSliderPresenterParams = useMemo(
+        () => ({
+            min: props.min,
+            max: props.max,
+            onValuesChange: props.onValuesChange,
+            onValuesCommit: props.onValuesCommit,
+            showTooltip: props.showTooltip,
+            transformValue: props.transformValue,
+            values: props.values
+        }),
+        [
+            props.min,
+            props.max,
+            props.onValuesChange,
+            props.onValuesCommit,
+            props.showTooltip,
+            props.transformValue,
+            props.values
+        ]
+    );
+
     const presenter = useMemo(() => {
-        const rangeSliderPrimitivePresenter = new RangeSliderPrimitivePresenter();
-        return new RangeSliderPresenter(rangeSliderPrimitivePresenter);
+        const presenter = new RangeSliderPresenter();
+        presenter.init(params);
+        return presenter;
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);
 
     useEffect(() => {
-        presenter.init(props);
-    }, [props]);
+        presenter.init(params);
+    }, [params]);
 
     useEffect(() => {
         return autorun(() => {

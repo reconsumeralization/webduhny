@@ -1,54 +1,64 @@
 import { makeAutoObservable } from "mobx";
-import {
-    ISliderPrimitivePresenter,
-    SliderPrimitivePresenterParams
-} from "./SliderPrimitivePresenter";
+import { SliderPrimitiveVm } from "./SliderPrimitive";
 
-type SliderPresenterParams = SliderPrimitivePresenterParams;
+interface SliderPresenterParams {
+    min?: number;
+    onValueChange: (value: number) => void;
+    onValueCommit?: (value: number) => void;
+    showTooltip?: boolean;
+    transformValue?: (value: number) => string;
+    value?: number;
+}
 
-interface ISliderPresenter extends ISliderPrimitivePresenter {
-    get vm(): ISliderPrimitivePresenter["vm"] & { labelValue: string };
+interface ISliderPresenter {
+    get vm(): SliderPrimitiveVm;
+    init: (params: SliderPresenterParams) => void;
+    changeValue: (values: number[]) => void;
+    commitValue: (values: number[]) => void;
 }
 
 class SliderPresenter implements ISliderPresenter {
-    private sliderPrimitivePresenter: ISliderPrimitivePresenter;
     private params?: SliderPresenterParams = undefined;
+    private showTooltip = false;
 
-    constructor(sliderPresenter: ISliderPrimitivePresenter) {
-        this.sliderPrimitivePresenter = sliderPresenter;
+    constructor() {
         makeAutoObservable(this);
     }
 
     init(params: SliderPresenterParams) {
         this.params = params;
-        this.sliderPrimitivePresenter.init({
-            min: params.min,
-            onValueChange: params.onValueChange,
-            onValueCommit: params.onValueCommit,
-            showTooltip: params.showTooltip,
-            transformValue: params.transformValue,
-            value: params.value
-        });
     }
 
     get vm() {
         return {
-            ...this.sliderPrimitivePresenter.vm,
-            labelValue: this.transformToLabelValue(
-                this.sliderPrimitivePresenter.vm.value?.[0] ?? this.sliderPrimitivePresenter.vm.min
-            )
+            value: this.value,
+            min: this.min,
+            textValue: this.transformToLabelValue(this.value?.[0] || this.min),
+            showTooltip: this.showTooltip
         };
     }
 
-    public changeValue = (values: number[]): void => {
-        this.sliderPrimitivePresenter.changeValue(values);
+    public changeValue = (values: number[]) => {
+        const [newValue] = values;
+        this.showTooltip = !!this.params?.showTooltip;
+        this.params?.onValueChange(newValue);
     };
 
-    public commitValue = (values: number[]): void => {
-        this.sliderPrimitivePresenter.commitValue(values);
+    public commitValue = (values: number[]) => {
+        const [newValue] = values;
+        this.showTooltip = false;
+        this.params?.onValueCommit?.(newValue);
     };
 
-    private transformToLabelValue(value: number): string {
+    private get value() {
+        return this.params?.value !== undefined ? [this.params.value] : undefined;
+    }
+
+    private get min() {
+        return this.params?.min ?? 0;
+    }
+
+    private transformToLabelValue(value: number) {
         return this.params?.transformValue ? this.params.transformValue(value) : String(value);
     }
 }

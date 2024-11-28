@@ -8,12 +8,7 @@ import {
     FormComponentNote,
     FormComponentProps
 } from "~/FormComponent";
-import { useRangeSlider } from "./useRangeSlider";
-
-type RangeSliderLabelVm = {
-    label: React.ReactNode;
-    values: string[];
-};
+import { useRangeSlider } from "~/RangeSlider/useRangeSlider";
 
 /**
  * Range Slider Value
@@ -54,25 +49,25 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
     return (
         <div className={"w-full"}>
             <FormComponentLabel
-                text={vm.labelVm.label}
+                text={props.label}
                 required={props.required}
                 disabled={props.disabled}
             />
             <FormComponentDescription text={props.description} />
             <div className={"flex flex-row items-center justify-between"}>
                 <div className={"basis-1/12 pr-xxs"}>
-                    <RangeSliderValue value={vm.labelVm.values[0]} disabled={props.disabled} />
+                    <RangeSliderValue value={vm.textValues[0]} disabled={props.disabled} />
                 </div>
                 <div className={"basis-10/12"}>
                     <RangeSliderPrimitiveRenderer
-                        sliderVm={vm.sliderVm}
-                        thumbsVm={vm.thumbsVm}
-                        onValuesChange={changeValues}
-                        onValuesCommit={commitValues}
+                        {...props}
+                        {...vm}
+                        onValueChange={changeValues}
+                        onValueCommit={commitValues}
                     />
                 </div>
                 <div className={"basis-1/12 pl-xxs text-right"}>
-                    <RangeSliderValue value={vm.labelVm.values[1]} disabled={props.disabled} />
+                    <RangeSliderValue value={vm.textValues[1]} disabled={props.disabled} />
                 </div>
             </div>
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
@@ -83,4 +78,4 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
 
 const RangeSlider = makeDecoratable("RangeSlider", DecoratableRangeSlider);
 
-export { RangeSlider, type RangeSliderProps, type RangeSliderLabelVm };
+export { RangeSlider, type RangeSliderProps };

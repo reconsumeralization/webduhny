@@ -1,93 +1,87 @@
 import { RangeSliderPresenter } from "./RangeSliderPresenter";
-import { RangeSliderPrimitivePresenter } from "./RangeSliderPrimitivePresenter";
 
 describe("RangeSliderPresenter", () => {
     const onValuesChange = jest.fn();
+    const presenter = new RangeSliderPresenter();
 
-    it("should return the compatible `labelVm` based on props", () => {
+    it("should return the compatible `vm` based on params", () => {
+        // `value`
         {
-            // `label`
-            const presenter = new RangeSliderPrimitivePresenter();
-            const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-            formRangeSliderPresenter.init({ label: "Label", onValuesChange });
-            expect(formRangeSliderPresenter.vm.labelVm.label).toEqual("Label");
+            presenter.init({ onValuesChange, values: [10, 90] });
+            expect(presenter.vm.values).toEqual([10, 90]);
+            expect(presenter.vm.textValues).toEqual(["10", "90"]);
         }
 
         {
-            // `values`
-            const presenter = new RangeSliderPrimitivePresenter();
-            const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-            formRangeSliderPresenter.init({ label: "Label", onValuesChange, values: [25, 75] });
-            expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["25", "75"]);
+            // `min` and `max`
+            const presenter = new RangeSliderPresenter();
+            presenter.init({ onValuesChange, min: 20, max: 80 });
+            expect(presenter.vm.min).toEqual(20);
+            expect(presenter.vm.max).toEqual(80);
+            expect(presenter.vm.textValues).toEqual(["20", "80"]);
+        }
+
+        // `min`
+        {
+            presenter.init({ onValuesChange, min: 25 });
+            expect(presenter.vm.min).toEqual(25);
+        }
+
+        // `max`
+        {
+            presenter.init({ onValuesChange, max: 75 });
+            expect(presenter.vm.max).toEqual(75);
         }
 
         {
-            // `min` & `max`
-            const presenter = new RangeSliderPrimitivePresenter();
-            const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-            formRangeSliderPresenter.init({ label: "Label", onValuesChange, min: 25, max: 75 });
-            expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["25", "75"]);
+            // `showTooltip`
+            const presenter = new RangeSliderPresenter();
+            presenter.init({ onValuesChange, showTooltip: true });
+            expect(presenter.vm.showTooltip).toEqual(false);
         }
 
         {
-            // default
-            const presenter = new RangeSliderPrimitivePresenter();
-            const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-            formRangeSliderPresenter.init({ label: "Label", onValuesChange });
-            expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["0", "100"]);
+            // default: no params
+            const presenter = new RangeSliderPresenter();
+            presenter.init({ onValuesChange });
+            expect(presenter.vm.values).toEqual([0, 100]);
+            expect(presenter.vm.textValues).toEqual(["0", "100"]);
+            expect(presenter.vm.min).toEqual(0); // `min` should default to 0
+            expect(presenter.vm.max).toEqual(100); // `min` should default to 100
+            expect(presenter.vm.showTooltip).toEqual(false);
         }
     });
 
-    it("should apply the `transformValues` function if provided", () => {
-        const transformValues = (value: number) => `${value} units`;
-        const presenter = new RangeSliderPrimitivePresenter();
-        const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-        formRangeSliderPresenter.init({
-            label: "Label",
-            values: [25, 75],
-            onValuesChange,
-            transformValues
-        });
-        expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["25 units", "75 units"]);
+    it("should apply `transformValue` function if provided", () => {
+        const transformValue = (value: number) => `${value} units`;
+        presenter.init({ onValuesChange, values: [40, 60], transformValue });
+        expect(presenter.vm.textValues).toEqual(["40 units", "60 units"]);
     });
 
-    it("should fall back to `value` as a string if `transformValue` is undefined", () => {
-        const presenter = new RangeSliderPrimitivePresenter();
-        const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-        formRangeSliderPresenter.init({
-            label: "Label",
-            values: [45, 55],
-            onValuesChange
-        });
-        expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["45", "55"]);
+    it("should fall back to string representation if `transformValue` is undefined", () => {
+        presenter.init({ onValuesChange, values: [45, 75] });
+        expect(presenter.vm.textValues).toEqual(["45", "75"]);
     });
 
-    it("should call `onValuesChange` callback when `changeValues` is called", () => {
-        const presenter = new RangeSliderPrimitivePresenter();
-        const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-        formRangeSliderPresenter.init({ label: "Label", values: [20, 80], onValuesChange });
-        formRangeSliderPresenter.changeValues([10, 90]);
-        expect(onValuesChange).toHaveBeenCalledWith([10, 90]);
+    it("should call `onValueChange` callback when `changeValue` is called", () => {
+        presenter.init({ onValuesChange, values: [10, 90] });
+        presenter.changeValues([20, 80]);
+        expect(onValuesChange).toHaveBeenCalledWith([20, 80]);
     });
 
-    it("should call `onValuesCommit` callback when `commitValues` is called", () => {
-        const onValuesCommit = jest.fn();
-        const presenter = new RangeSliderPrimitivePresenter();
-        const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-        formRangeSliderPresenter.init({
-            label: "Label",
-            values: [20, 80],
-            onValuesChange,
-            onValuesCommit
-        });
-        formRangeSliderPresenter.commitValues([10, 90]);
-        expect(onValuesCommit).toHaveBeenCalledWith([10, 90]);
+    it("should correctly handle edge cases with negative values", () => {
+        presenter.init({ onValuesChange, values: [-10, 10] });
+        presenter.changeValues([-20, 20]);
+        expect(onValuesChange).toHaveBeenCalledWith([-20, 20]);
     });
 
-    it("should handle negative values correctly", () => {
-        const presenter = new RangeSliderPrimitivePresenter();
-        const formRangeSliderPresenter = new RangeSliderPresenter(presenter);
-        formRangeSliderPresenter.init({ label: "Label", values: [-10, 10], onValuesChange });
-        expect(formRangeSliderPresenter.vm.labelVm.values).toEqual(["-10", "10"]);
+    it("should toggle `showTooltip` based on actions", () => {
+        presenter.init({ onValuesChange, showTooltip: true });
+
+        presenter.changeValues([10, 90]);
+        expect(presenter.vm.showTooltip).toBeTruthy();
+
+        presenter.commitValues([10, 90]);
+        expect(presenter.vm.showTooltip).toBeFalsy();
     });
 });

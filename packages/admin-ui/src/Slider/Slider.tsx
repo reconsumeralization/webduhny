@@ -13,7 +13,7 @@ import {
     FormComponentNote,
     FormComponentProps
 } from "~/FormComponent";
-import { useSlider } from "./useSlider";
+import { useSlider } from "~/Slider/useSlider";
 
 /**
  * Slider Value
@@ -46,13 +46,9 @@ const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
 interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps {
     label?: React.ReactNode;
     required?: boolean;
-    labelValue: string;
 }
 
-const DecoratableSliderRendererWithSideValue = ({
-    labelValue,
-    ...props
-}: SliderRendererWithSideValueProps) => {
+const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
     return (
         <div className={"w-full flex flex-row items-center justify-between"}>
             <div className={"basis-2/12 pr-sm"}>
@@ -66,11 +62,9 @@ const DecoratableSliderRendererWithSideValue = ({
             <div className={"basis-9/12"}>
                 <SliderPrimitiveRenderer {...props} />
             </div>
-            {labelValue && (
-                <div className={"basis-1/12 pl-sm text-right"}>
-                    <SliderValue value={labelValue} disabled={props.disabled} />
-                </div>
-            )}
+            <div className={"basis-1/12 pl-sm text-right"}>
+                <SliderValue value={props.textValue} disabled={props.disabled} />
+            </div>
         </div>
     );
 };
@@ -82,11 +76,9 @@ const SliderRendererWithSideValue = makeDecoratable(
 /**
  * Slider
  */
-type SliderProps = FormComponentProps &
-    SliderPrimitiveProps &
-    SliderPrimitiveRendererProps & {
-        labelPosition?: "top" | "side";
-    };
+interface SliderProps extends FormComponentProps, SliderPrimitiveProps {
+    labelPosition?: "top" | "side";
+}
 
 const DecoratableSlider = ({ description, note, validation, ...props }: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
@@ -112,9 +104,9 @@ const DecoratableSlider = ({ description, note, validation, ...props }: SliderPr
     return (
         <div className={"w-full"}>
             <FormComponentLabel
-                text={props.label}
-                required={props.required}
+                text={<Label text={props.label} value={vm.textValue} />}
                 disabled={props.disabled}
+                required={props.required}
             />
             <FormComponentDescription text={description} />
             <SliderPrimitiveRenderer

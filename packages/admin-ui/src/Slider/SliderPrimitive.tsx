@@ -2,7 +2,7 @@ import * as React from "react";
 import * as SliderPrimitives from "@radix-ui/react-slider";
 import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { Text } from "~/Text";
-import { useSliderPrimitive } from "./useSliderPrimitive";
+import { useSlider } from "./useSlider";
 
 /**
  * Slider Root
@@ -70,23 +70,23 @@ const sliderTooltipVariants = cva(
 );
 
 type SliderPrimitiveTooltipProps = VariantProps<typeof sliderTooltipVariants> & {
-    thumbValue?: string;
+    textValue: string;
     showTooltip?: boolean;
     tooltipSide?: "top" | "bottom";
 };
 
 const DecoratableSliderPrimitiveTooltip = ({
-    thumbValue,
+    textValue,
     showTooltip,
     tooltipSide
 }: SliderPrimitiveTooltipProps) => {
-    if (!thumbValue || !showTooltip) {
+    if (!textValue || !showTooltip) {
         return null;
     }
 
     return (
         <div className={cn(sliderTooltipVariants({ side: tooltipSide }))}>
-            <Text text={thumbValue} size={"sm"} as={"div"} />
+            <Text text={textValue} size={"sm"} as={"div"} />
         </div>
     );
 };
@@ -101,7 +101,7 @@ const SliderPrimitiveTooltip = makeDecoratable(
 type SliderPrimitiveThumbProps = SliderPrimitiveTooltipProps;
 
 const DecoratableSliderPrimitiveThumb = ({
-    thumbValue,
+    textValue,
     showTooltip,
     tooltipSide
 }: SliderPrimitiveThumbProps) => (
@@ -116,7 +116,7 @@ const DecoratableSliderPrimitiveThumb = ({
     >
         <SliderPrimitiveTooltip
             showTooltip={showTooltip}
-            thumbValue={thumbValue}
+            textValue={textValue}
             tooltipSide={tooltipSide}
         />
     </SliderPrimitives.Thumb>
@@ -138,16 +138,16 @@ type SliderPrimitiveRendererProps = SliderPrimitiveRootProps & SliderPrimitiveTh
 
 const DecoratableSliderPrimitiveRenderer = ({
     tooltipSide,
-    thumbValue,
+    textValue,
     showTooltip,
     ...sliderProps
-}: SliderPrimitiveRendererProps) => {
+}: SliderPrimitiveVm) => {
     return (
         <div className={"flex h-md w-full"}>
             <SliderPrimitiveRoot {...sliderProps}>
                 <SliderPrimitiveTrack />
                 <SliderPrimitiveThumb
-                    thumbValue={thumbValue}
+                    textValue={textValue}
                     showTooltip={showTooltip}
                     tooltipSide={tooltipSide}
                 />
@@ -176,10 +176,10 @@ interface SliderPrimitiveProps
     value?: number;
 }
 
-interface SliderPrimitiveVm extends SliderPrimitiveRootProps, SliderPrimitiveThumbProps {}
+type SliderPrimitiveVm = SliderPrimitiveRootProps & SliderPrimitiveThumbProps;
 
 const DecoratableSliderPrimitive = (props: SliderPrimitiveProps) => {
-    const { vm, changeValue, commitValue } = useSliderPrimitive(props);
+    const { vm, changeValue, commitValue } = useSlider(props);
     return (
         <SliderPrimitiveRenderer
             {...props}

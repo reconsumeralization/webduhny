@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
-import { SliderProps } from "./Slider";
-import { SliderPrimitivePresenter } from "./SliderPrimitivePresenter";
+import { SliderPrimitiveProps } from "./SliderPrimitive";
 import { SliderPresenter, SliderPresenterParams } from "./SliderPresenter";
 
-export const useSlider = (props: SliderProps) => {
+export const useSlider = (props: SliderPrimitiveProps) => {
     const params: SliderPresenterParams = useMemo(
         () => ({
             min: props.min,
@@ -25,8 +24,7 @@ export const useSlider = (props: SliderProps) => {
     );
 
     const presenter = useMemo(() => {
-        const sliderPrimitivePresenter = new SliderPrimitivePresenter();
-        const presenter = new SliderPresenter(sliderPrimitivePresenter);
+        const presenter = new SliderPresenter();
         presenter.init(params);
         return presenter;
     }, []);
