@@ -1,124 +1,51 @@
 import { SliderPrimitivePresenter } from "./SliderPrimitivePresenter";
 
-describe("SliderPresenter", () => {
+describe("SliderPrimitivePresenter", () => {
     const onValueChange = jest.fn();
+    const presenter = new SliderPrimitivePresenter();
 
-    it("should return the compatible `sliderVm` based on props", () => {
+    it("should return the compatible `vm` based on params", () => {
         // `value`
         {
-            const presenter = new SliderPrimitivePresenter();
             presenter.init({ onValueChange, value: 50 });
-            expect(presenter.vm.sliderVm.value).toEqual([50]);
+            expect(presenter.vm.value).toEqual([50]);
+            expect(presenter.vm.thumbValue).toEqual("50");
         }
 
         // `min`
         {
-            const presenter = new SliderPrimitivePresenter();
             presenter.init({ onValueChange, min: 25 });
-            expect(presenter.vm.sliderVm.min).toEqual(25);
-        }
-
-        // `max`
-        {
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, max: 75 });
-            expect(presenter.vm.sliderVm.max).toEqual(75);
-        }
-
-        // `disabled`
-        {
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, disabled: true });
-            expect(presenter.vm.sliderVm.disabled).toEqual(true);
-        }
-
-        // `step`
-        {
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, step: 10 });
-            expect(presenter.vm.sliderVm.step).toEqual(10);
-        }
-
-        // `minStepsBetweenThumbs`
-        {
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, minStepsBetweenThumbs: 10 });
-            expect(presenter.vm.sliderVm.minStepsBetweenThumbs).toEqual(10);
+            expect(presenter.vm.min).toEqual(25);
+            expect(presenter.vm.thumbValue).toEqual(undefined);
         }
 
         {
-            // default: no props
-            const presenter = new SliderPrimitivePresenter();
+            // default: no optional params
             presenter.init({ onValueChange });
-            expect(presenter.vm.sliderVm.value).toEqual(undefined);
-            expect(presenter.vm.sliderVm.min).toEqual(0); // `min` should default to 0
-            expect(presenter.vm.sliderVm.max).toEqual(undefined);
-            expect(presenter.vm.sliderVm.disabled).toEqual(undefined);
-            expect(presenter.vm.sliderVm.step).toEqual(undefined);
-            expect(presenter.vm.sliderVm.minStepsBetweenThumbs).toEqual(undefined);
-        }
-    });
-
-    it("should return the compatible `thumbVm` based on props", () => {
-        {
-            // `value`
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, value: 50 });
-            expect(presenter.vm.thumbVm.value).toEqual("50");
-        }
-
-        {
-            // `min`
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, min: 50 });
-            expect(presenter.vm.thumbVm.value).toEqual(undefined);
-        }
-
-        {
-            // `showTooltip`
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange, showTooltip: true });
-            expect(presenter.vm.thumbVm.showTooltip).toEqual(false);
-        }
-
-        {
-            // `tooltipSide`
-            const presenterTop = new SliderPrimitivePresenter();
-            presenterTop.init({ onValueChange, tooltipSide: "top" });
-            expect(presenterTop.vm.thumbVm.tooltipSide).toEqual("top");
-
-            const presenterBottom = new SliderPrimitivePresenter();
-            presenterBottom.init({ onValueChange, tooltipSide: "bottom" });
-            expect(presenterBottom.vm.thumbVm.tooltipSide).toEqual("bottom");
-        }
-
-        {
-            // default: no props
-            const presenter = new SliderPrimitivePresenter();
-            presenter.init({ onValueChange });
-            expect(presenter.vm.thumbVm.value).toEqual(undefined);
-            expect(presenter.vm.thumbVm.showTooltip).toEqual(false);
-            expect(presenter.vm.thumbVm.tooltipSide).toBeUndefined();
+            expect(presenter.vm.value).toEqual(undefined);
+            expect(presenter.vm.min).toEqual(0); // `min` should default to 0
+            expect(presenter.vm.thumbValue).toEqual(undefined);
+            expect(presenter.vm.showTooltip).toEqual(false);
         }
     });
 
     it("should use default `min` if `value` and `defaultValue` are both undefined", () => {
         const presenter = new SliderPrimitivePresenter();
         presenter.init({ onValueChange });
-        expect(presenter.vm.thumbVm.value).toEqual(undefined); // `min` should default to 0
+        expect(presenter.vm.thumbValue).toEqual(undefined); // `min` should default to 0
     });
 
     it("should apply `transformValue` function if provided", () => {
         const transformValue = (value: number) => `${value} units`;
         const presenter = new SliderPrimitivePresenter();
         presenter.init({ onValueChange, value: 30, transformValue });
-        expect(presenter.vm.thumbVm.value).toEqual("30 units");
+        expect(presenter.vm.thumbValue).toEqual("30 units");
     });
 
     it("should fall back to `value` as a string if `transformValue` is undefined", () => {
         const presenter = new SliderPrimitivePresenter();
         presenter.init({ onValueChange, value: 45 });
-        expect(presenter.vm.thumbVm.value).toEqual("45");
+        expect(presenter.vm.thumbValue).toEqual("45");
     });
 
     it("should call `onValueChange` callback when `changeValue` is called", () => {
@@ -139,8 +66,8 @@ describe("SliderPresenter", () => {
     it("should handle negative values correctly", () => {
         const presenter = new SliderPrimitivePresenter();
         presenter.init({ onValueChange, value: -10 });
-        expect(presenter.vm.sliderVm.value).toEqual([-10]);
-        expect(presenter.vm.thumbVm.value).toEqual("-10");
+        expect(presenter.vm.value).toEqual([-10]);
+        expect(presenter.vm.thumbValue).toEqual("-10");
     });
 
     it("should toggle `showTooltip` based on actions", () => {
@@ -148,9 +75,9 @@ describe("SliderPresenter", () => {
         presenter.init({ onValueChange, showTooltip: true });
 
         presenter.changeValue([30]);
-        expect(presenter.vm.thumbVm.showTooltip).toBeTruthy();
+        expect(presenter.vm.showTooltip).toBeTruthy();
 
         presenter.commitValue([30]);
-        expect(presenter.vm.thumbVm.showTooltip).toBeFalsy();
+        expect(presenter.vm.showTooltip).toBeFalsy();
     });
 });

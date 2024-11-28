@@ -1,82 +1,73 @@
 import { makeAutoObservable } from "mobx";
-import omit from "lodash/omit";
-import {
-    SliderPrimitiveProps,
-    SliderPrimitiveThumbProps,
-    SliderPrimitiveVm
-} from "./SliderPrimitive";
+import { SliderPrimitiveVm } from "./SliderPrimitive";
 
-interface ISliderPrimitivePresenter<TProps extends SliderPrimitiveProps = SliderPrimitiveProps> {
-    get vm(): {
-        sliderVm: SliderPrimitiveVm;
-        thumbVm: SliderPrimitiveThumbProps;
-    };
-    init: (props: TProps) => void;
+interface SliderPrimitivePresenterParams {
+    min?: number;
+    onValueChange: (value: number) => void;
+    onValueCommit?: (value: number) => void;
+    showTooltip?: boolean;
+    transformValue?: (value: number) => string;
+    value?: number;
+}
+
+interface ISliderPrimitivePresenter {
+    get vm(): SliderPrimitiveVm;
+    init: (params: SliderPrimitivePresenterParams) => void;
     changeValue: (values: number[]) => void;
     commitValue: (values: number[]) => void;
 }
 
 class SliderPrimitivePresenter implements ISliderPrimitivePresenter {
-    private props?: SliderPrimitiveProps;
-    private showTooltip: boolean;
+    private params?: SliderPrimitivePresenterParams = undefined;
+    private showTooltip = false;
 
     constructor() {
-        this.props = undefined;
-        this.showTooltip = false;
         makeAutoObservable(this);
     }
 
-    init(props: SliderPrimitiveProps) {
-        this.props = props;
+    init(params: SliderPrimitivePresenterParams) {
+        this.params = params;
     }
 
     get vm() {
         return {
-            sliderVm: {
-                ...omit(this.props, [
-                    "showTooltip",
-                    "tooltipSide",
-                    "transformValue",
-                    "onValueChange",
-                    "onValueCommit"
-                ]),
-                value: this.value,
-                min: this.min
-            },
-            thumbVm: {
-                value: this.transformToLabelValue(this.value?.[0]),
-                showTooltip: this.showTooltip,
-                tooltipSide: this.props?.tooltipSide
-            }
+            value: this.value,
+            min: this.min,
+            thumbValue: this.transformToLabelValue(this.value?.[0]),
+            showTooltip: this.showTooltip
         };
     }
 
     public changeValue = (values: number[]) => {
         const [newValue] = values;
-        this.showTooltip = !!this.props?.showTooltip;
-        this.props?.onValueChange(newValue);
+        this.showTooltip = !!this.params?.showTooltip;
+        this.params?.onValueChange(newValue);
     };
 
     public commitValue = (values: number[]) => {
         const [newValue] = values;
         this.showTooltip = false;
-        this.props?.onValueCommit?.(newValue);
+        this.params?.onValueCommit?.(newValue);
     };
 
     private get value() {
-        return this.props?.value !== undefined ? [this.props.value] : undefined;
+        return this.params?.value !== undefined ? [this.params.value] : undefined;
     }
 
     private get min() {
-        return this.props?.min ?? 0;
+        return this.params?.min ?? 0;
     }
 
     private transformToLabelValue(value?: number) {
         if (typeof value === "undefined") {
             return;
         }
-        return this.props?.transformValue ? this.props.transformValue(value) : String(value);
+        return this.params?.transformValue ? this.params.transformValue(value) : String(value);
     }
 }
 
-export { SliderPrimitivePresenter, type ISliderPrimitivePresenter };
+export {
+    SliderPrimitivePresenter,
+    type ISliderPrimitivePresenter,
+    type SliderPrimitivePresenterParams
+};

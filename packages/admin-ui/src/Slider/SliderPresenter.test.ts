@@ -1,96 +1,65 @@
 import { SliderPresenter } from "./SliderPresenter";
 import { SliderPrimitivePresenter } from "./SliderPrimitivePresenter";
 
-describe("FormSliderPresenter", () => {
+describe("SliderPresenter", () => {
     const onValueChange = jest.fn();
+    const primitivePresenter = new SliderPrimitivePresenter();
+    const presenter = new SliderPresenter(primitivePresenter);
 
-    it("should return the compatible `labelVm` based on props", () => {
+    it("should return the compatible `vm` based on params", () => {
+        // `value`
         {
-            // `label`
-            const presenter = new SliderPrimitivePresenter();
-            const formSliderPresenter = new SliderPresenter(presenter);
-            formSliderPresenter.init({ label: "Label", onValueChange });
-            expect(formSliderPresenter.vm.labelVm.label).toEqual("Label");
+            presenter.init({ onValueChange, value: 50 });
+            expect(presenter.vm.value).toEqual([50]);
+            expect(presenter.vm.thumbValue).toEqual("50");
+            expect(presenter.vm.labelValue).toEqual("50");
         }
 
+        // `min`
         {
-            // `value`
-            const presenter = new SliderPrimitivePresenter();
-            const formSliderPresenter = new SliderPresenter(presenter);
-            formSliderPresenter.init({ label: "Label", onValueChange, value: 20 });
-            expect(formSliderPresenter.vm.labelVm.value).toEqual("20");
-        }
-
-        {
-            // `min`
-            const presenter = new SliderPrimitivePresenter();
-            const formSliderPresenter = new SliderPresenter(presenter);
-            formSliderPresenter.init({ label: "Label", onValueChange, min: 30 });
-            expect(formSliderPresenter.vm.labelVm.value).toEqual("30");
-        }
-
-        {
-            // `labelPosition`
-            const presenter = new SliderPrimitivePresenter();
-            const formSliderPresenter = new SliderPresenter(presenter);
-            formSliderPresenter.init({ label: "Label", onValueChange, labelPosition: "top" });
-            expect(formSliderPresenter.vm.labelVm.position).toEqual("top");
+            presenter.init({ onValueChange, min: 25 });
+            expect(presenter.vm.min).toEqual(25);
+            expect(presenter.vm.thumbValue).toEqual(undefined);
+            expect(presenter.vm.labelValue).toEqual("25");
         }
 
         {
             // default
-            const presenter = new SliderPrimitivePresenter();
-            const formSliderPresenter = new SliderPresenter(presenter);
-            formSliderPresenter.init({ label: "Label", onValueChange });
-            expect(formSliderPresenter.vm.labelVm.label).toEqual("Label");
-            expect(formSliderPresenter.vm.labelVm.value).toEqual("0");
-            expect(formSliderPresenter.vm.labelVm.position).toEqual("top");
+            presenter.init({ onValueChange });
+            expect(presenter.vm.value).toEqual(undefined);
+            expect(presenter.vm.min).toEqual(0);
+            expect(presenter.vm.thumbValue).toEqual(undefined);
+            expect(presenter.vm.showTooltip).toEqual(false);
+            expect(presenter.vm.labelValue).toEqual("0");
         }
-    });
-
-    it("should use default `value` (0) if `value` and `min` are both undefined", () => {
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", onValueChange });
-        expect(formSliderPresenter.vm.labelVm.value).toEqual("0"); // `min` should default to 0
     });
 
     it("should apply the `transformValue` function if provided", () => {
         const transformValue = (value: number) => `${value} units`;
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", value: 30, onValueChange, transformValue });
-        expect(formSliderPresenter.vm.labelVm.value).toEqual("30 units");
+        presenter.init({ value: 30, onValueChange, transformValue });
+        expect(presenter.vm.labelValue).toEqual("30 units");
     });
 
     it("should fall back to `value` as a string if `transformValue` is undefined", () => {
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", value: 45, onValueChange });
-        expect(formSliderPresenter.vm.labelVm.value).toEqual("45");
+        presenter.init({ value: 45, onValueChange });
+        expect(presenter.vm.labelValue).toEqual("45");
     });
 
     it("should call `onValueChange` callback when `changeValue` is called", () => {
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", value: 20, onValueChange });
-        formSliderPresenter.changeValue([40]);
+        presenter.init({ value: 20, onValueChange });
+        presenter.changeValue([40]);
         expect(onValueChange).toHaveBeenCalledWith(40);
     });
 
     it("should call `onValueCommit` callback when `commitValue` is called", () => {
         const onValueCommit = jest.fn();
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", value: 20, onValueChange, onValueCommit });
-        formSliderPresenter.commitValue([40]);
+        presenter.init({ value: 20, onValueChange, onValueCommit });
+        presenter.commitValue([40]);
         expect(onValueCommit).toHaveBeenCalledWith(40);
     });
 
     it("should handle negative values correctly", () => {
-        const presenter = new SliderPrimitivePresenter();
-        const formSliderPresenter = new SliderPresenter(presenter);
-        formSliderPresenter.init({ label: "Label", value: -10, onValueChange });
-        expect(formSliderPresenter.vm.labelVm.value).toEqual("-10");
+        presenter.init({ value: -10, onValueChange });
+        expect(presenter.vm.labelValue).toEqual("-10");
     });
 });

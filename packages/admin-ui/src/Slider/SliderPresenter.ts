@@ -1,59 +1,56 @@
 import { makeAutoObservable } from "mobx";
-import omit from "lodash/omit";
-import { ISliderPrimitivePresenter } from "./SliderPrimitivePresenter";
-import { SliderLabelVm, SliderProps } from "./Slider";
+import {
+    ISliderPrimitivePresenter,
+    SliderPrimitivePresenterParams
+} from "./SliderPrimitivePresenter";
 
-interface ISliderPresenter<TProps extends SliderProps = SliderProps>
-    extends ISliderPrimitivePresenter<TProps> {
-    get vm(): ISliderPrimitivePresenter<TProps>["vm"] & { labelVm: SliderLabelVm };
+type SliderPresenterParams = SliderPrimitivePresenterParams;
+
+interface ISliderPresenter extends ISliderPrimitivePresenter {
+    get vm(): ISliderPrimitivePresenter["vm"] & { labelValue: string };
 }
 
 class SliderPresenter implements ISliderPresenter {
-    private sliderPresenter: ISliderPrimitivePresenter;
-    private props?: SliderProps;
+    private sliderPrimitivePresenter: ISliderPrimitivePresenter;
+    private params?: SliderPresenterParams = undefined;
 
     constructor(sliderPresenter: ISliderPrimitivePresenter) {
-        this.sliderPresenter = sliderPresenter;
-        this.props = undefined;
+        this.sliderPrimitivePresenter = sliderPresenter;
         makeAutoObservable(this);
     }
 
-    init(props: SliderProps) {
-        this.props = props;
-        this.sliderPresenter.init(omit(props, ["label", "labelPosition", "required"]));
+    init(params: SliderPresenterParams) {
+        this.params = params;
+        this.sliderPrimitivePresenter.init({
+            min: params.min,
+            onValueChange: params.onValueChange,
+            onValueCommit: params.onValueCommit,
+            showTooltip: params.showTooltip,
+            transformValue: params.transformValue,
+            value: params.value
+        });
     }
 
     get vm() {
         return {
-            sliderVm: {
-                ...this.sliderPresenter.vm.sliderVm
-            },
-            thumbVm: {
-                ...this.sliderPresenter.vm.thumbVm
-            },
-            labelVm: {
-                label: this.props?.label ?? "",
-                position: this.props?.labelPosition ?? "top",
-                required: this.props?.required ?? false,
-                value: this.transformToLabelValue(
-                    this.sliderPresenter.vm.sliderVm.value?.[0] ??
-                        this.sliderPresenter.vm.sliderVm.min
-                )
-            }
+            ...this.sliderPrimitivePresenter.vm,
+            labelValue: this.transformToLabelValue(
+                this.sliderPrimitivePresenter.vm.value?.[0] ?? this.sliderPrimitivePresenter.vm.min
+            )
         };
     }
 
     public changeValue = (values: number[]): void => {
-        this.sliderPresenter.changeValue(values);
+        this.sliderPrimitivePresenter.changeValue(values);
     };
 
     public commitValue = (values: number[]): void => {
-        this.sliderPresenter.commitValue(values);
+        this.sliderPrimitivePresenter.commitValue(values);
     };
 
     private transformToLabelValue(value: number): string {
-        return this.props?.transformValue ? this.props.transformValue(value) : String(value);
+        return this.params?.transformValue ? this.params.transformValue(value) : String(value);
     }
 }
 
-export { SliderPresenter, type ISliderPresenter };
+export { SliderPresenter, type ISliderPresenter, type SliderPresenterParams };

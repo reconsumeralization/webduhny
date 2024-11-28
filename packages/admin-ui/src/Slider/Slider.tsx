@@ -4,8 +4,7 @@ import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 import {
     SliderPrimitiveRenderer,
     SliderPrimitiveProps,
-    SliderPrimitiveVm,
-    SliderPrimitiveThumbProps
+    SliderPrimitiveRendererProps
 } from "~/Slider";
 import {
     FormComponentDescription,
@@ -15,15 +14,6 @@ import {
     FormComponentProps
 } from "~/FormComponent";
 import { useSlider } from "./useSlider";
-
-type LabelPosition = "top" | "side";
-
-type SliderLabelVm = {
-    label: React.ReactNode;
-    position: LabelPosition;
-    value: string;
-    required: boolean;
-};
 
 /**
  * Slider Value
@@ -39,7 +29,7 @@ const sliderValueVariants = cva("font-normal text-sm leading-none", {
 interface SliderValueProps
     extends React.HTMLAttributes<HTMLSpanElement>,
         VariantProps<typeof sliderValueVariants> {
-    value?: SliderLabelVm["value"];
+    value?: string;
 }
 
 const DecoratableSliderValue = ({ value, disabled, className }: SliderValueProps) => {
@@ -48,96 +38,68 @@ const DecoratableSliderValue = ({ value, disabled, className }: SliderValueProps
     }
     return <span className={cn(sliderValueVariants({ disabled }), className)}>{value}</span>;
 };
-
 const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
 
-type SliderProps = SliderPrimitiveProps &
-    FormComponentProps & {
-        labelPosition?: LabelPosition;
-    };
-
-interface DecoratableSliderProps {
-    sliderVm: SliderPrimitiveVm;
-    thumbVm: SliderPrimitiveThumbProps;
-    labelVm: SliderLabelVm;
-    onValueChange: (values: number[]) => void;
-    onValueCommit: (values: number[]) => void;
+/**
+ * Slider Renderer with side label
+ */
+interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps {
+    label?: React.ReactNode;
+    required?: boolean;
+    labelValue: string;
 }
 
-/**
- * Slider with top label
- */
-const DecoratableSliderWithTopValue = ({
-    sliderVm,
-    thumbVm,
-    onValueChange,
-    onValueCommit
-}: DecoratableSliderProps) => {
-    return (
-        <SliderPrimitiveRenderer
-            sliderVm={sliderVm}
-            thumbVm={thumbVm}
-            onValueChange={onValueChange}
-            onValueCommit={onValueCommit}
-        />
-    );
-};
-const SliderWithTopValue = makeDecoratable("SliderWithTopValue", DecoratableSliderWithTopValue);
-
-/**
- * Slider with side label
- */
-const DecoratableSliderWithSideValue = ({
-    sliderVm,
-    thumbVm,
-    labelVm,
-    onValueChange,
-    onValueCommit
-}: DecoratableSliderProps) => {
+const DecoratableSliderRendererWithSideValue = ({
+    labelValue,
+    ...props
+}: SliderRendererWithSideValueProps) => {
     return (
         <div className={"w-full flex flex-row items-center justify-between"}>
             <div className={"basis-2/12 pr-sm"}>
                 <Label
-                    text={labelVm.label}
-                    required={labelVm.required}
-                    disabled={sliderVm.disabled}
+                    text={props.label}
+                    required={props.required}
+                    disabled={props.disabled}
                     weight={"light"}
                 />
             </div>
             <div className={"basis-9/12"}>
-                <SliderPrimitiveRenderer
-                    sliderVm={sliderVm}
-                    thumbVm={thumbVm}
-                    onValueChange={onValueChange}
-                    onValueCommit={onValueCommit}
-                />
+                <SliderPrimitiveRenderer {...props} />
             </div>
-            {labelVm.value && (
+            {labelValue && (
                 <div className={"basis-1/12 pl-sm text-right"}>
-                    <SliderValue value={labelVm.value} disabled={sliderVm.disabled} />
+                    <SliderValue value={labelValue} disabled={props.disabled} />
                 </div>
             )}
         </div>
     );
 };
-const SliderWithSideValue = makeDecoratable("SliderWithSideValue", DecoratableSliderWithSideValue);
+const SliderRendererWithSideValue = makeDecoratable(
+    "SliderRendererWithSideValue",
+    DecoratableSliderRendererWithSideValue
+);
 
 /**
  * Slider
  */
-const DecoratableSlider = ({ description, note, required, validation, ...props }: SliderProps) => {
+type SliderProps = FormComponentProps &
+    SliderPrimitiveProps &
+    SliderPrimitiveRendererProps & {
+        labelPosition?: "top" | "side";
+    };
+
+const DecoratableSlider = ({ description, note, validation, ...props }: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
     const { vm, changeValue, commitValue } = useSlider(props);
 
-    if (vm.labelVm.position === "side") {
+    if (props.labelPosition === "side") {
         return (
             <div className={"w-full"}>
                 <FormComponentDescription text={description} />
-                <SliderWithSideValue
-                    sliderVm={vm.sliderVm}
-                    thumbVm={vm.thumbVm}
-                    labelVm={vm.labelVm}
+                <SliderRendererWithSideValue
+                    {...props}
+                    {...vm}
                     onValueChange={changeValue}
                     onValueCommit={commitValue}
                 />
@@ -150,15 +112,14 @@ const DecoratableSlider = ({ description, note, required, validation, ...props }
     return (
         <div className={"w-full"}>
             <FormComponentLabel
-                text={vm.labelVm.label}
-                required={required}
+                text={props.label}
+                required={props.required}
                 disabled={props.disabled}
             />
             <FormComponentDescription text={description} />
-            <SliderWithTopValue
-                sliderVm={vm.sliderVm}
-                thumbVm={vm.thumbVm}
-                labelVm={vm.labelVm}
+            <SliderPrimitiveRenderer
+                {...props}
+                {...vm}
                 onValueChange={changeValue}
                 onValueCommit={commitValue}
             />
@@ -167,7 +128,6 @@ const DecoratableSlider = ({ description, note, required, validation, ...props }
         </div>
     );
 };
-
 const Slider = makeDecoratable("Slider", DecoratableSlider);
 
-export { Slider, type SliderProps, type SliderLabelVm };
+export { Slider, type SliderProps };

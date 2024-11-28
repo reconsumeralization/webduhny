@@ -4,10 +4,6 @@ import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { Text } from "~/Text";
 import { useSliderPrimitive } from "./useSliderPrimitive";
 
-type SliderPrimitiveVm = Omit<SliderPrimitives.SliderProps, "min"> & {
-    min: number;
-};
-
 /**
  * Slider Root
  */
@@ -27,9 +23,7 @@ const DecoratableSliderPrimitiveRoot = React.forwardRef<
         {...props}
     />
 ));
-
 DecoratableSliderPrimitiveRoot.displayName = SliderPrimitives.Root.displayName;
-
 const SliderPrimitiveRoot = makeDecoratable("SliderPrimitiveRoot", DecoratableSliderPrimitiveRoot);
 
 /**
@@ -52,7 +46,6 @@ const DecoratableSliderPrimitiveTrack = () => (
         />
     </SliderPrimitives.Track>
 );
-
 const SliderPrimitiveTrack = makeDecoratable(
     "SliderPrimitiveTrack",
     DecoratableSliderPrimitiveTrack
@@ -77,27 +70,26 @@ const sliderTooltipVariants = cva(
 );
 
 type SliderPrimitiveTooltipProps = VariantProps<typeof sliderTooltipVariants> & {
-    value?: string;
+    thumbValue?: string;
     showTooltip?: boolean;
     tooltipSide?: "top" | "bottom";
 };
 
 const DecoratableSliderPrimitiveTooltip = ({
-    value,
+    thumbValue,
     showTooltip,
     tooltipSide
 }: SliderPrimitiveTooltipProps) => {
-    if (!value || !showTooltip) {
+    if (!thumbValue || !showTooltip) {
         return null;
     }
 
     return (
         <div className={cn(sliderTooltipVariants({ side: tooltipSide }))}>
-            <Text text={value} size={"sm"} as={"div"} />
+            <Text text={thumbValue} size={"sm"} as={"div"} />
         </div>
     );
 };
-
 const SliderPrimitiveTooltip = makeDecoratable(
     "SliderPrimitiveTooltip",
     DecoratableSliderPrimitiveTooltip
@@ -109,7 +101,7 @@ const SliderPrimitiveTooltip = makeDecoratable(
 type SliderPrimitiveThumbProps = SliderPrimitiveTooltipProps;
 
 const DecoratableSliderPrimitiveThumb = ({
-    value,
+    thumbValue,
     showTooltip,
     tooltipSide
 }: SliderPrimitiveThumbProps) => (
@@ -122,45 +114,47 @@ const DecoratableSliderPrimitiveThumb = ({
             "data-[disabled]:pointer-events-none data-[disabled]:bg-primary-disabled"
         )}
     >
-        <SliderPrimitiveTooltip showTooltip={showTooltip} value={value} tooltipSide={tooltipSide} />
+        <SliderPrimitiveTooltip
+            showTooltip={showTooltip}
+            thumbValue={thumbValue}
+            tooltipSide={tooltipSide}
+        />
     </SliderPrimitives.Thumb>
 );
-
 const SliderPrimitiveThumb = makeDecoratable(
     "SliderPrimitiveThumb",
     DecoratableSliderPrimitiveThumb
 );
 
 /**
- * SliderRenderer
+ * Slider Renderer
  */
-interface SliderPrimitiveRendererProps {
-    sliderVm: SliderPrimitiveVm;
-    thumbVm: SliderPrimitiveThumbProps;
-    onValueChange: (values: number[]) => void;
-    onValueCommit: (values: number[]) => void;
-}
+
+type SliderPrimitiveRootProps = Omit<SliderPrimitives.SliderProps, "min"> & {
+    min: number;
+};
+
+type SliderPrimitiveRendererProps = SliderPrimitiveRootProps & SliderPrimitiveThumbProps;
 
 const DecoratableSliderPrimitiveRenderer = ({
-    sliderVm,
-    thumbVm,
-    onValueChange,
-    onValueCommit
+    tooltipSide,
+    thumbValue,
+    showTooltip,
+    ...sliderProps
 }: SliderPrimitiveRendererProps) => {
     return (
         <div className={"flex h-md w-full"}>
-            <SliderPrimitiveRoot
-                {...sliderVm}
-                onValueChange={onValueChange}
-                onValueCommit={onValueCommit}
-            >
+            <SliderPrimitiveRoot {...sliderProps}>
                 <SliderPrimitiveTrack />
-                <SliderPrimitiveThumb {...thumbVm} />
+                <SliderPrimitiveThumb
+                    thumbValue={thumbValue}
+                    showTooltip={showTooltip}
+                    tooltipSide={tooltipSide}
+                />
             </SliderPrimitiveRoot>
         </div>
     );
 };
-
 const SliderPrimitiveRenderer = makeDecoratable(
     "SliderPrimitiveRenderer",
     DecoratableSliderPrimitiveRenderer
@@ -182,18 +176,19 @@ interface SliderPrimitiveProps
     value?: number;
 }
 
+interface SliderPrimitiveVm extends SliderPrimitiveRootProps, SliderPrimitiveThumbProps {}
+
 const DecoratableSliderPrimitive = (props: SliderPrimitiveProps) => {
     const { vm, changeValue, commitValue } = useSliderPrimitive(props);
     return (
         <SliderPrimitiveRenderer
-            sliderVm={vm.sliderVm}
-            thumbVm={vm.thumbVm}
+            {...props}
+            {...vm}
             onValueChange={changeValue}
             onValueCommit={commitValue}
         />
     );
 };
-
 const SliderPrimitive = makeDecoratable("SliderPrimitive", DecoratableSliderPrimitive);
 
 export {
@@ -204,5 +199,6 @@ export {
     SliderPrimitiveThumb,
     type SliderPrimitiveVm,
     type SliderPrimitiveProps,
-    type SliderPrimitiveThumbProps
+    type SliderPrimitiveThumbProps,
+    type SliderPrimitiveRendererProps
 };
