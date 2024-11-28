@@ -24,6 +24,13 @@ export const Default: Story = {
     }
 };
 
+export const WithLabelRequired: Story = {
+    args: {
+        label: "Any field label",
+        required: true
+    }
+};
+
 export const WithDescription: Story = {
     args: {
         ...Default.args,

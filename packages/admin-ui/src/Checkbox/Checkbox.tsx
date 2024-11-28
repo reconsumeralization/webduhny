@@ -10,6 +10,7 @@ const DecoratableFormCheckbox = ({
     note,
     validation,
     validate,
+    disabled,
     ...props
 }: CheckboxProps) => {
     return (
@@ -18,6 +19,7 @@ const DecoratableFormCheckbox = ({
             note={note}
             validation={validation}
             validate={validate}
+            disabled={disabled}
         >
             <CheckboxPrimitive {...props} />
         </FormComponent>

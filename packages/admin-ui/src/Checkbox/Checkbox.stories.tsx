@@ -54,6 +54,13 @@ export const WithErrors: Story = {
     }
 };
 
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        disabled: true
+    }
+};
+
 export const FullExample: Story = {
     args: {
         ...Default.args,

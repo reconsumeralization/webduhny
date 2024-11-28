@@ -20,7 +20,7 @@ class SliderPresenter implements ISliderPresenter {
 
     init(props: SliderProps) {
         this.props = props;
-        this.sliderPresenter.init(omit(props, ["label", "labelPosition"]));
+        this.sliderPresenter.init(omit(props, ["label", "labelPosition", "required"]));
     }
 
     get vm() {
@@ -34,6 +34,7 @@ class SliderPresenter implements ISliderPresenter {
             labelVm: {
                 label: this.props?.label ?? "",
                 position: this.props?.labelPosition ?? "top",
+                required: this.props?.required ?? false,
                 value: this.transformToLabelValue(
                     this.sliderPresenter.vm.sliderVm.value?.[0] ??
                         this.sliderPresenter.vm.sliderVm.min

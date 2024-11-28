@@ -5,26 +5,9 @@ import { FormComponent, FormComponentProps } from "~/FormComponent";
 
 type TextareaProps = FormComponentProps & TextareaPrimitiveProps;
 
-const DecoratableTextarea = ({
-    label,
-    description,
-    note,
-    validation,
-    validate,
-    required,
-    disabled,
-    ...props
-}: TextareaProps) => {
+const DecoratableTextarea = (props: TextareaProps) => {
     return (
-        <FormComponent
-            label={label}
-            description={description}
-            note={note}
-            validation={validation}
-            validate={validate}
-            required={required}
-            disabled={disabled}
-        >
+        <FormComponent {...props}>
             <TextareaPrimitive {...props} />
         </FormComponent>
     );

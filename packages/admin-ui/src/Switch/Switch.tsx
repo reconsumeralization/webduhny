@@ -7,10 +7,11 @@ type SwitchProps = SwitchPrimitiveProps & FormComponentProps;
 
 const DecoratableSwitch = ({
     description,
+    disabled,
     note,
-    validation,
-    validate,
     required,
+    validate,
+    validation,
     ...props
 }: SwitchProps) => {
     return (
@@ -20,8 +21,9 @@ const DecoratableSwitch = ({
             validation={validation}
             validate={validate}
             required={required}
+            disabled={disabled}
         >
-            <SwitchPrimitive {...props} />
+            <SwitchPrimitive {...props} disabled={disabled} required={required} />
         </FormComponent>
     );
 };

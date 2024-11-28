@@ -12,6 +12,7 @@ const DecoratableFormCheckboxGroup = ({
     validation,
     validate,
     required,
+    disabled,
     ...props
 }: CheckboxGroupProps) => {
     return (
@@ -22,6 +23,7 @@ const DecoratableFormCheckboxGroup = ({
             validation={validation}
             validate={validate}
             required={required}
+            disabled={disabled}
         >
             <CheckboxGroupPrimitive {...props} />
         </FormComponent>

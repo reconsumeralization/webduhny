@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Label } from "~/Label";
-import { makeDecoratable } from "~/utils";
+import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 import {
     SliderPrimitiveRenderer,
     SliderPrimitiveProps,
@@ -16,20 +16,31 @@ type SliderLabelVm = {
     label: React.ReactNode;
     position: LabelPosition;
     value: string;
+    required: boolean;
 };
 
 /**
  * Slider Value
  */
-interface SliderValueProps extends React.HTMLAttributes<HTMLSpanElement> {
+const sliderValueVariants = cva("font-normal text-sm leading-none", {
+    variants: {
+        disabled: {
+            true: "text-neutral-disabled cursor-not-allowed"
+        }
+    }
+});
+
+interface SliderValueProps
+    extends React.HTMLAttributes<HTMLSpanElement>,
+        VariantProps<typeof sliderValueVariants> {
     value?: SliderLabelVm["value"];
 }
 
-const DecoratableSliderValue = (props: SliderValueProps) => {
-    if (!props.value) {
+const DecoratableSliderValue = ({ value, disabled, className }: SliderValueProps) => {
+    if (!value) {
         return null;
     }
-    return <span className={"font-normal text-sm leading-none"}>{props.value}</span>;
+    return <span className={cn(sliderValueVariants({ disabled }), className)}>{value}</span>;
 };
 
 const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
@@ -80,8 +91,13 @@ const DecoratableSliderWithSideValue = ({
 }: DecoratableSliderProps) => {
     return (
         <div className={"w-full flex flex-row items-center justify-between"}>
-            <div className={"basis-2/12 pr-2"}>
-                <Label text={labelVm.label} />
+            <div className={"basis-2/12 pr-sm"}>
+                <Label
+                    text={labelVm.label}
+                    required={labelVm.required}
+                    disabled={sliderVm.disabled}
+                    weight={"light"}
+                />
             </div>
             <div className={"basis-9/12"}>
                 <SliderPrimitiveRenderer
@@ -92,8 +108,8 @@ const DecoratableSliderWithSideValue = ({
                 />
             </div>
             {labelVm.value && (
-                <div className={"basis-1/12 pl-2 text-right"}>
-                    <SliderValue value={labelVm.value} />
+                <div className={"basis-1/12 pl-sm text-right"}>
+                    <SliderValue value={labelVm.value} disabled={sliderVm.disabled} />
                 </div>
             )}
         </div>
@@ -113,6 +129,7 @@ const DecoratableSlider = (props: SliderProps) => {
                 required={props.required}
                 note={props.note}
                 description={props.description}
+                disabled={props.disabled}
                 validate={props.validate}
                 validation={props.validation}
             >
@@ -131,6 +148,7 @@ const DecoratableSlider = (props: SliderProps) => {
         <FormComponent
             label={<Label text={vm.labelVm.label} value={vm.labelVm.value} />}
             required={props.required}
+            disabled={props.disabled}
             note={props.note}
             description={props.description}
             validate={props.validate}

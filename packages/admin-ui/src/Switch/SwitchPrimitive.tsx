@@ -1,19 +1,20 @@
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { cn, cva, makeDecoratable, VariantProps } from "~/utils";
-import { useSwitch } from "~/Switch/useSwitch";
-import { SwitchItemFormatted } from "~/Switch/SwitchItemFormatted";
-import { CheckboxItemDto } from "~/Checkbox/CheckboxItemDto";
+import { Label } from "~/Label";
+import { useSwitch } from "./useSwitch";
+import { SwitchItemFormatted } from "./SwitchItemFormatted";
+import { SwitchItemDto } from "./SwitchItemDto";
 
 /**
  * Switch Renderer
  */
 
-const switchVariants = cva("flex items-start space-x-sm-extra", {
+const switchVariants = cva("inline-flex items-start space-x-sm", {
     variants: {
         labelPosition: {
             start: "",
-            end: "flex-row-reverse space-x-reverse"
+            end: "flex-row-reverse space-x-sm-extra space-x-reverse"
         }
     },
     defaultVariants: {
@@ -26,7 +27,7 @@ type SwitchPrimitiveProps = Omit<
     "defaultChecked" | "onCheckedChange"
 > &
     VariantProps<typeof switchVariants> &
-    CheckboxItemDto & {
+    SwitchItemDto & {
         onCheckedChange: (checked: boolean) => void;
     };
 
@@ -42,19 +43,17 @@ type SwitchRendererProps = Omit<SwitchPrimitiveProps, "onCheckedChange"> &
 const DecoratableSwitchRenderer = React.forwardRef<
     React.ElementRef<typeof SwitchPrimitives.Root>,
     SwitchRendererProps
->(({ id, label, changeChecked, className, labelPosition, ...props }, ref) => {
+>(({ id, label, changeChecked, className, labelPosition, disabled, required, ...props }, ref) => {
     return (
         <div className={cn(switchVariants({ labelPosition, className }))}>
-            <label
-                htmlFor={id}
-                className={cn([
-                    "text-md",
-                    "text-neutral-primary",
-                    "peer-disabled:cursor-not-allowed peer-disabled:text-neutral-disabled"
-                ])}
-            >
-                {label}
-            </label>
+            <Label
+                id={id}
+                text={label}
+                disabled={disabled}
+                required={required}
+                weight={"light"}
+                className={"text-md"}
+            />
             <SwitchPrimitives.Root
                 ref={ref}
                 {...props}
@@ -65,6 +64,7 @@ const DecoratableSwitchRenderer = React.forwardRef<
                     "focus-visible:outline-none focus-visible:border-success-default focus-visible:ring-lg focus-visible:ring-primary-dimmed",
                     "disabled:cursor-not-allowed disabled:bg-neutral-muted disabled:data-[state=checked]:bg-neutral-muted"
                 ])}
+                disabled={disabled}
                 onCheckedChange={changeChecked}
             >
                 <SwitchPrimitives.Thumb

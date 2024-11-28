@@ -12,6 +12,7 @@ const DecoratableInput = ({
     validation,
     validate,
     required,
+    disabled,
     ...props
 }: InputProps) => {
     return (
@@ -22,6 +23,7 @@ const DecoratableInput = ({
             validation={validation}
             validate={validate}
             required={required}
+            disabled={disabled}
         >
             <InputPrimitive {...props} />
         </FormComponent>

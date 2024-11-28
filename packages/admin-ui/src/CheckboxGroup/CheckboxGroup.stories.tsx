@@ -83,6 +83,14 @@ export const WithErrors: Story = {
     }
 };
 
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        disabled: true
+    }
+};
+
 export const FullExample: Story = {
     args: {
         ...Default.args,
