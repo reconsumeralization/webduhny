@@ -2,7 +2,7 @@ import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { cn, makeDecoratable } from "~/utils";
 import { Radio } from "./Radio";
-import { RadioItemDto } from "./RadioItemDto";
+import { RadioItemParams } from "./RadioItemParams";
 import { RadioItemFormatted } from "./RadioItemFormatted";
 import { useRadioGroup } from "./useRadioGroup";
 
@@ -29,7 +29,7 @@ const RadioGroupRoot = makeDecoratable("RadioGroupRoot", DecoratableRadioGroupRo
  */
 interface RadioGroupProps
     extends Omit<RadioGroupPrimitive.RadioGroupProps, "defaultValue" | "onValueChange"> {
-    items: RadioItemDto[];
+    items: RadioItemParams[];
     onValueChange: (value: string) => void;
 }
 

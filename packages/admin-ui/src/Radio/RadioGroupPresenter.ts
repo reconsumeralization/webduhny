@@ -2,10 +2,10 @@ import { makeAutoObservable } from "mobx";
 import { RadioGroupVm } from "./RadioGroup";
 import { RadioItem } from "./RadioItem";
 import { RadioItemFormatter } from "./RadioItemFormatter";
-import { RadioItemDto } from "./RadioItemDto";
+import { RadioItemParams } from "./RadioItemParams";
 
 interface RadioGroupPresenterParams<TValue = string> {
-    items: RadioItemDto[];
+    items: RadioItemParams[];
     onValueChange: (value: TValue) => void;
 }
 
@@ -28,7 +28,7 @@ class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValu
 
     get vm() {
         return {
-            items: this.items.map(item => RadioItemFormatter.format(item))
+            items: this.getRadioItems().map(item => RadioItemFormatter.format(item))
         };
     }
 
@@ -36,7 +36,7 @@ class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValu
         this.params?.onValueChange(value);
     };
 
-    private get items() {
+    private getRadioItems() {
         if (!this.params?.items) {
             return [];
         }

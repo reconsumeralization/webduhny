@@ -1,4 +1,4 @@
-import { RadioItemDto } from "./RadioItemDto";
+import { RadioItemParams } from "./RadioItemParams";
 import { generateId } from "~/utils";
 
 export class RadioItem {
@@ -14,7 +14,7 @@ export class RadioItem {
         this._disabled = data.disabled;
     }
 
-    static create(data: RadioItemDto) {
+    static create(data: RadioItemParams) {
         return new RadioItem({
             id: generateId(data.id),
             label: data.label,

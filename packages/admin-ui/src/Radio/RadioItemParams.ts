@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface RadioItemDto {
+export interface RadioItemParams {
     id?: string;
     label: string | React.ReactNode;
     value: string;
