@@ -1,5 +1,5 @@
 import * as React from "react";
-import { makeDecoratable, cva, type VariantProps } from "~/utils";
+import { makeDecoratable, cva, type VariantProps, cn } from "~/utils";
 
 const textareaVariants = cva(
     [
@@ -48,8 +48,8 @@ const textareaVariants = cva(
                 invalid: true,
                 class: [
                     "border-destructive-subtle bg-destructive-subtle",
-                    "hover:border-destructive-subtle",
-                    "focus:border-destructive-subtle",
+                    "hover:border-destructive-subtle hover:bg-destructive-subtle",
+                    "focus:border-destructive-subtle  focus:bg-destructive-subtle",
                     "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
                 ]
             }
@@ -68,7 +68,7 @@ const DecoratableTextareaPrimitive = React.forwardRef<HTMLTextAreaElement, Texta
     ({ className, variant, invalid, size, ...props }, ref) => {
         return (
             <textarea
-                className={textareaVariants({ variant, invalid, size, className })}
+                className={cn(textareaVariants({ variant, invalid, size }), className)}
                 ref={ref}
                 {...props}
             />
