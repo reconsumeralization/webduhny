@@ -5,9 +5,9 @@ import { cn, makeDecoratable } from "~/utils";
 /**
  * RadioItem
  */
-type RadioProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> & {
+interface RadioProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
     label: string | React.ReactNode;
-};
+}
 
 const DecoratableRadio = React.forwardRef<
     React.ElementRef<typeof RadioGroupPrimitive.Item>,

@@ -27,22 +27,20 @@ const RadioGroupRoot = makeDecoratable("RadioGroupRoot", DecoratableRadioGroupRo
 /**
  * Radio Group Renderer
  */
-type RadioGroupProps = Omit<
-    RadioGroupPrimitive.RadioGroupProps,
-    "defaultValue" | "onValueChange"
-> & {
+interface RadioGroupProps
+    extends Omit<RadioGroupPrimitive.RadioGroupProps, "defaultValue" | "onValueChange"> {
     items: RadioItemDto[];
     onValueChange: (value: string) => void;
-};
+}
 
-type RadioGroupVm = {
+interface RadioGroupVm {
     items: RadioItemFormatted[];
-};
+}
 
-type RadioGroupRendererProps = Omit<RadioGroupProps, "onValueChange"> & {
+interface RadioGroupRendererProps extends Omit<RadioGroupProps, "onValueChange"> {
     items: RadioItemFormatted[];
     changeValue: (value: string) => void;
-};
+}
 
 const DecoratableRadioGroupRenderer = React.forwardRef<
     React.ElementRef<typeof RadioGroupPrimitive.Root>,
