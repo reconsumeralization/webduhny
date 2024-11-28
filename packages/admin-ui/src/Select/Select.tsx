@@ -28,7 +28,7 @@ const DecoratableSelect = ({
             <div className={"w-full"}>
                 <FormComponentLabel text={label} required={required} disabled={disabled} />
                 <FormComponentDescription text={description} />
-                <SelectPrimitive {...props} />
+                <SelectPrimitive {...props} disabled={disabled} />
                 <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
                 <FormComponentNote text={note} />
             </div>

@@ -37,13 +37,6 @@ export const WithLabelRequired: Story = {
     }
 };
 
-export const WithValue: Story = {
-    args: {
-        ...Default.args,
-        value: "Earth is the third planet from the Sun and the only astronomical object known to harbor life. According to radiometric dating estimation and other evidence, Earth formed 4.5 billion years ago."
-    }
-};
-
 export const WithDescription: Story = {
     args: {
         ...Default.args,
