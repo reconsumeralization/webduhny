@@ -1,32 +1,20 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import { InputPrimitive, InputPrimitiveProps } from "./InputPrimitive";
+import { InputPrimitive } from "./InputPrimitive";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type InputProps = FormComponentProps & InputPrimitiveProps;
-
-const DecoratableInput = ({
-    label,
-    description,
-    note,
-    validation,
-    validate,
-    required,
-    disabled,
-    ...props
-}: InputProps) => {
+const DecoratableInput = (props: FormComponentProps<typeof InputPrimitive>) => {
     return (
         <FormComponent
-            label={label}
-            description={description}
-            note={note}
-            validation={validation}
-            validate={validate}
-            required={required}
-            disabled={disabled}
-        >
-            <InputPrimitive {...props} />
-        </FormComponent>
+            label={props.label}
+            description={props.description}
+            note={props.note}
+            validation={props.validation}
+            validate={props.validate}
+            required={props.required}
+            disabled={props.disabled}
+            element={<InputPrimitive {...props} />}
+        />
     );
 };
 const Input = makeDecoratable("Input", DecoratableInput);

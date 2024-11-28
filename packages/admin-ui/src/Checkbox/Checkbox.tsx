@@ -1,30 +1,21 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import { CheckboxPrimitive, CheckboxPrimitiveProps } from "~/Checkbox";
+import { CheckboxPrimitive } from "~/Checkbox";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type CheckboxProps = FormComponentProps & CheckboxPrimitiveProps;
-
-const DecoratableFormCheckbox = ({
-    description,
-    note,
-    validation,
-    validate,
-    disabled,
-    ...props
-}: CheckboxProps) => {
+const DecoratableCheckbox = (props: FormComponentProps<typeof CheckboxPrimitive>) => {
     return (
         <FormComponent
-            description={description}
-            note={note}
-            validation={validation}
-            validate={validate}
-            disabled={disabled}
-        >
-            <CheckboxPrimitive {...props} />
-        </FormComponent>
+            description={props.description}
+            note={props.note}
+            validation={props.validation}
+            validate={props.validate}
+            required={props.required}
+            disabled={props.disabled}
+            element={<CheckboxPrimitive {...props} label={props.label} />}
+        />
     );
 };
-const Checkbox = makeDecoratable("Checkbox", DecoratableFormCheckbox);
+const Checkbox = makeDecoratable("Checkbox", DecoratableCheckbox);
 
-export { Checkbox, type CheckboxProps };
+export { Checkbox };

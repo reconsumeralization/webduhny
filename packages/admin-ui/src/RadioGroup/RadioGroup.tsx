@@ -1,32 +1,20 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import { RadioGroupPrimitive, RadioGroupPrimitiveProps } from "~/RadioGroup";
+import { RadioGroupPrimitive } from "~/RadioGroup";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type RadioGroupProps = FormComponentProps & RadioGroupPrimitiveProps;
-
-const DecoratableRadioGroup = ({
-    label,
-    description,
-    note,
-    validation,
-    validate,
-    required,
-    disabled,
-    ...props
-}: RadioGroupProps) => {
+const DecoratableRadioGroup = (props: FormComponentProps<typeof RadioGroupPrimitive>) => {
     return (
         <FormComponent
-            label={label}
-            description={description}
-            note={note}
-            validation={validation}
-            validate={validate}
-            required={required}
-            disabled={disabled}
-        >
-            <RadioGroupPrimitive {...props} />
-        </FormComponent>
+            label={props.label}
+            description={props.description}
+            note={props.note}
+            validation={props.validation}
+            validate={props.validate}
+            required={props.required}
+            disabled={props.disabled}
+            element={<RadioGroupPrimitive {...props} />}
+        />
     );
 };
 const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);

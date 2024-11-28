@@ -1,30 +1,19 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import { SwitchPrimitive, SwitchPrimitiveProps } from "~/Switch";
+import { SwitchPrimitive } from "~/Switch";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type SwitchProps = SwitchPrimitiveProps & FormComponentProps;
-
-const DecoratableSwitch = ({
-    description,
-    disabled,
-    note,
-    required,
-    validate,
-    validation,
-    ...props
-}: SwitchProps) => {
+const DecoratableSwitch = (props: FormComponentProps<typeof SwitchPrimitive>) => {
     return (
         <FormComponent
-            description={description}
-            note={note}
-            validation={validation}
-            validate={validate}
-            required={required}
-            disabled={disabled}
-        >
-            <SwitchPrimitive {...props} disabled={disabled} required={required} />
-        </FormComponent>
+            description={props.description}
+            note={props.note}
+            validation={props.validation}
+            validate={props.validate}
+            required={props.required}
+            disabled={props.disabled}
+            element={<SwitchPrimitive {...props} label={props.label} />}
+        />
     );
 };
 

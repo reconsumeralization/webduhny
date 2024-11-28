@@ -1,5 +1,9 @@
 import * as React from "react";
-import { RangeSliderPrimitiveProps, RangeSliderPrimitiveRenderer } from "./RangeSliderPrimitive";
+import {
+    RangeSliderPrimitive,
+    RangeSliderPrimitiveProps,
+    RangeSliderPrimitiveRenderer
+} from "./RangeSliderPrimitive";
 import { useRangeSlider } from "./useRangeSlider";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
@@ -35,7 +39,9 @@ const DecoratableRangeSliderValue = ({ value, disabled, className }: RangeSlider
 
 const RangeSliderValue = makeDecoratable("RangeSliderValue", DecoratableRangeSliderValue);
 
-interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
+interface RangeSliderProps
+    extends RangeSliderPrimitiveProps,
+        FormComponentProps<typeof RangeSliderPrimitive> {
     label: React.ReactNode;
     valueConverter?: (value: number) => string;
 }
@@ -52,24 +58,25 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
             description={props.description}
             validate={props.validate}
             validation={props.validation}
-        >
-            <div className={"flex flex-row items-center justify-between"}>
-                <div className={"basis-1/12 pr-xxs"}>
-                    <RangeSliderValue value={vm.labelVm.values[0]} disabled={props.disabled} />
+            element={
+                <div className={"flex flex-row items-center justify-between"}>
+                    <div className={"basis-1/12 pr-xxs"}>
+                        <RangeSliderValue value={vm.labelVm.values[0]} disabled={props.disabled} />
+                    </div>
+                    <div className={"basis-10/12"}>
+                        <RangeSliderPrimitiveRenderer
+                            sliderVm={vm.sliderVm}
+                            thumbsVm={vm.thumbsVm}
+                            onValuesChange={changeValues}
+                            onValuesCommit={commitValues}
+                        />
+                    </div>
+                    <div className={"basis-1/12 pl-xxs text-right"}>
+                        <RangeSliderValue value={vm.labelVm.values[1]} disabled={props.disabled} />
+                    </div>
                 </div>
-                <div className={"basis-10/12"}>
-                    <RangeSliderPrimitiveRenderer
-                        sliderVm={vm.sliderVm}
-                        thumbsVm={vm.thumbsVm}
-                        onValuesChange={changeValues}
-                        onValuesCommit={commitValues}
-                    />
-                </div>
-                <div className={"basis-1/12 pl-xxs text-right"}>
-                    <RangeSliderValue value={vm.labelVm.values[1]} disabled={props.disabled} />
-                </div>
-            </div>
-        </FormComponent>
+            }
+        ></FormComponent>
     );
 };
 
