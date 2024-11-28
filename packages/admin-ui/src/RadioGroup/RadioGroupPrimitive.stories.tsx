@@ -1,32 +1,27 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RadioGroup } from "./RadioGroup";
+import { RadioGroupPrimitive } from "./RadioGroupPrimitive";
 import { Text } from "~/Text";
 import { Button } from "~/Button";
 
-const meta: Meta<typeof RadioGroup> = {
-    title: "Components/RadioGroup",
-    component: RadioGroup,
+const meta: Meta<typeof RadioGroupPrimitive> = {
+    title: "Components/Form Primitives/RadioGroup",
+    component: RadioGroupPrimitive,
     tags: ["autodocs"],
     parameters: {
-        layout: "fullscreen"
+        layout: "padded"
     },
-    decorators: [
-        Story => (
-            <div className="w-[60%] h-48 mx-auto flex justify-center items-center">
-                <Story />
-            </div>
-        )
-    ],
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <RadioGroup {...args} value={value} onValueChange={value => setValue(value)} />;
+        return (
+            <RadioGroupPrimitive {...args} value={value} onValueChange={value => setValue(value)} />
+        );
     }
 };
 
 export default meta;
 
-type Story = StoryObj<typeof RadioGroup>;
+type Story = StoryObj<typeof RadioGroupPrimitive>;
 
 export const Default: Story = {
     args: {
@@ -201,7 +196,11 @@ export const WithExternalValueControl: Story = {
         return (
             <div className={"w-full"}>
                 <div>
-                    <RadioGroup {...args} value={value} onValueChange={value => setValue(value)} />
+                    <RadioGroupPrimitive
+                        {...args}
+                        value={value}
+                        onValueChange={value => setValue(value)}
+                    />
                 </div>
                 <div className={"mt-4 text-center"}>
                     <Button onClick={() => setValue(args.value)} text={"Reset"} />

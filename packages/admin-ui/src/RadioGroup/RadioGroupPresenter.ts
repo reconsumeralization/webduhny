@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { RadioGroupVm } from "./RadioGroup";
+import { RadioGroupVm } from "./RadioGroupPrimitive";
 import { RadioItem } from "./RadioItem";
 import { RadioItemFormatter } from "./RadioItemFormatter";
 import { RadioItemParams } from "./RadioItemParams";

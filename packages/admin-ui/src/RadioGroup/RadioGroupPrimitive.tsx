@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import * as RadioGroupPrimitives from "@radix-ui/react-radio-group";
 import { cn, makeDecoratable } from "~/utils";
 import { Radio } from "./Radio";
 import { RadioItemParams } from "./RadioItemParams";
@@ -9,26 +9,29 @@ import { useRadioGroup } from "./useRadioGroup";
 /**
  * Radio Group Root
  */
-const DecoratableRadioGroupRoot = React.forwardRef<
-    React.ElementRef<typeof RadioGroupPrimitive.Root>,
-    React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+const DecoratableRadioGroupPrimitiveRoot = React.forwardRef<
+    React.ElementRef<typeof RadioGroupPrimitives.Root>,
+    React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root>
 >(({ className, ...props }, ref) => {
     return (
-        <RadioGroupPrimitive.Root
+        <RadioGroupPrimitives.Root
             className={cn("grid gap-sm-extra", className)}
             {...props}
             ref={ref}
         />
     );
 });
-DecoratableRadioGroupRoot.displayName = RadioGroupPrimitive.Root.displayName;
-const RadioGroupRoot = makeDecoratable("RadioGroupRoot", DecoratableRadioGroupRoot);
+DecoratableRadioGroupPrimitiveRoot.displayName = RadioGroupPrimitives.Root.displayName;
+const RadioGroupRoot = makeDecoratable(
+    "RadioGroupPrimitiveRoot",
+    DecoratableRadioGroupPrimitiveRoot
+);
 
 /**
  * Radio Group Renderer
  */
-interface RadioGroupProps
-    extends Omit<RadioGroupPrimitive.RadioGroupProps, "defaultValue" | "onValueChange"> {
+interface RadioGroupPrimitiveProps
+    extends Omit<RadioGroupPrimitives.RadioGroupProps, "defaultValue" | "onValueChange"> {
     items: RadioItemParams[];
     onValueChange: (value: string) => void;
 }
@@ -37,13 +40,13 @@ interface RadioGroupVm {
     items: RadioItemFormatted[];
 }
 
-interface RadioGroupRendererProps extends Omit<RadioGroupProps, "onValueChange"> {
+interface RadioGroupRendererProps extends Omit<RadioGroupPrimitiveProps, "onValueChange"> {
     items: RadioItemFormatted[];
     changeValue: (value: string) => void;
 }
 
 const DecoratableRadioGroupRenderer = React.forwardRef<
-    React.ElementRef<typeof RadioGroupPrimitive.Root>,
+    React.ElementRef<typeof RadioGroupPrimitives.Root>,
     RadioGroupRendererProps
 >(({ items, changeValue, ...props }, ref) => {
     return (
@@ -66,15 +69,15 @@ const RadioGroupRenderer = makeDecoratable("RadioGroupRenderer", DecoratableRadi
 /**
  * Radio Group
  */
-const DecoratableRadioGroup = React.forwardRef<
-    React.ElementRef<typeof RadioGroupPrimitive.Root>,
-    RadioGroupProps
+const DecoratableRadioGroupPrimitive = React.forwardRef<
+    React.ElementRef<typeof RadioGroupPrimitives.Root>,
+    RadioGroupPrimitiveProps
 >((props, ref) => {
     const { vm, changeValue } = useRadioGroup(props);
     return <RadioGroupRenderer {...props} items={vm.items} changeValue={changeValue} ref={ref} />;
 });
-DecoratableRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
-const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
+DecoratableRadioGroupPrimitive.displayName = RadioGroupPrimitives.Root.displayName;
+const RadioGroupPrimitive = makeDecoratable("RadioGroupPrimitive", DecoratableRadioGroupPrimitive);
 
 /**
  * @deprecated
@@ -85,9 +88,9 @@ const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
 const DeprecatedRadioGroup = makeDecoratable("DeprecatedRadioGroup", RadioGroupRoot);
 
 export {
-    RadioGroup,
+    RadioGroupPrimitive,
     RadioGroupRenderer,
     DeprecatedRadioGroup,
-    type RadioGroupProps,
+    type RadioGroupPrimitiveProps,
     type RadioGroupVm
 };

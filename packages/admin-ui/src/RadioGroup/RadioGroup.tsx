@@ -1,11 +1,11 @@
 import React from "react";
 import { makeDecoratable } from "~/utils";
-import { CheckboxGroupPrimitive, CheckboxGroupPrimitiveProps } from "~/CheckboxGroup";
+import { RadioGroupPrimitive, RadioGroupPrimitiveProps } from "~/RadioGroup";
 import { FormComponent, FormComponentProps } from "~/FormComponent";
 
-type CheckboxGroupProps = FormComponentProps & CheckboxGroupPrimitiveProps;
+type RadioGroupProps = FormComponentProps & RadioGroupPrimitiveProps;
 
-const DecoratableCheckboxGroup = ({
+const DecoratableRadioGroup = ({
     label,
     description,
     note,
@@ -14,7 +14,7 @@ const DecoratableCheckboxGroup = ({
     required,
     disabled,
     ...props
-}: CheckboxGroupProps) => {
+}: RadioGroupProps) => {
     return (
         <FormComponent
             label={label}
@@ -25,10 +25,10 @@ const DecoratableCheckboxGroup = ({
             required={required}
             disabled={disabled}
         >
-            <CheckboxGroupPrimitive {...props} />
+            <RadioGroupPrimitive {...props} />
         </FormComponent>
     );
 };
-const CheckboxGroup = makeDecoratable("CheckboxGroup", DecoratableCheckboxGroup);
+const RadioGroup = makeDecoratable("RadioGroup", DecoratableRadioGroup);
 
-export { CheckboxGroup };
+export { RadioGroup };

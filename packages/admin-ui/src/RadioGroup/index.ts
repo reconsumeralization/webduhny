@@ -1,3 +1,3 @@
 export * from "./Radio";
 export * from "./RadioGroup";
-export * from "./RadioGroupPresenter";
+export * from "./RadioGroupPrimitive";
