@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, ReactElement } from "react";
 import pick from "lodash/pick";
 import { FormComponentProps } from "~/types";
 import classNames from "classnames";
-import { Input as AdminInput } from "@webiny/admin-ui";
+import { Input as AdminInput, Textarea as AdminTextarea } from "@webiny/admin-ui";
 
 export interface TextFieldHelperTextProps {
     /** Make the help text always visible */
@@ -43,7 +43,7 @@ export interface TextFieldProps {
     /** Add a trailing icon. */
     trailingIcon?: React.ReactNode;
     /** By default, props spread to the input. These props are for the component's root container. */
-    // rootProps?: Object;
+    rootProps?: any;
     /** A reference to the native input or textarea. */
     inputRef?: React.Ref<HTMLInputElement | HTMLTextAreaElement | null>;
     /** The type of input field to render, search, number, etc */
@@ -53,7 +53,7 @@ export interface TextFieldProps {
     /** Add suffix. */
     suffix?: string;
     /** Advanced: A reference to the MDCFoundation. */
-    // foundationRef?: React.Ref<MDCTextFieldFoundation | null>;
+    foundationRef?: any;
     /** Make textarea resizeable */
     resizeable?: boolean;
 }
@@ -81,9 +81,13 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         maxLength?: number;
 
         // A callback that is executed when input focus is lost.
-        onBlur?: (e: React.SyntheticEvent<HTMLInputElement>) => any;
+        onBlur?: (
+            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
+        ) => any;
 
-        onKeyDown?: (e: React.SyntheticEvent<HTMLInputElement>) => any;
+        onKeyDown?: (
+            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
+        ) => any;
 
         // A callback that gets triggered when the user presses the "Enter" key.
         onEnter?: () => any;
@@ -100,9 +104,13 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         children?: React.ReactNode;
     };
 
-export type InputOnKeyDownProps = React.SyntheticEvent<HTMLInputElement> & {
-    key?: string;
-};
+export type InputOnKeyDownProps =
+    | (React.SyntheticEvent<HTMLInputElement> & {
+          key?: string;
+      })
+    | (React.SyntheticEvent<HTMLTextAreaElement> & {
+          key?: string;
+      });
 /**
  * Use Input component to store short string values, like first name, last name, e-mail etc.
  * Additionally, with rows prop, it can also be turned into a text area, to store longer strings.
@@ -112,21 +120,15 @@ export type InputOnKeyDownProps = React.SyntheticEvent<HTMLInputElement> & {
 const rmwcProps = [
     "label",
     "type",
-    "step",
     "disabled",
     "readOnly",
     "placeholder",
-    "outlined",
     "onKeyDown",
     "onKeyPress",
     "onKeyUp",
     "onFocus",
-    "rootProps",
-    "fullwidth",
-    "inputRef",
     "className",
-    "maxLength",
-    "characterCount"
+    "maxLength"
 ];
 
 /**
@@ -135,7 +137,7 @@ const rmwcProps = [
  */
 export const Input = (props: InputProps) => {
     const onChange = useCallback(
-        (e: React.SyntheticEvent<HTMLInputElement>) => {
+        (e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>) => {
             const { onChange, rawOnChange } = props;
             if (!onChange) {
                 return;
@@ -148,7 +150,9 @@ export const Input = (props: InputProps) => {
     );
 
     const onBlur = useCallback(
-        async (e: React.SyntheticEvent<HTMLInputElement>) => {
+        async (
+            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
+        ) => {
             const { validate, onBlur } = props;
             if (validate) {
                 // Since we are accessing event in an async operation, we need to persist it.
@@ -164,13 +168,12 @@ export const Input = (props: InputProps) => {
     const {
         autoFocus,
         value,
-        label,
         description,
         placeholder,
-        // rows,
+        rows,
         validation,
-        // icon,
-        // trailingIcon,
+        icon,
+        trailingIcon,
         onEnter,
         required,
         ...rest
@@ -206,29 +209,34 @@ export const Input = (props: InputProps) => {
         return "lg";
     }, [props.size]);
 
-    // if (Boolean(rows)) {
-    //     return (
-    //         <AdminTextarea
-    //             {...pick(rest, rmwcProps)}
-    //             onKeyDown={inputOnKeyDown}
-    //             autoFocus={autoFocus}
-    //             value={inputValue}
-    //             onChange={onChange}
-    //             onBlur={onBlur}
-    //             label={label}
-    //             // startIcon={icon}
-    //             placeholder={placeholder}
-    //             //trailingIcon={trailingIcon}
-    //             size={size}
-    //             className={classNames("webiny-ui-input")}
-    //             data-testid={props["data-testid"]}
-    //             validation={validation}
-    //             note={description}
-    //             required={required}
-    //             rows={rows}
-    //         />
-    //     );
-    // }
+    const getValidIcon = useCallback((icon: React.ReactNode) => {
+        if (React.isValidElement(icon)) {
+            return icon;
+        }
+
+        return undefined;
+    }, []);
+
+    if (Boolean(rows)) {
+        return (
+            <AdminTextarea
+                {...pick(rest, rmwcProps)}
+                onKeyDown={inputOnKeyDown}
+                autoFocus={autoFocus}
+                value={inputValue}
+                onChange={onChange}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                size={size}
+                className={classNames("webiny-ui-input")}
+                data-testid={props["data-testid"]}
+                validation={validation}
+                note={description}
+                required={required}
+                rows={rows}
+            />
+        );
+    }
 
     return (
         <AdminInput
@@ -238,10 +246,9 @@ export const Input = (props: InputProps) => {
             value={inputValue}
             onChange={onChange}
             onBlur={onBlur}
-            label={label}
-            // startIcon={icon}
+            startIcon={getValidIcon(icon)}
+            endIcon={getValidIcon(trailingIcon)}
             placeholder={placeholder}
-            // trailingIcon={trailingIcon}
             size={size}
             className={classNames("webiny-ui-input")}
             data-testid={props["data-testid"]}
