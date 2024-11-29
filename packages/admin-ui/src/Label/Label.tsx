@@ -89,7 +89,8 @@ const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
 const labelVariants = cva(
     [
         "inline-flex items-center justify-between w-full text-sm leading-none",
-        "text-neutral-primary"
+        "text-neutral-primary",
+        "peer-disabled:text-neutral-disabled peer-disabled:cursor-not-allowed"
     ],
     {
         variants: {
@@ -119,7 +120,10 @@ interface LabelProps
 }
 
 const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
-    ({ className, disabled, description, hint, required, value, text, weight, ...props }, ref) => {
+    (
+        { className, disabled, description, hint, required, value, text, weight, id, ...props },
+        ref
+    ) => {
         if (!text) {
             return null;
         }
@@ -127,7 +131,8 @@ const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>,
         return (
             <LabelPrimitive.Root
                 ref={ref}
-                className={cn(labelVariants({ disabled, weight }), className)}
+                className={cn(labelVariants({ weight }), className)}
+                htmlFor={id}
                 {...props}
             >
                 <span>

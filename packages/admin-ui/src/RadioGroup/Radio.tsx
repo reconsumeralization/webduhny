@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { cn, makeDecoratable } from "~/utils";
+import { Label } from "~/Label";
 
 /**
  * RadioItem
@@ -40,16 +41,7 @@ const DecoratableRadio = React.forwardRef<
                     />
                 </RadioGroupPrimitive.Indicator>
             </RadioGroupPrimitive.Item>
-            <label
-                htmlFor={id}
-                className={cn([
-                    "text-md",
-                    "text-neutral-primary",
-                    "peer-disabled:cursor-not-allowed peer-disabled:text-neutral-disabled"
-                ])}
-            >
-                {label}
-            </label>
+            <Label id={id} text={label} weight={"light"} className={"text-md"} />
         </div>
     );
 });

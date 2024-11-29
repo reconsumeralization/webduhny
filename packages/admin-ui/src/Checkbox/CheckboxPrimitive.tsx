@@ -5,6 +5,7 @@ import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
 import { CheckboxItemFormatted } from "./CheckboxItemFormatted";
 import { CheckboxItemDto } from "./CheckboxItemDto";
+import { Label } from "~/Label";
 
 /**
  * Indeterminate Icon
@@ -86,16 +87,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                     </CheckboxPrimitives.Indicator>
                 </span>
             </CheckboxPrimitives.Root>
-            <label
-                htmlFor={id}
-                className={cn([
-                    "text-md",
-                    "text-neutral-primary",
-                    "peer-disabled:cursor-not-allowed peer-disabled:text-neutral-disabled"
-                ])}
-            >
-                {label}
-            </label>
+            <Label id={id} text={label} weight={"light"} className={"text-md"} />
         </div>
     );
 });
