@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { RangeSlider } from "./RangeSlider";
 
 const meta: Meta<typeof RangeSlider> = {
-    title: "Components/RangeSlider",
+    title: "Components/Form/RangeSlider",
     component: RangeSlider,
     tags: ["autodocs"],
     argTypes: {
