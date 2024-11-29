@@ -82,7 +82,7 @@ const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
  */
 const inputVariants = cva(
     [
-        "flex w-full border-sm text-md",
+        "w-full border-sm text-md",
         "focus-visible:outline-none",
         "disabled:cursor-not-allowed",
         "file:bg-transparent file:border-none file:text-sm file:font-semibold"
@@ -229,7 +229,7 @@ const DecoratableInputPrimitive = React.forwardRef<HTMLInputElement, InputPrimit
         const iconPosition = getIconPosition(startIcon, endIcon);
 
         return (
-            <div className={"relative flex items-center w-full"}>
+            <div className={cn("relative flex items-center w-full", className)}>
                 {startIcon && (
                     <Icon
                         disabled={disabled}
@@ -239,9 +239,7 @@ const DecoratableInputPrimitive = React.forwardRef<HTMLInputElement, InputPrimit
                     />
                 )}
                 <input
-                    className={cn(
-                        inputVariants({ variant, size, className, iconPosition, invalid })
-                    )}
+                    className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
                     ref={ref}
                     disabled={disabled}
                     size={maxLength}

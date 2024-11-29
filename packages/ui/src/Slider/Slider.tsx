@@ -1,4 +1,5 @@
 import React from "react";
+import omit from "lodash/omit";
 import { Slider as AdminSlider } from "@webiny/admin-ui";
 import { FormComponentProps } from "~/types";
 
@@ -68,7 +69,7 @@ class Slider extends React.Component<Props> {
 
         return (
             <AdminSlider
-                {...this.props}
+                {...omit(this.props, ["displayMarkers", "discrete", "onInput", "onChange"])}
                 label={label}
                 min={this.toFloat(this.props.min)}
                 max={this.toFloat(this.props.max, 100)}

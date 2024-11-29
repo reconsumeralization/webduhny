@@ -108,6 +108,42 @@ const getOptions = (initialOptions: SelectProps["options"]): SelectOptionDto[] =
 };
 
 /**
+ * Select component lets users to manually build the option list.
+ */
+function getChildrenOptions(children: React.ReactNode): SelectOptionDto[] {
+    return React.Children.toArray(children)
+        .filter(
+            child =>
+                React.isValidElement(child) &&
+                (child.type === "option" || child.type === "optgroup")
+        )
+        .map(child => {
+            const element = child as React.ReactElement<{
+                value?: string;
+                label?: string;
+                children?: React.ReactNode;
+            }>;
+
+            if (React.isValidElement(child) && child.type === "option") {
+                return {
+                    value: element.props.value || "",
+                    label: element.props.children?.toString() || ""
+                };
+            }
+
+            if (React.isValidElement(child) && child.type === "optgroup") {
+                return {
+                    label: element.props.label || "",
+                    options: getChildrenOptions(element.props.children)
+                };
+            }
+
+            return null; // This shouldn't be reached
+        })
+        .filter(Boolean) as SelectOptionDto[];
+}
+
+/**
  * Select component lets users choose a value from given set of options.
  */
 const skipProps = ["validate", "form"];
@@ -132,6 +168,7 @@ export const Select = (props: SelectProps) => {
     const value = initialValue === null || initialValue === undefined ? "" : initialValue;
 
     const options = getOptions(other.options);
+    const childrenOptions = getChildrenOptions(props.children);
 
     // Memoize the label and placeholder values based on the component size.
     const { label, placeholder } = useMemo(() => {
@@ -170,7 +207,7 @@ export const Select = (props: SelectProps) => {
     return (
         <AdminSelect
             {...getRmwcProps(other)}
-            options={options}
+            options={[...options, ...childrenOptions]}
             value={value}
             label={label}
             placeholder={placeholder}
