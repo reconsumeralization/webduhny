@@ -81,13 +81,9 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         maxLength?: number;
 
         // A callback that is executed when input focus is lost.
-        onBlur?: (
-            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
-        ) => any;
+        onBlur?: (e: React.SyntheticEvent<any>) => any;
 
-        onKeyDown?: (
-            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
-        ) => any;
+        onKeyDown?: (e: React.SyntheticEvent<any>) => any;
 
         // A callback that gets triggered when the user presses the "Enter" key.
         onEnter?: () => any;
@@ -104,13 +100,9 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         children?: React.ReactNode;
     };
 
-export type InputOnKeyDownProps =
-    | (React.SyntheticEvent<HTMLInputElement> & {
-          key?: string;
-      })
-    | (React.SyntheticEvent<HTMLTextAreaElement> & {
-          key?: string;
-      });
+export type InputOnKeyDownProps = React.SyntheticEvent<any> & {
+    key?: string;
+};
 /**
  * Use Input component to store short string values, like first name, last name, e-mail etc.
  * Additionally, with rows prop, it can also be turned into a text area, to store longer strings.
@@ -137,7 +129,7 @@ const rmwcProps = [
  */
 export const Input = (props: InputProps) => {
     const onChange = useCallback(
-        (e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>) => {
+        (e: React.SyntheticEvent<any>) => {
             const { onChange, rawOnChange } = props;
             if (!onChange) {
                 return;
@@ -150,9 +142,7 @@ export const Input = (props: InputProps) => {
     );
 
     const onBlur = useCallback(
-        async (
-            e: React.SyntheticEvent<HTMLInputElement> | React.SyntheticEvent<HTMLTextAreaElement>
-        ) => {
+        async (e: React.SyntheticEvent<any>) => {
             const { validate, onBlur } = props;
             if (validate) {
                 // Since we are accessing event in an async operation, we need to persist it.
