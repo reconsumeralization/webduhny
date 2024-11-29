@@ -40,7 +40,7 @@ export interface RmwcSelectProps {
     /** Add a leading icon. */
     icon?: React.ReactNode;
     /** Advanced: A reference to the MDCFoundation. */
-    // foundationRef?: React.Ref<MDCSelectFoundation>;
+    foundationRef?: any;
 }
 
 export type SelectProps = FormComponentProps &

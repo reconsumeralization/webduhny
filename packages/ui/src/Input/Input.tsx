@@ -39,9 +39,9 @@ export interface TextFieldProps {
     /** Makes the TextField fullwidth. */
     fullwidth?: boolean;
     /** Add a leading icon. */
-    icon?: React.ReactNode;
+    icon?: any;
     /** Add a trailing icon. */
-    trailingIcon?: React.ReactNode;
+    trailingIcon?: any;
     /** By default, props spread to the input. These props are for the component's root container. */
     rootProps?: any;
     /** A reference to the native input or textarea. */
@@ -138,7 +138,7 @@ export const Input = (props: InputProps) => {
             // @ts-expect-error
             onChange(rawOnChange ? e : e.target.value);
         },
-        [props.onChange]
+        [props.onChange, props.rawOnChange]
     );
 
     const onBlur = useCallback(

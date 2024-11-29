@@ -34,7 +34,7 @@ class RadioGroup extends React.Component<Props> {
         const { isValid: validationIsValid, message: validationMessage } = validation || {};
 
         return (
-            <React.Fragment>
+            <div className={"w-full"}>
                 <FormComponentLabel text={label} />
                 <DeprecatedAdminRadioGroup value={value} onValueChange={onChange}>
                     {this.props.children({
@@ -47,7 +47,7 @@ class RadioGroup extends React.Component<Props> {
                     invalid={validationIsValid === false}
                 />
                 <FormComponentNote text={description} />
-            </React.Fragment>
+            </div>
         );
     }
 }

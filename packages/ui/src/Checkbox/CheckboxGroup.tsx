@@ -20,11 +20,12 @@ type Props = FormComponentProps & {
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `CheckboxGroup` component from the `@webiny/admin-ui/CheckboxGroup` package instead.
+ * Please use the `CheckboxGroup` component from the `@webiny/admin-ui` package instead.
  */
 class CheckboxGroup extends React.Component<Props> {
     public override render() {
         const { description, label, validation } = this.props;
+        const { isValid: validationIsValid, message: validationMessage } = validation || {};
 
         return (
             <div className={"w-full"}>
@@ -51,8 +52,8 @@ class CheckboxGroup extends React.Component<Props> {
                     }
                 })}
                 <FormComponentErrorMessage
-                    text={validation?.message}
-                    invalid={validation?.isValid === false}
+                    invalid={Boolean(validationIsValid === false)}
+                    text={validationMessage}
                 />
                 <FormComponentNote text={description} />
             </div>

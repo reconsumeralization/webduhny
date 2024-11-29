@@ -2,7 +2,8 @@ import React from "react";
 import { Text } from "~/Text";
 import { makeDecoratable } from "~/utils";
 
-interface FormComponentErrorMessageProps {
+interface FormComponentErrorMessageProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     text?: React.ReactNode;
     invalid?: boolean;
 }

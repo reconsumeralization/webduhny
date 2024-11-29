@@ -29,7 +29,7 @@ interface Props extends FormComponentProps {
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Checkbox` component from the `@webiny/admin-ui/Checkbox` package instead.
+ * Please use the `Checkbox` component from the `@webiny/admin-ui` package instead.
  */
 class Checkbox extends React.Component<Props> {
     onChange = (checked: boolean) => {

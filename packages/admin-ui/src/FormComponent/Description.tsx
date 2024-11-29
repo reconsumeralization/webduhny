@@ -2,7 +2,8 @@ import React from "react";
 import { Text } from "~/Text";
 import { makeDecoratable } from "~/utils";
 
-interface FormComponentDescriptionProps {
+interface FormComponentDescriptionProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     text?: React.ReactNode;
 }
 

@@ -43,6 +43,7 @@ class Switch extends React.Component<Props> {
                 validation={validation}
                 className={"webiny-ui-switch"}
                 checked={Boolean(value)}
+                value={String(value)}
                 onCheckedChange={() => this.props.onChange && this.props.onChange(!value)}
             />
         );
