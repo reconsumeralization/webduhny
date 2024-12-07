@@ -22,7 +22,7 @@ type AutoCompleteOption = CommandOptionDto | string;
 
 type AutoCompletePrimitiveProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> &
     InputPrimitiveProps & {
-        emptyMessage?: string;
+        emptyMessage?: React.ReactNode;
         onOpenChange?: (open: boolean) => void;
         onValueChange: (value: string) => void;
         onValueReset?: () => void;
@@ -43,7 +43,6 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
             if (event.key.toLowerCase() === "backspace") {
                 setListOpenState(true);
                 setSelectedOption("");
-                setInputValue("");
             }
         },
         [setListOpenState, setSelectedOption, setInputValue, vm.listVm.isOpen]

@@ -1,5 +1,5 @@
 import { AutoCompletePresenter } from "./AutoCompletePresenter";
-import { AutoCompleteInputPresenter } from "~/AutoComplete/AutoCompleteInputPresenter";
+import { AutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
 
 describe("AutoCompletePresenter", () => {
     const inputPresenter = new AutoCompleteInputPresenter();
@@ -31,14 +31,16 @@ describe("AutoCompletePresenter", () => {
                     label: "Option 1",
                     disabled: false,
                     selected: false,
-                    separator: false
+                    separator: false,
+                    item: null
                 },
                 {
                     value: "Option 2",
                     label: "Option 2",
                     disabled: false,
                     selected: false,
-                    separator: false
+                    separator: false,
+                    item: null
                 }
             ]);
             expect(presenter.vm.listVm.isEmpty).toEqual(false);
@@ -66,6 +68,14 @@ describe("AutoCompletePresenter", () => {
                         value: "option-4",
                         label: "Option 4",
                         separator: true
+                    },
+                    {
+                        value: "option-5",
+                        label: "Option 5",
+                        item: {
+                            anyKey1: "custom-value",
+                            anyKey2: 2
+                        }
                     }
                 ]
             });
@@ -76,28 +86,43 @@ describe("AutoCompletePresenter", () => {
                     label: "Option 1",
                     disabled: false,
                     selected: false,
-                    separator: false
+                    separator: false,
+                    item: null
                 },
                 {
                     value: "option-2",
                     label: "Option 2",
                     disabled: false,
                     selected: false, // `selected` is overwritten by the presenter
-                    separator: false
+                    separator: false,
+                    item: null
                 },
                 {
                     value: "option-3",
                     label: "Option 3",
                     disabled: true,
                     selected: false,
-                    separator: false
+                    separator: false,
+                    item: null
                 },
                 {
                     value: "option-4",
                     label: "Option 4",
                     disabled: false,
                     selected: false,
-                    separator: true
+                    separator: true,
+                    item: null
+                },
+                {
+                    value: "option-5",
+                    label: "Option 5",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: {
+                        anyKey1: "custom-value",
+                        anyKey2: 2
+                    }
                 }
             ]);
             expect(presenter.vm.listVm.isEmpty).toEqual(false);
@@ -112,14 +137,16 @@ describe("AutoCompletePresenter", () => {
                     label: "Option 1",
                     disabled: false,
                     selected: true,
-                    separator: false
+                    separator: false,
+                    item: null
                 },
                 {
                     value: "Option 2",
                     label: "Option 2",
                     disabled: false,
                     selected: false,
-                    separator: false
+                    separator: false,
+                    item: null
                 }
             ]);
             expect(presenter.vm.listVm.isEmpty).toEqual(false);
@@ -157,14 +184,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
 
@@ -176,14 +205,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: true,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
     });
@@ -220,14 +251,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: true,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
         expect(presenter.vm.inputVm.value).toEqual("Option 1");
@@ -256,14 +289,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
 
@@ -274,14 +309,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: true,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
         expect(presenter.vm.inputVm.value).toEqual("Option 1");
@@ -293,14 +330,16 @@ describe("AutoCompletePresenter", () => {
                 value: "option-1",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             },
             {
                 label: "Option 2",
                 value: "option-2",
                 disabled: false,
                 selected: false,
-                separator: false
+                separator: false,
+                item: null
             }
         ]);
         expect(presenter.vm.inputVm.value).toEqual("");

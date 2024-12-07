@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import { CommandOption, CommandOptionFormatter } from "~/Command";
+import { CommandOption } from "~/Command/CommandOption";
+import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
 import { AutoCompleteOption } from "./AutoCompletePrimitive";
 import { IAutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
 
 interface AutoCompletePresenterParams {
-    emptyMessage?: string;
+    emptyMessage?: any;
     isLoading?: boolean;
     onOpenChange?: (open: boolean) => void;
     onValueChange: (value: string) => void;
@@ -81,8 +82,6 @@ class AutoCompletePresenter {
             optionToSelect.selected = true;
             this.inputPresenter.setValue(optionToSelect.label);
             return;
-        } else {
-            this.inputPresenter.setValue(value || "");
         }
     }
 

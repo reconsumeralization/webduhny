@@ -21,7 +21,14 @@ const meta: Meta<typeof AutoCompletePrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <AutoCompletePrimitive {...args} value={value} onValueChange={setValue} />;
+        return (
+            <div className={"w-full"}>
+                <AutoCompletePrimitive {...args} value={value} onValueChange={setValue} />
+                <div className={"mt-4 text-center"}>
+                    Current selected value: <pre>{value}</pre>
+                </div>
+            </div>
+        );
     }
 };
 
