@@ -1,6 +1,5 @@
 import React, { KeyboardEvent } from "react";
-import { Command as CommandPrimitive } from "cmdk";
-import { CommandList, CommandInput, Command, CommandOptionDto } from "~/Command";
+import { CommandList, CommandInput, Command, CommandOptionDto, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
@@ -20,7 +19,7 @@ const commandListVariants = cva(
 
 type AutoCompleteOption = CommandOptionDto | string;
 
-type AutoCompletePrimitiveProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> &
+type AutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
         emptyMessage?: React.ReactNode;
         isLoading?: boolean;
