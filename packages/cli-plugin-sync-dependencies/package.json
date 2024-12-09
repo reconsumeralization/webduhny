@@ -9,7 +9,7 @@
   },
   "author": "Webiny Ltd.",
   "contributors": [
-    "Pavel Denisjuk <pavel@webiny.com>"
+    "Bruno Zorić <bruno@webiny.com>"
   ],
   "description": "A tool to generate sync files for Webiny dependencies.",
   "dependencies": {

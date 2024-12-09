@@ -229,7 +229,7 @@
     },
     {
       "name": "@commodo/fields",
-      "version": "1.2.1",
+      "version": "1.1.2-beta.20",
       "files": [
         "/packages/api-admin-users/package.json",
         "/packages/api-apw/package.json",
@@ -7150,7 +7150,7 @@
       "name": "@commodo/fields",
       "versions": [
         {
-          "version": "1.2.1",
+          "version": "1.1.2-beta.20",
           "files": [
             { "file": "/packages/api-admin-users/package.json", "types": ["dependencies"] },
             { "file": "/packages/api-apw/package.json", "types": ["dependencies"] },

@@ -23,7 +23,9 @@ export const listAllReferences = async (
 
     const allPackages = await listAllPackages.list(target);
 
-    const allPackageJsonFiles = await listAllPackageJsonFiles.list(allPackages);
+    const allPackageJsonFiles = await listAllPackageJsonFiles.list({
+        targets: allPackages
+    });
 
     const files = [path.join(basePath, "package.json"), ...allPackageJsonFiles];
 

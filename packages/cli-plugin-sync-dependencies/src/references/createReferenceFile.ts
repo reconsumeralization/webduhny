@@ -31,11 +31,11 @@ export const createReferenceFile = async (params: ICreateReferenceFileParams): P
             references: tree.references
         },
         {
-            indent: 0
+            indent: 2
         }
     );
 
     writeJsonFile.sync(duplicatesPath, tree.duplicates, {
-        indent: 0
+        indent: 2
     });
 };

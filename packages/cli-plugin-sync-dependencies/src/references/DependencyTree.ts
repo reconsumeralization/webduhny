@@ -88,10 +88,11 @@ export class DependencyTree implements IDependencyTree {
                     continue;
                 }
                 version = version
-                    .replace("^", "")
-                    .replace("~", "")
-                    .replace(">", "")
-                    .replace("=", "");
+                    .replace(/\^/g, "")
+                    .replace(/~/g, "")
+                    .replace(/>/g, "")
+                    .replace(/</g, "")
+                    .replace(/=/g, "");
                 const existing = this.packages[key].find(item => {
                     return item.name === name && item.version === version;
                 });
