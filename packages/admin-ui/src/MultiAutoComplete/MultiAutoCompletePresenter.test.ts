@@ -1,0 +1,592 @@
+import { MultiAutoCompletePresenter } from "./MultiAutoCompletePresenter";
+import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
+import { ListCache } from "~/MultiAutoComplete/ListCache";
+import { CommandOption } from "~/Command";
+import { MultiAutoCompleteSelectedOptionsPresenter } from "~/MultiAutoComplete/MultiAutoCompleteSelectedOptionsPresenter";
+
+describe("MultiAutoCompletePresenter", () => {
+    const inputPresenter = new MultiAutoCompleteInputPresenter();
+    const selectedCache = new ListCache<CommandOption>();
+    const selectedPresenter = new MultiAutoCompleteSelectedOptionsPresenter(selectedCache);
+    const optionsCache = new ListCache<CommandOption>();
+    const presenter = new MultiAutoCompletePresenter(
+        inputPresenter,
+        selectedPresenter,
+        optionsCache
+    );
+    const onValuesChange = jest.fn();
+
+    it("should return the compatible `vm.inputVm` based on params", () => {
+        // `placeholder`
+        {
+            presenter.init({ onValuesChange, placeholder: "Custom placeholder" });
+            expect(presenter.vm.inputVm.placeholder).toEqual("Custom placeholder");
+        }
+
+        {
+            // default: no params
+            presenter.init({ onValuesChange });
+            expect(presenter.vm.inputVm.placeholder).toEqual("Start typing or select");
+            expect(presenter.vm.inputVm.hasValue).toEqual(false);
+        }
+    });
+
+    it("should return the compatible `vm.selectedOptionsVm` based on params`", () => {
+        // `values`
+        {
+            presenter.init({
+                onValuesChange,
+                options: ["Option 1", "Option 2", "Option 3"],
+                values: ["Option 1", "Option 2"]
+            });
+            expect(presenter.vm.selectedOptionsVm.options).toEqual([
+                {
+                    value: "Option 1",
+                    label: "Option 1",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "Option 2",
+                    label: "Option 2",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                }
+            ]);
+        }
+
+        // default: no params
+        {
+            presenter.init({ onValuesChange, options: ["Option 1", "Option 2"] });
+            expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
+        }
+    });
+
+    it("should return the compatible `vm.listVm` based on params", () => {
+        // with `options` as string
+        {
+            presenter.init({ onValuesChange, options: ["Option 1", "Option 2"] });
+            expect(presenter.vm.listVm.options).toEqual([
+                {
+                    value: "Option 1",
+                    label: "Option 1",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "Option 2",
+                    label: "Option 2",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: null
+                }
+            ]);
+            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+        }
+
+        // with `options` as formatted options
+        {
+            presenter.init({
+                onValuesChange,
+                options: [
+                    {
+                        value: "option-1",
+                        label: "Option 1"
+                    },
+                    {
+                        value: "option-2",
+                        label: "Option 2"
+                    },
+                    {
+                        value: "option-3",
+                        label: "Option 3",
+                        disabled: true
+                    },
+                    {
+                        value: "option-4",
+                        label: "Option 4",
+                        separator: true
+                    },
+                    {
+                        value: "option-5",
+                        label: "Option 5",
+                        item: {
+                            anyKey1: "custom-value",
+                            anyKey2: 2
+                        }
+                    }
+                ]
+            });
+
+            expect(presenter.vm.listVm.options).toEqual([
+                {
+                    value: "option-1",
+                    label: "Option 1",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "option-2",
+                    label: "Option 2",
+                    disabled: false,
+                    selected: false, // `selected` is overwritten by the presenter
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "option-3",
+                    label: "Option 3",
+                    disabled: true,
+                    selected: false,
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "option-4",
+                    label: "Option 4",
+                    disabled: false,
+                    selected: false,
+                    separator: true,
+                    item: null
+                },
+                {
+                    value: "option-5",
+                    label: "Option 5",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: {
+                        anyKey1: "custom-value",
+                        anyKey2: 2
+                    }
+                }
+            ]);
+            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+        }
+
+        // with `options` and `value`
+        {
+            presenter.init({
+                onValuesChange,
+                options: ["Option 1", "Option 2"],
+                values: ["Option 1"]
+            });
+            expect(presenter.vm.listVm.options).toEqual([
+                {
+                    value: "Option 1",
+                    label: "Option 1",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                },
+                {
+                    value: "Option 2",
+                    label: "Option 2",
+                    disabled: false,
+                    selected: false,
+                    separator: false,
+                    item: null
+                }
+            ]);
+            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+        }
+
+        {
+            // default: no params
+            presenter.init({ onValuesChange });
+            expect(presenter.vm.listVm.options).toEqual([]);
+            expect(presenter.vm.listVm.emptyMessage).toEqual("No results.");
+            expect(presenter.vm.listVm.loadingMessage).toEqual("Loading...");
+            expect(presenter.vm.listVm.isOpen).toEqual(false);
+            expect(presenter.vm.listVm.isEmpty).toEqual(true);
+        }
+    });
+
+    it("should change the `options` and `selectedOptionsVm` state + call `onValueChange` callback when `setSelectedOption` is called", () => {
+        presenter.init({
+            onValuesChange,
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ]
+        });
+
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.setSelectedOption("option-2");
+        expect(onValuesChange).toHaveBeenCalledWith(["option-2"]);
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.setSelectedOption("option-1");
+        expect(onValuesChange).toHaveBeenCalledWith(["option-1", "option-2"]);
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+    });
+
+    it("should change the `options` and `selectedOptionsVm` state and call `onValueChange` callback when `removeSelectedOption` is called", () => {
+        presenter.init({
+            onValuesChange,
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ],
+            values: ["option-2", "option-1"]
+        });
+
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.removeSelectedOption("option-2");
+        expect(onValuesChange).toHaveBeenCalledWith(["option-2"]);
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.removeSelectedOption("option-1");
+        expect(onValuesChange).toHaveBeenCalledWith([]);
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
+    });
+
+    it("should set the internal `inputValue` when `setInputValue` is called", () => {
+        presenter.init({
+            onValuesChange
+        });
+
+        presenter.setInputValue("value");
+        expect(presenter.vm.inputVm.value).toEqual("value");
+        expect(presenter.vm.inputVm.hasValue).toEqual(true);
+    });
+
+    it("should set the option as `selected` when the presenter is initialized with a value", () => {
+        presenter.init({
+            onValuesChange,
+            values: ["option-1"],
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ]
+        });
+
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.inputVm.value).toEqual("Option 1");
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+    });
+
+    it("should reset the internal `options` state and call `onValueChange` + `onValueReset` callbacks when `resetValue` is called", () => {
+        const onValueReset = jest.fn();
+        presenter.init({
+            onValuesChange,
+            onValueReset,
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ]
+        });
+
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.setSelectedOption("option-1");
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+
+        presenter.resetValues();
+        expect(presenter.vm.listVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.inputVm.value).toEqual("");
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
+
+        expect(onValuesChange).toHaveBeenCalledWith([]);
+        expect(onValueReset).toHaveBeenCalled();
+    });
+
+    it("should change `listVm` and call `onOpenChange` when `setListOpenState` is called", () => {
+        const onOpenChange = jest.fn();
+
+        // let's open it
+        presenter.init({ onValuesChange, onOpenChange });
+        presenter.setListOpenState(true);
+        expect(presenter.vm.listVm.isOpen).toBe(true);
+        expect(onOpenChange).toHaveBeenCalledWith(true);
+
+        // let's close it
+        presenter.setListOpenState(false);
+        expect(presenter.vm.listVm.isOpen).toBe(false);
+        expect(onOpenChange).toHaveBeenCalledWith(false);
+    });
+});

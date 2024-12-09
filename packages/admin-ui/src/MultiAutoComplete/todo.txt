@@ -1,0 +1,1 @@
+1) The Selected values should be ordered based on selection change
