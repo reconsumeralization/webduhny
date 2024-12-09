@@ -23,6 +23,8 @@ type AutoCompleteOption = CommandOptionDto | string;
 type AutoCompletePrimitiveProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> &
     InputPrimitiveProps & {
         emptyMessage?: React.ReactNode;
+        isLoading?: boolean;
+        loadingMessage?: React.ReactNode;
         onOpenChange?: (open: boolean) => void;
         onValueChange: (value: string) => void;
         onValueReset?: () => void;
@@ -82,7 +84,8 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                     <CommandList
                         options={vm.listVm.options}
                         onOptionSelect={handleSelectOption}
-                        isLoading={vm.listVm.isLoading}
+                        isLoading={props.isLoading}
+                        loadingMessage={vm.listVm.loadingMessage}
                         emptyMessage={vm.listVm.emptyMessage}
                         optionRenderer={props.optionRenderer}
                     />

@@ -3,10 +3,11 @@ import { CommandOption } from "~/Command/CommandOption";
 import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
 import { AutoCompleteOption } from "./AutoCompletePrimitive";
 import { IAutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
+import { CommandOptionFormatted } from "~/Command";
 
 interface AutoCompletePresenterParams {
     emptyMessage?: any;
-    isLoading?: boolean;
+    loadingMessage?: any;
     onOpenChange?: (open: boolean) => void;
     onValueChange: (value: string) => void;
     onValueReset?: () => void;
@@ -15,7 +16,25 @@ interface AutoCompletePresenterParams {
     value?: string;
 }
 
-class AutoCompletePresenter {
+interface IAutoCompletePresenterParams {
+    vm: {
+        inputVm: IAutoCompleteInputPresenter["vm"];
+        listVm: {
+            options: CommandOptionFormatted[];
+            emptyMessage: string;
+            loadingMessage: string;
+            isOpen: boolean;
+            isEmpty: boolean;
+        };
+    };
+    init: (params: AutoCompletePresenterParams) => void;
+    setListOpenState: (open: boolean) => void;
+    setSelectedOption: (value: string) => void;
+    setInputValue: (value: string) => void;
+    resetValue: () => void;
+}
+
+class AutoCompletePresenter implements IAutoCompletePresenterParams {
     private inputPresenter: IAutoCompleteInputPresenter;
     private params?: AutoCompletePresenterParams = undefined;
     private options: CommandOption[] = [];
@@ -39,14 +58,12 @@ class AutoCompletePresenter {
     }
 
     get vm() {
-        const { emptyMessage = "No results.", isLoading = false } = this.params || {};
-
         return {
             inputVm: this.inputPresenter.vm,
             listVm: {
                 options: this.options.map(option => CommandOptionFormatter.format(option)),
-                emptyMessage,
-                isLoading,
+                emptyMessage: this.params?.emptyMessage ?? "No results.",
+                loadingMessage: this.params?.loadingMessage ?? "Loading...",
                 isOpen: this.isListOpen,
                 isEmpty: this.options.length === 0
             }

@@ -11,6 +11,7 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             value: props.value,
             placeholder: props.placeholder,
             emptyMessage: props.emptyMessage,
+            loadingMessage: props.loadingMessage,
             onOpenChange: props.onOpenChange,
             onValueChange: props.onValueChange,
             onValueReset: props.onValueReset
@@ -20,6 +21,7 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             props.value,
             props.placeholder,
             props.emptyMessage,
+            props.loadingMessage,
             props.onOpenChange,
             props.onValueChange,
             props.onValueReset

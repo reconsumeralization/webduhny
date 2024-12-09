@@ -157,7 +157,7 @@ describe("AutoCompletePresenter", () => {
             presenter.init({ onValueChange });
             expect(presenter.vm.listVm.options).toEqual([]);
             expect(presenter.vm.listVm.emptyMessage).toEqual("No results.");
-            expect(presenter.vm.listVm.isLoading).toEqual(false);
+            expect(presenter.vm.listVm.loadingMessage).toEqual("Loading...");
             expect(presenter.vm.listVm.isOpen).toEqual(false);
             expect(presenter.vm.listVm.isEmpty).toEqual(true);
         }

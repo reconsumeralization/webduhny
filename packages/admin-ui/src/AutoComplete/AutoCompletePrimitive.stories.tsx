@@ -5,8 +5,6 @@ import { ReactComponent as TimerIcon } from "@material-design-icons/svg/outlined
 import { AutoCompletePrimitive } from "./AutoCompletePrimitive";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
-import { Grid } from "~/Grid";
-import { SelectPrimitive } from "~/Select";
 
 const meta: Meta<typeof AutoCompletePrimitive> = {
     title: "Components/Form Primitives/Autocomplete",
@@ -98,6 +96,13 @@ export const WithStartAndEndIcons: Story = {
         ...Default.args,
         startIcon: <Icon label={"Search"} icon={<SearchIcon />} />,
         endIcon: <Icon label={"Timezones"} icon={<TimerIcon />} />
+    }
+};
+
+export const WithLoading: Story = {
+    args: {
+        ...Default.args,
+        isLoading: true
     }
 };
 
@@ -441,58 +446,6 @@ export const WithExternalValueControl: Story = {
                         onValueChange={value => setValue(value)}
                     />
                 </div>
-                <div className={"mt-4 text-center"}>
-                    <Button text={"Reset"} onClick={() => setValue("")} />
-                </div>
-                <div className={"mt-4 text-center"}>
-                    Current selected value: <pre>{value}</pre>
-                </div>
-            </div>
-        );
-    }
-};
-
-export const WithSelect: Story = {
-    args: {
-        ...Default.args,
-        options: [
-            { label: "Eastern Standard Time (EST)", value: "est" },
-            { label: "Central Standard Time (CST)", value: "cst" },
-            { label: "Pacific Standard Time (PST)", value: "pst" },
-            { label: "Greenwich Mean Time (GMT)", value: "gmt" },
-            { label: "Central European Time (CET)", value: "cet" },
-            { label: "Central Africa Time (CAT)", value: "cat" },
-            { label: "India Standard Time (IST)", value: "ist" },
-            { label: "China Standard Time (CST)", value: "cst_china" },
-            { label: "Japan Standard Time (JST)", value: "jst" },
-            { label: "Australian Western Standard Time (AWST)", value: "awst" },
-            { label: "New Zealand Standard Time (NZST)", value: "nzst" },
-            { label: "Fiji Time (FJT)", value: "fjt" },
-            { label: "Argentina Time (ART)", value: "art" },
-            { label: "Bolivia Time (BOT)", value: "bot" },
-            { label: "Brasilia Time (BRT)", value: "brt" }
-        ]
-    },
-    render: args => {
-        const [value, setValue] = useState(args.value);
-        return (
-            <div className={"w-full"}>
-                <Grid>
-                    <Grid.Column span={6}>
-                        <AutoCompletePrimitive
-                            {...args}
-                            value={value}
-                            onValueChange={value => setValue(value)}
-                        />
-                    </Grid.Column>
-                    <Grid.Column span={6}>
-                        <SelectPrimitive
-                            options={args.options}
-                            value={value}
-                            onValueChange={value => setValue(value)}
-                        />
-                    </Grid.Column>
-                </Grid>
                 <div className={"mt-4 text-center"}>
                     <Button text={"Reset"} onClick={() => setValue("")} />
                 </div>
