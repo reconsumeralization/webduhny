@@ -12594,6 +12594,7 @@ __metadata:
   resolution: "@webiny/api-headless-cms-tasks@workspace:packages/api-headless-cms-tasks"
   dependencies:
     "@webiny/api": 0.0.0
+    "@webiny/api-aco": 0.0.0
     "@webiny/api-headless-cms": 0.0.0
     "@webiny/api-headless-cms-bulk-actions": 0.0.0
     "@webiny/api-headless-cms-import-export": 0.0.0

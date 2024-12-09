@@ -74,8 +74,16 @@ export class DeleteModelRunner<
                 sort: ["id_ASC"]
             });
             for (const item of items) {
-                const result = await this.deleteEntry(model, item.id);
-                if (!result) {
+                try {
+                    await this.context.cms.deleteEntry(model, item.id, {
+                        permanently: true,
+                        force: true
+                    });
+                } catch (ex) {
+                    console.error("Failed to delete entry.", {
+                        model: model.modelId,
+                        id: item.id
+                    });
                     return this.response.error(
                         new Error(`Failed to delete entry "${item.id}". Cannot continue.`)
                     );
@@ -102,6 +110,27 @@ export class DeleteModelRunner<
                 }
             );
         }
+
+        let hasMoreFolders = false;
+        do {
+            const [items, meta] = await this.context.aco.folder.list({
+                where: {
+                    type: `cms:${model.modelId}`
+                },
+                limit: 1000
+            });
+            for (const item of items) {
+                try {
+                    await this.context.aco.folder.delete(item.id);
+                } catch (ex) {
+                    console.error(`Failed to delete folder "${item.id}".`, ex);
+                    return this.response.error(ex);
+                }
+            }
+
+            hasMoreFolders = meta.hasMoreItems;
+        } while (hasMoreFolders);
+
         /**
          * When there is no more records to be deleted, let's delete the model.
          */
@@ -143,22 +172,6 @@ export class DeleteModelRunner<
             },
             original: model
         });
-    }
-
-    private async deleteEntry(model: CmsModel, id: string): Promise<boolean> {
-        try {
-            await this.context.cms.deleteEntry(model, id, {
-                permanently: true,
-                force: true
-            });
-            return true;
-        } catch (ex) {
-            console.warn("Failed to delete entry.", {
-                model: model.modelId,
-                id
-            });
-        }
-        return false;
     }
 }
 
