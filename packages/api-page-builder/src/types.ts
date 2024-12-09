@@ -1,4 +1,5 @@
 import { DefaultSettingsCrudOptions, PbContext } from "~/graphql/types";
+import { GenericRecord } from "@webiny/api/types";
 
 export * from "./graphql/types";
 
@@ -888,6 +889,18 @@ export interface PageBlockStorageOperations {
     delete(params: PageBlockStorageOperationsDeleteParams): Promise<void>;
 }
 
+export interface PageTemplateDataSource {
+    name: string;
+    type: string;
+    config: GenericRecord;
+}
+
+export interface PageTemplateDataBinding {
+    dataSource: string;
+    bindFrom: string;
+    bindTo: string;
+}
+
 /**
  * @category RecordModel
  */
@@ -898,8 +911,9 @@ export interface PageTemplate {
     tags: string[];
     description: string;
     layout?: string;
-    pageCategory: string;
     content?: any;
+    dataSources?: PageTemplateDataSource[];
+    dataBindings?: PageTemplateDataBinding[];
     createdOn: string;
     savedOn: string;
     createdBy: CreatedBy;
@@ -909,7 +923,14 @@ export interface PageTemplate {
 
 export type PageTemplateInput = Pick<
     PageTemplate,
-    "title" | "description" | "content" | "slug" | "tags" | "layout" | "pageCategory"
+    | "title"
+    | "description"
+    | "content"
+    | "slug"
+    | "tags"
+    | "layout"
+    | "dataBindings"
+    | "dataSources"
 > & { id?: string };
 
 /**

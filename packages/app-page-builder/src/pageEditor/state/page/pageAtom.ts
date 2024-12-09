@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { PbEditorElement } from "~/types";
+import { PbEditorElementTree } from "~/types";
 
 interface PageCategoryType {
     slug: string;
@@ -8,7 +8,7 @@ interface PageCategoryType {
 }
 
 export interface PageWithContent extends PageAtomType {
-    content: PbEditorElement;
+    content: PbEditorElementTree;
 }
 
 export interface PageAtomType {

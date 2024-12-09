@@ -26,14 +26,35 @@ import { createTopic } from "@webiny/pubsub";
 import { mdbid } from "@webiny/utils";
 import { PageTemplatesPermissions } from "~/graphql/crud/permissions/PageTemplatesPermissions";
 
+const dataSources = {
+    dataSources: zod
+        .array(
+            zod.object({
+                name: zod.string(),
+                type: zod.string(),
+                config: zod.object({}).passthrough()
+            })
+        )
+        .optional(),
+    dataBindings: zod
+        .array(
+            zod.object({
+                dataSource: zod.string(),
+                bindFrom: zod.string(),
+                bindTo: zod.string()
+            })
+        )
+        .optional()
+};
+
 const createSchema = zod.object({
     title: zod.string().max(100),
     slug: zod.string().max(100),
     tags: zod.string().array(),
     description: zod.string().max(100),
     layout: zod.string().max(100).optional(),
-    pageCategory: zod.string().max(100),
-    content: zod.any()
+    content: zod.any(),
+    ...dataSources
 });
 
 const updateSchema = zod.object({
@@ -42,8 +63,8 @@ const updateSchema = zod.object({
     tags: zod.string().array().optional(),
     description: zod.string().max(100).optional(),
     layout: zod.string().max(100).optional(),
-    pageCategory: zod.string().max(100).optional(),
-    content: zod.any()
+    content: zod.any(),
+    ...dataSources
 });
 
 const getDefaultContent = () => {
@@ -377,7 +398,7 @@ export const createPageTemplatesCrud = (
             if (!template) {
                 throw new NotFoundError(`Page template "${id || slug}" was not found!`);
             }
-            const page = await context.pageBuilder.createPage(template.pageCategory, meta);
+            const page = await context.pageBuilder.createPage("static", meta);
             this.copyTemplateDataToPage(template, page);
 
             await context.pageBuilder.updatePage(page.id, {
@@ -422,7 +443,6 @@ export const createPageTemplatesCrud = (
                 description: data.description,
                 tags: page.settings.general?.tags || [],
                 layout: page.settings.general?.layout || "static",
-                pageCategory: page.category,
                 content: {
                     ...page.content,
                     data: {

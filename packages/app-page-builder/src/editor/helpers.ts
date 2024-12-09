@@ -7,6 +7,7 @@ import {
     PbBlockVariable,
     PbEditorBlockPlugin,
     PbEditorElement,
+    PbEditorElementTree,
     PbEditorPageElementPlugin,
     PbEditorPageElementSettingsPlugin,
     PbEditorPageElementStyleSettingsPlugin,
@@ -28,7 +29,10 @@ interface FlatElements {
     [id: string]: PbEditorElement;
 }
 
-export const flattenElements = (el?: PbEditorElement, parent?: string): FlatElements => {
+export const flattenElements = (
+    el?: PbEditorElementTree | PbEditorElement,
+    parent?: string
+): FlatElements => {
     if (!el || !el.id) {
         return {};
     }

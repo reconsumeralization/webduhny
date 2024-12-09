@@ -15,7 +15,7 @@ export type ElementInputType =
     | "number"
     | "boolean"
     | "date"
-    | "richText"
+    | "lexical"
     | "link"
     | "svgIcon"
     | "color"

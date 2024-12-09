@@ -20,11 +20,30 @@ export const createPageTemplateGraphQL = new GraphQLSchemaPlugin<PbContext>({
             description: String!
             tags: [String!]
             content: JSON!
+            dataSources: [PbPageTemplateDataSource!]
+            dataBindings: [PbPageTemplateDataBinding!]
             createdOn: DateTime!
             savedOn: DateTime!
             createdBy: PbIdentity!
             layout: String
-            pageCategory: String
+        }
+
+        type PbPageTemplateDataSource {
+            name: String!
+            type: String!
+            config: JSON!
+        }
+
+        type PbPageTemplateDataBinding {
+            dataSource: String
+            bindFrom: String
+            bindTo: String
+        }
+
+        input PbPageTemplateDataBindingInput {
+            dataSource: String!
+            bindFrom: String!
+            bindTo: String!
         }
 
         input PbCreatePageTemplateInput {
@@ -33,8 +52,15 @@ export const createPageTemplateGraphQL = new GraphQLSchemaPlugin<PbContext>({
             slug: String!
             tags: [String!]
             layout: String
-            pageCategory: String
             content: JSON
+            dataSources: [PbPageTemplateDataSourceInput!]
+            dataBindings: [PbPageTemplateDataBindingInput!]
+        }
+
+        input PbPageTemplateDataSourceInput {
+            name: String!
+            type: String!
+            config: JSON!
         }
 
         input PbUpdatePageTemplateInput {
@@ -42,9 +68,10 @@ export const createPageTemplateGraphQL = new GraphQLSchemaPlugin<PbContext>({
             slug: String
             description: String
             layout: String
-            pageCategory: String
             content: JSON
             tags: [String!]
+            dataSources: [PbPageTemplateDataSourceInput!]
+            dataBindings: [PbPageTemplateDataBindingInput!]
         }
 
         input PbCreateTemplateFromPageInput {
