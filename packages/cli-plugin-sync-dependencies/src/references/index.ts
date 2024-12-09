@@ -14,7 +14,8 @@ export const listAllReferences = async (
     params: IListAllReferencesParams
 ): Promise<IDependencyTree> => {
     const { context } = params;
-    const target = path.join(context.project.root, "packages");
+    const basePath = context.project.root;
+    const target = path.join(basePath, "packages");
 
     const listAllPackages = new ListAllPackages();
     const listAllPackageJsonFiles = new ListAllPackageJsonFiles();
@@ -24,9 +25,11 @@ export const listAllReferences = async (
 
     const allPackageJsonFiles = await listAllPackageJsonFiles.list(allPackages);
 
+    const files = [path.join(basePath, "package.json"), ...allPackageJsonFiles];
+
     return await listAllDependencies.list({
-        basePath: context.project.root,
-        files: allPackageJsonFiles,
+        basePath,
+        files,
         ignore: /^@webiny\//
     });
 };

@@ -21,13 +21,21 @@ export const createReferenceFile = async (params: ICreateReferenceFileParams): P
         return;
     }
 
-    writeJsonFile.sync(referencesPath, {
-        dependencies: tree.dependencies,
-        devDependencies: tree.devDependencies,
-        peerDependencies: tree.peerDependencies,
-        resolutions: tree.resolutions,
-        references: tree.references
-    });
+    writeJsonFile.sync(
+        referencesPath,
+        {
+            dependencies: tree.dependencies,
+            devDependencies: tree.devDependencies,
+            peerDependencies: tree.peerDependencies,
+            resolutions: tree.resolutions,
+            references: tree.references
+        },
+        {
+            indent: 0
+        }
+    );
 
-    writeJsonFile.sync(duplicatesPath, tree.duplicates);
+    writeJsonFile.sync(duplicatesPath, tree.duplicates, {
+        indent: 0
+    });
 };
