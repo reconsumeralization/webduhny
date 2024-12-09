@@ -6,7 +6,7 @@ const CommandSeparator = (
     props: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
 ) => (
     <CommandPrimitive.Separator asChild {...props}>
-        <Separator />
+        <Separator variant={"strong"} margin={"md"} />
     </CommandPrimitive.Separator>
 );
 
