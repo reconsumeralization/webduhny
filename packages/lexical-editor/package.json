@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "11.10.8",
     "@lexical/code": "^0.16.1",
     "@lexical/history": "^0.16.1",
     "@lexical/react": "^0.16.1",

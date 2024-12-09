@@ -318,7 +318,7 @@
     },
     {
       "name": "@emotion/react",
-      "version": "11.10.6",
+      "version": "11.10.8",
       "files": [
         "/packages/app-aco/package.json",
         "/packages/app-admin/package.json",
@@ -1333,7 +1333,7 @@
     },
     {
       "name": "eslint",
-      "version": "8.56.0",
+      "version": "8.57.1",
       "files": ["/packages/project-utils/package.json"]
     },
     {
@@ -2862,12 +2862,40 @@
     {
       "name": "@babel/cli",
       "version": "7.26.4",
-      "files": ["/packages/cli-plugin-scaffold-react-component/template/package.json"]
+      "files": [
+        "/packages/cli-plugin-scaffold-react-component/template/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
     },
     {
       "name": "@babel/core",
       "version": "7.26.0",
-      "files": ["/packages/cli-plugin-scaffold-react-component/template/package.json"]
+      "files": [
+        "/packages/cli-plugin-scaffold-react-component/template/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "@babel/plugin-transform-runtime",
+      "version": "7.25.9",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "@babel/preset-env",
+      "version": "7.26.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
     },
     {
       "name": "@babel/preset-react",
@@ -2877,7 +2905,12 @@
     {
       "name": "@babel/preset-typescript",
       "version": "7.26.0",
-      "files": ["/packages/cli-plugin-scaffold-react-component/template/package.json"]
+      "files": [
+        "/packages/cli-plugin-scaffold-react-component/template/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
     },
     {
       "name": "@babel/register",
@@ -2921,7 +2954,7 @@
     },
     {
       "name": "@emotion/react",
-      "version": "11.10.6",
+      "version": "11.10.8",
       "files": ["/packages/react-rich-text-lexical-renderer/package.json"]
     },
     {
@@ -3068,6 +3101,15 @@
       "files": ["/packages/db-dynamodb/package.json"]
     },
     {
+      "name": "@types/jest",
+      "version": "29.5.14",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "@types/jsdom",
       "version": "21.1.6",
       "files": ["/packages/lexical-converter/package.json"]
@@ -3141,6 +3183,15 @@
       ]
     },
     {
+      "name": "@types/node",
+      "version": "22.10.1",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "@types/node-fetch",
       "version": "2.6.1",
       "files": [
@@ -3210,6 +3261,9 @@
         "/packages/app-theme/package.json",
         "/packages/app-trash-bin/package.json",
         "/packages/cli-plugin-scaffold-react-component/template/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/theme/package.json"
       ]
     },
@@ -3222,6 +3276,15 @@
       "name": "@types/react-custom-scrollbars",
       "version": "4.0.10",
       "files": ["/packages/ui/package.json"]
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "18.2.25",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
     },
     {
       "name": "@types/react-google-recaptcha",
@@ -3332,6 +3395,24 @@
       "files": ["/packages/api-page-builder-import-export/package.json"]
     },
     {
+      "name": "@typescript-eslint/eslint-plugin",
+      "version": "5.5.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "version": "5.5.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "adm-zip",
       "version": "0.5.14",
       "files": ["/packages/api-headless-cms-import-export/package.json"]
@@ -3370,11 +3451,23 @@
       "files": ["/packages/ui/package.json"]
     },
     {
+      "name": "babel-plugin-dynamic-import-node",
+      "version": "2.3.3",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "babel-plugin-module-resolver",
       "version": "5.0.2",
       "files": [
         "/packages/app-headless-cms/package.json",
-        "/packages/app-headless-cms-common/package.json"
+        "/packages/app-headless-cms-common/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
       ]
     },
     {
@@ -3397,6 +3490,9 @@
       "files": [
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/pulumi-aws/package.json"
       ]
     },
@@ -3407,6 +3503,9 @@
         "/packages/cli-plugin-scaffold-react-app/template/code/package.json",
         "/packages/cwp-template-aws/template/common/apps/admin/package.json",
         "/packages/cwp-template-aws/template/common/apps/website/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/apps/admin/package.json",
         "/apps/website/package.json"
       ]
@@ -3456,6 +3555,87 @@
       "files": ["/packages/migrations/package.json"]
     },
     {
+      "name": "eslint",
+      "version": "8.57.1",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-config-standard",
+      "version": "16.0.3",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-import-resolver-babel-module",
+      "version": "5.3.1",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-import",
+      "version": "2.25.3",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-jest",
+      "version": "25.3.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-node",
+      "version": "11.1.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-promise",
+      "version": "5.2.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-react",
+      "version": "7.27.1",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "eslint-plugin-standard",
+      "version": "5.0.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "execa",
       "version": "5.1.1",
       "files": [
@@ -3466,6 +3646,9 @@
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/theme/package.json",
         "/packages/ui/package.json"
       ]
@@ -3560,6 +3743,9 @@
         "/packages/api-tenancy-so-ddb/package.json",
         "/packages/api-tenant-manager/package.json",
         "/packages/api-theme-manager/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/data-migration/package.json",
         "/packages/db-dynamodb/package.json",
         "/packages/handler-client/package.json",
@@ -3641,6 +3827,15 @@
       "files": ["/packages/api-security-cognito/package.json"]
     },
     {
+      "name": "merge",
+      "version": "2.0.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
       "name": "mime",
       "version": "3.0.0",
       "files": ["/packages/pulumi-aws/package.json"]
@@ -3694,6 +3889,9 @@
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/react-properties/package.json",
         "/packages/react-rich-text-lexical-renderer/package.json"
       ]
@@ -3845,6 +4043,15 @@
       "name": "source-map-explorer",
       "version": "2.5.3",
       "files": ["/apps/website/package.json"]
+    },
+    {
+      "name": "ts-jest",
+      "version": "29.1.2",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
     },
     {
       "name": "ts-node",
@@ -4084,6 +4291,9 @@
         "/packages/cli-plugin-scaffold-react-component/template/package.json",
         "/packages/cli-plugin-scaffold-workspaces/package.json",
         "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json",
         "/packages/data-migration/package.json",
         "/packages/db/package.json",
         "/packages/db-dynamodb/package.json",
@@ -4204,7 +4414,44 @@
       "files": ["/packages/utils/package.json"]
     }
   ],
-  "resolutions": [],
+  "resolutions": [
+    {
+      "name": "@emotion/react",
+      "version": "11.10.8",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "@types/react",
+      "version": "18.2.79",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "react",
+      "version": "18.2.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    },
+    {
+      "name": "react-dom",
+      "version": "18.2.0",
+      "files": [
+        "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+        "/packages/cwp-template-aws/template/ddb/dependencies.json"
+      ]
+    }
+  ],
   "references": [
     {
       "name": "rimraf",
@@ -5605,6 +5852,18 @@
               "types": ["devDependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/data-migration/package.json",
               "types": ["devDependencies"]
             },
@@ -6183,6 +6442,18 @@
               "types": ["devDependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/react-properties/package.json",
               "types": ["devDependencies"]
             },
@@ -6320,6 +6591,18 @@
             },
             {
               "file": "/packages/api-theme-manager/package.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
               "types": ["devDependencies"]
             },
             {
@@ -8775,6 +9058,18 @@
               "types": ["dependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies", "resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies", "resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies", "resolutions"]
+            },
+            {
               "file": "/packages/react-composition/package.json",
               "types": ["dependencies"]
             },
@@ -9491,6 +9786,18 @@
               "types": ["dependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
               "file": "/packages/form/package.json",
               "types": ["peerDependencies"]
             },
@@ -9709,6 +10016,18 @@
               "types": ["dependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
               "file": "/packages/lexical-editor/package.json",
               "types": ["dependencies"]
             },
@@ -9836,7 +10155,7 @@
       "name": "@emotion/react",
       "versions": [
         {
-          "version": "11.10.6",
+          "version": "11.10.8",
           "files": [
             {
               "file": "/packages/app-aco/package.json",
@@ -9913,6 +10232,18 @@
             {
               "file": "/packages/cwp-template-aws/template/common/extensions/theme/package.json",
               "types": ["dependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["resolutions"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["resolutions"]
             },
             {
               "file": "/packages/lexical-editor/package.json",
@@ -11140,6 +11471,18 @@
               "types": ["dependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/migrations/package.json",
               "types": ["dependencies"]
             },
@@ -11616,6 +11959,18 @@
             {
               "file": "/packages/app-headless-cms-common/package.json",
               "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
             }
           ]
         }
@@ -12086,6 +12441,18 @@
             {
               "file": "/packages/cwp-template-aws/package.json",
               "types": ["dependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
             },
             {
               "file": "/packages/data-migration/package.json",
@@ -13440,6 +13807,18 @@
               "types": ["devDependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/apps/admin/package.json",
               "types": ["devDependencies"]
             },
@@ -13476,6 +13855,18 @@
               "types": ["devDependencies"]
             },
             {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/project-utils/package.json",
               "types": ["dependencies"]
             }
@@ -13491,6 +13882,18 @@
           "files": [
             {
               "file": "/packages/cli-plugin-scaffold-react-component/template/package.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
               "types": ["devDependencies"]
             },
             {
@@ -13527,6 +13930,18 @@
           "files": [
             {
               "file": "/packages/cli-plugin-scaffold-react-component/template/package.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
               "types": ["devDependencies"]
             },
             {
@@ -13811,6 +14226,432 @@
             },
             {
               "file": "/extensions/theme/package.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@babel/plugin-transform-runtime",
+      "versions": [
+        {
+          "version": "7.25.9",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@babel/preset-env",
+      "versions": [
+        {
+          "version": "7.26.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/project-utils/package.json",
+              "types": ["dependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@types/jest",
+      "versions": [
+        {
+          "version": "29.5.14",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@types/node",
+      "versions": [
+        {
+          "version": "22.10.1",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@types/react-dom",
+      "versions": [
+        {
+          "version": "18.2.25",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "versions": [
+        {
+          "version": "5.5.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "versions": [
+        {
+          "version": "5.5.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "babel-plugin-dynamic-import-node",
+      "versions": [
+        {
+          "version": "2.3.3",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint",
+      "versions": [
+        {
+          "version": "8.57.1",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/project-utils/package.json",
+              "types": ["dependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-config-standard",
+      "versions": [
+        {
+          "version": "16.0.3",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-import-resolver-babel-module",
+      "versions": [
+        {
+          "version": "5.3.1",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-import",
+      "versions": [
+        {
+          "version": "2.25.3",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-jest",
+      "versions": [
+        {
+          "version": "25.3.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-node",
+      "versions": [
+        {
+          "version": "11.1.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-promise",
+      "versions": [
+        {
+          "version": "5.2.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-react",
+      "versions": [
+        {
+          "version": "7.27.1",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eslint-plugin-standard",
+      "versions": [
+        {
+          "version": "5.0.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "merge",
+      "versions": [
+        {
+          "version": "2.0.0",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
+              "types": ["devDependencies"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ts-jest",
+      "versions": [
+        {
+          "version": "29.1.2",
+          "files": [
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
+              "types": ["devDependencies"]
+            },
+            {
+              "file": "/packages/cwp-template-aws/template/ddb/dependencies.json",
               "types": ["devDependencies"]
             }
           ]
@@ -14574,20 +15415,6 @@
       ]
     },
     {
-      "name": "@babel/preset-env",
-      "versions": [
-        {
-          "version": "7.26.0",
-          "files": [
-            {
-              "file": "/packages/project-utils/package.json",
-              "types": ["dependencies"]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "@pmmmwh/react-refresh-webpack-plugin",
       "versions": [
         {
@@ -14708,20 +15535,6 @@
       "versions": [
         {
           "version": "7.0.0",
-          "files": [
-            {
-              "file": "/packages/project-utils/package.json",
-              "types": ["dependencies"]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "eslint",
-      "versions": [
-        {
-          "version": "8.56.0",
           "files": [
             {
               "file": "/packages/project-utils/package.json",
