@@ -32,4 +32,4 @@ const CommandItem = ({ className, children, selected, ...props }: CommandItemPro
     </CommandPrimitive.Item>
 );
 
-export { CommandItem };
+export { CommandItem, type CommandItemProps };

@@ -6,14 +6,16 @@ type CommandInputProps = Omit<
     React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
     "size"
 > &
-    InputPrimitiveProps;
+    InputPrimitiveProps & {
+        inputElement?: React.ReactNode;
+    };
 
-const CommandInput = ({ size, ...props }: CommandInputProps) => {
+const CommandInput = ({ inputElement, size, ...props }: CommandInputProps) => {
     return (
         <CommandPrimitive.Input asChild {...props}>
-            <InputPrimitive size={size} />
+            {inputElement ?? <InputPrimitive size={size} />}
         </CommandPrimitive.Input>
     );
 };
 
-export { CommandInput, CommandInputProps };
+export { CommandInput, type CommandInputProps };

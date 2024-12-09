@@ -2,6 +2,8 @@ import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "~/utils";
 
+type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive>;
+
 const Command = ({
     className,
     ...props
@@ -12,4 +14,4 @@ const Command = ({
     />
 );
 
-export { Command };
+export { Command, type CommandProps };
