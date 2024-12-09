@@ -6,13 +6,13 @@ import { cn } from "~/utils";
 /**
  * Icon
  */
-const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutral-xstrong", {
+const inputIconVariants = cva("absolute fill-neutral-xstrong", {
     variants: {
         // Define dummy variants to be used in combination with `compoundVariants` below.
         inputSize: {
-            md: "",
-            lg: "",
-            xl: ""
+            md: "top-sm",
+            lg: "top-sm-extra",
+            xl: "top-md"
         },
         position: {
             start: "",
@@ -61,14 +61,15 @@ const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutr
     ]
 });
 
-interface IconWrapperProps extends VariantProps<typeof iconVariants> {
+interface InputIconProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof inputIconVariants> {
     icon: React.ReactElement;
-    disabled?: boolean;
 }
 
-const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
+const InputIcon = ({ icon, disabled, position, inputSize, className }: InputIconProps) => {
     return (
-        <div className={cn(iconVariants({ position, disabled, inputSize }))}>
+        <div className={cn(inputIconVariants({ position, disabled, inputSize }), className)}>
             {React.cloneElement(icon, {
                 ...icon.props,
                 size: inputSize === "xl" ? "lg" : "sm" // Map icon size based on the input size.
@@ -239,7 +240,12 @@ const InputPrimitive = ({
     return (
         <div className={cn("relative flex items-center w-full", className)}>
             {startIcon && (
-                <Icon disabled={disabled} icon={startIcon} inputSize={size} position={"start"} />
+                <InputIcon
+                    disabled={disabled}
+                    icon={startIcon}
+                    inputSize={size}
+                    position={"start"}
+                />
             )}
             <input
                 ref={inputRef}
@@ -249,10 +255,17 @@ const InputPrimitive = ({
                 {...props}
             />
             {endIcon && (
-                <Icon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
+                <InputIcon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
             )}
         </div>
     );
 };
 
-export { InputPrimitive, inputVariants, type InputPrimitiveProps };
+export {
+    InputIcon,
+    InputPrimitive,
+    getIconPosition,
+    inputVariants,
+    type InputIconProps,
+    type InputPrimitiveProps
+};
