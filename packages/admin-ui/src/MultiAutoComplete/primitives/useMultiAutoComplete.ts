@@ -6,9 +6,9 @@ import {
     MultiAutoCompletePresenterParams
 } from "./MultiAutoCompletePresenter";
 import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
-import { ListCache } from "~/MultiAutoComplete/ListCache";
+import { MultiAutoCompleteSelectedOptionsPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
+import { ListCache } from "./ListCache";
 import { CommandOption } from "~/Command";
-import { MultiAutoCompleteSelectedOptionsPresenter } from "~/MultiAutoComplete/MultiAutoCompleteSelectedOptionsPresenter";
 
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
@@ -52,7 +52,7 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
 
     useEffect(() => {
         presenter.init(params);
-    }, [params, presenter]);
+    }, [presenter]);
 
     useEffect(() => {
         return autorun(() => {
@@ -65,7 +65,7 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
         setSelectedOption: presenter.setSelectedOption,
         removeSelectedOption: presenter.removeSelectedOption,
         setInputValue: presenter.setInputValue,
-        resetValues: presenter.resetValues,
+        resetSelectedOptions: presenter.resetSelectedOptions,
         setListOpenState: presenter.setListOpenState
     };
 };

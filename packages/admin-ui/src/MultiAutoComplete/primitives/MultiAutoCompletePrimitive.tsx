@@ -1,10 +1,10 @@
 import React, { KeyboardEvent } from "react";
-import { Command as CommandPrimitive } from "cmdk";
-import { CommandList, CommandInput, Command, CommandOptionDto } from "~/Command";
+import { CommandList, Command, CommandOptionDto, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
 import { MultiAutoCompleteInputIcons } from "./MultiAutoCompleteInputIcons";
+import { MultiAutoCompleteInput } from "./MultiAutoCompleteInput";
 
 const commandListVariants = cva(
     "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
@@ -20,7 +20,7 @@ const commandListVariants = cva(
 
 type MultiAutoCompleteOption = CommandOptionDto | string;
 
-type MultiAutoCompletePrimitiveProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> &
+type MultiAutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
         emptyMessage?: React.ReactNode;
         isLoading?: boolean;
@@ -40,11 +40,15 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
         setSelectedOption,
         setInputValue,
         removeSelectedOption,
-        resetValues
+        resetSelectedOptions
     } = useMultiAutoComplete(props);
 
     const handleKeyDown = React.useCallback(
         (event: KeyboardEvent<HTMLDivElement>) => {
+            if (props.disabled) {
+                return;
+            }
+
             if (!vm.listVm.isOpen) {
                 setListOpenState(true);
             }
@@ -70,32 +74,31 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Command onKeyDown={handleKeyDown}>
-            <CommandInput
+        <Command onKeyDown={handleKeyDown} className={"h-auto overflow-visible"}>
+            <MultiAutoCompleteInput
                 value={vm.inputVm.value}
-                onValueChange={setInputValue}
                 placeholder={vm.inputVm.placeholder}
-                size={props.size}
+                changeValue={setInputValue}
+                closeList={() => setListOpenState(false)}
+                openList={() => setListOpenState(true)}
                 variant={props.variant}
-                disabled={props.disabled}
+                size={props.size}
                 invalid={props.invalid}
+                removeSelectedOption={removeSelectedOption}
+                selectedOptions={vm.selectedOptionsVm.options}
+                disabled={props.disabled}
                 startIcon={props.startIcon}
                 endIcon={
                     <MultiAutoCompleteInputIcons
-                        hasValue={vm.inputVm.hasValue}
-                        onResetValue={resetValues}
+                        hasValue={!vm.selectedOptionsVm.isEmpty}
+                        onResetValue={resetSelectedOptions}
                         onOpenChange={() => setListOpenState(!vm.listVm.isOpen)}
                     />
                 }
-                onBlur={() => setListOpenState(false)}
-                onFocus={() => setListOpenState(true)}
+                hasValue={!vm.selectedOptionsVm.isEmpty}
+                resetValues={resetSelectedOptions}
             />
-            {vm.selectedOptionsVm.options.map(option => (
-                <span key={option.value}>
-                    {option.label}
-                    <button onClick={() => removeSelectedOption(option.value)}>x</button>
-                </span>
-            ))}
+
             <div className="relative">
                 <div className={cn(commandListVariants({ open: vm.listVm.isOpen }))}>
                     <CommandList

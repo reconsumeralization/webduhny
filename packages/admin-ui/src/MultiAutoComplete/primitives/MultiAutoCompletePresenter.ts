@@ -4,9 +4,8 @@ import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
 import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
 import { MultiAutoCompleteOption } from "./MultiAutoCompletePrimitive";
 import { IMultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
-
-import { IListCache } from "~/MultiAutoComplete/ListCache";
-import { IMultiAutoCompleteSelectedOptionsPresenter } from "~/MultiAutoComplete/MultiAutoCompleteSelectedOptionsPresenter";
+import { IMultiAutoCompleteSelectedOptionsPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
+import { IListCache } from "./ListCache";
 
 interface MultiAutoCompletePresenterParams {
     emptyMessage?: any;
@@ -34,25 +33,25 @@ interface IMultiAutoCompletePresenterParams {
     init: (params: MultiAutoCompletePresenterParams) => void;
     setListOpenState: (open: boolean) => void;
     setSelectedOption: (value: string) => void;
+    resetSelectedOptions: () => void;
     removeSelectedOption: (value: string) => void;
     setInputValue: (value: string) => void;
-    resetValues: () => void;
 }
 
 class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
     private inputPresenter: IMultiAutoCompleteInputPresenter;
-    private selectedPresenter: IMultiAutoCompleteSelectedOptionsPresenter;
+    private selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter;
     private optionsCache: IListCache<CommandOption>;
     private params?: MultiAutoCompletePresenterParams = undefined;
     private isListOpen = false;
 
     constructor(
         inputPresenter: IMultiAutoCompleteInputPresenter,
-        selectedPresenter: IMultiAutoCompleteSelectedOptionsPresenter,
+        selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter,
         optionsCache: IListCache<CommandOption>
     ) {
         this.inputPresenter = inputPresenter;
-        this.selectedPresenter = selectedPresenter;
+        this.selectedOptionsPresenter = selectedOptionsPresenter;
         this.optionsCache = optionsCache;
         makeAutoObservable(this);
     }
@@ -64,19 +63,18 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
         const options = this.mapOptions(params.options, params.values);
         this.optionsCache.addItems(options);
 
-        // this.inputPresenter.init({
-        //     value: this.getSelectedLabels(),
-        //     placeholder: params.placeholder
-        // });
+        this.inputPresenter.init({
+            placeholder: params.placeholder
+        });
 
         const selectedOptions = this.getSelectedOptions();
-        this.selectedPresenter.init({ options: selectedOptions });
+        this.selectedOptionsPresenter.init({ options: selectedOptions });
     }
 
     get vm() {
         return {
             inputVm: this.inputPresenter.vm,
-            selectedOptionsVm: this.selectedPresenter.vm,
+            selectedOptionsVm: this.selectedOptionsPresenter.vm,
             listVm: {
                 options: this.optionsCache
                     .getItems()
@@ -99,7 +97,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
 
         if (selectedOption) {
             selectedOption.selected = true;
-            this.selectedPresenter.addOption(selectedOption);
+            this.selectedOptionsPresenter.addOption(selectedOption);
             this.inputPresenter.setValue("");
             this.params?.onValuesChange?.(this.getSelectedValues());
             return;
@@ -111,7 +109,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
 
         if (removedOption) {
             removedOption.selected = false;
-            this.selectedPresenter.removeOption(removedOption);
+            this.selectedOptionsPresenter.removeOption(removedOption);
             this.params?.onValuesChange?.(this.getSelectedValues());
             return;
         }
@@ -121,13 +119,13 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
         this.inputPresenter.setValue(value);
     };
 
-    public resetValues = () => {
+    public resetSelectedOptions = () => {
         this.optionsCache.updateItems(item => {
             item.selected = false;
             return item;
         });
         this.inputPresenter.setValue("");
-        this.selectedPresenter.resetOptions();
+        this.selectedOptionsPresenter.resetOptions();
         this.params?.onValuesChange?.([]);
         this.params?.onValueReset?.();
     };
@@ -138,12 +136,6 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenterParams {
 
     private getSelectedValues() {
         return this.getSelectedOptions().map(option => CommandOptionFormatter.format(option).value);
-    }
-
-    private getSelectedLabels() {
-        return this.getSelectedOptions()
-            .map(option => CommandOptionFormatter.format(option).label)
-            .join(",");
     }
 
     private mapOptions(

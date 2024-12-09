@@ -1,8 +1,8 @@
+import { CommandOption } from "~/Command";
+import { ListCache } from "./ListCache";
 import { MultiAutoCompletePresenter } from "./MultiAutoCompletePresenter";
 import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
-import { ListCache } from "~/MultiAutoComplete/ListCache";
-import { CommandOption } from "~/Command";
-import { MultiAutoCompleteSelectedOptionsPresenter } from "~/MultiAutoComplete/MultiAutoCompleteSelectedOptionsPresenter";
+import { MultiAutoCompleteSelectedOptionsPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
 
 describe("MultiAutoCompletePresenter", () => {
     const inputPresenter = new MultiAutoCompleteInputPresenter();
@@ -470,7 +470,7 @@ describe("MultiAutoCompletePresenter", () => {
                 item: null
             }
         ]);
-        expect(presenter.vm.inputVm.value).toEqual("Option 1");
+        expect(presenter.vm.inputVm.value).toEqual("");
         expect(presenter.vm.selectedOptionsVm.options).toEqual([
             {
                 label: "Option 1",

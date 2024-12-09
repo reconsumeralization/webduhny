@@ -1,1 +1,1 @@
-export * from "./MultiAutoCompletePrimitive";
+export * from "./MultiAutoComplete";

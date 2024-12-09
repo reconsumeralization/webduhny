@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { CommandOption } from "~/Command/CommandOption";
 import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
 import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
-import { IListCache } from "~/MultiAutoComplete/ListCache";
+import { IListCache } from "./ListCache";
 
 interface MultiAutoCompleteSelectedOptionsPresenterParams {
     options?: CommandOption[];
@@ -11,6 +11,7 @@ interface MultiAutoCompleteSelectedOptionsPresenterParams {
 interface IMultiAutoCompleteSelectedOptionsPresenter {
     vm: {
         options: CommandOptionFormatted[];
+        isEmpty: boolean;
     };
     init: (params: MultiAutoCompleteSelectedOptionsPresenterParams) => void;
     addOption: (value: CommandOption) => void;
@@ -39,7 +40,8 @@ class MultiAutoCompleteSelectedOptionsPresenter
         return {
             options: this.optionsCache
                 .getItems()
-                .map(option => CommandOptionFormatter.format(option))
+                .map(option => CommandOptionFormatter.format(option)),
+            isEmpty: !this.optionsCache.hasItems()
         };
     }
 
