@@ -14,7 +14,6 @@
   "author": "Webiny Ltd",
   "license": "MIT",
   "dependencies": {
-    "@commodo/fields": "1.1.2-beta.20",
     "@smithy/node-http-handler": "^2.1.6",
     "@webiny/api": "0.0.0",
     "@webiny/api-file-manager": "0.0.0",
@@ -31,8 +30,7 @@
     "@webiny/utils": "0.0.0",
     "@webiny/validation": "0.0.0",
     "archiver": "^7.0.1",
-    "commodo-fields-object": "^1.0.6",
-    "dot-prop-immutable": "^2.1.1",
+    "dot-prop-immutable": "^2.1.0",
     "fs-extra": "^11.2.0",
     "load-json-file": "^6.2.0",
     "lodash": "^4.17.21",
