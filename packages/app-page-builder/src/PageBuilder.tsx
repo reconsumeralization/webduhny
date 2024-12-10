@@ -18,6 +18,7 @@ import { LexicalParagraphRenderer } from "~/render/plugins/elements/paragraph/Le
 import { LexicalHeadingRenderer } from "~/render/plugins/elements/heading/LexicalHeading";
 import { ConvertIconSettings as EditorConvertIconSettings } from "~/editor/prepareEditorContent/ConvertIconSettings";
 import { ConvertIconSettings as RendererConvertIconSettings } from "~/render/plugins/elementSettings/icon";
+import { AddImageLinkComponent } from "~/elementDecorators/AddImageLinkComponent";
 
 export type { EditorProps };
 export { EditorRenderer };
@@ -143,6 +144,7 @@ export const PageBuilder = () => {
             <LexicalHeadingRenderer />
             <AddButtonLinkComponent />
             <AddButtonClickHandlers />
+            <AddImageLinkComponent />
             <InjectElementVariables />
             {/* Ensure data is in the correct shape when editor is mounting. */}
             {/* This works only within the block/template/page editor. */}

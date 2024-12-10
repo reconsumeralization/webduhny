@@ -75,11 +75,5 @@ export const useInputBinding = (element: PbEditorElement, inputName: string) => 
         [bindings]
     );
 
-    const resetBindings = () => {
-        updateTemplate(template => {
-            return { ...template, dataBindings: [] };
-        });
-    };
-
-    return { binding, onChange, resetBindings };
+    return { binding, onChange };
 };

@@ -10,6 +10,7 @@ import { ElementDataSettings } from "./ElementDataSettings";
 import { DataSourceConfigAndBindings } from "./DataSourceConfigAndBindings";
 import { SetupDynamicDocument } from "~/admin/templateEditor/SetupDynamicDocument";
 import { useDynamicDocument } from "~/dataInjection";
+import { DeveloperUtilities } from "~/admin/templateEditor/DeveloperUtilities";
 
 const { Ui } = TemplateEditorConfig;
 
@@ -25,6 +26,7 @@ export const DynamicTemplateEditorConfig = () => {
             {/* Register new editor element plugins. This has to be done before the editor mounts. */}
             <Elements />
             <TemplateEditorConfig>
+                <DeveloperUtilities />
                 <SetupDynamicDocument />
                 {/* Disable "delete" action on grids that are children of "entries-list" element. */}
                 <DisableGridDelete />

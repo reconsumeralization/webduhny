@@ -10,6 +10,7 @@ export const DataSourceConfigAndBindings = () => {
             <ElementBinding elementType={"paragraph"} inputName={"text"} label={"Text"} />
             <ElementBinding elementType={"button"} inputName={"buttonText"} label={"Label"} />
             <ElementBinding elementType={"button"} inputName={"actionHref"} label={"Link"} />
+            <ElementBinding elementType={"image"} inputName={"imageSrc"} label={"Image URL"} />
             <ElementBinding
                 elementType={"repeater"}
                 inputName={"dataSource"}

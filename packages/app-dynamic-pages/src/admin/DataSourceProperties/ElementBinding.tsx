@@ -50,7 +50,7 @@ interface ElementInputUiProps {
 
 const ElementInputUi = ({ inputName, label }: ElementInputUiProps) => {
     const [element] = useActiveElement<PbEditorElement>();
-    const { binding, onChange, resetBindings } = useInputBinding(element, inputName);
+    const { binding, onChange } = useInputBinding(element, inputName);
     const value = binding ? binding.getSource() : "";
 
     return (
@@ -58,7 +58,6 @@ const ElementInputUi = ({ inputName, label }: ElementInputUiProps) => {
             <DelayedOnChange value={value} onChange={onChange}>
                 {({ value, onChange }) => <Input label={label} value={value} onChange={onChange} />}
             </DelayedOnChange>
-            <button onClick={() => resetBindings()}>Reset All Bindings</button>
         </>
     );
 };
