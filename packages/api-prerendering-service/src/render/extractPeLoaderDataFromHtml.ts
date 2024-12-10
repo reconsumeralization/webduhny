@@ -13,9 +13,7 @@ const parsePeLoaderDataCacheTag = (content: string): PeLoaderCacheEntry | null =
 
         const [, key, value] = m;
 
-        // JSON in `data-value` is HTML Entities-encoded. So, we need to decode it here first.
-        const parsedValue = JSON.parse(decodeURIComponent(value));
-        return { key, value: parsedValue };
+        return { key, value };
     }
 
     return null;
