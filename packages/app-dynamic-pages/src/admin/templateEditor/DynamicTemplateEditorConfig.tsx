@@ -24,8 +24,8 @@ export const DynamicTemplateEditorConfig = () => {
         <>
             {/* Register new editor element plugins. This has to be done before the editor mounts. */}
             <Elements />
-            <SetupDynamicDocument />
             <TemplateEditorConfig>
+                <SetupDynamicDocument />
                 {/* Disable "delete" action on grids that are children of "entries-list" element. */}
                 <DisableGridDelete />
                 <Ui.TopBar.Element
