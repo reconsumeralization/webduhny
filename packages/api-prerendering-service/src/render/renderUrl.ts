@@ -1,7 +1,8 @@
-import chromium from "@sparticuz/chromium";
-import puppeteer, { Browser, Page } from "puppeteer-core";
 import posthtml from "posthtml";
 import { noopener } from "posthtml-noopener";
+import type { Page } from "puppeteer";
+import { getBrowser } from "./getBrowser";
+
 /**
  * Package posthtml-plugin-link-preload has no types.
  */
@@ -125,18 +126,10 @@ export const defaultRenderUrlFunction = async (
     url: string,
     params: RenderUrlCallableParams
 ): Promise<RenderResult> => {
-    let browser!: Browser;
+    const browser = await getBrowser();
 
     try {
-        browser = await puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: chromium.headless,
-            ignoreHTTPSErrors: true
-        });
-
-        const browserPage = await browser.newPage();
+        const browserPage = (await browser.newPage()) as Page;
 
         // Can be used to add additional logic - e.g. skip a GraphQL query to be made when in pre-rendering process.
         windowSet(browserPage, "__PS_RENDER__", true);
