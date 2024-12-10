@@ -236,8 +236,7 @@
   },
   "packageManager": "yarn@3.6.4",
   "dependencies": {
-    "@types/hoist-non-react-statics": "^3.3.5",
-    "puppeteer": "^23.10.2"
+    "@types/hoist-non-react-statics": "^3.3.5"
   },
   "engines": {
     "node": "~20.0.0"
