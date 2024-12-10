@@ -31,6 +31,7 @@ type MultiAutoCompletePrimitiveProps = CommandProps &
         optionRenderer?: (item: any, index: number) => React.ReactNode;
         options?: MultiAutoCompleteOption[];
         values: string[];
+        allowFreeInput?: boolean;
     };
 
 const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
