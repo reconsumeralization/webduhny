@@ -14768,6 +14768,7 @@ __metadata:
     "@svgr/webpack": ^6.1.1
     "@types/react": 18.2.79
     "@webiny/cli": 0.0.0
+    "@webiny/di-container": "workspace:^"
     "@webiny/project-utils": 0.0.0
     "@webiny/react-composition": 0.0.0
     "@webiny/utils": 0.0.0
@@ -18132,7 +18133,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/di-container@workspace:packages/di-container":
+"@webiny/di-container@workspace:^, @webiny/di-container@workspace:packages/di-container":
   version: 0.0.0-use.local
   resolution: "@webiny/di-container@workspace:packages/di-container"
   dependencies:

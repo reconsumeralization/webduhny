@@ -1,14 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
-import { MultiAutoCompletePrimitiveProps } from "./MultiAutoCompletePrimitive";
+import { MultiAutoCompletePrimitiveProps } from "../primitives";
 import {
-    MultiAutoCompletePresenter,
+    MultiAutoCompletePresenterAbstraction,
     MultiAutoCompletePresenterParams
 } from "./MultiAutoCompletePresenter";
-import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
-import { MultiAutoCompleteSelectedOptionsPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
-import { ListCache } from "./ListCache";
-import { CommandOption } from "~/Command";
+import { container } from "./container";
 
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
@@ -35,24 +32,14 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
     );
 
     const presenter = useMemo(() => {
-        const inputPresenter = new MultiAutoCompleteInputPresenter();
-        const selectedCache = new ListCache<CommandOption>();
-        const selectedPresenter = new MultiAutoCompleteSelectedOptionsPresenter(selectedCache);
-        const optionsCache = new ListCache<CommandOption>();
-        const presenter = new MultiAutoCompletePresenter(
-            inputPresenter,
-            selectedPresenter,
-            optionsCache
-        );
-        presenter.init(params);
-        return presenter;
+        return container.resolve(MultiAutoCompletePresenterAbstraction);
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);
 
     useEffect(() => {
         presenter.init(params);
-    }, [presenter]);
+    }, [params]);
 
     useEffect(() => {
         return autorun(() => {
@@ -64,7 +51,7 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
         vm,
         setSelectedOption: presenter.setSelectedOption,
         removeSelectedOption: presenter.removeSelectedOption,
-        setInputValue: presenter.setInputValue,
+        searchOption: presenter.searchOption,
         resetSelectedOptions: presenter.resetSelectedOptions,
         setListOpenState: presenter.setListOpenState
     };

@@ -46,7 +46,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                 setSelectedOption("");
             }
         },
-        [setListOpenState, setSelectedOption, setInputValue, vm.listVm.isOpen]
+        [setListOpenState, setSelectedOption]
     );
 
     const handleSelectOption = React.useCallback(

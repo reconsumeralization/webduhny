@@ -23,8 +23,6 @@ type MultiAutoCompleteInputProps = VariantProps<typeof multiAutoCompleteInputVar
         removeSelectedOption: (value: string) => void;
         selectedOptions: CommandOptionFormatted[];
         value: string;
-        hasValue: boolean;
-        resetValues: () => void;
     };
 
 const MultiAutoCompleteInput = ({

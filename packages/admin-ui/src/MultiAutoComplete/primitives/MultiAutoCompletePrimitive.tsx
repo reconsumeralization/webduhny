@@ -2,7 +2,7 @@ import React, { KeyboardEvent } from "react";
 import { CommandList, Command, CommandOptionDto, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
-import { useMultiAutoComplete } from "./useMultiAutoComplete";
+import { useMultiAutoComplete } from "../features/useMultiAutoComplete";
 import { MultiAutoCompleteInputIcons } from "./MultiAutoCompleteInputIcons";
 import { MultiAutoCompleteInput } from "./MultiAutoCompleteInput";
 
@@ -38,7 +38,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
         vm,
         setListOpenState,
         setSelectedOption,
-        setInputValue,
+        searchOption,
         removeSelectedOption,
         resetSelectedOptions
     } = useMultiAutoComplete(props);
@@ -49,7 +49,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 return;
             }
 
-            if (!vm.listVm.isOpen) {
+            if (!vm.optionsListVm.isOpen) {
                 setListOpenState(true);
             }
 
@@ -62,7 +62,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 setSelectedOption("");
             }
         },
-        [setListOpenState, setSelectedOption, setInputValue, vm.listVm.isOpen]
+        [setListOpenState, setSelectedOption, vm.optionsListVm.isOpen]
     );
 
     const handleSelectOption = React.useCallback(
@@ -78,7 +78,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
             <MultiAutoCompleteInput
                 value={vm.inputVm.value}
                 placeholder={vm.inputVm.placeholder}
-                changeValue={setInputValue}
+                changeValue={searchOption}
                 closeList={() => setListOpenState(false)}
                 openList={() => setListOpenState(true)}
                 variant={props.variant}
@@ -92,20 +92,18 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                     <MultiAutoCompleteInputIcons
                         hasValue={!vm.selectedOptionsVm.isEmpty}
                         onResetValue={resetSelectedOptions}
-                        onOpenChange={() => setListOpenState(!vm.listVm.isOpen)}
+                        onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
                     />
                 }
-                hasValue={!vm.selectedOptionsVm.isEmpty}
-                resetValues={resetSelectedOptions}
             />
 
             <div className="relative">
-                <div className={cn(commandListVariants({ open: vm.listVm.isOpen }))}>
+                <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
                     <CommandList
-                        options={vm.listVm.options}
+                        options={vm.optionsListVm.options}
                         onOptionSelect={handleSelectOption}
                         isLoading={props.isLoading}
-                        emptyMessage={vm.listVm.emptyMessage}
+                        emptyMessage={vm.optionsListVm.emptyMessage}
                         optionRenderer={props.optionRenderer}
                     />
                 </div>
