@@ -55,7 +55,7 @@ const createDataModelValidation = zod
         data => {
             if (data.type !== ApwContentTypes.CMS_ENTRY) {
                 return true;
-            } else if (!!data.type) {
+            } else if (!!data.modelId) {
                 return true;
             }
             return false;
