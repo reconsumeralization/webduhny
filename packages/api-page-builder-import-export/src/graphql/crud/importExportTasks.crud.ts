@@ -220,7 +220,10 @@ export default ({ storageOperations }: ImportExportPluginsParams) =>
                     throw createZodError(validation.error);
                 }
 
-                const importExportTask = structuredClone(original);
+                const importExportTask = {
+                    ...original
+                };
+
                 for (const key in validation.data) {
                     // @ts-expect-error
                     const value = validation.data[key];
@@ -364,7 +367,9 @@ export default ({ storageOperations }: ImportExportPluginsParams) =>
                     throw createZodError(validation.error);
                 }
 
-                const importExportSubTask = structuredClone(original);
+                const importExportSubTask = {
+                    ...original
+                };
                 for (const key in validation.data) {
                     // @ts-expect-error
                     const value = validation.data[key];
