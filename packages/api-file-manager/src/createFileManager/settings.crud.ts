@@ -4,9 +4,25 @@ import { FileManagerConfig } from "~/createFileManager/index";
 import zod from "zod";
 import { createZodError } from "@webiny/utils";
 
+const MIN_FILE_SIZE = 0;
+const MAX_FILE_SIZE = 10737418240;
+
+const uploadMinFileSizeValidation = zod
+    .number()
+    .min(MIN_FILE_SIZE, {
+        message: `Value needs to be greater than or equal to ${MIN_FILE_SIZE}.`
+    })
+    .optional();
+const uploadMaxFileSizeValidation = zod
+    .number()
+    .max(MAX_FILE_SIZE, {
+        message: `Value needs to be lesser than or equal to ${MAX_FILE_SIZE}.`
+    })
+    .optional();
+
 const createDataModelValidation = zod.object({
-    uploadMinFileSize: zod.number().min(0).optional().default(0),
-    uploadMaxFileSize: zod.number().max(10737418240).optional().default(10737418240),
+    uploadMinFileSize: uploadMinFileSizeValidation.default(MIN_FILE_SIZE),
+    uploadMaxFileSize: uploadMaxFileSizeValidation.default(MAX_FILE_SIZE),
     srcPrefix: zod
         .string()
         .optional()
@@ -20,8 +36,8 @@ const createDataModelValidation = zod.object({
 });
 
 const updateDataModelValidation = zod.object({
-    uploadMinFileSize: zod.number().min(0).optional(),
-    uploadMaxFileSize: zod.number().optional(),
+    uploadMinFileSize: uploadMinFileSizeValidation,
+    uploadMaxFileSize: uploadMaxFileSizeValidation,
     srcPrefix: zod
         .string()
         .optional()
