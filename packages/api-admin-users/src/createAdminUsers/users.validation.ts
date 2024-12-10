@@ -2,7 +2,6 @@ import zod from "zod";
 import { AdminUsers } from "~/types";
 import { createZodError } from "@webiny/utils";
 
-// build CreateUserDataModel validation with zod
 const createUserDataValidation = zod.object({
     id: zod.string().min(1).optional(),
     displayName: zod.string().min(1).optional(),
