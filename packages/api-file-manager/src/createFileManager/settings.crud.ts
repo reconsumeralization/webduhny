@@ -1,38 +1,37 @@
 import { createTopic } from "@webiny/pubsub";
-/**
- * Package @commodo/fields does not have types.
- */
-// @ts-expect-error
-import { withFields, string, number, onSet } from "@commodo/fields";
-import { validation } from "@webiny/validation";
 import { FileManagerSettings, SettingsCRUD } from "~/types";
 import { FileManagerConfig } from "~/createFileManager/index";
+import zod from "zod";
+import { createZodError } from "@webiny/utils";
 
-const CreateDataModel = withFields({
-    uploadMinFileSize: number({ value: 0, validation: validation.create("gte:0") }),
-    uploadMaxFileSize: number({ value: 10737418240 }),
-    srcPrefix: onSet((value?: string) => {
-        // Make sure srcPrefix always ends with forward slash.
-        if (typeof value === "string") {
-            return value.endsWith("/") ? value : value + "/";
-        }
-        return value;
-    })(string({ value: "/files/" }))
-})();
+const createDataModelValidation = zod.object({
+    uploadMinFileSize: zod.number().min(0).optional().default(0),
+    uploadMaxFileSize: zod.number().max(10737418240).optional().default(10737418240),
+    srcPrefix: zod
+        .string()
+        .optional()
+        .default("/files/")
+        .transform(value => {
+            if (typeof value === "string") {
+                return value.endsWith("/") ? value : value + "/";
+            }
+            return value;
+        })
+});
 
-const UpdateDataModel = withFields({
-    uploadMinFileSize: number({
-        validation: validation.create("gte:0")
-    }),
-    uploadMaxFileSize: number(),
-    srcPrefix: onSet((value?: string) => {
-        // Make sure srcPrefix always ends with forward slash.
-        if (typeof value === "string") {
-            return value.endsWith("/") ? value : value + "/";
-        }
-        return value;
-    })(string())
-})();
+const updateDataModelValidation = zod.object({
+    uploadMinFileSize: zod.number().min(0).optional(),
+    uploadMaxFileSize: zod.number().optional(),
+    srcPrefix: zod
+        .string()
+        .optional()
+        .transform(value => {
+            if (typeof value === "string") {
+                return value.endsWith("/") ? value : value + "/";
+            }
+            return value;
+        })
+});
 
 export const createSettingsCrud = ({
     storageOperations,
@@ -45,45 +44,58 @@ export const createSettingsCrud = ({
             return storageOperations.settings.get({ tenant: getTenantId() });
         },
         async createSettings(data) {
-            const settings = new CreateDataModel().populate(data);
-            await settings.validate();
-
-            const settingsData: FileManagerSettings = await settings.toJSON();
+            const results = createDataModelValidation.safeParse(data);
+            if (!results.success) {
+                throw createZodError(results.error);
+            }
 
             return storageOperations.settings.create({
-                data: { ...settingsData, tenant: getTenantId() }
+                data: {
+                    ...results.data,
+                    tenant: getTenantId()
+                }
             });
         },
         async updateSettings(data) {
-            const updatedValue = new UpdateDataModel().populate(data);
-            await updatedValue.validate();
+            const results = updateDataModelValidation.safeParse(data);
+            if (!results.success) {
+                throw createZodError(results.error);
+            }
 
-            const existingSettings = (await storageOperations.settings.get({
+            const original = (await storageOperations.settings.get({
                 tenant: getTenantId()
             })) as FileManagerSettings;
+            const newSettings: FileManagerSettings = {
+                ...(original || {})
+            };
 
-            const updatedSettings: Partial<FileManagerSettings> = await updatedValue.toJSON({
-                onlyDirty: true
-            });
+            for (const key in results.data) {
+                // @ts-expect-error
+                const value = results.data[key];
+                if (value === undefined) {
+                    continue;
+                }
+                // @ts-expect-error
+                newSettings[key] = value;
+            }
 
             const settings: FileManagerSettings = {
-                ...existingSettings,
-                ...updatedSettings,
+                ...newSettings,
                 tenant: getTenantId()
             };
 
             await this.onSettingsBeforeUpdate.publish({
                 input: data,
-                original: existingSettings,
+                original,
                 settings
             });
             const result = await storageOperations.settings.update({
-                original: existingSettings,
+                original,
                 data: settings
             });
             await this.onSettingsAfterUpdate.publish({
                 input: data,
-                original: existingSettings,
+                original,
                 settings: result
             });
 
