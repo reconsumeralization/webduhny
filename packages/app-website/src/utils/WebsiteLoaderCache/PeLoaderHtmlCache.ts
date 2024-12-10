@@ -11,15 +11,15 @@ export class PeLoaderHtmlCache {
         }
 
         try {
-            return JSON.parse(cachedResultElementValue) as TData;
+            return JSON.parse(atob(cachedResultElementValue)) as TData;
         } catch {
             return null;
         }
     }
 
     static write<TData = unknown>(key: string, value: TData) {
-        const html = `<pe-loader-data-cache data-key="${key}" data-value='${JSON.stringify(
-            value
+        const html = `<pe-loader-data-cache data-key="${key}" data-value='${btoa(
+            JSON.stringify(value)
         )}'></pe-loader-data-cache>`;
         document.body.insertAdjacentHTML("beforeend", html);
     }

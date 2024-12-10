@@ -1,5 +1,6 @@
 import { PeLoaderCacheEntry } from "./types";
-import he from "he";
+
+const atob = (str: string) => Buffer.from(str, "base64").toString("binary");
 
 const parsePeLoaderDataCacheTag = (content: string): PeLoaderCacheEntry | null => {
     const regex =
@@ -15,8 +16,7 @@ const parsePeLoaderDataCacheTag = (content: string): PeLoaderCacheEntry | null =
         const [, key, value] = m;
 
         // JSON in `data-value` is HTML Entities-encoded. So, we need to decode it here first.
-        const heParsedValue = he.decode(value);
-        const parsedValue = JSON.parse(heParsedValue);
+        const parsedValue = JSON.parse(atob(value));
         return { key, value: parsedValue };
     }
 
