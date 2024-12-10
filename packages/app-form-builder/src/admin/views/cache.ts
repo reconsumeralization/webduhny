@@ -23,6 +23,9 @@ export const updateLatestRevisionInListCache = (
         return;
     }
     const { formBuilder } = response;
+    if (!formBuilder.listForms?.data) {
+        return;
+    }
     const index = formBuilder.listForms.data.findIndex(item => item.id.startsWith(uniqueId));
 
     cache.writeQuery({
@@ -41,6 +44,9 @@ export const addFormToListCache = (cache: DataProxy, revision: FbRevisionModel):
         return;
     }
     const { formBuilder } = response;
+    if (!formBuilder.listForms?.data) {
+        return;
+    }
 
     cache.writeQuery({
         ...gqlParams,
@@ -89,6 +95,9 @@ export const removeFormFromListCache = (cache: DataProxy, form: FbRevisionModel)
         return;
     }
     const { formBuilder } = response;
+    if (!formBuilder.listForms?.data) {
+        return;
+    }
 
     const index = formBuilder.listForms.data.findIndex(item => item.id === form.id);
 
