@@ -8,7 +8,7 @@ import { DataRequest, DataSourceData } from "./IResolveDataSourceRepository";
 const LOAD_DATA_SOURCE = gql`
     query LoadDataSource($type: String!, $config: JSON!, $paths: [String!]) {
         dataSources {
-            data: loadDataSource(type: $type, config: $config, paths: $paths) {
+            loadDataSource(type: $type, config: $config, paths: $paths) {
                 data
                 error {
                     code
@@ -22,7 +22,7 @@ const LOAD_DATA_SOURCE = gql`
 
 interface QueryType {
     dataSources: {
-        data:
+        loadDataSource:
             | {
                   data: DataSourceData;
                   error: undefined;
@@ -70,7 +70,7 @@ export class ResolveDataSourceGqlGateway implements IResolveDataSourceGateway {
             throw new WebinyError(`No data was returned from "loadOne" query!`);
         }
 
-        const { data, error } = query.data.dataSources.data;
+        const { data, error } = query.data.dataSources.loadDataSource;
 
         if (!data) {
             throw new WebinyError(error);

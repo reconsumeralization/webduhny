@@ -22,8 +22,7 @@ export class DataRequest {
     }
 
     getKey() {
-        const paths = this.request.paths ?? [];
-        return `${this.getName()}:${this.getType()}:${paths.join(";")}`;
+        return `${this.getName()}:${this.getType()}`;
     }
 
     getName() {
@@ -43,7 +42,10 @@ export class DataRequest {
     }
 
     async getChecksum() {
-        const checksum = await Checksum.createFrom(this.request.config);
+        const checksum = await Checksum.createFrom({
+            config: this.request.config,
+            paths: this.request.paths
+        });
         return checksum.getChecksum();
     }
 }

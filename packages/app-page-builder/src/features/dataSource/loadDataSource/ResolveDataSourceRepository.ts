@@ -35,30 +35,36 @@ export class ResolveDataSourceRepository implements IResolveDataSourceRepository
 
         if (cacheItem) {
             if (cacheItem.checksum === requestChecksum) {
+                console.log(
+                    `Data Source [${request.getName()}] ==> Returning from cache; checksum hasn't changed!`,
+                    request
+                );
                 return;
             }
         }
 
-        const dataSourceData = await this.gateway.execute(request);
+        try {
+            const dataSourceData = await this.gateway.execute(request);
 
-        console.log("dataSourceData", dataSourceData);
+            const newCache: DataSourceCache = {
+                data: dataSourceData,
+                key: request.getKey(),
+                checksum: requestChecksum
+            };
 
-        const newCache: DataSourceCache = {
-            data: dataSourceData,
-            key: request.getKey(),
-            checksum: requestChecksum
-        };
+            if (cacheItem) {
+                this.cache.updateItems(item => {
+                    if (item.key === request.getKey()) {
+                        return newCache;
+                    }
 
-        if (cacheItem) {
-            this.cache.updateItems(item => {
-                if (item.key === request.getKey()) {
-                    return newCache;
-                }
-
-                return item;
-            });
-        } else {
-            this.cache.addItems([newCache]);
+                    return item;
+                });
+            } else {
+                this.cache.addItems([newCache]);
+            }
+        } catch (e) {
+            console.log("Error loading data source", request, e.message);
         }
     }
 }

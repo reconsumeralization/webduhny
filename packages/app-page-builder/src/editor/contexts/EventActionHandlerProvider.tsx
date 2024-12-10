@@ -126,12 +126,14 @@ export const EventActionHandlerProvider = makeDecoratable(
             isBatching: false,
             isDisabled: false
         });
+
         const goToSnapshot = useGotoRecoilSnapshot();
 
         useEffect(() => {
             sidebarAtomValueRef.current = sidebarAtomValue;
             rootElementAtomValueRef.current = rootElementAtomValue;
             uiAtomValueRef.current = uiAtomValue;
+            snapshot.retain();
             snapshotRef.current = snapshot;
         }, [sidebarAtomValue, rootElementAtomValue, uiAtomValue, snapshot]);
 
@@ -177,10 +179,11 @@ export const EventActionHandlerProvider = makeDecoratable(
                 }
         );
 
-        const takeSnapshot = useRecoilCallback(({ snapshot }) => () => {
+        const takeSnapshot = () => {
+            const snapshot = snapshotRef.current!;
             snapshot.retain();
             return snapshot;
-        });
+        };
 
         const defaultGetElementTree = useCallback<GetElementTree>(
             () =>
