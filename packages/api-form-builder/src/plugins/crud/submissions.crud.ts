@@ -386,10 +386,6 @@ export const createSubmissionsCrud = (params: CreateSubmissionsCrudParams): Subm
             return submission;
         },
         async updateSubmission(this: FormBuilder, formId, input) {
-            /*
-            const data = await new models.FormSubmissionUpdateDataModel().populate(input);
-            data.validate();
-            */
             const validation = FormSubmissionUpdateDataModel.safeParse(input);
             if (!validation.success) {
                 throw createZodError(validation.error);

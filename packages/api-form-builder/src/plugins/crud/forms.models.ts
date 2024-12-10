@@ -6,8 +6,8 @@ export const FormFieldsModel = zod.object({
     name: zod.string(),
     fieldId: zod.string(),
     label: zod.string(),
-    helpText: zod.string().optional().default(""),
-    placeholderText: zod.string().optional().default(""),
+    helpText: zod.string().optional().nullish().default(""),
+    placeholderText: zod.string().optional().nullish().default(""),
     options: zod
         .array(
             zod.object({
@@ -51,24 +51,30 @@ export const FormSettingsModel = zod.object({
         .object({
             message: zod.object({}).optional().default({}),
             errorMessage: zod.string().optional().default(""),
-            enabled: zod.boolean().optional().default(false)
+            enabled: zod.boolean().optional().nullish().default(null)
         })
         .default({
             message: {},
             errorMessage: "",
-            enabled: false
+            enabled: null
         }),
     reCaptcha: zod
         .object({
-            enabled: zod.boolean().optional(),
+            enabled: zod.boolean().optional().nullish().default(null),
             /**
              * Note: We've replaced "i18nString()" with "string()"
              */
-            errorMessage: zod.string().optional().default("Please verify that you are not a robot.")
+            errorMessage: zod
+                .string()
+                .optional()
+                .default("Please verify that you are not a robot."),
+            secretKey: zod.string().optional().nullish().default(""),
+            siteKey: zod.string().optional().nullish().default("")
         })
+        .passthrough()
         .optional()
         .default({
-            enabled: false
+            enabled: null
         })
 });
 
@@ -77,11 +83,11 @@ export const FormCreateDataModel = zod.object({
 });
 
 export const FormUpdateDataModel = zod.object({
-    name: zod.string().optional().default(""),
-    fields: zod.array(FormFieldsModel).optional().default([]),
-    steps: zod.array(FormStepsModel).optional().default([]),
+    name: zod.string().optional(),
+    fields: zod.array(FormFieldsModel).optional(),
+    steps: zod.array(FormStepsModel).optional(),
     settings: FormSettingsModel.optional(),
-    triggers: zod.object({}).passthrough().optional().default({})
+    triggers: zod.object({}).passthrough().optional()
 });
 
 export const FormSubmissionCreateDataModel = zod.object({
