@@ -22,8 +22,8 @@ interface Props {
     children: React.ReactNode;
     dataSources: PbPageTemplateDataSource[];
     dataBindings: PbPageTemplateDataBinding[];
-    onDataSources: (dataSources: PbPageTemplateDataSource[]) => void;
-    onDataBindings: (dataBindings: PbPageTemplateDataBinding[]) => void;
+    onDataSources?: (dataSources: PbPageTemplateDataSource[]) => void;
+    onDataBindings?: (dataBindings: PbPageTemplateDataBinding[]) => void;
 }
 
 export interface Updater<T> {
@@ -38,11 +38,15 @@ export const DynamicDocumentProvider = ({
     onDataBindings
 }: Props) => {
     const updateDataBindings = (cb: Updater<PbPageTemplateDataBinding>) => {
-        onDataBindings(cb(dataBindings));
+        if (onDataBindings) {
+            onDataBindings(cb(dataBindings));
+        }
     };
 
     const updateDataSources = (cb: Updater<PbPageTemplateDataSource>) => {
-        onDataSources(cb(dataSources));
+        if (onDataSources) {
+            onDataSources(cb(dataSources));
+        }
     };
 
     return (
