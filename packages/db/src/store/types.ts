@@ -98,6 +98,13 @@ export type IListValuesParams =
           lte: string;
       };
 
+export type RemoveValueResult<V> = StoreValueResult<V>;
+
+export interface RemoveValuesResult<V extends GenericRecord<StorageKey>> {
+    keys: (keyof V)[];
+    error?: Error;
+}
+
 export interface IStore {
     storeValue<V>(key: StorageKey, value: V): Promise<StoreValueResult<V>>;
     storeValues<V extends GenericRecord<StorageKey>>(values: V): Promise<StoreValuesResult<V>>;
@@ -106,4 +113,8 @@ export interface IStore {
     listValues<V extends GenericRecord<StorageKey>>(
         params?: IListValuesParams
     ): Promise<ListValuesResult<V>>;
+    removeValue<V>(key: StorageKey): Promise<RemoveValueResult<V>>;
+    removeValues<V extends GenericRecord<StorageKey>>(
+        keys: (keyof V)[]
+    ): Promise<RemoveValuesResult<V>>;
 }

@@ -125,4 +125,98 @@ describe("DynamoDbDriver", () => {
 
         expect(results.data).toEqual(items);
     });
+
+    it("should properly remove an item", async () => {
+        const driver = new DynamoDbDriver({
+            documentClient
+        });
+
+        const key = "test";
+        const value = {
+            test: "test",
+            andEvenSomeComplexData: {
+                str: "string",
+                orMoreComplex: {
+                    boolean: true,
+                    moreData: 1234
+                }
+            }
+        };
+        await driver.storeValue(key, value);
+
+        const stored = await driver.getValue(key);
+        expect(stored.error).toBeUndefined();
+        expect(stored.key).toEqual(key);
+        expect(stored.data).toEqual(value);
+
+        const result = await driver.removeValue(key);
+        expect(result.error).toBeUndefined();
+        expect(result.key).toEqual(key);
+        expect(result.data).toEqual(value);
+
+        const results = await driver.getValues([key]);
+        expect(results.error).toBeUndefined();
+        expect(results.keys).toEqual([key]);
+        // @ts-expect-error
+        expect(results.data[key]).toBeNull();
+    });
+
+    it("should remove a list of items", async () => {
+        const driver = new DynamoDbDriver({
+            documentClient
+        });
+
+        const items = {
+            testing1: {
+                test: "test",
+                andEvenSomeComplexData: {
+                    str: "string",
+                    orMoreComplex: {
+                        boolean: true,
+                        moreData: 1234
+                    }
+                }
+            },
+            testing2: {
+                test: "test",
+                andEvenSomeComplexData: {
+                    str: "string",
+                    orMoreComplex: {
+                        boolean: true,
+                        moreData: 1234
+                    }
+                }
+            },
+            testing3: {
+                test: "test",
+                andEvenSomeComplexData: {
+                    str: "string",
+                    orMoreComplex: {
+                        boolean: true,
+                        moreData: 1234
+                    }
+                }
+            }
+        };
+
+        await driver.storeValues(items);
+
+        const results = await driver.getValues(Object.keys(items));
+        expect(results.error).toBeUndefined();
+        expect(results.keys).toEqual(Object.keys(items));
+        expect(results.data).toEqual(items);
+
+        const storedList = await driver.listValues();
+        expect(storedList.error).toBeUndefined();
+        expect(storedList.data).toEqual(items);
+
+        const keys = Object.keys(items);
+        const removed = await driver.removeValues(keys);
+        expect(removed.error).toBeUndefined();
+        expect(removed.keys).toEqual(keys);
+
+        const listed = await driver.listValues();
+        expect(listed.error).toBeUndefined();
+        expect(listed.data).toEqual({});
+    });
 });

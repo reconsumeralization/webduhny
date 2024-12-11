@@ -5,6 +5,8 @@ import {
     GetValuesResult,
     IListValuesParams,
     ListValuesResult,
+    RemoveValueResult,
+    RemoveValuesResult,
     StorageKey,
     StoreValueResult,
     StoreValuesResult
@@ -223,6 +225,58 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
             };
         } catch (ex) {
             return {
+                error: ex
+            };
+        }
+    }
+
+    public async removeValue<V>(key: StorageKey): Promise<RemoveValueResult<V>> {
+        const result = await this.getValue<V>(key);
+        if (result.error) {
+            return {
+                key,
+                error: result.error
+            };
+        }
+        try {
+            await this.entity().delete({
+                PK: createPartitionKey(),
+                SK: createSortKey({ key })
+            });
+            return {
+                key,
+                data: result.data
+            };
+        } catch (ex) {
+            return {
+                key,
+                error: ex
+            };
+        }
+    }
+
+    public async removeValues<V extends GenericRecord<StorageKey>>(
+        input: (keyof V)[]
+    ): Promise<RemoveValuesResult<V>> {
+        const keys = [...input] as string[];
+        const batch = keys.map(key => {
+            return this.entity().deleteBatch({
+                PK: createPartitionKey(),
+                SK: createSortKey({ key })
+            });
+        });
+
+        try {
+            await batchWriteAll({
+                table: this.table(),
+                items: batch
+            });
+            return {
+                keys
+            };
+        } catch (ex) {
+            return {
+                keys,
                 error: ex
             };
         }

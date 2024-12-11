@@ -1,11 +1,13 @@
 import {
+    GetValueResult,
+    GetValuesResult,
     IStore,
+    ListValuesResult,
+    RemoveValueResult,
+    RemoveValuesResult,
     StorageKey,
     StoreValueResult,
-    StoreValuesResult,
-    GetValuesResult,
-    GetValueResult,
-    ListValuesResult
+    StoreValuesResult
 } from "./types";
 import { GenericRecord } from "@webiny/api/types";
 import { DbDriver } from "~/index";
@@ -21,17 +23,17 @@ export class Store<T> implements IStore {
         this.driver = params.driver;
     }
 
-    public storeValue<V>(key: StorageKey, value: V): Promise<StoreValueResult<V>> {
+    public async storeValue<V>(key: StorageKey, value: V): Promise<StoreValueResult<V>> {
         return this.driver.storeValue<V>(key, value);
     }
 
-    public storeValues<V extends GenericRecord<StorageKey>>(
+    public async storeValues<V extends GenericRecord<StorageKey>>(
         values: V
     ): Promise<StoreValuesResult<V>> {
         return this.driver.storeValues<V>(values);
     }
 
-    public getValue<V>(key: StorageKey): Promise<GetValueResult<V>> {
+    public async getValue<V>(key: StorageKey): Promise<GetValueResult<V>> {
         return this.driver.getValue<V>(key);
     }
 
@@ -41,7 +43,17 @@ export class Store<T> implements IStore {
         return this.driver.getValues<V>(keys);
     }
 
-    public listValues<V extends GenericRecord<StorageKey>>(): Promise<ListValuesResult<V>> {
+    public async listValues<V extends GenericRecord<StorageKey>>(): Promise<ListValuesResult<V>> {
         return this.driver.listValues<V>();
+    }
+
+    public async removeValue<V>(key: StorageKey): Promise<RemoveValueResult<V>> {
+        return this.driver.removeValue<V>(key);
+    }
+
+    public async removeValues<V extends GenericRecord<StorageKey>>(
+        keys: (keyof V)[]
+    ): Promise<RemoveValuesResult<V>> {
+        return this.driver.removeValues<V>(keys);
     }
 }
