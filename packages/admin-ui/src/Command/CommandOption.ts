@@ -3,7 +3,7 @@ import { CommandOptionDto } from "./CommandOptionDto";
 export class CommandOption {
     private readonly _label: string;
     private readonly _value: string;
-    private readonly _disabled: boolean;
+    private _disabled: boolean;
     private readonly _separator: boolean;
     private readonly _item: any | null;
     private _selected: boolean;
@@ -56,6 +56,10 @@ export class CommandOption {
 
     get disabled() {
         return this._disabled;
+    }
+
+    set disabled(selected: boolean) {
+        this._disabled = selected;
     }
 
     get selected() {

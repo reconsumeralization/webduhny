@@ -25,12 +25,17 @@ export class SetSelectedOptionRepository implements ISetSelectedOptionRepository
         this.searchQueryCache = searchQueryCache;
     }
 
-    async execute(value: string) {
-        const option = this.optionsCache.getItem(item => item.value === value);
-        if (option) {
-            option.selected = true;
-            this.selectedOptionsCache.addItems([option]);
-        }
+    async execute(option: CommandOption) {
+        option.selected = true;
+
+        this.optionsCache.updateItems(opt => {
+            if (option?.value === opt.value) {
+                opt = option;
+            }
+
+            return opt;
+        });
+        this.selectedOptionsCache.addItems([option]);
         this.searchQueryCache.setState("");
     }
 }

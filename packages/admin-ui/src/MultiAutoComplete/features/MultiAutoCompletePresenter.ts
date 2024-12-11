@@ -28,9 +28,14 @@ import {
     ResetSelectedOptionUseCaseAbstraction
 } from "./resetSelectedOptions";
 import { ISearchOptionUseCase, SearchOptionUseCaseAbstraction } from "./searchOption";
+import {
+    CreateOptionUseCaseAbstraction,
+    ICreateOptionUseCase
+} from "~/MultiAutoComplete/features/createOption";
 import { container } from "./container";
 
 interface MultiAutoCompletePresenterParams {
+    allowFreeInput?: boolean;
     emptyMessage?: any;
     loadingMessage?: any;
     onOpenChange?: (open: boolean) => void;
@@ -51,6 +56,9 @@ interface IMultiAutoCompletePresenter {
             options: CommandOptionFormatted[];
             isEmpty: boolean;
         };
+        temporaryOption: {
+            option: CommandOptionFormatted;
+        };
         optionsListVm: {
             options: CommandOptionFormatted[];
             emptyMessage: string;
@@ -65,6 +73,7 @@ interface IMultiAutoCompletePresenter {
     removeSelectedOption: (value: string) => void;
     resetSelectedOptions: () => void;
     searchOption: (value: string) => void;
+    createOption: (value: string) => void;
 }
 
 class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
@@ -79,6 +88,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
     private removeSelectedOptionUseCase: IRemoveSelectedOptionUseCase;
     private resetSelectedOptionsUseCase: IResetSelectedOptionsUseCase;
     private searchOptionUseCase: ISearchOptionUseCase;
+    private createOptionUseCase: ICreateOptionUseCase;
 
     constructor(
         listOpenStateCache: IListOpenStateCache,
@@ -90,7 +100,8 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         setOpenListStateUseCase: ISetListOpenStateUseCase,
         removeSelectedOptionUseCase: IRemoveSelectedOptionUseCase,
         resetSelectedOptionsUseCase: IResetSelectedOptionsUseCase,
-        searchOptionUseCase: ISearchOptionUseCase
+        searchOptionUseCase: ISearchOptionUseCase,
+        createOptionUseCase: ICreateOptionUseCase
     ) {
         this.listOpenStateCache = listOpenStateCache;
         this.listOptionsCache = listOptionsCache;
@@ -102,6 +113,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.removeSelectedOptionUseCase = removeSelectedOptionUseCase;
         this.resetSelectedOptionsUseCase = resetSelectedOptionsUseCase;
         this.searchOptionUseCase = searchOptionUseCase;
+        this.createOptionUseCase = createOptionUseCase;
         makeAutoObservable(this);
     }
 
@@ -132,6 +144,11 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
                 loadingMessage: this.params?.loadingMessage ?? "Loading...",
                 isOpen: this.listOpenStateCache.getState(),
                 isEmpty: !this.listOptionsCache.hasItems()
+            },
+            temporaryOption: {
+                option: CommandOptionFormatter.format(
+                    CommandOption.createFromString(this.searchQueryCache.getState())
+                )
             }
         };
     }
@@ -161,12 +178,27 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.searchOptionUseCase.execute(value);
     };
 
+    public createOption = (value: string) => {
+        if (this.params?.allowFreeInput) {
+            this.createOptionUseCase.execute(value);
+            this.params?.onValuesChange?.(this.getSelectedValues());
+        }
+    };
+
     private getSelectedOptions() {
         return this.selectedOptionsCache.getItems();
     }
 
     private getSelectedValues() {
         return this.getSelectedOptions().map(option => option.value);
+    }
+
+    private getEmptyMessage() {
+        if (this.params?.allowFreeInput) {
+            return `Add "${this.searchQueryCache.getState()}" as a custom option`;
+        }
+
+        return this.params?.emptyMessage ?? "No results.";
     }
 }
 
@@ -187,11 +219,12 @@ const MultiAutoCompletePresenterImpl = createImplementation({
         SetListOpenStateUseCaseAbstraction,
         RemoveSelectedOptionUseCaseAbstraction,
         ResetSelectedOptionUseCaseAbstraction,
-        SearchOptionUseCaseAbstraction
+        SearchOptionUseCaseAbstraction,
+        CreateOptionUseCaseAbstraction
     ]
 });
 
-container.register(MultiAutoCompletePresenterImpl).inSingletonScope();
+container.register(MultiAutoCompletePresenterImpl);
 
 export {
     MultiAutoCompletePresenter,

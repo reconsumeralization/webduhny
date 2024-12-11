@@ -3,16 +3,23 @@ import { ISetSelectedOptionUseCase } from "./ISetSelectedOptionUseCase";
 import { ISetSelectedOptionRepository } from "./ISetSelectedOptionRepository";
 import { SetSelectedOptionRepositoryAbstraction } from "./SetSelectedOptionRepository";
 import { container } from "../container";
+import { IListCache, OptionsCacheAbstraction } from "../../domains";
+import { CommandOption } from "~/Command/CommandOption";
 
 export class SetSelectedOptionUseCase implements ISetSelectedOptionUseCase {
     private repository: ISetSelectedOptionRepository;
+    private optionsCache: IListCache<CommandOption>;
 
-    constructor(repository: ISetSelectedOptionRepository) {
+    constructor(optionsCache: IListCache<CommandOption>, repository: ISetSelectedOptionRepository) {
+        this.optionsCache = optionsCache;
         this.repository = repository;
     }
 
     async execute(value: string) {
-        await this.repository.execute(value);
+        const option =
+            this.optionsCache.getItem(item => item.value === value) ??
+            CommandOption.createFromString(value);
+        await this.repository.execute(option);
     }
 }
 
@@ -23,7 +30,7 @@ export const SetSelectedOptionUseCaseAbstraction = new Abstraction<ISetSelectedO
 const SetSelectedOptionUseCaseImpl = createImplementation({
     abstraction: SetSelectedOptionUseCaseAbstraction,
     implementation: SetSelectedOptionUseCase,
-    dependencies: [SetSelectedOptionRepositoryAbstraction]
+    dependencies: [OptionsCacheAbstraction, SetSelectedOptionRepositoryAbstraction]
 });
 
 container.register(SetSelectedOptionUseCaseImpl);

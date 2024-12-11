@@ -181,6 +181,13 @@ export const WithCustomEmptyMessage: Story = {
     }
 };
 
+export const WithAllowFreeInput: Story = {
+    args: {
+        ...Default.args,
+        allowFreeInput: true
+    }
+};
+
 export const WithFormattedOptions: Story = {
     args: {
         ...Default.args,

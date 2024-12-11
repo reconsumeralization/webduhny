@@ -21,10 +21,11 @@ export class RemoveSelectedOptionRepository implements IRemoveSelectedOptionRepo
     }
 
     async execute(value: string) {
+        this.selectedOptionsCache.removeItems(opt => opt.value === value);
+
         const option = this.optionsCache.getItem(item => item.value === value);
         if (option) {
             option.selected = false;
-            this.selectedOptionsCache.removeItems(opt => opt.value === option.value);
         }
     }
 }

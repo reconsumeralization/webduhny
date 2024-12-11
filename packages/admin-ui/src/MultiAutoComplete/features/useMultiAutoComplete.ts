@@ -10,24 +10,26 @@ import { container } from "./container";
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
         () => ({
+            allowFreeInput: props.allowFreeInput,
             emptyMessage: props.emptyMessage,
             loadingMessage: props.loadingMessage,
             onOpenChange: props.onOpenChange,
-            onValuesChange: props.onValuesChange,
             onValueReset: props.onValueReset,
+            onValuesChange: props.onValuesChange,
             options: props.options,
             placeholder: props.placeholder,
             values: props.values
         }),
         [
-            props.options,
-            props.values,
-            props.placeholder,
+            props.allowFreeInput,
             props.emptyMessage,
             props.loadingMessage,
             props.onOpenChange,
+            props.onValueReset,
             props.onValuesChange,
-            props.onValueReset
+            props.options,
+            props.placeholder,
+            props.values
         ]
     );
 
@@ -53,6 +55,7 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
         removeSelectedOption: presenter.removeSelectedOption,
         searchOption: presenter.searchOption,
         resetSelectedOptions: presenter.resetSelectedOptions,
-        setListOpenState: presenter.setListOpenState
+        setListOpenState: presenter.setListOpenState,
+        createOption: presenter.createOption
     };
 };

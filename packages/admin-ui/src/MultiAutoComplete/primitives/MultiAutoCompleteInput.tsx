@@ -75,10 +75,10 @@ const MultiAutoCompleteInput = ({
                 />
             )}
             <div className="relative flex flex-wrap gap-xs">
-                {selectedOptions.map(option => {
+                {selectedOptions.map((option, index) => {
                     return (
                         <Tag
-                            key={option.value}
+                            key={`tag-${option.value}-${index}`}
                             variant={"neutral-light"}
                             label={option.label}
                             icon={
@@ -92,7 +92,7 @@ const MultiAutoCompleteInput = ({
                     );
                 })}
                 <CommandInput
-                    className={"flex-sm bg-transparent border-none outline-none"}
+                    className={"flex-1 bg-transparent border-none outline-none"}
                     value={value}
                     onValueChange={changeValue}
                     placeholder={placeholder}
@@ -109,4 +109,4 @@ const MultiAutoCompleteInput = ({
     );
 };
 
-export { MultiAutoCompleteInput };
+export { MultiAutoCompleteInput, type MultiAutoCompleteInputProps };

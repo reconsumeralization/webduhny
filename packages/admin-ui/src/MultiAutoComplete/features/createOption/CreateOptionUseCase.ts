@@ -1,7 +1,7 @@
 import { Abstraction, createImplementation } from "@webiny/di-container";
 import { ICreateOptionUseCase } from "./ICreateOptionUseCase";
 import { ICreateOptionRepository } from "./ICreateOptionRepository";
-import { CommandOption } from "~/Command";
+import { CommandOption } from "~/Command/CommandOption";
 import { CreateOptionRepositoryAbstraction } from "./CreateOptionRepository";
 import { container } from "../container";
 
@@ -13,7 +13,7 @@ export class CreateOptionUseCase implements ICreateOptionUseCase {
     }
 
     async execute(value: string) {
-        this.repository.execute(CommandOption.createFromString(value));
+        await this.repository.execute(CommandOption.createFromString(value));
     }
 }
 

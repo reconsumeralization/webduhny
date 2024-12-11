@@ -10,10 +10,13 @@ import { CommandEmpty } from "./CommandEmpty";
 
 interface CommandListProps extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> {
     options: CommandOptionFormatted[];
+    temporaryOption?: CommandOptionFormatted;
     emptyMessage?: React.ReactNode;
     isLoading?: boolean;
+    allowFreeInput?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionSelect: (value: string) => void;
+    onOptionCreate: (value: string) => void;
     optionRenderer?: (item: any, index: number) => React.ReactNode;
 }
 
@@ -25,40 +28,59 @@ const CommandList = ({
     loadingMessage,
     options,
     optionRenderer,
+    temporaryOption,
+    allowFreeInput,
+    onOptionCreate,
     ...props
 }: CommandListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
-            return items.map((item, index) => {
-                const elements = [];
+            const elements = [<CommandItem key={"dummy-element"} value="-" className="hidden" />];
 
-                elements.push(
+            const renderedItems = items.reduce((acc, item, currentIndex) => {
+                acc.push(
                     <CommandItem
-                        key={`item-${item.value}`}
+                        key={`item-${item.value}-${currentIndex}`}
                         value={item.value}
                         keywords={[item.label]}
                         disabled={item.disabled}
                         selected={item.selected}
                         onSelect={() => onOptionSelect(item.value)}
-                        onMouseDown={event => {
-                            event.preventDefault();
-                        }}
+                        onMouseDown={event => event.preventDefault()}
                     >
                         {optionRenderer && item.item
-                            ? optionRenderer.call(this, item.item, index)
+                            ? optionRenderer.call(this, item.item, currentIndex)
                             : item.label}
                     </CommandItem>
                 );
 
                 // Conditionally render the separator if `separator` is true
                 if (item.separator) {
-                    elements.push(<CommandSeparator key={`separator-${item.value ?? index}`} />);
+                    acc.push(<CommandSeparator key={`separator-${item.value ?? currentIndex}`} />);
                 }
 
-                return elements;
-            });
+                return acc;
+            }, elements);
+
+            if (allowFreeInput && temporaryOption) {
+                renderedItems.push(
+                    <CommandItem
+                        key={`temporary-${temporaryOption.value}`}
+                        value={temporaryOption.value}
+                        keywords={[temporaryOption.label]}
+                        disabled={temporaryOption.disabled}
+                        selected={temporaryOption.selected}
+                        onSelect={() => onOptionCreate(temporaryOption.value)}
+                        onMouseDown={event => event.preventDefault()}
+                    >
+                        {`Add "${temporaryOption.label}" as new option`}
+                    </CommandItem>
+                );
+            }
+
+            return renderedItems;
         },
-        [onOptionSelect]
+        [onOptionSelect, allowFreeInput, temporaryOption, onOptionCreate]
     );
 
     return (

@@ -41,7 +41,8 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
         setSelectedOption,
         searchOption,
         removeSelectedOption,
-        resetSelectedOptions
+        resetSelectedOptions,
+        createOption
     } = useMultiAutoComplete(props);
 
     const handleKeyDown = React.useCallback(
@@ -57,13 +58,8 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
             if (event.key.toLowerCase() === "escape") {
                 setListOpenState(false);
             }
-
-            if (event.key.toLowerCase() === "backspace") {
-                setListOpenState(true);
-                setSelectedOption("");
-            }
         },
-        [setListOpenState, setSelectedOption, vm.optionsListVm.isOpen]
+        [props.disabled, setListOpenState, setSelectedOption, vm.optionsListVm.isOpen]
     );
 
     const handleSelectOption = React.useCallback(
@@ -72,6 +68,14 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
             setListOpenState(false);
         },
         [setSelectedOption, setListOpenState]
+    );
+
+    const handleCreateOption = React.useCallback(
+        (value: string) => {
+            createOption(value);
+            setListOpenState(false);
+        },
+        [createOption, setListOpenState]
     );
 
     return (
@@ -102,7 +106,10 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
                     <CommandList
                         options={vm.optionsListVm.options}
+                        temporaryOption={vm.temporaryOption.option}
+                        allowFreeInput={props.allowFreeInput}
                         onOptionSelect={handleSelectOption}
+                        onOptionCreate={handleCreateOption}
                         isLoading={props.isLoading}
                         emptyMessage={vm.optionsListVm.emptyMessage}
                         optionRenderer={props.optionRenderer}

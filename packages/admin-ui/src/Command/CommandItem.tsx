@@ -5,7 +5,7 @@ import { cn, cva, type VariantProps } from "~/utils";
 
 const commandItemVariants = cva(
     [
-        "flex items-center justify-between gap-sm-extra cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none",
+        "flex items-center justify-between gap-sm-extra cursor-default select-none rounded-sm p-sm mx-sm text-md outline-none overflow-hidden",
         "bg-neutral-base text-neutral-primary fill-neutral-xstrong",
         "data-[disabled=true]:text-neutral-disabled data-[disabled=true]:cursor-not-allowed",
         "data-[selected=true]:bg-neutral-dimmed"
@@ -27,7 +27,7 @@ interface CommandItemProps
 
 const CommandItem = ({ className, children, selected, ...props }: CommandItemProps) => (
     <CommandPrimitive.Item className={cn(commandItemVariants({ selected }), className)} {...props}>
-        {children}
+        <span className={"overflow-hidden truncate whitespace-nowrap"}>{children}</span>
         {selected ? <Check className="w-md h-md" /> : null}
     </CommandPrimitive.Item>
 );

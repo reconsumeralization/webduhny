@@ -1,3 +1,5 @@
+import { CommandOption } from "~/Command/CommandOption";
+
 export interface ISetSelectedOptionRepository {
-    execute: (value: string) => Promise<void>;
+    execute: (options: CommandOption) => Promise<void>;
 }

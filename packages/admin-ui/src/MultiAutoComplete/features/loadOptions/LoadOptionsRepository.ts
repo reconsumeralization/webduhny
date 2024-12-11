@@ -20,11 +20,11 @@ export class LoadOptionsRepository implements ILoadOptionsRepository {
         this.selectedOptionsCache = selectedOptionsCache;
     }
 
-    async execute(options: CommandOption[]) {
+    async execute(options: CommandOption[], selectedOptions: CommandOption[]) {
         this.optionsCache.clear();
         this.selectedOptionsCache.clear();
         this.optionsCache.addItems(options);
-        this.selectedOptionsCache.addItems(options.filter(opt => opt.selected));
+        this.selectedOptionsCache.addItems(selectedOptions);
     }
 }
 

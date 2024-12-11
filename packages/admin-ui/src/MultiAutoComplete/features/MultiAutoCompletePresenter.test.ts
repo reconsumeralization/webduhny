@@ -350,16 +350,16 @@ describe("MultiAutoCompletePresenter", () => {
 
         expect(presenter.vm.selectedOptionsVm.options).toEqual([
             {
-                label: "Option 1",
-                value: "option-1",
+                label: "Option 2",
+                value: "option-2",
                 disabled: false,
                 selected: true,
                 separator: false,
                 item: null
             },
             {
-                label: "Option 2",
-                value: "option-2",
+                label: "Option 1",
+                value: "option-1",
                 disabled: false,
                 selected: true,
                 separator: false,
@@ -581,5 +581,63 @@ describe("MultiAutoCompletePresenter", () => {
         presenter.setListOpenState(false);
         expect(presenter.vm.optionsListVm.isOpen).toBe(false);
         expect(onOpenChange).toHaveBeenCalledWith(false);
+    });
+
+    it("should be able to create new options if `allowNewOptions` is set to true", () => {
+        // This feature is disabled by default
+        {
+            presenter.init({ onValuesChange });
+            presenter.searchOption("New Option 1");
+            presenter.createOption("New Option 1");
+            expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(true);
+            expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
+        }
+
+        // Let's enable it by setting `allowFreeInput` = true
+        {
+            presenter.init({ onValuesChange, allowFreeInput: true });
+
+            // Let's create the first option
+            presenter.searchOption("New Option 1");
+            presenter.createOption("New Option 1");
+            expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(false);
+            expect(presenter.vm.selectedOptionsVm.options).toEqual([
+                {
+                    label: "New Option 1",
+                    value: "New Option 1",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                }
+            ]);
+            expect(onValuesChange).toHaveBeenCalledWith(["New Option 1"]);
+            expect(presenter.vm.inputVm.value).toEqual("");
+
+            // Let's create the second option
+            presenter.searchOption("New Option 2");
+            presenter.createOption("New Option 2");
+            expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(false);
+            expect(presenter.vm.selectedOptionsVm.options).toEqual([
+                {
+                    label: "New Option 1",
+                    value: "New Option 1",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                },
+                {
+                    label: "New Option 2",
+                    value: "New Option 2",
+                    disabled: false,
+                    selected: true,
+                    separator: false,
+                    item: null
+                }
+            ]);
+            expect(onValuesChange).toHaveBeenCalledWith(["New Option 1", "New Option 2"]);
+            expect(presenter.vm.inputVm.value).toEqual("");
+        }
     });
 });

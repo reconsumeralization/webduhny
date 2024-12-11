@@ -13,10 +13,15 @@ export class LoadOptionsUseCase implements ILoadOptionsUseCase {
     }
 
     async execute(options: MultiAutoCompleteOption[], selectedValues: string[] = []) {
-        await this.repository.execute(this.mapOptions(options, selectedValues));
+        const commandOptions = this.getOptions(options, selectedValues);
+        const selectedCommandOptions = this.getSelectedCommandOptions(
+            commandOptions,
+            selectedValues
+        );
+        await this.repository.execute(commandOptions, selectedCommandOptions);
     }
 
-    private mapOptions(
+    private getOptions(
         options: MultiAutoCompleteOption[] = [],
         values: string[] = []
     ): CommandOption[] {
@@ -27,7 +32,23 @@ export class LoadOptionsUseCase implements ILoadOptionsUseCase {
                     : CommandOption.create(option);
 
             commandOption.selected = values.includes(commandOption.value);
+
             return commandOption;
+        });
+    }
+
+    private getSelectedCommandOptions(
+        commandOptions: CommandOption[],
+        values: string[]
+    ): CommandOption[] {
+        return values.map(value => {
+            const option = commandOptions.find(option => option.value === value);
+
+            if (!option) {
+                return CommandOption.createFromString(value);
+            }
+
+            return option;
         });
     }
 }

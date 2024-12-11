@@ -3,27 +3,28 @@ import { CommandOption } from "~/Command";
 import { ICreateOptionRepository } from "./ICreateOptionRepository";
 import {
     IListCache,
-    OptionsCacheAbstraction,
+    ISearchQueryCache,
+    SearchQueryCacheAbstraction,
     SelectedOptionsCacheAbstraction
 } from "../../domains";
 import { container } from "../container";
 
 class CreateOptionRepository implements ICreateOptionRepository {
-    private optionsCache: IListCache<CommandOption>;
     private selectedOptionsCache: IListCache<CommandOption>;
+    private searchQueryCache: ISearchQueryCache;
 
     constructor(
-        optionsCache: IListCache<CommandOption>,
-        selectedOptionsCache: IListCache<CommandOption>
+        selectedOptionsCache: IListCache<CommandOption>,
+        searchQueryCache: ISearchQueryCache
     ) {
-        this.optionsCache = optionsCache;
         this.selectedOptionsCache = selectedOptionsCache;
+        this.searchQueryCache = searchQueryCache;
     }
 
     async execute(option: CommandOption) {
         option.selected = true;
-        this.optionsCache.addItems([option]);
         this.selectedOptionsCache.addItems([option]);
+        this.searchQueryCache.setState("");
     }
 }
 
@@ -34,7 +35,7 @@ export const CreateOptionRepositoryAbstraction = new Abstraction<ICreateOptionRe
 const CreateOptionRepositoryImpl = createImplementation({
     abstraction: CreateOptionRepositoryAbstraction,
     implementation: CreateOptionRepository,
-    dependencies: [OptionsCacheAbstraction, SelectedOptionsCacheAbstraction]
+    dependencies: [SelectedOptionsCacheAbstraction, SearchQueryCacheAbstraction]
 });
 
 container.register(CreateOptionRepositoryImpl);
