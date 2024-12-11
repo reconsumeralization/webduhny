@@ -137,7 +137,7 @@ export const GET_FORM = gql`
 export interface GetFormRevisionsQueryResponse {
     formBuilder: {
         revisions: {
-            data: FbRevisionModel[];
+            data: FbRevisionModel[] | null;
             error: FbErrorResponse | null;
         };
     };
