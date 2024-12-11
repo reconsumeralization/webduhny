@@ -1,3 +1,4 @@
+import { CmsIdentity } from "@webiny/api-headless-cms/types";
 import { ITaskResponseDoneResultOutput } from "@webiny/tasks";
 
 export interface IDeleteModelTaskInput {
@@ -23,4 +24,10 @@ export interface IDeleteCmsModelTask {
     total: number;
     deleted: number;
     message?: string;
+}
+
+export interface IStoreValue {
+    modelId: string;
+    task: string;
+    identity: CmsIdentity;
 }

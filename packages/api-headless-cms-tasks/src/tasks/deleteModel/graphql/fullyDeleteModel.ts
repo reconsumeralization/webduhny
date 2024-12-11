@@ -1,11 +1,11 @@
 import { HcmsTasksContext } from "~/types";
 import { DELETE_MODEL_TASK } from "~/tasks/deleteModel/constants";
-import { IDeleteCmsModelTask, IDeleteModelTaskInput } from "~/tasks/deleteModel/types";
+import { IDeleteCmsModelTask, IDeleteModelTaskInput, IStoreValue } from "~/tasks/deleteModel/types";
 import { getStatus } from "~/tasks/deleteModel/graphql/status";
-import { getTaskIdFromTag } from "~/tasks/deleteModel/helpers/tag";
+import { createStoreKey, createStoreValue } from "~/tasks/deleteModel/helpers/store";
 
 export interface IFullyDeleteModelParams {
-    readonly context: Pick<HcmsTasksContext, "cms" | "tasks">;
+    readonly context: Pick<HcmsTasksContext, "cms" | "tasks" | "db" | "security">;
     readonly modelId: string;
 }
 
@@ -33,11 +33,11 @@ export const fullyDeleteModel = async (
     if (!model) {
         throw new Error(`Model "${modelId}" not found.`);
     }
-    const taskId = getTaskIdFromTag(model.tags);
+    const storeKey = createStoreKey(model);
+    const result = await context.db.store.getValue<IStoreValue>(storeKey);
+    const taskId = result.data?.task;
     if (taskId) {
-        throw new Error(
-            `Model "${modelId}" is already being deleted. Task id: ${taskId || "unknown"}.`
-        );
+        throw new Error(`Model "${modelId}" is already getting deleted. Task id: ${taskId}.`);
     }
 
     const task = await context.tasks.trigger<IDeleteModelTaskInput>({
@@ -47,6 +47,15 @@ export const fullyDeleteModel = async (
         definition: DELETE_MODEL_TASK,
         name: `Fully delete model: ${modelId}`
     });
+
+    await context.db.store.storeValue(
+        storeKey,
+        createStoreValue({
+            model,
+            identity: context.security.getIdentity(),
+            task: task.id
+        })
+    );
 
     return {
         id: task.id,

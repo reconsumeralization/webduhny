@@ -1,7 +1,8 @@
 import {
     IDeleteCmsModelTask,
     IDeleteModelTaskInput,
-    IDeleteModelTaskOutput
+    IDeleteModelTaskOutput,
+    IStoreValue
 } from "~/tasks/deleteModel/types";
 import { HcmsTasksContext } from "~/types";
 import { DELETE_MODEL_TASK } from "~/tasks/deleteModel/constants";
@@ -9,10 +10,10 @@ import { WebinyError } from "@webiny/error";
 import { getStatus } from "~/tasks/deleteModel/graphql/status";
 import { NotFoundError } from "@webiny/handler-graphql";
 import { CmsModel } from "@webiny/api-headless-cms/types";
-import { getTaskIdFromTag } from "~/tasks/deleteModel/helpers/tag";
+import { createStoreKey } from "../helpers/store";
 
 export interface IGetDeleteModelProgress {
-    readonly context: Pick<HcmsTasksContext, "cms" | "tasks">;
+    readonly context: Pick<HcmsTasksContext, "cms" | "tasks" | "db">;
     readonly modelId: string;
 }
 
@@ -47,7 +48,10 @@ export const getDeleteModelProgress = async (
         rwd: "w"
     });
 
-    const taskId = getTaskIdFromTag(model.tags);
+    const storeKey = createStoreKey(model);
+    const result = await context.db.store.getValue<IStoreValue>(storeKey);
+
+    const taskId = result.data?.task;
     if (!taskId) {
         throw new Error(`Model "${modelId}" is not being deleted.`);
     }

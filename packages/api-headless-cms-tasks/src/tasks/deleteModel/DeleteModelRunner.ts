@@ -1,8 +1,8 @@
 import { ITaskResponse, ITaskResponseResult, ITaskRunParams } from "@webiny/tasks";
 import { HcmsTasksContext } from "~/types";
-import { IDeleteModelTaskInput, IDeleteModelTaskOutput } from "./types";
+import { IDeleteModelTaskInput, IDeleteModelTaskOutput, IStoreValue } from "./types";
 import { CmsEntryListWhere, CmsModel } from "@webiny/api-headless-cms/types";
-import { containsTaskTag, createTaskTag, removeTag } from "~/tasks/deleteModel/helpers/tag";
+import { createStoreKey, createStoreValue } from "~/tasks/deleteModel/helpers/store";
 
 export interface IDeleteModelRunnerParams<
     C extends HcmsTasksContext,
@@ -38,13 +38,14 @@ export class DeleteModelRunner<
     public async execute(params: IExecuteParams<C, I, O>): Promise<ITaskResponseResult<I, O>> {
         const { input, isCloseToTimeout, isAborted } = params;
 
-        let model = await this.getModel(input.modelId);
+        const model = await this.getModel(input.modelId);
         /**
          * We need to mark model as getting deleted, so that we can prevent any further operations on it.
          */
-        const tag = containsTaskTag(model.tags);
-        if (!tag) {
-            model = await this.addDeletingTag(model);
+        const gettingDeleted = await this.getDeletingTag(model);
+
+        if (!gettingDeleted) {
+            await this.addDeletingTag(model);
         }
 
         let hasMoreItems = false;
@@ -157,30 +158,26 @@ export class DeleteModelRunner<
         return model;
     }
 
-    private async addDeletingTag(model: CmsModel): Promise<CmsModel> {
-        if (model.isPlugin) {
-            return model;
-        }
-        return await this.context.cms.updateModelDirect({
-            model: {
-                ...model,
-                tags: [...(model.tags || []), createTaskTag(this.taskId)]
-            },
-            original: model
-        });
+    private async getDeletingTag(model: Pick<CmsModel, "modelId">): Promise<IStoreValue | null> {
+        const key = createStoreKey(model);
+        const value = await this.context.db.store.getValue<IStoreValue>(key);
+
+        return value.data || null;
     }
 
-    private async removeDeletingTag(model: CmsModel): Promise<CmsModel> {
-        if (model.isPlugin) {
-            return model;
-        }
-        return await this.context.cms.updateModelDirect({
-            model: {
-                ...model,
-                tags: removeTag(model.tags)
-            },
-            original: model
+    private async addDeletingTag(model: Pick<CmsModel, "modelId">): Promise<void> {
+        const key = createStoreKey(model);
+        const value = createStoreValue({
+            model,
+            identity: this.context.security.getIdentity(),
+            task: this.taskId
         });
+        await this.context.db.store.storeValue(key, value);
+    }
+
+    private async removeDeletingTag(model: Pick<CmsModel, "modelId">): Promise<void> {
+        const key = createStoreKey(model);
+        await this.context.db.store.removeValue(key);
     }
 }
 

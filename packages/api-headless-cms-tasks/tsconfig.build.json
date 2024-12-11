@@ -3,6 +3,7 @@
   "include": ["src"],
   "references": [
     { "path": "../api/tsconfig.build.json" },
+    { "path": "../db/tsconfig.build.json" },
     { "path": "../api-aco/tsconfig.build.json" },
     { "path": "../api-headless-cms/tsconfig.build.json" },
     { "path": "../api-headless-cms-bulk-actions/tsconfig.build.json" },
