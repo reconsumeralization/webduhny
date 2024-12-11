@@ -1,5 +1,26 @@
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
-import { DbDriver } from "@webiny/db";
+import {
+    DbDriver,
+    GetValueResult,
+    GetValuesResult,
+    ListValuesResult,
+    StorageKey,
+    StoreValueResult,
+    StoreValuesResult
+} from "@webiny/db";
+import { Entity } from "dynamodb-toolbox";
+import { createTable, Table } from "~/utils/createTable";
+import { GenericRecord } from "@webiny/api/types";
+import { createEntity } from "~/store/entity";
+import { batchReadAll, batchWriteAll, get, put, queryAll } from "~/utils";
+import {
+    createGSI1PartitionKey,
+    createGSI1SortKey,
+    createPartitionKey,
+    createSortKey,
+    createType
+} from "~/store/keys";
+import { IStoreItem } from "~/store/types";
 
 interface ConstructorArgs {
     documentClient: DynamoDBDocument;
@@ -7,12 +28,214 @@ interface ConstructorArgs {
 
 class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
     public readonly documentClient: DynamoDBDocument;
+
+    private _table: Table | undefined = undefined;
+    private _entity: Entity | undefined = undefined;
+
+    public table(): Table {
+        if (this._table) {
+            return this._table;
+        }
+        this._table = createTable({
+            documentClient: this.documentClient
+        });
+        return this._table;
+    }
+
+    public entity(): Entity {
+        if (this._entity) {
+            return this._entity;
+        }
+        this._entity = createEntity({
+            table: this.table()
+        });
+        return this._entity;
+    }
+
     constructor({ documentClient }: ConstructorArgs) {
         this.documentClient = documentClient;
     }
 
-    getClient() {
+    public getClient() {
         return this.documentClient;
+    }
+
+    public async storeValue<V>(key: string, input: V): Promise<StoreValueResult<V>> {
+        let value: string | undefined;
+        try {
+            value = JSON.stringify(input);
+        } catch (ex) {
+            return {
+                key,
+                error: ex
+            };
+        }
+
+        try {
+            await put<IStoreItem>({
+                entity: this.entity(),
+                item: {
+                    PK: createPartitionKey({ key }),
+                    SK: createSortKey({ key }),
+                    GSI1_PK: createGSI1PartitionKey(),
+                    GSI1_SK: createGSI1SortKey({ key }),
+                    TYPE: createType(),
+                    key,
+                    value
+                }
+            });
+
+            return {
+                key,
+                data: input
+            };
+        } catch (ex) {
+            return {
+                key,
+                error: ex
+            };
+        }
+    }
+    public async storeValues<V extends GenericRecord<StorageKey>>(
+        values: V
+    ): Promise<StoreValuesResult<V>> {
+        const keys = Object.keys(values);
+        try {
+            const batch = keys.map(key => {
+                const input = values[key];
+                let value: string | undefined;
+                try {
+                    value = JSON.stringify(input);
+                } catch (ex) {
+                    throw ex;
+                }
+                const item: IStoreItem = {
+                    PK: createPartitionKey({ key }),
+                    SK: createSortKey({ key }),
+                    GSI1_PK: createGSI1PartitionKey(),
+                    GSI1_SK: createGSI1SortKey({ key }),
+                    TYPE: createType(),
+                    key,
+                    value
+                };
+                return this.entity().putBatch(item);
+            });
+
+            await batchWriteAll({
+                table: this.table(),
+                items: batch
+            });
+            return {
+                keys,
+                data: values
+            };
+        } catch (ex) {
+            return {
+                keys,
+                error: ex
+            };
+        }
+    }
+    public async getValue<V>(key: StorageKey): Promise<GetValueResult<V>> {
+        try {
+            const result = await get<IStoreItem>({
+                entity: this.entity(),
+                keys: {
+                    PK: createPartitionKey({ key }),
+                    SK: createSortKey({ key })
+                }
+            });
+            return {
+                key,
+                data: result ? JSON.parse(result.value) : null
+            };
+        } catch (ex) {
+            return {
+                key,
+                error: ex
+            };
+        }
+    }
+    public async getValues<V extends GenericRecord<StorageKey>>(
+        input: (keyof V)[]
+    ): Promise<GetValuesResult<V>> {
+        const keys = [...input] as string[];
+        const batch = keys.map(key => {
+            return this.entity().getBatch({
+                PK: createPartitionKey({ key }),
+                SK: createSortKey({ key })
+            });
+        });
+
+        try {
+            const results = await batchReadAll<IStoreItem>({
+                table: this.table(),
+                items: batch
+            });
+            const data = keys.reduce((collection, key) => {
+                const result = results.find(item => {
+                    return (
+                        item.PK === createPartitionKey({ key }) &&
+                        item.SK === createSortKey({ key })
+                    );
+                });
+                if (!result?.value) {
+                    // @ts-expect-error
+                    collection[key] = null;
+                    return collection;
+                }
+                try {
+                    // @ts-expect-error
+                    collection[key] = JSON.parse(result.value);
+                } catch {
+                    // @ts-expect-error
+                    collection[key] = null;
+                }
+
+                return collection;
+            }, {} as V);
+            return {
+                keys,
+                data
+            };
+        } catch (ex) {
+            return {
+                keys,
+                error: ex
+            };
+        }
+    }
+    public async listValues<V extends GenericRecord<StorageKey>>(): Promise<ListValuesResult<V>> {
+        try {
+            const results = await queryAll<IStoreItem>({
+                entity: this.entity(),
+                partitionKey: createGSI1PartitionKey(),
+                options: {
+                    index: "GSI1"
+                }
+            });
+
+            const data = results.reduce((collection, item) => {
+                try {
+                    // @ts-expect-error
+                    collection[item.key] = JSON.parse(item.value);
+                } catch (ex) {
+                    // @ts-expect-error
+                    collection[item.key] = null;
+                }
+
+                return collection;
+            }, {} as V);
+
+            return {
+                keys: Object.keys(data),
+                data
+            };
+        } catch (ex) {
+            return {
+                error: ex
+            };
+        }
     }
 }
 
