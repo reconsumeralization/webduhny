@@ -4,6 +4,8 @@ import { PbPageTemplateWithContent } from "@webiny/app-page-builder/types";
 import { RenderPluginsLoader } from "@webiny/app-page-builder/admin";
 import { Content } from "@webiny/app-page-builder-elements";
 import { DataSourceProvider, DynamicDocumentProvider } from "~/dataInjection";
+import { RefreshIcon } from "@webiny/ui/List/DataList/icons";
+import { useRefreshPageTemplates } from "@webiny/app-page-builder/features";
 
 const LivePreviewContainer = styled.div`
     position: relative;
@@ -14,16 +16,30 @@ const LivePreviewContainer = styled.div`
     overflow: auto;
 `;
 
+const Header = styled.div`
+    display: flex;
+    padding: 15px;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--mdc-theme-on-background);
+    font-size: 24px;
+    align-items: center;
+`;
+
 export interface PreviewPaneProps {
     template: PbPageTemplateWithContent;
 }
 
 export const PreviewPane = ({ template }: PreviewPaneProps) => {
     const mainDataSource = template.dataSources.find(ds => ds.name === "main");
+    const { refreshPageTemplates } = useRefreshPageTemplates();
 
     return (
         <RenderPluginsLoader>
             <LivePreviewContainer>
+                <Header>
+                    {template.title}
+                    <RefreshIcon onClick={() => refreshPageTemplates()} />
+                </Header>
                 <DynamicDocumentProvider
                     dataSources={template.dataSources}
                     dataBindings={template.dataBindings}
