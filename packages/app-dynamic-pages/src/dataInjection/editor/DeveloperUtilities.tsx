@@ -13,11 +13,16 @@ export const DeveloperUtilities = () => {
 
     useEffect(() => {
         // @ts-expect-error This is a developers-only utility.
-        window["debug_resetAllBindings"] = resetBindings;
+        window["debug_resetBindings"] = resetBindings;
 
         // @ts-expect-error This is a developers-only utility.
-        window["debug_printAllBindings"] = () => {
+        window["debug_printBindings"] = () => {
             console.log(template.dataBindings);
+        };
+
+        // @ts-expect-error This is a developers-only utility.
+        window["debug_printDataSources"] = () => {
+            console.log(template.dataSources);
         };
 
         // @ts-expect-error This is a developers-only utility.
