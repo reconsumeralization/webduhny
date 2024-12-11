@@ -37,6 +37,14 @@ export class CmsEntryDataSource implements IDataSource<CmsEntryDataSourceConfig>
         const listQuery = new ModelGetQuery();
         const query = listQuery.getQuery(model, queryPaths);
 
+        console.log("query", {
+            query,
+            operationName: "GetEntry",
+            variables: {
+                entryId: config.entryId
+            }
+        });
+
         const response = await schemaClient({
             query,
             operationName: "GetEntry",
@@ -44,6 +52,8 @@ export class CmsEntryDataSource implements IDataSource<CmsEntryDataSourceConfig>
                 entryId: config.entryId
             }
         });
+
+        console.log("response", response);
 
         // @ts-expect-error Naive return for the time being.
         return response.data.entry.data;
