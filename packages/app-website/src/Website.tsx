@@ -18,11 +18,11 @@ export interface WebsiteProps extends AppProps {
 const PageBuilderProviderHOC: Decorator<
     GenericComponent<{ children: React.ReactNode }>
 > = PreviousProvider => {
-    return function PageBuilderProviderHOC({ children }) {
-        const websiteLoaderCache = useMemo(() => {
-            return new WebsiteLoaderCache();
-        }, []);
+    const websiteLoaderCache = useMemo(() => {
+        return new WebsiteLoaderCache();
+    }, []);
 
+    return function PageBuilderProviderHOC({ children }) {
         return (
             <PageBuilderProvider loaderCache={websiteLoaderCache}>
                 <PreviousProvider>{children}</PreviousProvider>
