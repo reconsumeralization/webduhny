@@ -10,7 +10,7 @@ import {
 import { ElementDataSettings } from "./ElementDataSettings";
 import { DataSourceConfigAndBindings } from "./DataSourceConfigAndBindings";
 import { ElementInputs } from "~/dataInjection/editor/DataSourceProperties/ElementInputs";
-// import { DeveloperUtilities } from "./DeveloperUtilities";
+import { DeveloperUtilities } from "./DeveloperUtilities";
 
 const { Ui } = EditorConfig;
 
@@ -35,8 +35,7 @@ const ContentDecorator = Ui.Content.createDecorator(Original => {
 export const SetupDynamicDataInEditor = () => {
     return (
         <>
-            {/* TODO: make this reusable across editors  */}
-            {/* <DeveloperUtilities /> */}
+            <DeveloperUtilities />
             <ContentDecorator />
             <InjectDynamicValues />
             <AddDataSourceContext />

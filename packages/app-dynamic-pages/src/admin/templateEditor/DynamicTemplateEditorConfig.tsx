@@ -5,7 +5,6 @@ import { hasMainDataSource } from "~/features";
 import { ElementEventHandlers } from "./ElementEventHandlers";
 import { SetupDynamicDocument } from "~/admin/templateEditor/SetupDynamicDocument";
 import { SetupDynamicDataInEditor, useDynamicDocument } from "~/dataInjection";
-import { DeveloperUtilities } from "~/dataInjection/editor/DeveloperUtilities";
 
 const { Ui } = TemplateEditorConfig;
 
@@ -19,7 +18,6 @@ export const DynamicTemplateEditorConfig = () => {
     return (
         <>
             <TemplateEditorConfig>
-                <DeveloperUtilities />
                 <SetupDynamicDocument />
                 <SetupDynamicDataInEditor />
                 <Ui.TopBar.Element

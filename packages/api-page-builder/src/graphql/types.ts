@@ -10,6 +10,7 @@ import {
     BlockCategory,
     Category,
     DefaultSettings,
+    DynamicDocument,
     Menu,
     Page,
     PageBlock,
@@ -887,7 +888,7 @@ export interface PbCategoryInput {
     layout: string;
 }
 
-export interface PbUpdatePageInput {
+export interface PbUpdatePageInput extends DynamicDocument {
     title?: string;
     category?: string;
     path?: string;

@@ -6,6 +6,7 @@ import { Select } from "@webiny/ui/Select";
 import { Zoom } from "./Zoom";
 import { PbPageData } from "~/types";
 import { Content } from "@webiny/app-page-builder-elements";
+import { makeDecoratable } from "@webiny/react-composition";
 
 const webinyZoomStyles = css`
     &.mdc-select--no-label:not(.mdc-select--outlined)
@@ -83,7 +84,7 @@ interface PagePreviewProps {
     page: PbPageData;
 }
 
-export const PagePreview = ({ page }: PagePreviewProps) => {
+export const PageContentPreview = makeDecoratable(({ page }: PagePreviewProps) => {
     return (
         <Zoom>
             {({ zoom, setZoom }) => (
@@ -97,4 +98,4 @@ export const PagePreview = ({ page }: PagePreviewProps) => {
             )}
         </Zoom>
     );
-};
+});

@@ -48,6 +48,8 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     settings: PbPageSettings
                     content: JSON
                     revisions: [PbPageRevision]
+                    dataSources: [DataSource!]
+                    dataBindings: [DataBinding!]
                 }
 
                 type PbPageRevision {
@@ -103,6 +105,8 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     path: String
                     settings: PbPageSettingsInput
                     content: JSON
+                    dataSources: [DataSourceInput!]
+                    dataBindings: [DataBindingInput!]
                 }
 
                 input PbPageSettingsInput {
@@ -299,6 +303,12 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                         });
 
                         return processedPage.content;
+                    },
+                    dataSources(page: Page) {
+                        return page.dataSources || [];
+                    },
+                    dataBindings(page: Page) {
+                        return page.dataBindings || [];
                     }
                 },
                 PbPageListItem: {

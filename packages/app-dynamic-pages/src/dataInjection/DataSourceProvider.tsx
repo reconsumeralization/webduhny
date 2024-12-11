@@ -22,12 +22,17 @@ export const DataSourceProvider = ({ dataSource, children }: PreviewDataProvider
     const { dataBindings } = useDynamicDocument();
 
     const paths = useMemo(() => {
+        if (!dataSource) {
+            return [];
+        }
+
         const binds = dataBindings
             .filter(b => b.dataSource === dataSource.name)
-            .map(binding => binding.bindFrom);
+            .map(binding => binding.bindFrom)
+            .filter(path => path !== "*");
 
         return Array.from(new Set(binds)).sort();
-    }, [dataBindings]);
+    }, [dataSource, dataBindings]);
 
     const { data, loadData } = useLoadDataSource(dataSource, paths);
 

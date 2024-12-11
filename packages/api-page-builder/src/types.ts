@@ -81,7 +81,7 @@ export interface PageSettings {
      */
     [key: string]: any;
 }
-export interface Page<T = Record<string, any> | null> {
+export interface Page<T = Record<string, any> | null> extends DynamicDocument {
     id: string;
     pid: string;
     locale: string;
@@ -796,7 +796,7 @@ export interface BlockCategoryStorageOperations {
 /**
  * @category RecordModel
  */
-export interface PageBlock {
+export interface PageBlock extends DynamicDocument {
     id: string;
     name: string;
     blockCategory: string;
@@ -889,22 +889,27 @@ export interface PageBlockStorageOperations {
     delete(params: PageBlockStorageOperationsDeleteParams): Promise<void>;
 }
 
-export interface PageTemplateDataSource {
+export interface DataSource {
     name: string;
     type: string;
     config: GenericRecord;
 }
 
-export interface PageTemplateDataBinding {
+export interface DataBinding {
     dataSource: string;
     bindFrom: string;
     bindTo: string;
 }
 
+export interface DynamicDocument {
+    dataSources?: DataSource[];
+    dataBindings?: DataBinding[];
+}
+
 /**
  * @category RecordModel
  */
-export interface PageTemplate {
+export interface PageTemplate extends DynamicDocument {
     id: string;
     title: string;
     slug: string;
@@ -912,8 +917,6 @@ export interface PageTemplate {
     description: string;
     layout?: string;
     content?: any;
-    dataSources?: PageTemplateDataSource[];
-    dataBindings?: PageTemplateDataBinding[];
     createdOn: string;
     savedOn: string;
     createdBy: CreatedBy;

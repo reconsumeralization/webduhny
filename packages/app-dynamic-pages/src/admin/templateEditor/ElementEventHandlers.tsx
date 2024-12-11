@@ -32,7 +32,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
             ...document.dataSources,
             {
                 name: dataSourceName,
-                type: "cms.list",
+                type: "cms.entries",
                 config: {
                     modelId: undefined,
                     limit: 10

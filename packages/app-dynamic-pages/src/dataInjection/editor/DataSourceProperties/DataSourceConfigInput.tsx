@@ -79,10 +79,8 @@ const ConfigInputUi = ({ configName, label, format }: ConfigInputUiProps) => {
     );
 
     return (
-        <>
-            <DelayedOnChange value={value} onChange={onChange}>
-                {({ value, onChange }) => <Input label={label} value={value} onChange={onChange} />}
-            </DelayedOnChange>
-        </>
+        <DelayedOnChange value={value} onChange={onChange}>
+            {({ value, onChange }) => <Input label={label} value={value} onChange={onChange} />}
+        </DelayedOnChange>
     );
 };

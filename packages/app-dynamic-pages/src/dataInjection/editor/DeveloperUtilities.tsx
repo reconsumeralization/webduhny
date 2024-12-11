@@ -1,36 +1,32 @@
 import { useEffect } from "react";
-import { useTemplate } from "@webiny/app-page-builder/templateEditor";
 import { PbPageTemplateDataBinding } from "@webiny/app-page-builder/types";
+import { useDynamicDocument } from "~/dataInjection";
 
 export const DeveloperUtilities = () => {
-    const [template, updateTemplate] = useTemplate();
-
-    const resetBindings = () => {
-        updateTemplate(template => {
-            return { ...template, dataBindings: [] };
-        });
-    };
+    const { dataSources, dataBindings, updateDataBindings } = useDynamicDocument();
 
     useEffect(() => {
         // @ts-expect-error This is a developers-only utility.
-        window["debug_resetBindings"] = resetBindings;
+        window["debug_resetBindings"] = () => {
+            updateDataBindings(() => []);
+        };
 
         // @ts-expect-error This is a developers-only utility.
         window["debug_printBindings"] = () => {
-            console.log(template.dataBindings);
+            console.log(dataBindings);
         };
 
         // @ts-expect-error This is a developers-only utility.
         window["debug_printDataSources"] = () => {
-            console.log(template.dataSources);
+            console.log(dataSources);
         };
 
         // @ts-expect-error This is a developers-only utility.
         window["debug_refreshBindings"] = () => {
-            updateTemplate(template => {
+            updateDataBindings(dataBindings => {
                 const uniqueBindings: PbPageTemplateDataBinding[] = [];
 
-                template.dataBindings.forEach(db => {
+                dataBindings.forEach(db => {
                     if (
                         !uniqueBindings.some(
                             b => b.dataSource === db.dataSource && b.bindTo === db.bindTo
@@ -39,10 +35,11 @@ export const DeveloperUtilities = () => {
                         uniqueBindings.push(db);
                     }
                 });
-                return { ...template, dataBindings: uniqueBindings };
+
+                return uniqueBindings;
             });
         };
-    }, [template.dataBindings]);
+    }, [dataSources, dataBindings]);
 
     return null;
 };

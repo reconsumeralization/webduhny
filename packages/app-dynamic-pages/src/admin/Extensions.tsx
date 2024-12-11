@@ -9,6 +9,7 @@ import { WebsiteDataInjection } from "~/dataInjection/presets/WebsiteDataInjecti
 import { PageTemplatesPreview } from "~/admin/PageTemplatesPreview";
 import { Elements } from "~/admin/elements/Elements";
 import { DynamicPageEditorConfig } from "~/admin/pageEditor/DynamicPageEditorConfig";
+import { PagesPreview } from "~/admin/PagesPreview";
 
 export const Extensions = () => {
     return (
@@ -21,6 +22,9 @@ export const Extensions = () => {
 
             {/* Decorate page template content preview. */}
             <PageTemplatesPreview />
+
+            {/* Decorate page content preview. */}
+            <PagesPreview />
 
             {/* Configure Template editor. */}
             <DynamicTemplateEditorConfig />

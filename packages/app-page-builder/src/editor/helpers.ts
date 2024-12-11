@@ -16,6 +16,7 @@ import {
 import {
     CreateElementActionEvent,
     DeleteElementActionEvent,
+    UpdateDocumentActionEvent,
     updateElementAction,
     UpdateElementActionArgsType
 } from "~/editor/recoil/actions";
@@ -352,10 +353,12 @@ export const onReceived: PbEditorPageElementPlugin["onReceived"] = props => {
     const element = createDroppedElement(source, target);
     const parent = addElementToParent(element, target, position);
 
+    const triggerDocumentUpdate = () => new UpdateDocumentActionEvent({ history: true });
+
     const result = executeAction<UpdateElementActionArgsType>(state, meta, updateElementAction, {
         element: parent,
         // Dropping of elements should always be stored to history, to trigger document save.
-        history: true
+        history: false
     });
 
     result.actions.push(new AfterDropElementActionEvent({ element }));
@@ -368,6 +371,8 @@ export const onReceived: PbEditorPageElementPlugin["onReceived"] = props => {
             })
         );
 
+        result.actions.push(triggerDocumentUpdate());
+
         return result;
     }
 
@@ -377,6 +382,8 @@ export const onReceived: PbEditorPageElementPlugin["onReceived"] = props => {
             source: source as PbEditorElement
         })
     );
+
+    result.actions.push(triggerDocumentUpdate());
 
     return result;
 };

@@ -32,7 +32,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
             ...document.dataSources || [],
             {
                 name: dataSourceName,
-                type: "cms.list",
+                type: "cms.entries",
                 config: {
                     modelId: undefined,
                     limit: 10
@@ -58,6 +58,7 @@ export const ElementEventHandlers = () => {
         _,
         args
     ) => {
+        console.log("dp.onElementCreate");
         if (!args) {
             return doNothing;
         }
@@ -72,6 +73,8 @@ export const ElementEventHandlers = () => {
         const page = state.page as PageAtomType;
 
         const updatedPage = addCmsListDataSource(page, element as PbEditorElementTree);
+
+        console.log("updatedPage", updatedPage);
 
         return {
             state: {

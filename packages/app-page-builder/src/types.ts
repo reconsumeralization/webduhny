@@ -364,7 +364,7 @@ export interface PbPageDataSettings {
 
 export type PbPageDataStatus = string | "draft" | "published" | "unpublished";
 
-export interface PbPageData {
+export interface PbPageData extends DynamicDocument {
     id: string;
     pid: string;
     path: string;
