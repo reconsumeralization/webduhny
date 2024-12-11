@@ -1,12 +1,12 @@
 import React from "react";
-import { TemplateEditorConfig } from "@webiny/app-page-builder/templateEditor";
+import { EditorConfig } from "@webiny/app-page-builder/editor";
 import { useActiveElement } from "@webiny/app-page-builder/editor";
 import { Input } from "@webiny/ui/Input";
 import { PbEditorElement } from "@webiny/app-page-builder/types";
 import { useInputBinding } from "./useInputBinding";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 
-const { Ui } = TemplateEditorConfig;
+const { Ui } = EditorConfig;
 
 export interface OnElementTypeProps {
     elementType: string;

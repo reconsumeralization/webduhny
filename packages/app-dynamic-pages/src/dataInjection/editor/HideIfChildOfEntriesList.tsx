@@ -7,11 +7,11 @@ interface HideIfChildOfEntriesListProps {
 
 export const HideIfChildOfEntriesList = ({ children }: HideIfChildOfEntriesListProps) => {
     const [element] = useActiveElement();
-    const isChildOfEntriesList = useIsElementChildOfType(element, "entries-list");
+    const { isChildOfType } = useIsElementChildOfType(element, "entries-list");
 
     if (!element) {
         return null;
     }
 
-    return isChildOfEntriesList ? null : <>{children}</>;
+    return isChildOfType ? null : <>{children}</>;
 };

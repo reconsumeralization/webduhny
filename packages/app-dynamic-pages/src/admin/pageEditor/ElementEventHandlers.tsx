@@ -7,12 +7,12 @@ import {
 import type {
     DynamicDocument,
     EventActionCallable,
-    PbEditorElementTree,
-    PbPageTemplate
+    PbEditorElementTree
 } from "@webiny/app-page-builder/types";
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
-import { ContentTraverser } from "~/admin/elements/eventHandlers/ContentTraverser";
+import type { PageAtomType } from "@webiny/app-page-builder/pageEditor/state";
+import { ContentTraverser } from "~/dataInjection";
 
 const doNothing = {
     actions: []
@@ -22,7 +22,6 @@ const addCmsListDataSource = <T extends DynamicDocument>(
     document: T,
     element: PbEditorElementTree
 ): T => {
-    console.log("add ds", element);
     const dataSourceName = `element:${element.id}`;
 
     const gridElement = element.elements[0];
@@ -30,7 +29,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
     return {
         ...document,
         dataSources: [
-            ...document.dataSources,
+            ...document.dataSources || [],
             {
                 name: dataSourceName,
                 type: "cms.list",
@@ -41,7 +40,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
             }
         ],
         dataBindings: [
-            ...document.dataBindings,
+            ...document.dataBindings || [],
             {
                 dataSource: dataSourceName,
                 bindFrom: "*",
@@ -70,14 +69,14 @@ export const ElementEventHandlers = () => {
         }
 
         // @ts-expect-error Event callable types need to be more generic.
-        const template = state.template as PbPageTemplate;
+        const page = state.page as PageAtomType;
 
-        const updatedTemplate = addCmsListDataSource(template, element as PbEditorElementTree);
+        const updatedPage = addCmsListDataSource(page, element as PbEditorElementTree);
 
         return {
             state: {
                 ...state,
-                template: updatedTemplate
+                page: updatedPage
             },
             actions: []
         };
@@ -95,7 +94,7 @@ export const ElementEventHandlers = () => {
         const { element } = args;
 
         // @ts-expect-error Event callable types need to be more generic.
-        const template = state.template as PbPageTemplate;
+        const page = state.page as PageAtomType;
 
         const withDescendants = await state.getElementTree({ element });
 
@@ -109,12 +108,12 @@ export const ElementEventHandlers = () => {
         const deleteDataSources = deletedElements.map(id => `element:${id}`);
         const deleteDataBindings = deletedElements.map(id => `element:${id}.`);
 
-        const updatedTemplate: PbPageTemplate = {
-            ...template,
-            dataSources: template.dataSources.filter(ds => {
+        const updatedPage: PageAtomType = {
+            ...page,
+            dataSources: (page.dataSources || []).filter(ds => {
                 return !deleteDataSources.includes(ds.name);
             }),
-            dataBindings: template.dataBindings.filter(binding => {
+            dataBindings: (page.dataBindings || []).filter(binding => {
                 return !deleteDataBindings.some(toDelete => binding.bindTo.startsWith(toDelete));
             })
         };
@@ -122,7 +121,7 @@ export const ElementEventHandlers = () => {
         return {
             state: {
                 ...state,
-                template: updatedTemplate
+                page: updatedPage
             },
             actions: []
         };

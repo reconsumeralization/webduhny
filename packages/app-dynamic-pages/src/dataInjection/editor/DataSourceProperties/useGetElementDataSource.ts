@@ -1,7 +1,6 @@
 import type { PbEditorElement } from "@webiny/app-page-builder/types";
 import { useGetElement } from "@webiny/app-page-builder/editor";
-import { useDocumentDataSource, useTemplate } from "@webiny/app-page-builder/templateEditor";
-import { ElementInputBinding } from "~/dataInjection";
+import { ElementInputBinding, useDocumentDataSource, useDynamicDocument } from "~/dataInjection";
 
 const getDataSourceFromBindings = async (
     getElement: (id: string) => Promise<PbEditorElement | null>,
@@ -30,12 +29,12 @@ const getDataSourceFromBindings = async (
 
 export const useGetElementDataSource = () => {
     const getElement = useGetElement();
-    const [template] = useTemplate();
+    const { dataBindings, dataSources } = useDynamicDocument();
     const { getDataSource } = useDocumentDataSource();
 
     const getElementDataSource = async (element: PbEditorElement) => {
         // First, we check if there's a dataSource dedicated to the requested element.
-        const dedicatedDataSource = template.dataSources.find(dataSource => {
+        const dedicatedDataSource = dataSources.find(dataSource => {
             return dataSource.name === `element:${element.id}`;
         });
 
@@ -44,7 +43,7 @@ export const useGetElementDataSource = () => {
         }
 
         // Then we proceed with the lookup through the element tree.
-        const bindings = template.dataBindings.map(binding => ElementInputBinding.create(binding));
+        const bindings = dataBindings.map(binding => ElementInputBinding.create(binding));
         const dataSource = await getDataSourceFromBindings(getElement, bindings, element);
 
         if (dataSource) {

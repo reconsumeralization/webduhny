@@ -1,4 +1,5 @@
 export * from "./AddBindingContext";
+export * from "./ContentTraverser";
 export * from "./AddDataSourceContext";
 export * from "./BindingProvider";
 export * from "./DataSourceProvider";
@@ -10,3 +11,6 @@ export * from "./useBindElementInputs";
 export * from "./useBindingContext";
 export * from "./useDataSource";
 export * from "./useDynamicDocument";
+export * from "./useDocumentDataSource";
+export * from "./useElementBindings";
+export * from "./editor/SetupDynamicDataInEditor";

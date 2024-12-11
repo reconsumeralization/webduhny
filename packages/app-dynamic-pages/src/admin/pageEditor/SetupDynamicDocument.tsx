@@ -1,29 +1,30 @@
 import React from "react";
-import { useTemplate, TemplateEditorConfig } from "@webiny/app-page-builder/templateEditor";
+import { PageEditorConfig } from "@webiny/app-page-builder/pageEditor";
 import { DynamicDocumentProvider } from "~/dataInjection";
+import { usePage } from "@webiny/app-page-builder/pageEditor";
 import {
     PbPageTemplateDataBinding,
     PbPageTemplateDataSource
 } from "@webiny/app-page-builder/types";
 
-const { Ui } = TemplateEditorConfig;
+const { Ui } = PageEditorConfig;
 
 export const SetupDynamicDocument = Ui.Layout.createDecorator(Original => {
-    return function TemplateToDynamicDocument() {
-        const [template, updateTemplate] = useTemplate();
+    return function PageToDynamicDocument() {
+        const [page, updatePage] = usePage();
 
         const onDataSources = (dataSources: PbPageTemplateDataSource[]) => {
-            updateTemplate(template => ({ ...template, dataSources }));
+            updatePage(page => ({ ...page, dataSources }));
         };
 
         const onDataBindings = (dataBindings: PbPageTemplateDataBinding[]) => {
-            updateTemplate(template => ({ ...template, dataBindings }));
+            updatePage(page => ({ ...page, dataBindings }));
         };
 
         return (
             <DynamicDocumentProvider
-                dataSources={template.dataSources}
-                dataBindings={template.dataBindings}
+                dataSources={page.dataSources || []}
+                dataBindings={page.dataBindings || []}
                 onDataSources={onDataSources}
                 onDataBindings={onDataBindings}
             >

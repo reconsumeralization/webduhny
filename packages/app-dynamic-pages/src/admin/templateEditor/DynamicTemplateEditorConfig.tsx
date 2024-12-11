@@ -1,16 +1,10 @@
 import React from "react";
 import { TemplateEditorConfig } from "@webiny/app-page-builder/templateEditor";
 import { EntrySelector } from "~/admin/templateEditor/EntrySelector";
-import { EntryDataPreview } from "./EntryDataPreview/EntryDataPreview";
 import { hasMainDataSource } from "~/features";
-import { Elements } from "~/admin/elements/Elements";
-import { ElementEventHandlers } from "~/admin/elements/eventHandlers/ElementEventHandlers";
-import { DisableGridDelete } from "~/admin/templateEditor/DisableGridDelete";
-import { ElementDataSettings } from "./ElementDataSettings";
-import { DataSourceConfigAndBindings } from "./DataSourceConfigAndBindings";
+import { ElementEventHandlers } from "./ElementEventHandlers";
 import { SetupDynamicDocument } from "~/admin/templateEditor/SetupDynamicDocument";
-import { useDynamicDocument } from "~/dataInjection";
-import { DeveloperUtilities } from "~/admin/templateEditor/DeveloperUtilities";
+import { SetupDynamicDataInEditor, useDynamicDocument } from "~/dataInjection";
 
 const { Ui } = TemplateEditorConfig;
 
@@ -23,13 +17,9 @@ const OnDynamicTemplate = ({ children }: { children: React.ReactNode }) => {
 export const DynamicTemplateEditorConfig = () => {
     return (
         <>
-            {/* Register new editor element plugins. This has to be done before the editor mounts. */}
-            <Elements />
             <TemplateEditorConfig>
-                <DeveloperUtilities />
                 <SetupDynamicDocument />
-                {/* Disable "delete" action on grids that are children of "entries-list" element. */}
-                <DisableGridDelete />
+                <SetupDynamicDataInEditor />
                 <Ui.TopBar.Element
                     name={"entrySelector"}
                     element={
@@ -39,17 +29,8 @@ export const DynamicTemplateEditorConfig = () => {
                     }
                     group={"center"}
                 />
-                <Ui.Sidebar.Group
-                    name={"data"}
-                    element={
-                        <OnDynamicTemplate>
-                            <ElementDataSettings />
-                        </OnDynamicTemplate>
-                    }
-                />
-                <EntryDataPreview />
+
                 <ElementEventHandlers />
-                <DataSourceConfigAndBindings />
             </TemplateEditorConfig>
         </>
     );

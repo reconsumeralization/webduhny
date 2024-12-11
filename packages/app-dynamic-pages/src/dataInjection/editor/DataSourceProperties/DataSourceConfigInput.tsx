@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-    TemplateEditorConfig,
-    useDocumentDataSource
-} from "@webiny/app-page-builder/templateEditor";
-import { useActiveElement } from "@webiny/app-page-builder/editor";
+import { useActiveElement, EditorConfig } from "@webiny/app-page-builder/editor";
 import type { PbEditorElement, PbPageTemplateDataSource } from "@webiny/app-page-builder/types";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { Input } from "@webiny/ui/Input";
 import { OnElementType } from "./OnElementType";
-import { useGetElementDataSource } from "~/admin/DataSourceProperties/useGetElementDataSource";
+import { useGetElementDataSource } from "./useGetElementDataSource";
+import { useDocumentDataSource } from "~/dataInjection";
 
-const { Ui } = TemplateEditorConfig;
+const { Ui } = EditorConfig;
 
 interface ValueFormatter {
     (value: string): unknown;

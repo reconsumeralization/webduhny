@@ -1,13 +1,16 @@
 import React from "react";
-import { useActiveElement, useIsElementChildOfType } from "@webiny/app-page-builder/editor";
-import { TemplateEditorConfig } from "@webiny/app-page-builder/templateEditor";
+import {
+    useActiveElement,
+    useIsElementChildOfType,
+    EditorConfig
+} from "@webiny/app-page-builder/editor";
 
-const { Ui } = TemplateEditorConfig;
+const { Ui } = EditorConfig;
 
 export const ElementDataSettings = () => {
     const [element] = useActiveElement();
-    const isChildOfEntriesList = useIsElementChildOfType(element, "entries-list");
-    const isDisabled = !element || (isChildOfEntriesList && element?.type === "grid");
+    const { isChildOfType } = useIsElementChildOfType(element, "entries-list");
+    const isDisabled = !element || (isChildOfType && element?.type === "grid");
 
     return (
         <Ui.Sidebar.Group.Tab
