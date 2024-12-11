@@ -3,6 +3,7 @@ import {
     DbDriver,
     GetValueResult,
     GetValuesResult,
+    IListValuesParams,
     ListValuesResult,
     StorageKey,
     StoreValueResult,
@@ -13,13 +14,7 @@ import { createTable, Table } from "~/utils/createTable";
 import { GenericRecord } from "@webiny/api/types";
 import { createEntity } from "~/store/entity";
 import { batchReadAll, batchWriteAll, get, put, queryAll } from "~/utils";
-import {
-    createGSI1PartitionKey,
-    createGSI1SortKey,
-    createPartitionKey,
-    createSortKey,
-    createType
-} from "~/store/keys";
+import { createPartitionKey, createSortKey, createType } from "~/store/keys";
 import { IStoreItem } from "~/store/types";
 
 interface ConstructorArgs {
@@ -75,10 +70,8 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
             await put<IStoreItem>({
                 entity: this.entity(),
                 item: {
-                    PK: createPartitionKey({ key }),
+                    PK: createPartitionKey(),
                     SK: createSortKey({ key }),
-                    GSI1_PK: createGSI1PartitionKey(),
-                    GSI1_SK: createGSI1SortKey({ key }),
                     TYPE: createType(),
                     key,
                     value
@@ -110,10 +103,8 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
                     throw ex;
                 }
                 const item: IStoreItem = {
-                    PK: createPartitionKey({ key }),
+                    PK: createPartitionKey(),
                     SK: createSortKey({ key }),
-                    GSI1_PK: createGSI1PartitionKey(),
-                    GSI1_SK: createGSI1SortKey({ key }),
                     TYPE: createType(),
                     key,
                     value
@@ -141,7 +132,7 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
             const result = await get<IStoreItem>({
                 entity: this.entity(),
                 keys: {
-                    PK: createPartitionKey({ key }),
+                    PK: createPartitionKey(),
                     SK: createSortKey({ key })
                 }
             });
@@ -162,7 +153,7 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
         const keys = [...input] as string[];
         const batch = keys.map(key => {
             return this.entity().getBatch({
-                PK: createPartitionKey({ key }),
+                PK: createPartitionKey(),
                 SK: createSortKey({ key })
             });
         });
@@ -174,10 +165,7 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
             });
             const data = keys.reduce((collection, key) => {
                 const result = results.find(item => {
-                    return (
-                        item.PK === createPartitionKey({ key }) &&
-                        item.SK === createSortKey({ key })
-                    );
+                    return item.PK === createPartitionKey() && item.SK === createSortKey({ key });
                 });
                 if (!result?.value) {
                     // @ts-expect-error
@@ -205,13 +193,15 @@ class DynamoDbDriver implements DbDriver<DynamoDBDocument> {
             };
         }
     }
-    public async listValues<V extends GenericRecord<StorageKey>>(): Promise<ListValuesResult<V>> {
+    public async listValues<V extends GenericRecord<StorageKey>>(
+        params?: IListValuesParams
+    ): Promise<ListValuesResult<V>> {
         try {
             const results = await queryAll<IStoreItem>({
                 entity: this.entity(),
-                partitionKey: createGSI1PartitionKey(),
+                partitionKey: createPartitionKey(),
                 options: {
-                    index: "GSI1"
+                    ...params
                 }
             });
 

@@ -6,7 +6,7 @@ export type StorageKey = `${CamelCase<string>}`;
 export interface IStoreValueSuccessResult<V> {
     key: StorageKey;
     data: V | null | undefined;
-    error?: never;
+    error?: undefined;
 }
 
 export interface IStoreValueErrorResult {
@@ -20,7 +20,7 @@ export type StoreValueResult<V> = IStoreValueSuccessResult<V> | IStoreValueError
 export interface IStoreValuesSuccessResult<V extends GenericRecord<StorageKey>> {
     keys: (keyof V)[];
     data: V;
-    error?: never;
+    error?: undefined;
 }
 
 export interface IStoreValuesErrorResult<V> {
@@ -36,7 +36,7 @@ export type StoreValuesResult<V extends GenericRecord<StorageKey>> =
 export interface IGetValueSuccessResult<V> {
     key: StorageKey;
     data: V | null | undefined;
-    error?: never;
+    error?: undefined;
 }
 
 export interface IGetValueErrorResult {
@@ -50,7 +50,7 @@ export type GetValueResult<V> = IGetValueSuccessResult<V> | IGetValueErrorResult
 export interface IGetValuesSuccessResult<V extends GenericRecord<StorageKey>> {
     keys: (keyof V)[];
     data: V;
-    error?: never;
+    error?: undefined;
 }
 
 export interface IGetValuesErrorResult<V> {
@@ -66,7 +66,7 @@ export type GetValuesResult<V extends GenericRecord<StorageKey>> =
 export interface IListValuesSuccessResult<V extends GenericRecord<StorageKey>> {
     keys: (keyof V)[];
     data: V;
-    error?: never;
+    error?: undefined;
 }
 
 export interface IListValuesErrorResult {
@@ -78,10 +78,32 @@ export type ListValuesResult<V extends GenericRecord<StorageKey>> =
     | IListValuesSuccessResult<V>
     | IListValuesErrorResult;
 
+export type IListValuesParams =
+    | {
+          beginsWith: string;
+      }
+    | {
+          eq: string;
+      }
+    | {
+          gt: string;
+      }
+    | {
+          gte: string;
+      }
+    | {
+          lt: string;
+      }
+    | {
+          lte: string;
+      };
+
 export interface IStore {
     storeValue<V>(key: StorageKey, value: V): Promise<StoreValueResult<V>>;
     storeValues<V extends GenericRecord<StorageKey>>(values: V): Promise<StoreValuesResult<V>>;
     getValue<V>(key: StorageKey): Promise<GetValueResult<V>>;
     getValues<V extends GenericRecord<StorageKey>>(keys: (keyof V)[]): Promise<GetValuesResult<V>>;
-    listValues<V extends GenericRecord<StorageKey>>(): Promise<ListValuesResult<V>>;
+    listValues<V extends GenericRecord<StorageKey>>(
+        params?: IListValuesParams
+    ): Promise<ListValuesResult<V>>;
 }

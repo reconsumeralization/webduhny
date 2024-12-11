@@ -19,12 +19,6 @@ export const createEntity = ({ table }: ICreateEntityParams) => {
             SK: {
                 sortKey: true
             },
-            GSI1_PK: {
-                type: "string"
-            },
-            GSI1_SK: {
-                type: "string"
-            },
             TYPE: {
                 type: "string"
             },

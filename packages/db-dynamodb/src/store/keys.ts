@@ -2,20 +2,11 @@ export interface IParams {
     key: string;
 }
 
-export const createPartitionKey = ({ key }: IParams) => {
-    return `W#internal#${key}`;
+export const createPartitionKey = () => {
+    return `W#internal`;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createSortKey = (_: IParams) => {
-    return "A";
-};
-
-export const createGSI1PartitionKey = () => {
-    return "W#internal";
-};
-
-export const createGSI1SortKey = ({ key }: IParams) => {
+export const createSortKey = ({ key }: IParams) => {
     return key;
 };
 
