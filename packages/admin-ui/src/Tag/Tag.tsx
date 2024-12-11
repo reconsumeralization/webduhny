@@ -4,7 +4,7 @@ import { Icon } from "~/Icon";
 
 const tagVariants = cva(
     [
-        "inline-flex items-center gap-xxs rounded-sm text-sm text-regular transition-colors cursor-default",
+        "inline-flex items-center gap-xxs rounded-sm text-sm text-regular transition-colors cursor-default overflow-hidden",
         "focus:outline-none",
         "aria-disabled:cursor-not-allowed"
     ],
@@ -81,7 +81,7 @@ const DecoratableTag = ({ className, variant, label, icon, disabled, ...props }:
             className={cn(tagVariants({ variant, hasIcon }), className)}
             aria-disabled={disabled}
         >
-            {label}
+            <span className={"overflow-hidden truncate whitespace-nowrap"}>{label}</span>
             {icon}
         </span>
     );
