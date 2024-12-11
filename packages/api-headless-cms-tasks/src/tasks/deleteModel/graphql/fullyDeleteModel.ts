@@ -18,8 +18,6 @@ export const fullyDeleteModel = async (
 
     if (model.isPrivate) {
         throw new Error(`Cannot delete private model.`);
-    } else if (model.isPlugin) {
-        throw new Error(`Cannot delete plugin model.`);
     }
 
     await context.cms.accessControl.ensureCanAccessModel({

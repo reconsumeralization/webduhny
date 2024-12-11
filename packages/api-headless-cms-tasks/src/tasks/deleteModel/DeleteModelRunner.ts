@@ -132,8 +132,11 @@ export class DeleteModelRunner<
         } while (hasMoreFolders);
 
         /**
-         * When there is no more records to be deleted, let's delete the model.
+         * When there is no more records to be deleted, let's delete the model, if it's not a plugin.
          */
+        if (model.isPlugin) {
+            return this.response.done();
+        }
         try {
             await this.context.cms.deleteModel(model.modelId);
         } catch (ex) {
@@ -155,6 +158,9 @@ export class DeleteModelRunner<
     }
 
     private async addDeletingTag(model: CmsModel): Promise<CmsModel> {
+        if (model.isPlugin) {
+            return model;
+        }
         return await this.context.cms.updateModelDirect({
             model: {
                 ...model,
@@ -165,6 +171,9 @@ export class DeleteModelRunner<
     }
 
     private async removeDeletingTag(model: CmsModel): Promise<CmsModel> {
+        if (model.isPlugin) {
+            return model;
+        }
         return await this.context.cms.updateModelDirect({
             model: {
                 ...model,
