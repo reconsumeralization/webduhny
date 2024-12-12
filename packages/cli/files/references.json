@@ -222,8 +222,8 @@
       "name": "@babel/runtime",
       "version": "7.26.0",
       "files": [
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/project-utils/package.json"
       ]
     },
@@ -1302,7 +1302,7 @@
       "name": "get-yarn-workspaces",
       "version": "1.0.2",
       "files": [
-        "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cwp-template-aws/package.json",
         "/packages/project-utils/package.json",
         "/scripts/prepublishOnly/package.json"
@@ -1312,8 +1312,8 @@
       "name": "glob",
       "version": "7.2.3",
       "files": [
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/project-utils/package.json"
       ]
     },
@@ -1530,6 +1530,7 @@
       "files": [
         "/packages/api-page-builder/package.json",
         "/packages/api-page-builder-import-export/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-scaffold-admin-app-module/package.json",
@@ -1538,7 +1539,6 @@
         "/packages/cli-plugin-scaffold-react-app/package.json",
         "/packages/cli-plugin-scaffold-react-component/package.json",
         "/packages/cli-plugin-scaffold-workspaces/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/create-webiny-project/package.json",
         "/packages/cwp-template-aws/package.json",
         "/packages/global-config/package.json",
@@ -2269,7 +2269,7 @@
       "files": [
         "/packages/api-headless-cms/package.json",
         "/packages/cli/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/create-webiny-project/package.json",
         "/packages/data-migration/package.json",
         "/packages/pulumi-sdk/package.json"
@@ -2481,6 +2481,7 @@
       "name": "write-json-file",
       "version": "4.3.0",
       "files": [
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-scaffold-graphql-api/package.json",
@@ -2488,7 +2489,6 @@
         "/packages/cli-plugin-scaffold-react-app/package.json",
         "/packages/cli-plugin-scaffold-react-component/package.json",
         "/packages/cli-plugin-scaffold-workspaces/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/create-webiny-project/package.json",
         "/packages/cwp-template-aws/package.json",
         "/packages/global-config/package.json",
@@ -3358,9 +3358,9 @@
         "/packages/app-page-builder/package.json",
         "/packages/app-page-builder-elements/package.json",
         "/packages/app-theme/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
         "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
         "/packages/cwp-template-aws/template/ddb/dependencies.json",
@@ -3589,9 +3589,9 @@
         "/packages/api-headless-cms-ddb-es/package.json",
         "/packages/api-prerendering-service/package.json",
         "/packages/api-prerendering-service-so-ddb/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
         "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
         "/packages/cwp-template-aws/template/ddb/dependencies.json",
@@ -3690,6 +3690,7 @@
         "/packages/app-website/package.json",
         "/packages/app-websockets/package.json",
         "/packages/aws-sdk/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-scaffold-admin-app-module/package.json",
@@ -3702,7 +3703,6 @@
         "/packages/cli-plugin-scaffold-react-component/package.json",
         "/packages/cli-plugin-scaffold-react-component/template/package.json",
         "/packages/cli-plugin-scaffold-workspaces/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/data-migration/package.json",
         "/packages/db/package.json",
         "/packages/db-dynamodb/package.json",
@@ -3734,7 +3734,7 @@
         "/packages/wcp/package.json"
       ]
     },
-    { "name": "semver", "version": "7.6.3", "files": ["/package.json"] },
+    { "name": "semver", "version": "7.2.3", "files": ["/package.json"] },
     { "name": "source-map-explorer", "version": "2.5.3", "files": ["/apps/website/package.json"] },
     { "name": "ts-expect", "version": "1.3.0", "files": ["/package.json"] },
     {
@@ -3871,7 +3871,7 @@
       "files": [
         "/packages/api-elasticsearch-tasks/package.json",
         "/packages/api-record-locking/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/tasks/package.json",
         "/scripts/prepublishOnly/package.json"
       ]
@@ -3977,6 +3977,7 @@
         "/packages/app-website/package.json",
         "/packages/app-websockets/package.json",
         "/packages/aws-sdk/package.json",
+        "/packages/cli-plugin-dependencies/package.json",
         "/packages/cli-plugin-extensions/package.json",
         "/packages/cli-plugin-scaffold/package.json",
         "/packages/cli-plugin-scaffold-admin-app-module/package.json",
@@ -3989,7 +3990,6 @@
         "/packages/cli-plugin-scaffold-react-component/package.json",
         "/packages/cli-plugin-scaffold-react-component/template/package.json",
         "/packages/cli-plugin-scaffold-workspaces/package.json",
-        "/packages/cli-plugin-sync-dependencies/package.json",
         "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
         "/packages/cwp-template-aws/template/ddb-os/dependencies.json",
         "/packages/cwp-template-aws/template/ddb/dependencies.json",
@@ -4432,11 +4432,8 @@
           "version": "7.26.0",
           "files": [
             { "file": "/package.json", "types": ["devDependencies"] },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-extensions/package.json", "types": ["dependencies"] },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["dependencies"]
-            },
             { "file": "/packages/project-utils/package.json", "types": ["dependencies"] }
           ]
         }
@@ -5159,6 +5156,10 @@
             { "file": "/packages/app-theme/package.json", "types": ["devDependencies"] },
             { "file": "/packages/cli/package.json", "types": ["dependencies"] },
             {
+              "file": "/packages/cli-plugin-dependencies/package.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/cli-plugin-deploy-pulumi/package.json",
               "types": ["dependencies"]
             },
@@ -5186,10 +5187,6 @@
             {
               "file": "/packages/cli-plugin-scaffold-workspaces/package.json",
               "types": ["dependencies"]
-            },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["devDependencies"]
             },
             { "file": "/packages/cli-plugin-workspaces/package.json", "types": ["dependencies"] },
             { "file": "/packages/create-webiny-project/package.json", "types": ["dependencies"] },
@@ -5264,10 +5261,7 @@
           "version": "1.0.2",
           "files": [
             { "file": "/package.json", "types": ["devDependencies"] },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["dependencies"]
-            },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/cwp-template-aws/package.json", "types": ["dependencies"] },
             { "file": "/packages/project-utils/package.json", "types": ["dependencies"] },
             { "file": "/scripts/prepublishOnly/package.json", "types": ["dependencies"] }
@@ -5294,11 +5288,8 @@
           "version": "7.2.3",
           "files": [
             { "file": "/package.json", "types": ["devDependencies"] },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-extensions/package.json", "types": ["dependencies"] },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["dependencies"]
-            },
             { "file": "/packages/i18n/package.json", "types": ["devDependencies"] },
             { "file": "/packages/project-utils/package.json", "types": ["dependencies"] }
           ]
@@ -5551,6 +5542,7 @@
               "file": "/packages/api-page-builder-import-export/package.json",
               "types": ["dependencies"]
             },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-extensions/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-scaffold/package.json", "types": ["dependencies"] },
             {
@@ -5575,10 +5567,6 @@
             },
             {
               "file": "/packages/cli-plugin-scaffold-workspaces/package.json",
-              "types": ["dependencies"]
-            },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
               "types": ["dependencies"]
             },
             { "file": "/packages/create-webiny-project/package.json", "types": ["dependencies"] },
@@ -5784,14 +5772,14 @@
               "types": ["devDependencies"]
             },
             {
+              "file": "/packages/cli-plugin-dependencies/package.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/cli-plugin-extensions/package.json",
               "types": ["devDependencies"]
             },
             { "file": "/packages/cli-plugin-scaffold/package.json", "types": ["devDependencies"] },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["devDependencies"]
-            },
             {
               "file": "/packages/cwp-template-aws/template/ddb-es/dependencies.json",
               "types": ["devDependencies"]
@@ -5817,15 +5805,16 @@
       "name": "semver",
       "versions": [
         {
+          "version": "7.2.3",
+          "files": [{ "file": "/package.json", "types": ["devDependencies"] }]
+        },
+        {
           "version": "7.6.3",
           "files": [
-            { "file": "/package.json", "types": ["devDependencies", "resolutions"] },
+            { "file": "/package.json", "types": ["resolutions"] },
             { "file": "/packages/api-headless-cms/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli/package.json", "types": ["dependencies"] },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
-              "types": ["dependencies"]
-            },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/create-webiny-project/package.json", "types": ["dependencies"] },
             { "file": "/packages/data-migration/package.json", "types": ["dependencies"] },
             { "file": "/packages/pulumi-sdk/package.json", "types": ["dependencies"] }
@@ -6073,6 +6062,10 @@
             { "file": "/packages/aws-sdk/package.json", "types": ["devDependencies"] },
             { "file": "/packages/cli/package.json", "types": ["dependencies"] },
             {
+              "file": "/packages/cli-plugin-dependencies/package.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/cli-plugin-extensions/package.json",
               "types": ["devDependencies"]
             },
@@ -6115,10 +6108,6 @@
             },
             {
               "file": "/packages/cli-plugin-scaffold-workspaces/package.json",
-              "types": ["devDependencies"]
-            },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
               "types": ["devDependencies"]
             },
             {
@@ -6199,6 +6188,7 @@
           "files": [
             { "file": "/package.json", "types": ["devDependencies"] },
             { "file": "/packages/api-headless-cms/package.json", "types": ["devDependencies"] },
+            { "file": "/packages/cli-plugin-dependencies/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-extensions/package.json", "types": ["dependencies"] },
             { "file": "/packages/cli-plugin-scaffold/package.json", "types": ["dependencies"] },
             {
@@ -6219,10 +6209,6 @@
             },
             {
               "file": "/packages/cli-plugin-scaffold-workspaces/package.json",
-              "types": ["dependencies"]
-            },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
               "types": ["dependencies"]
             },
             { "file": "/packages/create-webiny-project/package.json", "types": ["dependencies"] },
@@ -6823,6 +6809,10 @@
             { "file": "/packages/app-websockets/package.json", "types": ["devDependencies"] },
             { "file": "/packages/aws-sdk/package.json", "types": ["devDependencies"] },
             {
+              "file": "/packages/cli-plugin-dependencies/package.json",
+              "types": ["devDependencies"]
+            },
+            {
               "file": "/packages/cli-plugin-extensions/package.json",
               "types": ["devDependencies"]
             },
@@ -6865,10 +6855,6 @@
             },
             {
               "file": "/packages/cli-plugin-scaffold-workspaces/package.json",
-              "types": ["devDependencies"]
-            },
-            {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
               "types": ["devDependencies"]
             },
             { "file": "/packages/create-webiny-project/package.json", "types": ["dependencies"] },
@@ -7447,7 +7433,7 @@
             { "file": "/packages/api-record-locking/package.json", "types": ["devDependencies"] },
             { "file": "/packages/api-websockets/package.json", "types": ["dependencies"] },
             {
-              "file": "/packages/cli-plugin-sync-dependencies/package.json",
+              "file": "/packages/cli-plugin-dependencies/package.json",
               "types": ["devDependencies"]
             },
             { "file": "/packages/db/package.json", "types": ["dependencies"] },
