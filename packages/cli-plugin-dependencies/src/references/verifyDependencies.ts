@@ -29,19 +29,27 @@ export const verifyDependencies = (params: IVerifyDependenciesParams): void => {
     if (fs.existsSync(referencesFile)) {
         const json = loadJsonFile.sync(referencesFile);
         if (JSON.stringify(references) !== JSON.stringify(json)) {
-            throw new Error("References are not in sync.");
+            throw new Error(
+                "References are not in sync. Please run `yarn webiny sync-dependencies` command."
+            );
         }
     } else {
-        throw new Error("References file does not exist.");
+        throw new Error(
+            "References file does not exist. Please run `yarn webiny sync-dependencies` command."
+        );
     }
 
     if (fs.existsSync(duplicatesFile)) {
         const json = loadJsonFile.sync(duplicatesFile);
         if (JSON.stringify(tree.duplicates) !== JSON.stringify(json)) {
-            throw new Error("Duplicates are not in sync.");
+            throw new Error(
+                "Duplicates are not in sync. Please run `yarn webiny sync-dependencies` command."
+            );
         }
     } else {
-        throw new Error("Duplicates file does not exist.");
+        throw new Error(
+            "Duplicates file does not exist. Please run `yarn webiny sync-dependencies` command."
+        );
     }
 
     console.log("All package reference files are in sync.");
