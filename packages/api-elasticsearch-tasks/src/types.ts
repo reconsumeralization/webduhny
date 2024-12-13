@@ -1,18 +1,18 @@
-import { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
-import { Entity } from "@webiny/db-dynamodb/toolbox";
-import {
+import type { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
+import type { Entity } from "@webiny/db-dynamodb/toolbox";
+import type {
     Context as TasksContext,
     IIsCloseToTimeoutCallable,
+    ITaskManagerStore,
+    ITaskResponse,
     ITaskResponseDoneResultOutput
 } from "@webiny/tasks/types";
-import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
-import { Client } from "@webiny/api-elasticsearch";
+import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
+import type { Client } from "@webiny/api-elasticsearch";
 import { createTable } from "~/definitions";
-import { ITaskResponse } from "@webiny/tasks/response/abstractions";
-import { ITaskManagerStore } from "@webiny/tasks/runner/abstractions";
-import { BatchWriteItem, BatchWriteResult } from "@webiny/db-dynamodb";
-import { ITimer } from "@webiny/handler-aws";
-import { GenericRecord } from "@webiny/api/types";
+import type { BatchReadItem } from "@webiny/db-dynamodb";
+import type { ITimer } from "@webiny/handler-aws";
+import type { GenericRecord } from "@webiny/api/types";
 
 export interface Context extends ElasticsearchContext, TasksContext {}
 
@@ -74,5 +74,5 @@ export interface IManager<
 
     getEntity: (name: string) => Entity<any>;
 
-    write: (items: BatchWriteItem[]) => Promise<BatchWriteResult>;
+    read<T>(items: BatchReadItem[]): Promise<T[]>;
 }

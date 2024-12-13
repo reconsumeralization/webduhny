@@ -6,13 +6,7 @@ import { createEntry } from "~/definitions/entry";
 import { Entity } from "@webiny/db-dynamodb/toolbox";
 import { ITaskResponse } from "@webiny/tasks/response/abstractions";
 import { IIsCloseToTimeoutCallable, ITaskManagerStore } from "@webiny/tasks/runner/abstractions";
-import {
-    batchReadAll,
-    BatchReadItem,
-    batchWriteAll,
-    BatchWriteItem,
-    BatchWriteResult
-} from "@webiny/db-dynamodb";
+import { batchReadAll, BatchReadItem } from "@webiny/db-dynamodb";
 import { ITimer } from "@webiny/handler-aws/utils";
 
 export interface ManagerParams<T> {
@@ -75,15 +69,8 @@ export class Manager<T> implements IManager<T> {
         }));
     }
 
-    public async read<T>(items: BatchReadItem[]) {
+    public async read<T>(items: BatchReadItem[]): Promise<T[]> {
         return await batchReadAll<T>({
-            table: this.table,
-            items
-        });
-    }
-
-    public async write(items: BatchWriteItem[]): Promise<BatchWriteResult> {
-        return await batchWriteAll({
             table: this.table,
             items
         });
