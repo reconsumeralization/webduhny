@@ -1,7 +1,8 @@
 import useGqlHandler from "./useGqlHandler";
+import { GET_SETTINGS } from "~tests/graphql/formBuilderSettings";
 
 describe("Settings Test", () => {
-    const { getSettings, updateSettings, install, isInstalled } = useGqlHandler();
+    const { getSettings, updateSettings, install, createI18NLocale, isInstalled } = useGqlHandler();
 
     test(`Should not be able to get & update settings before "install"`, async () => {
         // Should not have any settings without install
@@ -142,6 +143,40 @@ describe("Settings Test", () => {
                     getSettings: {
                         data: {
                             domain: "http://localhost:5001",
+                            reCaptcha: {
+                                enabled: null,
+                                secretKey: null,
+                                siteKey: null
+                            }
+                        },
+                        error: null
+                    }
+                }
+            }
+        });
+    });
+
+    test(`Should be able to get & update settings after in a new locale`, async () => {
+        // Let's install the `Form builder`
+        await install({ domain: "http://localhost:3001" });
+
+        await createI18NLocale({ data: { code: "de-DE" } });
+
+        const { invoke } = useGqlHandler();
+
+        const [newLocaleFbSettings] = await invoke({
+            body: { query: GET_SETTINGS },
+            headers: {
+                "x-i18n-locale": "default:de-DE;content:de-DE;"
+            }
+        });
+
+        expect(newLocaleFbSettings).toEqual({
+            data: {
+                formBuilder: {
+                    getSettings: {
+                        data: {
+                            domain: "http://localhost:3001",
                             reCaptcha: {
                                 enabled: null,
                                 secretKey: null,
