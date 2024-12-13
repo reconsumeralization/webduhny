@@ -1,5 +1,5 @@
 import type { WriteRequest } from "@webiny/aws-sdk/client-dynamodb";
-import { Entity, TableDef } from "~/toolbox";
+import { Entity } from "~/toolbox";
 
 export interface BatchWriteResponse {
     next?: () => Promise<BatchWriteResponse>;
@@ -31,15 +31,15 @@ export interface BatchWriteItem {
 }
 
 export interface IEntityWriteBatchBuilder {
-    readonly entity: Entity;
+    // readonly entity: Entity;
     put<T extends Record<string, any>>(item: IPutBatchItem<T>): BatchWriteItem;
     delete(item: IDeleteBatchItem): BatchWriteItem;
 }
 
 export interface IEntityWriteBatch {
-    readonly entity: Entity;
-    readonly items: BatchWriteItem[];
-    readonly builder: IEntityWriteBatchBuilder;
+    // readonly entity: Entity;
+    // readonly items: BatchWriteItem[];
+    // readonly builder: IEntityWriteBatchBuilder;
 
     put(item: IPutBatchItem): void;
     delete(item: IDeleteBatchItem): void;
@@ -48,8 +48,8 @@ export interface IEntityWriteBatch {
 }
 
 export interface ITableWriteBatch {
-    readonly table: TableDef;
-    readonly items: BatchWriteItem[];
+    // readonly table: TableDef;
+    // readonly items: BatchWriteItem[];
     put(entity: Entity, item: IPutBatchItem): void;
     delete(entity: Entity, item: IDeleteBatchItem): void;
     execute(): Promise<BatchWriteResult>;

@@ -16,8 +16,8 @@ export interface ITableWriteBatchParams {
 }
 
 export class TableWriteBatch implements ITableWriteBatch {
-    public readonly table: TableDef;
-    public readonly items: BatchWriteItem[] = [];
+    private readonly table: TableDef;
+    private readonly items: BatchWriteItem[] = [];
     private readonly builders: Map<string, IEntityWriteBatchBuilder> = new Map();
 
     public constructor(params: ITableWriteBatchParams) {

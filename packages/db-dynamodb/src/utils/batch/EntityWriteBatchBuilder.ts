@@ -7,7 +7,7 @@ import type {
 } from "./types";
 
 export class EntityWriteBatchBuilder implements IEntityWriteBatchBuilder {
-    public readonly entity: Entity;
+    private readonly entity: Entity;
 
     public constructor(entity: Entity) {
         this.entity = entity;

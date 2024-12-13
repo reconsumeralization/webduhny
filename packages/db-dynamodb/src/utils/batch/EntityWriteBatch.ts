@@ -20,9 +20,9 @@ export interface IEntityWriteBatchParams {
 }
 
 export class EntityWriteBatch implements IEntityWriteBatch {
-    public readonly entity: Entity;
-    public readonly items: BatchWriteItem[] = [];
-    public readonly builder: IEntityWriteBatchBuilder;
+    private readonly entity: Entity;
+    private readonly items: BatchWriteItem[] = [];
+    private readonly builder: IEntityWriteBatchBuilder;
 
     public constructor(params: IEntityWriteBatchParams) {
         if (!params.entity.name) {
