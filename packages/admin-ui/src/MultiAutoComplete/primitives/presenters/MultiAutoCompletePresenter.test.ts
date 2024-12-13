@@ -1,21 +1,32 @@
 import {
     IMultiAutoCompletePresenter,
-    MultiAutoCompletePresenterAbstraction
+    MultiAutoCompletePresenter
 } from "./MultiAutoCompletePresenter";
-import { container } from "./container";
+import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
+import { MultiAutoCompleteSelectedOptionPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
+import { MultiAutoCompleteListOptionsPresenter } from "./MultiAutoCompleteListOptionsPresenter";
 
 describe("MultiAutoCompletePresenter", () => {
     let presenter: IMultiAutoCompletePresenter;
     const onValuesChange = jest.fn();
+    const onOpenChange = jest.fn();
+    const onValuesReset = jest.fn();
 
     beforeEach(() => {
-        presenter = container.resolve(MultiAutoCompletePresenterAbstraction);
+        const inputPresenter = new MultiAutoCompleteInputPresenter();
+        const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
+        const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
+        presenter = new MultiAutoCompletePresenter(
+            inputPresenter,
+            selectedOptionsPresenter,
+            optionsListPresenter
+        );
     });
 
     it("should return the compatible `vm.inputVm` based on params", () => {
         // `placeholder`
         {
-            presenter.init({ onValuesChange, placeholder: "Custom placeholder" });
+            presenter.init({ placeholder: "Custom placeholder", onValuesChange });
             expect(presenter.vm.inputVm.placeholder).toEqual("Custom placeholder");
         }
 
@@ -30,9 +41,9 @@ describe("MultiAutoCompletePresenter", () => {
         // `values`
         {
             presenter.init({
-                onValuesChange,
                 options: ["Option 1", "Option 2", "Option 3"],
-                values: ["Option 1", "Option 2"]
+                values: ["Option 1", "Option 2"],
+                onValuesChange
             });
             expect(presenter.vm.selectedOptionsVm.options).toEqual([
                 {
@@ -56,7 +67,7 @@ describe("MultiAutoCompletePresenter", () => {
 
         // default: no params
         {
-            presenter.init({ onValuesChange, options: ["Option 1", "Option 2"] });
+            presenter.init({ options: ["Option 1", "Option 2"], onValuesChange });
             expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
         }
     });
@@ -64,7 +75,7 @@ describe("MultiAutoCompletePresenter", () => {
     it("should return the compatible `vm.optionsListVm` based on params", () => {
         // with `options` as string
         {
-            presenter.init({ onValuesChange, options: ["Option 1", "Option 2"] });
+            presenter.init({ options: ["Option 1", "Option 2"], onValuesChange });
             expect(presenter.vm.optionsListVm.options).toEqual([
                 {
                     value: "Option 1",
@@ -207,7 +218,7 @@ describe("MultiAutoCompletePresenter", () => {
         }
     });
 
-    it("should change the `options` and `selectedOptionsVm` state + call `onValueChange` callback when `setSelectedOption` is called", () => {
+    it("should change the `optionsListVm` and `selectedOptionsVm` when `setSelectedOption` is called", () => {
         presenter.init({
             onValuesChange,
             options: [
@@ -313,7 +324,7 @@ describe("MultiAutoCompletePresenter", () => {
         ]);
     });
 
-    it("should change the `options` and `selectedOptionsVm` state and call `onValueChange` callback when `removeSelectedOption` is called", () => {
+    it("should change the `optionsListVm` and `selectedOptionsVm` when `removeSelectedOption` is called", () => {
         presenter.init({
             onValuesChange,
             options: [
@@ -422,9 +433,7 @@ describe("MultiAutoCompletePresenter", () => {
     });
 
     it("should set the internal `inputValue` when `setInputValue` is called", () => {
-        presenter.init({
-            onValuesChange
-        });
+        presenter.init({ onValuesChange });
 
         presenter.searchOption("value");
         expect(presenter.vm.inputVm.value).toEqual("value");
@@ -476,11 +485,10 @@ describe("MultiAutoCompletePresenter", () => {
         ]);
     });
 
-    it("should reset the internal `options` state and call `onValueChange` + `onValueReset` callbacks when `resetValue` is called", () => {
-        const onValueReset = jest.fn();
+    it("should change the `optionListVm` and `selectedOptionsVm` when `resetSelectedOptions` is called", () => {
         presenter.init({
             onValuesChange,
-            onValueReset,
+            onValuesReset,
             options: [
                 {
                     label: "Option 1",
@@ -565,12 +573,10 @@ describe("MultiAutoCompletePresenter", () => {
         expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
 
         expect(onValuesChange).toHaveBeenCalledWith([]);
-        expect(onValueReset).toHaveBeenCalled();
+        expect(onValuesReset).toHaveBeenCalled();
     });
 
     it("should change `listVm` and call `onOpenChange` when `setListOpenState` is called", () => {
-        const onOpenChange = jest.fn();
-
         // let's open it
         presenter.init({ onValuesChange, onOpenChange });
         presenter.setListOpenState(true);

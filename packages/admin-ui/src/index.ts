@@ -22,3 +22,6 @@ export * from "./Text";
 export * from "./Textarea";
 export * from "./Toast";
 export * from "./Tooltip";
+
+// REMOVE
+export * from "./Tabs";

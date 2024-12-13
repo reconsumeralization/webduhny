@@ -434,22 +434,14 @@ export const WithExternalValueControl: Story = {
         ]
     },
     render: args => {
-        const [value, setValue] = useState(args.value);
+        const [values, setValues] = useState(args.values);
         return (
             <div className={"w-full"}>
-                <div>
-                    <MultiAutoCompletePrimitive
-                        {...args}
-                        value={value}
-                        onValueChange={value => setValue(value)}
-                    />
-                </div>
+                <MultiAutoCompletePrimitive {...args} values={values} onValuesChange={setValues} />
                 <div className={"mt-4 text-center"}>
-                    <Button text={"Reset"} onClick={() => setValue("")} />
+                    <Button text={"Reset"} onClick={() => setValues(args.values)} />
                 </div>
-                <div className={"mt-4 text-center"}>
-                    Current selected value: <pre>{value}</pre>
-                </div>
+                <div className={"mt-4 text-center"}>Current selected values: {values}</div>
             </div>
         );
     }

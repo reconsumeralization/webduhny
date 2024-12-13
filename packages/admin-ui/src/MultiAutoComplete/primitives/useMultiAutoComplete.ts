@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
-import { MultiAutoCompletePrimitiveProps } from "../primitives";
+import { MultiAutoCompletePrimitiveProps } from "./MultiAutoCompletePrimitive";
 import {
-    MultiAutoCompletePresenterAbstraction,
-    MultiAutoCompletePresenterParams
-} from "./MultiAutoCompletePresenter";
-import { container } from "./container";
+    MultiAutoCompleteInputPresenter,
+    MultiAutoCompleteListOptionsPresenter,
+    MultiAutoCompletePresenter,
+    MultiAutoCompletePresenterParams,
+    MultiAutoCompleteSelectedOptionPresenter
+} from "./presenters";
 
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
@@ -13,35 +15,44 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
             allowFreeInput: props.allowFreeInput,
             emptyMessage: props.emptyMessage,
             loadingMessage: props.loadingMessage,
-            onOpenChange: props.onOpenChange,
-            onValueReset: props.onValueReset,
-            onValuesChange: props.onValuesChange,
             options: props.options,
             placeholder: props.placeholder,
-            values: props.values
+            values: props.values,
+            onValuesChange: props.onValuesChange,
+            onValuesReset: props.onValuesReset,
+            onOpenChange: props.onOpenChange
         }),
         [
             props.allowFreeInput,
             props.emptyMessage,
             props.loadingMessage,
-            props.onOpenChange,
-            props.onValueReset,
-            props.onValuesChange,
             props.options,
             props.placeholder,
-            props.values
+            props.values,
+            props.onValuesChange,
+            props.onValuesReset,
+            props.onOpenChange
         ]
     );
 
     const presenter = useMemo(() => {
-        return container.resolve(MultiAutoCompletePresenterAbstraction);
+        const inputPresenter = new MultiAutoCompleteInputPresenter();
+        const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
+        const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
+        const presenter = new MultiAutoCompletePresenter(
+            inputPresenter,
+            selectedOptionsPresenter,
+            optionsListPresenter
+        );
+        presenter.init(params);
+        return presenter;
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);
 
     useEffect(() => {
         presenter.init(params);
-    }, [params]);
+    }, [params, presenter]);
 
     useEffect(() => {
         return autorun(() => {

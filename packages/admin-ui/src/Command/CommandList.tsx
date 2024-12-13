@@ -16,7 +16,7 @@ interface CommandListProps extends React.ComponentPropsWithoutRef<typeof Command
     allowFreeInput?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionSelect: (value: string) => void;
-    onOptionCreate: (value: string) => void;
+    onOptionCreate?: (value: string) => void;
     optionRenderer?: (item: any, index: number) => React.ReactNode;
 }
 
@@ -70,7 +70,9 @@ const CommandList = ({
                         keywords={[temporaryOption.label]}
                         disabled={temporaryOption.disabled}
                         selected={temporaryOption.selected}
-                        onSelect={() => onOptionCreate(temporaryOption.value)}
+                        onSelect={() => {
+                            onOptionCreate && onOptionCreate(temporaryOption.value);
+                        }}
                         onMouseDown={event => event.preventDefault()}
                     >
                         {`Add "${temporaryOption.label}" as new option`}

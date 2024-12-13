@@ -1,10 +1,10 @@
 import React, { KeyboardEvent } from "react";
-import { CommandList, Command, CommandOptionDto, CommandProps } from "~/Command";
+import { CommandList, Command, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
-import { useMultiAutoComplete } from "../features/useMultiAutoComplete";
-import { MultiAutoCompleteInputIcons } from "./MultiAutoCompleteInputIcons";
-import { MultiAutoCompleteInput } from "./MultiAutoCompleteInput";
+import { useMultiAutoComplete } from "./useMultiAutoComplete";
+import { MultiAutoCompleteInput, MultiAutoCompleteInputIcons } from "./components";
+import { MultiAutoCompleteOption } from "./domains";
 
 const commandListVariants = cva(
     "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
@@ -18,15 +18,13 @@ const commandListVariants = cva(
     }
 );
 
-type MultiAutoCompleteOption = CommandOptionDto | string;
-
 type MultiAutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
         emptyMessage?: React.ReactNode;
         isLoading?: boolean;
         loadingMessage?: React.ReactNode;
         onOpenChange?: (open: boolean) => void;
-        onValueReset?: () => void;
+        onValuesReset?: () => void;
         onValuesChange: (values: string[]) => void;
         optionRenderer?: (item: any, index: number) => React.ReactNode;
         options?: MultiAutoCompleteOption[];
@@ -106,7 +104,6 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
                     <CommandList
                         options={vm.optionsListVm.options}
-                        temporaryOption={vm.temporaryOption.option}
                         allowFreeInput={props.allowFreeInput}
                         onOptionSelect={handleSelectOption}
                         onOptionCreate={handleCreateOption}
@@ -120,8 +117,4 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 };
 
-export {
-    MultiAutoCompletePrimitive,
-    type MultiAutoCompletePrimitiveProps,
-    type MultiAutoCompleteOption
-};
+export { MultiAutoCompletePrimitive, type MultiAutoCompletePrimitiveProps };
