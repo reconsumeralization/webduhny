@@ -12,6 +12,7 @@ import { ITaskResponse } from "@webiny/tasks/response/abstractions";
 import { ITaskManagerStore } from "@webiny/tasks/runner/abstractions";
 import { BatchWriteItem, BatchWriteResult } from "@webiny/db-dynamodb";
 import { ITimer } from "@webiny/handler-aws";
+import { GenericRecord } from "@webiny/api/types";
 
 export interface Context extends ElasticsearchContext, TasksContext {}
 
@@ -42,17 +43,18 @@ export interface IElasticsearchIndexingTaskValues {
 }
 
 export interface AugmentedError extends Error {
-    data?: Record<string, any>;
+    data?: GenericRecord;
     [key: string]: any;
 }
 
 export interface IDynamoDbElasticsearchRecord {
     PK: string;
     SK: string;
+    TYPE?: string;
     index: string;
     _et?: string;
     entity: string;
-    data: Record<string, any>;
+    data: GenericRecord;
     modified: string;
 }
 

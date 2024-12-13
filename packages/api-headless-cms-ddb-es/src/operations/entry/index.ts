@@ -11,7 +11,7 @@ import { configurations } from "~/configurations";
 import { Entity } from "@webiny/db-dynamodb/toolbox";
 import { Client } from "@elastic/elasticsearch";
 import { PluginsContainer } from "@webiny/plugins";
-import { batchWriteAll, BatchWriteItem } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll, BatchWriteItem } from "@webiny/db-dynamodb";
 import { DataLoadersHandler } from "./dataLoaders";
 import {
     createLatestSortKey,

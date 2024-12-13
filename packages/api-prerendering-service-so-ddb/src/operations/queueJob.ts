@@ -6,7 +6,7 @@ import {
     QueueJob
 } from "@webiny/api-prerendering-service/types";
 import { Entity } from "@webiny/db-dynamodb/toolbox";
-import { batchWriteAll } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll } from "@webiny/db-dynamodb";
 import { queryAllClean, QueryAllParams } from "@webiny/db-dynamodb/utils/query";
 import { put } from "@webiny/db-dynamodb";
 

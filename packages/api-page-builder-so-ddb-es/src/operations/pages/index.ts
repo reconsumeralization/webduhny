@@ -30,7 +30,7 @@ import { SearchLatestPagesPlugin } from "~/plugins/definitions/SearchLatestPages
 import { SearchPublishedPagesPlugin } from "~/plugins/definitions/SearchPublishedPagesPlugin";
 import { DbItem, queryAll, QueryAllParams, queryOne } from "@webiny/db-dynamodb/utils/query";
 import { SearchPagesPlugin } from "~/plugins/definitions/SearchPagesPlugin";
-import { batchWriteAll } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll } from "@webiny/db-dynamodb";
 import { getESLatestPageData, getESPublishedPageData } from "./helpers";
 import { PluginsContainer } from "@webiny/plugins";
 import {

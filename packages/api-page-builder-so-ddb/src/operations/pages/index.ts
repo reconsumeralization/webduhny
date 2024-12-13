@@ -27,7 +27,7 @@ import {
     queryOne,
     queryOneClean
 } from "@webiny/db-dynamodb/utils/query";
-import { batchWriteAll } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll } from "@webiny/db-dynamodb";
 import { filterItems } from "@webiny/db-dynamodb/utils/filter";
 import { sortItems } from "@webiny/db-dynamodb/utils/sort";
 import { decodeCursor, encodeCursor } from "@webiny/db-dynamodb/utils/cursor";

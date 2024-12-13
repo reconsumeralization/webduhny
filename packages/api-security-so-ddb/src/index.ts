@@ -26,7 +26,7 @@ import {
     QueryOneParams
 } from "@webiny/db-dynamodb/utils/query";
 import { sortItems } from "@webiny/db-dynamodb/utils/sort";
-import { batchWriteAll } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll } from "@webiny/db-dynamodb";
 import { deleteItem, getClean, put } from "@webiny/db-dynamodb";
 
 const reservedFields: string[] = ["PK", "SK", "index", "data"];

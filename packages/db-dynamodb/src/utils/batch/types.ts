@@ -24,7 +24,6 @@ export interface IDeleteBatchItem {
 export type IPutBatchItem<T extends Record<string, any> = Record<string, any>> = {
     PK: string;
     SK: string;
-    TYPE: string;
 } & T;
 
 export interface BatchWriteItem {

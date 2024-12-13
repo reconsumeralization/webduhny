@@ -18,7 +18,7 @@ import {
     createPublishedSortKey,
     createRevisionSortKey
 } from "~/operations/entry/keys";
-import { batchWriteAll } from "@webiny/db-dynamodb/utils/batchWrite";
+import { batchWriteAll } from "@webiny/db-dynamodb";
 import {
     DbItem,
     queryAll,
