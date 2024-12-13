@@ -2,10 +2,12 @@
  * Dictates how package tests will be executed. With this script, we achieve
  * parallelization of execution of Jest tests. Note: do not use any 3rd party
  * libraries because we need this script to be executed in our CI/CD, as fast as possible.
+ * Using 3rd party libraries would require `yarn install` to be run before this script is executed.
  */
 
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 
 /**
  * Some packages require custom handling.
@@ -19,6 +21,18 @@ interface PackageWithTests {
 interface PackageWithTestsWithId extends PackageWithTests {
     id: string;
 }
+
+// Takes a PackageWithTests object and returns an array of commands, where each
+// command is just running a subset of tests. This is achieved by using the
+// Jest's `--shard` option.
+const shardPackageTestExecution = (pkg: PackageWithTests, shardsCount = 6) => {
+    const commands: PackageWithTests[] = [];
+    for (let currentShard = 1; currentShard <= shardsCount; currentShard++) {
+        commands.push({ ...pkg, cmd: pkg.cmd + ` --shard=${currentShard}/${shardsCount}` });
+    }
+
+    return commands;
+};
 
 const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
     // Ignore "i18n" package.
@@ -45,6 +59,10 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
 
     "api-tenant-manager": () => {
         return [{ cmd: "packages/api-tenant-manager --storage=ddb", storage: "ddb" }];
+    },
+
+    "api-log": () => {
+        return [{ cmd: "packages/api-log --storage=ddb", storage: "ddb" }];
     },
 
     "api-file-manager": () => {
@@ -84,9 +102,18 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
 
     "api-page-builder": () => {
         return [
-            { cmd: "packages/api-page-builder --storage=ddb-es,ddb", storage: "ddb-es" },
-            { cmd: "packages/api-page-builder --storage=ddb-os,ddb", storage: "ddb-os" },
-            { cmd: "packages/api-page-builder --storage=ddb", storage: "ddb" }
+            ...shardPackageTestExecution({
+                cmd: "packages/api-page-builder --storage=ddb-es,ddb",
+                storage: "ddb-es"
+            }),
+            ...shardPackageTestExecution({
+                cmd: "packages/api-page-builder --storage=ddb-os,ddb",
+                storage: "ddb-os"
+            }),
+            ...shardPackageTestExecution({
+                cmd: "packages/api-page-builder --storage=ddb",
+                storage: "ddb"
+            })
         ];
     },
     "api-page-builder-so-ddb-es": () => {
@@ -125,9 +152,31 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
 
     "api-headless-cms": () => {
         return [
-            { cmd: "packages/api-headless-cms --storage=ddb", storage: "ddb" },
-            { cmd: "packages/api-headless-cms --storage=ddb-es,ddb", storage: "ddb-es" },
-            { cmd: "packages/api-headless-cms --storage=ddb-os,ddb", storage: "ddb-os" }
+            ...shardPackageTestExecution({
+                cmd: "packages/api-headless-cms --storage=ddb",
+                storage: "ddb"
+            }),
+            ...shardPackageTestExecution({
+                cmd: "packages/api-headless-cms --storage=ddb-es,ddb",
+                storage: "ddb-es"
+            }),
+            ...shardPackageTestExecution({
+                cmd: "packages/api-headless-cms --storage=ddb-os,ddb",
+                storage: "ddb-os"
+            })
+        ];
+    },
+    "api-headless-cms-import-export": () => {
+        return [
+            { cmd: "packages/api-headless-cms-import-export --storage=ddb", storage: "ddb" },
+            {
+                cmd: "packages/api-headless-cms-import-export --storage=ddb-es,ddb",
+                storage: "ddb-es"
+            },
+            {
+                cmd: "packages/api-headless-cms-import-export --storage=ddb-os,ddb",
+                storage: "ddb-os"
+            }
         ];
     },
     "api-headless-cms-ddb-es": () => {
@@ -206,19 +255,24 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
     migrations: () => {
         return [
             {
-                cmd: "packages/migrations",
-                // This will run migrations against DynamoDB too twice, once with each storage
-                // driver. This is because, at the moment, we can't run migrations against DynamoDB only.
-                // That's why we're not including "ddb" in the list below.
-                storage: ["ddb-es", "ddb-os"]
+                cmd: "packages/migrations --storage=ddb-es,ddb",
+                storage: ["ddb-es"]
+            },
+            {
+                cmd: "packages/migrations --storage=ddb-os,ddb",
+                storage: ["ddb-os"]
             }
         ];
     },
     "api-elasticsearch": () => {
         return [
             {
-                cmd: "packages/api-elasticsearch",
-                storage: ["ddb-es", "ddb-os"]
+                cmd: "packages/api-elasticsearch --storage=ddb-es,ddb",
+                storage: ["ddb-es"]
+            },
+            {
+                cmd: "packages/api-elasticsearch --storage=ddb-os,ddb",
+                storage: ["ddb-os"]
             }
         ];
     },
@@ -270,18 +324,21 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
                 storage: "ddb-os"
             }
         ];
+    },
+    "api-serverless-cms": () => {
+        return [
+            { cmd: "packages/api-serverless-cms --storage=ddb-es,ddb", storage: "ddb-es" },
+            { cmd: "packages/api-serverless-cms --storage=ddb-os,ddb", storage: "ddb-os" },
+            { cmd: "packages/api-serverless-cms --storage=ddb", storage: "ddb" }
+        ];
     }
 };
 
 const testFilePattern = /test\.j?t?sx?$/;
 
 const cmdToId = (cmd: string) => {
-    return cmd
-        .replace("packages/", "")
-        .replace("--storage=", "")
-        .replace(/[,\s]/g, "_")
-        .replace(/[\(\)\[\]]/g, "")
-        .toLowerCase();
+    // Just convert the command to kebab-case.
+    return crypto.createHash("md5").update(cmd).digest("hex");
 };
 
 /**
@@ -322,11 +379,17 @@ export const listPackagesWithJestTests = (params: ListPackagesWithJestTestsParam
         const packageName = allPackages[i];
 
         if (typeof CUSTOM_HANDLERS[packageName] === "function") {
-            packagesWithTests.push(...CUSTOM_HANDLERS[packageName]());
+            const packagesWithPkgName = CUSTOM_HANDLERS[packageName]().map(packageWithJestTests => {
+                return { ...packageWithJestTests, packageName };
+            });
+            packagesWithTests.push(...packagesWithPkgName);
         } else {
             const testsFolder = path.join("packages", packageName, "__tests__");
             if (hasTestFiles(testsFolder)) {
-                packagesWithTests.push({ cmd: `packages/${packageName}` } as PackageWithTests);
+                packagesWithTests.push({
+                    cmd: `packages/${packageName}`,
+                    packageName
+                } as PackageWithTests);
             }
         }
     }

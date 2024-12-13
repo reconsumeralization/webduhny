@@ -25,30 +25,30 @@ import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
 
+export interface ApiElasticsearchConfig {
+    domainName: string;
+    indexPrefix: string;
+    sharedIndexes: boolean;
+}
+
+export interface ApiOpenSearchConfig {
+    domainName: string;
+    indexPrefix: string;
+    sharedIndexes: boolean;
+}
+
 export interface CreateApiPulumiAppParams {
     /**
      * Enables ElasticSearch infrastructure.
      * Note that it requires also changes in application code.
      */
-    elasticSearch?: PulumiAppParam<
-        | boolean
-        | Partial<{
-              domainName: string;
-              indexPrefix: string;
-          }>
-    >;
+    elasticSearch?: PulumiAppParam<boolean | Partial<ApiElasticsearchConfig>>;
 
     /**
      * Enables OpenSearch infrastructure.
      * Note that it requires also changes in application code.
      */
-    openSearch?: PulumiAppParam<
-        | boolean
-        | Partial<{
-              domainName: string;
-              indexPrefix: string;
-          }>
-    >;
+    openSearch?: PulumiAppParam<boolean | Partial<ApiOpenSearchConfig>>;
 
     /**
      * Enables or disables VPC for the API.
@@ -105,6 +105,10 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                     if (params.indexPrefix) {
                         process.env.ELASTIC_SEARCH_INDEX_PREFIX = params.indexPrefix;
                     }
+
+                    if (params.sharedIndexes) {
+                        process.env.ELASTICSEARCH_SHARED_INDEXES = "true";
+                    }
                 }
             }
 
@@ -147,12 +151,14 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                     COGNITO_REGION: String(process.env.AWS_REGION),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
+                    DB_TABLE_LOG: core.logDynamodbTableName,
                     DB_TABLE_ELASTICSEARCH: core.elasticsearchDynamodbTableName,
                     ELASTIC_SEARCH_ENDPOINT: core.elasticsearchDomainEndpoint,
 
                     // Not required. Useful for testing purposes / ephemeral environments.
                     // https://www.webiny.com/docs/key-topics/ci-cd/testing/slow-ephemeral-environments
                     ELASTIC_SEARCH_INDEX_PREFIX: process.env.ELASTIC_SEARCH_INDEX_PREFIX,
+                    ELASTICSEARCH_SHARED_INDEXES: process.env.ELASTICSEARCH_SHARED_INDEXES,
 
                     S3_BUCKET: core.fileManagerBucketId,
                     WEBINY_LOGS_FORWARD_URL
@@ -166,6 +172,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                     COGNITO_REGION: String(process.env.AWS_REGION),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
+                    DB_TABLE_LOG: core.logDynamodbTableName,
                     S3_BUCKET: core.fileManagerBucketId,
                     WEBINY_LOGS_FORWARD_URL
                 }
@@ -176,12 +183,14 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                     COGNITO_REGION: String(process.env.AWS_REGION),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
+                    DB_TABLE_LOG: core.logDynamodbTableName,
                     DB_TABLE_ELASTICSEARCH: core.elasticsearchDynamodbTableName,
                     ELASTIC_SEARCH_ENDPOINT: core.elasticsearchDomainEndpoint,
 
                     // Not required. Useful for testing purposes / ephemeral environments.
                     // https://www.webiny.com/docs/key-topics/ci-cd/testing/slow-ephemeral-environments
                     ELASTIC_SEARCH_INDEX_PREFIX: process.env.ELASTIC_SEARCH_INDEX_PREFIX,
+                    ELASTICSEARCH_SHARED_INDEXES: process.env.ELASTICSEARCH_SHARED_INDEXES,
 
                     S3_BUCKET: core.fileManagerBucketId,
                     EVENT_BUS: core.eventBusArn,
@@ -201,7 +210,8 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
 
             const fileManager = app.addModule(ApiFileManager, {
                 env: {
-                    DB_TABLE: core.primaryDynamodbTableName
+                    DB_TABLE: core.primaryDynamodbTableName,
+                    DB_TABLE_LOG: core.logDynamodbTableName
                 }
             });
 
@@ -265,6 +275,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                 dynamoDbTable: core.primaryDynamodbTableName,
                 migrationLambdaArn: migration.function.output.arn,
                 graphqlLambdaName: graphql.functions.graphql.output.name,
+                graphqlLambdaRole: graphql.role.output.arn,
                 backgroundTaskLambdaArn: backgroundTask.backgroundTask.output.arn,
                 backgroundTaskStepFunctionArn: backgroundTask.stepFunction.output.arn,
                 websocketApiId: websocket.websocketApi.output.id,
@@ -314,6 +325,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
         app.addServiceManifest({
             name: "api",
             manifest: {
+                bgTaskSfn: baseApp.resources.backgroundTask.stepFunction.output.arn,
                 cloudfront: {
                     distributionId: baseApp.resources.cloudfront.output.id
                 }

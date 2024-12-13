@@ -2,13 +2,14 @@ import React from "react";
 import { Element as ElementType, RendererMeta } from "~/types";
 import { usePageElements } from "~/hooks/usePageElements";
 import ErrorBoundary from "./ErrorBoundary";
+import { makeDecoratable } from "@webiny/react-composition";
 
 export interface ElementProps {
     element: ElementType;
     meta?: RendererMeta;
 }
 
-export const Element = (props: ElementProps) => {
+export const Element = makeDecoratable("Element", (props: ElementProps) => {
     const { getRenderers } = usePageElements();
 
     const renderers = getRenderers();
@@ -30,8 +31,8 @@ export const Element = (props: ElementProps) => {
     };
 
     return (
-        <ErrorBoundary>
+        <ErrorBoundary element={element}>
             <ElementRenderer {...props} meta={meta} />
         </ErrorBoundary>
     );
-};
+});

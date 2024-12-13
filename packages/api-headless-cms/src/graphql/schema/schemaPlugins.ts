@@ -1,4 +1,4 @@
-import { CmsContext, CmsModel } from "~/types";
+import { CmsContext, CmsModel, ApiEndpoint } from "~/types";
 import { createManageSDL } from "./createManageSDL";
 import { createReadSDL } from "./createReadSDL";
 import { createManageResolvers } from "./createManageResolvers";
@@ -10,7 +10,10 @@ import {
     createCmsGraphQLSchemaPlugin,
     ICmsGraphQLSchemaPlugin
 } from "~/plugins";
-import { createFieldTypePluginRecords } from "~/graphql/schema/createFieldTypePluginRecords";
+import { createFieldTypePluginRecords } from "./createFieldTypePluginRecords";
+import { CMS_MODEL_SINGLETON_TAG } from "~/constants";
+import { createSingularSDL } from "./createSingularSDL";
+import { createSingularResolvers } from "./createSingularResolvers";
 
 interface GenerateSchemaPluginsParams {
     context: CmsContext;
@@ -46,6 +49,30 @@ export const generateSchemaPlugins = async (
     });
 
     models.forEach(model => {
+        if (model.tags?.includes(CMS_MODEL_SINGLETON_TAG)) {
+            /**
+             * We always need to send either manage or read.
+             */
+            const singularType: ApiEndpoint = type === "manage" ? "manage" : "read";
+            const plugin = createCmsGraphQLSchemaPlugin({
+                typeDefs: createSingularSDL({
+                    models,
+                    model,
+                    fieldTypePlugins,
+                    type: singularType
+                }),
+                resolvers: createSingularResolvers({
+                    context,
+                    models,
+                    model,
+                    fieldTypePlugins,
+                    type: singularType
+                })
+            });
+            plugin.name = `headless-cms.graphql.schema.singular.${model.modelId}`;
+            schemaPlugins.push(plugin);
+            return;
+        }
         switch (type) {
             case "manage":
                 {

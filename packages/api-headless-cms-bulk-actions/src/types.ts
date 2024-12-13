@@ -37,16 +37,21 @@ export type IBulkActionOperationTaskParams = ITaskRunParams<
  * Bulk Action Operation By Model
  */
 
+export enum BulkActionOperationByModelAction {
+    CREATE_SUBTASKS = "CREATE_SUBTASKS",
+    CHECK_MORE_SUBTASKS = "CHECK_MORE_SUBTASKS",
+    PROCESS_SUBTASKS = "PROCESS_SUBTASKS",
+    END_TASK = "END_TASK"
+}
+
 export interface IBulkActionOperationByModelInput {
     modelId: string;
     identity?: SecurityIdentity;
     where?: Record<string, any>;
     search?: string;
-    data?: Record<string, any>;
     after?: string | null;
-    currentBatch?: number;
-    processing?: boolean;
-    totalCount?: number;
+    data?: Record<string, any>;
+    action?: BulkActionOperationByModelAction;
 }
 
 export interface IBulkActionOperationByModelOutput extends ITaskResponseDoneResultOutput {
@@ -58,4 +63,20 @@ export type IBulkActionOperationByModelTaskParams = ITaskRunParams<
     HcmsBulkActionsContext,
     IBulkActionOperationByModelInput,
     IBulkActionOperationByModelOutput
+>;
+
+/**
+ * Empty Trash Bin
+ */
+
+export interface IEmptyTrashBinsInput {
+    executedTenantIds?: string[] | null;
+}
+
+export type IEmptyTrashBinsOutput = ITaskResponseDoneResultOutput;
+
+export type IEmptyTrashBinsTaskParams = ITaskRunParams<
+    HcmsBulkActionsContext,
+    IEmptyTrashBinsInput,
+    IEmptyTrashBinsOutput
 >;

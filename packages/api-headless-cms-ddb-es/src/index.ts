@@ -33,7 +33,7 @@ import {
 } from "~/plugins";
 import { createFilterPlugins } from "~/operations/entry/elasticsearch/filtering/plugins";
 import { CmsEntryFilterPlugin } from "~/plugins/CmsEntryFilterPlugin";
-import { StorageOperationsCmsModelPlugin } from "@webiny/api-headless-cms";
+import { StorageOperationsCmsModelPlugin, StorageTransformPlugin } from "@webiny/api-headless-cms";
 import { createElasticsearchIndexesOnLocaleAfterCreate } from "~/operations/system/indexes";
 import { createIndexTaskPluginTest } from "~/tasks/createIndexTaskPlugin";
 
@@ -124,6 +124,16 @@ export const createStorageOperations: StorageOperationsFactory = params => {
     return {
         name: "dynamodb:elasticsearch",
         beforeInit: async context => {
+            context.db.registry.register({
+                item: entities.entries,
+                app: "cms",
+                tags: ["regular", entities.entries.name]
+            });
+            context.db.registry.register({
+                item: entities.entriesEs,
+                app: "cms",
+                tags: ["es", entities.entriesEs.name]
+            });
             /**
              * Attach the elasticsearch into context if it is not already attached.
              */
@@ -157,6 +167,7 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 CmsEntryElasticsearchSortModifierPlugin.type,
                 CmsElasticsearchModelFieldPlugin.type,
                 StorageOperationsCmsModelPlugin.type,
+                StorageTransformPlugin.type,
                 CmsEntryElasticsearchValuesModifier.type
             ];
             for (const type of types) {

@@ -1,19 +1,21 @@
 import { createWorkflow, NormalJob } from "github-actions-wac";
-import { listPackagesWithJestTests, NODE_VERSION, BUILD_PACKAGES_RUNNER } from "./utils";
+import {
+    AWS_REGION,
+    BUILD_PACKAGES_RUNNER,
+    listPackagesWithJestTests,
+    NODE_VERSION,
+    runNodeScript
+} from "./utils";
 import { createJob } from "./jobs";
 import {
     createDeployWebinySteps,
-    createSetupVerdaccioSteps,
-    createInstallBuildSteps,
-    createYarnCacheSteps,
     createGlobalBuildCacheSteps,
-    createRunBuildCacheSteps
+    createInstallBuildSteps,
+    createRunBuildCacheSteps,
+    createSetupVerdaccioSteps,
+    createYarnCacheSteps,
+    withCommonParams
 } from "./steps";
-
-const withCommonParams = (
-    steps: NonNullable<NormalJob["steps"]>,
-    commonParams: Record<string, any>
-) => steps.map(step => ({ ...step, ...commonParams }));
 
 const createPushWorkflow = (branchName: string) => {
     const ucFirstBranchName = branchName.charAt(0).toUpperCase() + branchName.slice(1);
@@ -126,7 +128,7 @@ const createPushWorkflow = (branchName: string) => {
                 },
                 {
                     name: "Create a new Webiny project",
-                    run: `npx create-webiny-project@local-npm ${DIR_TEST_PROJECT} --tag local-npm --no-interactive --assign-to-yarnrc '{"npmRegistryServer":"http://localhost:4873","unsafeHttpWhitelist":["localhost"]}' --template-options '{"region":"$\{{ env.AWS_REGION }}","storageOperations":"${dbSetup}"}'
+                    run: `npx create-webiny-project@local-npm ${DIR_TEST_PROJECT} --tag local-npm --no-interactive --assign-to-yarnrc '{"npmRegistryServer":"http://localhost:4873","unsafeHttpWhitelist":["localhost"]}' --template-options '{"region":"${AWS_REGION}","storageOperations":"${dbSetup}"}'
 `
                 },
                 {
@@ -152,6 +154,13 @@ const createPushWorkflow = (branchName: string) => {
                 ...createDeployWebinySteps({ workingDirectory: DIR_TEST_PROJECT }),
                 ...withCommonParams(
                     [
+                        {
+                            name: "Deployment Summary",
+                            run: `${runNodeScript(
+                                "printDeploymentSummary",
+                                `../${DIR_TEST_PROJECT}`
+                            )} >> $GITHUB_STEP_SUMMARY`
+                        },
                         {
                             name: "Create Cypress config",
                             run: `yarn setup-cypress --projectFolder ../${DIR_TEST_PROJECT}`
@@ -214,7 +223,7 @@ const createPushWorkflow = (branchName: string) => {
     };
 
     const createJestTestsJob = (storage: string | null) => {
-        const env: Record<string, string> = {};
+        const env: Record<string, string> = { AWS_REGION };
 
         if (storage) {
             if (storage === "ddb-es") {

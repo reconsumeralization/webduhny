@@ -14,8 +14,21 @@ import { addServiceManifestTableItem, TableDefinition } from "~/utils/addService
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
 import * as random from "@pulumi/random";
 import { featureFlags } from "@webiny/feature-flags";
+import { LogDynamo } from "./LogDynamo";
 
 export type CorePulumiApp = ReturnType<typeof createCorePulumiApp>;
+
+export interface ElasticsearchConfig {
+    domainName: string;
+    indexPrefix: string;
+    sharedIndexes: boolean;
+}
+
+export interface OpenSearchConfig {
+    domainName: string;
+    indexPrefix: string;
+    sharedIndexes: boolean;
+}
 
 export interface CreateCorePulumiAppParams {
     /**
@@ -28,25 +41,13 @@ export interface CreateCorePulumiAppParams {
      * Enables ElasticSearch infrastructure.
      * Note that it requires also changes in application code.
      */
-    elasticSearch?: PulumiAppParam<
-        | boolean
-        | Partial<{
-              domainName: string;
-              indexPrefix: string;
-          }>
-    >;
+    elasticSearch?: PulumiAppParam<boolean | Partial<ElasticsearchConfig>>;
 
     /**
      * Enables OpenSearch infrastructure.
      * Note that it requires also changes in application code.
      */
-    openSearch?: PulumiAppParam<
-        | boolean
-        | Partial<{
-              domainName: string;
-              indexPrefix: string;
-          }>
-    >;
+    openSearch?: PulumiAppParam<boolean | Partial<OpenSearchConfig>>;
 
     /**
      * Enables VPC for the application.
@@ -114,6 +115,10 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
                     if (params.indexPrefix) {
                         process.env.ELASTIC_SEARCH_INDEX_PREFIX = params.indexPrefix;
                     }
+
+                    if (params.sharedIndexes) {
+                        process.env.ELASTICSEARCH_SHARED_INDEXES = "true";
+                    }
                 }
             }
 
@@ -146,6 +151,7 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
 
             // Setup DynamoDB table
             const dynamoDbTable = app.addModule(CoreDynamo, { protect });
+            const logDynamoDbTable = app.addModule(LogDynamo, { protect });
 
             // Setup VPC
             const vpcEnabled = app.getParam(projectAppParams?.vpc) ?? isProduction;
@@ -184,6 +190,10 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
                 primaryDynamodbTableName: dynamoDbTable.output.name,
                 primaryDynamodbTableHashKey: dynamoDbTable.output.hashKey,
                 primaryDynamodbTableRangeKey: dynamoDbTable.output.rangeKey,
+                logDynamodbTableArn: logDynamoDbTable.output.arn,
+                logDynamodbTableName: logDynamoDbTable.output.name,
+                logDynamodbTableHashKey: logDynamoDbTable.output.hashKey,
+                logDynamodbTableRangeKey: logDynamoDbTable.output.rangeKey,
                 cognitoUserPoolId: cognito.userPool.output.id,
                 cognitoUserPoolArn: cognito.userPool.output.arn,
                 cognitoUserPoolPasswordPolicy: cognito.userPool.output.passwordPolicy,
@@ -199,6 +209,7 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
 
             return {
                 dynamoDbTable,
+                logDynamoDbTable,
                 vpc,
                 ...cognito,
                 fileManagerBucket,

@@ -16,7 +16,9 @@ if (typeof createStorageOperations !== "function") {
     throw new Error(`Loaded plugins file must export a function that returns an array of plugins.`);
 }
 
-const prefix = process.env.ELASTIC_SEARCH_INDEX_PREFIX || "";
+const { getElasticsearchIndexPrefix } = require("@webiny/api-elasticsearch");
+
+const prefix = getElasticsearchIndexPrefix();
 if (!prefix.includes("api-")) {
     process.env.ELASTIC_SEARCH_INDEX_PREFIX = `${prefix}api-headless-cms-env-`;
 }
@@ -64,11 +66,19 @@ module.exports = () => {
             });
         });
 
+        const initializedDbPlugins = dbPlugins({
+            table: process.env.DB_TABLE,
+            driver: new DynamoDbDriver({
+                documentClient
+            })
+        });
+
         return {
             storageOperations: createStorageOperations({
                 documentClient,
                 elasticsearch: elasticsearchClient,
                 plugins: [
+                    ...initializedDbPlugins,
                     getElasticsearchOperators(),
                     createCmsEntryElasticsearchBodyModifierPlugin({
                         modifyBody: ({ body }) => {
@@ -89,16 +99,7 @@ module.exports = () => {
                     })
                 ]
             }),
-            plugins: [
-                ...plugins,
-                dbPlugins({
-                    table: process.env.DB_TABLE,
-                    driver: new DynamoDbDriver({
-                        documentClient
-                    })
-                }),
-                createOrRefreshIndexSubscription
-            ]
+            plugins: [...plugins, ...initializedDbPlugins, createOrRefreshIndexSubscription]
         };
     });
 };

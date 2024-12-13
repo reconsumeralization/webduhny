@@ -1,14 +1,17 @@
-import { Plugin } from "@webiny/plugins";
-import { GraphQLSchemaDefinition, Resolvers, Types } from "~/types";
 import { Context } from "@webiny/api/types";
+import { Plugin } from "@webiny/plugins";
+import { GraphQLSchemaDefinition, ResolverDecorators, Resolvers, TypeDefs } from "~/types";
 
 export interface IGraphQLSchemaPlugin<TContext = Context> extends Plugin {
     schema: GraphQLSchemaDefinition<TContext>;
+    isApplicable: (context: TContext) => boolean;
 }
 
 export interface GraphQLSchemaPluginConfig<TContext> {
-    typeDefs?: Types;
+    typeDefs?: TypeDefs;
     resolvers?: Resolvers<TContext>;
+    resolverDecorators?: ResolverDecorators;
+    isApplicable?: (context: TContext) => boolean;
 }
 
 export class GraphQLSchemaPlugin<TContext = Context>
@@ -26,8 +29,16 @@ export class GraphQLSchemaPlugin<TContext = Context>
     get schema(): GraphQLSchemaDefinition<TContext> {
         return {
             typeDefs: this.config.typeDefs || "",
-            resolvers: this.config.resolvers
+            resolvers: this.config.resolvers,
+            resolverDecorators: this.config.resolverDecorators
         };
+    }
+
+    isApplicable(context: TContext): boolean {
+        if (this.config.isApplicable) {
+            return this.config.isApplicable(context);
+        }
+        return true;
     }
 }
 

@@ -17,12 +17,15 @@ export interface EditRevisionHandler {
 export interface DeleteRevisionHandler {
     (id?: string): Promise<void>;
 }
+
 export interface PublishRevisionHandler {
     (id?: string): Promise<PublishEntryRevisionResponse>;
 }
+
 export interface UnpublishRevisionHandler {
     (id?: string): Promise<void>;
 }
+
 interface UseRevisionHandlers {
     createRevision: CreateRevisionHandler;
     editRevision: EditRevisionHandler;
@@ -40,18 +43,18 @@ export interface UseRevisionProps {
 export const useRevision = ({ revision }: UseRevisionProps) => {
     const contentEntry = useContentEntry();
     const { history } = useRouter();
-    const { showSnackbar } = useSnackbar();
+    const { showSnackbar, showErrorSnackbar } = useSnackbar();
     const { contentModel } = contentEntry;
     const { modelId } = contentModel;
 
     const { createRevision, editRevision, deleteRevision, publishRevision, unpublishRevision } =
         useHandlers<UseRevisionHandlers>(
-            { entry: revision },
+            { entry: revision, contentEntryHook: contentEntry },
             {
                 createRevision:
-                    (): CreateRevisionHandler =>
+                    ({ contentEntryHook }): CreateRevisionHandler =>
                     async (id): Promise<void> => {
-                        const { entry, error } = await contentEntry.createEntryRevisionFrom({
+                        const { entry, error } = await contentEntryHook.createEntryRevisionFrom({
                             id: id || revision.id
                         });
 
@@ -74,36 +77,37 @@ export const useRevision = ({ revision }: UseRevisionProps) => {
                         );
                     },
                 deleteRevision:
-                    ({ entry }): DeleteRevisionHandler =>
+                    ({ entry, contentEntryHook }): DeleteRevisionHandler =>
                     async (id): Promise<void> => {
                         const revisionId = id || entry.id;
-                        const response = await contentEntry.deleteEntry({
+
+                        const response = await contentEntryHook.deleteEntryRevision({
                             id: revisionId
                         });
 
-                        if (typeof response === "boolean") {
-                            // Redirect to the first revision in the list of all entry revisions.
-                            const targetRevision = contentEntry.revisions.filter(
-                                rev => rev.id !== revisionId
-                            )[0];
-                            history.push(
-                                `/cms/content-entries/${modelId}?id=` +
-                                    encodeURIComponent(targetRevision!.id)
-                            );
+                        if (typeof response === "object" && response.error) {
                             return;
                         }
 
-                        showSnackbar(response.error.message);
+                        const { newLatestRevision } = response;
+
+                        let redirectTarget = `/cms/content-entries/${modelId}`;
+                        if (newLatestRevision) {
+                            // Redirect to the first revision in the list of all entry revisions.
+                            redirectTarget += `?id=${encodeURIComponent(newLatestRevision.id)}`;
+                        }
+
+                        history.push(redirectTarget);
                     },
                 publishRevision:
-                    ({ entry }): PublishRevisionHandler =>
+                    ({ entry, contentEntryHook }): PublishRevisionHandler =>
                     async id => {
-                        const response = await contentEntry.publishEntryRevision({
+                        const response = await contentEntryHook.publishEntryRevision({
                             id: id || entry.id
                         });
 
                         if (response.error) {
-                            showSnackbar(response.error.message);
+                            showErrorSnackbar(response.error.message);
                             return response;
                         }
 
@@ -117,9 +121,9 @@ export const useRevision = ({ revision }: UseRevisionProps) => {
                         return response;
                     },
                 unpublishRevision:
-                    ({ entry }): UnpublishRevisionHandler =>
+                    ({ entry, contentEntryHook }): UnpublishRevisionHandler =>
                     async id => {
-                        const { error } = await contentEntry.unpublishEntryRevision({
+                        const { error } = await contentEntryHook.unpublishEntryRevision({
                             id: id || entry.id
                         });
 

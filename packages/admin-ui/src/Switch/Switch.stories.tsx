@@ -1,38 +1,77 @@
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { Switch } from "./Switch";
+import { Switch } from "~/Switch";
 
 const meta: Meta<typeof Switch> = {
-    title: "Components/Switch",
+    title: "Components/Form/Switch",
     component: Switch,
     tags: ["autodocs"],
-    argTypes: {
-        // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onCheckedChange argument.
-        onCheckedChange: { action: "onCheckedChange" }
+    parameters: {
+        layout: "padded"
+    },
+    render: args => {
+        const [checked, setChecked] = useState(args.checked);
+        return <Switch {...args} checked={checked} onCheckedChange={value => setChecked(value)} />;
     }
 };
 
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
-export const Default: Story = {};
-
-export const WithLabel: Story = {
+export const Default: Story = {
     args: {
-        label: "Label"
+        label: "Any field label"
     }
 };
 
-export const WithLeadingLabel: Story = {
+export const WithLabelRequired: Story = {
     args: {
-        label: "Leading label",
-        labelPosition: "start"
+        label: "Any field label",
+        required: true
     }
 };
 
-export const WithTrailingLabel: Story = {
+export const WithDescription: Story = {
     args: {
-        label: "Trailing label",
-        labelPosition: "end"
+        ...Default.args,
+        description: "Provide the required information for processing your request."
+    }
+};
+
+export const WithNotes: Story = {
+    args: {
+        ...Default.args,
+        note: "Note: Ensure your selection or input is accurate before proceeding."
+    }
+};
+
+export const WithErrors: Story = {
+    args: {
+        ...Default.args,
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        }
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        disabled: true
+    }
+};
+
+export const FullExample: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        required: true,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        }
     }
 };

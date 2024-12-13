@@ -5,7 +5,7 @@ import { createPulumiApp, PulumiAppParamCallback, PulumiAppParam } from "@webiny
 import { createPrivateAppBucket } from "../createAppBucket";
 import { applyCustomDomain, CustomDomainParams } from "../customDomain";
 import { createPrerenderingService } from "./WebsitePrerendering";
-import { CoreOutput, VpcConfig } from "~/apps";
+import { CoreOutput, ApiOutput, VpcConfig } from "~/apps";
 import { addDomainsUrlsOutputs, tagResources, withCommonLambdaEnvVariables } from "~/utils";
 import { applyTenantRouter } from "~/apps/tenantRouter";
 import { withServiceManifest } from "~/utils/withServiceManifest";
@@ -50,7 +50,7 @@ export interface CreateWebsitePulumiAppParams {
 }
 
 export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppParams = {}) => {
-    const app = createPulumiApp({
+    const baseApp = createPulumiApp({
         name: "website",
         path: "apps/website",
         config: projectAppParams,
@@ -78,8 +78,9 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
                 app.params.create.productionEnvironments || DEFAULT_PROD_ENV_NAMES;
             const isProduction = productionEnvironments.includes(app.params.run.env);
 
-            // Register core output as a module available for all other modules
+            // Register core and api output as a module, to be available to all other modules.
             const core = app.addModule(CoreOutput);
+            app.addModule(ApiOutput);
 
             // Register VPC config module to be available to other modules.
             const vpcEnabled = app.getParam(projectAppParams?.vpc) ?? isProduction;
@@ -121,6 +122,21 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
                     viewerCertificate: {
                         cloudfrontDefaultCertificate: true
                     }
+                },
+                opts: {
+                    // We are ignoring changes to the "staging" property. This is because of the following.
+                    // With the 5.41.0 release of Webiny, we also upgraded Pulumi to v6. This introduced a change
+                    // with how Cloudfront distributions are deployed, where Pulumi now also controls the new
+                    // `staging` property.
+                    // If not set, Pulumi will default it to `false`. Which is fine, but, the problem is
+                    // that, because this property did not exist before, it will always be considered as a change
+                    // upon deployment.
+                    // We might think this is fine, but, the problem is that a change in this property causes
+                    // a full replacement of the Cloudfront distribution, which is not acceptable. Especially
+                    // if a custom domain has already been associated with the distribution. This then would
+                    // require the user to disassociate the domain, wait for the distribution to be replaced,
+                    // and then re-associate the domain. This is not a good experience.
+                    ignoreChanges: ["staging"]
                 }
             });
 
@@ -185,6 +201,23 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
                             minTtl: 0,
                             defaultTtl: 2592000, // 30 days
                             maxTtl: 2592000
+                        },
+                        // This forward is necessary for non-WCP projects. For WCP projects, the
+                        // forwarding is performed by the `website-router` Lambda@Edge function.
+                        {
+                            compress: true,
+                            allowedMethods: ["GET", "HEAD", "OPTIONS"],
+                            cachedMethods: ["GET", "HEAD", "OPTIONS"],
+                            forwardedValues: {
+                                cookies: {
+                                    forward: "none"
+                                },
+                                headers: [],
+                                queryString: false
+                            },
+                            pathPattern: "/robots.txt",
+                            viewerProtocolPolicy: "allow-all",
+                            targetOriginId: appBucket.origin.originId
                         }
                     ],
                     customErrorResponses: [
@@ -203,6 +236,10 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
                     viewerCertificate: {
                         cloudfrontDefaultCertificate: true
                     }
+                },
+                opts: {
+                    // Check the comment in the `appCloudfront` resource above for more info.
+                    ignoreChanges: ["staging"]
                 }
             });
 
@@ -210,6 +247,7 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
                 dbTableName: core.primaryDynamodbTableName,
                 dbTableHashKey: core.primaryDynamodbTableHashKey,
                 dbTableRangeKey: core.primaryDynamodbTableRangeKey,
+                logDbTableName: core.logDynamodbTableName,
                 appUrl: pulumi.interpolate`https://${appCloudfront.output.domainName}`,
                 deliveryUrl: pulumi.interpolate`https://${deliveryCloudfront.output.domainName}`,
                 bucket: deliveryBucket.bucket.output.bucket,
@@ -308,5 +346,42 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
         }
     });
 
-    return withServiceManifest(withCommonLambdaEnvVariables(app));
+    const app = withServiceManifest(withCommonLambdaEnvVariables(baseApp));
+
+    app.addHandler(() => {
+        const preview = baseApp.resources.preview;
+        const delivery = baseApp.resources.delivery;
+
+        app.addServiceManifest({
+            name: "website",
+            manifest: {
+                preview: {
+                    cloudfront: {
+                        distributionId: preview.cloudfront.output.id,
+                        domainName: preview.cloudfront.output.domainName
+                    },
+                    bucket: {
+                        name: preview.bucket.output.id,
+                        arn: preview.bucket.output.arn,
+                        bucketDomainName: preview.bucket.output.bucketDomainName,
+                        bucketRegionalDomainName: preview.bucket.output.bucketRegionalDomainName
+                    }
+                },
+                delivery: {
+                    cloudfront: {
+                        distributionId: delivery.cloudfront.output.id,
+                        domainName: delivery.cloudfront.output.domainName
+                    },
+                    bucket: {
+                        name: delivery.bucket.output.id,
+                        arn: delivery.bucket.output.arn,
+                        bucketDomainName: delivery.bucket.output.bucketDomainName,
+                        bucketRegionalDomainName: delivery.bucket.output.bucketRegionalDomainName
+                    }
+                }
+            }
+        });
+    });
+
+    return app;
 };

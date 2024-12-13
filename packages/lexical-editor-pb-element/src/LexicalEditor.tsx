@@ -1,25 +1,32 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import { HeadingEditor, ParagraphEditor } from "@webiny/lexical-editor";
 import { LexicalValue } from "@webiny/lexical-editor/types";
-import { isHeadingTag } from "~/utils/isHeadingTag";
 import { usePageElements } from "@webiny/app-page-builder-elements";
 import { assignStyles } from "@webiny/app-page-builder-elements/utils";
 import { StylesObject } from "@webiny/theme/types";
+import type { EditorTheme } from "@webiny/lexical-theme";
 
 interface LexicalEditorProps {
-    tag: string | [string, Record<string, any>];
+    type: "heading" | "paragraph";
     value: LexicalValue | undefined;
+    placeholder?: string;
     focus?: boolean;
     onChange?: (value: LexicalValue) => void;
     onBlur?: (editorState: LexicalValue) => void;
     height?: number | string;
     width?: number | string;
+    children?: React.ReactNode | React.ReactNode[];
 }
 
-export const LexicalEditor = ({ tag, value, onChange, ...rest }: LexicalEditorProps) => {
+const defaultTheme: EditorTheme = {
+    styles: {},
+    emotionMap: {}
+};
+
+export const LexicalEditor = ({ type, value, onChange, ...rest }: LexicalEditorProps) => {
     const { theme } = usePageElements();
 
-    const isHeading = useMemo(() => isHeadingTag(tag), [tag]);
+    const isHeading = type === "heading";
 
     const themeStylesTransformer = useCallback(
         (styles: StylesObject) => {
@@ -35,7 +42,7 @@ export const LexicalEditor = ({ tag, value, onChange, ...rest }: LexicalEditorPr
         <>
             {isHeading ? (
                 <HeadingEditor
-                    theme={theme}
+                    theme={{ ...defaultTheme, ...theme }}
                     themeStylesTransformer={themeStylesTransformer}
                     value={value}
                     onChange={onChange}
@@ -43,7 +50,7 @@ export const LexicalEditor = ({ tag, value, onChange, ...rest }: LexicalEditorPr
                 />
             ) : (
                 <ParagraphEditor
-                    theme={theme}
+                    theme={{ ...defaultTheme, ...theme }}
                     themeStylesTransformer={themeStylesTransformer}
                     value={value}
                     onChange={onChange}
