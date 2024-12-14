@@ -1,9 +1,10 @@
 import React, { KeyboardEvent } from "react";
-import { Command, CommandOptionDto, CommandProps } from "~/Command";
+import { Command, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
-import { AutoCompleteInputIcons } from "./AutoCompleteInputIcons";
+import { AutoCompleteInputIcons } from "./components";
+import { AutoCompleteOption } from "./domains";
 
 const commandListVariants = cva(
     "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
@@ -16,8 +17,6 @@ const commandListVariants = cva(
         }
     }
 );
-
-type AutoCompleteOption = CommandOptionDto | string;
 
 type AutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {

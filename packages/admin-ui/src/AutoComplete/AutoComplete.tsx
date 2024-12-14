@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { AutoCompletePrimitive, AutoCompletePrimitiveProps } from "./AutoCompletePrimitive";
+import {
+    AutoCompletePrimitive,
+    AutoCompletePrimitiveProps
+} from "./primitives/AutoCompletePrimitive";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,

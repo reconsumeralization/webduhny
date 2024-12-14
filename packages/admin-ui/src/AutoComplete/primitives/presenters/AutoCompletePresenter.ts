@@ -1,9 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import { CommandOption } from "~/Command/CommandOption";
 import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
-import { AutoCompleteOption } from "./AutoCompletePrimitive";
+import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
 import { IAutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
-import { CommandOptionFormatted } from "~/Command";
+import { AutoCompleteOption } from "../domains";
 
 interface AutoCompletePresenterParams {
     emptyMessage?: any;
