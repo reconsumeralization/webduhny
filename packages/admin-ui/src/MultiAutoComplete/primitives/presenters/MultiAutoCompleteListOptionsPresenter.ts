@@ -20,6 +20,7 @@ export interface IMultiAutoCompleteListOptionsPresenter {
     };
     init: (params: IMultiAutoCompleteListOptionsPresenterParams) => void;
     setListOpenState: (open: boolean) => void;
+    addOption: (option: CommandOption) => void;
     setSelectedOption: (value: string) => void;
     removeSelectedOption: (value: string) => void;
     resetSelectedOptions: () => void;
@@ -83,5 +84,9 @@ export class MultiAutoCompleteListOptionsPresenter
             option.selected = false;
             return option;
         });
+    };
+
+    addOption = (option: CommandOption) => {
+        this.options.addItems([option]);
     };
 }

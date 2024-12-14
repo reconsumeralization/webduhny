@@ -104,6 +104,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
                     <CommandList
                         options={vm.optionsListVm.options}
+                        temporaryOption={vm.temporaryOptionVm.option}
                         allowFreeInput={props.allowFreeInput}
                         onOptionSelect={handleSelectOption}
                         onOptionCreate={handleCreateOption}

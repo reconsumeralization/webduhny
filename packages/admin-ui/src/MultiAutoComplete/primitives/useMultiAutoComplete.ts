@@ -8,6 +8,7 @@ import {
     MultiAutoCompletePresenterParams,
     MultiAutoCompleteSelectedOptionPresenter
 } from "./presenters";
+import { MultiAutoCompleteTemporaryOptionPresenter } from "~/MultiAutoComplete/primitives/presenters/MultiAutoCompleteTemporaryOptionPresenter";
 
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
@@ -39,10 +40,12 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
         const inputPresenter = new MultiAutoCompleteInputPresenter();
         const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
         const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
+        const temporaryOptionsPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
         const presenter = new MultiAutoCompletePresenter(
             inputPresenter,
             selectedOptionsPresenter,
-            optionsListPresenter
+            optionsListPresenter,
+            temporaryOptionsPresenter
         );
         presenter.init(params);
         return presenter;

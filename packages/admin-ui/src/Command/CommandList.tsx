@@ -33,6 +33,8 @@ const CommandList = ({
     onOptionCreate,
     ...props
 }: CommandListProps) => {
+    console.log(temporaryOption);
+
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
             const elements = [<CommandItem key={"dummy-element"} value="-" className="hidden" />];
@@ -62,7 +64,7 @@ const CommandList = ({
                 return acc;
             }, elements);
 
-            if (allowFreeInput && temporaryOption) {
+            if (allowFreeInput && temporaryOption?.value) {
                 renderedItems.push(
                     <CommandItem
                         key={`temporary-${temporaryOption.value}`}

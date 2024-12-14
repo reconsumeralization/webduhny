@@ -5,6 +5,7 @@ import {
 import { MultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
 import { MultiAutoCompleteSelectedOptionPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
 import { MultiAutoCompleteListOptionsPresenter } from "./MultiAutoCompleteListOptionsPresenter";
+import { MultiAutoCompleteTemporaryOptionPresenter } from "~/MultiAutoComplete/primitives/presenters/MultiAutoCompleteTemporaryOptionPresenter";
 
 describe("MultiAutoCompletePresenter", () => {
     let presenter: IMultiAutoCompletePresenter;
@@ -16,10 +17,13 @@ describe("MultiAutoCompletePresenter", () => {
         const inputPresenter = new MultiAutoCompleteInputPresenter();
         const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
         const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
+        const temporaryOptionPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
+
         presenter = new MultiAutoCompletePresenter(
             inputPresenter,
             selectedOptionsPresenter,
-            optionsListPresenter
+            optionsListPresenter,
+            temporaryOptionPresenter
         );
     });
 

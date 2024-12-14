@@ -4,6 +4,7 @@ import { MultiAutoCompleteOption } from "../domains";
 import { IMultiAutoCompleteInputPresenter } from "./MultiAutoCompleteInputPresenter";
 import { IMultiAutoCompleteSelectedOptionsPresenter } from "./MultiAutoCompleteSelectedOptionsPresenter";
 import { IMultiAutoCompleteListOptionsPresenter } from "./MultiAutoCompleteListOptionsPresenter";
+import { IMultiAutoCompleteTemporaryOptionPresenter } from "./MultiAutoCompleteTemporaryOptionPresenter";
 
 interface MultiAutoCompletePresenterParams {
     allowFreeInput?: boolean;
@@ -22,6 +23,7 @@ interface IMultiAutoCompletePresenter {
         inputVm: IMultiAutoCompleteInputPresenter["vm"];
         selectedOptionsVm: IMultiAutoCompleteSelectedOptionsPresenter["vm"];
         optionsListVm: IMultiAutoCompleteListOptionsPresenter["vm"];
+        temporaryOptionVm: IMultiAutoCompleteTemporaryOptionPresenter["vm"];
     };
     init: (params: MultiAutoCompletePresenterParams) => void;
     setListOpenState: (open: boolean) => void;
@@ -37,15 +39,18 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
     private inputPresenter: IMultiAutoCompleteInputPresenter;
     private selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter;
     private optionsListPresenter: IMultiAutoCompleteListOptionsPresenter;
+    private temporaryOptionPresenter: IMultiAutoCompleteTemporaryOptionPresenter;
 
     constructor(
         inputPresenter: IMultiAutoCompleteInputPresenter,
         selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter,
-        optionsListPresenter: IMultiAutoCompleteListOptionsPresenter
+        optionsListPresenter: IMultiAutoCompleteListOptionsPresenter,
+        temporaryOptionPresenter: IMultiAutoCompleteTemporaryOptionPresenter
     ) {
         this.inputPresenter = inputPresenter;
         this.selectedOptionsPresenter = selectedOptionsPresenter;
         this.optionsListPresenter = optionsListPresenter;
+        this.temporaryOptionPresenter = temporaryOptionPresenter;
         makeAutoObservable(this);
     }
 
@@ -65,13 +70,16 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.selectedOptionsPresenter.init({
             options: this.getSelectedCommandOptions(listOptions, params.values)
         });
+
+        this.temporaryOptionPresenter.init();
     }
 
     get vm() {
         return {
             inputVm: this.inputPresenter.vm,
             selectedOptionsVm: this.selectedOptionsPresenter.vm,
-            optionsListVm: this.optionsListPresenter.vm
+            optionsListVm: this.optionsListPresenter.vm,
+            temporaryOptionVm: this.temporaryOptionPresenter.vm
         };
     }
 
@@ -82,6 +90,10 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
+
+        if (this.params?.allowFreeInput) {
+            this.temporaryOptionPresenter.setOption(value);
+        }
     };
 
     public setSelectedOption = (value: string) => {
@@ -101,6 +113,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
     public removeSelectedOption = (value: string) => {
         this.optionsListPresenter.removeSelectedOption(value);
         this.selectedOptionsPresenter.removeOption(value);
+        this.temporaryOptionPresenter.resetOption();
 
         this.params?.onValuesChange(this.getSelectedValues());
     };
@@ -109,6 +122,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.optionsListPresenter.resetSelectedOptions();
         this.selectedOptionsPresenter.resetOptions();
         this.inputPresenter.resetValue();
+        this.temporaryOptionPresenter.resetOption();
 
         this.params?.onValuesChange(this.getSelectedValues());
         this.params?.onValuesReset?.();
