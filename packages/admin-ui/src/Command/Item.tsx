@@ -19,17 +19,17 @@ const commandItemVariants = cva(
     }
 );
 
-interface CommandItemProps
+interface ItemProps
     extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>,
         VariantProps<typeof commandItemVariants> {
     selected?: boolean;
 }
 
-const CommandItem = ({ className, children, selected, ...props }: CommandItemProps) => (
+const Item = ({ className, children, selected, ...props }: ItemProps) => (
     <CommandPrimitive.Item className={cn(commandItemVariants({ selected }), className)} {...props}>
         <span className={"overflow-hidden truncate whitespace-nowrap"}>{children}</span>
         {selected ? <Check className="w-md h-md" /> : null}
     </CommandPrimitive.Item>
 );
 
-export { CommandItem, type CommandItemProps };
+export { Item, type ItemProps };

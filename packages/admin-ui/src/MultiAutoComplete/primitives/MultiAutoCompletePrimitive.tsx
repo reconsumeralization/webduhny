@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from "react";
-import { CommandList, Command, CommandProps } from "~/Command";
+import { Command, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
@@ -102,7 +102,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
 
             <div className="relative">
                 <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
-                    <CommandList
+                    <Command.List
                         options={vm.optionsListVm.options}
                         temporaryOption={vm.temporaryOptionVm.option}
                         allowFreeInput={props.allowFreeInput}

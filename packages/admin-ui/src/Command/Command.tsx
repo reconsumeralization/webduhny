@@ -1,10 +1,17 @@
 import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
-import { cn } from "~/utils";
+import { cn, withStaticProps } from "~/utils";
+import { Empty } from "./Empty";
+import { Group } from "./Group";
+import { Input } from "./Input";
+import { Item } from "./Item";
+import { List } from "./List";
+import { Loading } from "./Loading";
+import { Separator } from "./Separator";
 
 type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive>;
 
-const Command = ({
+const CommandBase = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive>) => (
@@ -13,5 +20,15 @@ const Command = ({
         {...props}
     />
 );
+
+const Command = withStaticProps(CommandBase, {
+    Empty,
+    Group,
+    Input,
+    Item,
+    List,
+    Loading,
+    Separator
+});
 
 export { Command, type CommandProps };

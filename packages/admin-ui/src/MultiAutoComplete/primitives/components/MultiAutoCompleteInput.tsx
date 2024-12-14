@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
 import { getIconPosition, InputIcon, InputPrimitiveProps, inputVariants } from "~/Input";
-import { CommandInput, CommandOptionFormatted } from "~/Command";
+import { Command, CommandOptionFormatted } from "~/Command";
 import { Tag } from "~/Tag";
 import { Icon } from "~/Icon";
 import { cn, cva, VariantProps } from "~/utils";
@@ -91,7 +91,7 @@ const MultiAutoCompleteInput = ({
                         />
                     );
                 })}
-                <CommandInput
+                <Command.Input
                     className={"flex-1 bg-transparent border-none outline-none"}
                     value={value}
                     onValueChange={changeValue}

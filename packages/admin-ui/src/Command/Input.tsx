@@ -2,15 +2,12 @@ import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { InputPrimitive, InputPrimitiveProps } from "~/Input";
 
-type CommandInputProps = Omit<
-    React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
-    "size"
-> &
+type InputProps = Omit<React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>, "size"> &
     InputPrimitiveProps & {
         inputElement?: React.ReactNode;
     };
 
-const CommandInput = ({ inputElement, size, ...props }: CommandInputProps) => {
+const Input = ({ inputElement, size, ...props }: InputProps) => {
     return (
         <CommandPrimitive.Input asChild {...props}>
             {inputElement ?? <InputPrimitive size={size} />}
@@ -18,4 +15,4 @@ const CommandInput = ({ inputElement, size, ...props }: CommandInputProps) => {
     );
 };
 
-export { CommandInput, type CommandInputProps };
+export { Input, type InputProps };

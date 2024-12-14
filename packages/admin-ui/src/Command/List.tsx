@@ -2,13 +2,13 @@ import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "~/utils";
 import { CommandOptionFormatted } from "./CommandOptionFormatted";
-import { CommandGroup } from "./CommandGroup";
-import { CommandItem } from "./CommandItem";
-import { CommandSeparator } from "./CommandSeparator";
-import { CommandLoading } from "./CommandLoading";
-import { CommandEmpty } from "./CommandEmpty";
+import { Group } from "./Group";
+import { Item } from "./Item";
+import { Separator } from "./Separator";
+import { Loading } from "./Loading";
+import { Empty } from "./Empty";
 
-interface CommandListProps extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> {
+interface ListProps extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> {
     options: CommandOptionFormatted[];
     temporaryOption?: CommandOptionFormatted;
     emptyMessage?: React.ReactNode;
@@ -20,7 +20,7 @@ interface CommandListProps extends React.ComponentPropsWithoutRef<typeof Command
     optionRenderer?: (item: any, index: number) => React.ReactNode;
 }
 
-const CommandList = ({
+const List = ({
     className,
     onOptionSelect,
     emptyMessage,
@@ -32,16 +32,14 @@ const CommandList = ({
     allowFreeInput,
     onOptionCreate,
     ...props
-}: CommandListProps) => {
-    console.log(temporaryOption);
-
+}: ListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
-            const elements = [<CommandItem key={"dummy-element"} value="-" className="hidden" />];
+            const elements = [<Item key={"dummy-element"} value="-" className="hidden" />];
 
             const renderedItems = items.reduce((acc, item, currentIndex) => {
                 acc.push(
-                    <CommandItem
+                    <Item
                         key={`item-${item.value}-${currentIndex}`}
                         value={item.value}
                         keywords={[item.label]}
@@ -53,12 +51,12 @@ const CommandList = ({
                         {optionRenderer && item.item
                             ? optionRenderer.call(this, item.item, currentIndex)
                             : item.label}
-                    </CommandItem>
+                    </Item>
                 );
 
                 // Conditionally render the separator if `separator` is true
                 if (item.separator) {
-                    acc.push(<CommandSeparator key={`separator-${item.value ?? currentIndex}`} />);
+                    acc.push(<Separator key={`separator-${item.value ?? currentIndex}`} />);
                 }
 
                 return acc;
@@ -66,7 +64,7 @@ const CommandList = ({
 
             if (allowFreeInput && temporaryOption?.value) {
                 renderedItems.push(
-                    <CommandItem
+                    <Item
                         key={`temporary-${temporaryOption.value}`}
                         value={temporaryOption.value}
                         keywords={[temporaryOption.label]}
@@ -78,7 +76,7 @@ const CommandList = ({
                         onMouseDown={event => event.preventDefault()}
                     >
                         {`Add "${temporaryOption.label}" as new option`}
-                    </CommandItem>
+                    </Item>
                 );
             }
 
@@ -97,13 +95,11 @@ const CommandList = ({
             )}
             {...props}
         >
-            {isLoading ? <CommandLoading>{loadingMessage}</CommandLoading> : null}
-            {options.length > 0 && !isLoading ? (
-                <CommandGroup>{renderOptions(options)}</CommandGroup>
-            ) : null}
-            {!isLoading ? <CommandEmpty>{emptyMessage}</CommandEmpty> : null}
+            {isLoading ? <Loading>{loadingMessage}</Loading> : null}
+            {options.length > 0 && !isLoading ? <Group>{renderOptions(options)}</Group> : null}
+            {!isLoading ? <Empty>{emptyMessage}</Empty> : null}
         </CommandPrimitive.List>
     );
 };
 
-export { CommandList, type CommandListProps };
+export { List, type ListProps };

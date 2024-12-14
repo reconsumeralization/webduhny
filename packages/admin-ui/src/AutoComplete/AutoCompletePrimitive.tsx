@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from "react";
-import { CommandList, CommandInput, Command, CommandOptionDto, CommandProps } from "~/Command";
+import { Command, CommandOptionDto, CommandProps } from "~/Command";
 import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
@@ -59,7 +59,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
 
     return (
         <Command onKeyDown={handleKeyDown}>
-            <CommandInput
+            <Command.Input
                 value={vm.inputVm.value}
                 onValueChange={setInputValue}
                 placeholder={vm.inputVm.placeholder}
@@ -80,7 +80,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
             />
             <div className="relative">
                 <div className={cn(commandListVariants({ open: vm.listVm.isOpen }))}>
-                    <CommandList
+                    <Command.List
                         options={vm.listVm.options}
                         onOptionSelect={handleSelectOption}
                         isLoading={props.isLoading}
