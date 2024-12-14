@@ -6,6 +6,7 @@ import {
     MultiAutoCompleteListOptionsPresenter,
     MultiAutoCompletePresenter,
     MultiAutoCompletePresenterParams,
+    MultiAutoCompletePresenterWithFreeInput,
     MultiAutoCompleteSelectedOptionPresenter
 } from "./presenters";
 import { MultiAutoCompleteTemporaryOptionPresenter } from "~/MultiAutoComplete/primitives/presenters/MultiAutoCompleteTemporaryOptionPresenter";
@@ -40,15 +41,24 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
         const inputPresenter = new MultiAutoCompleteInputPresenter();
         const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
         const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
-        const temporaryOptionsPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
         const presenter = new MultiAutoCompletePresenter(
             inputPresenter,
             selectedOptionsPresenter,
-            optionsListPresenter,
-            temporaryOptionsPresenter
+            optionsListPresenter
         );
-        presenter.init(params);
-        return presenter;
+
+        if (params?.allowFreeInput) {
+            const temporaryOptionsPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
+            const withPresenter = new MultiAutoCompletePresenterWithFreeInput(
+                temporaryOptionsPresenter,
+                presenter
+            );
+            withPresenter.init(params);
+            return withPresenter;
+        } else {
+            presenter.init(params);
+            return presenter;
+        }
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);

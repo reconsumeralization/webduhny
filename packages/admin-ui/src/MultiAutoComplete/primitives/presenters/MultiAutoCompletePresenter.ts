@@ -39,18 +39,15 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
     private inputPresenter: IMultiAutoCompleteInputPresenter;
     private selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter;
     private optionsListPresenter: IMultiAutoCompleteListOptionsPresenter;
-    private temporaryOptionPresenter: IMultiAutoCompleteTemporaryOptionPresenter;
 
     constructor(
         inputPresenter: IMultiAutoCompleteInputPresenter,
         selectedOptionsPresenter: IMultiAutoCompleteSelectedOptionsPresenter,
-        optionsListPresenter: IMultiAutoCompleteListOptionsPresenter,
-        temporaryOptionPresenter: IMultiAutoCompleteTemporaryOptionPresenter
+        optionsListPresenter: IMultiAutoCompleteListOptionsPresenter
     ) {
         this.inputPresenter = inputPresenter;
         this.selectedOptionsPresenter = selectedOptionsPresenter;
         this.optionsListPresenter = optionsListPresenter;
-        this.temporaryOptionPresenter = temporaryOptionPresenter;
         makeAutoObservable(this);
     }
 
@@ -70,8 +67,6 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.selectedOptionsPresenter.init({
             options: this.getSelectedCommandOptions(listOptions, params.values)
         });
-
-        this.temporaryOptionPresenter.init();
     }
 
     get vm() {
@@ -79,7 +74,9 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
             inputVm: this.inputPresenter.vm,
             selectedOptionsVm: this.selectedOptionsPresenter.vm,
             optionsListVm: this.optionsListPresenter.vm,
-            temporaryOptionVm: this.temporaryOptionPresenter.vm
+            temporaryOptionVm: {
+                option: undefined
+            }
         };
     }
 
@@ -90,10 +87,6 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
-
-        if (this.params?.allowFreeInput) {
-            this.temporaryOptionPresenter.setOption(value);
-        }
     };
 
     public setSelectedOption = (value: string) => {
@@ -101,11 +94,13 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.optionsListPresenter.setSelectedOption(value);
 
         const option = this.vm.optionsListVm.options.find(option => option.value === value);
-        if (option) {
-            const commandOption = CommandOption.create(option);
-            commandOption.selected = true;
-            this.selectedOptionsPresenter.addOption(commandOption);
-        }
+
+        const commandOption = option
+            ? CommandOption.create(option)
+            : CommandOption.createFromString(value);
+
+        commandOption.selected = true;
+        this.selectedOptionsPresenter.addOption(commandOption);
 
         this.params?.onValuesChange(this.getSelectedValues());
     };
@@ -113,7 +108,6 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
     public removeSelectedOption = (value: string) => {
         this.optionsListPresenter.removeSelectedOption(value);
         this.selectedOptionsPresenter.removeOption(value);
-        this.temporaryOptionPresenter.resetOption();
 
         this.params?.onValuesChange(this.getSelectedValues());
     };
@@ -122,22 +116,13 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.optionsListPresenter.resetSelectedOptions();
         this.selectedOptionsPresenter.resetOptions();
         this.inputPresenter.resetValue();
-        this.temporaryOptionPresenter.resetOption();
 
         this.params?.onValuesChange(this.getSelectedValues());
         this.params?.onValuesReset?.();
     };
 
-    public createOption = (value: string) => {
-        if (!this.params?.allowFreeInput) {
-            return;
-        }
-
-        const option = CommandOption.createFromString(value);
-        option.selected = true;
-        this.selectedOptionsPresenter.addOption(option);
-        this.searchOption("");
-        this.params?.onValuesChange(this.getSelectedValues());
+    public createOption = () => {
+        return;
     };
 
     private getListOptions(
