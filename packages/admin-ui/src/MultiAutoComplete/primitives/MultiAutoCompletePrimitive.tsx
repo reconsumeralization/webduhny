@@ -1,22 +1,13 @@
 import React, { KeyboardEvent } from "react";
 import { Command, CommandProps } from "~/Command";
-import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
-import { MultiAutoCompleteInput, MultiAutoCompleteInputIcons } from "./components";
+import {
+    MultiAutoCompleteInput,
+    MultiAutoCompleteInputIcons,
+    MultiAutoCompleteList
+} from "./components";
 import { MultiAutoCompleteOption } from "./domains";
-
-const commandListVariants = cva(
-    "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
-    {
-        variants: {
-            open: {
-                true: "block",
-                false: "hidden"
-            }
-        }
-    }
-);
 
 type MultiAutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
@@ -100,20 +91,16 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 }
             />
 
-            <div className="relative">
-                <div className={cn(commandListVariants({ open: vm.optionsListVm.isOpen }))}>
-                    <Command.List
-                        options={vm.optionsListVm.options}
-                        temporaryOption={vm.temporaryOptionVm.option}
-                        allowFreeInput={props.allowFreeInput}
-                        onOptionSelect={handleSelectOption}
-                        onOptionCreate={handleCreateOption}
-                        isLoading={props.isLoading}
-                        emptyMessage={vm.optionsListVm.emptyMessage}
-                        optionRenderer={props.optionRenderer}
-                    />
-                </div>
-            </div>
+            <MultiAutoCompleteList
+                options={vm.optionsListVm.options}
+                temporaryOption={vm.temporaryOptionVm.option}
+                onOptionSelect={handleSelectOption}
+                onOptionCreate={handleCreateOption}
+                isLoading={props.isLoading}
+                isOpen={vm.optionsListVm.isOpen}
+                emptyMessage={vm.optionsListVm.emptyMessage}
+                optionRenderer={props.optionRenderer}
+            />
         </Command>
     );
 };

@@ -1,22 +1,9 @@
 import React, { KeyboardEvent } from "react";
 import { Command, CommandProps } from "~/Command";
-import { cn, cva } from "~/utils";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
-import { AutoCompleteInputIcons } from "./components";
+import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
 import { AutoCompleteOption } from "./domains";
-
-const commandListVariants = cva(
-    "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
-    {
-        variants: {
-            open: {
-                true: "block",
-                false: "hidden"
-            }
-        }
-    }
-);
 
 type AutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
@@ -77,18 +64,15 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                 onBlur={() => setListOpenState(false)}
                 onFocus={() => setListOpenState(true)}
             />
-            <div className="relative">
-                <div className={cn(commandListVariants({ open: vm.listVm.isOpen }))}>
-                    <Command.List
-                        options={vm.listVm.options}
-                        onOptionSelect={handleSelectOption}
-                        isLoading={props.isLoading}
-                        loadingMessage={vm.listVm.loadingMessage}
-                        emptyMessage={vm.listVm.emptyMessage}
-                        optionRenderer={props.optionRenderer}
-                    />
-                </div>
-            </div>
+            <AutoCompleteList
+                options={vm.listVm.options}
+                onOptionSelect={handleSelectOption}
+                isLoading={props.isLoading}
+                isOpen={vm.listVm.isOpen}
+                loadingMessage={vm.listVm.loadingMessage}
+                emptyMessage={vm.listVm.emptyMessage}
+                optionRenderer={props.optionRenderer}
+            />
         </Command>
     );
 };
