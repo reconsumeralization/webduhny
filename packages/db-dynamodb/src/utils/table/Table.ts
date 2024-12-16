@@ -1,9 +1,14 @@
 import type { TableConstructor } from "~/toolbox";
 import { Table as BaseTable } from "~/toolbox";
-import { ITable, ITableScanParams, ITableScanResponse } from "./types";
-import type { ITableReadBatch, ITableWriteBatch } from "../batch/types";
-import { createTableWriteBatch } from "../batch/TableWriteBatch";
-import { createTableReadBatch } from "../batch/TableReadBatch";
+import type {
+    ITable,
+    ITableReadBatch,
+    ITableScanParams,
+    ITableScanResponse,
+    ITableWriteBatch
+} from "./types";
+import { createTableWriteBatch } from "./TableWriteBatch";
+import { createTableReadBatch } from "./TableReadBatch";
 import { scan } from "../scan";
 
 export class Table<

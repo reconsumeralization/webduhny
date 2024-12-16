@@ -3,12 +3,12 @@ import type {
     BatchWriteItem,
     BatchWriteResult,
     IDeleteBatchItem,
-    IEntityWriteBatchBuilder,
-    IPutBatchItem,
-    ITableWriteBatch
-} from "./types";
-import { batchWriteAll } from "./batchWrite";
-import { createEntityWriteBatchBuilder } from "./EntityWriteBatchBuilder";
+    IPutBatchItem
+} from "~/utils/batch/types";
+import type { IEntityWriteBatchBuilder } from "~/utils/entity/types";
+import { batchWriteAll } from "~/utils/batch/batchWrite";
+import { createEntityWriteBatchBuilder } from "~/utils/entity/EntityWriteBatchBuilder";
+import type { ITableWriteBatch } from "./types";
 
 export interface ITableWriteBatchParams {
     table: TableDef;

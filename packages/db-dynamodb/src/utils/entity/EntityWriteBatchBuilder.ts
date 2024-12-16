@@ -1,10 +1,6 @@
 import type { Entity } from "~/toolbox";
-import type {
-    BatchWriteItem,
-    IDeleteBatchItem,
-    IEntityWriteBatchBuilder,
-    IPutBatchItem
-} from "./types";
+import type { BatchWriteItem, IDeleteBatchItem, IPutBatchItem } from "~/utils/batch/types";
+import type { IEntityWriteBatchBuilder } from "./types";
 
 export class EntityWriteBatchBuilder implements IEntityWriteBatchBuilder {
     private readonly entity: Entity;

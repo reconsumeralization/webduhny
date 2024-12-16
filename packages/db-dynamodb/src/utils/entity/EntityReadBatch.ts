@@ -1,12 +1,12 @@
+import type { IPutBatchItem } from "~/utils/batch/types";
 import type {
     IEntityReadBatch,
     IEntityReadBatchBuilder,
     IEntityReadBatchBuilderGetResponse,
-    IEntityReadBatchKey,
-    IPutBatchItem
+    IEntityReadBatchKey
 } from "./types";
 import type { Entity, TableDef } from "~/toolbox";
-import { batchReadAll } from "./batchRead";
+import { batchReadAll } from "~/utils/batch/batchRead";
 import { GenericRecord } from "@webiny/api/types";
 import { createEntityReadBatchBuilder } from "./EntityReadBatchBuilder";
 

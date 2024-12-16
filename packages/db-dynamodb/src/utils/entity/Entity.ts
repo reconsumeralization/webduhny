@@ -5,17 +5,23 @@ import type {
     TableDef
 } from "~/toolbox";
 import { Entity as BaseEntity } from "~/toolbox";
-import type { IEntityReadBatch, IEntityWriteBatch, ITableWriteBatch } from "../batch/types";
-import type { IEntity, IEntityQueryAllParams, IEntityQueryOneParams } from "./types";
+import type { ITableWriteBatch } from "../table/types";
+import type {
+    IEntity,
+    IEntityQueryAllParams,
+    IEntityQueryOneParams,
+    IEntityReadBatch,
+    IEntityWriteBatch
+} from "./types";
 import type { IPutParamsItem } from "../put";
 import { put } from "../put";
 import type { GetRecordParamsKeys } from "../get";
 import { get, getClean } from "../get";
 import type { IDeleteItemKeys } from "../delete";
 import { deleteItem } from "../delete";
-import { createEntityReadBatch } from "../batch/EntityReadBatch";
-import { createEntityWriteBatch } from "../batch/EntityWriteBatch";
-import { createTableWriteBatch } from "../batch/TableWriteBatch";
+import { createEntityReadBatch } from "./EntityReadBatch";
+import { createEntityWriteBatch } from "./EntityWriteBatch";
+import { createTableWriteBatch } from "~/utils/table/TableWriteBatch";
 import { queryAllClean, queryOneClean } from "../query";
 
 export type EntityConstructor<

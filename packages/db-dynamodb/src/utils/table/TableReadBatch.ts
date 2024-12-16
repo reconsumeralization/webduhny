@@ -1,14 +1,13 @@
 import type { Entity, TableDef } from "~/toolbox";
 import type {
     IEntityReadBatchBuilder,
-    IEntityReadBatchBuilderGetResponse,
-    ITableReadBatch,
-    ITableReadBatchKey
-} from "./types";
-import { batchReadAll } from "./batchRead";
-import { createEntityReadBatchBuilder } from "./EntityReadBatchBuilder";
+    IEntityReadBatchBuilderGetResponse
+} from "~/utils/entity/types";
+import { batchReadAll } from "~/utils/batch/batchRead";
+import { createEntityReadBatchBuilder } from "~/utils/entity/EntityReadBatchBuilder";
 import type { GenericRecord } from "@webiny/api/types";
 import { WebinyError } from "@webiny/error";
+import type { ITableReadBatch, ITableReadBatchKey } from "./types";
 
 export interface ITableReadBatchParams {
     table: TableDef;
