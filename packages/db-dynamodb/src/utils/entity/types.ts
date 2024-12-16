@@ -1,5 +1,5 @@
 import type { Entity as BaseEntity } from "dynamodb-toolbox";
-import type { IEntityWriteBatch, ITableWriteBatch } from "~/utils/batch/types";
+import type { IEntityReadBatch, IEntityWriteBatch, ITableWriteBatch } from "~/utils/batch/types";
 import type {
     deleteItem,
     get,
@@ -12,6 +12,7 @@ import type {
 
 export interface IEntity {
     readonly entity: BaseEntity;
+    createEntityReader(): IEntityReadBatch;
     createEntityWriter(): IEntityWriteBatch;
     createTableWriter(): ITableWriteBatch;
     put(item: IPutParamsItem): ReturnType<typeof put>;

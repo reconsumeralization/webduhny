@@ -8,7 +8,7 @@ import {
     ITableWriteBatch
 } from "./types";
 import { batchWriteAll } from "./batchWrite";
-import { createEntityWriteBatchBuilder } from "~/utils/batch/EntityWriteBatchBuilder";
+import { createEntityWriteBatchBuilder } from "./EntityWriteBatchBuilder";
 
 export interface ITableWriteBatchParams {
     table: TableDef;

@@ -1,17 +1,48 @@
-import type { Entity as BaseEntity } from "dynamodb-toolbox";
-import { createEntityWriteBatch, createTableWriteBatch } from "~/utils/batch";
-import type { IEntityWriteBatch, ITableWriteBatch } from "~/utils/batch/types";
+import { Entity as BaseEntity } from "dynamodb-toolbox";
+import type { IEntityReadBatch, IEntityWriteBatch, ITableWriteBatch } from "../batch/types";
 import type { TableDef } from "dynamodb-toolbox/dist/cjs/classes/Table";
-import { IEntity } from "./types";
-import { IPutParamsItem, put } from "~/utils/put";
-import { get, getClean, GetRecordParamsKeys } from "~/utils/get";
-import { deleteItem, IDeleteItemKeys } from "~/utils";
+import type { IEntity } from "./types";
+import type { IPutParamsItem } from "../put";
+import { put } from "../put";
+import type { GetRecordParamsKeys } from "../get";
+import { get, getClean } from "../get";
+import type { IDeleteItemKeys } from "../delete";
+import { deleteItem } from "../delete";
+import type {
+    AttributeDefinitions,
+    EntityConstructor as BaseEntityConstructor,
+    Readonly
+} from "dynamodb-toolbox/dist/cjs/classes/Entity/types";
+import { createEntityReadBatch } from "../batch/EntityReadBatch";
+import { createEntityWriteBatch } from "../batch/EntityWriteBatch";
+import { createTableWriteBatch } from "../batch/TableWriteBatch";
+
+export type EntityConstructor<
+    T extends Readonly<AttributeDefinitions> = Readonly<AttributeDefinitions>
+> = BaseEntityConstructor<
+    TableDef,
+    string,
+    true,
+    true,
+    true,
+    "created",
+    "modified",
+    "entity",
+    false,
+    T
+>;
 
 export class Entity implements IEntity {
     public readonly entity: BaseEntity;
 
-    public constructor(entity: BaseEntity) {
-        this.entity = entity;
+    public constructor(params: EntityConstructor) {
+        this.entity = new BaseEntity(params);
+    }
+
+    public createEntityReader(): IEntityReadBatch {
+        return createEntityReadBatch({
+            entity: this.entity
+        });
     }
 
     public createEntityWriter(): IEntityWriteBatch {
@@ -55,6 +86,6 @@ export class Entity implements IEntity {
     }
 }
 
-export const createEntity = (params: BaseEntity): IEntity => {
+export const createEntity = (params: EntityConstructor): IEntity => {
     return new Entity(params);
 };
