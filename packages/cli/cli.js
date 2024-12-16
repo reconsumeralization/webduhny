@@ -4,14 +4,15 @@ const yargs = require("yargs");
 // Disable help processing until after plugins are imported.
 yargs.help(false);
 
+// Ensure system requirements are met.
+require("./utils/ensureSystemRequirements").ensureSystemRequirements();
+
 // Loads environment variables from multiple sources.
 require("./utils/loadEnvVariables");
 
 const { blue, red, bold, bgYellow } = require("chalk");
 const context = require("./context");
 const { createCommands } = require("./commands");
-
-// TODO: Throw an error if incorrect version of Node.js is used.
 
 yargs
     .usage("Usage: $0 <command> [options]")
