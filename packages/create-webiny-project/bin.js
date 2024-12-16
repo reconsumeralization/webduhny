@@ -20,7 +20,7 @@ const { SystemRequirements } = require("@webiny/system-requirements");
         console.error(
             chalk.red(
                 [
-                    `You are running Node.js ${systemRequirements.node.current}, but Webiny requires version ${systemRequirements.node.requiredVersion}.`,
+                    `You are running Node.js ${systemRequirements.node.currentVersion}, but Webiny requires version ${systemRequirements.node.requiredVersion}.`,
                     `Please switch to one of the required versions and try again.`,
                     "For more information, please visit https://www.webiny.com/docs/get-started/install-webiny#prerequisites."
                 ].join(" ")
