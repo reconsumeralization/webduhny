@@ -5,7 +5,7 @@ interface Params {
     item: {
         PK: string;
         SK: string;
-        TYPE: string;
+        TYPE?: string;
         [key: string]: any;
     };
 }

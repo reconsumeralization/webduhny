@@ -14,3 +14,4 @@ export * from "./sort";
 export * from "./table";
 export * from "./update";
 export * from "./batch";
+export * from "./entity";

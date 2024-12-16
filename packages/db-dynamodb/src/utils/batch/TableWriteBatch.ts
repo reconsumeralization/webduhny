@@ -46,8 +46,13 @@ export class TableWriteBatch implements ITableWriteBatch {
     }
 
     public async execute(): Promise<BatchWriteResult> {
+        if (this.items.length === 0) {
+            return [];
+        }
+        const items = [...this.items];
+        this.items.length = 0;
         return await batchWriteAll({
-            items: this.items,
+            items,
             table: this.table
         });
     }
