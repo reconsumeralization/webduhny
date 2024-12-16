@@ -17208,6 +17208,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/cli@workspace:packages/cli"
   dependencies:
+    "@webiny/system-requirements": 0.0.0
     "@webiny/telemetry": 0.0.0
     "@webiny/wcp": 0.0.0
     boolean: ^3.1.4
@@ -18133,6 +18134,19 @@ __metadata:
     ttypescript: ^1.5.12
     typescript: 4.9.5
     webpack: ^5.91.0
+  languageName: unknown
+  linkType: soft
+
+"@webiny/system-requirements@0.0.0, @webiny/system-requirements@workspace:packages/cli-system-requirements":
+  version: 0.0.0-use.local
+  resolution: "@webiny/system-requirements@workspace:packages/cli-system-requirements"
+  dependencies:
+    "@webiny/telemetry": 0.0.0
+    "@webiny/wcp": 0.0.0
+    execa: ^5.0.0
+    semver: ^7.3.5
+  bin:
+    webiny: ./bin.js
   languageName: unknown
   linkType: soft
 
