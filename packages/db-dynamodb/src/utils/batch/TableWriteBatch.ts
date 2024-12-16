@@ -1,5 +1,5 @@
-import { Entity, TableDef } from "~/toolbox";
-import {
+import type { Entity, TableDef } from "~/toolbox";
+import type {
     BatchWriteItem,
     BatchWriteResult,
     IDeleteBatchItem,
