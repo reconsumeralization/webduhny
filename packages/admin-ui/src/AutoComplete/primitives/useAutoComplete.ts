@@ -4,7 +4,8 @@ import { AutoCompletePrimitiveProps } from "./AutoCompletePrimitive";
 import {
     AutoCompletePresenter,
     AutoCompletePresenterParams,
-    AutoCompleteInputPresenter
+    AutoCompleteInputPresenter,
+    AutoCompleteListOptionsPresenter
 } from "./presenters";
 
 export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
@@ -33,7 +34,8 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
 
     const presenter = useMemo(() => {
         const inputPresenter = new AutoCompleteInputPresenter();
-        const presenter = new AutoCompletePresenter(inputPresenter);
+        const optionsListPresenter = new AutoCompleteListOptionsPresenter();
+        const presenter = new AutoCompletePresenter(inputPresenter, optionsListPresenter);
         presenter.init(params);
         return presenter;
     }, []);
@@ -53,8 +55,8 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
     return {
         vm,
         setSelectedOption: presenter.setSelectedOption,
-        setInputValue: presenter.setInputValue,
-        resetValue: presenter.resetValue,
+        searchOption: presenter.searchOption,
+        resetSelectedOption: presenter.resetSelectedOption,
         setListOpenState: presenter.setListOpenState
     };
 };

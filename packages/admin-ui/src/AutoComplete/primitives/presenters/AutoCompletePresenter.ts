@@ -1,8 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { CommandOption } from "~/Command/CommandOption";
-import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
-import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
 import { IAutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
+import { IAutoCompleteListOptionsPresenter } from "./AutoCompleteListOptionsPresenter";
 import { AutoCompleteOption } from "../domains";
 
 interface AutoCompletePresenterParams {
@@ -19,40 +18,42 @@ interface AutoCompletePresenterParams {
 interface IAutoCompletePresenterParams {
     vm: {
         inputVm: IAutoCompleteInputPresenter["vm"];
-        listVm: {
-            options: CommandOptionFormatted[];
-            emptyMessage: string;
-            loadingMessage: string;
-            isOpen: boolean;
-            isEmpty: boolean;
-        };
+        optionsListVm: IAutoCompleteListOptionsPresenter["vm"];
     };
     init: (params: AutoCompletePresenterParams) => void;
     setListOpenState: (open: boolean) => void;
     setSelectedOption: (value: string) => void;
-    setInputValue: (value: string) => void;
-    resetValue: () => void;
+    searchOption: (value: string) => void;
+    resetSelectedOption: () => void;
 }
 
 class AutoCompletePresenter implements IAutoCompletePresenterParams {
-    private inputPresenter: IAutoCompleteInputPresenter;
     private params?: AutoCompletePresenterParams = undefined;
-    private options: CommandOption[] = [];
-    private isListOpen = false;
+    private inputPresenter: IAutoCompleteInputPresenter;
+    private optionsListPresenter: IAutoCompleteListOptionsPresenter;
 
-    constructor(inputPresenter: IAutoCompleteInputPresenter) {
+    constructor(
+        inputPresenter: IAutoCompleteInputPresenter,
+        optionsListPresenter: IAutoCompleteListOptionsPresenter
+    ) {
         this.inputPresenter = inputPresenter;
+        this.optionsListPresenter = optionsListPresenter;
         makeAutoObservable(this);
     }
 
     init(params: AutoCompletePresenterParams) {
         this.params = params;
-        this.options = this.mapOptions(params.options, params.value);
+
+        const listOptions = this.getListOptions(params.options, params.value);
+        this.optionsListPresenter.init({
+            options: listOptions,
+            emptyMessage: params.emptyMessage,
+            loadingMessage: params.loadingMessage
+        });
 
         const selected = this.getSelectedOption();
-
         this.inputPresenter.init({
-            value: selected ? CommandOptionFormatter.format(selected).label : "",
+            value: selected?.label ?? "",
             placeholder: params.placeholder
         });
     }
@@ -60,53 +61,40 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
     get vm() {
         return {
             inputVm: this.inputPresenter.vm,
-            listVm: {
-                options: this.options.map(option => CommandOptionFormatter.format(option)),
-                emptyMessage: this.params?.emptyMessage ?? "No results.",
-                loadingMessage: this.params?.loadingMessage ?? "Loading...",
-                isOpen: this.isListOpen,
-                isEmpty: this.options.length === 0
-            }
+            optionsListVm: this.optionsListPresenter.vm
         };
     }
 
     public setListOpenState = (open: boolean) => {
-        this.isListOpen = open;
+        this.optionsListPresenter.setListOpenState(open);
         this.params?.onOpenChange?.(open);
     };
 
-    public setSelectedOption = (value: string) => {
-        this.updateSelectedOption(value);
-        this.params?.onValueChange?.(value);
-    };
-
-    public setInputValue = (value: string) => {
+    public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
     };
 
-    public resetValue = () => {
-        this.updateSelectedOption();
-        this.inputPresenter.setValue("");
+    public setSelectedOption = (value: string) => {
+        this.resetSelectedOption();
+        this.optionsListPresenter.setSelectedOption(value);
+        const option = this.getSelectedOption();
+
+        if (option) {
+            this.searchOption(option.label);
+        }
+
+        this.params?.onValueChange?.(value);
+    };
+
+    public resetSelectedOption = () => {
+        this.optionsListPresenter.resetSelectedOption();
+        this.inputPresenter.resetValue();
+
         this.params?.onValueChange?.("");
         this.params?.onValueReset?.();
     };
 
-    private updateSelectedOption(value?: string) {
-        const optionToSelect = this.options.find(option => option.value === value);
-        this.options.forEach(option => (option.selected = false));
-
-        if (optionToSelect) {
-            optionToSelect.selected = true;
-            this.inputPresenter.setValue(optionToSelect.label);
-            return;
-        }
-    }
-
-    private getSelectedOption() {
-        return this.options.find(option => option.selected);
-    }
-
-    private mapOptions(options: AutoCompleteOption[] = [], value?: string): CommandOption[] {
+    private getListOptions(options: AutoCompleteOption[] = [], value?: string): CommandOption[] {
         return options.map(option => {
             const commandOption =
                 typeof option === "string"
@@ -116,6 +104,10 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
             commandOption.selected = commandOption.value === value;
             return commandOption;
         });
+    }
+
+    private getSelectedOption() {
+        return this.vm.optionsListVm.options.find(option => option.selected);
     }
 }
 

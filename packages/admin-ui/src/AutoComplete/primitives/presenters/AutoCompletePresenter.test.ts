@@ -1,9 +1,11 @@
 import { AutoCompletePresenter } from "./AutoCompletePresenter";
 import { AutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
+import { AutoCompleteListOptionsPresenter } from "./AutoCompleteListOptionsPresenter";
 
 describe("AutoCompletePresenter", () => {
     const inputPresenter = new AutoCompleteInputPresenter();
-    const presenter = new AutoCompletePresenter(inputPresenter);
+    const optionsListPresenter = new AutoCompleteListOptionsPresenter();
+    const presenter = new AutoCompletePresenter(inputPresenter, optionsListPresenter);
     const onValueChange = jest.fn();
 
     it("should return the compatible `vm.inputVm` based on params", () => {
@@ -21,11 +23,11 @@ describe("AutoCompletePresenter", () => {
         }
     });
 
-    it("should return the compatible `vm.listVm` based on params", () => {
+    it("should return the compatible `vm.optionsListVm` based on params", () => {
         // with `options` as string
         {
             presenter.init({ onValueChange, options: ["Option 1", "Option 2"] });
-            expect(presenter.vm.listVm.options).toEqual([
+            expect(presenter.vm.optionsListVm.options).toEqual([
                 {
                     value: "Option 1",
                     label: "Option 1",
@@ -43,7 +45,7 @@ describe("AutoCompletePresenter", () => {
                     item: null
                 }
             ]);
-            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
         }
 
         // with `options` as formatted options
@@ -80,7 +82,7 @@ describe("AutoCompletePresenter", () => {
                 ]
             });
 
-            expect(presenter.vm.listVm.options).toEqual([
+            expect(presenter.vm.optionsListVm.options).toEqual([
                 {
                     value: "option-1",
                     label: "Option 1",
@@ -125,13 +127,13 @@ describe("AutoCompletePresenter", () => {
                     }
                 }
             ]);
-            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
         }
 
         // with `options` and `value`
         {
             presenter.init({ onValueChange, options: ["Option 1", "Option 2"], value: "Option 1" });
-            expect(presenter.vm.listVm.options).toEqual([
+            expect(presenter.vm.optionsListVm.options).toEqual([
                 {
                     value: "Option 1",
                     label: "Option 1",
@@ -149,17 +151,17 @@ describe("AutoCompletePresenter", () => {
                     item: null
                 }
             ]);
-            expect(presenter.vm.listVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
         }
 
         {
             // default: no params
             presenter.init({ onValueChange });
-            expect(presenter.vm.listVm.options).toEqual([]);
-            expect(presenter.vm.listVm.emptyMessage).toEqual("No results.");
-            expect(presenter.vm.listVm.loadingMessage).toEqual("Loading...");
-            expect(presenter.vm.listVm.isOpen).toEqual(false);
-            expect(presenter.vm.listVm.isEmpty).toEqual(true);
+            expect(presenter.vm.optionsListVm.options).toEqual([]);
+            expect(presenter.vm.optionsListVm.emptyMessage).toEqual("No results.");
+            expect(presenter.vm.optionsListVm.loadingMessage).toEqual("Loading...");
+            expect(presenter.vm.optionsListVm.isOpen).toEqual(false);
+            expect(presenter.vm.optionsListVm.isEmpty).toEqual(true);
         }
     });
 
@@ -178,7 +180,7 @@ describe("AutoCompletePresenter", () => {
             ]
         });
 
-        expect(presenter.vm.listVm.options).toEqual([
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -199,7 +201,7 @@ describe("AutoCompletePresenter", () => {
 
         presenter.setSelectedOption("option-2");
         expect(onValueChange).toHaveBeenCalledWith("option-2");
-        expect(presenter.vm.listVm.options).toEqual([
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -224,7 +226,7 @@ describe("AutoCompletePresenter", () => {
             onValueChange
         });
 
-        presenter.setInputValue("value");
+        presenter.searchOption("value");
         expect(presenter.vm.inputVm.value).toEqual("value");
         expect(presenter.vm.inputVm.hasValue).toEqual(true);
     });
@@ -245,7 +247,7 @@ describe("AutoCompletePresenter", () => {
             ]
         });
 
-        expect(presenter.vm.listVm.options).toEqual([
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -283,7 +285,7 @@ describe("AutoCompletePresenter", () => {
             ]
         });
 
-        expect(presenter.vm.listVm.options).toEqual([
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -303,7 +305,7 @@ describe("AutoCompletePresenter", () => {
         ]);
 
         presenter.setSelectedOption("option-1");
-        expect(presenter.vm.listVm.options).toEqual([
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -323,8 +325,8 @@ describe("AutoCompletePresenter", () => {
         ]);
         expect(presenter.vm.inputVm.value).toEqual("Option 1");
 
-        presenter.resetValue();
-        expect(presenter.vm.listVm.options).toEqual([
+        presenter.resetSelectedOption();
+        expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
                 value: "option-1",
@@ -348,18 +350,18 @@ describe("AutoCompletePresenter", () => {
         expect(onValueReset).toHaveBeenCalled();
     });
 
-    it("should change `listVm` and call `onOpenChange` when `setListOpenState` is called", () => {
+    it("should change `optionsListVm` and call `onOpenChange` when `setListOpenState` is called", () => {
         const onOpenChange = jest.fn();
 
         // let's open it
         presenter.init({ onValueChange, onOpenChange });
         presenter.setListOpenState(true);
-        expect(presenter.vm.listVm.isOpen).toBe(true);
+        expect(presenter.vm.optionsListVm.isOpen).toBe(true);
         expect(onOpenChange).toHaveBeenCalledWith(true);
 
         // let's close it
         presenter.setListOpenState(false);
-        expect(presenter.vm.listVm.isOpen).toBe(false);
+        expect(presenter.vm.optionsListVm.isOpen).toBe(false);
         expect(onOpenChange).toHaveBeenCalledWith(false);
     });
 });

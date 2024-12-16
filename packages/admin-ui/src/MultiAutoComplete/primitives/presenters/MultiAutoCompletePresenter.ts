@@ -65,7 +65,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
             loadingMessage: params.loadingMessage
         });
         this.selectedOptionsPresenter.init({
-            options: this.getSelectedCommandOptions(listOptions, params.values)
+            options: this.getSelectedOptions(listOptions, params.values)
         });
     }
 
@@ -141,7 +141,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         });
     }
 
-    private getSelectedCommandOptions(
+    private getSelectedOptions(
         commandOptions: CommandOption[],
         values: string[] = []
     ): CommandOption[] {

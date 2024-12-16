@@ -18,7 +18,7 @@ type AutoCompletePrimitiveProps = CommandProps &
     };
 
 const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
-    const { vm, setListOpenState, setSelectedOption, setInputValue, resetValue } =
+    const { vm, setListOpenState, setSelectedOption, searchOption, resetSelectedOption } =
         useAutoComplete(props);
 
     const handleKeyDown = React.useCallback(
@@ -47,7 +47,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
         <Command onKeyDown={handleKeyDown}>
             <Command.Input
                 value={vm.inputVm.value}
-                onValueChange={setInputValue}
+                onValueChange={searchOption}
                 placeholder={vm.inputVm.placeholder}
                 size={props.size}
                 variant={props.variant}
@@ -57,20 +57,20 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                 endIcon={
                     <AutoCompleteInputIcons
                         hasValue={vm.inputVm.hasValue}
-                        onResetValue={resetValue}
-                        onOpenChange={() => setListOpenState(!vm.listVm.isOpen)}
+                        onResetValue={resetSelectedOption}
+                        onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
                     />
                 }
                 onBlur={() => setListOpenState(false)}
                 onFocus={() => setListOpenState(true)}
             />
             <AutoCompleteList
-                options={vm.listVm.options}
+                options={vm.optionsListVm.options}
                 onOptionSelect={handleSelectOption}
                 isLoading={props.isLoading}
-                isOpen={vm.listVm.isOpen}
-                loadingMessage={vm.listVm.loadingMessage}
-                emptyMessage={vm.listVm.emptyMessage}
+                isOpen={vm.optionsListVm.isOpen}
+                loadingMessage={vm.optionsListVm.loadingMessage}
+                emptyMessage={vm.optionsListVm.emptyMessage}
                 optionRenderer={props.optionRenderer}
             />
         </Command>

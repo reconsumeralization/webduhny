@@ -12,11 +12,12 @@ interface IAutoCompleteInputPresenter {
         hasValue: boolean;
     };
     init: (params: AutoCompleteInputPresenterParams) => void;
-    setValue: (value?: string) => void;
+    setValue: (query: string) => void;
+    resetValue: () => void;
 }
 
 class AutoCompleteInputPresenter implements IAutoCompleteInputPresenter {
-    private value?: string = undefined;
+    private searchQuery?: string = undefined;
     private placeholder?: string = undefined;
 
     constructor() {
@@ -24,20 +25,24 @@ class AutoCompleteInputPresenter implements IAutoCompleteInputPresenter {
     }
 
     init(params?: AutoCompleteInputPresenterParams) {
-        this.value = params?.value;
+        this.searchQuery = params?.value;
         this.placeholder = params?.placeholder;
     }
 
     get vm() {
         return {
             placeholder: this.placeholder || "Start typing or select",
-            value: this.value || "",
-            hasValue: !!this.value
+            value: this.searchQuery || "",
+            hasValue: !!this.searchQuery
         };
     }
 
-    public setValue = (value = "") => {
-        this.value = value;
+    public setValue = (value: string) => {
+        this.searchQuery = value;
+    };
+
+    public resetValue = () => {
+        this.searchQuery = undefined;
     };
 }
 
