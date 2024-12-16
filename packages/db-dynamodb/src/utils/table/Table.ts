@@ -1,9 +1,10 @@
 import type { TableConstructor } from "~/toolbox";
 import { Table as BaseTable } from "~/toolbox";
-import type { ITable } from "./types";
+import { ITable, ITableScanParams, ITableScanResponse } from "./types";
 import type { ITableReadBatch, ITableWriteBatch } from "../batch/types";
 import { createTableWriteBatch } from "../batch/TableWriteBatch";
 import { createTableReadBatch } from "../batch/TableReadBatch";
+import { scan } from "../scan";
 
 export class Table<
     Name extends string = string,
@@ -25,6 +26,13 @@ export class Table<
 
     public createReader(): ITableReadBatch {
         return createTableReadBatch({
+            table: this.table
+        });
+    }
+
+    public async scan<T>(params: ITableScanParams): Promise<ITableScanResponse<T>> {
+        return scan<T>({
+            ...params,
             table: this.table
         });
     }

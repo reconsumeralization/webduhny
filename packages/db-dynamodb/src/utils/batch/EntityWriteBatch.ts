@@ -1,4 +1,4 @@
-import type { Entity } from "dynamodb-toolbox";
+import type { Entity, TableDef } from "~/toolbox";
 import { batchWriteAll } from "./batchWrite";
 import type {
     BatchWriteItem,
@@ -10,7 +10,6 @@ import type {
     ITableWriteBatch
 } from "./types";
 import { createTableWriteBatch } from "./TableWriteBatch";
-import type { TableDef } from "~/toolbox";
 import { createEntityWriteBatchBuilder } from "./EntityWriteBatchBuilder";
 
 export interface IEntityWriteBatchParams {

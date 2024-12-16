@@ -1,4 +1,4 @@
-import type { Entity } from "dynamodb-toolbox";
+import type { Entity } from "~/toolbox";
 import type {
     IEntityReadBatchBuilder,
     IEntityReadBatchBuilderGetResponse,

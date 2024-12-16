@@ -1,21 +1,22 @@
-import { Entity as BaseEntity } from "dynamodb-toolbox";
+import type {
+    AttributeDefinitions,
+    EntityConstructor as BaseEntityConstructor,
+    Readonly,
+    TableDef
+} from "~/toolbox";
+import { Entity as BaseEntity } from "~/toolbox";
 import type { IEntityReadBatch, IEntityWriteBatch, ITableWriteBatch } from "../batch/types";
-import type { TableDef } from "dynamodb-toolbox/dist/cjs/classes/Table";
-import type { IEntity } from "./types";
+import type { IEntity, IEntityQueryAllParams, IEntityQueryOneParams } from "./types";
 import type { IPutParamsItem } from "../put";
 import { put } from "../put";
 import type { GetRecordParamsKeys } from "../get";
 import { get, getClean } from "../get";
 import type { IDeleteItemKeys } from "../delete";
 import { deleteItem } from "../delete";
-import type {
-    AttributeDefinitions,
-    EntityConstructor as BaseEntityConstructor,
-    Readonly
-} from "dynamodb-toolbox/dist/cjs/classes/Entity/types";
 import { createEntityReadBatch } from "../batch/EntityReadBatch";
 import { createEntityWriteBatch } from "../batch/EntityWriteBatch";
 import { createTableWriteBatch } from "../batch/TableWriteBatch";
+import { queryAllClean, queryOneClean } from "../query";
 
 export type EntityConstructor<
     T extends Readonly<AttributeDefinitions> = Readonly<AttributeDefinitions>
@@ -82,6 +83,20 @@ export class Entity implements IEntity {
         return deleteItem({
             entity: this.entity,
             keys
+        });
+    }
+
+    public queryOne<T>(params: IEntityQueryOneParams): Promise<T | null> {
+        return queryOneClean<T>({
+            ...params,
+            entity: this.entity
+        });
+    }
+
+    public queryAll<T>(params: IEntityQueryAllParams): Promise<T[]> {
+        return queryAllClean<T>({
+            ...params,
+            entity: this.entity
         });
     }
 }

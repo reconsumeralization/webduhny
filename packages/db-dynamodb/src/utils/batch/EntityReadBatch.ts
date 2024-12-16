@@ -5,8 +5,7 @@ import type {
     IEntityReadBatchKey,
     IPutBatchItem
 } from "./types";
-import type { Entity } from "dynamodb-toolbox";
-import type { TableDef } from "dynamodb-toolbox/dist/cjs/classes/Table/types";
+import type { Entity, TableDef } from "~/toolbox";
 import { batchReadAll } from "./batchRead";
 import { GenericRecord } from "@webiny/api/types";
 import { createEntityReadBatchBuilder } from "./EntityReadBatchBuilder";
