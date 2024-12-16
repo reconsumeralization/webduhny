@@ -3,6 +3,8 @@ const { SystemRequirements } = require("@webiny/system-requirements");
 const SKIP_CHECKS_MESSAGE =
     "If you think this is a mistake, you can also try skipping the system requirements checks by appending the --no-system-requirements-check flag.";
 
+const LEARN_MORE = "For more information, please visit https://webiny.link/prerequisites.";
+
 const ensureSystemRequirements = () => {
     // Just in case, we want to allow users to skip the system requirements check.
     const skipSystemRequirementsCheck = process.argv.includes("--no-system-requirements-check");
@@ -17,7 +19,8 @@ const ensureSystemRequirements = () => {
         console.error(
             [
                 `You are running Node.js %s, but Webiny requires version %s. Please set the required version and try again.`,
-                SKIP_CHECKS_MESSAGE
+                SKIP_CHECKS_MESSAGE,
+                LEARN_MORE
             ].join("\n\n"),
             systemRequirements.node.currentVersion,
             systemRequirements.node.requiredVersion
@@ -30,7 +33,8 @@ const ensureSystemRequirements = () => {
         console.error(
             [
                 `Webiny requires NPM %s, but you are using version %s. Please set the required version and try again.`,
-                SKIP_CHECKS_MESSAGE
+                SKIP_CHECKS_MESSAGE,
+                LEARN_MORE
             ].join("\n\n"),
             systemRequirements.npm.requiredVersion,
             systemRequirements.npm.currentVersion
@@ -43,7 +47,8 @@ const ensureSystemRequirements = () => {
         console.error(
             [
                 `Webiny requires Yarn %s, but you are using version %s. Please set the required version and try again.`,
-                SKIP_CHECKS_MESSAGE
+                SKIP_CHECKS_MESSAGE,
+                LEARN_MORE
             ].join("\n\n"),
             systemRequirements.yarn.requiredVersion,
             systemRequirements.yarn.currentVersion
