@@ -21,6 +21,7 @@ type MultiAutoCompletePrimitiveProps = CommandProps &
         options?: MultiAutoCompleteOption[];
         values: string[];
         allowFreeInput?: boolean;
+        uniqueValues?: boolean;
     };
 
 const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
@@ -98,6 +99,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 onOptionCreate={handleCreateOption}
                 isLoading={props.isLoading}
                 isOpen={vm.optionsListVm.isOpen}
+                isEmpty={vm.optionsListVm.isEmpty}
                 emptyMessage={vm.optionsListVm.emptyMessage}
                 optionRenderer={props.optionRenderer}
             />

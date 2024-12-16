@@ -18,6 +18,7 @@ const autoCompleteListWrapperVariants = cva(
 interface AutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
     options: CommandOptionFormatted[];
     emptyMessage?: React.ReactNode;
+    isEmpty?: boolean;
     isLoading?: boolean;
     isOpen?: boolean;
     loadingMessage?: React.ReactNode;
@@ -27,6 +28,7 @@ interface AutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Co
 
 export const AutoCompleteList = ({
     emptyMessage,
+    isEmpty,
     isLoading,
     isOpen,
     loadingMessage,
@@ -37,6 +39,10 @@ export const AutoCompleteList = ({
 }: AutoCompleteListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
+            if (isEmpty) {
+                return null;
+            }
+
             const elements = [<Command.Item key={"dummy-element"} value="-" className="hidden" />];
 
             return items.reduce((acc, item, currentIndex) => {
@@ -64,7 +70,7 @@ export const AutoCompleteList = ({
                 return acc;
             }, elements);
         },
-        [onOptionSelect, optionRenderer]
+        [onOptionSelect, optionRenderer, isEmpty]
     );
 
     return (

@@ -188,6 +188,18 @@ export const WithAllowFreeInput: Story = {
     }
 };
 
+export const WithUniqueValues: Story = {
+    args: {
+        ...Default.args,
+        uniqueValues: true,
+        options: [
+            { label: "Eastern Standard Time (EST)", value: "est" },
+            { label: "Central Standard Time (CST)", value: "cst" },
+            { label: "Pacific Standard Time (PST)", value: "pst" }
+        ]
+    }
+};
+
 export const WithFormattedOptions: Story = {
     args: {
         ...Default.args,

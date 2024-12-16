@@ -18,19 +18,21 @@ const multiAutoCompleteListWrapperVariants = cva(
 );
 
 interface MultiAutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
-    options: CommandOptionFormatted[];
-    temporaryOption?: CommandOptionFormatted;
     emptyMessage?: React.ReactNode;
+    isEmpty?: boolean;
     isLoading?: boolean;
     isOpen?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionCreate?: (value: string) => void;
     onOptionSelect: (value: string) => void;
     optionRenderer?: (item: any, index: number) => React.ReactNode;
+    options: CommandOptionFormatted[];
+    temporaryOption?: CommandOptionFormatted;
 }
 
 export const MultiAutoCompleteList = ({
     emptyMessage,
+    isEmpty,
     isLoading,
     isOpen,
     loadingMessage,
@@ -43,6 +45,10 @@ export const MultiAutoCompleteList = ({
 }: MultiAutoCompleteListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
+            if (isEmpty) {
+                return null;
+            }
+
             const elements = [<Item key={"dummy-element"} value="-" className="hidden" />];
 
             const renderedItems = items.reduce((acc, item, currentIndex) => {
@@ -90,7 +96,7 @@ export const MultiAutoCompleteList = ({
 
             return renderedItems;
         },
-        [onOptionSelect, temporaryOption, onOptionCreate]
+        [onOptionSelect, temporaryOption, onOptionCreate, isEmpty]
     );
 
     return (

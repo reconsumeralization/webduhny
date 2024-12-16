@@ -67,6 +67,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
             <AutoCompleteList
                 options={vm.optionsListVm.options}
                 onOptionSelect={handleSelectOption}
+                isEmpty={vm.optionsListVm.isEmpty}
                 isLoading={props.isLoading}
                 isOpen={vm.optionsListVm.isOpen}
                 loadingMessage={vm.optionsListVm.loadingMessage}

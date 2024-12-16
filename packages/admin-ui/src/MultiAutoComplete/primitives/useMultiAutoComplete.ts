@@ -4,6 +4,7 @@ import { MultiAutoCompletePrimitiveProps } from "./MultiAutoCompletePrimitive";
 import {
     MultiAutoCompleteInputPresenter,
     MultiAutoCompleteListOptionsPresenter,
+    MultiAutoCompleteListOptionsPresenterWithUniqueValues,
     MultiAutoCompletePresenter,
     MultiAutoCompletePresenterParams,
     MultiAutoCompletePresenterWithFreeInput,
@@ -14,7 +15,6 @@ import { MultiAutoCompleteTemporaryOptionPresenter } from "~/MultiAutoComplete/p
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
         () => ({
-            allowFreeInput: props.allowFreeInput,
             emptyMessage: props.emptyMessage,
             loadingMessage: props.loadingMessage,
             options: props.options,
@@ -25,7 +25,6 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
             onOpenChange: props.onOpenChange
         }),
         [
-            props.allowFreeInput,
             props.emptyMessage,
             props.loadingMessage,
             props.options,
@@ -38,16 +37,28 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
     );
 
     const presenter = useMemo(() => {
-        const inputPresenter = new MultiAutoCompleteInputPresenter();
         const optionsListPresenter = new MultiAutoCompleteListOptionsPresenter();
+        const optionsListWithUniqueValues =
+            new MultiAutoCompleteListOptionsPresenterWithUniqueValues(optionsListPresenter);
+
+        const inputPresenter = new MultiAutoCompleteInputPresenter();
         const selectedOptionsPresenter = new MultiAutoCompleteSelectedOptionPresenter();
-        const presenter = new MultiAutoCompletePresenter(
+
+        let presenter = new MultiAutoCompletePresenter(
             inputPresenter,
             selectedOptionsPresenter,
             optionsListPresenter
         );
 
-        if (params?.allowFreeInput) {
+        if (props?.uniqueValues) {
+            presenter = new MultiAutoCompletePresenter(
+                inputPresenter,
+                selectedOptionsPresenter,
+                optionsListWithUniqueValues
+            );
+        }
+
+        if (props?.allowFreeInput) {
             const temporaryOptionsPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
             const withPresenter = new MultiAutoCompletePresenterWithFreeInput(
                 temporaryOptionsPresenter,
@@ -59,7 +70,7 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
             presenter.init(params);
             return presenter;
         }
-    }, []);
+    }, [props.allowFreeInput, props.uniqueValues]);
 
     const [vm, setVm] = useState(presenter.vm);
 
