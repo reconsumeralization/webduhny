@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ReactComponent as BackIcon } from "@material-design-icons/svg/round/arrow_back.svg";
 import { useNavigateFolder } from "@webiny/app-aco";
 import { IconButton } from "@webiny/ui/Button";
 import { Typography } from "@webiny/ui/Typography";
-import { useModel } from "~/admin/components/ModelProvider";
 import { useContentEntry } from "~/admin/views/contentEntries/hooks";
 import {
     EntryMeta,
@@ -14,18 +13,13 @@ import {
 } from "./FullScreenContentEntry.styled";
 
 export const FullScreenContentEntryHeaderLeft = () => {
-    const { model } = useModel();
-    const { entry } = useContentEntry();
+    const { entry, contentModel } = useContentEntry();
     const { navigateToFolder, currentFolderId } = useNavigateFolder();
 
-    const title = useMemo(
-        () => entry?.meta?.title || `New ${model.name}`,
-        [entry.meta, model.name]
-    );
-    const isNewEntry = useMemo(() => !entry.meta?.title, [entry.meta]);
-    const version = useMemo(() => entry.meta?.version ?? null, [entry.meta]);
-    const status = useMemo(() => entry.meta?.status ?? null, [entry.meta]);
-    const modelName = useMemo(() => model.name, [model.name]);
+    const title = entry?.meta?.title || `New ${contentModel.name}`;
+    const isNewEntry = !entry.meta?.title;
+    const version = entry.meta?.version ?? null;
+    const status = entry.meta?.status ?? null;
 
     return (
         <>
@@ -33,7 +27,7 @@ export const FullScreenContentEntryHeaderLeft = () => {
             <TitleWrapper>
                 <EntryMeta>
                     <Typography use="overline">
-                        {`Model: ${modelName} ${status ? `(status: ${status})` : ""}`}
+                        {`Model: ${contentModel.name} ${status ? `(status: ${status})` : ""}`}
                     </Typography>
                 </EntryMeta>
                 <EntryTitle>

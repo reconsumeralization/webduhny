@@ -21,10 +21,6 @@ const { ContentEntry } = ContentEntryEditorConfig;
 
 const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original => {
     return function ContentEntry() {
-        if (!featureFlags.allowCmsFullScreenEditor) {
-            return <Original />;
-        }
-
         const { loading } = useContentEntry();
         const [isRevisionListOpen, openRevisionList] = useState<boolean>(false);
 
@@ -64,10 +60,6 @@ const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original =>
 const FullScreenContentEntryFormDecorator = ContentEntry.ContentEntryForm.createDecorator(
     Original => {
         return function ContentEntryForm(props) {
-            if (!featureFlags.allowCmsFullScreenEditor) {
-                return <Original {...props} />;
-            }
-
             return <Original {...props} className={FullScreenContentEntryContentFormInnerCss} />;
         };
     }
@@ -76,10 +68,6 @@ const FullScreenContentEntryFormDecorator = ContentEntry.ContentEntryForm.create
 const FullScreenContentEntryFormHeaderDecorator =
     ContentEntry.ContentEntryForm.Header.createDecorator(Original => {
         return function ContentEntryFormHeader() {
-            if (!featureFlags.allowCmsFullScreenEditor) {
-                return <Original />;
-            }
-
             const headerRightElement = document.getElementById("cms-content-entry-header-right");
 
             if (!headerRightElement) {
@@ -91,6 +79,10 @@ const FullScreenContentEntryFormHeaderDecorator =
     });
 
 export const FullScreenContentEntry = () => {
+    if (!featureFlags.allowCmsFullScreenEditor) {
+        return null;
+    }
+
     return (
         <>
             <FullScreenContentEntryDecorator />
