@@ -1,5 +1,7 @@
-const chalk = require("chalk");
 const { SystemRequirements } = require("@webiny/system-requirements");
+
+const SKIP_CHECKS_MESSAGE =
+    "If you think this is a mistake, you can also try skipping the system requirements checks by appending the --no-system-requirements-check flag.";
 
 const ensureSystemRequirements = () => {
     // Just in case, we want to allow users to skip the system requirements check.
@@ -13,13 +15,12 @@ const ensureSystemRequirements = () => {
     // Check Node.js version.
     if (!systemRequirements.node.valid) {
         console.error(
-            chalk.red(
-                [
-                    `You are running Node.js ${systemRequirements.node.currentVersion}, but Webiny requires version ${systemRequirements.node.requiredVersion}.`,
-                    `Please switch to one of the required versions and try again.`,
-                    "Learn more: https://www.webiny.com/docs/get-started/install-webiny#prerequisites."
-                ].join(" ")
-            )
+            [
+                `You are running Node.js %s, but Webiny requires version %s. Please set the required version and try again.`,
+                SKIP_CHECKS_MESSAGE
+            ].join("\n\n"),
+            systemRequirements.node.currentVersion,
+            systemRequirements.node.requiredVersion
         );
         process.exit(1);
     }
@@ -27,14 +28,12 @@ const ensureSystemRequirements = () => {
     // Check NPM version.
     if (!systemRequirements.npm.valid) {
         console.error(
-            chalk.red(
-                [
-                    `Webiny requires npm@^${systemRequirements.npm.requiredVersion}.`,
-                    `Please run ${chalk.green(
-                        "npm install npm@latest -g"
-                    )}, to get the latest version.`
-                ].join("\n")
-            )
+            [
+                `Webiny requires NPM %s, but you are using version %s. Please set the required version and try again.`,
+                SKIP_CHECKS_MESSAGE
+            ].join("\n\n"),
+            systemRequirements.npm.requiredVersion,
+            systemRequirements.npm.currentVersion
         );
         process.exit(1);
     }
@@ -42,12 +41,12 @@ const ensureSystemRequirements = () => {
     // Check Yarn version.
     if (!systemRequirements.yarn.valid) {
         console.error(
-            chalk.red(
-                [
-                    `Webiny requires yarn@^${systemRequirements.yarn.requiredVersion}.`,
-                    `Please visit https://yarnpkg.com/ to install ${chalk.green("yarn")}.`
-                ].join("\n")
-            )
+            [
+                `Webiny requires Yarn %s, but you are using version %s. Please set the required version and try again.`,
+                SKIP_CHECKS_MESSAGE
+            ].join("\n\n"),
+            systemRequirements.yarn.requiredVersion,
+            systemRequirements.yarn.currentVersion
         );
         process.exit(1);
     }
