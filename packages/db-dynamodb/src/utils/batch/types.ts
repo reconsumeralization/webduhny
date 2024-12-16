@@ -37,6 +37,7 @@ export interface IEntityWriteBatchBuilder {
 }
 
 export interface IEntityWriteBatch {
+    readonly total: number;
     // readonly entity: Entity;
     // readonly items: BatchWriteItem[];
     // readonly builder: IEntityWriteBatchBuilder;
@@ -48,6 +49,7 @@ export interface IEntityWriteBatch {
 }
 
 export interface ITableWriteBatch {
+    readonly total: number;
     // readonly table: TableDef;
     // readonly items: BatchWriteItem[];
     put(entity: Entity, item: IPutBatchItem): void;

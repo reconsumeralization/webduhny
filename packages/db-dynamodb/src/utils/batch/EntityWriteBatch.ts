@@ -24,6 +24,10 @@ export class EntityWriteBatch implements IEntityWriteBatch {
     private readonly items: BatchWriteItem[] = [];
     private readonly builder: IEntityWriteBatchBuilder;
 
+    public get total(): number {
+        return this.items.length;
+    }
+
     public constructor(params: IEntityWriteBatchParams) {
         if (!params.entity.name) {
             throw new Error(`No name provided for entity.`);

@@ -20,6 +20,10 @@ export class TableWriteBatch implements ITableWriteBatch {
     private readonly items: BatchWriteItem[] = [];
     private readonly builders: Map<string, IEntityWriteBatchBuilder> = new Map();
 
+    public get total(): number {
+        return this.items.length;
+    }
+
     public constructor(params: ITableWriteBatchParams) {
         this.table = params.table;
         if (!params.items?.length) {
