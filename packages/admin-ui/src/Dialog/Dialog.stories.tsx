@@ -1,7 +1,7 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
-import { ButtonBase as Button } from "~/Button";
+import { Button } from "~/Button";
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
