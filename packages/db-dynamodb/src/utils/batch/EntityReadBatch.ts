@@ -18,7 +18,7 @@ export interface IEntityReadBatchParams {
 export class EntityReadBatch implements IEntityReadBatch {
     private readonly entity: Entity;
     private readonly builder: IEntityReadBatchBuilder;
-    private readonly items: IEntityReadBatchBuilderGetResponse[] = [];
+    private readonly _items: IEntityReadBatchBuilderGetResponse[] = [];
 
     public constructor(params: IEntityReadBatchParams) {
         if (!params.entity.name) {
@@ -31,20 +31,20 @@ export class EntityReadBatch implements IEntityReadBatch {
     }
     public get(input: IEntityReadBatchKey | IEntityReadBatchKey[]): void {
         if (Array.isArray(input)) {
-            this.items.push(
+            this._items.push(
                 ...input.map(item => {
                     return this.builder.get(item);
                 })
             );
             return;
         }
-        this.items.push(this.builder.get(input));
+        this._items.push(this.builder.get(input));
     }
 
     public async execute<T = GenericRecord>() {
         return await batchReadAll<T>({
             table: this.entity.table as TableDef,
-            items: this.items
+            items: this._items
         });
     }
 }

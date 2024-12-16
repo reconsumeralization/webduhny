@@ -28,7 +28,7 @@ export class EntityWriteBatch implements IEntityWriteBatch {
     }
 
     public get items(): BatchWriteItem[] {
-        return Array.from(this.items);
+        return Array.from(this._items);
     }
 
     public constructor(params: IEntityWriteBatchParams) {

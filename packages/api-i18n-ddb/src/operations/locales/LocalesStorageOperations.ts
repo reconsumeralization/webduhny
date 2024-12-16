@@ -16,7 +16,7 @@ import WebinyError from "@webiny/error";
 import defineTable from "~/definitions/table";
 import defineLocaleEntity from "~/definitions/localeEntity";
 import type { IEntity, IEntityQueryAllParams } from "@webiny/db-dynamodb";
-import { cleanupItems, createListResponse, filterItems, sortItems } from "@webiny/db-dynamodb";
+import { createListResponse, filterItems, sortItems } from "@webiny/db-dynamodb";
 import { LocaleDynamoDbFieldPlugin } from "~/plugins/LocaleDynamoDbFieldPlugin";
 
 interface ConstructorParams {
@@ -240,7 +240,7 @@ export class LocalesStorageOperations implements I18NLocalesStorageOperations {
          * Use the common db-dynamodb method to create the required response.
          */
         return createListResponse<I18NLocaleData>({
-            items: cleanupItems(this.entity.entity, sortedFiles),
+            items: sortedFiles,
             after,
             totalCount,
             limit
