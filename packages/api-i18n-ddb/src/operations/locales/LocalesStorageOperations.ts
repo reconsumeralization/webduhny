@@ -15,14 +15,8 @@ import type { Table } from "@webiny/db-dynamodb/toolbox";
 import WebinyError from "@webiny/error";
 import defineTable from "~/definitions/table";
 import defineLocaleEntity from "~/definitions/localeEntity";
-import type { IEntity, QueryAllParams } from "@webiny/db-dynamodb";
-import {
-    cleanupItems,
-    createListResponse,
-    filterItems,
-    queryAll,
-    sortItems
-} from "@webiny/db-dynamodb";
+import type { IEntity, IEntityQueryAllParams } from "@webiny/db-dynamodb";
+import { cleanupItems, createListResponse, filterItems, sortItems } from "@webiny/db-dynamodb";
 import { LocaleDynamoDbFieldPlugin } from "~/plugins/LocaleDynamoDbFieldPlugin";
 
 interface ConstructorParams {
@@ -210,7 +204,7 @@ export class LocalesStorageOperations implements I18NLocalesStorageOperations {
 
         let results: I18NLocaleData[] = [];
         try {
-            results = await queryAll<I18NLocaleData>(queryAllParams);
+            results = await this.entity.queryAll<I18NLocaleData>(queryAllParams);
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Cannot list I18N locales.",
@@ -272,7 +266,7 @@ export class LocalesStorageOperations implements I18NLocalesStorageOperations {
 
     private createQueryAllParamsOptions(
         params: I18NLocalesStorageOperationsListParams
-    ): QueryAllParams {
+    ): IEntityQueryAllParams {
         const { where } = params;
 
         const tenant = where.tenant;
@@ -285,7 +279,6 @@ export class LocalesStorageOperations implements I18NLocalesStorageOperations {
             delete where.default;
         }
         return {
-            entity: this.entity.entity,
             partitionKey,
             options: {}
         };
