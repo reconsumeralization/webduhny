@@ -39,7 +39,7 @@ export interface IEntityWriteBatchBuilder {
 export interface IEntityWriteBatch {
     readonly total: number;
     // readonly entity: Entity;
-    // readonly items: BatchWriteItem[];
+    readonly items: BatchWriteItem[];
     // readonly builder: IEntityWriteBatchBuilder;
 
     put(item: IPutBatchItem): void;
@@ -51,7 +51,7 @@ export interface IEntityWriteBatch {
 export interface ITableWriteBatch {
     readonly total: number;
     // readonly table: TableDef;
-    // readonly items: BatchWriteItem[];
+    readonly items: BatchWriteItem[];
     put(entity: Entity, item: IPutBatchItem): void;
     delete(entity: Entity, item: IDeleteBatchItem): void;
     execute(): Promise<BatchWriteResult>;

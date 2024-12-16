@@ -113,7 +113,7 @@ export class ReindexingTaskRunner {
                     /**
                      * Reindexing will be triggered by the `putBatch` method.
                      */
-                    tableWriteBatch.put(entity, {
+                    tableWriteBatch.put(entity.entity, {
                         ...item,
                         TYPE: item.TYPE || "unknown",
                         modified: new Date().toISOString()

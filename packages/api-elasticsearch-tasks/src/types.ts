@@ -1,5 +1,4 @@
 import type { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
-import type { Entity } from "@webiny/db-dynamodb/toolbox";
 import type {
     Context as TasksContext,
     IIsCloseToTimeoutCallable,
@@ -10,7 +9,7 @@ import type {
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import type { Client } from "@webiny/api-elasticsearch";
 import { createTable } from "~/definitions";
-import type { BatchReadItem } from "@webiny/db-dynamodb";
+import type { BatchReadItem, IEntity } from "@webiny/db-dynamodb";
 import type { ITimer } from "@webiny/handler-aws";
 import type { GenericRecord } from "@webiny/api/types";
 
@@ -72,7 +71,7 @@ export interface IManager<
     readonly store: ITaskManagerStore<T>;
     readonly timer: ITimer;
 
-    getEntity: (name: string) => Entity<any>;
+    getEntity: (name: string) => IEntity;
 
     read<T>(items: BatchReadItem[]): Promise<T[]>;
 }

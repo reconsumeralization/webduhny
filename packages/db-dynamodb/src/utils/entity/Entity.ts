@@ -4,7 +4,8 @@ import type { IEntityWriteBatch, ITableWriteBatch } from "~/utils/batch/types";
 import type { TableDef } from "dynamodb-toolbox/dist/cjs/classes/Table";
 import { IEntity } from "./types";
 import { IPutParamsItem, put } from "~/utils/put";
-import { getClean, GetRecordParamsKeys } from "~/utils/get";
+import { get, getClean, GetRecordParamsKeys } from "~/utils/get";
+import { deleteItem, IDeleteItemKeys } from "~/utils";
 
 export class Entity implements IEntity {
     public readonly entity: BaseEntity;
@@ -32,8 +33,22 @@ export class Entity implements IEntity {
         });
     }
 
-    public async get<T>(keys: GetRecordParamsKeys): ReturnType<typeof getClean<T>> {
+    public async get<T>(keys: GetRecordParamsKeys): ReturnType<typeof get<T>> {
+        return get<T>({
+            entity: this.entity,
+            keys
+        });
+    }
+
+    public async getClean<T>(keys: GetRecordParamsKeys): ReturnType<typeof getClean<T>> {
         return getClean<T>({
+            entity: this.entity,
+            keys
+        });
+    }
+
+    public async delete(keys: IDeleteItemKeys): ReturnType<typeof deleteItem> {
+        return deleteItem({
             entity: this.entity,
             keys
         });

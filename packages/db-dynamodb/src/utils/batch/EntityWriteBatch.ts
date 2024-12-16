@@ -21,11 +21,15 @@ export interface IEntityWriteBatchParams {
 
 export class EntityWriteBatch implements IEntityWriteBatch {
     private readonly entity: Entity;
-    private readonly items: BatchWriteItem[] = [];
+    private readonly _items: BatchWriteItem[] = [];
     private readonly builder: IEntityWriteBatchBuilder;
 
     public get total(): number {
-        return this.items.length;
+        return this._items.length;
+    }
+
+    public get items(): BatchWriteItem[] {
+        return Array.from(this.items);
     }
 
     public constructor(params: IEntityWriteBatchParams) {
@@ -45,26 +49,26 @@ export class EntityWriteBatch implements IEntityWriteBatch {
     }
 
     public put<T extends Record<string, any>>(item: IPutBatchItem<T>): void {
-        this.items.push(this.builder.put(item));
+        this._items.push(this.builder.put(item));
     }
 
     public delete(item: IDeleteBatchItem): void {
-        this.items.push(this.builder.delete(item));
+        this._items.push(this.builder.delete(item));
     }
 
     public combine(items: BatchWriteItem[]): ITableWriteBatch {
         return createTableWriteBatch({
             table: this.entity!.table as TableDef,
-            items: this.items.concat(items)
+            items: this._items.concat(items)
         });
     }
 
     public async execute(): Promise<BatchWriteResult> {
-        if (this.items.length === 0) {
+        if (this._items.length === 0) {
             return [];
         }
-        const items = [...this.items];
-        this.items.length = 0;
+        const items = Array.from(this._items);
+        this._items.length = 0;
         return await batchWriteAll({
             items,
             table: this.entity.table
