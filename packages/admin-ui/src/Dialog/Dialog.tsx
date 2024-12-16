@@ -56,6 +56,7 @@ const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogP
             <DialogRoot {...rootProps}>
                 <DialogTrigger {...triggerProps} asChild />
                 <DialogPortal>
+                    <DialogOverlay/>
                     <DialogContent {...contentProps} ref={ref} />
                 </DialogPortal>
             </DialogRoot>
