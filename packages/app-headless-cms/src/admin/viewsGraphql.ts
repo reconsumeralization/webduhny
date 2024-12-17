@@ -31,6 +31,7 @@ const BASE_CONTENT_MODEL_FIELDS = `
         displayName
         type
     }
+    isBeingDeleted
 `;
 
 /**
@@ -85,18 +86,31 @@ export interface ListCmsModelsQueryResponse {
     };
 }
 
-export const LIST_CONTENT_MODELS = gql`
-    query CmsListContentModels {
-        listContentModels {
-            data {
-                ${BASE_CONTENT_MODEL_FIELDS}
-            }
-            error {
-                ${ERROR_FIELDS}
+export interface ListCmsModelsQueryVariables {
+    includeBeingDeleted?: boolean;
+    includePlugins?: boolean;
+}
+
+const createListContentModelsQuery = (includeBeingDeleted: boolean) => {
+    return gql`
+        query CmsListContentModels {
+            listContentModels(includeBeingDeleted: ${includeBeingDeleted ? "true" : "false"}) {
+                data {
+                    ${BASE_CONTENT_MODEL_FIELDS}
+                }
+                error {
+                    ${ERROR_FIELDS}
+                }
             }
         }
-    }
-`;
+    `;
+};
+
+export const LIST_CONTENT_MODELS = createListContentModelsQuery(true);
+
+export const withoutBeingDeletedModels = (models: CmsModel[]): CmsModel[] => {
+    return models.filter(model => !model.isBeingDeleted);
+};
 
 /**
  * ############################

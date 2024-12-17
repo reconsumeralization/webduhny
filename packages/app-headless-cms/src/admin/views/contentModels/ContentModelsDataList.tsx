@@ -108,6 +108,47 @@ const DisplayIcon = ({ model }: IconProps) => {
     }
     return <FontAwesomeIcon icon={(model.icon || "").split("/") as IconProp} />;
 };
+const GreyOutModelItem = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+`;
+
+const GreyOutModelItemOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    opacity: 0.5;
+    z-index: 2;
+`;
+
+const GreyOutModel = ({ children }: React.PropsWithChildren) => {
+    const onClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        return false;
+    }, []);
+    return (
+        <GreyOutModelItem onClick={onClick}>
+            <GreyOutModelItemOverlay />
+            {children}
+        </GreyOutModelItem>
+    );
+};
+
+interface IModelOverlayProps {
+    model: CmsModel;
+}
+
+const ModelOverlay = ({ model, children }: React.PropsWithChildren<IModelOverlayProps>) => {
+    if (!model.isBeingDeleted) {
+        return <>{children}</>;
+    }
+    return <GreyOutModel>{children}</GreyOutModel>;
+};
 
 const ContentModelsDataList = ({
     canCreate,
@@ -287,125 +328,130 @@ const ContentModelsDataList = ({
                         const message = disableViewContent
                             ? "To view the content, you first need to add a field and save the model"
                             : "View content";
-                        return (
-                            <UIL.ListItem key={contentModel.modelId} className={listItemMinHeight}>
-                                <Icon>
-                                    <DisplayIcon model={contentModel} />
-                                </Icon>
-                                <UIL.ListItemText>
-                                    {contentModel.name}
-                                    <UIL.ListItemTextSecondary>
-                                        {t`Last modified: {time}.`({
-                                            time: contentModel.savedOn ? (
-                                                <TimeAgo datetime={contentModel.savedOn} />
-                                            ) : (
-                                                "N/A"
-                                            )
-                                        })}
-                                    </UIL.ListItemTextSecondary>
-                                </UIL.ListItemText>
-                                <UIL.ListItemMeta className={rightAlign}>
-                                    <UIL.ListActions>
-                                        <Tooltip
-                                            content={t`{message}`({ message })}
-                                            placement={"top"}
-                                        >
-                                            <IconButton
-                                                data-testid={"cms-view-content-model-button"}
-                                                icon={<ViewListIcon />}
-                                                label={t`View entries`}
-                                                onClick={viewContentEntries(contentModel)}
-                                                disabled={disableViewContent}
-                                            />
-                                        </Tooltip>
-                                        <Tooltip
-                                            content={t`Export content model`}
-                                            placement={"top"}
-                                        >
-                                            <IconButton
-                                                data-testid={"cms-export-content-model-button"}
-                                                icon={<DownloadFileIcon />}
-                                                label={t`Export content model`}
-                                                onClick={handleModelExport(contentModel)}
-                                            />
-                                        </Tooltip>
-                                        {canEdit(contentModel, "cms.contentModel") && (
-                                            <>
-                                                {contentModel.plugin ? (
-                                                    <Tooltip
-                                                        content={t`Content model is registered via a plugin.`}
-                                                        placement={"top"}
-                                                    >
-                                                        <EditIcon
-                                                            disabled
-                                                            data-testid={
-                                                                "cms-edit-content-model-button"
-                                                            }
-                                                        />
-                                                    </Tooltip>
-                                                ) : (
-                                                    <Tooltip
-                                                        content={t`Edit content model`}
-                                                        placement={"top"}
-                                                    >
-                                                        <EditIcon
-                                                            onClick={() => editRecord(contentModel)}
-                                                            data-testid={
-                                                                "cms-edit-content-model-button"
-                                                            }
-                                                        />
-                                                    </Tooltip>
-                                                )}
-                                                <Tooltip
-                                                    content={"Clone content model"}
-                                                    placement={"top"}
-                                                >
-                                                    <IconButton
-                                                        data-testid={
-                                                            "cms-clone-content-model-button"
-                                                        }
-                                                        icon={<CloneIcon />}
-                                                        label={t`Clone content model`}
-                                                        onClick={() => onClone(contentModel)}
-                                                    />
-                                                </Tooltip>
-                                            </>
-                                        )}
 
-                                        {canDelete(contentModel, "cms.contentModel") && (
-                                            <>
-                                                {contentModel.plugin ? (
-                                                    <Tooltip
-                                                        content={t`Content model is registered via a plugin.`}
-                                                        placement={"top"}
-                                                    >
-                                                        <DeleteIcon
-                                                            disabled
-                                                            data-testid={
-                                                                "cms-delete-content-model-button"
-                                                            }
-                                                        />
-                                                    </Tooltip>
+                        return (
+                            <ModelOverlay key={contentModel.modelId} model={contentModel}>
+                                <UIL.ListItem className={listItemMinHeight}>
+                                    <Icon>
+                                        <DisplayIcon model={contentModel} />
+                                    </Icon>
+                                    <UIL.ListItemText>
+                                        {contentModel.name}
+                                        <UIL.ListItemTextSecondary>
+                                            {t`Last modified: {time}.`({
+                                                time: contentModel.savedOn ? (
+                                                    <TimeAgo datetime={contentModel.savedOn} />
                                                 ) : (
+                                                    "N/A"
+                                                )
+                                            })}
+                                        </UIL.ListItemTextSecondary>
+                                    </UIL.ListItemText>
+                                    <UIL.ListItemMeta className={rightAlign}>
+                                        <UIL.ListActions>
+                                            <Tooltip
+                                                content={t`{message}`({ message })}
+                                                placement={"top"}
+                                            >
+                                                <IconButton
+                                                    data-testid={"cms-view-content-model-button"}
+                                                    icon={<ViewListIcon />}
+                                                    label={t`View entries`}
+                                                    onClick={viewContentEntries(contentModel)}
+                                                    disabled={disableViewContent}
+                                                />
+                                            </Tooltip>
+                                            <Tooltip
+                                                content={t`Export content model`}
+                                                placement={"top"}
+                                            >
+                                                <IconButton
+                                                    data-testid={"cms-export-content-model-button"}
+                                                    icon={<DownloadFileIcon />}
+                                                    label={t`Export content model`}
+                                                    onClick={handleModelExport(contentModel)}
+                                                />
+                                            </Tooltip>
+                                            {canEdit(contentModel, "cms.contentModel") && (
+                                                <>
+                                                    {contentModel.plugin ? (
+                                                        <Tooltip
+                                                            content={t`Content model is registered via a plugin.`}
+                                                            placement={"top"}
+                                                        >
+                                                            <EditIcon
+                                                                disabled
+                                                                data-testid={
+                                                                    "cms-edit-content-model-button"
+                                                                }
+                                                            />
+                                                        </Tooltip>
+                                                    ) : (
+                                                        <Tooltip
+                                                            content={t`Edit content model`}
+                                                            placement={"top"}
+                                                        >
+                                                            <EditIcon
+                                                                onClick={() =>
+                                                                    editRecord(contentModel)
+                                                                }
+                                                                data-testid={
+                                                                    "cms-edit-content-model-button"
+                                                                }
+                                                            />
+                                                        </Tooltip>
+                                                    )}
                                                     <Tooltip
-                                                        content={t`Delete content model`}
+                                                        content={"Clone content model"}
                                                         placement={"top"}
                                                     >
-                                                        <DeleteIcon
-                                                            onClick={() =>
-                                                                deleteRecord(contentModel)
-                                                            }
+                                                        <IconButton
                                                             data-testid={
-                                                                "cms-delete-content-model-button"
+                                                                "cms-clone-content-model-button"
                                                             }
+                                                            icon={<CloneIcon />}
+                                                            label={t`Clone content model`}
+                                                            onClick={() => onClone(contentModel)}
                                                         />
                                                     </Tooltip>
-                                                )}
-                                            </>
-                                        )}
-                                    </UIL.ListActions>
-                                </UIL.ListItemMeta>
-                            </UIL.ListItem>
+                                                </>
+                                            )}
+
+                                            {canDelete(contentModel, "cms.contentModel") && (
+                                                <>
+                                                    {contentModel.plugin ? (
+                                                        <Tooltip
+                                                            content={t`Content model is registered via a plugin.`}
+                                                            placement={"top"}
+                                                        >
+                                                            <DeleteIcon
+                                                                disabled
+                                                                data-testid={
+                                                                    "cms-delete-content-model-button"
+                                                                }
+                                                            />
+                                                        </Tooltip>
+                                                    ) : (
+                                                        <Tooltip
+                                                            content={t`Delete content model`}
+                                                            placement={"top"}
+                                                        >
+                                                            <DeleteIcon
+                                                                onClick={() =>
+                                                                    deleteRecord(contentModel)
+                                                                }
+                                                                data-testid={
+                                                                    "cms-delete-content-model-button"
+                                                                }
+                                                            />
+                                                        </Tooltip>
+                                                    )}
+                                                </>
+                                            )}
+                                        </UIL.ListActions>
+                                    </UIL.ListItemMeta>
+                                </UIL.ListItem>
+                            </ModelOverlay>
                         );
                     })}
                 </UIL.List>
