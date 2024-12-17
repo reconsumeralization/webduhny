@@ -8,7 +8,7 @@ import i18nContext from "@webiny/api-i18n/graphql/context";
 import { mockLocalesPlugins } from "@webiny/api-i18n/graphql/testing";
 import { SecurityIdentity, SecurityPermission } from "@webiny/api-security/types";
 import { createFormBuilder } from "~/index";
-import {createI18NGraphQL} from "@webiny/api-i18n/graphql";
+import { createI18NGraphQL } from "@webiny/api-i18n/graphql";
 
 // Graphql
 import { INSTALL as INSTALL_FILE_MANAGER } from "./graphql/fileManagerSettings";
@@ -90,12 +90,6 @@ export default (params: UseGqlHandlerParams = {}) => {
             createI18NGraphQL(),
             i18nStorage.storageOperations,
             mockLocalesPlugins(),
-            new CmsParametersPlugin(async () => {
-                return {
-                    locale: "en-US",
-                    type: "manage"
-                };
-            }),
             createHeadlessCmsContext({ storageOperations: cmsStorage.storageOperations }),
             createHeadlessCmsGraphQL(),
             createPageBuilderContext({
@@ -236,8 +230,8 @@ export default (params: UseGqlHandlerParams = {}) => {
         },
 
         // Locales.
-        async createI18NLocale(variables:Record<string, any>) {
+        async createI18NLocale(variables: Record<string, any>) {
             return invoke({ body: { query: CREATE_LOCALE, variables } });
-        },
+        }
     };
 };

@@ -171,12 +171,13 @@ describe("Settings Test", () => {
             }
         });
 
+        // Settings should exist in the newly created locale.
         expect(newLocaleFbSettings).toEqual({
             data: {
                 formBuilder: {
                     getSettings: {
                         data: {
-                            domain: "http://localhost:3001",
+                            domain: null,
                             reCaptcha: {
                                 enabled: null,
                                 secretKey: null,
