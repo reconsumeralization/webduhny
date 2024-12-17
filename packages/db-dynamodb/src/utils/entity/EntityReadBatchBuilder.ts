@@ -1,16 +1,19 @@
-import type { Entity } from "~/toolbox";
+import type { Entity as ToolboxEntity } from "~/toolbox";
 import type {
     IEntityReadBatchBuilder,
     IEntityReadBatchBuilderGetResponse,
     IEntityReadBatchKey
 } from "./types";
 import { WebinyError } from "@webiny/error";
+import { Entity } from "./Entity";
+import type { EntityOption } from "./getEntity";
+import { getEntity } from "./getEntity";
 
 export class EntityReadBatchBuilder implements IEntityReadBatchBuilder {
-    private readonly entity: Entity;
+    private readonly entity: ToolboxEntity;
 
-    public constructor(entity: Entity) {
-        this.entity = entity;
+    public constructor(entity: EntityOption) {
+        this.entity = getEntity(entity);
     }
 
     public get(item: IEntityReadBatchKey): IEntityReadBatchBuilderGetResponse {
@@ -24,6 +27,8 @@ export class EntityReadBatchBuilder implements IEntityReadBatchBuilder {
     }
 }
 
-export const createEntityReadBatchBuilder = (entity: Entity): IEntityReadBatchBuilder => {
+export const createEntityReadBatchBuilder = (
+    entity: ToolboxEntity | Entity
+): IEntityReadBatchBuilder => {
     return new EntityReadBatchBuilder(entity);
 };

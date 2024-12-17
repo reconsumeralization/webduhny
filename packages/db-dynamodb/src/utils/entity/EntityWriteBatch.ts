@@ -1,4 +1,5 @@
-import type { Entity, TableDef } from "~/toolbox";
+import type { TableDef } from "~/toolbox";
+import type { Entity as ToolboxEntity } from "~/toolbox";
 import { batchWriteAll } from "~/utils/batch/batchWrite";
 import type {
     BatchWriteItem,
@@ -10,15 +11,17 @@ import type { IEntityWriteBatch, IEntityWriteBatchBuilder } from "./types";
 import type { ITableWriteBatch } from "~/utils/table/types";
 import { createTableWriteBatch } from "~/utils/table/TableWriteBatch";
 import { createEntityWriteBatchBuilder } from "./EntityWriteBatchBuilder";
+import type { EntityOption } from "./getEntity";
+import { getEntity } from "./getEntity";
 
 export interface IEntityWriteBatchParams {
-    entity: Entity;
+    entity: EntityOption;
     put?: IPutBatchItem[];
     delete?: IDeleteBatchItem[];
 }
 
 export class EntityWriteBatch implements IEntityWriteBatch {
-    private readonly entity: Entity;
+    private readonly entity: ToolboxEntity;
     private readonly _items: BatchWriteItem[] = [];
     private readonly builder: IEntityWriteBatchBuilder;
 
@@ -31,12 +34,7 @@ export class EntityWriteBatch implements IEntityWriteBatch {
     }
 
     public constructor(params: IEntityWriteBatchParams) {
-        if (!params.entity.name) {
-            throw new Error(`No name provided for entity.`);
-        } else if (!params.entity.table) {
-            throw new Error(`No table provided for entity ${params.entity.name}.`);
-        }
-        this.entity = params.entity;
+        this.entity = getEntity(params.entity);
         this.builder = createEntityWriteBatchBuilder(this.entity);
         for (const item of params.put || []) {
             this.put(item);

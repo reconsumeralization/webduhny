@@ -5,29 +5,30 @@ import type {
     IEntityReadBatchBuilderGetResponse,
     IEntityReadBatchKey
 } from "./types";
-import type { Entity, TableDef } from "~/toolbox";
+import type { TableDef } from "~/toolbox";
+import type { Entity as ToolboxEntity } from "~/toolbox";
 import { batchReadAll } from "~/utils/batch/batchRead";
 import { GenericRecord } from "@webiny/api/types";
 import { createEntityReadBatchBuilder } from "./EntityReadBatchBuilder";
+import type { EntityOption } from "./getEntity";
+import { getEntity } from "./getEntity";
 
 export interface IEntityReadBatchParams {
-    entity: Entity;
+    entity: EntityOption;
     read?: IPutBatchItem[];
 }
 
 export class EntityReadBatch implements IEntityReadBatch {
-    private readonly entity: Entity;
+    private readonly entity: ToolboxEntity;
     private readonly builder: IEntityReadBatchBuilder;
     private readonly _items: IEntityReadBatchBuilderGetResponse[] = [];
 
     public constructor(params: IEntityReadBatchParams) {
-        if (!params.entity.name) {
-            throw new Error(`No name provided for entity.`);
-        } else if (!params.entity.table) {
-            throw new Error(`No table provided for entity ${params.entity.name}.`);
-        }
-        this.entity = params.entity;
+        this.entity = getEntity(params.entity);
         this.builder = createEntityReadBatchBuilder(this.entity);
+        for (const item of params.read || []) {
+            this.get(item);
+        }
     }
     public get(input: IEntityReadBatchKey | IEntityReadBatchKey[]): void {
         if (Array.isArray(input)) {

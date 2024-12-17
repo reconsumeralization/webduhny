@@ -45,11 +45,53 @@ const putResult = await entity.put({...params}); // see put
 
 ```
 
-#### [EntityWriteBatch](./src/utils/batch/EntityWriteBatch.ts)
-#### [EntityReadBatch](./src/utils/batch/EntityReadBatch.ts)
-#### [TableReadBatch](./src/utils/batch/TableReadBatch.ts)
-#### [TableWriteBatch](./src/utils/batch/TableWriteBatch.ts)
+#### [EntityWriteBatch](./src/utils/entity/EntityWriteBatch.ts)
+```typescript
+import { createEntityWriteBatch } from "@webiny/db-dynamodb";
 
+const writer = createEntityWriteBatch({...params});
+
+writer.put({...item});
+writer.delete({...keys});
+writer.delete({...moreKeys});
+
+await writer.execute();
+```
+
+#### [EntityReadBatch](./src/utils/entity/EntityReadBatch.ts)
+```typescript
+import { createEntityReadBatch } from "@webiny/db-dynamodb";
+
+const reader = createEntityReadBatch({...params});
+
+reader.get({...keys});
+reader.get({...moreKeys});
+
+const result = await reader.execute();
+```
+#### [TableWriteBatch](./src/utils/table/TableWriteBatch.ts)
+```typescript
+import { createTableWriteBatch } from "@webiny/db-dynamodb";
+
+const writer = createTableWriteBatch({...params});
+
+writer.put(entity, {...item});
+writer.delete(entity, {...keys});
+writer.delete(entity, {...moreKeys});
+
+await writer.execute();
+```
+#### [TableReadBatch](./src/utils/table/TableReadBatch.ts)
+```typescript
+import {createTableReadBatch} from "@webiny/db-dynamodb";
+
+const reader = createTableReadBatch({...params});
+
+writer.get(entity, {...keys});
+writer.get(entity, {...moreKeys});
+
+const result = await reader.execute();
+```
 
 
 
