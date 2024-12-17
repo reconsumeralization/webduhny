@@ -24,7 +24,6 @@ export const preloadFonts = (render: RenderResult): void => {
         req => req.type === "font" && req.url
     );
 
-    console.log(fontsRequests);
     const preloadLinks: string = Array.from(fontsRequests)
         .map(req => {
             return `<link rel="preload" href="${req.url}" as="font" type="font/${getFontType(

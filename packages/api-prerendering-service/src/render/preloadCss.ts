@@ -1,15 +1,4 @@
 import { RenderResult } from "./types";
-import { TagPathLink } from "~/types";
-
-export interface File {
-    type: string;
-    body: any;
-    name: string;
-    meta: {
-        tags?: TagPathLink[];
-        [key: string]: any;
-    };
-}
 
 export const preloadCss = (render: RenderResult): void => {
     const regex = /<link href="\/static\/css\//gm;
