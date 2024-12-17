@@ -20,6 +20,7 @@ export interface RenderHookPlugin extends Plugin {
 export interface RenderApolloState {
     [key: string]: string;
 }
+
 /**
  * @internal
  */
@@ -42,11 +43,13 @@ export interface RenderResult {
         cachedData: {
             apolloGraphQl: GraphQLCacheEntry[];
             peLoaders: PeLoaderCacheEntry[];
+            issuedRequests: Array<{ type: string; url: string }>;
             [key: string]: any;
         };
         [key: string]: any;
     };
 }
+
 /**
  * @internal
  */
@@ -54,12 +57,14 @@ export interface RenderUrlCallableParams {
     context: Context;
     args: RenderEvent;
 }
+
 /**
  * @internal
  */
 export interface RenderUrlParams extends RenderUrlCallableParams {
     renderUrlFunction?: (url: string, params: RenderUrlCallableParams) => Promise<RenderResult>;
 }
+
 /**
  * @internal
  */
