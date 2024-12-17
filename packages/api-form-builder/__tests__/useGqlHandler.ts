@@ -45,11 +45,7 @@ import { PluginCollection } from "@webiny/plugins/types";
 import { getStorageOps } from "@webiny/project-utils/testing/environment";
 import { FileManagerStorageOperations } from "@webiny/api-file-manager/types";
 import { HeadlessCmsStorageOperations } from "@webiny/api-headless-cms/types";
-import {
-    CmsParametersPlugin,
-    createHeadlessCmsContext,
-    createHeadlessCmsGraphQL
-} from "@webiny/api-headless-cms";
+import { createHeadlessCmsContext, createHeadlessCmsGraphQL } from "@webiny/api-headless-cms";
 import { FormBuilderStorageOperations } from "~/types";
 import { APIGatewayEvent, LambdaContext } from "@webiny/handler-aws/types";
 import { createPageBuilderContext } from "@webiny/api-page-builder";
