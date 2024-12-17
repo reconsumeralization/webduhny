@@ -164,6 +164,8 @@ describe("Settings Test", () => {
 
         const { invoke } = useGqlHandler();
 
+        // Had to do it via `invoke` directly because this way it's possible to
+        // set the locale header. Wasn't easily possible via the `getSettings` helper.
         const [newLocaleFbSettings] = await invoke({
             body: { query: GET_SETTINGS },
             headers: {
