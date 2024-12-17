@@ -39,11 +39,11 @@ export interface PeLoaderCacheEntry {
 export interface RenderResult {
     content: string;
     meta: {
+        interceptedRequests: Array<{ type: string; url: string }>;
         apolloState: RenderApolloState;
         cachedData: {
             apolloGraphQl: GraphQLCacheEntry[];
             peLoaders: PeLoaderCacheEntry[];
-            issuedRequests: Array<{ type: string; url: string }>;
             [key: string]: any;
         };
         [key: string]: any;

@@ -1,12 +1,7 @@
 import chromium from "@sparticuz/chromium";
 import puppeteer, { Browser, Page } from "puppeteer-core";
 import extractPeLoaderDataFromHtml from "./extractPeLoaderDataFromHtml";
-import {
-    GraphQLCacheEntry,
-    PeLoaderCacheEntry,
-    RenderResult,
-    RenderUrlCallableParams
-} from "./types";
+import { RenderResult, RenderUrlCallableParams } from "./types";
 import { TagPathLink } from "~/types";
 
 const windowSet = (page: Page, name: string, value: string | boolean) => {
@@ -63,21 +58,18 @@ export const defaultRenderUrlFunction = async (
         const renderResult: RenderResult = {
             content: "",
             meta: {
+                interceptedRequests: [],
                 apolloState: {},
                 cachedData: {
                     apolloGraphQl: [],
-                    peLoaders: [],
-                    issuedRequests: []
-                },
-                issuedRequests: []
+                    peLoaders: []
+                }
             }
         };
 
         // Don't load these resources during prerender.
         const skipResources = ["image"];
         await browserPage.setRequestInterception(true);
-
-        const fontUrls = new Set<string>();
 
         browserPage.on("request", request => {
             const issuedRequest = {
@@ -93,7 +85,7 @@ export const defaultRenderUrlFunction = async (
                 request.continue();
             }
 
-            renderResult.meta.issuedRequests.push(issuedRequest);
+            renderResult.meta.interceptedRequests.push(issuedRequest);
         });
 
         // TODO: should be a plugin.
