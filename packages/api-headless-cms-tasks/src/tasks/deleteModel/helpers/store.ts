@@ -8,8 +8,10 @@ export interface ICreateStoreValueParams {
     task: string;
 }
 
+export const STORE_NAMESPACE = "deletingCmsModel#";
+
 export const createStoreKey = (model: Pick<CmsModel, "modelId">): StorageKey => {
-    return `deletingCmsModel#${model.modelId}`;
+    return `${STORE_NAMESPACE}${model.modelId}`;
 };
 
 export const createStoreValue = (params: ICreateStoreValueParams): IStoreValue => {

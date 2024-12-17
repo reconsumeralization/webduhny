@@ -1,5 +1,5 @@
-import { HcmsTasksContext } from "~/types";
-import {
+import type { HcmsTasksContext } from "~/types";
+import type {
     IDeleteCmsModelTask,
     IDeleteModelTaskInput,
     IDeleteModelTaskOutput,
