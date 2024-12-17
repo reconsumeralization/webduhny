@@ -121,6 +121,16 @@ export default async (url: string, args: RenderUrlParams): Promise<[File[], Meta
     ];
 };
 
+// Helper function to determine font type based on extension
+function getFontType(url: string) {
+    if (url.endsWith(".woff2")) return "woff2";
+    if (url.endsWith(".woff")) return "woff";
+    if (url.endsWith(".ttf")) return "truetype";
+    if (url.endsWith(".otf")) return "opentype";
+    if (url.endsWith(".eot")) return "embedded-opentype";
+    return "font";
+}
+
 export const defaultRenderUrlFunction = async (
     url: string,
     params: RenderUrlCallableParams
@@ -154,13 +164,23 @@ export const defaultRenderUrlFunction = async (
         }
 
         // Don't load these resources during prerender.
-        const skipResources = ["image", "stylesheet"];
+        const skipResources = ["image"];
         await browserPage.setRequestInterception(true);
 
+        const fontUrls = new Set<string>();
+
         browserPage.on("request", request => {
-            if (skipResources.includes(request.resourceType())) {
+            const resourceType = request.resourceType();
+            const resourceUrl = request.url();
+
+            if (skipResources.includes(resourceType)) {
                 request.abort();
             } else {
+                if (resourceType === "font" || /\.(woff|woff2|ttf|otf|eot)$/.test(resourceUrl)) {
+                    fontUrls.add(resourceUrl);
+                    console.log(`Detected font: ${resourceUrl}`);
+                }
+
                 request.continue();
             }
         });
@@ -211,7 +231,19 @@ export const defaultRenderUrlFunction = async (
             return window.getApolloState();
         });
 
-        const content = await browserPage.content();
+        let content = await browserPage.content();
+
+        // Generate <link rel="preload"> tags for detected font URLs
+        const preloadLinks: string = Array.from(fontUrls)
+            .map(url => {
+                return `<link rel="preload" href="${url}" as="font" type="font/${getFontType(
+                    url
+                )}" crossorigin="anonymous">`;
+            })
+            .join("\n");
+
+        // Inject the preload tags into the <head> section
+        content = content.replace("</head>", `${preloadLinks}\n</head>`);
 
         cachedData.peLoaders = extractPeLoaderDataFromHtml(content);
 
