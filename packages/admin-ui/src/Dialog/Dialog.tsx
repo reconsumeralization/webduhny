@@ -8,19 +8,19 @@ import { DialogHeader } from "~/Dialog/components/DialogHeader";
 import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
 import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
-import { DialogTitle } from "./components/DialogTitle";
 import { DialogTrigger } from "./components/DialogTrigger";
 
-interface DialogProps
+export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
-        React.ComponentPropsWithoutRef<typeof DialogContent> {
+        Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger: React.ReactNode;
+    title: React.ReactNode | string;
     children: React.ReactNode;
 }
 
 const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogProps>(
     (props, ref) => {
-        const { rootProps, triggerProps, contentProps } = React.useMemo(() => {
+        const { rootProps, triggerProps, contentProps, headerProps } = React.useMemo(() => {
             const {
                 // Root props.
                 defaultOpen,
@@ -31,6 +31,9 @@ const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogP
 
                 // Trigger props.
                 trigger,
+
+                // Header props.
+                title,
 
                 // Content props.
                 ...rest
@@ -48,6 +51,7 @@ const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogP
                     // Temporary fix.
                     children: <div>{trigger}</div>
                 },
+                headerProps: { title },
                 contentProps: rest
             };
         }, [props]);
@@ -56,8 +60,11 @@ const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogP
             <DialogRoot {...rootProps}>
                 <DialogTrigger {...triggerProps} asChild />
                 <DialogPortal>
-                    <DialogOverlay/>
-                    <DialogContent {...contentProps} ref={ref} />
+                    <DialogOverlay />
+                    <DialogContent {...contentProps} ref={ref}>
+                        <DialogHeader title={headerProps.title}/>
+                        {contentProps.children}
+                    </DialogContent>
                 </DialogPortal>
             </DialogRoot>
         );
@@ -71,9 +78,7 @@ const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 const Dialog = withStaticProps(DecoratableDialog, {
     Close: DialogClose,
     Description: DialogDescription,
-    Footer: DialogFooter,
-    Header: DialogHeader,
-    Title: DialogTitle
+    Footer: DialogFooter
 });
 
 export { Dialog };
