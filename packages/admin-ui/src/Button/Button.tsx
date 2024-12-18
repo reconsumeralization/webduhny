@@ -64,10 +64,6 @@ const buttonVariants = cva(
                     "py-[calc(theme(padding.md-plus)-theme(borderWidth.md))] px-[calc(theme(padding.md)-theme(borderWidth.md))]"
                 ]
             },
-            iconSize: {
-                default: "",
-                lg: ""
-            },
             contentLayout: {
                 text: "",
                 icon: "",
@@ -91,13 +87,6 @@ const buttonVariants = cva(
             },
             {
                 size: "sm",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className:
-                    "!p-[calc(theme(padding.xxs)-theme(borderWidth.sm))] [&>svg]:!size-md-plus"
-            },
-            {
-                size: "sm",
                 contentLayout: "text-icon-start",
                 className: "pl-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>svg]:mr-xs"
             },
@@ -110,12 +99,6 @@ const buttonVariants = cva(
                 size: "md",
                 contentLayout: "icon",
                 className: "p-[calc(theme(padding.sm)-theme(borderWidth.sm))]"
-            },
-            {
-                size: "md",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className: "!p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>svg]:!size-lg"
             },
             {
                 size: "md",
@@ -134,12 +117,6 @@ const buttonVariants = cva(
             },
             {
                 size: "lg",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className: "!p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>svg]:!size-lg"
-            },
-            {
-                size: "lg",
                 contentLayout: "text-icon-start",
                 className:
                     "pl-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))] [&>svg]:mr-xs-plus"
@@ -154,13 +131,6 @@ const buttonVariants = cva(
                 size: "xl",
                 contentLayout: "icon",
                 className: "p-[calc(theme(padding.md)-theme(borderWidth.md))]"
-            },
-            {
-                size: "xl",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className:
-                    "!p-[calc(theme(padding.md-plus)-theme(borderWidth.md))] [&>svg]:!size-lg"
             },
             {
                 size: "xl",
@@ -203,7 +173,6 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
         text,
         icon,
         iconPosition = "start",
-        iconSize = "default",
         ...rest
     } = props;
     const Comp = asChild ? Slot : "button";
@@ -224,10 +193,9 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
         buttonVariants({
             variant,
             size,
-            contentLayout,
-            iconSize,
-            className
-        })
+            contentLayout
+        }),
+        className
     );
 
     return (

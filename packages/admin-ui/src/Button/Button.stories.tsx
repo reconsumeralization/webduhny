@@ -119,11 +119,3 @@ export const OnlyIcon: Story = {
         iconPosition: "end"
     }
 };
-
-export const OnlyIconLarge: Story = {
-    name: "Only Icon (Large)",
-    args: {
-        ...OnlyIcon.args,
-        iconSize: "lg"
-    }
-};
