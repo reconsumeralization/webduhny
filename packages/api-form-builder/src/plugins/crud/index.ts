@@ -110,6 +110,11 @@ export default (params: CreateFormBuilderCrudParams) => {
 
         // Once a new locale is created, we need to create a new settings entry for it.
         new ContextPlugin<FormBuilderContext>(async context => {
+            const fbIsInstalled = Boolean(await context.formBuilder.getSystemVersion());
+            if (!fbIsInstalled) {
+                return;
+            }
+
             context.i18n.locales.onLocaleAfterCreate.subscribe(async params => {
                 const { locale } = params;
                 await context.i18n.withLocale(locale, async () => {
