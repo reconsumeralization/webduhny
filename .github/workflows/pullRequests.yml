@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - uses: webiny/action-conventional-commits@v1.3.0
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - uses: webiny/action-conventional-commits@v1.3.0
         with:
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: Create global cache key
         id: global-cache-key
@@ -96,7 +96,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: Print latest Webiny version
         run: echo ${{ needs.constants.outputs.latest-webiny-version }}
@@ -124,7 +124,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
         with:
           path: ${{ github.base_ref }}
@@ -156,7 +156,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
         with:
           path: ${{ github.base_ref }}
@@ -183,6 +183,9 @@ jobs:
       - name: ESLint
         run: yarn eslint
         working-directory: ${{ github.base_ref }}
+      - name: Sync Dependencies Verification
+        run: yarn webiny verify-dependencies
+        working-directory: ${{ github.base_ref }}
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--max_old_space_size=4096'
@@ -193,7 +196,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
         with:
           path: ${{ github.base_ref }}
@@ -224,7 +227,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: List packages to test with Jest
         id: list-packages-to-jest-test
@@ -253,7 +256,7 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - 20
+          - 22
         package: >-
           ${{
           fromJson(needs.jestTestsNoStorageConstants.outputs.packages-to-jest-test)
@@ -267,7 +270,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
         with:
           path: ${{ github.base_ref }}
@@ -299,7 +302,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: List packages to test with Jest
         id: list-packages-to-jest-test
@@ -372,7 +375,7 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - 20
+          - 22
         package: >-
           ${{
           fromJson(needs.jestTestsddbConstants.outputs.packages-to-jest-test) }}
@@ -385,7 +388,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
         with:
           path: ${{ github.base_ref }}
@@ -417,7 +420,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: List packages to test with Jest
         id: list-packages-to-jest-test
@@ -489,7 +492,7 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - 20
+          - 22
         package: >-
           ${{
           fromJson(needs.jestTestsddb-esConstants.outputs.packages-to-jest-test)
@@ -508,7 +511,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -547,7 +550,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - uses: actions/checkout@v4
       - name: List packages to test with Jest
         id: list-packages-to-jest-test
@@ -619,7 +622,7 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - 20
+          - 22
         package: >-
           ${{
           fromJson(needs.jestTestsddb-osConstants.outputs.packages-to-jest-test)
@@ -638,7 +641,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

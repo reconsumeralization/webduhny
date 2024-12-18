@@ -6,6 +6,11 @@ const VALUE_PREFIX = "tab-";
 
 export type TabsProps = PropsWithChildren<{
     /**
+     * Append an ID.
+     */
+    id?: string;
+
+    /**
      * Append a class name.
      */
     className?: string;
@@ -32,6 +37,7 @@ interface TabItem extends TabProps {
 
 interface TabsContext {
     addTab(props: TabItem): void;
+
     removeTab(id: string): void;
 }
 
