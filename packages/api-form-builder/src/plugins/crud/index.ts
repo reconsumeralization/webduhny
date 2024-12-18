@@ -111,8 +111,8 @@ export default (params: CreateFormBuilderCrudParams) => {
         // Once a new locale is created, we need to create a new settings entry for it.
         new ContextPlugin<FormBuilderContext>(async context => {
             context.i18n.locales.onLocaleAfterCreate.subscribe(async params => {
-                // We skip hooking onto the `onLocaleAfterCreate` event if Form Builder is not installed.
-                // This is because the settings entry needs to be created during the app installation process.
+                // We don't want to auto-create the settings entry if Form Builder is not installed.
+                // This is because the entry will be created by the app's installer.
                 const fbIsInstalled = Boolean(await context.formBuilder.getSystemVersion());
                 if (!fbIsInstalled) {
                     return;
