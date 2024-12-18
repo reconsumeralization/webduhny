@@ -1,25 +1,22 @@
 import { createWorkflow, NormalJob } from "github-actions-wac";
 import {
-    createSetupVerdaccioSteps,
-    createDeployWebinySteps,
-    createYarnCacheSteps,
-    createInstallBuildSteps,
     createGlobalBuildCacheSteps,
+    createInstallBuildSteps,
     createRunBuildCacheSteps,
+    createYarnCacheSteps,
     withCommonParams
 } from "./steps";
 import {
-    NODE_OPTIONS,
-    NODE_VERSION,
-    BUILD_PACKAGES_RUNNER,
     AWS_REGION,
-    runNodeScript, listPackagesWithJestTests
+    BUILD_PACKAGES_RUNNER,
+    listPackagesWithJestTests,
+    NODE_OPTIONS,
+    NODE_VERSION
 } from "./utils";
 import { createJob, createValidateWorkflowsJob } from "./jobs";
 
 // Will print "next" or "dev". Important for caching (via actions/cache).
 const DIR_WEBINY_JS = "${{ needs.baseBranch.outputs.base-branch }}";
-const DIR_TEST_PROJECT = "new-webiny-project";
 
 const installBuildSteps = createInstallBuildSteps({ workingDirectory: DIR_WEBINY_JS });
 const yarnCacheSteps = createYarnCacheSteps({ workingDirectory: DIR_WEBINY_JS });
@@ -41,15 +38,13 @@ const createJestTestsJob = (storage: string | null) => {
 
     if (storage) {
         if (storage === "ddb-es") {
-            env["AWS_ELASTIC_SEARCH_DOMAIN_NAME"] =
-                "${{ secrets.AWS_ELASTIC_SEARCH_DOMAIN_NAME }}";
+            env["AWS_ELASTIC_SEARCH_DOMAIN_NAME"] = "${{ secrets.AWS_ELASTIC_SEARCH_DOMAIN_NAME }}";
             env["ELASTIC_SEARCH_ENDPOINT"] = "${{ secrets.ELASTIC_SEARCH_ENDPOINT }}";
             env["ELASTIC_SEARCH_INDEX_PREFIX"] = "${{ matrix.package.id }}";
         } else if (storage === "ddb-os") {
             // We still use the same environment variables as for "ddb-es" setup, it's
             // just that the values are read from different secrets.
-            env["AWS_ELASTIC_SEARCH_DOMAIN_NAME"] =
-                "${{ secrets.AWS_OPEN_SEARCH_DOMAIN_NAME }}";
+            env["AWS_ELASTIC_SEARCH_DOMAIN_NAME"] = "${{ secrets.AWS_OPEN_SEARCH_DOMAIN_NAME }}";
             env["ELASTIC_SEARCH_ENDPOINT"] = "${{ secrets.OPEN_SEARCH_ENDPOINT }}";
             env["ELASTIC_SEARCH_INDEX_PREFIX"] = "${{ matrix.package.id }}";
         }
@@ -159,10 +154,11 @@ export const pullRequestsCommandJest = createWorkflow({
         }),
         build: createJob({
             name: "Build",
-            needs: "constants",
+            needs: ["baseBranch", "constants"],
             checkout: { path: DIR_WEBINY_JS },
             "runs-on": BUILD_PACKAGES_RUNNER,
             steps: [
+                ...createCheckoutPrSteps(),
                 ...yarnCacheSteps,
                 ...globalBuildCacheSteps,
                 ...installBuildSteps,
@@ -172,6 +168,6 @@ export const pullRequestsCommandJest = createWorkflow({
         jestTestsNoStorage: createJestTestsJob(null),
         jestTestsDdb: createJestTestsJob("ddb"),
         jestTestsDdbEs: createJestTestsJob("ddb-es"),
-        jestTestsDdbOs: createJestTestsJob("ddb-os"),
+        jestTestsDdbOs: createJestTestsJob("ddb-os")
     }
 });
