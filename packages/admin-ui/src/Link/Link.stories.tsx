@@ -69,6 +69,35 @@ export const LinkSm: Story = {
     }
 };
 
+export const InheritedSize: Story = {
+    name: "Link with inherited size",
+    render: linkProps => {
+        return (
+            <Text
+                text={
+                    <>
+                        <Text
+                            size="lg"
+                            text={
+                                <>
+                                    Size of this text is set to large, so,&nbsp;
+                                    <Link {...linkProps}>this link&apos;s</Link> size is also
+                                    automatically set to large.
+                                </>
+                            }
+                        />
+                    </>
+                }
+            />
+        );
+    },
+    args: {
+        to: "#",
+        children:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+    }
+};
+
 export const WithUnderline: Story = {
     args: {
         underline: true,

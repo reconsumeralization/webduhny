@@ -9,6 +9,7 @@ import {
 const linkVariants = cva("font-sans rounded-xs", {
     variants: {
         size: {
+            inherit: "[font-size:inherit]",
             sm: "text-sm",
             md: "text-md",
             lg: "text-lg",
@@ -38,7 +39,7 @@ const linkVariants = cva("font-sans rounded-xs", {
         }
     },
     defaultVariants: {
-        size: "md",
+        size: "inherit",
         variant: "primary",
         underline: false
     }
