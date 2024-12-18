@@ -5,7 +5,7 @@ import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 const buttonVariants = cva(
     [
         "border-transparent rounded font-sans inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-colors",
-        "disabled:pointer-events-none",
+        "disabled:cursor-not-allowed",
         "focus-visible:outline-none focus-visible:border-accent-default"
     ],
     {

@@ -85,6 +85,14 @@ export const Small: Story = {
     }
 };
 
+export const SmallWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "sm",
+        iconSize: "lg"
+    }
+};
+
 export const Medium: Story = {
     args: {
         ...Primary.args,
@@ -92,10 +100,26 @@ export const Medium: Story = {
     }
 };
 
+export const MediumWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "md",
+        iconSize: "lg"
+    }
+};
+
 export const Large: Story = {
     args: {
         ...Primary.args,
         size: "lg"
+    }
+};
+
+export const LargeWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "lg",
+        iconSize: "lg"
     }
 };
 
