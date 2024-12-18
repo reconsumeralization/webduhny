@@ -11,3 +11,4 @@ packages/cli-plugin-deploy-pulumi/commands/newWatch/handler/mqtt.js
 packages/admin-ui/scripts/importFromFigma/exports/Alias tokens.json
 lerna.json
 coverage/**
+packages/cli/files/**/*.json
