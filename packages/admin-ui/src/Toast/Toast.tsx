@@ -7,6 +7,7 @@ import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Heading } from "~/Heading";
 import { Text } from "~/Text";
 import { Icon, IconProps } from "~/Icon";
+import { IconButton } from "~/Button";
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -88,19 +89,22 @@ const ToastActions = makeDecoratable("ToastActions", DecoratableToastActions);
 /**
  * Toast Close Icon
  */
+
+interface ToastCloseProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close> {
+    variant?: VariantProps<typeof toastVariants>["variant"];
+}
+
 const DecoratableToastClose = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Close>,
-    React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
->(({ className, ...props }, ref) => (
-    <ToastPrimitives.Close
-        ref={ref}
-        className={cn(
-            "focus:outline-none group-[.default-variant]:fill-neutral-base group-[.subtle-variant]:fill-neutral-xstrong",
-            className
-        )}
-        {...props}
-    >
-        <Icon label={"Close"} icon={<CloseIcon />} aria-hidden={true} />
+    ToastCloseProps
+>(({ variant, ...props }, ref) => (
+    <ToastPrimitives.Close ref={ref} {...props} asChild>
+        <IconButton
+            icon={<Icon label={"Close"} icon={<CloseIcon />} />}
+            size={"sm"}
+            iconSize={"lg"}
+            variant={variant === "subtle" ? "ghost" : "ghost-negative"}
+        />
     </ToastPrimitives.Close>
 ));
 DecoratableToastClose.displayName = ToastPrimitives.Close.displayName;
@@ -203,7 +207,7 @@ const DecoratableToast = ({ title, description, icon, actions, ...props }: Toast
                 {description && description}
                 {actions && actions}
             </div>
-            <ToastClose />
+            <ToastClose variant={props.variant} />
         </ToastRoot>
     );
 };

@@ -4,7 +4,7 @@ import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 
 const iconButtonVariants = cva(
     [
-        "border-transparent rounded flex items-center justify-center ring-offset-background transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "border-transparent rounded flex items-center justify-center ring-offset-background transition-colors [&_svg]pointer-events-none [&_svg]:shrink-0",
         "disabled:cursor-not-allowed",
         "focus-visible:outline-none focus-visible:border-accent-default"
     ],
@@ -19,29 +19,31 @@ const iconButtonVariants = cva(
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 secondary: [
-                    "bg-neutral-dimmed [&_svg]:fill-neutral-xstrong",
+                    "bg-neutral-dimmed fill-neutral-xstrong",
                     "hover:bg-neutral-muted",
                     "active:bg-neutral-strong",
-                    "disabled:bg-neutral-disabled",
+                    "disabled:bg-neutral-disabled fill-neutral-strong",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 tertiary: [
-                    "bg-neutral-base border-neutral-muted [&_svg]:fill-neutral-xstrong",
+                    "bg-neutral-base border-neutral-muted fill-neutral-xstrong",
                     "hover:bg-neutral-light",
                     "active:bg-neutral-muted",
-                    "disabled:bg-neutral-disabled disabled:border-none",
+                    "disabled:bg-neutral-disabled fill-neutral-strong disabled:border-none",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 ghost: [
-                    "[&_svg]:fill-neutral-xstrong",
+                    "fill-neutral-xstrong",
                     "hover:bg-neutral-dimmed",
-                    "active:bg-neutral-muted"
+                    "active:bg-neutral-muted",
+                    "disabled:fill-neutral-strong hover:disabled:bg-transparent active:disabled:bg-transparent"
                 ],
                 "ghost-negative": [
-                    "[&_svg]:fill-neutral-base",
+                    "fill-neutral-base",
                     "hover:bg-neutral-base/20",
                     "active:bg-neutral-base/30",
-                    "focus-visible:!border-neutral-base"
+                    "focus-visible:!border-neutral-base",
+                    "disabled:fill-neutral-base disabled:opacity-50 hover:disabled:bg-transparent active:disabled:bg-transparent"
                 ]
             },
             size: {
@@ -134,4 +136,4 @@ const DecoratableIconButton = ({
 
 const IconButton = makeDecoratable("IconButton", DecoratableIconButton);
 
-export { IconButton, type IconButtonProps };
+export { IconButton, type IconButtonProps, iconButtonVariants };

@@ -1,8 +1,7 @@
 import React from "react";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/round/close.svg";
+import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Tag } from "./Tag";
-import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Tag> = {
     title: "Components/Tag",
@@ -18,20 +17,31 @@ type Story = StoryObj<typeof Tag>;
 
 export const Default: Story = {
     args: {
-        label: "Label"
+        content: "Label"
     }
 };
 
-export const WithIcon: Story = {
+export const IsDismissible: Story = {
     args: {
         ...Default.args,
-        icon: <Icon icon={<XIcon />} label={"Close"} size={"sm"} />
+        isDismissible: true,
+        onDismiss: evt => {
+            console.log("onDismiss", evt);
+        }
+    }
+};
+
+export const WithCustomDismissIconElement: Story = {
+    args: {
+        ...IsDismissible.args,
+        dismissIconElement: <AddIcon />,
+        dismissIconLabel: "Custom dismiss label"
     }
 };
 
 export const NeutralBase: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "neutral-base"
     }
 };
@@ -45,7 +55,7 @@ export const NeutralBaseDisabled: Story = {
 
 export const NeutralLight: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "neutral-light"
     }
 };
@@ -59,7 +69,7 @@ export const NeutralLightDisabled: Story = {
 
 export const NeutralStrong: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "neutral-strong"
     }
 };
@@ -73,7 +83,7 @@ export const NeutralStrongDisabled: Story = {
 
 export const NeutralDark: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "neutral-dark"
     }
 };
@@ -87,7 +97,7 @@ export const NeutralDarkDisabled: Story = {
 
 export const Accent: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "accent"
     }
 };
@@ -101,7 +111,7 @@ export const AccentDisabled: Story = {
 
 export const Success: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "success"
     }
 };
@@ -115,7 +125,7 @@ export const SuccessDisabled: Story = {
 
 export const Warning: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "warning"
     }
 };
@@ -129,7 +139,7 @@ export const WarningDisabled: Story = {
 
 export const Destructive: Story = {
     args: {
-        ...WithIcon.args,
+        ...IsDismissible.args,
         variant: "destructive"
     }
 };

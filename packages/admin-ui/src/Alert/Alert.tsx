@@ -1,10 +1,11 @@
 import * as React from "react";
 import { cva, type VariantProps, cn, makeDecoratable, withStaticProps } from "~/utils";
-import { Button, type ButtonProps } from "~/Button";
+import { Button, type ButtonProps, IconButton } from "~/Button";
 import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
 import { ReactComponent as WarningIcon } from "@material-design-icons/svg/outlined/warning_amber.svg";
 import { ReactComponent as SuccessIcon } from "@material-design-icons/svg/outlined/check_circle.svg";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { Icon } from "~/Icon";
 
 const VARIANT_ICON_MAP = {
     info: InfoIcon,
@@ -149,9 +150,9 @@ const AlertBase = React.forwardRef<HTMLDivElement, AlertProps>(
                     <div className={"flex-grow py-xxs"}>{children}</div>
                     {actions && <div>{actions}</div>}
                     {showCloseButton && (
-                        <Button
+                        <IconButton
                             onClick={onClose}
-                            icon={<XIcon />}
+                            icon={<Icon icon={<XIcon />} label="Close" />}
                             size={"sm"}
                             variant={closeButtonVariants({ type, variant })}
                         />
