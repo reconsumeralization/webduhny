@@ -243,4 +243,4 @@ ButtonBase.displayName = "Button";
 
 const Button = makeDecoratable("Button", ButtonBase);
 
-export { Button, type ButtonProps };
+export { Button, type ButtonProps, buttonVariants };
