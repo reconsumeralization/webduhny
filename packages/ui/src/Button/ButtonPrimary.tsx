@@ -9,5 +9,5 @@ import { Button as AdminUiButton } from "@webiny/admin-ui";
  */
 export const ButtonPrimary = (props: ButtonProps) => {
     const mappedProps = useMappedButtonProps(props);
-    return <AdminUiButton {...props} {...mappedProps} variant={"primary"} />;
+    return <AdminUiButton {...mappedProps} variant={"primary"} />;
 };

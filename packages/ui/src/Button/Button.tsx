@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Button as AdminUiButton } from "@webiny/admin-ui/Button";
 import { useMappedButtonProps } from "~/Button/useMappedButtonProps";
 
@@ -58,7 +57,7 @@ interface ButtonProps {
  */
 const Button = (props: ButtonProps) => {
     const mappedProps = useMappedButtonProps(props);
-    return <AdminUiButton {...props} {...mappedProps} />;
+    return <AdminUiButton {...mappedProps} />;
 };
 
 Button.displayName = "Button";
