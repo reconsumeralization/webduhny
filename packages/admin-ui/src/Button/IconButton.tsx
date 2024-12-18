@@ -22,14 +22,14 @@ const iconButtonVariants = cva(
                     "bg-neutral-dimmed fill-neutral-xstrong",
                     "hover:bg-neutral-muted",
                     "active:bg-neutral-strong",
-                    "disabled:bg-neutral-disabled fill-neutral-strong",
+                    "disabled:bg-neutral-disabled disabled:fill-neutral-strong",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 tertiary: [
                     "bg-neutral-base border-neutral-muted fill-neutral-xstrong",
                     "hover:bg-neutral-light",
                     "active:bg-neutral-muted",
-                    "disabled:bg-neutral-disabled fill-neutral-strong disabled:border-none",
+                    "disabled:bg-neutral-disabled disabled:fill-neutral-strong disabled:border-none",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 ghost: [

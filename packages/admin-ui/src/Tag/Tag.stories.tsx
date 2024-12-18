@@ -21,10 +21,18 @@ export const Default: Story = {
     }
 };
 
-export const IsDismissible: Story = {
+export const WithOnClickCallback: Story = {
     args: {
         ...Default.args,
-        isDismissible: true,
+        onClick: evt => {
+            console.log("onClick", evt);
+        }
+    }
+};
+
+export const WithOnDismissCallback: Story = {
+    args: {
+        ...Default.args,
         onDismiss: evt => {
             console.log("onDismiss", evt);
         }
@@ -33,7 +41,7 @@ export const IsDismissible: Story = {
 
 export const WithCustomDismissIconElement: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         dismissIconElement: <AddIcon />,
         dismissIconLabel: "Custom dismiss label"
     }
@@ -41,7 +49,7 @@ export const WithCustomDismissIconElement: Story = {
 
 export const NeutralBase: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-base"
     }
 };
@@ -55,7 +63,7 @@ export const NeutralBaseDisabled: Story = {
 
 export const NeutralLight: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-light"
     }
 };
@@ -69,7 +77,7 @@ export const NeutralLightDisabled: Story = {
 
 export const NeutralStrong: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-strong"
     }
 };
@@ -83,7 +91,7 @@ export const NeutralStrongDisabled: Story = {
 
 export const NeutralDark: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-dark"
     }
 };
@@ -97,7 +105,7 @@ export const NeutralDarkDisabled: Story = {
 
 export const Accent: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "accent"
     }
 };
@@ -111,7 +119,7 @@ export const AccentDisabled: Story = {
 
 export const Success: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "success"
     }
 };
@@ -125,7 +133,7 @@ export const SuccessDisabled: Story = {
 
 export const Warning: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "warning"
     }
 };
@@ -139,7 +147,7 @@ export const WarningDisabled: Story = {
 
 export const Destructive: Story = {
     args: {
-        ...IsDismissible.args,
+        ...WithOnDismissCallback.args,
         variant: "destructive"
     }
 };
@@ -148,5 +156,23 @@ export const DestructiveDisabled: Story = {
     args: {
         ...Destructive.args,
         disabled: true
+    }
+};
+
+export const FullExample: Story = {
+    args: WithOnDismissCallback.args,
+    render: args => {
+        return (
+            <div className={"flex gap-sm"}>
+                <Tag {...args} content={"Neutral base"} variant={"neutral-base"} />
+                <Tag {...args} content={"Neutral light"} variant={"neutral-light"} />
+                <Tag {...args} content={"Neutral strong"} variant={"neutral-strong"} />
+                <Tag {...args} content={"Neutral dark"} variant={"neutral-dark"} />
+                <Tag {...args} content={"Success"} variant={"success"} />
+                <Tag {...args} content={"Warning"} variant={"warning"} />
+                <Tag {...args} content={"Destructive"} variant={"destructive"} />
+                <Tag {...args} content={"Accent"} variant={"accent"} />
+            </div>
+        );
     }
 };

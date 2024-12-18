@@ -6,19 +6,24 @@ import { IconButton, iconButtonVariants } from "~/Button";
 
 const tagVariants = cva(
     [
-        "inline-flex items-center gap-xxs rounded-sm text-sm text-regular transition-colors cursor-default overflow-hidden",
-        "focus:outline-none",
-        "aria-disabled:cursor-not-allowed"
+        "inline-flex items-center gap-xxs rounded-sm text-sm text-regular transition-colors overflow-hidden",
+        "focus:outline-none"
     ],
     {
         variants: {
+            isInteractive: {
+                true: "cursor-pointer"
+            },
             isDismissible: {
                 true: "pl-xs-plus pt-xxs pb-xxs pr-xs",
                 false: "px-xs-plus py-xxs"
             },
+            isDisabled: {
+                true: "cursor-not-allowed pointer-events-none"
+            },
             variant: {
                 "neutral-base": [
-                    "border-sm px-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] py-[calc(theme(padding.xxs)-theme(borderWidth.sm))]",
+                    "border-sm border-solid px-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] py-[calc(theme(padding.xxs)-theme(borderWidth.sm))]",
                     "bg-transparent border-neutral-muted text-neutral-primary",
                     "hover:bg-neutral-light",
                     "aria-disabled:bg-transparent aria-disabled:border-neutral-dimmed aria-disabled:text-neutral-disabled"
@@ -71,7 +76,6 @@ export interface TagProps
         VariantProps<typeof tagVariants> {
     content: React.ReactNode;
     onDismiss?: (event: React.SyntheticEvent<HTMLSpanElement>) => void;
-    isDismissible?: boolean;
     dismissIconElement?: React.ReactElement;
     dismissIconLabel?: string;
     disabled?: boolean;
@@ -81,7 +85,7 @@ const DecoratableTag = ({
     className,
     variant,
     content,
-    isDismissible,
+    onClick,
     onDismiss,
     dismissIconElement = <Close />,
     dismissIconLabel = "Close",
@@ -102,11 +106,20 @@ const DecoratableTag = ({
     return (
         <span
             {...props}
-            className={cn(tagVariants({ variant, isDismissible }), className)}
+            onClick={onClick}
+            className={cn(
+                tagVariants({
+                    variant,
+                    isDismissible: Boolean(onDismiss),
+                    isInteractive: Boolean(onClick),
+                    isDisabled: Boolean(disabled)
+                }),
+                className
+            )}
             aria-disabled={disabled}
         >
             <span className={"overflow-hidden truncate whitespace-nowrap"}>{content}</span>
-            {isDismissible && (
+            {onDismiss && (
                 <IconButton
                     icon={<Icon icon={dismissIconElement} label={dismissIconLabel} size={"sm"} />}
                     size={"xxs"}

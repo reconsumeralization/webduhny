@@ -32,7 +32,7 @@ export const Chips = (props: ChipsProps) => {
     const { children, className, ...rest } = props;
 
     return (
-        <div {...rest} className={classNames("mdc-evolution-chip-set", className)}>
+        <div {...rest} className={classNames("mdc-evolution-chip-set flex gap-sm p-sm", className)}>
             {children}
         </div>
     );
