@@ -1,9 +1,14 @@
 import React from "react";
 import type { CmsModel } from "~/types";
+import { css } from "emotion";
 
 export interface IInformationProps {
     model: Pick<CmsModel, "plugin">;
 }
+
+const warningClassName = css({
+    color: "var(--mdc-theme-error)"
+});
 
 export const Information = (props: IInformationProps) => {
     const { model } = props;
@@ -23,7 +28,8 @@ export const Information = (props: IInformationProps) => {
             <p>- This action will permanently delete the model and all its associated data.</p>
             <p>- References to this model in other parts of the system will be emptied.</p>
             <p>- This action cannot be undone.</p>
-            <p>- Lifecycle events will be triggered.</p>
+            <p>- All relevant lifecycle events will be triggered.</p>
+            <p className={warningClassName}> - This action cannot be undone!</p>
         </>
     );
 };

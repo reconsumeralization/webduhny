@@ -11,6 +11,10 @@ const errorClassName = css({
     display: "block"
 });
 
+const deleteClassName = css({
+    fontWeight: "bold"
+});
+
 export interface IConfirmationProps {
     model: CmsModel;
     confirmation: string;
@@ -35,7 +39,10 @@ export const Confirmation = (props: IConfirmationProps) => {
     return (
         <>
             <p>Are you sure you want to delete this content model and all of its entries?</p>
-            <p>If yes, please write &quot;{placeholder}&quot; in the confirmation input:</p>
+            <p>
+                If yes, please write <span className={deleteClassName}>{placeholder}</span> in the
+                confirmation input:
+            </p>
             <p>
                 <br />
             </p>
