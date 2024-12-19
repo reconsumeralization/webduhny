@@ -110,12 +110,3 @@ export const WithIconPositionEnd: Story = {
         iconPosition: "end"
     }
 };
-
-export const OnlyIcon: Story = {
-    args: {
-        ...Primary.args,
-        text: null,
-        icon: <PencilIcon />,
-        iconPosition: "end"
-    }
-};

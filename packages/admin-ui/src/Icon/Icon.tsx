@@ -12,6 +12,7 @@ const iconVariants = cva("", {
             lg: "size-lg"
         },
         color: {
+            inherit: "fill-inherit",
             accent: "fill-accent-default",
             neutral: "fill-neutral-base",
             "neutral-light": "fill-neutral-strong",
@@ -20,7 +21,7 @@ const iconVariants = cva("", {
     },
     defaultVariants: {
         size: "md",
-        color: "accent"
+        color: "inherit"
     }
 });
 
