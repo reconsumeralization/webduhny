@@ -30,15 +30,28 @@ module.exports = async options => {
         webpackConfig = overrides.webpack(webpackConfig);
     }
 
+    let initialCompilation = true;
     return new Promise(async (resolve, reject) => {
-        options.logs && console.log("Compiling...");
+        if (options.logs) {
+            if (initialCompilation) {
+                console.log("Initial compilation started...");
+            } else {
+                console.log("Compiling...");
+            }
+        }
+
         return webpack(webpackConfig).watch({}, async (err, stats) => {
             if (err) {
                 return reject(err);
             }
 
             if (!stats.hasErrors()) {
-                options.logs && console.log("Compiled successfully.");
+                if (initialCompilation) {
+                    initialCompilation = false;
+                    console.log("Initial compilation completed. Watching for changes...");
+                } else {
+                    options.logs && console.log("Compiled successfully.");
+                }
             } else {
                 options.logs && console.log(stats.toString("errors-warnings"));
             }
