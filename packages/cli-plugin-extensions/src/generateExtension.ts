@@ -160,8 +160,12 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
         }
 
         console.log();
-            console.log(chalk.bold("Additional Notes"));
-        console.log(`‣ note that if you already have the ${context.success.hl("webiny watch")} command running, you'll need to restart it`);
+        console.log(chalk.bold("Additional Notes"));
+        console.log(
+            `‣ note that if you already have the ${context.success.hl(
+                "webiny watch"
+            )} command running, you'll need to restart it`
+        );
     } catch (err) {
         ora.fail("Could not create extension. Please check the logs below.");
         console.log();
