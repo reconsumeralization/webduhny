@@ -97,10 +97,10 @@ function FontSizeDropDown(props: FontSizeDropDownProps): JSX.Element {
 }
 
 interface FontSizeActionProps {
-    fontSizes: FontSize[];
+    fontSizes?: FontSize[];
 }
 
-const FontSize = ({ fontSizes }: FontSizeActionProps) => {
+const FontSize = ({ fontSizes = FONT_SIZES_FALLBACK }: FontSizeActionProps) => {
     const { editor } = useRichTextEditor();
     const [isEditable, setIsEditable] = useState(() => editor.isEditable());
     const fontSize = useDeriveValueFromSelection(({ rangeSelection }) => {
