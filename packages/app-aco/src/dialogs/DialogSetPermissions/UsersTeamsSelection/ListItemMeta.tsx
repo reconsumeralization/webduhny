@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import { ListActions, ListItemMeta as UiListItemMeta } from "@webiny/ui/List";
-import { Menu, MenuDivider, MenuItem } from "@webiny/ui/Menu";
+import { DropdownMenu, Text } from "@webiny/admin-ui";
 import { ReactComponent as More } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
-import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
 import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import { useSecurity } from "@webiny/app-security";
@@ -33,28 +32,6 @@ const StyledHandle = styled.div<{ disabled: boolean }>`
     cursor: pointer;
     padding: 20px 0 20px 20px;
     ${({ disabled }) => disabled && `opacity: 0.5; pointer-events: none;`}
-`;
-
-const StyledMenuItem = styled(MenuItem)`
-    display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-
-    div.selected {
-        margin-right: 15px;
-        width: 20px;
-        height: 20px;
-
-        svg {
-            fill: var(--mdc-theme-primary);
-        }
-    }
-
-    div.info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
 `;
 
 interface ListItemMetaProps {
@@ -117,15 +94,26 @@ export const ListItemMeta = ({
     return (
         <UiListItemMeta>
             <ListActions>
-                <Menu
-                    handle={handle}
-                    disabled={!!disabledReason}
+                <DropdownMenu
+                    trigger={handle}
                     // Should prevent first item from being autofocused, but it doesn't. 🤷‍
-                    focusOnOpen={false}
+                    // focusOnOpen={false}
                 >
                     {TARGET_LEVELS.map(level => (
-                        <StyledMenuItem
+                        <DropdownMenu.CheckboxItem
                             key={level.id}
+                            checked={currentLevel.id === level.id}
+                            content={
+                                <div>
+                                    <Text as={"div"} text={level.label} />
+                                    <Text
+                                        as={"div"}
+                                        text={level.description}
+                                        size={"sm"}
+                                        className={"text-neutral-strong"}
+                                    />
+                                </div>
+                            }
                             onClick={() => {
                                 // Needed to do this with a short delay because of a visual glitch.
                                 setTimeout(() => {
@@ -137,21 +125,14 @@ export const ListItemMeta = ({
                                     });
                                 }, 75);
                             }}
-                        >
-                            <div className="selected">
-                                {currentLevel.id === level.id && <Check />}
-                            </div>
-                            <div className="info">
-                                <Typography use="body1">{level.label}</Typography>
-                                <Typography use="caption">{level.description}</Typography>
-                            </div>
-                        </StyledMenuItem>
+                        />
                     ))}
-                    <MenuDivider />
-                    <MenuItem onClick={() => onRemoveAccess({ permission })}>
-                        Remove access
-                    </MenuItem>
-                </Menu>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Item
+                        onClick={() => onRemoveAccess({ permission })}
+                        content={"Remove access"}
+                    />
+                </DropdownMenu>
             </ListActions>
         </UiListItemMeta>
     );
