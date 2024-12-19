@@ -7,7 +7,7 @@ import {
     ListCmsModelsQueryResponse,
     ListMenuCmsGroupsQueryResponse
 } from "../../viewsGraphql";
-import { CmsEditorContentModel } from "~/types";
+import { CmsEditorContentModel, CmsModel } from "~/types";
 
 export const addModelToListCache = (cache: DataProxy, model: CmsEditorContentModel): void => {
     const response = cache.readQuery<ListCmsModelsQueryResponse>({
@@ -23,6 +23,26 @@ export const addModelToListCache = (cache: DataProxy, model: CmsEditorContentMod
         query: LIST_CONTENT_MODELS,
         data: {
             listContentModels: dotProp.set(listContentModels, `data.${newModelIndex}`, model)
+        }
+    });
+};
+
+export const updateModelInCache = (cache: DataProxy, model: CmsModel): void => {
+    const response = cache.readQuery<ListCmsModelsQueryResponse>({
+        query: LIST_CONTENT_MODELS
+    });
+    if (!response || !response.listContentModels?.data) {
+        return;
+    }
+
+    const index = response.listContentModels.data.findIndex(m => m.modelId === model.modelId);
+    if (index < 0) {
+        return;
+    }
+    cache.writeQuery({
+        query: LIST_CONTENT_MODELS,
+        data: {
+            listContentModels: dotProp.set(response.listContentModels, `data.${index}`, model)
         }
     });
 };

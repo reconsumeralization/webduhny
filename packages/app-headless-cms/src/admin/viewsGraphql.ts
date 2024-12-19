@@ -66,6 +66,7 @@ export const LIST_MENU_CONTENT_GROUPS_MODELS = gql`
                         displayName
                         type
                     }
+                    isBeingDeleted
                 }
             }
             error {
@@ -189,6 +190,69 @@ export const DELETE_CONTENT_MODEL = gql`
     mutation CmsDeleteContentModel($modelId: ID!) {
         deleteContentModel(modelId: $modelId) {
             data
+            error {
+                ${ERROR_FIELDS}
+            }
+        }
+    }
+`;
+
+export const DELETE_CMS_MODEL_TASK_FIELDS = `
+    id
+    status
+    deleted
+    total
+`;
+
+export interface IDeleteCmsModelTask {
+    id: string;
+    status: string;
+    deleted: number;
+    total: number;
+}
+
+export interface IFullyDeleteCmsModelMutationVariables {
+    modelId: string;
+    confirmation: string;
+}
+
+export interface IFullyDeleteCmsModelMutationResponse {
+    fullyDeleteModel: {
+        data?: IDeleteCmsModelTask;
+        error?: CmsErrorResponse;
+    };
+}
+
+export const FULLY_DELETE_CONTENT_MODEL = gql`
+    mutation CmsFullyDeleteContentModel($modelId: ID!, $confirmation: String!) {
+        fullyDeleteModel(modelId: $modelId, confirmation: $confirmation) {
+            data {
+                ${DELETE_CMS_MODEL_TASK_FIELDS}
+            }
+            error {
+                ${ERROR_FIELDS}
+            }
+        }
+    }
+`;
+
+export interface ICancelDeleteCmsModelMutationVariables {
+    modelId: string;
+}
+
+export interface ICancelDeleteCmsModelMutationResponse {
+    cancelFullyDeleteModel: {
+        data?: IDeleteCmsModelTask;
+        error?: CmsErrorResponse;
+    };
+}
+
+export const CANCEL_DELETE_CONTENT_MODEL = gql`
+    mutation CmsCancelDeleteContentModel($modelId: ID!) {
+        cancelFullyDeleteModel(modelId: $modelId) {
+            data {
+                ${DELETE_CMS_MODEL_TASK_FIELDS}
+            }
             error {
                 ${ERROR_FIELDS}
             }
