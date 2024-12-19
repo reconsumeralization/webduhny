@@ -110,3 +110,11 @@ export const WithIconPositionEnd: Story = {
         iconPosition: "end"
     }
 };
+
+export const WithAsChild: Story = {
+    args: {
+        ...Primary.args,
+        asChild: true,
+        text: <span>Button</span>
+    }
+};

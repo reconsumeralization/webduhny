@@ -4,8 +4,8 @@ import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 
 const iconButtonVariants = cva(
     [
-        "border-transparent rounded flex items-center justify-center ring-offset-background transition-colors [&_svg]pointer-events-none [&_svg]:shrink-0",
-        "disabled:cursor-not-allowed",
+        "border-transparent rounded flex items-center justify-center ring-offset-background cursor-pointer transition-colors [&_svg]pointer-events-none [&_svg]:shrink-0",
+        "aria-disabled:pointer-events-none",
         "focus-visible:outline-none focus-visible:border-accent-default"
     ],
     {
@@ -15,35 +15,35 @@ const iconButtonVariants = cva(
                     "bg-primary fill-neutral-base",
                     "hover:bg-primary-strong",
                     "active:bg-primary-xstrong",
-                    "disabled:bg-primary-disabled",
+                    "aria-disabled:bg-primary-disabled",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 secondary: [
                     "bg-neutral-dimmed fill-neutral-xstrong",
                     "hover:bg-neutral-muted",
                     "active:bg-neutral-strong",
-                    "disabled:bg-neutral-disabled disabled:fill-neutral-strong",
+                    "aria-disabled:bg-neutral-disabled aria-disabled:fill-neutral-strong",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 tertiary: [
                     "bg-neutral-base border-neutral-muted fill-neutral-xstrong",
                     "hover:bg-neutral-light",
                     "active:bg-neutral-muted",
-                    "disabled:bg-neutral-disabled disabled:fill-neutral-strong disabled:border-none",
+                    "aria-disabled:bg-neutral-disabled aria-disabled:fill-neutral-strong aria-disabled:border-neutral-dimmed",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 ghost: [
                     "fill-neutral-xstrong",
                     "hover:bg-neutral-dimmed",
                     "active:bg-neutral-muted",
-                    "disabled:fill-neutral-strong hover:disabled:bg-transparent active:disabled:bg-transparent"
+                    "aria-disabled:fill-neutral-strong hover:aria-disabled:bg-transparent active:aria-disabled:bg-transparent"
                 ],
                 "ghost-negative": [
                     "fill-neutral-base",
                     "hover:bg-neutral-base/20",
                     "active:bg-neutral-base/30",
                     "focus-visible:!border-neutral-base",
-                    "disabled:fill-neutral-base disabled:opacity-50 hover:disabled:bg-transparent active:disabled:bg-transparent"
+                    "aria-disabled:fill-neutral-base aria-disabled:opacity-50 hover:aria-disabled:bg-transparent active:aria-disabled:bg-transparent"
                 ]
             },
             size: {
@@ -124,11 +124,17 @@ const DecoratableIconButton = ({
     icon,
     iconSize,
     asChild = false,
+    disabled,
     ...props
 }: IconButtonProps) => {
     const Comp = asChild ? Slot : "button";
     return (
-        <Comp className={cn(iconButtonVariants({ variant, size, iconSize }), className)} {...props}>
+        <Comp
+            {...props}
+            className={cn(iconButtonVariants({ variant, size, iconSize }), className)}
+            disabled={disabled}
+            aria-disabled={disabled}
+        >
             {icon}
         </Comp>
     );

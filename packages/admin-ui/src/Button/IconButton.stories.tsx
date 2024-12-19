@@ -15,6 +15,7 @@ const meta: Meta<typeof IconButton> = {
         size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl"] },
         iconSize: { control: "select", options: ["default", "lg"] },
         disabled: { control: "boolean" },
+        asChild: { control: "boolean" },
         onClick: { action: "onClick" }
     }
 };
@@ -127,5 +128,17 @@ export const ExtraLarge: Story = {
     args: {
         ...Primary.args,
         size: "xl"
+    }
+};
+
+export const WithAsChild: Story = {
+    args: {
+        ...Primary.args,
+        asChild: true,
+        icon: (
+            <span>
+                <AddIcon />
+            </span>
+        )
     }
 };

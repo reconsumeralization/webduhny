@@ -39,7 +39,7 @@ const triggerVariants = cva(
     [
         "w-full flex items-center justify-between gap-sm border-sm text-md relative",
         "focus:outline-none",
-        "disabled:cursor-not-allowed"
+        "disabled:pointer-events-none"
     ],
     {
         variants: {
@@ -335,6 +335,7 @@ type SelectTriggerProps = SelectPrimitives.SelectValueProps &
         startIcon?: React.ReactElement;
         endIcon?: React.ReactElement;
         onValueReset: () => void;
+        disabled?: boolean;
     };
 
 const DecoratableSelectTrigger = ({
@@ -345,6 +346,7 @@ const DecoratableSelectTrigger = ({
     endIcon,
     invalid,
     onValueReset,
+    disabled,
     ...props
 }: SelectTriggerProps) => {
     const resetButton = React.useMemo(() => {
@@ -365,10 +367,11 @@ const DecoratableSelectTrigger = ({
                 }
                 size={"xs"}
                 variant={"secondary"}
+                disabled={disabled}
                 asChild
             />
         );
-    }, [hasValue, onValueReset]);
+    }, [hasValue, onValueReset, disabled]);
 
     return (
         <Trigger
@@ -491,18 +494,19 @@ type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
 
 const DecoratableSelectPrimitive = (props: SelectPrimitiveProps) => {
     const { vm, changeValue, resetValue } = useSelect(props);
-    const { size, variant, startIcon, endIcon, invalid, ...selectRootProps } = props;
+    const { size, variant, startIcon, endIcon, invalid, disabled, ...selectRootProps } = props;
 
     return (
         <SelectPrimitiveRenderer
-            selectRootProps={{ ...selectRootProps }}
+            selectRootProps={{ ...selectRootProps, disabled }}
             selectTriggerProps={{
                 ...vm.selectTrigger,
                 size,
                 variant,
                 startIcon,
                 endIcon,
-                invalid
+                invalid,
+                disabled
             }}
             selectOptionsProps={vm.selectOptions}
             onValueChange={changeValue}
