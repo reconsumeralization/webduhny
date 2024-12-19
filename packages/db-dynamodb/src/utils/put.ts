@@ -1,18 +1,21 @@
 import { Entity } from "~/toolbox";
 
-interface Params {
-    entity: Entity;
-    item: {
-        PK: string;
-        SK: string;
-        [key: string]: any;
-    };
+export interface IPutParamsItem {
+    PK: string;
+    SK: string;
+    [key: string]: any;
 }
 
-export const put = async (params: Params) => {
+export interface IPutParams {
+    entity: Entity;
+    item: IPutParamsItem;
+}
+
+export const put = async (params: IPutParams) => {
     const { entity, item } = params;
 
     return await entity.put(item, {
-        execute: true
+        execute: true,
+        strictSchemaCheck: false
     });
 };
