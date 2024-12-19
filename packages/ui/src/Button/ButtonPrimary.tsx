@@ -10,6 +10,6 @@ import { Button as AdminUiButton } from "@webiny/admin-ui";
 export const ButtonPrimary = React.forwardRef<HTMLButtonElement, ButtonProps>(
     function ButtonPrimary(props, ref) {
         const mappedProps = useMappedButtonProps(props);
-        return <AdminUiButton {...props} {...mappedProps} ref={ref} variant={"primary"} />;
+        return <AdminUiButton {...mappedProps} ref={ref} variant={"primary"} />;
     }
 );

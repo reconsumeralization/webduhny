@@ -1,8 +1,7 @@
 import React from "react";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/round/close.svg";
+import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Tag } from "./Tag";
-import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Tag> = {
     title: "Components/Tag",
@@ -18,20 +17,39 @@ type Story = StoryObj<typeof Tag>;
 
 export const Default: Story = {
     args: {
-        label: "Label"
+        content: "Label"
     }
 };
 
-export const WithIcon: Story = {
+export const WithOnClickCallback: Story = {
     args: {
         ...Default.args,
-        icon: <Icon icon={<XIcon />} label={"Close"} size={"sm"} />
+        onClick: evt => {
+            console.log("onClick", evt);
+        }
+    }
+};
+
+export const WithOnDismissCallback: Story = {
+    args: {
+        ...Default.args,
+        onDismiss: evt => {
+            console.log("onDismiss", evt);
+        }
+    }
+};
+
+export const WithCustomDismissIconElement: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        dismissIconElement: <AddIcon />,
+        dismissIconLabel: "Custom dismiss label"
     }
 };
 
 export const NeutralBase: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-base"
     }
 };
@@ -45,7 +63,7 @@ export const NeutralBaseDisabled: Story = {
 
 export const NeutralLight: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-light"
     }
 };
@@ -59,7 +77,7 @@ export const NeutralLightDisabled: Story = {
 
 export const NeutralStrong: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-strong"
     }
 };
@@ -73,7 +91,7 @@ export const NeutralStrongDisabled: Story = {
 
 export const NeutralDark: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "neutral-dark"
     }
 };
@@ -87,7 +105,7 @@ export const NeutralDarkDisabled: Story = {
 
 export const Accent: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "accent"
     }
 };
@@ -101,7 +119,7 @@ export const AccentDisabled: Story = {
 
 export const Success: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "success"
     }
 };
@@ -115,7 +133,7 @@ export const SuccessDisabled: Story = {
 
 export const Warning: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "warning"
     }
 };
@@ -129,7 +147,7 @@ export const WarningDisabled: Story = {
 
 export const Destructive: Story = {
     args: {
-        ...WithIcon.args,
+        ...WithOnDismissCallback.args,
         variant: "destructive"
     }
 };
@@ -138,5 +156,23 @@ export const DestructiveDisabled: Story = {
     args: {
         ...Destructive.args,
         disabled: true
+    }
+};
+
+export const FullExample: Story = {
+    args: WithOnDismissCallback.args,
+    render: args => {
+        return (
+            <div className={"flex gap-sm"}>
+                <Tag {...args} content={"Neutral base"} variant={"neutral-base"} />
+                <Tag {...args} content={"Neutral light"} variant={"neutral-light"} />
+                <Tag {...args} content={"Neutral strong"} variant={"neutral-strong"} />
+                <Tag {...args} content={"Neutral dark"} variant={"neutral-dark"} />
+                <Tag {...args} content={"Success"} variant={"success"} />
+                <Tag {...args} content={"Warning"} variant={"warning"} />
+                <Tag {...args} content={"Destructive"} variant={"destructive"} />
+                <Tag {...args} content={"Accent"} variant={"accent"} />
+            </div>
+        );
     }
 };

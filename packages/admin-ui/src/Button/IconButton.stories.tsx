@@ -1,35 +1,32 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as PencilIcon } from "@material-design-icons/svg/filled/edit.svg";
-import { Button } from "./Button";
+import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
+import { IconButton } from "./IconButton";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Button> = {
-    title: "Components/Button",
-    component: Button,
-    // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+const meta: Meta<typeof IconButton> = {
+    title: "Components/Icon Button",
+    component: IconButton,
     tags: ["autodocs"],
-    // More on argTypes: https://storybook.js.org/docs/api/argtypes
     argTypes: {
         variant: {
             control: "select",
             options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"]
         },
-        size: { control: "select", options: ["sm", "md", "lg", "xl"] },
+        size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl"] },
+        iconSize: { control: "select", options: ["default", "lg"] },
         disabled: { control: "boolean" },
-        text: { control: "text" },
-        // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onClick argument.
+        asChild: { control: "boolean" },
         onClick: { action: "onClick" }
     }
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof IconButton>;
 
 export const Primary: Story = {
     args: {
         variant: "primary",
-        text: "Button"
+        icon: <AddIcon />
     }
 };
 
@@ -68,10 +65,32 @@ export const GhostNegative: Story = {
     }
 };
 
+export const DoubleExtraSmall: Story = {
+    args: {
+        ...Primary.args,
+        size: "xxs"
+    }
+};
+
+export const ExtraSmall: Story = {
+    args: {
+        ...Primary.args,
+        size: "xs"
+    }
+};
+
 export const Small: Story = {
     args: {
         ...Primary.args,
         size: "sm"
+    }
+};
+
+export const SmallWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "sm",
+        iconSize: "lg"
     }
 };
 
@@ -82,10 +101,26 @@ export const Medium: Story = {
     }
 };
 
+export const MediumWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "md",
+        iconSize: "lg"
+    }
+};
+
 export const Large: Story = {
     args: {
         ...Primary.args,
         size: "lg"
+    }
+};
+
+export const LargeWithLargeIcon: Story = {
+    args: {
+        ...Primary.args,
+        size: "lg",
+        iconSize: "lg"
     }
 };
 
@@ -96,25 +131,14 @@ export const ExtraLarge: Story = {
     }
 };
 
-export const WithIcon: Story = {
-    args: {
-        ...Primary.args,
-        icon: <PencilIcon />
-    }
-};
-
-export const WithIconPositionEnd: Story = {
-    args: {
-        ...Primary.args,
-        icon: <PencilIcon />,
-        iconPosition: "end"
-    }
-};
-
 export const WithAsChild: Story = {
     args: {
         ...Primary.args,
         asChild: true,
-        text: <span>Button</span>
+        icon: (
+            <span>
+                <AddIcon />
+            </span>
+        )
     }
 };

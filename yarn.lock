@@ -19321,7 +19321,6 @@ __metadata:
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:^11.10.6"
     "@material-design-icons/svg": "npm:^0.14.3"
-    "@rmwc/chip": "npm:^14.2.2"
     "@rmwc/data-table": "npm:^14.2.2"
     "@rmwc/dialog": "npm:^14.2.2"
     "@rmwc/drawer": "npm:^14.2.2"
