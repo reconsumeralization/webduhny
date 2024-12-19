@@ -30,7 +30,7 @@ export class ApiExtension extends AbstractExtension {
         const indexTsxFilePath = `${extensionsFolderPath}/src/index.ts`;
 
         return [
-            `run (or restart if already running) ${chalk.green(watchCommand)} to start local development`,
+            `run ${chalk.green(watchCommand)} to start local development`,
             `open ${chalk.green(indexTsxFilePath)} and start coding`,
             `to install additional dependencies, run ${chalk.green(
                 `yarn workspace ${this.params.packageName} add <package-name>`
