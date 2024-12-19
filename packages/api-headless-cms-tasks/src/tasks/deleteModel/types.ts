@@ -15,7 +15,7 @@ export enum DeleteCmsModelTaskStatus {
     RUNNING = "running",
     DONE = "done",
     ERROR = "error",
-    ABORTED = "aborted"
+    CANCELED = "canceled"
 }
 
 export interface IDeleteCmsModelTask {
@@ -28,6 +28,8 @@ export interface IDeleteCmsModelTask {
 
 export interface IStoreValue {
     modelId: string;
-    task: string;
+    tenant: string;
+    locale: string;
     identity: CmsIdentity;
+    task: string;
 }

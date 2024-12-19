@@ -1,6 +1,6 @@
 import zod from "zod";
 import { ContextPlugin } from "@webiny/api";
-import { CmsGraphQLSchemaPlugin } from "@webiny/api-headless-cms";
+import { CmsGraphQLSchemaPlugin, isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { validateConfirmation } from "../helpers/confirmation";
 import type { HcmsTasksContext } from "~/types";
 import { createResolverDecorator, ErrorResponse, resolve, Response } from "@webiny/handler-graphql";
@@ -27,7 +27,7 @@ const deleteValidation = zod
     })
     .readonly();
 
-const abortValidation = zod
+const cancelValidation = zod
     .object({
         modelId: zod.string()
     })
@@ -41,6 +41,11 @@ const getValidation = zod
 
 export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksContext>() => {
     const contextPlugin = new ContextPlugin<T>(async context => {
+        const ready = await isHeadlessCmsReady(context);
+        if (!ready) {
+            return;
+        }
+
         attachDeleteModelCrud({ context });
 
         const plugin = new CmsGraphQLSchemaPlugin<T>({
@@ -49,7 +54,7 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                     running
                     done
                     error
-                    aborted
+                    canceled
                 }
                 type DeleteCmsModelTask {
                     id: ID!
@@ -68,7 +73,7 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                     error: CmsError
                 }
 
-                type AbortDeleteCmsModelResponse {
+                type CancelDeleteCmsModelResponse {
                     data: DeleteCmsModelTask
                     error: CmsError
                 }
@@ -89,7 +94,7 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                         modelId: ID!
                         confirmation: String!
                     ): FullyDeleteCmsModelResponse!
-                    abortDeleteModel(modelId: ID!): AbortDeleteCmsModelResponse!
+                    cancelFullyDeleteModel(modelId: ID!): CancelDeleteCmsModelResponse!
                 }
             `,
             resolvers: {
@@ -124,13 +129,13 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             return await context.cms.fullyDeleteModel(input.data.modelId);
                         });
                     },
-                    abortDeleteModel: async (_, args) => {
+                    cancelFullyDeleteModel: async (_, args) => {
                         return resolve<IDeleteCmsModelTask>(async () => {
-                            const input = abortValidation.safeParse(args);
+                            const input = cancelValidation.safeParse(args);
                             if (input.error) {
                                 throw createZodError(input.error);
                             }
-                            return await context.cms.abortDeleteModel(input.data.modelId);
+                            return await context.cms.cancelFullyDeleteModel(input.data.modelId);
                         });
                     }
                 }
@@ -151,14 +156,17 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             const listed = result.data as CmsModel[];
 
                             try {
-                                const models = await context.cms.listGettingDeletedModels();
+                                const beingDeletedList = await context.cms.listModelsBeingDeleted();
 
                                 return new Response(
                                     listed.filter(model => {
                                         if (!model?.modelId) {
                                             return false;
-                                        }
-                                        if (models.includes(model.modelId)) {
+                                        } else if (
+                                            beingDeletedList.some(
+                                                item => item.modelId === model.modelId
+                                            )
+                                        ) {
                                             return false;
                                         }
                                         return true;
