@@ -96,7 +96,7 @@ export const MultiAutoCompleteList = ({
 
             return renderedItems;
         },
-        [onOptionSelect, temporaryOption, onOptionCreate, isEmpty]
+        [onOptionSelect, temporaryOption, onOptionCreate, isEmpty, optionRenderer]
     );
 
     return (

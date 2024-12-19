@@ -21,6 +21,7 @@ type MultiAutoCompleteInputProps = VariantProps<typeof multiAutoCompleteInputVar
         openList: () => void;
         placeholder: string;
         removeSelectedOption: (value: string) => void;
+        selectedOptionRenderer?: (item: any, index: number) => React.ReactNode;
         selectedOptions: CommandOptionFormatted[];
         value: string;
     };
@@ -34,6 +35,7 @@ const MultiAutoCompleteInput = ({
     openList,
     placeholder,
     removeSelectedOption,
+    selectedOptionRenderer,
     selectedOptions,
     size,
     startIcon,
@@ -44,6 +46,33 @@ const MultiAutoCompleteInput = ({
 }: MultiAutoCompleteInputProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const iconPosition = getIconPosition(startIcon, endIcon);
+
+    const renderSelectedOptions = React.useCallback(
+        (options: CommandOptionFormatted[]) => {
+            return options.map((option, index) => {
+                if (selectedOptionRenderer) {
+                    console.log("qui");
+                    return selectedOptionRenderer.call(this, option, index);
+                }
+
+                return (
+                    <Tag
+                        key={`tag-${option.value}-${index}`}
+                        variant={"neutral-light"}
+                        label={option.label}
+                        icon={
+                            <Icon
+                                label={"Remove option"}
+                                icon={<Close />}
+                                onClick={() => removeSelectedOption(option.value)}
+                            />
+                        }
+                    />
+                );
+            });
+        },
+        [selectedOptionRenderer, removeSelectedOption]
+    );
 
     return (
         <div
@@ -75,22 +104,7 @@ const MultiAutoCompleteInput = ({
                 />
             )}
             <div className="relative flex flex-wrap gap-xs">
-                {selectedOptions.map((option, index) => {
-                    return (
-                        <Tag
-                            key={`tag-${option.value}-${index}`}
-                            variant={"neutral-light"}
-                            label={option.label}
-                            icon={
-                                <Icon
-                                    label={"Remove option"}
-                                    icon={<Close />}
-                                    onClick={() => removeSelectedOption(option.value)}
-                                />
-                            }
-                        />
-                    );
-                })}
+                {renderSelectedOptions(selectedOptions)}
                 <Command.Input
                     className={"flex-1 bg-transparent border-none outline-none"}
                     value={value}

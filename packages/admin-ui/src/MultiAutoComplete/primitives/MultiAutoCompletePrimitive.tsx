@@ -11,17 +11,18 @@ import { MultiAutoCompleteOption } from "./domains";
 
 type MultiAutoCompletePrimitiveProps = CommandProps &
     InputPrimitiveProps & {
+        allowFreeInput?: boolean;
         emptyMessage?: React.ReactNode;
         isLoading?: boolean;
         loadingMessage?: React.ReactNode;
         onOpenChange?: (open: boolean) => void;
-        onValuesReset?: () => void;
         onValuesChange: (values: string[]) => void;
+        onValuesReset?: () => void;
         optionRenderer?: (item: any, index: number) => React.ReactNode;
         options?: MultiAutoCompleteOption[];
-        values: string[];
-        allowFreeInput?: boolean;
+        selectedOptionRenderer?: (item: any, index: number) => React.ReactNode;
         uniqueValues?: boolean;
+        values: string[];
     };
 
 const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
@@ -80,6 +81,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 size={props.size}
                 invalid={props.invalid}
                 removeSelectedOption={removeSelectedOption}
+                selectedOptionRenderer={props.selectedOptionRenderer}
                 selectedOptions={vm.selectedOptionsVm.options}
                 disabled={props.disabled}
                 startIcon={props.startIcon}
