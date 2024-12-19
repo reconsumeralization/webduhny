@@ -16,13 +16,13 @@ export interface RmwcChipProps {
     id?: string;
     /** @deprecated Includes an optional checkmark for the chips selected state. */
     checkmark?: boolean;
-    /** Additional children will be rendered in the text area. */
+    /** @deprecated Additional children will be rendered in the text area. */
     children?: React.ReactNode;
     /** A callback for click or enter key. This should be used over onClick for accessibility reasons. evt.detail = { chipId: string }  */
     onInteraction?: (evt: any) => void;
     /** @deprecated A callback for click or enter key for the trailing icon. material-components-web always treats this as an intent to remove the chip. evt.detail = { chipId: string } */
     onTrailingIconInteraction?: (evt: any) => void;
-    /** @deprecated A callback that is fired once the chip is in an exited state from removing it. evt.detail = { chipId: string } */
+    /** A callback that is fired once the chip is in an exited state from removing it. evt.detail = { chipId: string } */
     onRemove?: (evt: any) => void;
     /** @deprecated Advanced: A reference to the MDCFoundation. */
     foundationRef?: any;
@@ -42,15 +42,38 @@ export interface ChipProps extends Omit<RmwcChipProps, "onRemove" | "trailingIco
 export const Chip = (props: ChipProps) => {
     const { children, label, trailingIcon, onRemove, onInteraction, ...rest } = props;
 
+    const getEventWithDetails = useCallback(
+        (ev: React.SyntheticEvent<HTMLSpanElement>) => {
+            return {
+                ...ev,
+                detail: {
+                    chipId: props.id
+                }
+            };
+        },
+        [props.id]
+    );
+
     const onRemoveCb = useCallback(
         (ev: React.SyntheticEvent<HTMLSpanElement>) => {
             if (!onRemove) {
                 return;
             }
 
-            onRemove(ev);
+            onRemove(getEventWithDetails(ev));
         },
         [onRemove]
+    );
+
+    const onClick = useCallback(
+        (ev: React.SyntheticEvent<HTMLSpanElement>) => {
+            if (!onInteraction) {
+                return;
+            }
+
+            onInteraction(getEventWithDetails(ev));
+        },
+        [onInteraction]
     );
 
     const createIconElement = useCallback((icon: React.ReactNode) => {
@@ -67,7 +90,7 @@ export const Chip = (props: ChipProps) => {
             content={children || label}
             dismissIconElement={createIconElement(trailingIcon)}
             onDismiss={onRemoveCb}
-            onClick={onInteraction}
+            onClick={onClick}
         />
     );
 };

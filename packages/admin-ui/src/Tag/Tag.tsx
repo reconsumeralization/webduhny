@@ -125,7 +125,10 @@ const DecoratableTag = ({
                     size={"xxs"}
                     variant={iconVariant}
                     disabled={disabled}
-                    onClick={onDismiss}
+                    onClick={event => {
+                        event.stopPropagation();
+                        onDismiss(event);
+                    }}
                 />
             )}
         </span>
