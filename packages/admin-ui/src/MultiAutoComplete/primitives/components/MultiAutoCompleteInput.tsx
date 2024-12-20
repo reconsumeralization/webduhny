@@ -1,9 +1,7 @@
 import React from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
 import { getIconPosition, InputIcon, InputPrimitiveProps, inputVariants } from "~/Input";
 import { Command, CommandOptionFormatted } from "~/Command";
 import { Tag } from "~/Tag";
-import { Icon } from "~/Icon";
 import { cn, cva, VariantProps } from "~/utils";
 
 const multiAutoCompleteInputVariants = cva("relative", {
@@ -51,7 +49,6 @@ const MultiAutoCompleteInput = ({
         (options: CommandOptionFormatted[]) => {
             return options.map((option, index) => {
                 if (selectedOptionRenderer) {
-                    console.log("qui");
                     return selectedOptionRenderer.call(this, option, index);
                 }
 
@@ -59,14 +56,8 @@ const MultiAutoCompleteInput = ({
                     <Tag
                         key={`tag-${option.value}-${index}`}
                         variant={"neutral-light"}
-                        label={option.label}
-                        icon={
-                            <Icon
-                                label={"Remove option"}
-                                icon={<Close />}
-                                onClick={() => removeSelectedOption(option.value)}
-                            />
-                        }
+                        content={option.label}
+                        onDismiss={() => removeSelectedOption(option.value)}
                     />
                 );
             });

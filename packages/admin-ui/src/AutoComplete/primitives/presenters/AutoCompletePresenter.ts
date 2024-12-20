@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { CommandOption } from "~/Command/CommandOption";
+import { CommandOption } from "~/Command/domain/CommandOption";
 import { IAutoCompleteInputPresenter } from "./AutoCompleteInputPresenter";
 import { IAutoCompleteListOptionsPresenter } from "./AutoCompleteListOptionsPresenter";
 import { AutoCompleteOption } from "../domains";

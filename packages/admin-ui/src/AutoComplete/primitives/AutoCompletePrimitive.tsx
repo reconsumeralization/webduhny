@@ -1,21 +1,52 @@
 import React, { KeyboardEvent } from "react";
-import { Command, CommandProps } from "~/Command";
+import { Command } from "~/Command";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
 import { AutoCompleteOption } from "./domains";
 
-type AutoCompletePrimitiveProps = CommandProps &
-    InputPrimitiveProps & {
-        emptyMessage?: React.ReactNode;
-        isLoading?: boolean;
-        loadingMessage?: React.ReactNode;
-        onOpenChange?: (open: boolean) => void;
-        onValueChange: (value: string) => void;
-        onValueReset?: () => void;
-        options?: AutoCompleteOption[];
-        optionRenderer?: (item: any, index: number) => React.ReactNode;
-    };
+type AutoCompletePrimitiveProps = InputPrimitiveProps & {
+    /**
+     * Accessible label for the command menu. Not shown visibly.
+     */
+    label?: string;
+    /**
+     * Message to display when there are no options.
+     */
+    emptyMessage?: React.ReactNode;
+    /**
+     * Indicates if the autocomplete is loading options.
+     */
+    isLoading?: boolean;
+    /**
+     * Message to display while loading options.
+     */
+    loadingMessage?: React.ReactNode;
+    /**
+     * Callback triggered when the open state changes.
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
+     * Callback triggered when the value changes.
+     */
+    onValueChange: (value: string) => void;
+    /**
+     * Callback triggered to reset the value.
+     */
+    onValueReset?: () => void;
+    /**
+     * List of options for the autocomplete.
+     */
+    options?: AutoCompleteOption[];
+    /**
+     * Custom renderer for the options.
+     */
+    optionRenderer?: (item: any, index: number) => React.ReactNode;
+    /**
+     * Optional selected item.
+     */
+    value?: string;
+};
 
 const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     const { vm, setListOpenState, setSelectedOption, searchOption, resetSelectedOption } =
@@ -23,16 +54,26 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
 
     const handleKeyDown = React.useCallback(
         (event: KeyboardEvent<HTMLDivElement>) => {
+            if (props.disabled) {
+                return;
+            }
+
+            if (!vm.optionsListVm.isOpen) {
+                setListOpenState(true);
+            }
+
             if (event.key.toLowerCase() === "escape") {
                 setListOpenState(false);
             }
 
             if (event.key.toLowerCase() === "backspace") {
                 setListOpenState(true);
+                const inputValue = (event.target as HTMLInputElement).value;
                 setSelectedOption("");
+                searchOption(inputValue);
             }
         },
-        [setListOpenState, setSelectedOption]
+        [props.disabled, setListOpenState, setSelectedOption]
     );
 
     const handleSelectOption = React.useCallback(
@@ -44,7 +85,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Command onKeyDown={handleKeyDown}>
+        <Command label={props.label} onKeyDown={handleKeyDown}>
             <Command.Input
                 value={vm.inputVm.value}
                 onValueChange={searchOption}

@@ -1,4 +1,4 @@
-import { CommandOption } from "~/Command/CommandOption";
+import { CommandOption } from "~/Command/domain/CommandOption";
 import {
     IMultiAutoCompleteListOptionsPresenter,
     IMultiAutoCompleteListOptionsPresenterParams

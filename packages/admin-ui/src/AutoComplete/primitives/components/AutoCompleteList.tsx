@@ -1,5 +1,5 @@
 import React from "react";
-import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
+import { CommandOptionFormatted } from "~/Command/domain/CommandOptionFormatted";
 import { Command } from "~/Command";
 import { cn, cva } from "~/utils";
 
@@ -77,9 +77,12 @@ export const AutoCompleteList = ({
         <div className="relative">
             <div className={cn(autoCompleteListWrapperVariants({ isOpen }))}>
                 <Command.List {...props}>
-                    {isLoading ? <Command.Loading>{loadingMessage}</Command.Loading> : null}
-                    {renderOptions(options)}
-                    {!isLoading ? <Command.Empty>{emptyMessage}</Command.Empty> : null}
+                    {isLoading ? (
+                        <Command.Loading>{loadingMessage}</Command.Loading>
+                    ) : (
+                        renderOptions(options)
+                    )}
+                    {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
                 </Command.List>
             </div>
         </div>

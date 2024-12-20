@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from "react";
-import { Command, CommandProps } from "~/Command";
+import { Command } from "~/Command";
 import { InputPrimitiveProps } from "~/Input";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
 import {
@@ -9,21 +9,60 @@ import {
 } from "./components";
 import { MultiAutoCompleteOption } from "./domains";
 
-type MultiAutoCompletePrimitiveProps = CommandProps &
-    InputPrimitiveProps & {
-        allowFreeInput?: boolean;
-        emptyMessage?: React.ReactNode;
-        isLoading?: boolean;
-        loadingMessage?: React.ReactNode;
-        onOpenChange?: (open: boolean) => void;
-        onValuesChange: (values: string[]) => void;
-        onValuesReset?: () => void;
-        optionRenderer?: (item: any, index: number) => React.ReactNode;
-        options?: MultiAutoCompleteOption[];
-        selectedOptionRenderer?: (item: any, index: number) => React.ReactNode;
-        uniqueValues?: boolean;
-        values: string[];
-    };
+type MultiAutoCompletePrimitiveProps = InputPrimitiveProps & {
+    /**
+     * Accessible label for the command menu. Not shown visibly.
+     */
+    label?: string;
+    /**
+     * Allows free input of values not present in the options.
+     */
+    allowFreeInput?: boolean;
+    /**
+     * Message to display when there are no options.
+     */
+    emptyMessage?: React.ReactNode;
+    /**
+     * Indicates if the autocomplete is loading options.
+     */
+    isLoading?: boolean;
+    /**
+     * Message to display while loading options.
+     */
+    loadingMessage?: React.ReactNode;
+    /**
+     * Callback triggered when the open state changes.
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
+     * Callback triggered when the values change.
+     */
+    onValuesChange: (values: string[]) => void;
+    /**
+     * Callback triggered to reset the values.
+     */
+    onValuesReset?: () => void;
+    /**
+     * Custom renderer for the options.
+     */
+    optionRenderer?: (item: any, index: number) => React.ReactNode;
+    /**
+     * List of options for the autocomplete.
+     */
+    options?: MultiAutoCompleteOption[];
+    /**
+     * Custom renderer for the selected options.
+     */
+    selectedOptionRenderer?: (item: any, index: number) => React.ReactNode;
+    /**
+     * Ensures that each value is unique.
+     */
+    uniqueValues?: boolean;
+    /**
+     * Optional selected items.
+     */
+    values: string[];
+};
 
 const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     const {
@@ -70,7 +109,11 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Command onKeyDown={handleKeyDown} className={"h-auto overflow-visible"}>
+        <Command
+            label={props.label}
+            onKeyDown={handleKeyDown}
+            className={"h-auto overflow-visible"}
+        >
             <MultiAutoCompleteInput
                 value={vm.inputVm.value}
                 placeholder={vm.inputVm.placeholder}
@@ -95,15 +138,16 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
             />
 
             <MultiAutoCompleteList
-                options={vm.optionsListVm.options}
-                temporaryOption={vm.temporaryOptionVm.option}
-                onOptionSelect={handleSelectOption}
-                onOptionCreate={handleCreateOption}
+                emptyMessage={vm.optionsListVm.emptyMessage}
+                isEmpty={vm.optionsListVm.isEmpty}
                 isLoading={props.isLoading}
                 isOpen={vm.optionsListVm.isOpen}
-                isEmpty={vm.optionsListVm.isEmpty}
-                emptyMessage={vm.optionsListVm.emptyMessage}
+                loadingMessage={vm.optionsListVm.loadingMessage}
+                onOptionCreate={handleCreateOption}
+                onOptionSelect={handleSelectOption}
                 optionRenderer={props.optionRenderer}
+                options={vm.optionsListVm.options}
+                temporaryOption={vm.temporaryOptionVm.option}
             />
         </Command>
     );

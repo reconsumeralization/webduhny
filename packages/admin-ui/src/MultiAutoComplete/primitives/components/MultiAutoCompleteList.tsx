@@ -1,9 +1,7 @@
 import React from "react";
-import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
+import { CommandOptionFormatted } from "~/Command/domain/CommandOptionFormatted";
 import { Command } from "~/Command";
 import { cn, cva } from "~/utils";
-import { Item } from "~/Command/Item";
-import { Separator } from "~/Command/Separator";
 
 const multiAutoCompleteListWrapperVariants = cva(
     "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
@@ -49,11 +47,11 @@ export const MultiAutoCompleteList = ({
                 return null;
             }
 
-            const elements = [<Item key={"dummy-element"} value="-" className="hidden" />];
+            const elements = [<Command.Item key={"dummy-element"} value="-" className="hidden" />];
 
             const renderedItems = items.reduce((acc, item, currentIndex) => {
                 acc.push(
-                    <Item
+                    <Command.Item
                         key={`item-${item.value}-${currentIndex}`}
                         value={item.value}
                         keywords={[item.label]}
@@ -65,12 +63,12 @@ export const MultiAutoCompleteList = ({
                         {optionRenderer && item.item
                             ? optionRenderer.call(this, item.item, currentIndex)
                             : item.label}
-                    </Item>
+                    </Command.Item>
                 );
 
                 // Conditionally render the separator if `separator` is true
                 if (item.separator) {
-                    acc.push(<Separator key={`separator-${item.value ?? currentIndex}`} />);
+                    acc.push(<Command.Separator key={`separator-${item.value ?? currentIndex}`} />);
                 }
 
                 return acc;
@@ -78,7 +76,7 @@ export const MultiAutoCompleteList = ({
 
             if (temporaryOption?.value) {
                 renderedItems.push(
-                    <Item
+                    <Command.Item
                         key={`temporary-${temporaryOption.value}`}
                         value={temporaryOption.value}
                         keywords={[temporaryOption.label]}
@@ -90,7 +88,7 @@ export const MultiAutoCompleteList = ({
                         onMouseDown={event => event.preventDefault()}
                     >
                         {`Add "${temporaryOption.label}" as new option`}
-                    </Item>
+                    </Command.Item>
                 );
             }
 
@@ -103,9 +101,12 @@ export const MultiAutoCompleteList = ({
         <div className="relative">
             <div className={cn(multiAutoCompleteListWrapperVariants({ isOpen }))}>
                 <Command.List {...props}>
-                    {isLoading ? <Command.Loading>{loadingMessage}</Command.Loading> : null}
-                    {renderOptions(options)}
-                    {!isLoading ? <Command.Empty>{emptyMessage}</Command.Empty> : null}
+                    {isLoading ? (
+                        <Command.Loading>{loadingMessage}</Command.Loading>
+                    ) : (
+                        renderOptions(options)
+                    )}
+                    {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
                 </Command.List>
             </div>
         </div>

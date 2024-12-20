@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
-import { CommandOptionFormatted } from "~/Command/CommandOptionFormatted";
-import { CommandOptionFormatter } from "~/Command/CommandOptionFormatter";
-import { CommandOption } from "~/Command/CommandOption";
+import { CommandOptionFormatted } from "~/Command/domain/CommandOptionFormatted";
+import { CommandOptionFormatter } from "~/Command/domain/CommandOptionFormatter";
+import { CommandOption } from "~/Command/domain/CommandOption";
 import { ListCache } from "../domains";
 
 interface IMultiAutoCompleteSelectedOptionsParams {

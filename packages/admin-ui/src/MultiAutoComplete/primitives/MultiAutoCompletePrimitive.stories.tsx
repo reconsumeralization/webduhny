@@ -14,7 +14,7 @@ const meta: Meta<typeof MultiAutoCompletePrimitive> = {
         layout: "padded"
     },
     argTypes: {
-        onValueChange: { action: "onValueChange" },
+        onValuesChange: { action: "onValuesChange" },
         onOpenChange: { action: "onOpenChange" }
     },
     render: args => {
@@ -163,7 +163,7 @@ export const GhostVariantInvalid: Story = {
 export const WithPredefinedValue: Story = {
     args: {
         ...Default.args,
-        value: "Eastern Standard Time (EST)"
+        values: ["Eastern Standard Time (EST)"]
     }
 };
 
