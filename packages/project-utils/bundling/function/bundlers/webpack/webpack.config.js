@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const { version } = require("@webiny/project-utils/package.json");
-const { getOutput, getEntry } = require("./utils");
+const { getOutput, getEntry } = require("../../utils");
 const WebpackBar = require("webpackbar");
 
 module.exports = options => {
