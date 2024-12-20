@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
-import { ReactComponent as TimerIcon } from "@material-design-icons/svg/outlined/timer.svg";
 import { AutoCompletePrimitive } from "./AutoCompletePrimitive";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
@@ -81,21 +80,6 @@ export const WithStartIcon: Story = {
     args: {
         ...Default.args,
         startIcon: <Icon label={"Search"} icon={<SearchIcon />} />
-    }
-};
-
-export const WithEndIconIcon: Story = {
-    args: {
-        ...Default.args,
-        endIcon: <Icon label={"Timezones"} icon={<TimerIcon />} />
-    }
-};
-
-export const WithStartAndEndIcons: Story = {
-    args: {
-        ...Default.args,
-        startIcon: <Icon label={"Search"} icon={<SearchIcon />} />,
-        endIcon: <Icon label={"Timezones"} icon={<TimerIcon />} />
     }
 };
 
@@ -222,7 +206,6 @@ export const WithCustomOptionRenderer: Story = {
                 value: "est",
                 item: {
                     name: "Eastern Standard Time (EST)",
-                    hour: "+",
                     time_difference: "-5:00",
                     flag: "🇺🇸"
                 }

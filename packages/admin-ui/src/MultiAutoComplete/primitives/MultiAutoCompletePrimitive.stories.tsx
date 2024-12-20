@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
-import { ReactComponent as TimerIcon } from "@material-design-icons/svg/outlined/timer.svg";
 import { MultiAutoCompletePrimitive } from "./MultiAutoCompletePrimitive";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
+import { Tag } from "~/Tag";
 
 const meta: Meta<typeof MultiAutoCompletePrimitive> = {
     title: "Components/Form Primitives/Multi Autocomplete",
@@ -79,21 +79,6 @@ export const WithStartIcon: Story = {
     args: {
         ...Default.args,
         startIcon: <Icon label={"Search"} icon={<SearchIcon />} />
-    }
-};
-
-export const WithEndIconIcon: Story = {
-    args: {
-        ...Default.args,
-        endIcon: <Icon label={"Timezones"} icon={<TimerIcon />} />
-    }
-};
-
-export const WithStartAndEndIcons: Story = {
-    args: {
-        ...Default.args,
-        startIcon: <Icon label={"Search"} icon={<SearchIcon />} />,
-        endIcon: <Icon label={"Timezones"} icon={<TimerIcon />} />
     }
 };
 
@@ -232,9 +217,9 @@ export const WithCustomOptionRenderer: Story = {
                 value: "est",
                 item: {
                     name: "Eastern Standard Time (EST)",
-                    hour: "+",
                     time_difference: "-5:00",
-                    flag: "🇺🇸"
+                    flag: "🇺🇸",
+                    value: "est"
                 }
             },
             {
@@ -243,7 +228,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Central Standard Time (CST)",
                     time_difference: "-6:00",
-                    flag: "🇺🇸"
+                    flag: "🇺🇸",
+                    value: "cst"
                 }
             },
             {
@@ -252,7 +238,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Pacific Standard Time (PST)",
                     time_difference: "-8:00",
-                    flag: "🇺🇸"
+                    flag: "🇺🇸",
+                    value: "pst"
                 }
             },
             {
@@ -261,7 +248,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Greenwich Mean Time (GMT)",
                     time_difference: "±0:00",
-                    flag: "🇬🇧"
+                    flag: "🇬🇧",
+                    value: "gmt"
                 }
             },
             {
@@ -270,7 +258,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Central European Time (CET)",
                     time_difference: "+1:00",
-                    flag: "🇪🇺"
+                    flag: "🇪🇺",
+                    value: "cet"
                 }
             },
             {
@@ -279,7 +268,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Central Africa Time (CAT)",
                     time_difference: "+2:00",
-                    flag: "🇿🇦"
+                    flag: "🇿🇦",
+                    value: "cat"
                 }
             },
             {
@@ -288,7 +278,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "India Standard Time (IST)",
                     time_difference: "+5:30",
-                    flag: "🇮🇳"
+                    flag: "🇮🇳",
+                    value: "ist"
                 }
             },
             {
@@ -297,7 +288,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "China Standard Time (CST)",
                     time_difference: "+8:00",
-                    flag: "🇨🇳"
+                    flag: "🇨🇳",
+                    value: "cst_china"
                 }
             },
             {
@@ -306,7 +298,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Japan Standard Time (JST)",
                     time_difference: "+9:00",
-                    flag: "🇯🇵"
+                    flag: "🇯🇵",
+                    value: "jst"
                 }
             },
             {
@@ -315,7 +308,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Australian Western Standard Time (AWST)",
                     time_difference: "+8:00",
-                    flag: "🇦🇺"
+                    flag: "🇦🇺",
+                    value: "awst"
                 }
             },
             {
@@ -324,17 +318,18 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "New Zealand Standard Time (NZST)",
                     time_difference: "+12:00",
-                    flag: "🇳🇿"
+                    flag: "🇳🇿",
+                    value: "nzst"
                 }
             },
             {
                 label: "Fiji Time (FJT)",
                 value: "fjt",
-                separator: true,
                 item: {
                     name: "Fiji Time (FJT)",
                     time_difference: "+12:00",
-                    flag: "🇫🇯"
+                    flag: "🇫🇯",
+                    value: "fjt"
                 }
             },
             {
@@ -343,7 +338,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Argentina Time (ART)",
                     time_difference: "-3:00",
-                    flag: "🇦🇷"
+                    flag: "🇦🇷",
+                    value: "art"
                 }
             },
             {
@@ -352,7 +348,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Bolivia Time (BOT)",
                     time_difference: "-4:00",
-                    flag: "🇧🇴"
+                    flag: "🇧🇴",
+                    value: "bot"
                 }
             },
             {
@@ -361,7 +358,8 @@ export const WithCustomOptionRenderer: Story = {
                 item: {
                     name: "Brasilia Time (BRT)",
                     time_difference: "-3:00",
-                    flag: "🇧🇷"
+                    flag: "🇧🇷",
+                    value: "brt"
                 }
             }
         ],
@@ -376,6 +374,39 @@ export const WithCustomOptionRenderer: Story = {
                 </div>
             );
         }
+    }
+};
+
+export const WithCustomSelectedOptionRenderer: Story = {
+    args: {
+        ...WithCustomOptionRenderer.args
+    },
+    render: args => {
+        const [values, setValues] = useState(args.values);
+        const selectedOptionRenderer = (item: any) => {
+            return (
+                <Tag
+                    variant={"neutral-base"}
+                    content={
+                        <>
+                            {item.flag} {item.name}
+                        </>
+                    }
+                    onDismiss={() => setValues(values.filter(value => value !== item.value))}
+                />
+            );
+        };
+        return (
+            <div className={"w-full"}>
+                <MultiAutoCompletePrimitive
+                    {...args}
+                    values={values}
+                    onValuesChange={setValues}
+                    selectedOptionRenderer={selectedOptionRenderer}
+                />
+                <div className={"mt-4 text-center"}>Current selected values: {values}</div>
+            </div>
+        );
     }
 };
 

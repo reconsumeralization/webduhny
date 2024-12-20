@@ -9,7 +9,10 @@ import {
 } from "./components";
 import { MultiAutoCompleteOption } from "./domains";
 
-type MultiAutoCompletePrimitiveProps = InputPrimitiveProps & {
+type MultiAutoCompletePrimitiveProps = Omit<
+    InputPrimitiveProps,
+    "endIcon" | "value" | "onValueChange"
+> & {
     /**
      * Accessible label for the command menu. Not shown visibly.
      */

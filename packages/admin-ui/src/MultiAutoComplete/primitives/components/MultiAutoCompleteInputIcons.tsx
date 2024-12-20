@@ -1,8 +1,8 @@
 import React from "react";
 import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
 import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
-import { Button } from "~/Button";
 
 interface MultiAutoCompleteInputIconsProps {
     hasValue: boolean;
@@ -14,10 +14,10 @@ export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsPr
     return (
         <div className={"flex items-center gap-sm"}>
             {props.hasValue && (
-                <Button
+                <IconButton
                     size={"xs"}
                     variant={"secondary"}
-                    icon={<Icon icon={<Close />} label="Clear" />}
+                    icon={<Icon icon={<Close />} label={"Reset"} />}
                     onClick={event => {
                         event.stopPropagation();
                         props.onResetValue();
@@ -25,7 +25,7 @@ export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsPr
                 />
             )}
             <Icon
-                className="h-md w-md"
+                size={"sm"}
                 icon={<ChevronDown />}
                 label={"Open list"}
                 onClick={event => {

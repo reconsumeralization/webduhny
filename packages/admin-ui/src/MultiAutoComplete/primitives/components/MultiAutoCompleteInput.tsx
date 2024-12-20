@@ -48,8 +48,8 @@ const MultiAutoCompleteInput = ({
     const renderSelectedOptions = React.useCallback(
         (options: CommandOptionFormatted[]) => {
             return options.map((option, index) => {
-                if (selectedOptionRenderer) {
-                    return selectedOptionRenderer.call(this, option, index);
+                if (selectedOptionRenderer && option.item) {
+                    return selectedOptionRenderer.call(this, option.item, index);
                 }
 
                 return (

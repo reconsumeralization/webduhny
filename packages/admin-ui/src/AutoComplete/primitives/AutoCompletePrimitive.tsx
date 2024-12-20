@@ -5,7 +5,7 @@ import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
 import { AutoCompleteOption } from "./domains";
 
-type AutoCompletePrimitiveProps = InputPrimitiveProps & {
+type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     /**
      * Accessible label for the command menu. Not shown visibly.
      */
