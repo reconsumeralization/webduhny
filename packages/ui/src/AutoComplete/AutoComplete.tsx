@@ -43,10 +43,6 @@ export const AutoComplete = ({
             return "md";
         }
 
-        if (size === "large") {
-            return "lg";
-        }
-
         return "lg";
     }, [size]);
 

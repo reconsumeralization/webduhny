@@ -98,6 +98,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                 endIcon={
                     <AutoCompleteInputIcons
                         hasValue={vm.inputVm.hasValue}
+                        isDisabled={props.disabled}
                         onResetValue={resetSelectedOption}
                         onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
                     />

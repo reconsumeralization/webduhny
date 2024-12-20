@@ -15,7 +15,12 @@ const meta: Meta<typeof MultiAutoCompletePrimitive> = {
     },
     argTypes: {
         onValuesChange: { action: "onValuesChange" },
-        onOpenChange: { action: "onOpenChange" }
+        onOpenChange: { action: "onOpenChange" },
+        disabled: {
+            control: {
+                type: "boolean"
+            }
+        }
     },
     render: args => {
         const [values, setValues] = useState(args.values);

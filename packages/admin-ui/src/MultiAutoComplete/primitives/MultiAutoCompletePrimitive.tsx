@@ -134,6 +134,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 endIcon={
                     <MultiAutoCompleteInputIcons
                         hasValue={!vm.selectedOptionsVm.isEmpty}
+                        isDisabled={props.disabled}
                         onResetValue={resetSelectedOptions}
                         onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
                     />

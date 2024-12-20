@@ -125,6 +125,7 @@ export const MultiAutoComplete = ({
         <>
             <AdminMultiAutoComplete
                 {...props}
+                size={"lg"}
                 values={values}
                 options={options}
                 optionRenderer={renderItem}

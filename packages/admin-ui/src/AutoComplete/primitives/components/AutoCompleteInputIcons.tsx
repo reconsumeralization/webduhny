@@ -6,6 +6,7 @@ import { Icon } from "~/Icon";
 
 interface AutoCompleteInputIconsProps {
     hasValue: boolean;
+    isDisabled?: boolean;
     onOpenChange: (open: boolean) => void;
     onResetValue: () => void;
 }
@@ -18,6 +19,7 @@ export const AutoCompleteInputIcons = (props: AutoCompleteInputIconsProps) => {
                     size={"xs"}
                     variant={"secondary"}
                     icon={<Icon icon={<Close />} label={"Reset"} />}
+                    disabled={props.isDisabled}
                     onClick={event => {
                         event.stopPropagation();
                         props.onResetValue();
