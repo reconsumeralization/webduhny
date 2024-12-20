@@ -7,15 +7,15 @@ const meta: Meta<typeof MultiAutoComplete> = {
     component: MultiAutoComplete,
     tags: ["autodocs"],
     argTypes: {
-        onValueChange: { action: "onValueChange" },
+        onValuesChange: { action: "onValuesChange" },
         onOpenChange: { action: "onOpenChange" }
     },
     parameters: {
         layout: "padded"
     },
     render: args => {
-        const [value, setValue] = useState(args.value);
-        return <MultiAutoComplete {...args} value={value} onValueChange={setValue} />;
+        const [values, setValues] = useState(args.values);
+        return <MultiAutoComplete {...args} values={values} onValuesChange={setValues} />;
     }
 };
 
