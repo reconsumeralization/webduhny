@@ -1,18 +1,24 @@
-import type { HcmsTasksContext } from "~/types";
-import { fullyDeleteModel } from "~/tasks/deleteModel/graphql/fullyDeleteModel";
+import { HcmsTasksContext, HeadlessCmsFullyDeleteModel } from "~/types";
+import { fullyDeleteModel as fullyDeleteModelMethod } from "~/tasks/deleteModel/graphql/fullyDeleteModel";
 import { cancelDeleteModel } from "~/tasks/deleteModel/graphql/cancelDeleteModel";
-import { getDeleteModelProgress } from "~/tasks/deleteModel/graphql/getDeleteModelProgress";
+import { getDeleteModelProgress as getDeleteModelProgressMethod } from "~/tasks/deleteModel/graphql/getDeleteModelProgress";
+import {
+    createCacheKey as createCacheKeyValue,
+    createMemoryCache
+} from "@webiny/api-headless-cms/utils";
+import { mdbid } from "@webiny/utils";
+import { ListStoreKeysResult } from "~/tasks/deleteModel/graphql/listModelsBeingDeleted";
 import { createStoreNamespace } from "~/tasks/deleteModel/helpers/store";
-import type { IStoreValue } from "~/tasks/deleteModel/types";
 import type { GenericRecord } from "@webiny/api/types";
-import type { ListValuesResult } from "@webiny/db";
-import { CmsModel } from "@webiny/api-headless-cms/types";
+import type { IStoreValue } from "~/tasks/deleteModel/types";
 
 export interface ICreateDeleteModelCrudParams {
     context: HcmsTasksContext;
 }
 
-export const attachDeleteModelCrud = ({ context }: ICreateDeleteModelCrudParams) => {
+export const createDeleteModelCrud = ({
+    context
+}: ICreateDeleteModelCrudParams): HeadlessCmsFullyDeleteModel => {
     const getLocale = (): string => {
         return context.cms.getLocale().code;
     };
@@ -20,60 +26,104 @@ export const attachDeleteModelCrud = ({ context }: ICreateDeleteModelCrudParams)
         return context.tenancy.getCurrentTenant().id;
     };
 
-    let modelIsBeingDeletedPromise:
-        | Promise<ListValuesResult<GenericRecord<string, IStoreValue>>>
-        | undefined = undefined;
-
-    const clearListDeletingModelsPromise = () => {
-        modelIsBeingDeletedPromise = undefined;
-    };
-
-    const getListDeletingModelsPromise = (params: Pick<CmsModel, "tenant" | "locale">) => {
-        if (!modelIsBeingDeletedPromise) {
-            modelIsBeingDeletedPromise = context.db.store.listValues<
-                GenericRecord<string, IStoreValue>
-            >({
-                beginsWith: createStoreNamespace(params)
-            });
-        }
-        return modelIsBeingDeletedPromise;
-    };
-
-    context.cms.listModelsBeingDeleted = async (): Promise<IStoreValue[]> => {
-        const result = await getListDeletingModelsPromise({
+    const createCacheKey = () => {
+        return createCacheKeyValue({
+            tenant: getTenant(),
             locale: getLocale(),
-            tenant: getTenant()
+            type: "deleteModel"
         });
+    };
+    const cacheId = mdbid();
+    const cache = createMemoryCache<ListStoreKeysResult>({
+        id: cacheId
+    });
+
+    if (!context.__id) {
+        const id = mdbid();
+        console.log(`no id, assigning ${id}`);
+        context.__id = id;
+    } else {
+        console.log(`id exists, using ${context.__id}`);
+    }
+
+    console.log({
+        createdCacheId: cache.id
+    });
+
+    const listModelsBeingDeleted = async () => {
+        const locale = getLocale();
+        const tenant = getTenant();
+        const cacheKey = createCacheKey();
+
+        console.log({
+            listingModelsBeingDeleted: true,
+            contextId: context.__id,
+            usingCacheId: cache.id,
+            keys: cacheKey.keys
+        });
+
+        const result = await cache.getOrSet(cacheKey, async () => {
+            console.log({
+                usingCacheInGetOrSet: cache.id
+            });
+            const beginsWith = createStoreNamespace({
+                tenant,
+                locale
+            });
+            return await context.db.store.listValues<GenericRecord<string, IStoreValue>>({
+                beginsWith
+            });
+        });
+
+        console.log({
+            id: cache.id,
+            keys: cacheKey.keys,
+            result
+        });
+
         if (result.error) {
-            clearListDeletingModelsPromise();
             throw result.error;
         } else if (!result.data) {
-            clearListDeletingModelsPromise();
             return [];
         }
         return Object.values(result.data);
     };
 
-    context.cms.isModelBeingDeleted = async modelId => {
-        const items = await context.cms.listModelsBeingDeleted();
+    const isModelBeingDeleted = async (modelId: string) => {
+        const items = await listModelsBeingDeleted();
         return items.some(item => item.modelId === modelId);
     };
-    context.cms.fullyDeleteModel = async modelId => {
-        return fullyDeleteModel({
+    const fullyDeleteModel = async function (modelId: string) {
+        const result = await fullyDeleteModelMethod({
+            context,
+            modelId
+        });
+        cache.clear();
+        return result;
+    };
+
+    const cancelFullyDeleteModel = async function (modelId: string) {
+        const result = await cancelDeleteModel({
+            context,
+            modelId
+        });
+        cache.clear();
+        return result;
+    };
+
+    const getDeleteModelProgress = async function (modelId: string) {
+        return await getDeleteModelProgressMethod({
             context,
             modelId
         });
     };
-    context.cms.cancelFullyDeleteModel = async modelId => {
-        return cancelDeleteModel({
-            context,
-            modelId
-        });
-    };
-    context.cms.getDeleteModelProgress = async modelId => {
-        return getDeleteModelProgress({
-            context,
-            modelId
-        });
+
+    return {
+        cache,
+        listModelsBeingDeleted,
+        isModelBeingDeleted,
+        fullyDeleteModel,
+        cancelFullyDeleteModel,
+        getDeleteModelProgress
     };
 };

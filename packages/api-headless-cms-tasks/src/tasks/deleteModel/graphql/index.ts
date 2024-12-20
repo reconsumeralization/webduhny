@@ -7,7 +7,7 @@ import { createResolverDecorator, ErrorResponse, resolve, Response } from "@webi
 import { createZodError } from "@webiny/utils";
 import type { IDeleteCmsModelTask } from "~/tasks/deleteModel/types";
 import type { CmsModel } from "@webiny/api-headless-cms/types";
-import { attachDeleteModelCrud } from "~/tasks/deleteModel/graphql/crud";
+import { createDeleteModelCrud } from "~/tasks/deleteModel/graphql/crud";
 
 const deleteValidation = zod
     .object({
@@ -46,7 +46,7 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
             return;
         }
 
-        attachDeleteModelCrud({ context });
+        context.cms.modelDelete = createDeleteModelCrud({ context });
 
         const plugin = new CmsGraphQLSchemaPlugin<T>({
             typeDefs: /* GraphQL */ `
@@ -101,7 +101,7 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                 CmsContentModel: {
                     isBeingDeleted: async (model: CmsModel) => {
                         try {
-                            return await context.cms.isModelBeingDeleted(model.modelId);
+                            return await context.cms.modelDelete.isModelBeingDeleted(model.modelId);
                         } catch (ex) {
                             console.error(ex);
                         }
@@ -115,7 +115,9 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             if (input.error) {
                                 throw createZodError(input.error);
                             }
-                            return await context.cms.getDeleteModelProgress(input.data.modelId);
+                            return await context.cms.modelDelete.getDeleteModelProgress(
+                                input.data.modelId
+                            );
                         });
                     }
                 },
@@ -126,7 +128,9 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             if (input.error) {
                                 throw createZodError(input.error);
                             }
-                            return await context.cms.fullyDeleteModel(input.data.modelId);
+                            return await context.cms.modelDelete.fullyDeleteModel(
+                                input.data.modelId
+                            );
                         });
                     },
                     cancelFullyDeleteModel: async (_, args) => {
@@ -135,7 +139,9 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             if (input.error) {
                                 throw createZodError(input.error);
                             }
-                            return await context.cms.cancelFullyDeleteModel(input.data.modelId);
+                            return await context.cms.modelDelete.cancelFullyDeleteModel(
+                                input.data.modelId
+                            );
                         });
                     }
                 }
@@ -156,7 +162,8 @@ export const createDeleteModelGraphQl = <T extends HcmsTasksContext = HcmsTasksC
                             const listed = result.data as CmsModel[];
 
                             try {
-                                const beingDeletedList = await context.cms.listModelsBeingDeleted();
+                                const beingDeletedList =
+                                    await context.cms.modelDelete.listModelsBeingDeleted();
 
                                 return new Response(
                                     listed.filter(model => {

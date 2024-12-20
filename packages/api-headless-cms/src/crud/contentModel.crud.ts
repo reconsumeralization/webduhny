@@ -100,7 +100,7 @@ export const createModelsCrud = (params: CreateModelsCrudParams): CmsModelContex
             models: modelPlugins
                 .map(({ contentModel: model }) => {
                     return `${model.modelId}#${model.pluralApiName}#${model.singularApiName}#${
-                        model.savedOn || "unknown"
+                        model.savedOn || "savedOn:plugin"
                     }`;
                 })
                 .join("/"),
