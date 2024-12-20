@@ -13,7 +13,7 @@ import { DialogTrigger } from "./components/DialogTrigger";
 export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
-    trigger: React.ReactNode;
+    trigger?: React.ReactNode;
     title?: React.ReactNode | string;
     description?: React.ReactNode | string;
     children: React.ReactNode;
