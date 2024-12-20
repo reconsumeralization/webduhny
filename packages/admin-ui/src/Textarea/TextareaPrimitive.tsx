@@ -1,5 +1,5 @@
 import * as React from "react";
-import { makeDecoratable, cva, type VariantProps, cn } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const textareaVariants = cva(
     [
@@ -67,7 +67,7 @@ interface TextareaPrimitiveProps
     textareaRef?: React.Ref<HTMLTextAreaElement>;
 }
 
-const DecoratableTextareaPrimitive = ({
+const TextareaPrimitive = ({
     className,
     variant,
     invalid,
@@ -83,7 +83,5 @@ const DecoratableTextareaPrimitive = ({
         />
     );
 };
-DecoratableTextareaPrimitive.displayName = "TextareaPrimitive";
-const TextareaPrimitive = makeDecoratable("TextareaPrimitive", DecoratableTextareaPrimitive);
 
 export { TextareaPrimitive, type TextareaPrimitiveProps };
