@@ -4,13 +4,14 @@ export * from "./Avatar";
 export * from "./Button";
 export * from "./Card";
 export * from "./Checkbox";
+export * from "./DropdownMenu";
 export * from "./FormComponent";
 export * from "./Grid";
 export * from "./Heading";
+export * from "./Icon";
 export * from "./Input";
 export * from "./Label";
 export * from "./MultiAutoComplete";
-export * from "./DropdownMenu";
 export * from "./Progress";
 export * from "./Providers";
 export * from "./RadioGroup";
@@ -25,6 +26,3 @@ export * from "./Text";
 export * from "./Textarea";
 export * from "./Toast";
 export * from "./Tooltip";
-
-// REMOVE
-export * from "./Tabs";
