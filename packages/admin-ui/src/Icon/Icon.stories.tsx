@@ -27,7 +27,7 @@ export const Default: Story = {
         },
         color: {
             control: "select",
-            options: ["accent", "neutral", "neutral-strong", "neutral-light"]
+            options: ["accent", "neutral", "neutral-strong", "neutral-light", "inherit"]
         }
     }
 };
@@ -64,6 +64,20 @@ export const ColorNeutralXStrong: Story = {
     args: {
         ...Default.args,
         color: "neutral-strong"
+    }
+};
+
+export const ColorInherit: Story = {
+    decorators: [
+        Story => (
+            <div className="fill-success">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Default.args,
+        color: "inherit"
     }
 };
 

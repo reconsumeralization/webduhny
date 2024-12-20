@@ -8,6 +8,8 @@ import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { useSelect } from "./useSelect";
 import { SelectOptionDto } from "./SelectOptionDto";
 import { SelectOptionFormatted } from "./SelectOptionFormatted";
+import { IconButton } from "~/Button";
+import { Icon } from "~/Icon";
 
 const SelectRoot = SelectPrimitives.Root;
 
@@ -16,15 +18,15 @@ const SelectGroup = SelectPrimitives.Group;
 const SelectValue = SelectPrimitives.Value;
 
 /**
- * Icon
+ * SelectIcon
  */
-type IconWrapperProps = {
+type SelectIconProps = {
     icon: React.ReactElement;
 };
 
-const Icon = ({ icon }: IconWrapperProps) => {
+const SelectIcon = ({ icon }: SelectIconProps) => {
     return (
-        <SelectPrimitives.Icon asChild className={"h-4 w-4"}>
+        <SelectPrimitives.Icon asChild className={"h-md w-md"}>
             {React.cloneElement(icon)}
         </SelectPrimitives.Icon>
     );
@@ -37,7 +39,7 @@ const triggerVariants = cva(
     [
         "w-full flex items-center justify-between gap-sm border-sm text-md relative",
         "focus:outline-none",
-        "disabled:cursor-not-allowed"
+        "disabled:pointer-events-none"
     ],
     {
         variants: {
@@ -119,7 +121,7 @@ interface TriggerProps
         VariantProps<typeof triggerVariants> {
     startIcon?: React.ReactElement;
     endIcon?: React.ReactElement;
-    resetIcon?: React.ReactElement;
+    resetButton?: React.ReactElement;
 }
 
 const DecoratableTrigger = React.forwardRef<
@@ -134,7 +136,7 @@ const DecoratableTrigger = React.forwardRef<
             variant,
             startIcon,
             endIcon = <ChevronDown />,
-            resetIcon,
+            resetButton,
             disabled,
             invalid,
             ...props
@@ -147,10 +149,10 @@ const DecoratableTrigger = React.forwardRef<
             disabled={disabled}
             {...props}
         >
-            {startIcon && <Icon icon={startIcon} />}
+            {startIcon && <SelectIcon icon={startIcon} />}
             {children}
-            {resetIcon && <Icon icon={resetIcon} />}
-            <Icon icon={endIcon} />
+            {resetButton}
+            <SelectIcon icon={endIcon} />
         </SelectPrimitives.Trigger>
     )
 );
@@ -173,7 +175,7 @@ const DecoratableSelectScrollUpButton = React.forwardRef<
         )}
         {...props}
     >
-        <ChevronUp className="h-4 w-4" />
+        <ChevronUp className="h-md w-md" />
     </SelectPrimitives.ScrollUpButton>
 ));
 DecoratableSelectScrollUpButton.displayName = SelectPrimitives.ScrollUpButton.displayName;
@@ -198,7 +200,7 @@ const DecoratableSelectScrollDownButton = React.forwardRef<
         )}
         {...props}
     >
-        <ChevronDown className="h-4 w-4" />
+        <ChevronDown className="h-md w-md" />
     </SelectPrimitives.ScrollDownButton>
 ));
 DecoratableSelectScrollDownButton.displayName = SelectPrimitives.ScrollDownButton.displayName;
@@ -333,6 +335,7 @@ type SelectTriggerProps = SelectPrimitives.SelectValueProps &
         startIcon?: React.ReactElement;
         endIcon?: React.ReactElement;
         onValueReset: () => void;
+        disabled?: boolean;
     };
 
 const DecoratableSelectTrigger = ({
@@ -343,25 +346,32 @@ const DecoratableSelectTrigger = ({
     endIcon,
     invalid,
     onValueReset,
+    disabled,
     ...props
 }: SelectTriggerProps) => {
-    const resetIcon = React.useMemo(() => {
+    const resetButton = React.useMemo(() => {
         if (!hasValue) {
             return undefined;
         }
 
         return (
-            <SelectPrimitives.SelectIcon
-                className="bg-neutral-dimmed fill-neutral-xstrong pointer-events-auto"
+            <IconButton
                 onPointerDown={event => {
                     event.stopPropagation();
                     onValueReset();
                 }}
-            >
-                <Close className="w-4 h-4" />
-            </SelectPrimitives.SelectIcon>
+                icon={
+                    <span>
+                        <Icon icon={<Close />} label={"Reset"} />
+                    </span>
+                }
+                size={"xs"}
+                variant={"secondary"}
+                disabled={disabled}
+                asChild
+            />
         );
-    }, [hasValue, onValueReset]);
+    }, [hasValue, onValueReset, disabled]);
 
     return (
         <Trigger
@@ -370,7 +380,7 @@ const DecoratableSelectTrigger = ({
             invalid={invalid}
             startIcon={startIcon}
             endIcon={endIcon}
-            resetIcon={resetIcon}
+            resetButton={resetButton}
         >
             <div className={"flex-1 text-left truncate"}>
                 <SelectValue {...props} />
@@ -484,18 +494,19 @@ type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
 
 const DecoratableSelectPrimitive = (props: SelectPrimitiveProps) => {
     const { vm, changeValue, resetValue } = useSelect(props);
-    const { size, variant, startIcon, endIcon, invalid, ...selectRootProps } = props;
+    const { size, variant, startIcon, endIcon, invalid, disabled, ...selectRootProps } = props;
 
     return (
         <SelectPrimitiveRenderer
-            selectRootProps={{ ...selectRootProps }}
+            selectRootProps={{ ...selectRootProps, disabled }}
             selectTriggerProps={{
                 ...vm.selectTrigger,
                 size,
                 variant,
                 startIcon,
                 endIcon,
-                invalid
+                invalid,
+                disabled
             }}
             selectOptionsProps={vm.selectOptions}
             onValueChange={changeValue}

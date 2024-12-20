@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 
 const buttonVariants = cva(
     [
-        "border-transparent rounded font-sans inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-colors",
-        "disabled:pointer-events-none",
+        "border-transparent rounded font-sans inline-flex items-center justify-center whitespace-nowrap ring-offset-background cursor-pointer transition-colors",
+        "aria-disabled:pointer-events-none",
         "focus-visible:outline-none focus-visible:border-accent-default"
     ],
     {
@@ -15,34 +15,34 @@ const buttonVariants = cva(
                     "bg-primary text-neutral-light [&>svg]:fill-neutral-base",
                     "hover:bg-primary-strong",
                     "active:bg-primary-xstrong",
-                    "disabled:bg-primary-disabled",
+                    "aria-disabled:bg-primary-disabled",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 secondary: [
                     "bg-neutral-dimmed text-neutral-strong [&>svg]:fill-neutral-xstrong",
                     "hover:bg-neutral-muted",
                     "active:bg-neutral-strong",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled",
+                    "aria-disabled:bg-neutral-disabled aria-disabled:text-neutral-disabled",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 tertiary: [
                     "bg-neutral-base text-neutral-strong border-neutral-muted [&>svg]:fill-neutral-xstrong",
                     "hover:bg-neutral-light",
                     "active:bg-neutral-muted",
-                    "disabled:bg-neutral-disabled disabled:border-none disabled:text-neutral-disabled",
+                    "aria-disabled:bg-neutral-disabled aria-disabled:border-neutral-dimmed aria-disabled:text-neutral-disabled",
                     "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
                 ],
                 ghost: [
                     "text-neutral-strong [&>svg]:fill-neutral-xstrong",
                     "hover:bg-neutral-dimmed",
                     "active:bg-neutral-muted",
-                    "disabled:text-neutral-disabled"
+                    "aria-disabled:text-neutral-disabled"
                 ],
                 "ghost-negative": [
                     "text-neutral-light [&>svg]:fill-neutral-base",
                     "hover:bg-neutral-base/20",
                     "active:bg-neutral-base/30",
-                    "disabled:text-neutral-disabled",
+                    "aria-disabled:text-neutral-disabled",
                     "focus-visible:!border-neutral-base"
                 ]
             },
@@ -63,10 +63,6 @@ const buttonVariants = cva(
                     "text-lg font-semibold border-lg rounded-md [&>svg]:size-lg",
                     "py-[calc(theme(padding.md-plus)-theme(borderWidth.md))] px-[calc(theme(padding.md)-theme(borderWidth.md))]"
                 ]
-            },
-            iconSize: {
-                default: "",
-                lg: ""
             },
             contentLayout: {
                 text: "",
@@ -91,13 +87,6 @@ const buttonVariants = cva(
             },
             {
                 size: "sm",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className:
-                    "!p-[calc(theme(padding.xxs)-theme(borderWidth.sm))] [&>svg]:!size-md-plus"
-            },
-            {
-                size: "sm",
                 contentLayout: "text-icon-start",
                 className: "pl-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>svg]:mr-xs"
             },
@@ -110,12 +99,6 @@ const buttonVariants = cva(
                 size: "md",
                 contentLayout: "icon",
                 className: "p-[calc(theme(padding.sm)-theme(borderWidth.sm))]"
-            },
-            {
-                size: "md",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className: "!p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>svg]:!size-lg"
             },
             {
                 size: "md",
@@ -134,12 +117,6 @@ const buttonVariants = cva(
             },
             {
                 size: "lg",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className: "!p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>svg]:!size-lg"
-            },
-            {
-                size: "lg",
                 contentLayout: "text-icon-start",
                 className:
                     "pl-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))] [&>svg]:mr-xs-plus"
@@ -154,13 +131,6 @@ const buttonVariants = cva(
                 size: "xl",
                 contentLayout: "icon",
                 className: "p-[calc(theme(padding.md)-theme(borderWidth.md))]"
-            },
-            {
-                size: "xl",
-                contentLayout: "icon",
-                iconSize: "lg",
-                className:
-                    "!p-[calc(theme(padding.md-plus)-theme(borderWidth.md))] [&>svg]:!size-lg"
             },
             {
                 size: "xl",
@@ -203,7 +173,7 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
         text,
         icon,
         iconPosition = "start",
-        iconSize = "default",
+        disabled,
         ...rest
     } = props;
     const Comp = asChild ? Slot : "button";
@@ -224,16 +194,21 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
         buttonVariants({
             variant,
             size,
-            contentLayout,
-            iconSize,
-            className
-        })
+            contentLayout
+        }),
+        className
     );
 
     return (
-        <Comp className={cssClasses} ref={ref} {...rest}>
+        <Comp
+            className={cssClasses}
+            ref={ref}
+            disabled={disabled}
+            aria-disabled={disabled}
+            {...rest}
+        >
             {iconPosition !== "end" && icon}
-            {text}
+            <Slottable>{text}</Slottable>
             {iconPosition === "end" && icon}
         </Comp>
     );
@@ -243,4 +218,4 @@ ButtonBase.displayName = "Button";
 
 const Button = makeDecoratable("Button", ButtonBase);
 
-export { Button, type ButtonProps };
+export { Button, type ButtonProps, buttonVariants };

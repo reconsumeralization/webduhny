@@ -2,7 +2,8 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as MoreVertical } from "@material-design-icons/svg/filled/more_vert.svg";
 import { Card } from "./Card";
-import { Button } from "~/Button";
+import { Button, IconButton } from "~/Button";
+import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Card> = {
     title: "Components/Card",
@@ -98,9 +99,10 @@ export const WithOptions: Story = {
         ...Default.args,
         actions: null,
         options: (
-            <Button
+            <IconButton
                 variant={"ghost"}
-                icon={<MoreVertical />}
+                icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                size={"sm"}
                 iconSize={"lg"}
                 onClick={() => alert("Custom action button clicked.")}
             />
