@@ -10,10 +10,9 @@ type MultiAutoCompletePropsValue = SelectionItem[] | string[];
 
 export interface MultiAutoCompleteProps extends Omit<AutoCompleteBaseProps, "value"> {
     /**
-     * @deprecated Use `uniqueValues` instead.
      * Prevents adding the same item to the list twice.
      */
-    unique: boolean;
+    unique?: boolean;
 
     /**
      * Set if custom values (not from list of suggestions) are allowed.
@@ -21,25 +20,21 @@ export interface MultiAutoCompleteProps extends Omit<AutoCompleteBaseProps, "val
     allowFreeInput?: boolean;
 
     /**
-     *  @deprecated Use `loading` instead.
      *  If true, will show a loading spinner on the right side of the input.
      */
     loading?: boolean;
 
     /**
-     * @deprecated Use `selectedOptionRenderer` instead
      * Use custom renderer for selected items.
      */
     renderMultipleSelection?: ((items: any, index: number) => React.ReactNode | null) | null;
 
     /**
-     * @deprecated
      * Use data list instead of default Chips component. Useful when expecting a lot of data.
      */
     useMultipleSelectionList?: boolean;
 
     /**
-     * @deprecated
      * Render list item when `useMultipleSelectionList` is used.
      */
     renderListItemLabel?: (item: any) => React.ReactNode;
@@ -50,7 +45,6 @@ export interface MultiAutoCompleteProps extends Omit<AutoCompleteBaseProps, "val
     renderListItemOptions?: (item: any) => React.ReactNode | null;
 
     /**
-     *  @deprecated Use `emptyMessage` instead
      *  A component that renders supporting UI in case of no result found.
      */
     noResultFound?: React.ReactNode;
@@ -84,7 +78,8 @@ export const MultiAutoComplete = ({
             if (useSimpleValues) {
                 return {
                     label: option,
-                    value: option
+                    value: option,
+                    item: option
                 };
             }
 
@@ -98,25 +93,33 @@ export const MultiAutoComplete = ({
     }, [props.options, textProp, valueProp, useSimpleValues]);
 
     const values = useMemo(() => {
-        return value.map(value => {
-            if (typeof value === "string") {
-                return value;
-            }
+        return value
+            .map((val: SelectionItem | string) => {
+                if (typeof val === "string") {
+                    return val;
+                }
 
-            if (useSimpleValues) {
-                return value?.name ?? value;
-            }
-
-            return value.name;
-        });
-    }, [value, useSimpleValues]);
+                return val[valueProp as keyof SelectionItem] as string;
+            })
+            .filter(Boolean);
+    }, [value, valueProp]);
 
     const onValuesChange = useCallback(
         (values: any) => {
-            onChange?.(values);
+            const selectedOptions = options.filter(option => values.includes(option.value));
+            const selectedItems = selectedOptions.map(option => option.item);
+
+            onChange?.(selectedItems);
         },
-        [onChange]
+        [onChange, options]
     );
+
+    const selectedOptionRenderer = useMemo(() => {
+        if (renderMultipleSelection === null) {
+            return () => null;
+        }
+        return renderMultipleSelection;
+    }, [renderMultipleSelection]);
 
     return (
         <>
@@ -125,9 +128,7 @@ export const MultiAutoComplete = ({
                 values={values}
                 options={options}
                 optionRenderer={renderItem}
-                selectedOptionRenderer={
-                    renderMultipleSelection ? renderMultipleSelection : undefined
-                }
+                selectedOptionRenderer={selectedOptionRenderer}
                 emptyMessage={noResultFound}
                 onValuesChange={onValuesChange}
                 isLoading={loading}

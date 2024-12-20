@@ -69,12 +69,12 @@ export const AutoComplete = ({
     }, [props.options, textProp, valueProp, useSimpleValues]);
 
     const value = useMemo(() => {
-        if (useSimpleValues) {
-            return props.value as unknown as string;
+        if (!props.value) {
+            return undefined;
         }
 
-        return props.value?.id;
-    }, [props.value, useSimpleValues]);
+        return props.value[valueProp as keyof AutoCompleteProps["value"]] as string;
+    }, [props.value, valueProp]);
 
     const onValueChange = useCallback(
         (value: any) => {
