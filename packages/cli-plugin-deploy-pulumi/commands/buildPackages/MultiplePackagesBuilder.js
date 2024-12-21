@@ -1,9 +1,10 @@
 const path = require("path");
-const { Worker } = require("worker_threads");
+const { Worker, workerData, parentPort } = require("worker_threads");
 const Listr = require("listr");
 const { BasePackagesBuilder } = require("./BasePackagesBuilder");
 const { gray } = require("chalk");
 const { measureDuration } = require("../../utils");
+const { cli } = require("@webiny/cli");
 
 class MultiplePackagesBuilder extends BasePackagesBuilder {
     async build() {
@@ -25,44 +26,68 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
             buildTasks.push({
                 pkg: pkg,
                 task: new Promise((resolve, reject) => {
-                    const enableLogs = inputs.logs === true;
-
                     const workerData = {
                         options: {
                             env,
                             variant,
                             debug,
-                            logs: enableLogs
+                            logs: true
                         },
                         package: { ...pkg.paths }
                     };
 
-                    const worker = new Worker(path.join(__dirname, "./worker.js"), {
-                        workerData,
-                        stderr: true,
-                        stdout: true
-                    });
+                    const { options, package: pckg } = workerData;
+                    let config = require(pckg.config).default || require(pckg.config);
+                    if (typeof config === "function") {
+                        config = config({ options: { ...options, cwd: pckg.root }, context: cli });
+                    }
 
-                    worker.on("message", threadMessage => {
-                        const { type, stdout, stderr, error } = JSON.parse(threadMessage);
+                    const hasBuildCommand =
+                        config.commands && typeof config.commands.build === "function";
+                    if (!hasBuildCommand) {
+                        throw new Error("Build command not found.");
+                    }
 
-                        const result = {
-                            package: pkg,
-                            stdout,
-                            stderr,
-                            error,
-                            duration: getBuildDuration()
-                        };
+                    config.commands.build(options).then(resolve).catch(reject);
 
-                        if (type === "error") {
-                            reject(result);
-                            return;
-                        }
-
-                        if (type === "success") {
-                            resolve(result);
-                        }
-                    });
+                    // const enableLogs = inputs.logs === true;
+                    //
+                    // const workerData = {
+                    //     options: {
+                    //         env,
+                    //         variant,
+                    //         debug,
+                    //         logs: enableLogs
+                    //     },
+                    //     package: { ...pkg.paths }
+                    // };
+                    //
+                    // const worker = new Worker(path.join(__dirname, "./worker.js"), {
+                    //     workerData,
+                    //     stderr: false,
+                    //     stdout: false
+                    // });
+                    //
+                    // worker.on("message", threadMessage => {
+                    //     const { type, stdout, stderr, error } = JSON.parse(threadMessage);
+                    //
+                    //     const result = {
+                    //         package: pkg,
+                    //         stdout,
+                    //         stderr,
+                    //         error,
+                    //         duration: getBuildDuration()
+                    //     };
+                    //
+                    //     if (type === "error") {
+                    //         reject(result);
+                    //         return;
+                    //     }
+                    //
+                    //     if (type === "success") {
+                    //         resolve(result);
+                    //     }
+                    // });
                 })
             });
         }
