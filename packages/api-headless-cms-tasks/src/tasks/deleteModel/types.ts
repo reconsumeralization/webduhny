@@ -1,5 +1,7 @@
 import { CmsIdentity } from "@webiny/api-headless-cms/types";
 import { ITaskResponseDoneResultOutput } from "@webiny/tasks";
+import type { ListValuesResult } from "@webiny/db";
+import type { GenericRecord } from "@webiny/api/types";
 
 export interface IDeleteModelTaskInput {
     modelId: string;
@@ -33,3 +35,5 @@ export interface IStoreValue {
     identity: CmsIdentity;
     task: string;
 }
+
+export type ListStoreKeysResult = Promise<ListValuesResult<GenericRecord<string, IStoreValue>>>;

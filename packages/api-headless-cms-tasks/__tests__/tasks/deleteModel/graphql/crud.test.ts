@@ -7,7 +7,7 @@ describe("crud", () => {
         const { handler, identity, tenant, locale } = useHandler();
         const context = await handler();
 
-        const results = await context.cms.modelDelete.listModelsBeingDeleted();
+        const results = await context.cms.listModelsBeingDeleted();
         expect(results).toHaveLength(0);
 
         const value: IStoreValue = {
@@ -22,7 +22,7 @@ describe("crud", () => {
 
         const secondaryContext = await handler();
 
-        const resultsPopulated = await secondaryContext.cms.modelDelete.listModelsBeingDeleted();
+        const resultsPopulated = await secondaryContext.cms.listModelsBeingDeleted();
         expect(resultsPopulated).toHaveLength(1);
         expect(resultsPopulated).toEqual([value]);
 
@@ -30,7 +30,7 @@ describe("crud", () => {
 
         const tertiaryContext = await handler();
 
-        const resultsRemoved = await tertiaryContext.cms.modelDelete.listModelsBeingDeleted();
+        const resultsRemoved = await tertiaryContext.cms.listModelsBeingDeleted();
         expect(resultsRemoved).toHaveLength(0);
     });
 
@@ -59,7 +59,7 @@ describe("crud", () => {
         const secondaryContext = await handler();
         const tertiaryContext = await handler();
 
-        const fullyDeleteResult = await context.cms.modelDelete.fullyDeleteModel(model.modelId);
+        const fullyDeleteResult = await context.cms.fullyDeleteModel(model.modelId);
         expect(fullyDeleteResult).toEqual({
             total: 0,
             deleted: 0,
@@ -74,7 +74,7 @@ describe("crud", () => {
             locale
         };
 
-        const results = await context.cms.modelDelete.listModelsBeingDeleted();
+        const results = await context.cms.listModelsBeingDeleted();
         expect(results).toHaveLength(1);
         expect(results).toEqual([
             {
@@ -83,9 +83,7 @@ describe("crud", () => {
             }
         ]);
 
-        const cancelDeleteResult = await secondaryContext.cms.modelDelete.cancelFullyDeleteModel(
-            model.modelId
-        );
+        const cancelDeleteResult = await secondaryContext.cms.cancelFullyDeleteModel(model.modelId);
 
         expect(cancelDeleteResult).toEqual({
             total: 0,
@@ -94,7 +92,7 @@ describe("crud", () => {
             id: expect.any(String)
         });
 
-        const resultsCanceled = await tertiaryContext.cms.modelDelete.listModelsBeingDeleted();
+        const resultsCanceled = await tertiaryContext.cms.listModelsBeingDeleted();
         expect(resultsCanceled).toHaveLength(0);
     });
 });

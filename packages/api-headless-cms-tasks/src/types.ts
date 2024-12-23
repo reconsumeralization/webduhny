@@ -1,11 +1,9 @@
 import type { HcmsBulkActionsContext } from "@webiny/api-headless-cms-bulk-actions/types";
 import type { AcoContext } from "@webiny/api-aco/types";
 import type { HeadlessCms } from "@webiny/api-headless-cms/types";
-import type { IDeleteCmsModelTask, IStoreValue } from "~/tasks/deleteModel/types";
-import { ICache } from "@webiny/api-headless-cms/utils/caching/types";
+import { IDeleteCmsModelTask, IStoreValue } from "~/tasks/deleteModel/types";
 
 export interface HeadlessCmsFullyDeleteModel {
-    cache: ICache;
     fullyDeleteModel: (modelId: string) => Promise<IDeleteCmsModelTask>;
     cancelFullyDeleteModel: (modelId: string) => Promise<IDeleteCmsModelTask>;
     getDeleteModelProgress: (modelId: string) => Promise<IDeleteCmsModelTask>;
@@ -14,8 +12,5 @@ export interface HeadlessCmsFullyDeleteModel {
 }
 
 export interface HcmsTasksContext extends HcmsBulkActionsContext, AcoContext {
-    __id: string;
-    cms: HeadlessCms & {
-        modelDelete: HeadlessCmsFullyDeleteModel;
-    };
+    cms: HeadlessCms & HeadlessCmsFullyDeleteModel;
 }
