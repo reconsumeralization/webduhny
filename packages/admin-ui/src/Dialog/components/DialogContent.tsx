@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
-import { cn, makeDecoratable } from "~/utils";
+import { cn } from "~/utils";
 
-const DialogContentBase = React.forwardRef<
+const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
@@ -23,6 +23,6 @@ const DialogContentBase = React.forwardRef<
     </DialogPrimitive.Content>
 ));
 
-DialogContentBase.displayName = DialogPrimitive.Content.displayName;
+DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-export const DialogContent = makeDecoratable("DialogContent", DialogContentBase);
+export { DialogContent };

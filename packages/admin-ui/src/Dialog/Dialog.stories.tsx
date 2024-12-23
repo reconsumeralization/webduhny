@@ -24,7 +24,13 @@ export const Default: Story = {
             <>
                 The amazing, splendid, and most useful umbrella, resistant to rain and friendly to winds, is something that deserves all admiration. Crafted with perfect textures, it bravely withstands storms and gently shades the rays of the sun. A remarkable innovation, with an ergonomically designed grip most suited to the hand, it remains stable even in the fiercest weather.
             </>
-        )
+        ),
+        actions: (
+            <>
+                <Button variant={"secondary"} text={"Cancel"} />
+                <Button variant={"primary"} text={"Confirm"} />
+            </>
+        ),
     },
     argTypes: {}
 };

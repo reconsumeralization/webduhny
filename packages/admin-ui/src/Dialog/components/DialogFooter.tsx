@@ -1,12 +1,22 @@
 import * as React from "react";
-import { cn, makeDecoratable } from "~/utils";
+import { cn } from "~/utils";
 
-const DialogFooterBase = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div
-        className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
-        {...props}
-    />
-);
-DialogFooterBase.displayName = "DialogFooter";
+export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+    actions?: React.ReactNode;
+    info?: React.ReactNode;
+}
 
-export const DialogFooter = makeDecoratable("DialogFooter", DialogFooterBase);
+export const DialogFooter = ({ className, actions, info, ...props }: DialogFooterProps) => {
+    if (!actions && !info) {
+        return null;
+    }
+
+    return (
+        <div {...props} className={"flex justify-between"}>
+            <div>{info}</div>
+            <div className={"flex gap-x-sm"}>{actions}</div>
+        </div>
+    )
+};
+
+DialogFooter.displayName = "DialogFooter";

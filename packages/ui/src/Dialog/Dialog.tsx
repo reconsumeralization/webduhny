@@ -1,8 +1,8 @@
 import React from "react";
 import { Dialog as AdminUiDialog } from "@webiny/admin-ui";
-import { DialogTitle as AdminUiDialogTitle } from "@webiny/admin-ui/Dialog/components/DialogTitle";
-import { DialogContent as AdminUiDialogContent } from "@webiny/admin-ui/Dialog/components/DialogContent";
 import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
+import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
+import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
 
 export type DialogOnClose = (event: DialogOnCloseEventT) => void;
 
@@ -19,9 +19,17 @@ export type DialogOnClose = (event: DialogOnCloseEventT) => void;
 //     children?: React.ReactNode;
 // }
 
-export const DialogActions = (props, ref) => {
-    return <span>acts</span>;
+export interface DialogActionsProps {
+    children: React.ReactNode[] | React.ReactNode;
+}
+
+export const DialogActions = (props: DialogActionsProps) => {
+    return <AdminUiDialogFooter style={{marginTop: 32}} actions={props.children}/>;
 };
+
+export const DialogCancel = (props: any) => {
+    return <AdminUiDialogClose {...props}/>
+}
 
 DialogActions.displayName = "DialogActions";
 
@@ -30,7 +38,7 @@ export interface DialogContentProps {
 }
 
 export const DialogContent = (props: DialogContentProps) => {
-    return <>{props.children}</>
+    return <>{props.children}</>;
 };
 
 DialogContent.displayName = "DialogContent";
@@ -40,7 +48,7 @@ export interface DialogTitleProps {
 }
 
 export const DialogTitle = (props: DialogTitleProps) => {
-    return <AdminUiDialogHeader title={props.children} />;
+    return <AdminUiDialogHeader title={props.children} description={"what here"} />;
 };
 
 DialogTitle.displayName = "DialogTitle";

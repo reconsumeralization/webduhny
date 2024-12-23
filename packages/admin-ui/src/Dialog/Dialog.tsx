@@ -17,55 +17,66 @@ export interface DialogProps
     title?: React.ReactNode | string;
     description?: React.ReactNode | string;
     children: React.ReactNode;
+    actions: React.ReactNode;
+    info: React.ReactNode;
 }
 
 const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogProps>(
     (props, ref) => {
-        const { rootProps, triggerProps, contentProps, headerProps } = React.useMemo(() => {
-            const {
-                // Root props.
-                defaultOpen,
-                open,
-                onOpenChange,
-                modal,
-                dir,
-
-                // Trigger props.
-                trigger,
-
-                // Header props.
-                title,
-                description,
-
-                // Content props.
-                ...rest
-            } = props;
-
-            return {
-                rootProps: {
+        const { rootProps, triggerProps, contentProps, headerProps, footerProps } =
+            React.useMemo(() => {
+                const {
+                    // Root props.
                     defaultOpen,
                     open,
                     onOpenChange,
                     modal,
-                    dir
-                },
-                triggerProps: {
-                    // Temporary fix.
-                    children: <div>{trigger}</div>
-                },
-                headerProps: { title, description },
-                contentProps: rest
-            };
-        }, [props]);
+                    dir,
+
+                    // Trigger props.
+                    trigger,
+
+                    // Header props.
+                    title,
+                    description,
+
+                    // Footer props.
+                    actions,
+                    info,
+
+                    // Content props.
+                    ...rest
+                } = props;
+
+                return {
+                    rootProps: {
+                        defaultOpen,
+                        open,
+                        onOpenChange,
+                        modal,
+                        dir
+                    },
+                    triggerProps: {
+                        children: trigger
+                    },
+                    headerProps: { title, description },
+                    footerProps: { info, actions },
+                    contentProps: rest
+                };
+            }, [props]);
 
         return (
             <DialogRoot {...rootProps}>
-                <DialogTrigger {...triggerProps} asChild />
+                {triggerProps.children && <DialogTrigger {...triggerProps} asChild />}
                 <DialogPortal>
                     <DialogOverlay />
                     <DialogContent {...contentProps} ref={ref}>
-                        <DialogHeader {...headerProps}/>
-                        {contentProps.children}
+                        <div>
+                            <DialogHeader {...headerProps} />
+                            {contentProps.children}
+                        </div>
+
+                        <DialogFooter {...footerProps}/>
                     </DialogContent>
                 </DialogPortal>
             </DialogRoot>

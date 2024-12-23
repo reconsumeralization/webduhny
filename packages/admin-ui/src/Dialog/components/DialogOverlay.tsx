@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { cn, makeDecoratable } from "~/utils";
+import { cn } from "~/utils";
 
-const DialogOverlayBase = React.forwardRef<
+export const DialogOverlay = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Overlay>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
@@ -16,6 +16,5 @@ const DialogOverlayBase = React.forwardRef<
     />
 ));
 
-DialogOverlayBase.displayName = DialogPrimitive.Overlay.displayName;
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-export const DialogOverlay = makeDecoratable("DialogOverlay", DialogOverlayBase);
