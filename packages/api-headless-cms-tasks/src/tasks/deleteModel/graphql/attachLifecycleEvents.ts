@@ -22,6 +22,9 @@ export const attachLifecycleEvents = ({ context }: IAttachLifecycleEventsParams)
             `Model "${model.name}" is being deleted and you cannot create, update or delete any entries of this model.`
         );
     };
+    /**
+     * Entry actions.
+     */
     context.cms.onEntryBeforeCreate.subscribe(blockActionOnEvent);
 
     context.cms.onEntryRevisionBeforeCreate.subscribe(blockActionOnEvent);
@@ -37,4 +40,12 @@ export const attachLifecycleEvents = ({ context }: IAttachLifecycleEventsParams)
     context.cms.onEntryBeforeRestoreFromBin.subscribe(blockActionOnEvent);
 
     context.cms.onEntryBeforeMove.subscribe(blockActionOnEvent);
+    /**
+     * Model actions.
+     */
+    context.cms.onModelBeforeUpdate.subscribe(blockActionOnEvent);
+
+    context.cms.onModelBeforeDelete.subscribe(blockActionOnEvent);
+
+    context.cms.onModelBeforeCreateFrom.subscribe(blockActionOnEvent);
 };
