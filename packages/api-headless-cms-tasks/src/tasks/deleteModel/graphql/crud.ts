@@ -2,17 +2,18 @@ import type { HcmsTasksContext } from "~/types";
 import { fullyDeleteModel as fullyDeleteModelMethod } from "./fullyDeleteModel";
 import { cancelDeleteModel } from "./cancelDeleteModel";
 import { getDeleteModelProgress as getDeleteModelProgressMethod } from "./getDeleteModelProgress";
-import {
-    createCacheKey as createCacheKeyValue,
-    createMemoryCache
-} from "@webiny/api-headless-cms/utils";
+import { createCacheKey, createMemoryCache } from "@webiny/api-headless-cms/utils";
 import type { IStoreValue, ListStoreKeysResult } from "../types";
 import { createStoreNamespace } from "~/tasks/deleteModel/helpers/store";
 import type { GenericRecord } from "@webiny/api/types";
 import { ContextPlugin } from "@webiny/api";
+import { attachLifecycleEvents } from "./attachLifecycleEvents";
 
 export const createDeleteModelCrud = () => {
     const plugin = new ContextPlugin<HcmsTasksContext>(async context => {
+        attachLifecycleEvents({
+            context
+        });
         const getLocale = (): string => {
             return context.cms.getLocale().code;
         };
@@ -20,20 +21,16 @@ export const createDeleteModelCrud = () => {
             return context.tenancy.getCurrentTenant().id;
         };
 
-        const createCacheKey = () => {
-            return createCacheKeyValue({
-                tenant: getTenant(),
-                locale: getLocale(),
-                type: "deleteModel"
-            });
-        };
-
         const cache = createMemoryCache<ListStoreKeysResult>();
 
         context.cms.listModelsBeingDeleted = async () => {
             const locale = getLocale();
             const tenant = getTenant();
-            const cacheKey = createCacheKey();
+            const cacheKey = createCacheKey({
+                tenant: getTenant(),
+                locale: getLocale(),
+                type: "deleteModel"
+            });
 
             const result = await cache.getOrSet(cacheKey, async () => {
                 const beginsWith = createStoreNamespace({

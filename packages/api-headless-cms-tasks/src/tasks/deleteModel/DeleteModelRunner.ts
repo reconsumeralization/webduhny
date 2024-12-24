@@ -55,17 +55,18 @@ export class DeleteModelRunner<
                     lastDeletedId
                 });
             }
-            let where: CmsEntryListWhere | undefined = undefined;
+            const where: CmsEntryListWhere = {
+                latest: true
+            };
             if (lastDeletedId) {
-                where = {
-                    entryId_gte: lastDeletedId
-                };
+                where.entryId_gte = lastDeletedId;
             }
-            const [items, meta] = await this.context.cms.listLatestEntries(model, {
-                limit: 1000,
-                where,
-                sort: ["id_ASC"]
-            });
+            const { items, hasMoreItems: metaHasMoreItems } =
+                await this.context.cms.storageOperations.entries.list(model, {
+                    limit: 1000,
+                    where,
+                    sort: ["entryId_ASC"]
+                });
             for (const item of items) {
                 try {
                     await this.context.cms.deleteEntry(model, item.id, {
@@ -84,13 +85,16 @@ export class DeleteModelRunner<
                 lastDeletedId = item.entryId;
             }
 
-            hasMoreItems = meta.hasMoreItems;
+            hasMoreItems = metaHasMoreItems;
         } while (hasMoreItems);
         /**
          * Let's do one more check. If there are items, continue the task with 5 seconds delay.
          */
-        const [items] = await this.context.cms.listLatestEntries(model, {
-            limit: 1
+        const { items } = await this.context.cms.storageOperations.entries.list(model, {
+            limit: 1,
+            where: {
+                latest: true
+            }
         });
         if (items.length > 0) {
             console.log("There are still items to be deleted. Continuing the task.");
