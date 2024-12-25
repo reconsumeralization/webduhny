@@ -35,7 +35,7 @@
     "@webiny/project-utils": "0.0.0",
     "@webiny/wcp": "0.0.0",
     "graphql": "^15.9.0",
-    "typescript": "5.1.6"
+    "typescript": "5.7.2"
   },
   "dependencies": {
     "@webiny/api": "0.0.0",
