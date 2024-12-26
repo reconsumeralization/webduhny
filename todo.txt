@@ -1,0 +1,5 @@
+1. output parallel
+3. test webpack again
+4. enabled ts checks?
+5. err handling - 'child process exied with code 1'
+6. createWebpackConfig (same as createRspackConfig)

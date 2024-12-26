@@ -1,22 +1,24 @@
 const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
 const { BaseFunctionBundler } = require("./BaseFunctionBundler");
+const { createRspackConfig } = require("./rspack/createRspackConfig");
+const rspack = require("@rspack/core");
 
 class RspackBundler extends BaseFunctionBundler {
-    constructor({ cwd, overrides }) {
+    constructor(params) {
         super();
-        this.cwd = cwd;
-        this.overrides = overrides;
+        this.params = params;
     }
 
     build() {
         return new Promise(async (resolve, reject) => {
-            const bundlerConfig = require("./rspack/rspack.config.js")({
-                cwd: this.cwd,
-                overrides: this.overrides,
+            const rspackConfig = createRspackConfig({
+                ...this.params,
                 production: true
             });
 
-            require("@rspack/core")(bundlerConfig, async (err, stats) => {
+            const compiler = rspack(rspackConfig);
+
+            return compiler.run(async (err, stats) => {
                 let messages = {};
 
                 if (err) {
@@ -53,7 +55,7 @@ class RspackBundler extends BaseFunctionBundler {
                     return;
                 }
 
-                console.log(`Compiled successfully.`);
+                console.log("Compiled successfully.");
                 resolve();
             });
         });
@@ -63,13 +65,14 @@ class RspackBundler extends BaseFunctionBundler {
         return new Promise(async (resolve, reject) => {
             console.log("Compiling...");
 
-            const bundlerConfig = require("./rspack/rspack.config.js")({
-                cwd: this.cwd,
-                overrides: this.overrides,
+            const rspackConfig = createRspackConfig({
+                ...this.params,
                 production: false
             });
 
-            return require("@rspack/core")(bundlerConfig).watch({}, async (err, stats) => {
+            const compiler = rspack(rspackConfig);
+
+            return compiler.watch({}, async (err, stats) => {
                 if (err) {
                     return reject(err);
                 }
@@ -84,4 +87,4 @@ class RspackBundler extends BaseFunctionBundler {
     }
 }
 
-module.exports = {RspackBundler};
+module.exports = { RspackBundler };

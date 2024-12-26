@@ -4,11 +4,11 @@ const { version } = require("@webiny/project-utils/package.json");
 const { getOutput, getEntry } = require("../../utils");
 const { TsCheckerRspackPlugin } = require("ts-checker-rspack-plugin");
 
-module.exports = options => {
-    const output = getOutput(options);
-    const entry = getEntry(options);
+const createRspackConfig = params => {
+    const output = getOutput(params);
+    const entry = getEntry(params);
 
-    const { cwd, overrides, production, watch } = options;
+    const { cwd, overrides, production, watch } = params;
 
     let swcOptions = require("./swcrc");
     // Customize Babel options.
@@ -16,7 +16,7 @@ module.exports = options => {
         swcOptions = overrides.swc(swcOptions);
     }
 
-    const sourceMaps = options.sourceMaps !== false;
+    const sourceMaps = params.sourceMaps !== false;
 
     const definitions = overrides.define ? JSON.parse(overrides.define) : {};
     const tsChecksEnabled = process.env.WEBINY_ENABLE_TS_CHECKS === "true";
@@ -57,7 +57,7 @@ module.exports = options => {
                 contextRegExp: /jsdom$/
             }),
             new rspack.ProgressPlugin(),
-            // new TsCheckerRspackPlugin()
+            tsChecksEnabled && new TsCheckerRspackPlugin()
         ].filter(Boolean),
 
         module: {
@@ -113,3 +113,5 @@ module.exports = options => {
         }
     };
 };
+
+module.exports = { createRspackConfig };

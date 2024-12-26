@@ -1,10 +1,10 @@
-const path = require("path");
-const { Worker, workerData, parentPort } = require("worker_threads");
 const Listr = require("listr");
 const { BasePackagesBuilder } = require("./BasePackagesBuilder");
 const { gray } = require("chalk");
 const { measureDuration } = require("../../utils");
-const { cli } = require("@webiny/cli");
+const path = require("path");
+
+const WORKER_PATH = path.resolve(__dirname, "worker.js");
 
 class MultiplePackagesBuilder extends BasePackagesBuilder {
     async build() {
@@ -14,93 +14,38 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
 
         const getBuildDuration = measureDuration();
 
-        const { env, variant, debug } = inputs;
+        const { env } = inputs;
 
         context.info(`Building %s packages...`, packages.length);
 
-        const buildTasks = [];
+        const { fork } = require("child_process");
+        const tasksList = packages.map(pkg => {
+            return {
+                title: this.getPackageLabel(pkg),
+                task: () => {
+                    return new Promise((resolve, reject) => {
+                        const buildConfig = { package: { paths: pkg.paths }, env };
+                        const child = fork(WORKER_PATH, [JSON.stringify(buildConfig)], {
+                            silent: true
+                        });
 
-        for (let i = 0; i < packages.length; i++) {
-            const pkg = packages[i];
+                        child.on("error", err => {
+                            reject(err); // Reject the promise with the error
+                        });
 
-            buildTasks.push({
-                pkg: pkg,
-                task: new Promise((resolve, reject) => {
-                    const workerData = {
-                        options: {
-                            env,
-                            variant,
-                            debug,
-                            logs: true
-                        },
-                        package: { ...pkg.paths }
-                    };
+                        child.on("exit", code => {
+                            if (code !== 0) {
+                                reject(new Error(`Child process exited with code ${code}`));
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                }
+            };
+        });
 
-                    const { options, package: pckg } = workerData;
-                    let config = require(pckg.config).default || require(pckg.config);
-                    if (typeof config === "function") {
-                        config = config({ options: { ...options, cwd: pckg.root }, context: cli });
-                    }
-
-                    const hasBuildCommand =
-                        config.commands && typeof config.commands.build === "function";
-                    if (!hasBuildCommand) {
-                        throw new Error("Build command not found.");
-                    }
-
-                    config.commands.build(options).then(resolve).catch(reject);
-
-                    // const enableLogs = inputs.logs === true;
-                    //
-                    // const workerData = {
-                    //     options: {
-                    //         env,
-                    //         variant,
-                    //         debug,
-                    //         logs: enableLogs
-                    //     },
-                    //     package: { ...pkg.paths }
-                    // };
-                    //
-                    // const worker = new Worker(path.join(__dirname, "./worker.js"), {
-                    //     workerData,
-                    //     stderr: false,
-                    //     stdout: false
-                    // });
-                    //
-                    // worker.on("message", threadMessage => {
-                    //     const { type, stdout, stderr, error } = JSON.parse(threadMessage);
-                    //
-                    //     const result = {
-                    //         package: pkg,
-                    //         stdout,
-                    //         stderr,
-                    //         error,
-                    //         duration: getBuildDuration()
-                    //     };
-                    //
-                    //     if (type === "error") {
-                    //         reject(result);
-                    //         return;
-                    //     }
-                    //
-                    //     if (type === "success") {
-                    //         resolve(result);
-                    //     }
-                    // });
-                })
-            });
-        }
-
-        const tasks = new Listr(
-            buildTasks.map(({ pkg, task }) => {
-                return {
-                    title: this.getPackageLabel(pkg),
-                    task: () => task
-                };
-            }),
-            { concurrent: true, exitOnError: false }
-        );
+        const tasks = new Listr(tasksList, { concurrent: true, exitOnError: false });
 
         await tasks.run().catch(err => {
             console.log();
