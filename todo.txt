@@ -1,6 +1,8 @@
-1. output parallel
-2. ci not working build?
-3. test webpack again
-4. enabled ts checks?
-5. err handling - 'child process exied with code 1'
-6. createWebpackConfig (same as createRspackConfig)
+MH
+- ci not working build?
+- err handling - 'child process exied with code 1'
+- cleanup `logs` var
+- inspect `debug`
+
+SH
+- enabled ts checks?
