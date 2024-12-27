@@ -5,7 +5,7 @@ const { version } = require("@webiny/project-utils/package.json");
 const { getOutput, getEntry } = require("../../utils");
 const WebpackBar = require("webpackbar");
 
-module.exports = options => {
+const createWebpackConfig = options => {
     const output = getOutput(options);
     const entry = getEntry(options);
 
@@ -113,3 +113,5 @@ module.exports = options => {
         }
     };
 };
+
+module.exports = { createWebpackConfig };

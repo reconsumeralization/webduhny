@@ -10,7 +10,7 @@ class BaseFunctionBundler {
     }
 
     setBundlerConfig(config) {
-        if (typeof config === 'function') {
+        if (typeof config === "function") {
             this.bundlerConfig = config(this.bundlerConfig);
         }
 
@@ -18,7 +18,7 @@ class BaseFunctionBundler {
     }
 
     getBundlerConfig() {
-        return this.bundlerConfig
+        return this.bundlerConfig;
     }
 }
 

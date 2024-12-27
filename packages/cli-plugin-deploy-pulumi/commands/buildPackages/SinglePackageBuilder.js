@@ -32,9 +32,9 @@ class SinglePackageBuilder extends BasePackagesBuilder {
             throw new Error("Build command not found.");
         }
 
-        console.log('runaj build!!!')
+        console.log("runaj build!!!");
         await config.commands.build(options);
-        console.log('odeeeee')
+        console.log("odeeeee");
     }
 }
 

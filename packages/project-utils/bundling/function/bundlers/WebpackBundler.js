@@ -1,22 +1,22 @@
 const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
 const { BaseFunctionBundler } = require("./BaseFunctionBundler");
+const { createWebpackConfig } = require("./webpack/createWebpackConfig");
+const webpack = require("webpack");
 
 class WebpackBundler extends BaseFunctionBundler {
-    constructor({ cwd, overrides }) {
+    constructor(params) {
         super();
-        this.cwd = cwd;
-        this.overrides = overrides;
+        this.params = params;
     }
 
     build() {
         return new Promise(async (resolve, reject) => {
-            const bundlerConfig = require("./webpack/webpack.config.js")({
-                cwd: this.cwd,
-                overrides: this.overrides,
+            const webpackConfig = createWebpackConfig({
+                ...this.params,
                 production: true
             });
 
-            require("webpack")(bundlerConfig, async (err, stats) => {
+            return webpack(webpackConfig, async (err, stats) => {
                 let messages = {};
 
                 if (err) {
@@ -63,13 +63,12 @@ class WebpackBundler extends BaseFunctionBundler {
         return new Promise(async (resolve, reject) => {
             console.log("Compiling...");
 
-            const bundlerConfig = require("./webpack/webpack.config.js")({
-                cwd: this.cwd,
-                overrides: this.overrides,
-                production: false
+            const webpackConfig = createWebpackConfig({
+                ...this.params,
+                production: true
             });
 
-            return require("webpack")(bundlerConfig).watch({}, async (err, stats) => {
+            return webpack(webpackConfig).watch({}, async (err, stats) => {
                 if (err) {
                     return reject(err);
                 }

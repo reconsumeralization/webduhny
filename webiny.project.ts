@@ -55,6 +55,6 @@ export default {
 
     featureFlags: {
         experimentalAdminOmniSearch: true,
-        newWatchCommand: true,
+        newWatchCommand: true
     }
 };
