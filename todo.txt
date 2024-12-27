@@ -1,4 +1,5 @@
 1. output parallel
+2. ci not working build?
 3. test webpack again
 4. enabled ts checks?
 5. err handling - 'child process exied with code 1'

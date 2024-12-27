@@ -56,6 +56,5 @@ export default {
     featureFlags: {
         experimentalAdminOmniSearch: true,
         newWatchCommand: true,
-        rspack: true
     }
 };
