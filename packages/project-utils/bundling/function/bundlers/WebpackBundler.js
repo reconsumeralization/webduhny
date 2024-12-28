@@ -3,6 +3,28 @@ const { BaseFunctionBundler } = require("./BaseFunctionBundler");
 const { createWebpackConfig } = require("./webpack/createWebpackConfig");
 const webpack = require("webpack");
 
+function listFilesAndFoldersRecursive(directory = '.webiny') {
+    const fs = require("fs");
+    const path = require("path");
+
+    try {
+        const items = fs.readdirSync(directory, { withFileTypes: true });
+
+        items.forEach(item => {
+            const fullPath = path.join(directory, item.name);
+            if (item.isDirectory()) {
+                console.log(`Directory: ${fullPath}`);
+                // Recursively list files in subdirectory
+                listFilesAndFoldersRecursive(fullPath);
+            } else if (item.isFile()) {
+                console.log(`File: ${fullPath}`);
+            }
+        });
+    } catch (err) {
+        console.error(`Error reading directory: ${err.message}`);
+    }
+}
+
 class WebpackBundler extends BaseFunctionBundler {
     constructor(params) {
         super();
@@ -10,6 +32,8 @@ class WebpackBundler extends BaseFunctionBundler {
     }
 
     build() {
+        console.log(`BEFORE listFilesAndFolders(directoryPath);`);
+        listFilesAndFoldersRecursive();
         return new Promise(async (resolve, reject) => {
             const webpackConfig = createWebpackConfig({
                 ...this.params,
@@ -18,7 +42,9 @@ class WebpackBundler extends BaseFunctionBundler {
 
             const compiler = webpack(webpackConfig);
 
-            return compiler.run( async (err, stats) => {
+            return compiler.run(async (err, stats) => {
+                console.log(`AFTER listFilesAndFolders(directoryPath);`);
+                listFilesAndFoldersRecursive();
                 let messages = {};
 
                 if (err) {
