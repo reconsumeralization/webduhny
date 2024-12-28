@@ -16,7 +16,9 @@ class WebpackBundler extends BaseFunctionBundler {
                 production: true
             });
 
-            return webpack(webpackConfig, async (err, stats) => {
+            const compiler = webpack(webpackConfig);
+
+            return compiler.run( async (err, stats) => {
                 let messages = {};
 
                 if (err) {

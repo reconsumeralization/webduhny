@@ -14,7 +14,7 @@ const createRspackConfig = params => {
     const { cwd, overrides, production, watch } = params;
 
     let swcOptions = require("./swcrc");
-    // Customize Babel options.
+    // Customize SWC options.
     if (typeof overrides.swc === "function") {
         swcOptions = overrides.swc(swcOptions);
     }

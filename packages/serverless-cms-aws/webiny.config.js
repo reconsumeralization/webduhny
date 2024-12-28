@@ -33,7 +33,7 @@ async function buildHandlers(options) {
                 }
             }
         ],
-        { concurrent: false, rendererOptions: { showTimer: true, collapse: false } }
+        { concurrent: true, rendererOptions: { showTimer: true, collapse: false } }
     );
     await runner.run();
 }
