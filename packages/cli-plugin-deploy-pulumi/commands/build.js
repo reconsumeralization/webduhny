@@ -19,7 +19,7 @@ module.exports = (params, context) => {
             console.log();
 
             const builder = new PackagesBuilder({
-                packages: [projectApplication.packages[0]],
+                packages: projectApplication.packages,
                 inputs,
                 context
             });
