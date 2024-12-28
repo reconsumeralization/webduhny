@@ -2,6 +2,7 @@ const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
 const { BaseFunctionBundler } = require("./BaseFunctionBundler");
 const { createRspackConfig } = require("./rspack/createRspackConfig");
 const rspack = require("@rspack/core");
+const { getProjectApplication } = require("@webiny/cli/utils");
 
 class RspackBundler extends BaseFunctionBundler {
     constructor(params) {
@@ -11,8 +12,16 @@ class RspackBundler extends BaseFunctionBundler {
 
     build() {
         return new Promise(async (resolve, reject) => {
+            let projectApplication;
+            try {
+                projectApplication = getProjectApplication({ cwd: this.params.cwd });
+            } catch {
+                // No need to do anything.
+            }
+
             const rspackConfig = createRspackConfig({
                 ...this.params,
+                projectApplication,
                 production: true
             });
 

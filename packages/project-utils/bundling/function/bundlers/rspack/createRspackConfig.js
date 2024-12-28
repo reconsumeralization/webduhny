@@ -8,9 +8,6 @@ const createRspackConfig = params => {
     const output = getOutput(params);
     const entry = getEntry(params);
 
-    console.log('USING RSPACK');
-    console.log('output', output);
-    console.log('entry', entry);
     const { cwd, overrides, production, watch } = params;
 
     let swcOptions = require("./swcrc");

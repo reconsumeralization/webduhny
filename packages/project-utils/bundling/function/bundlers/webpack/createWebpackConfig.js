@@ -9,10 +9,6 @@ const createWebpackConfig = options => {
     const output = getOutput(options);
     const entry = getEntry(options);
 
-    console.log('USING WEBPACK');
-    console.log('output', output);
-    console.log('entry', entry);
-
     const { cwd, overrides, production } = options;
 
     let babelOptions = require("./babelrc");
