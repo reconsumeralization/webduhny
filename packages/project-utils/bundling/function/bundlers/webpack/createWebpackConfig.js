@@ -9,6 +9,10 @@ const createWebpackConfig = options => {
     const output = getOutput(options);
     const entry = getEntry(options);
 
+    console.log('USING WEBPACK');
+    console.log('output', output);
+    console.log('entry', entry);
+
     const { cwd, overrides, production } = options;
 
     let babelOptions = require("./babelrc");
@@ -64,7 +68,7 @@ const createWebpackConfig = options => {
                     },
                     async: !production
                 }),
-            options.logs && new WebpackBar({ name: path.basename(cwd) })
+            new WebpackBar({ name: path.basename(cwd) })
         ].filter(Boolean),
         // Run babel on all .js files and skip those in node_modules
         module: {

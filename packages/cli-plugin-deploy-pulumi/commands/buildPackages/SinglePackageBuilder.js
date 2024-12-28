@@ -13,7 +13,7 @@ class SinglePackageBuilder extends BasePackagesBuilder {
         const pkgRelativePath = gray(`(${pkg.paths.relative})`);
         context.info(`Building %s package...`, `${pkgName} ${pkgRelativePath}`);
 
-        const options = { env, debug };
+        const options = { env, debug, cwd: pkg.paths.root };
 
         let config = require(pkg.paths.config).default || require(pkg.paths.config);
         if (typeof config === "function") {
@@ -25,7 +25,7 @@ class SinglePackageBuilder extends BasePackagesBuilder {
             throw new Error("Build command not found.");
         }
 
-        await config.commands.build(options);
+        return config.commands.build(options);
     }
 }
 

@@ -7,8 +7,9 @@ class FunctionBundler extends BaseFunctionBundler {
     }
 
     build() {
-        const Bundler = this.getBundlerClass();
-        return new Bundler(this.params).build();
+        const BundlerClass = this.getBundlerClass();
+        const bundler = new BundlerClass(this.params);
+        return bundler.build();
     }
 
     watch() {
