@@ -2,6 +2,7 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
 import { Button } from "~/Button";
+import { DropdownMenu } from "~/DropdownMenu";
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -14,15 +15,54 @@ export default meta;
 
 type Story = StoryObj<typeof Dialog>;
 
-
 export const Default: Story = {
     args: {
         trigger: <Button variant="primary" text={"Open"} />,
         title: "Dialog Title",
-        description: "A short dialog description.",
+        // description: "A short dialog description.",
         children: (
             <>
-                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to winds, is something that deserves all admiration. Crafted with perfect textures, it bravely withstands storms and gently shades the rays of the sun. A remarkable innovation, with an ergonomically designed grip most suited to the hand, it remains stable even in the fiercest weather.
+                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
+                winds, is something that deserves all admiration. Crafted with perfect textures, it
+                bravely withstands storms and gently shades the rays of the sun. A remarkable
+                innovation, with an ergonomically designed grip most suited to the hand, it remains
+                stable even in the fiercest weather.
+            </>
+        ),
+        onOpenChange: opened => {
+            console.log(`Dialog is ${opened ? "opened" : "closed"}.`);
+        },
+        actions: (
+            <>
+                <Button variant={"secondary"} text={"Cancel"} />
+                <Button variant={"primary"} text={"Confirm"} />
+            </>
+        )
+    },
+    argTypes: {}
+};
+
+export const ControlledVisibility: Story = {
+    render: props => {
+        const [open, setOpen] = React.useState(false);
+
+        return (
+            <>
+                <Button variant="primary" text={"Open"} onClick={() => setOpen(true)} />
+                <Dialog {...props} open={open} onOpenChange={() => setOpen(false)} />
+            </>
+        );
+    },
+    args: {
+        title: "Dialog Title",
+        // description: "A short dialog description.",
+        children: (
+            <>
+                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
+                winds, is something that deserves all admiration. Crafted with perfect textures, it
+                bravely withstands storms and gently shades the rays of the sun. A remarkable
+                innovation, with an ergonomically designed grip most suited to the hand, it remains
+                stable even in the fiercest weather.
             </>
         ),
         actions: (
@@ -30,7 +70,42 @@ export const Default: Story = {
                 <Button variant={"secondary"} text={"Cancel"} />
                 <Button variant={"primary"} text={"Confirm"} />
             </>
+        )
+    },
+    argTypes: {}
+};
+export const WithDropdownMenu: Story = {
+    render: props => {
+        const [open, setOpen] = React.useState(false);
+
+        return (
+            <>
+                <DropdownMenu trigger={<Button variant="primary" text={"Open"} />}>
+                    <DropdownMenu.Item content={"Open Dialog"} onClick={() => setOpen(true)} />
+                </DropdownMenu>
+
+                <Dialog {...props} open={open} onOpenChange={() => setOpen(false)} />
+            </>
+        );
+    },
+    args: {
+        title: "Dialog Title",
+        // description: "A short dialog description.",
+        children: (
+            <>
+                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
+                winds, is something that deserves all admiration. Crafted with perfect textures, it
+                bravely withstands storms and gently shades the rays of the sun. A remarkable
+                innovation, with an ergonomically designed grip most suited to the hand, it remains
+                stable even in the fiercest weather.
+            </>
         ),
+        actions: (
+            <>
+                <Button variant={"secondary"} text={"Cancel"} />
+                <Button variant={"primary"} text={"Confirm"} />
+            </>
+        )
     },
     argTypes: {}
 };

@@ -3,21 +3,37 @@ import { cn } from "~/utils";
 import { type DialogProps } from "../Dialog";
 import { DialogTitle } from "./DialogTitle";
 import { DialogDescription } from "./DialogDescription";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 type DialogHeaderProps = Pick<DialogProps, "title" | "description">;
 
 const DialogHeaderBase = React.forwardRef<any, DialogHeaderProps>(({ title, description }, ref) => {
-    if (!title && !description) {
+    if (!title) {
         return null;
+    }
+
+    const renderedTitle = <DialogTitle>{title}</DialogTitle>;
+
+    // If there is no description, use the title as the description, but visually hide it.
+    // We're doing this because, without a description, warnings are thrown in the console.
+    let renderedDescription = <DialogDescription>{description}</DialogDescription>;
+    if (!description) {
+        renderedDescription = (
+            <VisuallyHidden.Root>
+                <DialogDescription>{title}</DialogDescription>
+            </VisuallyHidden.Root>
+        );
     }
 
     return (
         <div
-            className={cn("flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary")}
+            className={cn(
+                "flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary"
+            )}
             ref={ref}
         >
-            {title && <DialogTitle>{title}</DialogTitle>}
-            {description && <DialogDescription>{description}</DialogDescription>}
+            {renderedTitle}
+            {renderedDescription}
         </div>
     );
 });

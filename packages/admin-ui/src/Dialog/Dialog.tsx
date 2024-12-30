@@ -17,8 +17,8 @@ export interface DialogProps
     title?: React.ReactNode | string;
     description?: React.ReactNode | string;
     children: React.ReactNode;
-    actions: React.ReactNode;
-    info: React.ReactNode;
+    actions?: React.ReactNode;
+    info?: React.ReactNode;
 }
 
 const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogProps>(

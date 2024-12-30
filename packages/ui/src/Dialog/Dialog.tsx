@@ -4,7 +4,8 @@ import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/com
 import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
 import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
 
-export type DialogOnClose = (event: DialogOnCloseEventT) => void;
+//export type DialogOnClose = (event: DialogOnCloseEventT) => void;
+export type DialogOnClose = any;
 
 // export interface DialogProps extends RmwcDialogProps {
 //     className?: string;
@@ -24,12 +25,16 @@ export interface DialogActionsProps {
 }
 
 export const DialogActions = (props: DialogActionsProps) => {
-    return <AdminUiDialogFooter style={{marginTop: 32}} actions={props.children}/>;
+    return <AdminUiDialogFooter style={{ marginTop: 32 }} actions={props.children} />;
+};
+
+export const DialogAccept = (props: any) => {
+    return null;
 };
 
 export const DialogCancel = (props: any) => {
-    return <AdminUiDialogClose {...props}/>
-}
+    return <AdminUiDialogClose {...props} />;
+};
 
 DialogActions.displayName = "DialogActions";
 
@@ -48,22 +53,23 @@ export interface DialogTitleProps {
 }
 
 export const DialogTitle = (props: DialogTitleProps) => {
-    return <AdminUiDialogHeader title={props.children} description={"what here"} />;
+    return <AdminUiDialogHeader title={props.children} description={""} />;
 };
 
 DialogTitle.displayName = "DialogTitle";
 
-export const Dialog = (props: any) => {
+export const Dialog = ({ onClose, open, children }: any) => {
     return (
         <AdminUiDialog
-            open={props.open}
-            onOpenChange={() => {
-                if (props.onClose) {
-                    props.onClose({ target: {} } as any);
+            open={open}
+            onOpenChange={opened => {
+                if (!opened && onClose) {
+                    console.log('gasi!')
+                    onClose();
                 }
             }}
         >
-            {props.children}
+            {children}
         </AdminUiDialog>
     );
 

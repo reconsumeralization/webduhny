@@ -3,7 +3,7 @@ import { makeDecoratable } from "@webiny/react-composition";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/utils";
 
-export type HeadingTags = string
+export type HeadingTags = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "div";
 export type HeadingLevels = 1 | 2 | 3 | 4 | 5 | 6;
 
 // Create a mapping of variant to tag

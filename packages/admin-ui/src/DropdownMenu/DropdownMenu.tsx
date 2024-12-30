@@ -42,8 +42,11 @@ const DropdownMenuBase = React.forwardRef<
                 defaultOpen,
                 open,
                 onOpenChange,
-                modal,
-                dir
+                dir,
+
+                // Fixes the following issue:
+                // https://github.com/radix-ui/primitives/issues/3141
+                modal: false
             },
             triggerProps: {
                 // Temporary fix.
@@ -54,7 +57,7 @@ const DropdownMenuBase = React.forwardRef<
     }, [props]);
 
     return (
-        <DropdownMenuRoot {...rootProps}>
+        <DropdownMenuRoot {...rootProps} modal={false}>
             <DropdownMenuTrigger {...triggerProps} asChild />
             <DropdownMenuPortal>
                 <DropdownMenuContent {...contentProps} ref={ref} />

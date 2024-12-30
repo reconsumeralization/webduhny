@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import get from "lodash/get";
 import { useUi } from "@webiny/app/hooks/useUi";
-import { Dialog, DialogAccept, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
+import { Dialog, DialogCancel, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { ButtonPrimary } from "@webiny/ui/Button";
 
 export const DialogContainer = () => {
@@ -53,9 +53,9 @@ export const DialogContainer = () => {
             <DialogContent>{message}</DialogContent>
             <DialogActions>
                 {actions.cancel && (
-                    <DialogAccept onClick={actions.cancel.onClick}>
+                    <DialogCancel onClick={actions.cancel.onClick}>
                         {actions.cancel.label}
-                    </DialogAccept>
+                    </DialogCancel>
                 )}
                 {actions.accept && (
                     <ButtonPrimary
