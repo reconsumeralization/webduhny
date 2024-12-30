@@ -235,6 +235,8 @@
   },
   "packageManager": "yarn@3.6.4",
   "dependencies": {
+    "@swc/core": "^1.10.3",
+    "@swc/jest": "^0.2.37",
     "@types/hoist-non-react-statics": "^3.3.5"
   },
   "engines": {

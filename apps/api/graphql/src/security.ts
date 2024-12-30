@@ -8,7 +8,7 @@ import apiKeyAuthentication from "@webiny/api-security/plugins/apiKeyAuthenticat
 import apiKeyAuthorization from "@webiny/api-security/plugins/apiKeyAuthorization";
 import cognitoAuthentication, { syncWithCognito } from "@webiny/api-security-cognito";
 import anonymousAuthorization from "@webiny/api-security/plugins/anonymousAuthorization";
-import tenantLinkAuthorization from "@webiny/api-security/plugins/tenantLinkAuthorization";
+import tenantLinkAuthorization from "@webiny/api-s2ecurity/plugins/tenantLinkAuthorization";
 import createAdminUsersApp from "@webiny/api-admin-users";
 import { createStorageOperations as createAdminUsersStorageOperations } from "@webiny/api-admin-users-so-ddb";
 
@@ -25,7 +25,7 @@ export default ({ documentClient }: { documentClient: DynamoDBDocument }) => [
      */
     createTenancyGraphQL(),
 
-    /**
+    /**s
      * Create Security app in the `context`.
      */
     createSecurityContext({

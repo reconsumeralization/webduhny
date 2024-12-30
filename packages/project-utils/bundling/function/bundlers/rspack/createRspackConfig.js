@@ -45,6 +45,9 @@ const createRspackConfig = params => {
             hints: false
         },
         plugins: [
+            tsChecksEnabled && new TsCheckerRspackPlugin({
+                memoryLimit: 4096 * 4,
+            }),
             new rspack.DefinePlugin({
                 "process.env.WEBINY_VERSION": JSON.stringify(process.env.WEBINY_VERSION || version),
                 ...definitions
@@ -57,7 +60,6 @@ const createRspackConfig = params => {
                 contextRegExp: /jsdom$/
             }),
             new rspack.ProgressPlugin(),
-            tsChecksEnabled && new TsCheckerRspackPlugin()
         ].filter(Boolean),
 
         module: {
@@ -78,11 +80,14 @@ const createRspackConfig = params => {
                             }
                         },
                         {
-                            test: /\.(js|ts)$/,
+                            test: /\.(ts)$/,
                             loader: "builtin:swc-loader",
                             exclude: /node_modules/,
                             options: {
                                 jsc: {
+                                    parser: {
+                                        syntax: 'typescript',
+                                    },
                                     baseUrl: cwd,
                                     paths: {
                                         "~/*": ["src/*"],
@@ -90,7 +95,7 @@ const createRspackConfig = params => {
                                     }
                                 }
                             }
-                        }
+                        },
                     ].filter(Boolean)
                 },
                 /**

@@ -24,18 +24,34 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
                 title: this.getPackageLabel(pkg),
                 task: () => {
                     return new Promise((resolve, reject) => {
-                        const buildConfig = { package: { paths: pkg.paths }, env };
-                        const child = fork(WORKER_PATH, [JSON.stringify(buildConfig)], {
-                            silent: true
+                        const buildConfig = JSON.stringify({
+                            ...inputs,
+                            package: { paths: pkg.paths },
                         });
+                        const child = fork(WORKER_PATH, [buildConfig], { silent: true });
 
+                        let errorOutput = "";
+
+                        // Collect error messages from the child process's stderr
+                        if (child.stderr) {
+                            child.stderr.on("data", data => {
+                                errorOutput += data.toString();
+                            });
+                        }
+
+                        // Handle child process error events
                         child.on("error", err => {
-                            reject(err); // Reject the promise with the error
+                            console.log("ERRORARARARA");
+                            reject(err);
                         });
 
+                        // Handle child process exit and check for errors
                         child.on("exit", code => {
                             if (code !== 0) {
-                                reject(new Error(`Child process exited with code ${code}`));
+                                const err = new Error("Build failed.", {
+                                    cause: { errorOutput, pkg }
+                                });
+                                reject(err);
                             } else {
                                 resolve();
                             }
@@ -52,14 +68,15 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
             context.error(`Failed to build all packages. For more details, check the logs below.`);
             console.log();
 
-            err.errors.forEach(({ package: pkg, error }, i) => {
+            err.errors.forEach((err, i) => {
+                const { pkg, errorOutput } = err.cause;
                 const number = `${i + 1}.`;
                 const name = context.error.hl(pkg.name);
                 const relativePath = gray(`(${pkg.paths.relative})`);
                 const title = [number, name, relativePath].join(" ");
 
                 console.log(title);
-                console.log(error.message);
+                console.log(errorOutput);
                 console.log();
             });
 
