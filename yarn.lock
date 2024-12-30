@@ -14886,6 +14886,7 @@ __metadata:
     "@webiny/react-composition": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
+    ace-builds: "npm:^1.37.1"
     chalk: "npm:^4.1.0"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.1"
@@ -14895,6 +14896,7 @@ __metadata:
     postcss-loader: "npm:^6.2.1"
     prettier: "npm:^2.8.3"
     react: "npm:18.2.0"
+    react-ace: "npm:^13.0.0"
     rimraf: "npm:^5.0.5"
     sass: "npm:1.44.0"
     storybook: "npm:7.6.20"
@@ -19173,7 +19175,6 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
     babel-loader: "npm:^9.2.1"
-    brace: "npm:^0.11.1"
     classnames: "npm:^2.5.1"
     cropperjs: "npm:^1.4.3"
     dot-prop-immutable: "npm:^2.1.1"
@@ -19188,7 +19189,6 @@ __metadata:
     nprogress: "npm:^0.2.0"
     nuka-carousel: "npm:4.7.1"
     raw-loader: "npm:^4.0.2"
-    react-ace: "npm:^6.1.4"
     react-butterfiles: "npm:^1.3.3"
     react-color: "npm:^2.19.3"
     react-columned: "npm:^1.1.3"
@@ -19451,6 +19451,13 @@ __metadata:
   version: 0.4.1
   resolution: "accounting@npm:0.4.1"
   checksum: 10/01d27e58d63a4a4bf7f6f6be0d7ccb523f8332d8d9d32b6a6fbe3cb8f8c56ae2269fd77c0ebb8202e149bdcaa4dc7177b546a2e6f5f5b26ad78528f8bd821dcf
+  languageName: node
+  linkType: hard
+
+"ace-builds@npm:^1.36.3, ace-builds@npm:^1.37.1":
+  version: 1.37.1
+  resolution: "ace-builds@npm:1.37.1"
+  checksum: 10/ae6a4fcac289a5edf4c1eb43492f6bbf65e146eb9542df31943593badcf77f6f9cfeff8904aec0c14fe332e5fbc6bf4a8173aa4101cab708e466cdb4b56839db
   languageName: node
   linkType: hard
 
@@ -24871,7 +24878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff-match-patch@npm:^1.0.4":
+"diff-match-patch@npm:^1.0.4, diff-match-patch@npm:^1.0.5":
   version: 1.0.5
   resolution: "diff-match-patch@npm:1.0.5"
   checksum: 10/fd1ab417eba9559bda752a4dfc9a8ac73fa2ca8b146d29d153964b437168e301c09d8a688fae0cd81d32dc6508a4918a94614213c85df760793f44e245173bb6
@@ -37764,6 +37771,22 @@ __metadata:
   version: 1.1.0
   resolution: "reachdown@npm:1.1.0"
   checksum: 10/9b267ced318fca2fe15d6023dc7798137878b7718df362b929692391ba56eb792744463b4b8d9863a170989df1d5170a4477d0631443e1d8bbf6ef2058a54b07
+  languageName: node
+  linkType: hard
+
+"react-ace@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "react-ace@npm:13.0.0"
+  dependencies:
+    ace-builds: "npm:^1.36.3"
+    diff-match-patch: "npm:^1.0.5"
+    lodash.get: "npm:^4.4.2"
+    lodash.isequal: "npm:^4.5.0"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/93bf67725641d6533d25e930c309e86ea13f91299c6f3fa7ae90c35d647a8309beca2f031c31bf7fe2f3bc9d88831430befa3340eb6c1ed8d651529613363240
   languageName: node
   linkType: hard
 
