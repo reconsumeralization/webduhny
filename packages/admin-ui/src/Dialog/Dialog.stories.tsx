@@ -19,7 +19,7 @@ export const Default: Story = {
     args: {
         trigger: <Button variant="primary" text={"Open"} />,
         title: "Dialog Title",
-        // description: "A short dialog description.",
+        description: "A short dialog description.",
         children: (
             <>
                 The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
@@ -34,8 +34,8 @@ export const Default: Story = {
         },
         actions: (
             <>
-                <Button variant={"secondary"} text={"Cancel"} />
-                <Button variant={"primary"} text={"Confirm"} />
+                <Dialog.CancelButton />
+                <Dialog.ConfirmButton />
             </>
         )
     },
@@ -49,31 +49,21 @@ export const ControlledVisibility: Story = {
         return (
             <>
                 <Button variant="primary" text={"Open"} onClick={() => setOpen(true)} />
-                <Dialog {...props} open={open} onOpenChange={() => setOpen(false)} />
+                <Dialog
+                    {...props}
+                    open={open}
+                    onOpenChange={open => {
+                        if (!open) {
+                            setOpen(false);
+                        }
+                    }}
+                />
             </>
         );
     },
-    args: {
-        title: "Dialog Title",
-        // description: "A short dialog description.",
-        children: (
-            <>
-                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
-                winds, is something that deserves all admiration. Crafted with perfect textures, it
-                bravely withstands storms and gently shades the rays of the sun. A remarkable
-                innovation, with an ergonomically designed grip most suited to the hand, it remains
-                stable even in the fiercest weather.
-            </>
-        ),
-        actions: (
-            <>
-                <Button variant={"secondary"} text={"Cancel"} />
-                <Button variant={"primary"} text={"Confirm"} />
-            </>
-        )
-    },
-    argTypes: {}
+    args: { ...Default.args, trigger: null }
 };
+
 export const WithDropdownMenu: Story = {
     render: props => {
         const [open, setOpen] = React.useState(false);
@@ -88,107 +78,24 @@ export const WithDropdownMenu: Story = {
             </>
         );
     },
-    args: {
-        title: "Dialog Title",
-        // description: "A short dialog description.",
-        children: (
-            <>
-                The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
-                winds, is something that deserves all admiration. Crafted with perfect textures, it
-                bravely withstands storms and gently shades the rays of the sun. A remarkable
-                innovation, with an ergonomically designed grip most suited to the hand, it remains
-                stable even in the fiercest weather.
-            </>
-        ),
-        actions: (
-            <>
-                <Button variant={"secondary"} text={"Cancel"} />
-                <Button variant={"primary"} text={"Confirm"} />
-            </>
-        )
-    },
-    argTypes: {}
+    args: { ...Default.args, trigger: null }
 };
 
-// export const SimpleMenu: Story = {
-//     args: {
-//         trigger: <Button variant="primary" text={"Open"} />,
-//         children: (
-//             <>
-//                 <Item content={"Billing"} />
-//                 <Item content={"Settings"} />
-//                 <Item content={"Keyboard shortcuts"} />
-//             </>
-//         )
-//     },
-//     argTypes: {}
-// };
-// export const SimpleMenuWithIcons: Story = {
-//     args: {
-//         trigger: <Button variant="primary" text={"Open"} />,
-//         children: (
-//             <>
-//                 <Item icon={<CreditCard />} content={"Billing"} />
-//                 <Item icon={<Settings />} content={"Settings"} />
-//                 <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
-//             </>
-//         )
-//     },
-//     argTypes: {}
-// };
-//
-// export const WithSubMenus: Story = {
-//     args: {
-//         trigger: <Button variant="primary" text={"Open"} />,
-//         children: (
-//             <>
-//                 <Label content={"My Account"} />
-//                 <Item icon={<User />} content={"Profile"} />
-//                 <Group>
-//                     <Item icon={<CreditCard />} content={"Billing"} />
-//                     <Item icon={<Settings />} content={"Settings"} />
-//                     <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
-//                 </Group>
-//                 <Separator />
-//                 <Group>
-//                     <Item icon={<Users />} content={"Team"} />
-//                     <Item icon={<UserPlus />} content={"Invite users"}>
-//                         <Item icon={<Mail />} content={"Email"} />
-//                         <Item icon={<MessageSquare />} content={"Message"} />
-//                         <Separator />
-//                         <Item icon={<PlusCircle />} content={"More..."}>
-//                             <Item icon={<Mail />} content={"Email"} />
-//                             <Item icon={<MessageSquare />} content={"Message"} />
-//                             <Separator />
-//                             <Item icon={<PlusCircle />} content={"More..."} />
-//                         </Item>
-//                     </Item>
-//                     <Item icon={<Plus />} content={"New Team"} />
-//                 </Group>
-//                 <Separator />
-//                 <Item icon={<LifeBuoy />} content={"Support"} />
-//                 <Item icon={<Cloud />} content={"API"} disabled />
-//                 <Separator />
-//                 <Item icon={<LogOut />} content={"Log out"} />
-//             </>
-//         )
-//     },
-//     argTypes: {}
-// };
-//
-// export const WithOnOpenChange: Story = {
-//     args: {
-//         trigger: <Button variant="primary" text={"Open"} />,
-//         onOpenChange: opened => {
-//             console.log(`Menu is ${opened ? "opened" : "closed"}.`);
-//         },
-//         children: (
-//             <>
-//                 <Item icon={<CreditCard />} content={"Billing"} />
-//                 <Item icon={<Settings />} content={"Settings"} />
-//                 <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
-//             </>
-//         )
-//     },
-//     argTypes: {}
-// };
+export const WithoutCloseButton: Story = {
+    args: { ...Default.args, showCloseButton: false }
+};
+
+export const AlertDialog: Story = {
+    args: {
+        ...Default.args,
+        showCloseButton: false,
+        title: "Confirm Action",
+        description: "Are you sure you want to delete this item?",
+        children: (
+            <>
+                <p>This action cannot be undone.</p>
+                <p>Deleted items cannot be recovered.</p>
+            </>
+        )
+    }
+};
