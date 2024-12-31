@@ -120,4 +120,4 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     );
 };
 
-export { AutoCompletePrimitive, type AutoCompletePrimitiveProps, type AutoCompleteOption };
+export { AutoCompletePrimitive, type AutoCompletePrimitiveProps };
