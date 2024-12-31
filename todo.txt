@@ -1,2 +1,0 @@
-- dropown menu auto-hiding in manage perms dialog
-- things dissapear from the dialog when it's being closed
