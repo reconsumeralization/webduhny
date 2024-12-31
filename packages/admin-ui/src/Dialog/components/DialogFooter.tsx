@@ -16,7 +16,7 @@ export const DialogFooter = ({ className, actions, info, ...props }: DialogFoote
             <div>{info}</div>
             <div className={"flex gap-x-sm"}>{actions}</div>
         </div>
-    )
+    );
 };
 
 DialogFooter.displayName = "DialogFooter";

@@ -46,8 +46,8 @@ const DropdownMenuBase = React.forwardRef<
                 defaultOpen,
                 open,
                 onOpenChange,
-                dir,
-                modal
+                modal,
+                dir
             },
             triggerProps: {
                 // Temporary fix.

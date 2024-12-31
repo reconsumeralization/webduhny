@@ -244,7 +244,7 @@ const ContentModelsDataList = ({
                 <DataListActionsWrapper>
                     {canCreate ? (
                         <ButtonSecondary data-testid="new-record-button" onClick={onCreate}>
-                            <ButtonIcon icon={<AddIcon />} /> {t`2New Model`}
+                            <ButtonIcon icon={<AddIcon />} /> {t`New Model`}
                         </ButtonSecondary>
                     ) : null}
                     <OptionsMenu

@@ -6,11 +6,7 @@ const DialogTitleBase = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Title>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
-    <DialogPrimitive.Title
-        ref={ref}
-        className={cn("text-h4", className)}
-        {...props}
-    />
+    <DialogPrimitive.Title ref={ref} className={cn("text-h4", className)} {...props} />
 ));
 DialogTitleBase.displayName = DialogPrimitive.Title.displayName;
 

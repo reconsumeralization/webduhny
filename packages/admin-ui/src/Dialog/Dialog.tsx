@@ -77,7 +77,7 @@ const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogP
                             {contentProps.children}
                         </div>
 
-                        <DialogFooter {...footerProps}/>
+                        <DialogFooter {...footerProps} />
                     </DialogContent>
                 </DialogPortal>
             </DialogRoot>
