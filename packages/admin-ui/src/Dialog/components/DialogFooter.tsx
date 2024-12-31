@@ -13,7 +13,9 @@ export const DialogFooter = ({ actions, info, className, ...props }: DialogFoote
 
     return (
         <div {...props} className={cn("flex justify-between", className)}>
-            <div>{info}</div>
+            <div className={"text-sm flex items-center"}>
+                <div>{info}</div>
+            </div>
             <div className={"flex gap-x-sm"}>{actions}</div>
         </div>
     );

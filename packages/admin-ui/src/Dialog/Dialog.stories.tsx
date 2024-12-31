@@ -20,6 +20,11 @@ export const Default: Story = {
         trigger: <Button variant="primary" text={"Open"} />,
         title: "Dialog Title",
         description: "A short dialog description.",
+        info: (
+            <>
+                Learn more about this <a href={"#"}>here</a>.
+            </>
+        ),
         children: (
             <>
                 The amazing, splendid, and most useful umbrella, resistant to rain and friendly to
@@ -88,6 +93,7 @@ export const WithoutCloseButton: Story = {
 export const AlertDialog: Story = {
     args: {
         ...Default.args,
+        info: null,
         showCloseButton: false,
         title: "Confirm Action",
         description: "Are you sure you want to delete this item?",

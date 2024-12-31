@@ -73,8 +73,11 @@ const DialogBase = (props: DialogProps) => {
             <DialogPortal>
                 <DialogOverlay />
                 <DialogContent {...contentProps}>
-                    <DialogHeader {...headerProps} />
-                    {contentProps.children}
+                    <div>
+                        <DialogHeader {...headerProps} />
+                        {contentProps.children}
+                    </div>
+
                     <DialogFooter {...footerProps} />
                 </DialogContent>
             </DialogPortal>
