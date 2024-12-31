@@ -55,9 +55,9 @@ const SupportedFileTypes = ({
 
     return (
         <span>
-            {t`Showing {currentCount} out of {totalCountLabel} from the following file extensions: {files}.`(
+            {t`Showing {currentCountLabel} out of {totalCountLabel} from the following file extensions: {files}.`(
                 {
-                    currentCount,
+                    currentCountLabel: String(currentCount),
                     totalCountLabel: getLabel(totalCount),
                     files: getUniqueFilePlugins(accept).join(", ")
                 }
