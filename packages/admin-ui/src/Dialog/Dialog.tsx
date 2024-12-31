@@ -59,7 +59,7 @@ const DialogBase = (props: DialogProps) => {
                 triggerProps: {
                     // Temporary fix. We need this because `ref` doesn't get passed to components
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
-                    children: <div>{trigger}</div>
+                    children: <div className={"inline-block"}>{trigger}</div>
                 },
                 headerProps: { title, description },
                 footerProps: { info, actions },
