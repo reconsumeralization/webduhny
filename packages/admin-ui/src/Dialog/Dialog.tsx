@@ -63,6 +63,7 @@ const DialogBase = (props: DialogProps) => {
             };
         }, [props]);
 
+    console.log('contentProps', contentProps)
     return (
         <DialogRoot {...rootProps}>
             {triggerProps.children && <DialogTrigger {...triggerProps} asChild />}

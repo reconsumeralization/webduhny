@@ -5,9 +5,10 @@ import { DialogTitle } from "./DialogTitle";
 import { DialogDescription } from "./DialogDescription";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-type DialogHeaderProps = Pick<DialogProps, "title" | "description">;
+export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
+    Pick<DialogProps, "title" | "description">;
 
-const DialogHeaderBase = React.forwardRef<any, DialogHeaderProps>(({ title, description }, ref) => {
+export const DialogHeader = ({ title, description, className, ...props }: DialogHeaderProps) => {
     if (!title) {
         return null;
     }
@@ -27,17 +28,14 @@ const DialogHeaderBase = React.forwardRef<any, DialogHeaderProps>(({ title, desc
 
     return (
         <div
+            {...props}
             className={cn(
-                "flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary"
+                "flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary",
+                className
             )}
-            ref={ref}
         >
             {renderedTitle}
             {renderedDescription}
         </div>
     );
-});
-
-DialogHeaderBase.displayName = "DialogHeader";
-
-export const DialogHeader = DialogHeaderBase;
+};
