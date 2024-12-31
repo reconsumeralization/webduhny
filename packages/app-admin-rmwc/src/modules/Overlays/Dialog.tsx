@@ -53,20 +53,30 @@ export const DialogContainer = () => {
     };
 
     return (
-        <Dialog open={!!message} onClose={hideDialog} data-testid={dataTestId} style={style} showCloseButton={false}>
+        <Dialog
+            open={!!message}
+            onClose={hideDialog}
+            data-testid={dataTestId}
+            style={style}
+            showCloseButton={false}
+        >
             {isLoading ? loading : null}
             {title && <DialogTitle>{title}</DialogTitle>}
             <DialogContent>{message}</DialogContent>
             <DialogActions>
                 {actions.cancel && (
-                    <DialogCancel onClick={actions.cancel.onClick} text={actions.cancel.label} />
+                    <DialogCancel onClick={actions.cancel.onClick}>
+                        {actions.cancel.label}
+                    </DialogCancel>
                 )}
                 {actions.accept && (
                     <DialogAccept
                         data-testid={"confirmationdialog-confirm-action"}
                         onClick={handleConfirm}
                         text={actions.accept.label}
-                    />
+                    >
+                        {actions.accept.label}
+                    </DialogAccept>
                 )}
             </DialogActions>
         </Dialog>

@@ -33,7 +33,7 @@ export const DialogActions = (props: DialogActionsProps) => {
 };
 
 export interface DialogAcceptProps extends AdminUiButtonProps {
-    children: React.ReactNode[] | React.ReactNode;
+    children?: React.ReactNode[] | React.ReactNode;
 }
 
 export const DialogAccept = (props: DialogAcceptProps) => {
@@ -41,7 +41,7 @@ export const DialogAccept = (props: DialogAcceptProps) => {
 };
 
 export interface DialogCancelProps extends AdminUiButtonProps {
-    children: React.ReactNode[] | React.ReactNode;
+    children?: React.ReactNode[] | React.ReactNode;
 }
 
 export const DialogCancel = (props: DialogCancelProps) => {

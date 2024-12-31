@@ -1,1 +1,2 @@
-- check make Decoratable / ref fwding
+- check makeDecoratable calls / ref forwarding
+- dbl check stories
