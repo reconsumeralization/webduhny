@@ -3,13 +3,14 @@ import { makeAutoObservable } from "mobx";
 interface AutoCompleteInputPresenterParams {
     value?: string;
     placeholder?: string;
+    displayResetAction?: boolean;
 }
 
 interface IAutoCompleteInputPresenter {
     vm: {
         placeholder: string;
         value: string;
-        hasValue: boolean;
+        displayResetAction: boolean;
     };
     init: (params: AutoCompleteInputPresenterParams) => void;
     setValue: (query: string) => void;
@@ -19,6 +20,7 @@ interface IAutoCompleteInputPresenter {
 class AutoCompleteInputPresenter implements IAutoCompleteInputPresenter {
     private searchQuery?: string = undefined;
     private placeholder?: string = undefined;
+    private displayResetAction?: boolean = true;
 
     constructor() {
         makeAutoObservable(this);
@@ -27,13 +29,14 @@ class AutoCompleteInputPresenter implements IAutoCompleteInputPresenter {
     init(params?: AutoCompleteInputPresenterParams) {
         this.searchQuery = params?.value;
         this.placeholder = params?.placeholder;
+        this.displayResetAction = params?.displayResetAction ?? true;
     }
 
     get vm() {
         return {
             placeholder: this.placeholder || "Start typing or select",
             value: this.searchQuery || "",
-            hasValue: !!this.searchQuery
+            displayResetAction: Boolean(this.displayResetAction && !!this.searchQuery)
         };
     }
 

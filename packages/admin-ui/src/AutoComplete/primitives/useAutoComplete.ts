@@ -18,7 +18,8 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             loadingMessage: props.loadingMessage,
             onOpenChange: props.onOpenChange,
             onValueChange: props.onValueChange,
-            onValueReset: props.onValueReset
+            onValueReset: props.onValueReset,
+            displayResetAction: props.displayResetAction
         }),
         [
             props.options,
@@ -28,7 +29,8 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             props.loadingMessage,
             props.onOpenChange,
             props.onValueChange,
-            props.onValueReset
+            props.onValueReset,
+            props.displayResetAction
         ]
     );
 

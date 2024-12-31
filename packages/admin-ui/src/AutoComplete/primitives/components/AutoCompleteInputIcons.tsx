@@ -5,7 +5,7 @@ import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
 
 interface AutoCompleteInputIconsProps {
-    hasValue: boolean;
+    displayResetAction: boolean;
     isDisabled?: boolean;
     onOpenChange: (open: boolean) => void;
     onResetValue: () => void;
@@ -14,7 +14,7 @@ interface AutoCompleteInputIconsProps {
 export const AutoCompleteInputIcons = (props: AutoCompleteInputIconsProps) => {
     return (
         <div className={"flex items-center gap-sm"}>
-            {props.hasValue && (
+            {props.displayResetAction && (
                 <IconButton
                     size={"xs"}
                     variant={"secondary"}

@@ -35,6 +35,7 @@ describe("MultiAutoCompletePresenter", () => {
             // default: no params
             presenter.init({ onValuesChange });
             expect(presenter.vm.inputVm.placeholder).toEqual("Start typing or select");
+            expect(presenter.vm.inputVm.displayResetAction).toEqual(true);
         }
     });
 
@@ -597,5 +598,55 @@ describe("MultiAutoCompletePresenter", () => {
         presenter.createOption("New Option 1");
         expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(true);
         expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
+    });
+
+    it("should not display the reset action if `displayResetAction` is set to `false` and option is selected", () => {
+        presenter.init({
+            onValuesChange,
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ],
+            displayResetAction: false
+        });
+
+        presenter.setSelectedOption("option-2");
+        expect(onValuesChange).toHaveBeenCalledWith(["option-2"]);
+        // `displayResetAction` is set to `false` and option is selected
+        expect(presenter.vm.inputVm.displayResetAction).toEqual(false);
+        expect(presenter.vm.optionsListVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
     });
 });

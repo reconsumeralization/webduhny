@@ -2,12 +2,14 @@ import { makeAutoObservable } from "mobx";
 
 export interface MultiAutoCompleteInputPresenterParams {
     placeholder?: string;
+    displayResetAction?: boolean;
 }
 
 export interface IMultiAutoCompleteInputPresenter {
     vm: {
         placeholder: string;
         value: string;
+        displayResetAction: boolean;
     };
     init: (params: MultiAutoCompleteInputPresenterParams) => void;
     setValue: (query: string) => void;
@@ -17,6 +19,7 @@ export interface IMultiAutoCompleteInputPresenter {
 export class MultiAutoCompleteInputPresenter implements IMultiAutoCompleteInputPresenter {
     private searchQuery?: string = undefined;
     private placeholder?: string = undefined;
+    private displayResetAction = true;
 
     constructor() {
         makeAutoObservable(this);
@@ -24,12 +27,14 @@ export class MultiAutoCompleteInputPresenter implements IMultiAutoCompleteInputP
 
     init(params?: MultiAutoCompleteInputPresenterParams) {
         this.placeholder = params?.placeholder;
+        this.displayResetAction = params?.displayResetAction ?? true;
     }
 
     get vm() {
         return {
             placeholder: this.placeholder || "Start typing or select",
-            value: this.searchQuery || ""
+            value: this.searchQuery || "",
+            displayResetAction: this.displayResetAction
         };
     }
 

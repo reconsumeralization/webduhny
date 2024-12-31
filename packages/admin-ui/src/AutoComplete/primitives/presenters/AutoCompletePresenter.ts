@@ -5,6 +5,7 @@ import { IAutoCompleteListOptionsPresenter } from "./AutoCompleteListOptionsPres
 import { AutoCompleteOption } from "../domains";
 
 interface AutoCompletePresenterParams {
+    displayResetAction?: boolean;
     emptyMessage?: any;
     loadingMessage?: any;
     onOpenChange?: (open: boolean) => void;
@@ -54,7 +55,8 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
         const selected = this.getSelectedOption();
         this.inputPresenter.init({
             value: selected?.label ?? "",
-            placeholder: params.placeholder
+            placeholder: params.placeholder,
+            displayResetAction: params.displayResetAction
         });
     }
 

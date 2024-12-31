@@ -22,7 +22,8 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
             values: props.values,
             onValuesChange: props.onValuesChange,
             onValuesReset: props.onValuesReset,
-            onOpenChange: props.onOpenChange
+            onOpenChange: props.onOpenChange,
+            displayResetAction: props.displayResetAction
         }),
         [
             props.emptyMessage,
@@ -32,7 +33,8 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
             props.values,
             props.onValuesChange,
             props.onValuesReset,
-            props.onOpenChange
+            props.onOpenChange,
+            props.displayResetAction
         ]
     );
 

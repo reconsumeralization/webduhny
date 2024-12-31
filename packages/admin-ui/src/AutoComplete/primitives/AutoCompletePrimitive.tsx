@@ -46,6 +46,10 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      * Optional selected item.
      */
     value?: string;
+    /**
+     * Indicates if the reset action should be displayed.
+     */
+    displayResetAction?: boolean;
 };
 
 const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
@@ -97,7 +101,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                 startIcon={props.startIcon}
                 endIcon={
                     <AutoCompleteInputIcons
-                        hasValue={vm.inputVm.hasValue}
+                        displayResetAction={vm.inputVm.displayResetAction}
                         isDisabled={props.disabled}
                         onResetValue={resetSelectedOption}
                         onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}

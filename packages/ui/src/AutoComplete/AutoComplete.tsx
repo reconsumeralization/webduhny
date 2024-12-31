@@ -22,6 +22,9 @@ export interface AutoCompleteProps extends Omit<AutoCompleteBaseProps, "onChange
 
     // Size - small, medium or large
     size?: "small" | "medium" | "large";
+
+    // Indicates if the reset action should be displayed.
+    displayResetAction?: boolean;
 }
 
 /**

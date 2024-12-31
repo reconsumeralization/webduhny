@@ -53,6 +53,11 @@ export interface MultiAutoCompleteProps extends Omit<AutoCompleteBaseProps, "val
      * Value is an array of strings. But can be undefined.
      */
     value?: MultiAutoCompletePropsValue;
+
+    /**
+     * Indicates if the reset action should be displayed.
+     */
+    displayResetAction?: boolean;
 }
 
 /**

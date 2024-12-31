@@ -8,6 +8,7 @@ import { IMultiAutoCompleteTemporaryOptionPresenter } from "./MultiAutoCompleteT
 
 interface MultiAutoCompletePresenterParams {
     allowFreeInput?: boolean;
+    displayResetAction?: boolean;
     emptyMessage?: any;
     loadingMessage?: any;
     options?: MultiAutoCompleteOption[];
@@ -55,7 +56,8 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.params = params;
 
         this.inputPresenter.init({
-            placeholder: params.placeholder
+            placeholder: params.placeholder,
+            displayResetAction: params.displayResetAction
         });
 
         const listOptions = this.getListOptions(params.options, params.values);

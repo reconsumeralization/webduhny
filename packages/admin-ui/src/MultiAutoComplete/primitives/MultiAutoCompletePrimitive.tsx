@@ -65,6 +65,10 @@ type MultiAutoCompletePrimitiveProps = Omit<
      * Optional selected items.
      */
     values: string[];
+    /**
+     * Indicates if the reset action should be displayed.
+     */
+    displayResetAction?: boolean;
 };
 
 const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
@@ -133,7 +137,9 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 startIcon={props.startIcon}
                 endIcon={
                     <MultiAutoCompleteInputIcons
-                        hasValue={!vm.selectedOptionsVm.isEmpty}
+                        displayResetAction={
+                            !vm.selectedOptionsVm.isEmpty && vm.inputVm.displayResetAction
+                        }
                         isDisabled={props.disabled}
                         onResetValue={resetSelectedOptions}
                         onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}

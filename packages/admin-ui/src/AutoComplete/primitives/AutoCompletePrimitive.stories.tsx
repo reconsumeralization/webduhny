@@ -90,6 +90,13 @@ export const WithLoading: Story = {
     }
 };
 
+export const WithoutResetAction: Story = {
+    args: {
+        ...Default.args,
+        displayResetAction: false
+    }
+};
+
 export const PrimaryVariant: Story = {
     args: {
         ...Default.args,

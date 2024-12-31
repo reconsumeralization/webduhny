@@ -19,7 +19,7 @@ describe("AutoCompletePresenter", () => {
             // default: no params
             presenter.init({ onValueChange });
             expect(presenter.vm.inputVm.placeholder).toEqual("Start typing or select");
-            expect(presenter.vm.inputVm.hasValue).toEqual(false);
+            expect(presenter.vm.inputVm.displayResetAction).toEqual(false);
         }
     });
 
@@ -228,7 +228,7 @@ describe("AutoCompletePresenter", () => {
 
         presenter.searchOption("value");
         expect(presenter.vm.inputVm.value).toEqual("value");
-        expect(presenter.vm.inputVm.hasValue).toEqual(true);
+        expect(presenter.vm.inputVm.displayResetAction).toEqual(true);
     });
 
     it("should set the option as `selected` when the presenter is initialized with a value", () => {
@@ -363,5 +363,45 @@ describe("AutoCompletePresenter", () => {
         presenter.setListOpenState(false);
         expect(presenter.vm.optionsListVm.isOpen).toBe(false);
         expect(onOpenChange).toHaveBeenCalledWith(false);
+    });
+
+    it("should not display the reset action if `displayResetAction` is set to `false` and option is selected", () => {
+        presenter.init({
+            onValueChange,
+            options: [
+                {
+                    label: "Option 1",
+                    value: "option-1"
+                },
+                {
+                    label: "Option 2",
+                    value: "option-2"
+                }
+            ],
+            displayResetAction: false
+        });
+
+        presenter.setSelectedOption("option-2");
+        expect(onValueChange).toHaveBeenCalledWith("option-2");
+        // `displayResetAction` is set to `false` and option is selected
+        expect(presenter.vm.inputVm.displayResetAction).toEqual(false);
+        expect(presenter.vm.optionsListVm.options).toEqual([
+            {
+                label: "Option 1",
+                value: "option-1",
+                disabled: false,
+                selected: false,
+                separator: false,
+                item: null
+            },
+            {
+                label: "Option 2",
+                value: "option-2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
     });
 });
