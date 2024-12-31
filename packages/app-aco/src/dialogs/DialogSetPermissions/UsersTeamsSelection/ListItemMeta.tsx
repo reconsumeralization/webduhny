@@ -94,11 +94,7 @@ export const ListItemMeta = ({
     return (
         <UiListItemMeta>
             <ListActions>
-                <DropdownMenu
-                    trigger={handle}
-                    // Should prevent first item from being autofocused, but it doesn't. 🤷‍
-                    // focusOnOpen={false}
-                >
+                <DropdownMenu trigger={handle}>
                     {TARGET_LEVELS.map(level => (
                         <DropdownMenu.CheckboxItem
                             key={level.id}

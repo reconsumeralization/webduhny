@@ -99,3 +99,18 @@ export const AlertDialog: Story = {
         )
     }
 };
+
+export const DropdownMenuInDialog: Story = {
+    args: {
+        ...Default.args,
+        children: (
+            <>
+                <DropdownMenu trigger={<Button variant="primary" text={"Open"} />}>
+                    <DropdownMenu.Item content={"Billing"} />
+                    <DropdownMenu.Item content={"Settings"} />
+                    <DropdownMenu.Item content={"Keyboard shortcuts"} />
+                </DropdownMenu>
+            </>
+        )
+    }
+};

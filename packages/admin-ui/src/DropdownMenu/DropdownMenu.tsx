@@ -50,7 +50,8 @@ const DropdownMenuBase = React.forwardRef<
                 dir
             },
             triggerProps: {
-                // Temporary fix.
+                // Temporary fix. We need this because `ref` doesn't get passed to components
+                // that are decorated with `makeDecoratable`. This will be fixed in the future.
                 children: <div>{trigger}</div>
             },
             contentProps: rest

@@ -57,7 +57,9 @@ const DialogBase = (props: DialogProps) => {
                     dir
                 },
                 triggerProps: {
-                    children: trigger
+                    // Temporary fix. We need this because `ref` doesn't get passed to components
+                    // that are decorated with `makeDecoratable`. This will be fixed in the future.
+                    children: <div>{trigger}</div>
                 },
                 headerProps: { title, description },
                 footerProps: { info, actions },
@@ -71,11 +73,8 @@ const DialogBase = (props: DialogProps) => {
             <DialogPortal>
                 <DialogOverlay />
                 <DialogContent {...contentProps}>
-                    <div>
-                        <DialogHeader {...headerProps} />
-                        {contentProps.children}
-                    </div>
-
+                    <DialogHeader {...headerProps} />
+                    {contentProps.children}
                     <DialogFooter {...footerProps} />
                 </DialogContent>
             </DialogPortal>
@@ -87,10 +86,13 @@ DialogBase.displayName = "Dialog";
 
 const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 
-const ConfirmButton = (props: ButtonProps) => <Button text={"Confirm"} {...props} variant="primary" />;
+const ConfirmButton = (props: ButtonProps) => (
+    <Button text={"Confirm"} {...props} variant="primary" />
+);
+
 const CancelButton = (props: ButtonProps) => (
     <DialogClose asChild>
-        <Button text={"Cancel"}  {...props} variant="secondary" />
+        <Button text={"Cancel"} {...props} variant="secondary" />
     </DialogClose>
 );
 
