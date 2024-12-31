@@ -1,6 +1,6 @@
 const workerData = JSON.parse(process.argv[2]);
 const { package: pkg, env, debug } = workerData;
-const {serializeError} = require("serialize-error");
+const { serializeError } = require("serialize-error");
 
 require("@webiny/cli/utils/importModule");
 const { cli } = require("@webiny/cli");

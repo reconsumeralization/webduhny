@@ -45,9 +45,10 @@ const createRspackConfig = params => {
             hints: false
         },
         plugins: [
-            tsChecksEnabled && new TsCheckerRspackPlugin({
-                memoryLimit: 4096 * 4,
-            }),
+            tsChecksEnabled &&
+                new TsCheckerRspackPlugin({
+                    memoryLimit: 4096 * 4
+                }),
             new rspack.DefinePlugin({
                 "process.env.WEBINY_VERSION": JSON.stringify(process.env.WEBINY_VERSION || version),
                 ...definitions
@@ -59,7 +60,7 @@ const createRspackConfig = params => {
                 resourceRegExp: /canvas/,
                 contextRegExp: /jsdom$/
             }),
-            new rspack.ProgressPlugin(),
+            new rspack.ProgressPlugin()
         ].filter(Boolean),
 
         module: {
@@ -86,7 +87,7 @@ const createRspackConfig = params => {
                             options: {
                                 jsc: {
                                     parser: {
-                                        syntax: 'typescript',
+                                        syntax: "typescript"
                                     },
                                     baseUrl: cwd,
                                     paths: {
@@ -95,7 +96,7 @@ const createRspackConfig = params => {
                                     }
                                 }
                             }
-                        },
+                        }
                     ].filter(Boolean)
                 },
                 /**
