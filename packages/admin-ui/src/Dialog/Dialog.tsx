@@ -1,8 +1,6 @@
 import * as React from "react";
-import { makeDecoratable, withStaticProps } from "~/utils";
-import { DialogClose } from "./components/DialogClose";
+import { makeDecoratable } from "~/utils";
 import { DialogContent } from "./components/DialogContent";
-import { DialogDescription } from "~/Dialog/components/DialogDescription";
 import { DialogFooter } from "~/Dialog/components/DialogFooter";
 import { DialogHeader } from "~/Dialog/components/DialogHeader";
 import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
@@ -22,77 +20,69 @@ export interface DialogProps
     info?: React.ReactNode;
 }
 
-const DialogBase = React.forwardRef<React.ElementRef<typeof DialogRoot>, DialogProps>(
-    (props, ref) => {
-        const { rootProps, triggerProps, contentProps, headerProps, footerProps } =
-            React.useMemo(() => {
-                const {
-                    // Root props.
+const DialogBase = (props: DialogProps) => {
+    const { rootProps, triggerProps, contentProps, headerProps, footerProps } =
+        React.useMemo(() => {
+            const {
+                // Root props.
+                defaultOpen,
+                open,
+                onOpenChange,
+                modal,
+                dir,
+
+                // Trigger props.
+                trigger,
+
+                // Header props.
+                title,
+                description,
+
+                // Footer props.
+                actions,
+                info,
+
+                // Content props.
+                ...rest
+            } = props;
+
+            return {
+                rootProps: {
                     defaultOpen,
                     open,
                     onOpenChange,
                     modal,
-                    dir,
+                    dir
+                },
+                triggerProps: {
+                    children: trigger
+                },
+                headerProps: { title, description },
+                footerProps: { info, actions },
+                contentProps: rest
+            };
+        }, [props]);
 
-                    // Trigger props.
-                    trigger,
+    return (
+        <DialogRoot {...rootProps}>
+            {triggerProps.children && <DialogTrigger {...triggerProps} asChild />}
+            <DialogPortal>
+                <DialogOverlay />
+                <DialogContent {...contentProps}>
+                    <div>
+                        <DialogHeader {...headerProps} />
+                        {contentProps.children}
+                    </div>
 
-                    // Header props.
-                    title,
-                    description,
-
-                    // Footer props.
-                    actions,
-                    info,
-
-                    // Content props.
-                    ...rest
-                } = props;
-
-                return {
-                    rootProps: {
-                        defaultOpen,
-                        open,
-                        onOpenChange,
-                        modal,
-                        dir
-                    },
-                    triggerProps: {
-                        children: trigger
-                    },
-                    headerProps: { title, description },
-                    footerProps: { info, actions },
-                    contentProps: rest
-                };
-            }, [props]);
-
-        return (
-            <DialogRoot {...rootProps}>
-                {triggerProps.children && <DialogTrigger {...triggerProps} asChild />}
-                <DialogPortal>
-                    <DialogOverlay />
-                    <DialogContent {...contentProps} ref={ref}>
-                        <div>
-                            <DialogHeader {...headerProps} />
-                            {contentProps.children}
-                        </div>
-
-                        <DialogFooter {...footerProps} />
-                    </DialogContent>
-                </DialogPortal>
-            </DialogRoot>
-        );
-    }
-);
+                    <DialogFooter {...footerProps} />
+                </DialogContent>
+            </DialogPortal>
+        </DialogRoot>
+    );
+};
 
 DialogBase.displayName = "Dialog";
 
-const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
-
-const Dialog = withStaticProps(DecoratableDialog, {
-    Close: DialogClose,
-    Description: DialogDescription,
-    Footer: DialogFooter
-});
+const Dialog = makeDecoratable("Dialog", DialogBase);
 
 export { Dialog };

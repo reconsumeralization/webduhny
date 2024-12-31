@@ -1,3 +1,4 @@
 - check makeDecoratable calls / ref forwarding
 - dbl check stories (add full example with left footer info)
 - dropown menu auto-hiding in manage perms dialog
+- things dissapear from the dialog when it's being closed
