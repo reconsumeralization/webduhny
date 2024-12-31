@@ -15,6 +15,7 @@ export interface DialogProps
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode | string;
+    showCloseButton?: boolean;
     description?: React.ReactNode | string;
     children: React.ReactNode;
     actions?: React.ReactNode;

@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import get from "lodash/get";
 import { useUi } from "@webiny/app/hooks/useUi";
-import { Dialog, DialogCancel, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
-import { ButtonPrimary } from "@webiny/ui/Button";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    DialogCancel,
+    DialogAccept
+} from "@webiny/ui/Dialog";
 
 export const DialogContainer = () => {
     const ui = useUi();
@@ -47,23 +53,20 @@ export const DialogContainer = () => {
     };
 
     return (
-        <Dialog open={!!message} onClose={hideDialog} data-testid={dataTestId} style={style}>
+        <Dialog open={!!message} onClose={hideDialog} data-testid={dataTestId} style={style} showCloseButton={false}>
             {isLoading ? loading : null}
             {title && <DialogTitle>{title}</DialogTitle>}
             <DialogContent>{message}</DialogContent>
             <DialogActions>
                 {actions.cancel && (
-                    <DialogCancel onClick={actions.cancel.onClick}>
-                        {actions.cancel.label}
-                    </DialogCancel>
+                    <DialogCancel onClick={actions.cancel.onClick} text={actions.cancel.label} />
                 )}
                 {actions.accept && (
-                    <ButtonPrimary
+                    <DialogAccept
                         data-testid={"confirmationdialog-confirm-action"}
                         onClick={handleConfirm}
-                    >
-                        {actions.accept.label}
-                    </ButtonPrimary>
+                        text={actions.accept.label}
+                    />
                 )}
             </DialogActions>
         </Dialog>

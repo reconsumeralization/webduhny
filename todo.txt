@@ -1,5 +1,1 @@
-- root tenant modal breaks
-- close animations weird
-- close icon
-- check makeDecoratable / ref fwding
-- delete menu - breaks modal
+- check make Decoratable / ref fwding

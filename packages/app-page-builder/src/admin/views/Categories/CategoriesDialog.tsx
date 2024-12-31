@@ -67,7 +67,6 @@ const CategoriesDialog = ({ open, onClose, onSelect, children }: CategoriesDialo
                                             key={item.slug}
                                             onClick={() => {
                                                 onSelect(item);
-                                                // @ts-expect-error
                                                 onClose();
                                             }}
                                         >

@@ -27,7 +27,10 @@ const DropdownMenuBase = React.forwardRef<
             defaultOpen,
             open,
             onOpenChange,
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             modal,
+
             dir,
 
             // Trigger props.
@@ -46,7 +49,7 @@ const DropdownMenuBase = React.forwardRef<
 
                 // Fixes the following issue:
                 // https://github.com/radix-ui/primitives/issues/3141
-                modal: false
+                modal: true
             },
             triggerProps: {
                 // Temporary fix.

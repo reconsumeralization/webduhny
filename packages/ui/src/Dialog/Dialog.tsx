@@ -1,5 +1,9 @@
 import React from "react";
-import { Dialog as AdminUiDialog } from "@webiny/admin-ui";
+import {
+    Button as AdminUiButton,
+    type ButtonProps as AdminUiButtonProps,
+    Dialog as AdminUiDialog
+} from "@webiny/admin-ui";
 import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
 import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
 import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
@@ -28,12 +32,24 @@ export const DialogActions = (props: DialogActionsProps) => {
     return <AdminUiDialogFooter style={{ marginTop: 32 }} actions={props.children} />;
 };
 
-export const DialogAccept = (props: any) => {
-    return null;
+export interface DialogAcceptProps extends AdminUiButtonProps {
+    children: React.ReactNode[] | React.ReactNode;
+}
+
+export const DialogAccept = (props: DialogAcceptProps) => {
+    return <AdminUiButton variant={"primary"} {...props} />;
 };
 
-export const DialogCancel = (props: any) => {
-    return <AdminUiDialogClose {...props} />;
+export interface DialogCancelProps extends AdminUiButtonProps {
+    children: React.ReactNode[] | React.ReactNode;
+}
+
+export const DialogCancel = (props: DialogCancelProps) => {
+    return (
+        <AdminUiDialogClose asChild>
+            <AdminUiButton {...props} variant={"secondary"} text={props.text || props.children} />
+        </AdminUiDialogClose>
+    );
 };
 
 DialogActions.displayName = "DialogActions";
@@ -58,13 +74,13 @@ export const DialogTitle = (props: DialogTitleProps) => {
 
 DialogTitle.displayName = "DialogTitle";
 
-export const Dialog = ({ onClose, open, children }: any) => {
+export const Dialog = ({ onClose, open, children, showCloseButton }: any) => {
     return (
         <AdminUiDialog
             open={open}
+            showCloseButton={showCloseButton}
             onOpenChange={opened => {
                 if (!opened && onClose) {
-                    console.log('gasi!')
                     onClose();
                 }
             }}

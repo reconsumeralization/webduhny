@@ -4,10 +4,15 @@ import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close
 import { cn } from "~/utils";
 import { IconButton } from "~/Button";
 
+export interface DialogContentProps
+    extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+    showCloseButton?: boolean;
+}
+
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+    DialogContentProps
+>(({ className, children, showCloseButton, ...props }, ref) => (
     <DialogPrimitive.Content
         ref={ref}
         className={cn(
@@ -16,10 +21,15 @@ const DialogContent = React.forwardRef<
         )}
         {...props}
     >
-        {children}
-        <DialogPrimitive.Close asChild className="absolute right-4 top-4">
-            <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
-        </DialogPrimitive.Close>
+        {/* We needed to add this wrapper so that absolute-positioned elements can be placed */}
+        {/* inside the dialog. We noticed this while showing a loader inside the dialog. */}
+        <div className={"relative"}>{children}</div>
+
+        {showCloseButton !== false && (
+            <DialogPrimitive.Close asChild className="absolute right-4 top-4">
+                <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
+            </DialogPrimitive.Close>
+        )}
     </DialogPrimitive.Content>
 ));
 
