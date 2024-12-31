@@ -1,5 +1,4 @@
 MH
-- err handling - 'child process exied with code 1'
 - cleanup `logs` var
 - inspect `debug`
 - SWC config

@@ -1,5 +1,6 @@
 const workerData = JSON.parse(process.argv[2]);
 const { package: pkg, env, debug } = workerData;
+const {serializeError} = require("serialize-error");
 
 require("@webiny/cli/utils/importModule");
 const { cli } = require("@webiny/cli");
@@ -16,4 +17,8 @@ if (!hasBuildCommand) {
     throw new Error("Build command not found.");
 }
 
-config.commands.build(options)
+config.commands.build(options).catch(error => {
+    // Send error message to the parent process
+    process.send(serializeError(error));
+    process.exit(1); // Ensure the worker process exits with an error code
+});

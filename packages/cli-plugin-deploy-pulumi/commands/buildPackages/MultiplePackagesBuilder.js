@@ -3,6 +3,7 @@ const { BasePackagesBuilder } = require("./BasePackagesBuilder");
 const { gray } = require("chalk");
 const { measureDuration } = require("../../utils");
 const path = require("path");
+const { deserializeError } = require("serialize-error");
 
 const WORKER_PATH = path.resolve(__dirname, "worker.js");
 
@@ -14,8 +15,6 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
 
         const getBuildDuration = measureDuration();
 
-        const { env } = inputs;
-
         context.info(`Building %s packages...`, packages.length);
 
         const { fork } = require("child_process");
@@ -26,35 +25,30 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
                     return new Promise((resolve, reject) => {
                         const buildConfig = JSON.stringify({
                             ...inputs,
-                            package: { paths: pkg.paths },
+                            package: { paths: pkg.paths }
                         });
                         const child = fork(WORKER_PATH, [buildConfig], { silent: true });
 
-                        let errorOutput = "";
-
-                        // Collect error messages from the child process's stderr
-                        if (child.stderr) {
-                            child.stderr.on("data", data => {
-                                errorOutput += data.toString();
-                            });
-                        }
+                        // We only send one message from the child process, and that is the error, if any.
+                        child.on("message", serializedError => {
+                            const error = deserializeError(serializedError);
+                            reject(new Error("Build failed.", { cause: { pkg, error } }));
+                        });
 
                         // Handle child process error events
-                        child.on("error", err => {
-                            console.log("ERRORARARARA");
-                            reject(err);
+                        child.on("error", error => {
+                            reject(new Error("Build failed.", { cause: { pkg, error } }));
                         });
 
                         // Handle child process exit and check for errors
                         child.on("exit", code => {
                             if (code !== 0) {
-                                const err = new Error("Build failed.", {
-                                    cause: { errorOutput, pkg }
-                                });
-                                reject(err);
-                            } else {
-                                resolve();
+                                const error = new Error(`Build process exited with code ${code}.`);
+                                reject(new Error("Build failed.", { cause: { pkg, error } }));
+                                return;
                             }
+
+                            resolve();
                         });
                     });
                 }
@@ -69,15 +63,18 @@ class MultiplePackagesBuilder extends BasePackagesBuilder {
             console.log();
 
             err.errors.forEach((err, i) => {
-                const { pkg, errorOutput } = err.cause;
+                const { pkg, error } = err.cause;
                 const number = `${i + 1}.`;
                 const name = context.error.hl(pkg.name);
                 const relativePath = gray(`(${pkg.paths.relative})`);
                 const title = [number, name, relativePath].join(" ");
 
                 console.log(title);
-                console.log(errorOutput);
-                console.log();
+                console.log(error.message);
+
+                if (inputs.debug) {
+                    console.log(error.stack);
+                }
             });
 
             throw new Error(`Failed to build all packages.`);
