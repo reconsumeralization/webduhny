@@ -5,7 +5,7 @@ import { cn } from "~/utils";
 export type DialogTitleProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>;
 
 export const DialogTitle = ({ className, ...props }: DialogTitleProps) => (
-    <DialogPrimitive.Title className={cn("text-h4", className)} {...props} />
+    <DialogPrimitive.Title {...props} className={cn("text-h4", className)} />
 );
 
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
