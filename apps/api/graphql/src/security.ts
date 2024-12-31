@@ -25,7 +25,7 @@ export default ({ documentClient }: { documentClient: DynamoDBDocument }) => [
      */
     createTenancyGraphQL(),
 
-    /**s
+    /**
      * Create Security app in the `context`.
      */
     createSecurityContext({
