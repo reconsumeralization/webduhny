@@ -10,7 +10,7 @@ export const useBindingContext = () => {
                 return path;
             }
 
-            return path.replace(new RegExp(`^${binding.bindFrom}\.`), "");
+            return path.replace(new RegExp(`^${binding.bindFrom}\\.`), "");
         },
         [binding]
     );
