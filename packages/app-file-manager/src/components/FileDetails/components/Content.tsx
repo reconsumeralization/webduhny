@@ -1,11 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-const Horizontal = styled.div`
-    display: flex;
-    height: calc(100vh - 160px);
-`;
-
 const Grow = styled.div<{ flex: number }>`
     flex: ${({ flex }) => flex};
     overflow-y: scroll;
@@ -19,7 +14,7 @@ interface ContentProps {
 }
 
 export const Content = ({ children }: ContentProps) => {
-    return <Horizontal>{children}</Horizontal>;
+    return <div className={"flex"}>{children}</div>;
 };
 
 interface PanelProps {

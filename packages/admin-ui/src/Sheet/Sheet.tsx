@@ -20,6 +20,7 @@ export interface SheetProps
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
+    width?: string;
 }
 
 const SheetBase = (props: SheetProps) => {

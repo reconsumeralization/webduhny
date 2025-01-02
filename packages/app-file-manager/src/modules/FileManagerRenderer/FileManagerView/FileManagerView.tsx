@@ -195,7 +195,6 @@ const FileManagerView = () => {
             return (
                 <ButtonPrimary
                     flat={true}
-                    small={true}
                     onClick={browseFiles as ButtonProps["onClick"]}
                 >
                     <ButtonIcon icon={<UploadIcon />} />
@@ -345,7 +344,6 @@ const FileManagerView = () => {
                                 <ButtonSecondary
                                     data-testid={"file-manager.create-folder-button"}
                                     onClick={onCreateFolder}
-                                    small={true}
                                     style={{ margin: "0 8px" }}
                                 >
                                     <ButtonIcon icon={<AddIcon />} />

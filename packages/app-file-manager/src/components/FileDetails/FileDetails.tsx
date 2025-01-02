@@ -16,7 +16,6 @@ import { Preview } from "./components/Preview";
 import { PreviewMeta } from "./components/PreviewMeta";
 import { Actions } from "./components/Actions";
 import { Header } from "./components/Header";
-import { Elevation } from "@webiny/ui/Elevation";
 import { Content } from "./components/Content";
 import { SimpleForm } from "@webiny/app-admin/components/SimpleForm";
 import { Footer } from "./components/Footer";
@@ -25,20 +24,7 @@ import { useFileModel } from "~/hooks/useFileModel";
 import { useFileManagerViewConfig } from "~/index";
 import { FileProvider } from "~/contexts/FileProvider";
 
-type FileDetailsDrawerProps = React.ComponentProps<typeof DrawerRight> & { width: string };
-
-const FileDetailsDrawer = styled(DrawerRight)<FileDetailsDrawerProps>`
-    z-index: 70;
-    &.mdc-drawer {
-        width: ${props => props.width};
-    }
-    .mdc-drawer__content {
-        overflow-y: hidden;
-    }
-    & + .mdc-drawer-scrim {
-        z-index: 65;
-    }
-`;
+const FileDetailsDrawer = DrawerRight;
 
 const FormContainer = styled(SimpleForm)`
     margin: 0;
@@ -89,11 +75,9 @@ const FileDetailsInner = ({ file, ...props }: FileDetailsInnerProps) => {
                     <Header />
                     <Content>
                         <Content.Panel flex={parseFloat(leftPanel)}>
-                            <Elevation z={2} style={{ margin: 20 }}>
-                                <Actions />
-                                <Preview />
-                                <PreviewMeta />
-                            </Elevation>
+                            <Actions />
+                            <Preview />
+                            <PreviewMeta />
                         </Content.Panel>
                         <Content.Panel flex={parseFloat(rightPanel)}>
                             {fileDetails.groupFields ? (
@@ -171,6 +155,7 @@ export const FileDetails = ({
                 width={drawerWidth}
                 modal
                 open={open}
+                className={"z-50"}
                 onClose={onClose}
                 data-testid={"fm.file-details.drawer"}
             >

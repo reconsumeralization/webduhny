@@ -1,14 +1,11 @@
-import React, { useMemo } from "react";
-import { CSSObject } from "@emotion/react";
-import styled from "@emotion/styled";
+import React from "react";
 import {
-    Drawer as RmwcDrawer,
-    DrawerContent as RmwcDrawerContent,
-    DrawerHeader as RmwcDrawerHeader,
-    DrawerProps as RmwcDrawerProps,
-    DrawerHeaderProps as RmwcDrawerHeaderProps,
-    DrawerContentProps as RmwcDrawerContentProps
+    DrawerContentProps as RmwcDrawerContentProps,
+    DrawerHeaderProps as RmwcDrawerHeaderProps
 } from "@rmwc/drawer";
+
+import { Sheet as AdminUiSheet, type SheetProps as AdminUiSheetProps } from "@webiny/admin-ui";
+import { SheetHeader as AdminUiSheetHeader } from "@webiny/admin-ui/Sheet/components/SheetHeader";
 
 type DrawerHeaderProps = RmwcDrawerHeaderProps & {
     /**
@@ -23,9 +20,12 @@ type DrawerHeaderProps = RmwcDrawerHeaderProps & {
 };
 
 /**
- * Shows header of the drawer.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-const DrawerHeader = (props: DrawerHeaderProps) => <RmwcDrawerHeader {...props} />;
+const DrawerHeader = (props: DrawerHeaderProps) => {
+    return <AdminUiSheetHeader title={props.children} description={""} />;
+};
 
 export type DrawerContentProps = RmwcDrawerContentProps & {
     /**
@@ -40,63 +40,40 @@ export type DrawerContentProps = RmwcDrawerContentProps & {
 };
 
 /**
- * Shows drawer content. It can be anything, but commonly a List component would suffice here.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Drawer` component from the `@webiny/admin-ui` package instead.
  */
-const DrawerContent = (props: DrawerContentProps) => <RmwcDrawerContent {...props} />;
-
-type DrawerProps = RmwcDrawerProps & {
-    /**
-     * Drawer content.
-     */
-    children: React.ReactNode;
-
-    /**
-     * CSS class name
-     */
-    className?: string;
-
-    style?: CSSObject;
+const DrawerContent = (props: DrawerContentProps) => {
+    return <>{props.children}</>;
 };
 
-const DirectionRTL = styled.div`
-    .mdc-drawer.mdc-drawer--modal,
-    .mdc-drawer.mdc-drawer--dismissable {
-        left: initial;
-        right: 0;
-    }
-
-    .mdc-drawer--animate {
-        -webkit-transform: translateX(100%);
-        transform: translateX(100%);
-    }
-
-    .mdc-drawer.mdc-drawer--opening {
-        -webkit-transform: translateX(0%) !important;
-        transform: translateX(0%) !important;
-    }
-
-    .mdc-drawer.mdc-drawer--closing {
-        -webkit-transform: translateX(100%) !important;
-        transform: translateX(100%) !important;
-    }
-`;
+interface DrawerProps extends AdminUiSheetProps {
+    onClose?: () => void;
+}
 
 /**
  * Use Drawer component to display navigation for the whole app or just a small section of it.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Drawer` component from the `@webiny/admin-ui` package instead.
  */
-const Drawer = ({ style, children, ...props }: DrawerProps) => {
-    // Style the drawer using the styles that were passed in.
-    const Drawer = useMemo(() => (style ? styled(RmwcDrawer)(style) : RmwcDrawer), [style]);
-
-    return <Drawer {...props}>{children}</Drawer>;
+const Drawer = ({ onClose, children, ...props }: DrawerProps) => {
+    return (
+        <AdminUiSheet
+            side={"left"}
+            onOpenChange={opened => {
+                if (!opened && onClose) {
+                    onClose();
+                }
+            }}
+            {...props}
+        >
+            {children}
+        </AdminUiSheet>
+    );
 };
 
 const DrawerRight = (props: DrawerProps) => {
-    return (
-        <DirectionRTL>
-            <Drawer {...props} />
-        </DirectionRTL>
-    );
+    return <Drawer side={"right"} {...props} />;
 };
 
 const DrawerLeft = (props: DrawerProps) => {
