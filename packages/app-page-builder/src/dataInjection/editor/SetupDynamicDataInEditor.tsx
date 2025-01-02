@@ -1,13 +1,7 @@
 import React from "react";
-import { EditorConfig } from "@webiny/app-page-builder/editor";
+import { EditorConfig } from "~/editor";
 import { InjectDynamicValues } from "./InjectDynamicValues";
-import {
-    AddBindingContext,
-    AddDataSourceContext,
-    DataSourceProvider,
-    useDynamicDocument
-} from "~/dataInjection";
-import { ElementDataSettings } from "./ElementDataSettings";
+import { AddBindingContext, DataSourceProvider, useDynamicDocument } from "~/dataInjection";
 import { DataSourceConfigAndBindings } from "./DataSourceConfigAndBindings";
 import { ElementInputs } from "~/dataInjection/editor/DataSourceProperties/ElementInputs";
 import { DeveloperUtilities } from "./DeveloperUtilities";
@@ -38,9 +32,7 @@ export const SetupDynamicDataInEditor = () => {
             <DeveloperUtilities />
             <ContentDecorator />
             <InjectDynamicValues />
-            <AddDataSourceContext />
             <AddBindingContext />
-            <Ui.Sidebar.Group name={"data"} element={<ElementDataSettings />} />
             <DataSourceConfigAndBindings />
             <ElementInputs />
         </>

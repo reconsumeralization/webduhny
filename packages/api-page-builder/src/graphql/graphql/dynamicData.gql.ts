@@ -27,5 +27,5 @@ export const createDynamicDataSchema = () => {
                 config: JSON!
             }
         `
-    })
-}
+    });
+};

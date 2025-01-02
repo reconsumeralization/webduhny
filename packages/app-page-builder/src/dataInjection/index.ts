@@ -1,6 +1,5 @@
 export * from "./AddBindingContext";
 export * from "./ContentTraverser";
-export * from "./AddDataSourceContext";
 export * from "./BindingProvider";
 export * from "./DataSourceProvider";
 export * from "./DataSourceDataProvider";

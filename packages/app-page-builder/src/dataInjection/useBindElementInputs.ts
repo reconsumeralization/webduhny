@@ -1,7 +1,7 @@
 import get from "lodash/get";
 import type { ElementInputs } from "@webiny/app-page-builder-elements";
 import type { GenericRecord } from "@webiny/app/types";
-import type { PbEditorElement } from "@webiny/app-page-builder/types";
+import type { PbEditorElement } from "~/types";
 import { isValidLexicalData } from "@webiny/lexical-editor";
 import {
     ElementInputBinding,

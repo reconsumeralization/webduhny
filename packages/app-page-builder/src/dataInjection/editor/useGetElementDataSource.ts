@@ -1,20 +1,16 @@
 import { useCallback } from "react";
-import type {
-    PbEditorElement,
-    PbPageTemplateDataBinding,
-    PbPageTemplateDataSource
-} from "@webiny/app-page-builder/types";
-import { useGetElement } from "@webiny/app-page-builder/editor";
+import type { PbEditorElement, PbDataBinding, PbDataSource } from "~/types";
+import { useGetElement } from "~/editor";
 
 export function useGetElementDataSource() {
     const getElementById = useGetElement();
 
     const getElementDataSource = useCallback(
         async (
-            dataSources: PbPageTemplateDataSource[],
-            bindings: PbPageTemplateDataBinding[],
+            dataSources: PbDataSource[],
+            bindings: PbDataBinding[],
             element: PbEditorElement
-        ): Promise<PbPageTemplateDataSource | undefined> => {
+        ): Promise<PbDataSource | undefined> => {
             const elementBinding = bindings.find(binding =>
                 binding.bindTo.startsWith(`element:${element.id}.`)
             );

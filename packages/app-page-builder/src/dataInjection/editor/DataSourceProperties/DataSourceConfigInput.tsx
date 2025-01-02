@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useActiveElement, EditorConfig } from "@webiny/app-page-builder/editor";
-import type { PbEditorElement, PbPageTemplateDataSource } from "@webiny/app-page-builder/types";
+import { useActiveElement, EditorConfig } from "~/editor";
+import type { PbEditorElement, PbDataSource } from "~/types";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { Input } from "@webiny/ui/Input";
 import { OnElementType } from "./OnElementType";
@@ -52,7 +52,7 @@ const ConfigInputUi = ({ configName, label, format }: ConfigInputUiProps) => {
     const { updateDataSource } = useDocumentDataSource();
     const { getElementDataSource } = useGetElementDataSource();
     const [value, setValue] = useState("");
-    const [dataSource, setDataSource] = useState<PbPageTemplateDataSource | undefined>(undefined);
+    const [dataSource, setDataSource] = useState<PbDataSource | undefined>(undefined);
 
     useEffect(() => {
         getElementDataSource(element).then(dataSource => {

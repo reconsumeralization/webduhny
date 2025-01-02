@@ -1,6 +1,6 @@
 import React from "react";
 import { useActiveElement, useIsElementChildOfType } from "@webiny/app-page-builder/editor";
-import { useElementBindings } from "~/dataInjection";
+import { useElementBindings } from "@webiny/app-page-builder/dataInjection";
 
 interface HideIfEntriesListGridWithDataSourceProps {
     children: React.ReactNode;

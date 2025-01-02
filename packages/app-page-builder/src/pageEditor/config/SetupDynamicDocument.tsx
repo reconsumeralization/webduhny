@@ -1,13 +1,10 @@
 import React from "react";
-import { PageEditorConfig } from "@webiny/app-page-builder/pageEditor";
+import { PageEditorConfig } from "~/pageEditor";
 import { DynamicDocumentProvider } from "~/dataInjection";
-import { usePage } from "@webiny/app-page-builder/pageEditor";
-import {
-    PbPageTemplateDataBinding,
-    PbPageTemplateDataSource
-} from "@webiny/app-page-builder/types";
-import { useEventActionHandler } from "@webiny/app-page-builder/editor";
-import { UpdateDocumentActionEvent } from "@webiny/app-page-builder/editor/recoil/actions";
+import { usePage } from "~/pageEditor";
+import { PbDataBinding, PbDataSource } from "~/types";
+import { useEventActionHandler } from "~/editor";
+import { UpdateDocumentActionEvent } from "~/editor/recoil/actions";
 
 const { Ui } = PageEditorConfig;
 
@@ -16,7 +13,7 @@ export const SetupDynamicDocument = Ui.Layout.createDecorator(Original => {
         const eventActionHandler = useEventActionHandler();
         const [page, updatePage] = usePage();
 
-        const onDataSources = (dataSources: PbPageTemplateDataSource[]) => {
+        const onDataSources = (dataSources: PbDataSource[]) => {
             updatePage(page => ({ ...page, dataSources }));
             eventActionHandler.trigger(
                 new UpdateDocumentActionEvent({
@@ -28,7 +25,7 @@ export const SetupDynamicDocument = Ui.Layout.createDecorator(Original => {
             );
         };
 
-        const onDataBindings = (dataBindings: PbPageTemplateDataBinding[]) => {
+        const onDataBindings = (dataBindings: PbDataBinding[]) => {
             updatePage(page => ({ ...page, dataBindings }));
             eventActionHandler.trigger(
                 new UpdateDocumentActionEvent({

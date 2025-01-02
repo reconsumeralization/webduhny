@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
-import { PbPageTemplateDataSource } from "@webiny/app-page-builder/types";
+import { PbDataSource } from "~/types";
 import { useDynamicDocument } from "~/dataInjection/useDynamicDocument";
 
 export interface DataSourceUpdater {
-    (config: PbPageTemplateDataSource["config"]): PbPageTemplateDataSource["config"];
+    (config: PbDataSource["config"]): PbDataSource["config"];
 }
 
 export const useDocumentDataSource = () => {
@@ -22,7 +22,7 @@ export const useDocumentDataSource = () => {
     );
 
     const createDataSource = useCallback(
-        (dataSource: PbPageTemplateDataSource) => {
+        (dataSource: PbDataSource) => {
             updateDataSources(sources => {
                 return [...sources, dataSource];
             });

@@ -907,7 +907,7 @@ export interface PbBlockCategory {
     createdBy: PbIdentity;
 }
 
-export interface PbPageBlock {
+export interface PbPageBlock extends DynamicDocument {
     id: string;
     name: string;
     blockCategory: string;
@@ -917,21 +917,27 @@ export interface PbPageBlock {
 }
 
 export interface DynamicDocument {
-    dataSources: PbPageTemplateDataSource[];
-    dataBindings: PbPageTemplateDataBinding[];
+    dataSources: PbDataSource[];
+    dataBindings: PbDataBinding[];
 }
 
-export interface PbPageTemplateDataSource {
+export interface PbDataSource {
     name: string;
     type: string;
     config: GenericRecord;
 }
 
-export interface PbPageTemplateDataBinding {
-    dataSource: string;
-    bindFrom: string;
-    bindTo: string;
-}
+export type PbDataBinding =
+    | {
+          dataSource: string;
+          bindFrom: string;
+          bindTo: string;
+      }
+    | {
+          dataSource: "static";
+          bindFrom: any;
+          bindTo: string;
+      };
 
 export interface PbPageTemplate extends DynamicDocument {
     id: string;

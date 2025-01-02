@@ -3,7 +3,7 @@ import { useRenderer, Elements, ElementInput } from "@webiny/app-page-builder-el
 import { PeGrid } from "@webiny/app-page-builder/editor/plugins/elements/grid/PeGrid";
 import { useElementWithChildren } from "@webiny/app-page-builder/editor";
 import { GenericRecord } from "@webiny/app/types";
-import { DataSourceDataProvider } from "~/dataInjection";
+import { DataSourceDataProvider } from "@webiny/app-page-builder/dataInjection";
 
 const elementInputs = {
     dataSource: ElementInput.create<GenericRecord[]>({

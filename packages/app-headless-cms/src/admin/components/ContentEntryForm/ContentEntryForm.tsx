@@ -19,7 +19,8 @@ const FormWrapper = styled("div")({
     overflow: "auto"
 });
 
-export interface ContentEntryFormProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContentEntryFormProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
     entry: Partial<CmsContentEntry>;
     /**
      * This callback is executed when an entry, or a revision, are created.

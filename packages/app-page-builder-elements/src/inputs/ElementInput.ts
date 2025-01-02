@@ -41,6 +41,10 @@ export class ElementInput<TValue = unknown, TElementData = any> {
         return new ElementInput<TValue, TElementData>(params);
     }
 
+    getName() {
+        return this.params.name;
+    }
+
     getType() {
         return this.params.type;
     }

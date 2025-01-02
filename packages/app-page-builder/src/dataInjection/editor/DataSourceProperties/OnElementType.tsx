@@ -1,5 +1,5 @@
 import React from "react";
-import { useActiveElement } from "@webiny/app-page-builder/editor";
+import { useActiveElement } from "~/editor";
 
 export interface OnElementTypeProps {
     elementType: string;

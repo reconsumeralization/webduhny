@@ -6,7 +6,7 @@ import {
     useRenderer
 } from "@webiny/app-page-builder-elements";
 import { GenericRecord } from "@webiny/app/types";
-import { DataSourceDataProvider } from "~/dataInjection";
+import { DataSourceDataProvider } from "@webiny/app-page-builder/dataInjection";
 
 export const elementInputs = {
     dataSource: ElementInput.create<GenericRecord[]>({

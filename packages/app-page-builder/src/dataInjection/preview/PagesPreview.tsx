@@ -1,5 +1,5 @@
 import React from "react";
-import { PageContentPreview } from "@webiny/app-page-builder/admin/plugins/pageDetails/previewContent/PageContentPreview";
+import { PageContentPreview } from "~/admin/plugins/pageDetails/previewContent/PageContentPreview";
 import { DynamicDocumentProvider } from "~/dataInjection";
 import { WebsiteDataInjection } from "~/dataInjection/presets/WebsiteDataInjection";
 

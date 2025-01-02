@@ -3,6 +3,7 @@ import { Element } from "@webiny/app-page-builder-elements";
 import { BindingProvider } from "./BindingProvider";
 import { useDynamicDocument } from "./useDynamicDocument";
 
+// TODO: find a better way to manage this!
 const addPrefixForTypes = ["grid", "repeater"];
 
 export const AddBindingContext = Element.createDecorator(Original => {

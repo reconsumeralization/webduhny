@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { PbPageTemplateDataBinding } from "@webiny/app-page-builder/types";
+import { PbDataBinding } from "~/types";
 import { useDynamicDocument } from "~/dataInjection";
 
 export const DeveloperUtilities = () => {
@@ -24,7 +24,7 @@ export const DeveloperUtilities = () => {
         // @ts-expect-error This is a developers-only utility.
         window["debug_refreshBindings"] = () => {
             updateDataBindings(dataBindings => {
-                const uniqueBindings: PbPageTemplateDataBinding[] = [];
+                const uniqueBindings: PbDataBinding[] = [];
 
                 dataBindings.forEach(db => {
                     if (

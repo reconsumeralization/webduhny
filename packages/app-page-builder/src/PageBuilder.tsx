@@ -19,6 +19,9 @@ import { LexicalHeadingRenderer } from "~/render/plugins/elements/heading/Lexica
 import { ConvertIconSettings as EditorConvertIconSettings } from "~/editor/prepareEditorContent/ConvertIconSettings";
 import { ConvertIconSettings as RendererConvertIconSettings } from "~/render/plugins/elementSettings/icon";
 import { AddImageLinkComponent } from "~/elementDecorators/AddImageLinkComponent";
+import { PageTemplatesPreview } from "./dataInjection/preview/PageTemplatesPreview";
+import { PagesPreview } from "~/dataInjection/preview/PagesPreview";
+import { IfDynamicPagesEnabled } from "~/IfDynamicPagesEnabled";
 
 export type { EditorProps };
 export { EditorRenderer };
@@ -152,6 +155,12 @@ export const PageBuilder = () => {
             {/* Ensure each element renderer is receiving data in the correct shape.  */}
             {/* This works for page previews, block previews, etc. */}
             <RendererConvertIconSettings />
+            <IfDynamicPagesEnabled>
+                {/* Decorate page template content preview. */}
+                <PageTemplatesPreview />
+                {/* Decorate page content preview. */}
+                <PagesPreview />
+            </IfDynamicPagesEnabled>
         </Fragment>
     );
 };

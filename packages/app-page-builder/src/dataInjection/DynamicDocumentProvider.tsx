@@ -1,16 +1,13 @@
 import React, { createContext } from "react";
-import {
-    PbPageTemplateDataBinding,
-    PbPageTemplateDataSource
-} from "@webiny/app-page-builder/types";
+import { PbDataBinding, PbDataSource } from "~/types";
 
 const passthrough = (cb: Updater<any>) => cb([]);
 
 export const DynamicDocumentContext = createContext<{
-    dataSources: PbPageTemplateDataSource[];
-    dataBindings: PbPageTemplateDataBinding[];
-    updateDataSources: (cb: Updater<PbPageTemplateDataSource>) => void;
-    updateDataBindings: (cb: Updater<PbPageTemplateDataBinding>) => void;
+    dataSources: PbDataSource[];
+    dataBindings: PbDataBinding[];
+    updateDataSources: (cb: Updater<PbDataSource>) => void;
+    updateDataBindings: (cb: Updater<PbDataBinding>) => void;
 }>({
     dataSources: [],
     dataBindings: [],
@@ -20,10 +17,10 @@ export const DynamicDocumentContext = createContext<{
 
 interface Props {
     children: React.ReactNode;
-    dataSources: PbPageTemplateDataSource[];
-    dataBindings: PbPageTemplateDataBinding[];
-    onDataSources?: (dataSources: PbPageTemplateDataSource[]) => void;
-    onDataBindings?: (dataBindings: PbPageTemplateDataBinding[]) => void;
+    dataSources: PbDataSource[];
+    dataBindings: PbDataBinding[];
+    onDataSources?: (dataSources: PbDataSource[]) => void;
+    onDataBindings?: (dataBindings: PbDataBinding[]) => void;
 }
 
 export interface Updater<T> {
@@ -37,13 +34,13 @@ export const DynamicDocumentProvider = ({
     onDataSources,
     onDataBindings
 }: Props) => {
-    const updateDataBindings = (cb: Updater<PbPageTemplateDataBinding>) => {
+    const updateDataBindings = (cb: Updater<PbDataBinding>) => {
         if (onDataBindings) {
             onDataBindings(cb(dataBindings));
         }
     };
 
-    const updateDataSources = (cb: Updater<PbPageTemplateDataSource>) => {
+    const updateDataSources = (cb: Updater<PbDataSource>) => {
         if (onDataSources) {
             onDataSources(cb(dataSources));
         }

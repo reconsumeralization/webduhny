@@ -1,9 +1,8 @@
 import React from "react";
 import { Element } from "@webiny/app-page-builder-elements";
-import { DataSourceProvider } from "./DataSourceProvider";
-import { useDynamicDocument } from "./useDynamicDocument";
+import { DataSourceProvider, useDynamicDocument } from "@webiny/app-page-builder/dataInjection";
 
-export const AddDataSourceContext = Element.createDecorator(Original => {
+export const AddEntriesListDataSourceContext = Element.createDecorator(Original => {
     return function WithDataSourceContext(props) {
         const { dataSources } = useDynamicDocument();
 

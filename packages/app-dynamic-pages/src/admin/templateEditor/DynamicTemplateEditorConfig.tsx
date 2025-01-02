@@ -3,8 +3,9 @@ import { TemplateEditorConfig } from "@webiny/app-page-builder/templateEditor";
 import { EntrySelector } from "~/admin/templateEditor/EntrySelector";
 import { hasMainDataSource } from "~/features";
 import { ElementEventHandlers } from "./ElementEventHandlers";
-import { SetupDynamicDocument } from "~/admin/templateEditor/SetupDynamicDocument";
-import { SetupDynamicDataInEditor, useDynamicDocument } from "~/dataInjection";
+import { useDynamicDocument } from "@webiny/app-page-builder/dataInjection";
+import { SetupElementDataSettings } from "~/dataInjection/editor/SetupElementDataSettings";
+import { AddEntriesListDataSourceContext } from "~/dataInjection/AddEntriesListDataSourceContext";
 
 const { Ui } = TemplateEditorConfig;
 
@@ -18,8 +19,8 @@ export const DynamicTemplateEditorConfig = () => {
     return (
         <>
             <TemplateEditorConfig>
-                <SetupDynamicDocument />
-                <SetupDynamicDataInEditor />
+                <AddEntriesListDataSourceContext />
+                <SetupElementDataSettings />
                 <Ui.TopBar.Element
                     name={"entrySelector"}
                     element={

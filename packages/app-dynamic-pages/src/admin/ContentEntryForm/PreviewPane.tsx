@@ -3,7 +3,10 @@ import styled from "@emotion/styled";
 import { PbPageTemplateWithContent } from "@webiny/app-page-builder/types";
 import { RenderPluginsLoader } from "@webiny/app-page-builder/admin";
 import { Content } from "@webiny/app-page-builder-elements";
-import { DataSourceProvider, DynamicDocumentProvider } from "~/dataInjection";
+import {
+    DataSourceProvider,
+    DynamicDocumentProvider
+} from "@webiny/app-page-builder/dataInjection";
 import { RefreshIcon } from "@webiny/ui/List/DataList/icons";
 import { useRefreshPageTemplates } from "@webiny/app-page-builder/features";
 

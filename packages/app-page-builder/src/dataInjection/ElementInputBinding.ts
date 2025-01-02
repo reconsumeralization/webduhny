@@ -1,18 +1,18 @@
-import { PbPageTemplateDataBinding } from "@webiny/app-page-builder/types";
+import { PbDataBinding } from "~/types";
 
 export class ElementInputBinding {
-    private binding: PbPageTemplateDataBinding;
+    private binding: PbDataBinding;
     private readonly elementId: string;
     private readonly inputName: string;
 
-    private constructor(binding: PbPageTemplateDataBinding) {
+    private constructor(binding: PbDataBinding) {
         this.binding = binding;
         const [elementId, inputName] = binding.bindTo.replace("element:", "").split(".");
         this.elementId = elementId;
         this.inputName = inputName;
     }
 
-    static create(binding: PbPageTemplateDataBinding) {
+    static create(binding: PbDataBinding) {
         return new ElementInputBinding(binding);
     }
 

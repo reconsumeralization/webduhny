@@ -1,10 +1,5 @@
 import { atom } from "recoil";
-import {
-    DynamicDocument,
-    PbEditorElementTree,
-    PbPageTemplateDataBinding,
-    PbPageTemplateDataSource
-} from "~/types";
+import { DynamicDocument, PbEditorElementTree } from "~/types";
 
 interface PageCategoryType {
     slug: string;
@@ -34,8 +29,6 @@ export interface PageAtomType extends DynamicDocument {
     published: boolean;
     savedOn?: string;
     snippet: string | null;
-    dataBindings: PbPageTemplateDataBinding[];
-    dataSources: PbPageTemplateDataSource[];
     category?: PageCategoryType;
     createdBy: {
         id: string | null;

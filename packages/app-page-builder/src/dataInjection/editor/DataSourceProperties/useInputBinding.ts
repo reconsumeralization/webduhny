@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { PbEditorElement, PbPageTemplateDataBinding } from "@webiny/app-page-builder/types";
+import type { PbEditorElement, PbDataBinding } from "~/types";
 import { ElementInputBinding, useDynamicDocument } from "~/dataInjection";
 import { useGetElementDataSource } from "./useGetElementDataSource";
 
@@ -39,7 +39,7 @@ export const useInputBinding = (element: PbEditorElement, inputName: string) => 
                 return;
             }
 
-            const binding: PbPageTemplateDataBinding = {
+            const binding: PbDataBinding = {
                 dataSource: elementDataSource.name,
                 bindFrom: String(value),
                 bindTo: `element:${element.id}.${inputName}`

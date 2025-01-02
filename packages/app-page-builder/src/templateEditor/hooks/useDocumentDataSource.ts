@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { useTemplate } from "./useTemplate";
-import { PbPageTemplateDataSource } from "~/types";
+import { PbDataSource } from "~/types";
 
 export interface DataSourceUpdater {
-    (config: PbPageTemplateDataSource["config"]): PbPageTemplateDataSource["config"];
+    (config: PbDataSource["config"]): PbDataSource["config"];
 }
 
 export const useDocumentDataSource = () => {
@@ -23,7 +23,7 @@ export const useDocumentDataSource = () => {
     );
 
     const createDataSource = useCallback(
-        (dataSource: PbPageTemplateDataSource) => {
+        (dataSource: PbDataSource) => {
             updateTemplate(template => {
                 return {
                     ...template,

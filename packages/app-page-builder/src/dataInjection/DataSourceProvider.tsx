@@ -1,18 +1,18 @@
 import React, { createContext, useMemo } from "react";
-import { useLoadDataSource } from "@webiny/app-page-builder/features";
-import { PbPageTemplateDataSource } from "@webiny/app-page-builder/types";
+import { useLoadDataSource } from "~/features";
+import { PbDataSource } from "~/types";
 import type { GenericRecord } from "@webiny/app/types";
 import { useDynamicDocument } from "./useDynamicDocument";
 import { DataSourceDataProvider } from "./DataSourceDataProvider";
 
 export interface PreviewDataProviderProps {
-    dataSource: PbPageTemplateDataSource;
+    dataSource: PbDataSource;
     children: React.ReactNode;
 }
 
 export interface DataSourceContext {
     data: GenericRecord;
-    dataSource: PbPageTemplateDataSource;
+    dataSource: PbDataSource;
     loadData: (params: GenericRecord) => void;
 }
 

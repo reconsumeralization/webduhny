@@ -17,7 +17,6 @@ export const updateElementAction: EventActionCallable<UpdateElementActionArgsTyp
     const { element, onFinish, debounce, history } = args;
     const actions = [];
 
-
     if (history) {
         actions.push(new UpdateDocumentActionEvent({ onFinish, debounce, history }));
     }

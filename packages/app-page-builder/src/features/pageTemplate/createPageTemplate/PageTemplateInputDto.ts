@@ -1,5 +1,5 @@
 import type { GenericRecord } from "@webiny/app/types";
-import type { PbPageTemplateDataBinding, PbPageTemplateDataSource } from "~/types";
+import type { PbDataBinding, PbDataSource } from "~/types";
 
 export interface PageTemplateInputDto {
     title: string;
@@ -8,6 +8,6 @@ export interface PageTemplateInputDto {
     tags: string[];
     layout: string;
     content?: GenericRecord;
-    dataSources?: PbPageTemplateDataSource[];
-    dataBindings?: PbPageTemplateDataBinding[];
+    dataSources?: PbDataSource[];
+    dataBindings?: PbDataBinding[];
 }

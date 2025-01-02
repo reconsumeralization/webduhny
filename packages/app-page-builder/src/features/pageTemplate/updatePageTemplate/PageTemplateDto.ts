@@ -1,4 +1,4 @@
-import { PbPageTemplateDataBinding, PbPageTemplateDataSource } from "~/types";
+import { PbDataBinding, PbDataSource } from "~/types";
 
 export interface PageTemplateDto {
     id: string;
@@ -7,6 +7,6 @@ export interface PageTemplateDto {
     description: string;
     tags: string[];
     layout: string;
-    dataSources: PbPageTemplateDataSource[];
-    dataBindings: PbPageTemplateDataBinding[];
+    dataSources: PbDataSource[];
+    dataBindings: PbDataBinding[];
 }

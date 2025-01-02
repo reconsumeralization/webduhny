@@ -1,10 +1,10 @@
 import React, { createContext } from "react";
-import { PbPageTemplateDataBinding } from "@webiny/app-page-builder/types";
+import { PbDataBinding } from "~/types";
 
-export const BindingContext = createContext<PbPageTemplateDataBinding | undefined>(undefined);
+export const BindingContext = createContext<PbDataBinding | undefined>(undefined);
 
 export interface BindingProviderProps {
-    binding: PbPageTemplateDataBinding;
+    binding: PbDataBinding;
     children: React.ReactNode;
 }
 

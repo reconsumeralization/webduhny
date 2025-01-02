@@ -1,8 +1,8 @@
 import React from "react";
-import { EditorConfig } from "@webiny/app-page-builder/editor";
-import { useActiveElement } from "@webiny/app-page-builder/editor";
+import { EditorConfig } from "~/editor";
+import { useActiveElement } from "~/editor";
 import { Input } from "@webiny/ui/Input";
-import { PbEditorElement } from "@webiny/app-page-builder/types";
+import { PbEditorElement } from "~/types";
 import { useInputBinding } from "./useInputBinding";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 

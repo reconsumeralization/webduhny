@@ -2,7 +2,7 @@ import { autorun, toJS } from "mobx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GenericRecord } from "@webiny/app/types";
 import { useApolloClient } from "@apollo/react-hooks";
-import { PbPageTemplateDataSource } from "~/types";
+import { PbDataSource } from "~/types";
 import { dataSourceCache } from "~/features/dataSource/loadDataSource/dataSourceCache";
 import {
     DataRequest,
@@ -21,7 +21,7 @@ const decorators: { repository: Decorator<IResolveDataSourceRepository>[] } = {
     repository: []
 };
 
-const useLoadDataSourceHook = (dataSource: PbPageTemplateDataSource, paths: string[]) => {
+const useLoadDataSourceHook = (dataSource: PbDataSource, paths: string[]) => {
     const client = useApolloClient();
     const [vm, setVm] = useState<DataSourceLoaderVm>({ data: {} });
 

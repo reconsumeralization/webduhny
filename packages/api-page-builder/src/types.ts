@@ -901,9 +901,17 @@ export interface DataBinding {
     bindTo: string;
 }
 
+export interface BlockVariable {
+    blockId: string;
+    elementId: string;
+    label: string;
+    inputName: string;
+}
+
 export interface DynamicDocument {
     dataSources?: DataSource[];
     dataBindings?: DataBinding[];
+    blockVariables?: BlockVariable[];
 }
 
 /**
@@ -934,6 +942,7 @@ export type PageTemplateInput = Pick<
     | "layout"
     | "dataBindings"
     | "dataSources"
+    | "blockVariables"
 > & { id?: string };
 
 /**

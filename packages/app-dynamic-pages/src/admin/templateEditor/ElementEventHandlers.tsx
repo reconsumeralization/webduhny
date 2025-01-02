@@ -12,7 +12,7 @@ import type {
 } from "@webiny/app-page-builder/types";
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
-import { ContentTraverser } from "~/dataInjection";
+import { ContentTraverser } from "@webiny/app-page-builder/dataInjection";
 
 const doNothing = {
     actions: []

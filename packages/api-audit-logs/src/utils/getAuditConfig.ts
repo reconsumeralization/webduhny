@@ -147,7 +147,7 @@ export const getAuditConfig = (audit: AuditAction) => {
                     payload: auditLogPayload,
                     delay
                 });
-            } catch{
+            } catch {
                 // Don't care at this point!
             } finally {
                 return JSON.stringify({});

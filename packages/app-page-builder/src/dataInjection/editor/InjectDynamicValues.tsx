@@ -1,6 +1,6 @@
 import React from "react";
 import { ElementRendererInputs } from "@webiny/app-page-builder-elements";
-import { useActiveElement } from "@webiny/app-page-builder/editor";
+import { useActiveElement } from "~/editor";
 import { useBindElementInputs } from "~/dataInjection";
 
 const skipInjection = ["heading", "paragraph"];

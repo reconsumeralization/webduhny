@@ -1,5 +1,5 @@
-import type { PbEditorElement } from "@webiny/app-page-builder/types";
-import { useGetElement } from "@webiny/app-page-builder/editor";
+import type { PbEditorElement } from "~/types";
+import { useGetElement } from "~/editor";
 import { ElementInputBinding, useDocumentDataSource, useDynamicDocument } from "~/dataInjection";
 
 const getDataSourceFromBindings = async (

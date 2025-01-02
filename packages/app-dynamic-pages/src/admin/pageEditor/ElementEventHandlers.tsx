@@ -12,7 +12,7 @@ import type {
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { PageAtomType } from "@webiny/app-page-builder/pageEditor/state";
-import { ContentTraverser } from "~/dataInjection";
+import { ContentTraverser } from "@webiny/app-page-builder/dataInjection";
 
 const doNothing = {
     actions: []
@@ -29,7 +29,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
     return {
         ...document,
         dataSources: [
-            ...document.dataSources || [],
+            ...(document.dataSources || []),
             {
                 name: dataSourceName,
                 type: "cms.entries",
@@ -40,7 +40,7 @@ const addCmsListDataSource = <T extends DynamicDocument>(
             }
         ],
         dataBindings: [
-            ...document.dataBindings || [],
+            ...(document.dataBindings || []),
             {
                 dataSource: dataSourceName,
                 bindFrom: "*",
@@ -58,7 +58,6 @@ export const ElementEventHandlers = () => {
         _,
         args
     ) => {
-        console.log("dp.onElementCreate");
         if (!args) {
             return doNothing;
         }
@@ -73,8 +72,6 @@ export const ElementEventHandlers = () => {
         const page = state.page as PageAtomType;
 
         const updatedPage = addCmsListDataSource(page, element as PbEditorElementTree);
-
-        console.log("updatedPage", updatedPage);
 
         return {
             state: {
