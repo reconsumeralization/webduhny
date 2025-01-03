@@ -2,13 +2,12 @@ import React from "react";
 import {
     Button as AdminUiButton,
     type ButtonProps as AdminUiButtonProps,
-    Dialog as AdminUiDialog
+    Dialog as AdminUiDialog,
+    type DialogProps as AdminUiDialogProps
 } from "@webiny/admin-ui";
 import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
 import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
 import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
-
-export type DialogOnClose = any;
 
 export interface DialogActionsProps {
     children: React.ReactNode[] | React.ReactNode;
@@ -22,18 +21,6 @@ export const DialogActions = (props: DialogActionsProps) => {
     return <AdminUiDialogFooter style={{ marginTop: 32 }} actions={props.children} />;
 };
 
-export interface DialogAcceptProps extends AdminUiButtonProps {
-    children?: React.ReactNode[] | React.ReactNode;
-}
-
-/**
- * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
- */
-export const DialogAccept = (props: DialogAcceptProps) => {
-    return <AdminUiButton {...props} variant={"primary"} text={props.text || props.children} />;
-};
-
 export interface DialogButtonProps extends AdminUiButtonProps {
     children?: React.ReactNode[] | React.ReactNode;
 }
@@ -44,6 +31,18 @@ export interface DialogButtonProps extends AdminUiButtonProps {
  */
 export const DialogButton = (props: DialogButtonProps) => {
     return <AdminUiButton {...props} variant={"secondary"} text={props.text || props.children} />;
+};
+
+export interface DialogAcceptProps extends AdminUiButtonProps {
+    children?: React.ReactNode[] | React.ReactNode;
+}
+
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
+ */
+export const DialogAccept = (props: DialogAcceptProps) => {
+    return <AdminUiButton {...props} variant={"primary"} text={props.text || props.children} />;
 };
 
 /**
@@ -83,25 +82,35 @@ export interface DialogTitleProps {
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
 export const DialogTitle = (props: DialogTitleProps) => {
-    return <AdminUiDialogHeader title={props.children} description={""} />;
+    return <AdminUiDialogHeader title={props.children} />;
 };
 
 DialogTitle.displayName = "DialogTitle";
+
+export type DialogOnClose = () => void;
+
+export interface DialogProps extends AdminUiDialogProps {
+    onClose?: DialogOnClose;
+
+    preventOutsideDismiss?: boolean;
+}
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-export const Dialog = ({ onClose, open, children, showCloseButton }: any) => {
+export const Dialog = ({ onClose, open, showCloseButton, children, preventOutsideDismiss, ...rest }: DialogProps) => {
     return (
         <AdminUiDialog
             open={open}
+            preventOutsideDismiss={preventOutsideDismiss}
             showCloseButton={showCloseButton}
             onOpenChange={opened => {
                 if (!opened && onClose) {
                     onClose();
                 }
             }}
+            {...rest}
         >
             {children}
         </AdminUiDialog>
