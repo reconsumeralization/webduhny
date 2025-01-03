@@ -14,8 +14,8 @@ import { CmsModel } from "@webiny/app-headless-cms/types";
 
 import { ReactComponent as ArrowRightIcon } from "@material-design-icons/svg/round/keyboard_arrow_right.svg";
 import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
-import { ReactComponent as ArticleIcon } from "@material-symbols/svg-400/rounded/article.svg";
-import { ReactComponent as DatabaseIcon } from "@material-symbols/svg-400/rounded/database.svg";
+import { ReactComponent as ArticleIcon } from "@material-design-icons/svg/rounded/article.svg";
+import { ReactComponent as DatabaseIcon } from "@material-design-icons/svg/rounded/database.svg";
 
 const dialogStyles = css`
     .mdc-dialog__surface {
