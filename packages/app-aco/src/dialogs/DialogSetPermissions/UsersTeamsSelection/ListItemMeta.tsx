@@ -122,6 +122,7 @@ export const ListItemMeta = ({
                     disabled={!!disabledReason}
                     // Should prevent first item from being autofocused, but it doesn't. 🤷‍
                     focusOnOpen={false}
+                    portalZIndex={101}
                 >
                     {TARGET_LEVELS.map(level => (
                         <StyledMenuItem
