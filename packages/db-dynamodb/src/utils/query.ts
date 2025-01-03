@@ -166,7 +166,7 @@ export const queryPerPageClean = async <T>(
  */
 export const queryAllWithCallback = async <T>(
     params: QueryAllParams,
-    callback: (items: DbItem<T>[]) => Promise<void>
+    callback: (items: DbItem<T>[]) => Promise<void | boolean>
 ): Promise<void> => {
     let results: QueryResult<DbItem<T>>;
     let previousResult: any = undefined;
@@ -174,7 +174,10 @@ export const queryAllWithCallback = async <T>(
         if (!results.result) {
             break;
         }
-        await callback(results.items);
+        const callbackResult = await callback(results.items);
+        if (callbackResult === false) {
+            break;
+        }
         previousResult = results.result;
     }
 };

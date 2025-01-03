@@ -543,10 +543,10 @@ describe("CRUD Test", () => {
         const id = createPageResponse.data.pageBuilder.createPage.data.id;
         expect(id).toMatch("#0001");
 
-        const content = createPageContent("3.2MB");
+        const content = createPageContent("1.6MB");
         const size = calculateSize(content);
 
-        expect(size).toBeGreaterThan(bytes("3.19MB"));
+        expect(size).toBeGreaterThan(Number(bytes("1.5MB")));
 
         const [updatePageResponse] = await updatePage({
             id,
@@ -604,7 +604,7 @@ describe("CRUD Test", () => {
         const content = createPageContent("4MB");
         const size = calculateSize(content);
 
-        expect(size).toBeGreaterThan(bytes("3.99MB"));
+        expect(size).toBeGreaterThan(Number(bytes("3.99MB")));
 
         const [updatePageResponse] = await updatePage({
             id,

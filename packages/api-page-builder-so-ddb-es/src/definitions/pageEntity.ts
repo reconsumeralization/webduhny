@@ -22,6 +22,9 @@ export const createPageEntity = (params: Params): Entity<any> => {
             TYPE: {
                 type: "string"
             },
+            data: {
+                type: "map"
+            },
             id: {
                 type: "string"
             },

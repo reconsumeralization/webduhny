@@ -58,6 +58,25 @@ function removePageAttributes(item: Page): Page {
     return omit(item, ["home", "notFound", "visibility"]) as Page;
 }
 
+type PageWithOptionalData = Page & { data?: Page };
+
+const unpackPageData = <T extends PageWithOptionalData>(page: T) => {
+    if (page.data) {
+        return removePageAttributes(page.data);
+    }
+
+    return removePageAttributes(page);
+};
+
+const preparePageData = (page: Page) => {
+    return {
+        ...page,
+        data: {
+            ...page
+        }
+    };
+};
+
 export interface CreatePageStorageOperationsParams {
     entity: Entity<any>;
     esEntity: Entity<any>;
@@ -72,6 +91,8 @@ export const createPageStorageOperations = (
     const create = async (params: PageStorageOperationsCreateParams): Promise<Page> => {
         const { page, input } = params;
 
+        const pageToStore = preparePageData(page);
+
         const versionKeys = {
             PK: createPartitionKey(page),
             SK: createSortKey(page)
@@ -83,12 +104,12 @@ export const createPageStorageOperations = (
 
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...versionKeys,
                 TYPE: createBasicType()
             }),
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...latestKeys,
                 TYPE: createLatestType()
             })
@@ -133,14 +154,16 @@ export const createPageStorageOperations = (
             SK: createLatestSortKey()
         };
 
+        const pageToStore = preparePageData(page);
+
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createBasicType(),
                 ...versionKeys
             }),
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createLatestType(),
                 ...latestKeys
             })
@@ -186,6 +209,8 @@ export const createPageStorageOperations = (
             SK: createSortKey(page)
         };
 
+        const pageToStore = preparePageData(page);
+
         const latestKeys = {
             ...keys,
             SK: createLatestSortKey()
@@ -197,7 +222,7 @@ export const createPageStorageOperations = (
 
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createBasicType(),
                 ...keys
             })
@@ -211,7 +236,7 @@ export const createPageStorageOperations = (
              */
             items.push(
                 entity.putBatch({
-                    ...page,
+                    ...pageToStore,
                     TYPE: createLatestType(),
                     ...latestKeys
                 })
@@ -301,11 +326,12 @@ export const createPageStorageOperations = (
                     lt: createSortKey(latestPage),
                     reverse: true
                 }
-            });
+            }).then(item => (item ? unpackPageData(item) : null));
+
             if (previousLatestRecord) {
                 items.push(
                     entity.putBatch({
-                        ...previousLatestRecord,
+                        ...preparePageData(previousLatestRecord),
                         TYPE: createLatestType(),
                         PK: partitionKey,
                         SK: createLatestSortKey()
@@ -454,12 +480,14 @@ export const createPageStorageOperations = (
 
         page.status = "published";
 
+        const pageToStore = preparePageData(page);
+
         /**
          * Update the given revision of the page.
          */
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createBasicType(),
                 PK: createPartitionKey(page),
                 SK: createSortKey(page)
@@ -473,7 +501,7 @@ export const createPageStorageOperations = (
         if (latestPage.id === page.id) {
             items.push(
                 entity.putBatch({
-                    ...page,
+                    ...pageToStore,
                     TYPE: createLatestType(),
                     PK: createPartitionKey(page),
                     SK: createLatestSortKey()
@@ -494,10 +522,14 @@ export const createPageStorageOperations = (
          *  - set the existing published revision to "unpublished"
          */
         if (publishedPage && publishedPage.id !== page.id) {
+            const publishedPageToStore = preparePageData({
+                ...publishedPage,
+                status: "unpublished"
+            });
+
             items.push(
                 entity.putBatch({
-                    ...publishedPage,
-                    status: "unpublished",
+                    ...publishedPageToStore,
                     PK: createPartitionKey(publishedPage),
                     SK: createSortKey(publishedPage)
                 })
@@ -529,7 +561,7 @@ export const createPageStorageOperations = (
          */
         items.push(
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createPublishedPathType(),
                 PK: createPathPartitionKey(page),
                 SK: createPathSortKey(page)
@@ -540,7 +572,7 @@ export const createPageStorageOperations = (
          */
         items.push(
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createPublishedType(),
                 PK: createPartitionKey(page),
                 SK: createPublishedSortKey()
@@ -584,6 +616,8 @@ export const createPageStorageOperations = (
 
         page.status = "unpublished";
 
+        const pageToStore = preparePageData(page);
+
         const items = [
             entity.deleteBatch({
                 PK: createPartitionKey(page),
@@ -594,7 +628,7 @@ export const createPageStorageOperations = (
                 SK: createPathSortKey(page)
             }),
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 TYPE: createBasicType(),
                 PK: createPartitionKey(page),
                 SK: createSortKey(page)
@@ -607,7 +641,7 @@ export const createPageStorageOperations = (
         if (latestPage.id === page.id) {
             items.push(
                 entity.putBatch({
-                    ...page,
+                    ...pageToStore,
                     TYPE: createLatestType(),
                     PK: createPartitionKey(page),
                     SK: createLatestSortKey()
@@ -700,10 +734,12 @@ export const createPageStorageOperations = (
             SK: sortKey
         };
         try {
-            return await getClean({
+            const cleanRecord = await getClean<Page>({
                 entity,
                 keys
             });
+
+            return cleanRecord ? unpackPageData(cleanRecord) : null;
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not load page by given params.",
@@ -943,7 +979,7 @@ export const createPageStorageOperations = (
         );
 
         return sortItems({
-            items: items.map(item => removePageAttributes(item)),
+            items: items.map(item => unpackPageData(item)),
             fields,
             sort
         });

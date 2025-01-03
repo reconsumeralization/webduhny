@@ -78,6 +78,29 @@ const createPublishedType = (): string => {
     return "pb.page.p";
 };
 
+type PageWithOptionalData = Page & { data?: Page };
+
+const unpackPageData = (page: PageWithOptionalData): Page => {
+    if (page.data) {
+        return page.data;
+    }
+
+    return page;
+};
+
+const preparePageData = (page: Page) => {
+    const titleLC = page.title.toLowerCase();
+
+    return {
+        ...page,
+        titleLC,
+        data: {
+            ...page,
+            titleLC
+        }
+    };
+};
+
 export interface CreatePageStorageOperationsParams {
     entity: Entity<any>;
     plugins: PluginsContainer;
@@ -99,7 +122,8 @@ export const createPageStorageOperations = (
             SK: createLatestSortKey(page)
         };
 
-        const titleLC = page.title.toLowerCase();
+        const pageToStore = preparePageData(page);
+
         /**
          * We need to create
          * - latest
@@ -107,14 +131,12 @@ export const createPageStorageOperations = (
          */
         const items = [
             entity.putBatch({
-                ...page,
-                titleLC,
+                ...pageToStore,
                 ...latestKeys,
                 TYPE: createLatestType()
             }),
             entity.putBatch({
-                ...page,
-                titleLC,
+                ...pageToStore,
                 ...revisionKeys,
                 TYPE: createRevisionType()
             })
@@ -149,6 +171,9 @@ export const createPageStorageOperations = (
             PK: createLatestPartitionKey(page),
             SK: createLatestSortKey(page)
         };
+
+        const pageToStore = preparePageData(page);
+
         /**
          * We need to create
          * - latest
@@ -156,12 +181,12 @@ export const createPageStorageOperations = (
          */
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...latestKeys,
                 TYPE: createLatestType()
             }),
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...revisionKeys,
                 TYPE: createRevisionType()
             })
@@ -203,9 +228,10 @@ export const createPageStorageOperations = (
         const latestPage = await getClean<Page>({
             entity,
             keys: latestKeys
-        });
+        }).then(item => (item ? unpackPageData(item) : null));
 
-        const titleLC = page.title.toLowerCase();
+        const pageToStore = preparePageData(page);
+
         /**
          * We need to update
          * - revision
@@ -213,8 +239,7 @@ export const createPageStorageOperations = (
          */
         const items = [
             entity.putBatch({
-                ...page,
-                titleLC,
+                ...pageToStore,
                 ...revisionKeys,
                 TYPE: createRevisionType()
             })
@@ -225,8 +250,7 @@ export const createPageStorageOperations = (
         if (latestPage && latestPage.id === page.id) {
             items.push(
                 entity.putBatch({
-                    ...page,
-                    titleLC,
+                    ...pageToStore,
                     ...latestKeys,
                     TYPE: createLatestType()
                 })
@@ -295,7 +319,10 @@ export const createPageStorageOperations = (
                     reverse: true
                 }
             });
+
             if (previousLatestRecord) {
+                previousLatestPage = unpackPageData(cleanupItem(entity, previousLatestRecord)!);
+
                 items.push(
                     entity.putBatch({
                         ...previousLatestRecord,
@@ -303,7 +330,6 @@ export const createPageStorageOperations = (
                         TYPE: createLatestType()
                     })
                 );
-                previousLatestPage = cleanupItem(entity, previousLatestRecord);
             }
         }
         try {
@@ -417,12 +443,15 @@ export const createPageStorageOperations = (
             PK: createPublishedPartitionKey(page),
             SK: createPublishedSortKey(page)
         };
+
+        const pageToStore = preparePageData(page);
+
         /**
          * Update the given revision of the page.
          */
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...revisionKeys,
                 TYPE: createRevisionType()
             })
@@ -431,7 +460,7 @@ export const createPageStorageOperations = (
         if (latestPage.id === page.id) {
             items.push(
                 entity.putBatch({
-                    ...page,
+                    ...pageToStore,
                     ...latestKeys,
                     TYPE: createLatestType()
                 })
@@ -446,10 +475,15 @@ export const createPageStorageOperations = (
                 PK: createRevisionPartitionKey(publishedPage),
                 SK: createRevisionSortKey(publishedPage)
             };
+
+            const publishedPageToStore = preparePageData({
+                ...publishedPage,
+                status: "unpublished"
+            });
+
             items.push(
                 entity.putBatch({
-                    ...publishedPage,
-                    status: "unpublished",
+                    ...publishedPageToStore,
                     ...publishedRevisionKeys,
                     TYPE: createRevisionType()
                 })
@@ -458,7 +492,7 @@ export const createPageStorageOperations = (
 
         items.push(
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...publishedKeys,
                 GSI1_PK: createPathPartitionKey(page),
                 GSI1_SK: page.path,
@@ -504,9 +538,11 @@ export const createPageStorageOperations = (
             SK: createPublishedSortKey(page)
         };
 
+        const pageToStore = preparePageData(page);
+
         const items = [
             entity.putBatch({
-                ...page,
+                ...pageToStore,
                 ...revisionKeys,
                 TYPE: createRevisionType()
             }),
@@ -516,7 +552,7 @@ export const createPageStorageOperations = (
         if (latestPage.id === page.id) {
             items.push(
                 entity.putBatch({
-                    ...page,
+                    ...pageToStore,
                     ...latestKeys,
                     TYPE: createLatestType()
                 })
@@ -589,10 +625,12 @@ export const createPageStorageOperations = (
             };
         }
         try {
-            return await getClean<Page>({
+            const cleanPage = await getClean<Page>({
                 entity,
                 keys
             });
+
+            return cleanPage ? unpackPageData(cleanPage) : cleanPage;
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not load page by given params.",
@@ -623,7 +661,8 @@ export const createPageStorageOperations = (
             }
         };
         try {
-            return await queryOneClean<Page>(queryOptions);
+            const cleanData = await queryOneClean<Page>(queryOptions);
+            return cleanData ? unpackPageData(cleanData) : cleanData;
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not get page by given path.",
@@ -710,7 +749,9 @@ export const createPageStorageOperations = (
 
         let dbRecords: Page[] = [];
         try {
-            dbRecords = await queryAll<Page>(queryAllParams);
+            dbRecords = await queryAll<Page>(queryAllParams).then(records => {
+                return records.map(unpackPageData) as Page[];
+            });
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not load pages by given query params.",
@@ -784,7 +825,9 @@ export const createPageStorageOperations = (
 
         let items: any[] = [];
         try {
-            items = await queryAll<Page>(queryAllParams);
+            items = await queryAll<Page>(queryAllParams).then(records => {
+                return records.map(unpackPageData);
+            });
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not load all the revisions from requested page.",
@@ -819,9 +862,11 @@ export const createPageStorageOperations = (
             options
         };
 
-        let pages: DbItem<Page>[] = [];
+        let pages: Page[] = [];
         try {
-            pages = await queryAll<Page>(queryAllParams);
+            pages = await queryAll<Page>(queryAllParams).then(records => {
+                return records.map(unpackPageData) as Page[];
+            });
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not load pages by given query params.",
