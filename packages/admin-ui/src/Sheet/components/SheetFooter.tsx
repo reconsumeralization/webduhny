@@ -12,7 +12,7 @@ export const SheetFooter = ({ actions, info, className, ...props }: SheetFooterP
     }
 
     return (
-        <div {...props} className={cn("flex justify-between", className)}>
+        <div {...props} className={cn("w-full flex justify-between pt-md", className)}>
             <div className={"text-sm flex items-center"}>
                 <div>{info}</div>
             </div>

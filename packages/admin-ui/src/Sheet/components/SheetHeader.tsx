@@ -9,11 +9,10 @@ export type SheetHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title
     Pick<SheetProps, "title" | "description">;
 
 export const SheetHeader = ({ title, description, className, ...props }: SheetHeaderProps) => {
+    let renderedTitle = <SheetTitle>{title}</SheetTitle>;
     if (!title) {
-        return null;
+        renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
     }
-
-    const renderedTitle = <SheetTitle>{title}</SheetTitle>;
 
     // If there is no description, use the title as the description, but visually hide it.
     // We're doing this because, without a description, warnings are thrown in the console.
@@ -26,11 +25,20 @@ export const SheetHeader = ({ title, description, className, ...props }: SheetHe
         );
     }
 
+    if (!title && !description) {
+        return (
+            <>
+                {renderedTitle}
+                {renderedDescription}
+            </>
+        );
+    }
+
     return (
         <div
             {...props}
             className={cn(
-                "flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary",
+                "flex flex-col gap-y-xs mb-lg text-center sm:text-left text-neutral-primary",
                 className
             )}
         >

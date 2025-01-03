@@ -9,6 +9,7 @@ import { SheetRoot } from "./components/SheetRoot";
 import { SheetTrigger } from "./components/SheetTrigger";
 import { SheetClose } from "./components/SheetClose";
 import { Button, ButtonProps } from "~/Button";
+import { Separator } from "~/Separator";
 
 export interface SheetProps
     extends React.ComponentPropsWithoutRef<typeof SheetRoot>,
@@ -21,10 +22,12 @@ export interface SheetProps
     actions?: React.ReactNode;
     info?: React.ReactNode;
     width?: string;
+    separators?: boolean;
+    tabs?: boolean;
 }
 
 const SheetBase = (props: SheetProps) => {
-    const { rootProps, triggerProps, contentProps, headerProps, footerProps } =
+    const { rootProps, triggerProps, contentProps, headerProps, footerProps, otherProps } =
         React.useMemo(() => {
             const {
                 // Root props.
@@ -45,6 +48,9 @@ const SheetBase = (props: SheetProps) => {
                 actions,
                 info,
 
+                // Other props.
+                separators,
+
                 // Content props.
                 ...rest
             } = props;
@@ -64,7 +70,8 @@ const SheetBase = (props: SheetProps) => {
                 },
                 headerProps: { title, description },
                 footerProps: { info, actions },
-                contentProps: rest
+                contentProps: rest,
+                otherProps: { separators }
             };
         }, [props]);
 
@@ -76,9 +83,16 @@ const SheetBase = (props: SheetProps) => {
                 <SheetContent {...contentProps}>
                     <div>
                         <SheetHeader {...headerProps} />
+                        {otherProps.separators && <Separator />}
+                    </div>
+                    <div className={"h-full"}>
                         {contentProps.children}
                     </div>
-                    <SheetFooter {...footerProps} />
+
+                    <div>
+                        {otherProps.separators && <Separator />}
+                        <SheetFooter {...footerProps} />
+                    </div>
                 </SheetContent>
             </SheetPortal>
         </SheetRoot>

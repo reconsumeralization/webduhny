@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Sheet } from "./Sheet";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
+import { Tabs, TabsContent, TabsTrigger } from "~/Tabs";
 
 const meta: Meta<typeof Sheet> = {
     title: "Components/Sheet",
@@ -90,17 +91,50 @@ export const WithoutCloseButton: Story = {
     args: { ...Default.args, showCloseButton: false }
 };
 
-export const AlertSheet: Story = {
+export const CustomWidth: Story = {
+    args: { ...Default.args, width: "1000px" }
+};
+
+export const WithSeparators: Story = {
+    args: { ...Default.args, separators: true }
+};
+
+export const WithTabs: Story = {
     args: {
         ...Default.args,
-        info: null,
-        showCloseButton: false,
-        title: "Confirm Action",
-        description: "Are you sure you want to delete this item?",
+        separators: true,
         children: (
             <>
-                <p>This action cannot be undone.</p>
-                <p>Deleted items cannot be recovered.</p>
+                <Tabs
+                    triggers={[
+                        <TabsTrigger key="account" value="account" text={"Account"} />,
+                        <TabsTrigger key="company" value="company" text={"Company"} />,
+                        <TabsTrigger key="security" value="security" text={"Security"} />,
+                        <TabsTrigger key="development" value="development" text={"development"} />
+                    ]}
+                    contents={[
+                        <TabsContent
+                            key="account"
+                            value="account"
+                            text={"Make changes to your account here."}
+                        />,
+                        <TabsContent
+                            key="company"
+                            value="company"
+                            text={"Make changes to your company info here."}
+                        />,
+                        <TabsContent
+                            key="security"
+                            value="security"
+                            text={"Make changes to your security settings here."}
+                        />,
+                        <TabsContent
+                            key="development"
+                            value="development"
+                            text={"Make changes to your development settings here."}
+                        />
+                    ]}
+                />
             </>
         )
     }
