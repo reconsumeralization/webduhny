@@ -1,8 +1,8 @@
-import {GraphQLSchemaPlugin} from "@webiny/handler-graphql";
+import { GraphQLSchemaPlugin } from "@webiny/handler-graphql";
 
 export const createDynamicDataSchema = () => {
     return new GraphQLSchemaPlugin({
-        typeDefs: /* GraphQL */`
+        typeDefs: /* GraphQL */ `
             type DataSource {
                 name: String!
                 type: String!
