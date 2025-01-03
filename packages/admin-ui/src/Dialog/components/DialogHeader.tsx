@@ -9,20 +9,22 @@ export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "titl
     Pick<DialogProps, "title" | "description">;
 
 export const DialogHeader = ({ title, description, className, ...props }: DialogHeaderProps) => {
+    let renderedTitle = <DialogTitle>{title}</DialogTitle>;
     if (!title) {
-        return null;
+        renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
     }
 
-    const renderedTitle = <DialogTitle>{title}</DialogTitle>;
-
-    // If there is no description, use the title as the description, but visually hide it.
-    // We're doing this because, without a description, warnings are thrown in the console.
     let renderedDescription = <DialogDescription>{description}</DialogDescription>;
     if (!description) {
-        renderedDescription = (
-            <VisuallyHidden.Root>
-                <DialogDescription>{title}</DialogDescription>
-            </VisuallyHidden.Root>
+        renderedDescription = <VisuallyHidden.Root>{renderedDescription}</VisuallyHidden.Root>;
+    }
+
+    if (!title && !description) {
+        return (
+            <>
+                {renderedTitle}
+                {renderedDescription}
+            </>
         );
     }
 

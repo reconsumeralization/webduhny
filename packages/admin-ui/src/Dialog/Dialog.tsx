@@ -16,6 +16,7 @@ export interface DialogProps
     trigger?: React.ReactNode;
     title?: React.ReactNode | string;
     showCloseButton?: boolean;
+    preventOutsideDismiss?: boolean;
     description?: React.ReactNode | string;
     children: React.ReactNode;
     actions?: React.ReactNode;
@@ -45,7 +46,7 @@ const DialogBase = (props: DialogProps) => {
                 info,
 
                 // Content props.
-                ...rest
+                ...contentProps
             } = props;
 
             return {
@@ -63,7 +64,7 @@ const DialogBase = (props: DialogProps) => {
                 },
                 headerProps: { title, description },
                 footerProps: { info, actions },
-                contentProps: rest
+                contentProps
             };
         }, [props]);
 
@@ -89,15 +90,15 @@ DialogBase.displayName = "Dialog";
 
 const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 
-const ConfirmButton = (props: ButtonProps) => (
+const ConfirmButton = makeDecoratable("ConfirmButton", (props: ButtonProps) => (
     <Button text={"Confirm"} {...props} variant="primary" />
-);
+));
 
-const CancelButton = (props: ButtonProps) => (
+const CancelButton = makeDecoratable("CancelButton", (props: ButtonProps) => (
     <DialogClose asChild>
         <Button text={"Cancel"} {...props} variant="secondary" />
     </DialogClose>
-);
+));
 
 const Dialog = withStaticProps(DecoratableDialog, {
     ConfirmButton,
