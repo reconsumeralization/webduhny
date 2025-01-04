@@ -91,12 +91,13 @@ export const createPageEntity = (params: Params): Entity<any> => {
             webinyVersion: {
                 type: "string"
             },
-            // Dynamic pages
             dataSources: {
-                type: "list"
+                type: "list",
+                default: []
             },
             dataBindings: {
-                type: "list"
+                type: "list",
+                default: []
             },
             ...(attributes || {})
         }

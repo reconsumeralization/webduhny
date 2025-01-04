@@ -303,12 +303,6 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                         });
 
                         return processedPage.content;
-                    },
-                    dataSources(page: Page) {
-                        return page.dataSources || [];
-                    },
-                    dataBindings(page: Page) {
-                        return page.dataBindings || [];
                     }
                 },
                 PbPageListItem: {

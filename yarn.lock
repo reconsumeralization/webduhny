@@ -12881,6 +12881,7 @@ __metadata:
     "@webiny/aws-sdk": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/error": "npm:0.0.0"
+    "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/handler": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
