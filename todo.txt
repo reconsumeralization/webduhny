@@ -1,9 +1,8 @@
 MH
-- cleanup `logs` var
-- inspect `debug`
-- SWC config
-- jest babel config
-- replace ts-jest with swc/jest, any gains?
+- check overrides.rspack (and prolly overrides in general)
 
 WH
-- enabled ts checks?
+- jest babel config
+- replace ts-jest with swc/jest, any gains?
+- remove babel (not yet)
+- enabled ts checks? (not yet)
