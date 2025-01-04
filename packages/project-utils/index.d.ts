@@ -39,7 +39,6 @@ export function createWatchApp(options: BuildAppConfig): BuildCommand;
 interface BuildFunctionConfig {
     [key: string]: any;
     cwd: string;
-    logs?: boolean;
     debug?: boolean;
     /**
      * Enables or disables source map generation for the function.

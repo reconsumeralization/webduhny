@@ -72,12 +72,20 @@ class RspackBundler extends BaseFunctionBundler {
 
     watch() {
         return new Promise(async (resolve, reject) => {
-            console.log("Compiling...");
+            let projectApplication;
+            try {
+                projectApplication = getProjectApplication({ cwd: this.params.cwd });
+            } catch {
+                // No need to do anything.
+            }
 
             const rspackConfig = createRspackConfig({
                 ...this.params,
+                projectApplication,
                 production: false
             });
+
+            console.log("Compiling...");
 
             const compiler = rspack(rspackConfig);
 

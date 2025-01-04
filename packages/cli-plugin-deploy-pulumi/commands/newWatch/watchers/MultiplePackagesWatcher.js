@@ -3,6 +3,10 @@ const path = require("path");
 const chalk = require("chalk");
 const { BasePackagesWatcher } = require("./BasePackagesWatcher");
 const { getRandomColorForString } = require("../../../utils");
+const { fork } = require("child_process");
+const { deserializeError } = require("serialize-error");
+
+const WORKER_PATH = path.resolve(__dirname, "worker.js");
 
 class MultiplePackagesWatcher extends BasePackagesWatcher {
     async watch() {
@@ -19,55 +23,69 @@ class MultiplePackagesWatcher extends BasePackagesWatcher {
             packages.forEach(item => console.log("‣ " + item.name));
         }
 
-        const commandOptions = { env, debug, logs: true };
+        const commandOptions = { env, debug };
         const log = createLog({ context });
 
-        const promises = [];
+        const tasksList = [];
+
         for (let i = 0; i < packages.length; i++) {
-            const current = packages[i];
-            promises.push(
+            const pkg = packages[i];
+            tasksList.push(
                 new Promise(resolve => {
-                    const worker = new Worker(path.join(__dirname, "./worker.js"), {
-                        workerData: {
-                            options: commandOptions,
-                            package: { ...current.paths }
-                        }
+                    const buildConfig = JSON.stringify({
+                        ...inputs,
+                        package: { paths: pkg.paths }
                     });
 
-                    worker.on("message", threadMessage => {
-                        const { type, message } = parseMessage(threadMessage);
-
-                        if (type === "error") {
-                            log(current.name, message, "error");
-                        } else if (type === "warn") {
-                            log(current.name, message);
-                        } else {
-                            log(current.name, message);
-                        }
+                    const child = fork(WORKER_PATH, [buildConfig], {
+                        env: { ...process.env, ...commandOptions.env },
+                        stdio: ["pipe", "pipe", "pipe", "ipc"] // Use "pipe" to handle custom output
                     });
 
-                    worker.on("error", e => {
-                        log(
-                            current.name,
-                            `An unknown error occurred while watching ${context.error.hl(
-                                current.name
-                            )}:`
-                        );
+                    // Prefix each line of child stdout with the package name
+                    if (child.stdout) {
+                        child.stdout.on("data", chunk => {
+                            log(pkg.name, chunk);
 
-                        log(e);
-
-                        resolve({
-                            package: current,
-                            result: {
-                                message: `An unknown error occurred.`
-                            }
+                            // process.stdout.write(`[${pkg.paths}] ${chunk}`);
                         });
+                    }
+
+                    // Prefix each line of child stderr with the package name
+                    if (child.stderr) {
+                        child.stderr.on("data", chunk => {
+                            log(pkg.name, chunk, "error");
+
+                            // process.stderr.write(`[${pkg.paths}] ${chunk}`);
+                        });
+                    }
+
+                    // We only send one message from the child process, and that is the error, if any.
+                    child.on("message", serializedError => {
+                        const error = deserializeError(serializedError);
+                        reject(new Error("Build failed.", { cause: { pkg, error } }));
+                    });
+
+                    // Handle child process error events
+                    child.on("error", error => {
+                        reject(new Error("Build failed.", { cause: { pkg, error } }));
+                    });
+
+                    // Handle child process exit and check for errors
+                    child.on("exit", code => {
+                        if (code !== 0) {
+                            const error = new Error(`Build process exited with code ${code}.`);
+                            reject(new Error("Build failed.", { cause: { pkg, error } }));
+                            return;
+                        }
+
+                        resolve();
                     });
                 })
             );
         }
 
-        await Promise.all(promises);
+        await Promise.all(tasksList);
     }
 }
 

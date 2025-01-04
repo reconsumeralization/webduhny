@@ -3,6 +3,7 @@ const rspack = require("@rspack/core");
 const { version } = require("@webiny/project-utils/package.json");
 const { getOutput, getEntry } = require("../../utils");
 const { TsCheckerRspackPlugin } = require("ts-checker-rspack-plugin");
+const { createSwcConfig } = require("./createSwcConfig");
 
 const createRspackConfig = params => {
     const output = getOutput(params);
@@ -10,10 +11,11 @@ const createRspackConfig = params => {
 
     const { cwd, overrides, production, watch } = params;
 
-    let swcOptions = require("./swcrc");
-    // Customize SWC options.
+    let swcConfig = createSwcConfig(cwd);
+
+    // User overrides.
     if (typeof overrides.swc === "function") {
-        swcOptions = overrides.swc(swcOptions);
+        swcConfig = overrides.swc(swcConfig);
     }
 
     const sourceMaps = params.sourceMaps !== false;
@@ -37,29 +39,27 @@ const createRspackConfig = params => {
         devtool: sourceMaps ? "source-map" : false,
         externals: [/^@aws-sdk/, /^sharp$/],
         mode: production ? "production" : "development",
-        optimization: {
-            minimize: production
-        },
         performance: {
             // Turn off size warnings for entry points
             hints: false
         },
         plugins: [
-            tsChecksEnabled &&
-                new TsCheckerRspackPlugin({
-                    memoryLimit: 4096 * 4
-                }),
+            tsChecksEnabled && new TsCheckerRspackPlugin(),
+
+            // https://rspack.dev/plugins/webpack/define-plugin
             new rspack.DefinePlugin({
                 "process.env.WEBINY_VERSION": JSON.stringify(process.env.WEBINY_VERSION || version),
                 ...definitions
             }),
-            /**
-             * This is necessary to enable JSDOM usage in Lambda.
-             */
+
+            // This is necessary to enable JSDOM usage in Lambda.
+            // https://rspack.dev/plugins/webpack/ignore-plugin
             new rspack.IgnorePlugin({
                 resourceRegExp: /canvas/,
                 contextRegExp: /jsdom$/
             }),
+
+            // https://rspack.dev/plugins/webpack/progress-plugin
             new rspack.ProgressPlugin()
         ].filter(Boolean),
 
@@ -67,11 +67,6 @@ const createRspackConfig = params => {
             rules: [
                 {
                     oneOf: [
-                        sourceMaps && {
-                            test: /\.js$/,
-                            enforce: "pre",
-                            use: [require.resolve("source-map-loader")]
-                        },
                         {
                             test: /\.mjs$/,
                             include: /node_modules/,
@@ -84,18 +79,7 @@ const createRspackConfig = params => {
                             test: /\.(ts)$/,
                             loader: "builtin:swc-loader",
                             exclude: /node_modules/,
-                            options: {
-                                jsc: {
-                                    parser: {
-                                        syntax: "typescript"
-                                    },
-                                    baseUrl: cwd,
-                                    paths: {
-                                        "~/*": ["src/*"],
-                                        "~": ["src"]
-                                    }
-                                }
-                            }
+                            options: swcConfig
                         }
                     ].filter(Boolean)
                 },

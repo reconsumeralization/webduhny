@@ -5,7 +5,7 @@ const { serializeError } = require("serialize-error");
 require("@webiny/cli/utils/importModule");
 const { cli } = require("@webiny/cli");
 
-const options = { cwd: pkg.paths.root, env };
+const options = { cwd: pkg.paths.root, env, debug };
 
 let config = require(pkg.paths.config).default || require(pkg.paths.config);
 if (typeof config === "function") {
