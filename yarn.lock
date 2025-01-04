@@ -18160,6 +18160,7 @@ __metadata:
     assert-browserify: ^2.0.0
     babel-loader: 9.1.2
     buffer: ^6.0.3
+    bufferutil: ^4.0.1
     camelcase: 5.3.1
     case-sensitive-paths-webpack-plugin: 2.4.0
     chalk: ^4.1.0
@@ -18212,6 +18213,7 @@ __metadata:
     typescript: 4.9.5
     url: 0.11.0
     url-loader: 4.1.1
+    utf-8-validate: ">=5.0.2"
     vm-browserify: ^1.1.2
     webpack: ^5.91.0
     webpack-dev-server: ^4.6.0
@@ -19437,6 +19439,7 @@ __metadata:
     "@webiny/project-utils": 0.0.0
     "@webiny/tasks": 0.0.0
     graphql-request: ^3.4.0
+    my-custom-extension: 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -21056,6 +21059,16 @@ __metadata:
     base64-js: ^1.3.1
     ieee754: ^1.2.1
   checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
+  languageName: node
+  linkType: hard
+
+"bufferutil@npm:^4.0.1":
+  version: 4.0.9
+  resolution: "bufferutil@npm:4.0.9"
+  dependencies:
+    node-gyp: latest
+    node-gyp-build: ^4.3.0
+  checksum: 51ce9ee19bc4b72c2eb9f9a231dd95e786ca5a00a6bdfcae83f1d5cd8169301c79245ce96913066a5a1bbe45c44e95bc5a1761a18798b835585c1a05af65b209
   languageName: node
   linkType: hard
 
@@ -32052,6 +32065,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"my-custom-extension@1.0.0, my-custom-extension@workspace:extensions/myCustomExtension":
+  version: 0.0.0-use.local
+  resolution: "my-custom-extension@workspace:extensions/myCustomExtension"
+  languageName: unknown
+  linkType: soft
+
 "nanoclone@npm:^0.2.1":
   version: 0.2.1
   resolution: "nanoclone@npm:0.2.1"
@@ -32285,6 +32304,17 @@ __metadata:
   version: 1.3.1
   resolution: "node-forge@npm:1.3.1"
   checksum: 08fb072d3d670599c89a1704b3e9c649ff1b998256737f0e06fbd1a5bf41cae4457ccaee32d95052d80bbafd9ffe01284e078c8071f0267dc9744e51c5ed42a9
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.3.0":
+  version: 4.8.4
+  resolution: "node-gyp-build@npm:4.8.4"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 8b81ca8ffd5fa257ad8d067896d07908a36918bc84fb04647af09d92f58310def2d2b8614d8606d129d9cd9b48890a5d2bec18abe7fcff54818f72bedd3a7d74
   languageName: node
   linkType: hard
 
@@ -40484,6 +40514,16 @@ __metadata:
   peerDependencies:
     react: ">=16.13"
   checksum: 2b9b6291df3f772f44d259b352e5d998963ccee0db2efeb76bb05525d928064aeeb69bb0dee5a5e428fea7cf3db67c097a770ebd30caa080662b565f6ef02b2e
+  languageName: node
+  linkType: hard
+
+"utf-8-validate@npm:>=5.0.2":
+  version: 6.0.5
+  resolution: "utf-8-validate@npm:6.0.5"
+  dependencies:
+    node-gyp: latest
+    node-gyp-build: ^4.3.0
+  checksum: ab6bd5b0db2241a990a9e1c434a29194900f9f8f715158b56d591306634cdd4f748e91b965d91a32fd459c86b082ec0a35d369bbc4efbb243b48f593c14448e8
   languageName: node
   linkType: hard
 
