@@ -13,17 +13,16 @@ if (typeof config === "function") {
 }
 
 const hasWatchCommand = config.commands && typeof config.commands.watch === "function";
-if (!hasWatchCommand) {
+if (hasWatchCommand) {
+    config.commands.watch(options).catch(error => {
+        // Send error message to the parent process
+        process.send(serializeError(error));
+        process.exit(1); // Ensure the worker process exits with an error code
+    });
+} else {
     console.log(
         `Skipping watch; ${cli.warning.hl(
             "watch"
         )} command is missing. Check package's ${cli.warning.hl("webiny.config.ts")} file.`
     );
-    return;
 }
-
-config.commands.watch(options).catch(error => {
-    // Send error message to the parent process
-    process.send(serializeError(error));
-    process.exit(1); // Ensure the worker process exits with an error code
-});
