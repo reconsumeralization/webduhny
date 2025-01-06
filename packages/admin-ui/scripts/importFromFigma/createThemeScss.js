@@ -1,8 +1,33 @@
 const fs = require("fs");
 
-const createThemeScss = normalizedFigmaExport => {
+const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport) => {
     // Generate `theme.scss` file.
     let stylesScss = fs.readFileSync(__dirname + "/templates/theme.scss.txt", "utf8");
+
+    // 0. Colors
+    {
+        let currentBgColorGroup = null;
+        const bgColors = normalizedPrimitivesFigmaExport
+            .filter(item => item.type === "colors")
+            .map(variable => {
+                const [colorGroup] = variable.variantName.split("-");
+                const cssVar = `--bg-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+
+                if (!currentBgColorGroup) {
+                    currentBgColorGroup = colorGroup;
+                    return cssVar;
+                }
+
+                if (!currentBgColorGroup || currentBgColorGroup !== colorGroup) {
+                    currentBgColorGroup = colorGroup;
+                    return ["", cssVar];
+                }
+                return cssVar;
+            })
+            .flat();
+
+        stylesScss = stylesScss.replace("{COLORS}", bgColors.join("\n"));
+    }
 
     // 1. Background color.
     {

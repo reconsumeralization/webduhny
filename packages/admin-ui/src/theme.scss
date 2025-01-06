@@ -6,6 +6,69 @@
 
 @layer base {
   :root {
+    // Colors.
+    --bg-destructive-100: 0 100% 96.9%;
+    --bg-destructive-200: 0 96.4% 89.2%;
+    --bg-destructive-300: 1 83.2% 76.7%;
+    --bg-destructive-400: 0 66.3% 62.7%;
+    --bg-destructive-500: 0 71% 48.6%;
+    --bg-destructive-600: 0 76.4% 38.2%;
+    --bg-destructive-700: 359 72.8% 28.8%;
+    --bg-destructive-800: 0 83.6% 21.6%;
+    --bg-destructive-900: 359 81.6% 17.1%;
+
+    --bg-neutral-0: 0 0% 100%;
+    --bg-neutral-100: 210 14.3% 97.3%;
+    --bg-neutral-200: 220 11.1% 94.7%;
+    --bg-neutral-300: 225 16.7% 90.6%;
+    --bg-neutral-400: 219 12.1% 77.3%;
+    --bg-neutral-50: 180 11.1% 98.2%;
+    --bg-neutral-500: 218 10.7% 65.3%;
+    --bg-neutral-600: 215 9.6% 51%;
+    --bg-neutral-700: 213 10.1% 38.8%;
+    --bg-neutral-800: 215 11.1% 21.2%;
+    --bg-neutral-900: 214 12.3% 11.2%;
+
+    --bg-primary-100: 5 100% 97.5%;
+    --bg-primary-200: 15 94.2% 86.5%;
+    --bg-primary-300: 14 94.7% 77.8%;
+    --bg-primary-400: 15 100% 63.5%;
+    --bg-primary-500: 15 95.6% 55.9%;
+    --bg-primary-600: 14 81.4% 48.4%;
+    --bg-primary-700: 14 94.1% 40%;
+    --bg-primary-800: 14 100% 32.2%;
+    --bg-primary-900: 14 100% 25.5%;
+
+    --bg-secondary-100: 168 50% 96.1%;
+    --bg-secondary-200: 170 57.1% 91.8%;
+    --bg-secondary-300: 168 58.1% 79.4%;
+    --bg-secondary-400: 169 59.8% 64.9%;
+    --bg-secondary-500: 170 100% 37.5%;
+    --bg-secondary-600: 168 100% 34.7%;
+    --bg-secondary-700: 165 100% 28.6%;
+    --bg-secondary-800: 160 100% 19.6%;
+    --bg-secondary-900: 160 100% 14.5%;
+
+    --bg-success-100: 168 50% 96.1%;
+    --bg-success-200: 170 57.1% 91.8%;
+    --bg-success-300: 168 58.1% 79.4%;
+    --bg-success-400: 169 59.8% 64.9%;
+    --bg-success-500: 170 100% 37.5%;
+    --bg-success-600: 168 100% 34.7%;
+    --bg-success-700: 165 100% 28.6%;
+    --bg-success-800: 160 100% 19.6%;
+    --bg-success-900: 160 100% 14.5%;
+
+    --bg-warning-100: 43 100% 96.5%;
+    --bg-warning-200: 45 96.9% 87.5%;
+    --bg-warning-300: 45 95.1% 75.9%;
+    --bg-warning-400: 45 95.7% 63.7%;
+    --bg-warning-500: 45 95.7% 63.7%;
+    --bg-warning-600: 45 100% 42.5%;
+    --bg-warning-700: 45 100% 37.3%;
+    --bg-warning-800: 45 98.2% 21.6%;
+    --bg-warning-900: 45 96.6% 11.6%;
+
     // Background colors.
     --bg-destructive-default: 0 71% 48.6%;
     --bg-destructive-disabled: 1 83.2% 76.7%;
