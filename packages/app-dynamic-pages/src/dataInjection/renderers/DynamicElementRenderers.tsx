@@ -8,9 +8,12 @@ import { DynamicGrid } from "~/dataInjection/renderers/DynamicGrid";
 export const DynamicElementRenderers = () => {
     return (
         <>
-            <PbRenderElementPlugin elementType={"repeater"} render={RepeaterRenderer} />
-            <PbRenderElementPlugin elementType={"entries-list"} render={EntriesListRenderer} />
-            <PbRenderElementPlugin elementType={"entries-search"} render={EntriesSearchRenderer} />
+            <PbRenderElementPlugin elementType={"repeater"} renderer={RepeaterRenderer} />
+            <PbRenderElementPlugin elementType={"entries-list"} renderer={EntriesListRenderer} />
+            <PbRenderElementPlugin
+                elementType={"entries-search"}
+                renderer={EntriesSearchRenderer}
+            />
             <DynamicGrid />
         </>
     );
