@@ -11,7 +11,7 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .filter(item => item.type === "colors")
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--bg-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVar = `--color-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
 
                 if (!currentBgColorGroup) {
                     currentBgColorGroup = colorGroup;
@@ -24,7 +24,7 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
                 }
                 return cssVar;
             })
-            .flat();
+            .flat().reverse();
 
         stylesScss = stylesScss.replace("{COLORS}", bgColors.join("\n"));
     }
@@ -36,7 +36,8 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .filter(item => item.type === "backgroundColor")
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--bg-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--bg-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentBgColorGroup) {
                     currentBgColorGroup = colorGroup;
@@ -61,7 +62,8 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .filter(item => item.type === "borderColor")
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--border-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--border-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentBorderColor) {
                     currentBorderColor = colorGroup;
@@ -166,7 +168,8 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .filter(item => item.type === "ringColor")
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--ring-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--ring-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentRingColorGroup) {
                     currentRingColorGroup = colorGroup;
@@ -218,7 +221,8 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .filter(item => item.type === "textColor")
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--text-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--text-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentTextColor) {
                     currentTextColor = colorGroup;

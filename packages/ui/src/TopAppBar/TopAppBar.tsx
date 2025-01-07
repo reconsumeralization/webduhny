@@ -24,7 +24,7 @@ export type TopAppBarProps = RmwcTopAppBarProps & {
 const TopAppBar = (props: TopAppBarProps) => {
     const { children, ...rest } = props;
     return (
-        <RmwcTopAppBar {...rest}>
+        <RmwcTopAppBar {...rest} className={"bg-primary-default"}>
             <TopAppBarRow>{children}</TopAppBarRow>
         </RmwcTopAppBar>
     );

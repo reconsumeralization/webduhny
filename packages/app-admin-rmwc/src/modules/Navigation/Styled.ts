@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "emotion";
 
-export const MenuHeader = styled("div")({
+export const MenuHeader = styled.div({
     display: "flex",
     alignItems: "center",
     padding: 5,
@@ -21,27 +21,10 @@ export const navContent = css({
     padding: "0 !important"
 });
 
-export const logoStyle = css({
-    "&.mdc-top-app-bar__title": {
-        paddingLeft: 15,
-        ".webiny-logo": {
-            color: "var(--mdc-theme-primary)"
-        }
-    }
-});
-
-export const MenuFooter = styled("div")({
+export const MenuFooter = styled.div({
     borderTop: "1px solid var(--mdc-theme-on-background)",
     a: {
         color: "var(--mdc-theme-text-on-primary)",
         textDecoration: "none"
-    }
-});
-
-export const subFooter = css({
-    ".mdc-drawer &.mdc-deprecated-list-item": {
-        borderTop: "1px solid var(--mdc-theme-on-background)",
-        padding: "10px 16px",
-        margin: 0
     }
 });
