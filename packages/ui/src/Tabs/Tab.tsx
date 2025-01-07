@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import shortid from "shortid";
+import { generateAlphaNumericId } from "@webiny/utils/generateId";
 import { TabsContext } from "./Tabs";
 
 export type TabProps = {
@@ -43,7 +43,7 @@ export type TabProps = {
  */
 export const Tab = React.memo((props: TabProps) => {
     const tabsContext = useContext(TabsContext);
-    const idRef = useRef(shortid.generate());
+    const idRef = useRef(generateAlphaNumericId(12));
 
     useEffect(() => {
         tabsContext!.addTab({ ...props, id: idRef.current, visible: props.visible ?? true });
