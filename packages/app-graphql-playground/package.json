@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@emotion/react": "11.10.8",
-    "@emotion/styled": "^11.10.6",
+    "@emotion/styled": "11.10.6",
     "@webiny/app": "0.0.0",
     "@webiny/app-admin": "0.0.0",
     "@webiny/app-i18n": "0.0.0",
