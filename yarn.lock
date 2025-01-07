@@ -12821,6 +12821,7 @@ __metadata:
   dependencies:
     "@webiny/api-headless-cms-bulk-actions": "npm:0.0.0"
     "@webiny/api-headless-cms-import-export": "npm:0.0.0"
+    "@webiny/api-headless-cms-tasks": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     ttypescript: "npm:^1.5.15"
