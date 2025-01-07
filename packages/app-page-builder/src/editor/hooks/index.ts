@@ -20,3 +20,5 @@ export { useUpdateElement } from "./useUpdateElement";
 export { useUpdateHandlers } from "./useUpdateHandlers";
 export { useGetElement } from "./useGetElement";
 export { useIsElementChildOfType } from "./useIsElementChildOfType";
+export { useDeleteElement } from "./useDeleteElement";
+export { useFindElementBlock } from "./useFindElementBlock";

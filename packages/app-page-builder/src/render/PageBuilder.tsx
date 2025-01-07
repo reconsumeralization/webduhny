@@ -7,7 +7,7 @@ import { LexicalHeadingRenderer } from "~/render/plugins/elements/heading/Lexica
 import { ConvertIconSettings } from "~/render/plugins/elementSettings/icon";
 import { AddImageLinkComponent } from "~/elementDecorators/AddImageLinkComponent";
 
-export const PageBuilder = () => {
+export const PageBuilder = React.memo(() => {
     return (
         <>
             <AddButtonLinkComponent />
@@ -19,4 +19,6 @@ export const PageBuilder = () => {
             <ConvertIconSettings />
         </>
     );
-};
+});
+
+PageBuilder.displayName = "PageBuilder";

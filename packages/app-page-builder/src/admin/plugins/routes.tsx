@@ -90,12 +90,10 @@ const plugins: RoutePlugin[] = [
                 element={
                     <SecureRoute permission={ROLE_PB_PAGES}>
                         <EditorPluginsLoader>
-                            <RenderPluginsLoader>
-                                <Helmet title={"Page Builder - Edit page"} />
-                                <CompositionScope name={"pb.pageEditor"}>
-                                    <PageEditor />
-                                </CompositionScope>
-                            </RenderPluginsLoader>
+                            <Helmet title={"Page Builder - Edit page"} />
+                            <CompositionScope name={"pb.pageEditor"}>
+                                <PageEditor />
+                            </CompositionScope>
                         </EditorPluginsLoader>
                     </SecureRoute>
                 }
@@ -130,12 +128,10 @@ const plugins: RoutePlugin[] = [
                 element={
                     <SecureRoute permission={ROLE_PB_TEMPLATE}>
                         <EditorPluginsLoader>
-                            <RenderPluginsLoader>
-                                <Helmet title={"Page Builder - Edit template"} />
-                                <CompositionScope name={"pb.templateEditor"}>
-                                    <TemplateEditor />
-                                </CompositionScope>
-                            </RenderPluginsLoader>
+                            <Helmet title={"Page Builder - Edit template"} />
+                            <CompositionScope name={"pb.templateEditor"}>
+                                <TemplateEditor />
+                            </CompositionScope>
                         </EditorPluginsLoader>
                     </SecureRoute>
                 }
@@ -187,12 +183,10 @@ const plugins: RoutePlugin[] = [
                 element={
                     <SecureRoute permission={ROLE_PB_PAGES}>
                         <EditorPluginsLoader>
-                            <RenderPluginsLoader>
-                                <Helmet title={"Page Builder - Edit block"} />
-                                <CompositionScope name={"pb.blockEditor"}>
-                                    <BlockEditor />
-                                </CompositionScope>
-                            </RenderPluginsLoader>
+                            <Helmet title={"Page Builder - Edit block"} />
+                            <CompositionScope name={"pb.blockEditor"}>
+                                <BlockEditor />
+                            </CompositionScope>
                         </EditorPluginsLoader>
                     </SecureRoute>
                 }
