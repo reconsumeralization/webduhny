@@ -33,7 +33,7 @@ const createSchema = zod.object({
     tags: zod.string().array(),
     description: zod.string().max(100),
     layout: zod.string().max(100).optional(),
-    pageCategory: zod.string().max(100),
+    pageCategory: zod.string().max(100).default("static"),
     content: zod.any(),
     ...dynamicData
 });
