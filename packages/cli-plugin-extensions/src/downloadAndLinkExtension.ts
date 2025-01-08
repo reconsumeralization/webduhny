@@ -13,6 +13,7 @@ import { Extension } from "./extensions/Extension";
 import glob from "fast-glob";
 import { CliContext } from "@webiny/cli/types";
 import { Ora } from "ora";
+import { ExtensionJson, ExtensionMessage } from "~/types";
 
 const EXTENSIONS_ROOT_FOLDER = "extensions";
 const S3_BUCKET_NAME = "webiny-examples";
@@ -88,6 +89,12 @@ export const downloadAndLinkExtension = async ({
 
         let extensionsFolderToCopyPath = path.join(downloadFolderPath, "extensions");
 
+        const extensionJsonPath = path.join(downloadFolderPath, "extension.json");
+        const extensionJsonExists = fs.existsSync(extensionJsonPath);
+        const extensionJson: ExtensionJson = extensionJsonExists
+            ? JSON.parse(fs.readFileSync(extensionJsonPath, "utf-8"))
+            : {};
+
         // If we have `extensions` folder in the root of the downloaded extension.
         // it means the example extension is not versioned, and we can just copy it.
         const extensionsFolderExistsInRoot = fs.existsSync(extensionsFolderToCopyPath);
@@ -145,12 +152,25 @@ export const downloadAndLinkExtension = async ({
                 )}.`
             );
 
-            const nextSteps = downloadedExtension.getNextSteps();
+            // Next Steps section.
+            const nextStepsToDisplay = downloadedExtension.getNextSteps();
+
+            const nextStepsFromExtensionJson = extensionJson.nextSteps;
+            if (nextStepsFromExtensionJson) {
+                const { clearExisting, messages } = nextStepsFromExtensionJson;
+                if (clearExisting) {
+                    nextStepsToDisplay.length = 0;
+                }
+
+                if (Array.isArray(messages)) {
+                    nextStepsToDisplay.push(...messages);
+                }
+            }
 
             console.log();
             console.log(chalk.bold("Next Steps"));
-            nextSteps.forEach(message => {
-                console.log(`‣ ${message}`);
+            nextStepsToDisplay.forEach(({ text, variables = [] }) => {
+                console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
             });
         } else {
             const paths = downloadedExtensions.map(ext => ext.getLocation());
@@ -160,13 +180,31 @@ export const downloadAndLinkExtension = async ({
             });
         }
 
+        // Additional Notes section.
+        const additionalNotesToDisplay: ExtensionMessage[] = [
+            {
+                text: `if you already have the %s command running, you'll need to restart it`,
+                variables: ["webiny watch"]
+            }
+        ];
+
+        const additionalNotesFromExtensionJson = extensionJson.additionalNotes;
+        if (additionalNotesFromExtensionJson) {
+            const { clearExisting, messages } = additionalNotesFromExtensionJson;
+            if (clearExisting) {
+                additionalNotesToDisplay.length = 0;
+            }
+
+            if (Array.isArray(messages)) {
+                additionalNotesToDisplay.push(...messages);
+            }
+        }
+
         console.log();
         console.log(chalk.bold("Additional Notes"));
-        console.log(
-            `‣ if you already have the ${context.success.hl(
-                "webiny watch"
-            )} command running, you'll need to restart it`
-        );
+        additionalNotesToDisplay.forEach(({ text, variables = [] }) => {
+            console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
+        });
     } catch (e) {
         switch (e.code) {
             case "NO_OBJECTS_FOUND":
