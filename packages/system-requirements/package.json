@@ -13,8 +13,7 @@
   "author": "Webiny Ltd.",
   "description": "Contains utilities for checking system requirements for Webiny projects",
   "dependencies": {
-    "@webiny/telemetry": "0.0.0",
-    "@webiny/wcp": "0.0.0",
+    "chalk": "^4.1.2",
     "cli-table3": "^0.6.5",
     "execa": "^5.0.0",
     "semver": "^7.3.5"

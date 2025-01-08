@@ -15883,8 +15883,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/system-requirements@workspace:packages/system-requirements"
   dependencies:
-    "@webiny/telemetry": "npm:0.0.0"
-    "@webiny/wcp": "npm:0.0.0"
+    chalk: "npm:^4.1.2"
     cli-table3: "npm:^0.6.5"
     execa: "npm:^5.0.0"
     semver: "npm:^7.3.5"
@@ -20077,6 +20076,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-webiny-project@workspace:packages/create-webiny-project"
   dependencies:
+    "@webiny/system-requirements": "npm:0.0.0"
     "@webiny/telemetry": "npm:0.0.0"
     chalk: "npm:^4.1.2"
     execa: "npm:^5.1.1"
