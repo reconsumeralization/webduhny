@@ -81,9 +81,12 @@ export function FileManagerProvider({
 
 export const FileManagerRenderer = createDecorator(BaseFileManagerRenderer, () => {
     return function FileManagerRenderer(props) {
-        const { onChange, ...forwardProps } = props;
+        const { onChange, onUploadCompletion, ...forwardProps } = props;
 
-        const handleFileOnChange = (value?: FileItem[] | FileItem) => {
+        const handleFileOnChange: FileManagerViewProviderProps["onChange"] = (
+            value: FileItem[] | FileItem,
+            context
+        ) => {
             if (!onChange || !value || (Array.isArray(value) && !value.length)) {
                 return;
             }
@@ -91,16 +94,29 @@ export const FileManagerRenderer = createDecorator(BaseFileManagerRenderer, () =
             if (Array.isArray(value)) {
                 const finalValue = value.map(formatFileItem);
                 (onChange as FileManagerOnChange<FileManagerFileItem[]>)(finalValue);
+                context.onClose();
                 return;
             }
 
             (onChange as FileManagerOnChange<FileManagerFileItem>)(formatFileItem(value));
+            context.onClose();
+        };
+
+        const handleFileOnUploadCompletion: FileManagerViewProviderProps["onUploadCompletion"] = (
+            files: FileItem[],
+            context
+        ) => {
+            if (!onUploadCompletion) {
+                return;
+            }
+
+            onUploadCompletion(files.map(formatFileItem));
+            context.onClose();
         };
 
         const viewProps: Omit<FileManagerProviderProps, "children"> = {
             ...forwardProps,
-            onUploadCompletion:
-                forwardProps.onUploadCompletion as FileManagerViewProviderProps["onUploadCompletion"],
+            onUploadCompletion: handleFileOnUploadCompletion,
             onChange: typeof onChange === "function" ? handleFileOnChange : undefined
         };
 

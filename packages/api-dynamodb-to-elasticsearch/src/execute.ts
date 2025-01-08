@@ -30,7 +30,7 @@ export interface IExecuteParams {
     timer: ITimer;
     maxRunningTime: number;
     maxProcessorPercent: number;
-    context: Pick<Context, "elasticsearch">;
+    context: Pick<Context, "elasticsearch" | "logger">;
     operations: Pick<IOperations, "items" | "total">;
 }
 
@@ -89,6 +89,8 @@ export const execute = (params: IExecuteParams) => {
             maxWaitingTime
         });
 
+        const log = context.logger.withSource("dynamodbToElasticsearch");
+
         try {
             await healthCheck.wait({
                 async onUnhealthy({ startedAt, runs, mustEndAt, waitingTimeStep, waitingReason }) {
@@ -125,6 +127,11 @@ export const execute = (params: IExecuteParams) => {
             });
             checkErrors(res);
         } catch (error) {
+            log.error(error, {
+                tenant: "root",
+                locale: "unknown"
+            });
+
             if (process.env.DEBUG !== "true") {
                 throw error;
             }

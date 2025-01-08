@@ -2,13 +2,14 @@ import React from "react";
 import { Element as ElementType, RendererMeta } from "~/types";
 import { usePageElements } from "~/hooks/usePageElements";
 import ErrorBoundary from "./ErrorBoundary";
+import { makeDecoratable } from "@webiny/react-composition";
 
 export interface ElementProps {
     element: ElementType;
     meta?: RendererMeta;
 }
 
-export const Element = (props: ElementProps) => {
+export const Element = makeDecoratable("Element", (props: ElementProps) => {
     const { getRenderers } = usePageElements();
 
     const renderers = getRenderers();
@@ -20,7 +21,7 @@ export const Element = (props: ElementProps) => {
 
     const ElementRenderer = renderers ? renderers[element.type] : null;
     if (!ElementRenderer) {
-        return null;
+        return <div>Missing renderer for {element.type}</div>;
     }
 
     const meta = {
@@ -34,4 +35,4 @@ export const Element = (props: ElementProps) => {
             <ElementRenderer {...props} meta={meta} />
         </ErrorBoundary>
     );
-};
+});

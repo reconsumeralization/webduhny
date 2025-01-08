@@ -44,6 +44,7 @@ export {
 } from "./components/SingleImageUpload";
 export { LexicalEditor } from "./components/LexicalEditor/LexicalEditor";
 export { Wcp } from "./components/Wcp";
+export * from "./components/IconPicker";
 
 export { FileManager, FileManagerRenderer } from "./base/ui/FileManager";
 export type {
@@ -62,3 +63,11 @@ export { AaclPermission } from "@webiny/app-wcp/types";
 export { useTheme, ThemeProvider } from "@webiny/app-theme";
 
 export * from "@webiny/app/renderApp";
+
+// Exporting chosen utils from `@webiny/app` package.
+export * from "@webiny/app/utils/getApiUrl";
+export * from "@webiny/app/utils/getGqlApiUrl";
+export * from "@webiny/app/utils/getHeadlessCmsGqlApiUrl";
+export * from "@webiny/app/utils/getLocaleCode";
+export * from "@webiny/app/utils/getTenantId";
+export * from "@webiny/app/utils/isLocalhost";

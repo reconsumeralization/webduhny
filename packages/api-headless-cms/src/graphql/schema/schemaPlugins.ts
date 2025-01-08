@@ -1,4 +1,4 @@
-import { CmsContext, CmsModel } from "~/types";
+import type { ApiEndpoint, CmsContext, CmsModel } from "~/types";
 import { createManageSDL } from "./createManageSDL";
 import { createReadSDL } from "./createReadSDL";
 import { createManageResolvers } from "./createManageResolvers";
@@ -50,19 +50,22 @@ export const generateSchemaPlugins = async (
 
     models.forEach(model => {
         if (model.tags?.includes(CMS_MODEL_SINGLETON_TAG)) {
+            /**
+             * We always need to send either manage or read.
+             */
+            const singularType: ApiEndpoint = type === "manage" ? "manage" : "read";
             const plugin = createCmsGraphQLSchemaPlugin({
                 typeDefs: createSingularSDL({
                     models,
                     model,
                     fieldTypePlugins,
-                    type
+                    type: singularType
                 }),
                 resolvers: createSingularResolvers({
-                    context,
                     models,
                     model,
                     fieldTypePlugins,
-                    type
+                    type: singularType
                 })
             });
             plugin.name = `headless-cms.graphql.schema.singular.${model.modelId}`;
@@ -82,8 +85,7 @@ export const generateSchemaPlugins = async (
                         resolvers: createManageResolvers({
                             models,
                             model,
-                            fieldTypePlugins,
-                            context
+                            fieldTypePlugins
                         })
                     });
                     plugin.name = `headless-cms.graphql.schema.manage.${model.modelId}`;
@@ -105,14 +107,12 @@ export const generateSchemaPlugins = async (
                             ? createReadResolvers({
                                   models,
                                   model,
-                                  fieldTypePlugins,
-                                  context
+                                  fieldTypePlugins
                               })
                             : createPreviewResolvers({
                                   models,
                                   model,
-                                  fieldTypePlugins,
-                                  context
+                                  fieldTypePlugins
                               })
                     });
                     plugin.name = `headless-cms.graphql.schema.${type}.${model.modelId}`;

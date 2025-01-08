@@ -2,6 +2,7 @@ import { ContextPlugin } from "@webiny/api";
 import { HcmsBulkActionsContext } from "~/types";
 import { CmsGraphQLSchemaPlugin, isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { Response } from "@webiny/handler-graphql";
+import { CMS_MODEL_SINGLETON_TAG } from "@webiny/api-headless-cms/constants";
 
 export interface CreateBulkActionGraphQL {
     name: string;
@@ -9,27 +10,35 @@ export interface CreateBulkActionGraphQL {
 }
 
 export const createBulkActionGraphQL = (config: CreateBulkActionGraphQL) => {
-    return new ContextPlugin<HcmsBulkActionsContext>(async context => {
-        const tenant = context.tenancy.getCurrentTenant();
-        const locale = context.i18n.getContentLocale();
+    return new ContextPlugin<HcmsBulkActionsContext>(async ctx => {
+        const tenant = ctx.tenancy.getCurrentTenant();
+        const locale = ctx.i18n.getContentLocale();
 
-        if (!locale || !(await isHeadlessCmsReady(context))) {
+        if (!locale || !(await isHeadlessCmsReady(ctx))) {
             return;
         }
 
-        const models = await context.security.withoutAuthorization(async () => {
-            const allModels = await context.cms.listModels();
-            return allModels.filter(
-                model =>
-                    !model.isPrivate &&
-                    (!config.modelIds?.length || config.modelIds.includes(model.modelId))
-            );
+        const models = await ctx.security.withoutAuthorization(async () => {
+            const allModels = await ctx.cms.listModels();
+            return allModels.filter(model => {
+                if (model.isPrivate) {
+                    return false;
+                }
+                const tags = Array.isArray(model.tags) ? model.tags : [];
+                if (tags.includes(CMS_MODEL_SINGLETON_TAG)) {
+                    return false;
+                }
+                if (config.modelIds?.length) {
+                    return config.modelIds.includes(model.modelId);
+                }
+                return true;
+            });
         });
 
         const plugins: CmsGraphQLSchemaPlugin<HcmsBulkActionsContext>[] = [];
 
         models.forEach(model => {
-            const plugin = new CmsGraphQLSchemaPlugin({
+            const plugin = new CmsGraphQLSchemaPlugin<HcmsBulkActionsContext>({
                 typeDefs: /* GraphQL */ `
                      extend enum BulkAction${model.singularApiName}Name {
                         ${config.name}
@@ -37,7 +46,7 @@ export const createBulkActionGraphQL = (config: CreateBulkActionGraphQL) => {
                 `,
                 resolvers: {
                     Mutation: {
-                        [`bulkAction${model.singularApiName}`]: async (_, args) => {
+                        [`bulkAction${model.singularApiName}`]: async (_, args, context) => {
                             const identity = context.security.getIdentity();
 
                             const response = await context.tasks.trigger({
@@ -66,6 +75,6 @@ export const createBulkActionGraphQL = (config: CreateBulkActionGraphQL) => {
             plugins.push(plugin);
         });
 
-        context.plugins.register([...plugins]);
+        ctx.plugins.register([...plugins]);
     });
 };

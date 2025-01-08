@@ -1,6 +1,8 @@
-import { Context } from "@webiny/handler/types";
+import { Context as LoggerContext } from "@webiny/api-log/types";
 import { Plugin } from "@webiny/plugins/types";
-import { RenderEvent, PrerenderingSettings, Render } from "~/types";
+import { PrerenderingSettings, Render, RenderEvent } from "~/types";
+
+export type Context = LoggerContext;
 
 export type HandlerPayload = RenderEvent | RenderEvent[];
 
@@ -20,6 +22,7 @@ export interface RenderHookPlugin extends Plugin {
 export interface RenderApolloState {
     [key: string]: string;
 }
+
 /**
  * @internal
  */
@@ -38,6 +41,7 @@ export interface PeLoaderCacheEntry {
 export interface RenderResult {
     content: string;
     meta: {
+        interceptedRequests: Array<{ type: string; url: string }>;
         apolloState: RenderApolloState;
         cachedData: {
             apolloGraphQl: GraphQLCacheEntry[];
@@ -47,6 +51,7 @@ export interface RenderResult {
         [key: string]: any;
     };
 }
+
 /**
  * @internal
  */
@@ -54,12 +59,14 @@ export interface RenderUrlCallableParams {
     context: Context;
     args: RenderEvent;
 }
+
 /**
  * @internal
  */
 export interface RenderUrlParams extends RenderUrlCallableParams {
     renderUrlFunction?: (url: string, params: RenderUrlCallableParams) => Promise<RenderResult>;
 }
+
 /**
  * @internal
  */

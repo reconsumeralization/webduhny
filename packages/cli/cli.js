@@ -4,6 +4,9 @@ const yargs = require("yargs");
 // Disable help processing until after plugins are imported.
 yargs.help(false);
 
+// Suppress punycode warnings. This is a known issue which we can't fix.
+require("./utils/suppressPunycodeWarnings");
+
 // Ensure system requirements are met.
 require("./utils/ensureSystemRequirements").ensureSystemRequirements();
 

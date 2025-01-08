@@ -1,6 +1,8 @@
 export type FeatureFlags<TFeatureFlags = Record<string, any>> = {
     experimentalAdminOmniSearch?: boolean;
     allowCmsLegacyRichTextInput?: boolean;
+    allowCmsFullScreenEditor?: boolean;
+    experimentalDynamicPages?: boolean;
     newWatchCommand?: boolean;
 } & TFeatureFlags;
 

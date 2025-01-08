@@ -17,6 +17,12 @@ import { InjectElementVariables } from "~/render/variables/InjectElementVariable
 import { LexicalParagraphRenderer } from "~/render/plugins/elements/paragraph/LexicalParagraph";
 import { LexicalHeadingRenderer } from "~/render/plugins/elements/heading/LexicalHeading";
 import { NullLoaderCache } from "@webiny/app-page-builder-elements/hooks/useLoader/NullLoaderCache";
+import { ConvertIconSettings as EditorConvertIconSettings } from "~/editor/prepareEditorContent/ConvertIconSettings";
+import { ConvertIconSettings as RendererConvertIconSettings } from "~/render/plugins/elementSettings/icon";
+import { AddImageLinkComponent } from "~/elementDecorators/AddImageLinkComponent";
+import { PageTemplatesPreview } from "./dataInjection/preview/PageTemplatesPreview";
+import { PagesPreview } from "~/dataInjection/preview/PagesPreview";
+import { IfDynamicPagesEnabled } from "~/IfDynamicPagesEnabled";
 
 export type { EditorProps };
 export { EditorRenderer };
@@ -109,7 +115,7 @@ const EditorLoader = React.lazy(() =>
     import(
         /* webpackChunkName: "PageBuilderEditor" */
         "./editor/Editor"
-    ).then(m => ({
+        ).then(m => ({
         default: m.Editor
     }))
 );
@@ -146,7 +152,20 @@ export const PageBuilder = () => {
             <LexicalHeadingRenderer />
             <AddButtonLinkComponent />
             <AddButtonClickHandlers />
+            <AddImageLinkComponent />
             <InjectElementVariables />
+            {/* Ensure data is in the correct shape when editor is mounting. */}
+            {/* This works only within the block/template/page editor. */}
+            <EditorConvertIconSettings />
+            {/* Ensure each element renderer is receiving data in the correct shape.  */}
+            {/* This works for page previews, block previews, etc. */}
+            <RendererConvertIconSettings />
+            <IfDynamicPagesEnabled>
+                {/* Decorate page template content preview. */}
+                <PageTemplatesPreview />
+                {/* Decorate page content preview. */}
+                <PagesPreview />
+            </IfDynamicPagesEnabled>
         </Fragment>
     );
 };

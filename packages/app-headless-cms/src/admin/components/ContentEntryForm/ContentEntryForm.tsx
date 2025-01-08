@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import { CmsContentEntry } from "~/types";
+import type { FormOnSubmit } from "@webiny/form";
 import { makeDecoratable } from "@webiny/app-admin";
+import { CmsContentEntry } from "~/types";
 import { ModelProvider, useModel } from "~/admin/components/ModelProvider";
 import { useFormRenderer } from "~/admin/components/ContentEntryForm/useFormRenderer";
 import {
@@ -18,7 +19,8 @@ const FormWrapper = styled("div")({
     overflow: "auto"
 });
 
-export interface ContentEntryFormProps {
+export interface ContentEntryFormProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
     entry: Partial<CmsContentEntry>;
     /**
      * This callback is executed when an entry, or a revision, are created.
@@ -29,6 +31,7 @@ export interface ContentEntryFormProps {
      * This callback is executed when the form is valid, and it needs to persist the content entry.
      */
     persistEntry: PersistEntry;
+    onChange?: FormOnSubmit<Partial<CmsContentEntry>>;
     header?: React.ReactNode;
     /**
      * This prop is used to get a reference to `saveEntry` callback, so it can be triggered by components
@@ -43,9 +46,11 @@ export const ContentEntryForm = makeDecoratable(
     ({
         entry,
         persistEntry,
+        onChange,
         onAfterCreate,
         setSaveEntry,
-        header = true
+        header = true,
+        ...props
     }: ContentEntryFormProps) => {
         const formElementRef = useRef<HTMLDivElement>(null);
         const { model } = useModel();
@@ -67,10 +72,15 @@ export const ContentEntryForm = makeDecoratable(
             }, 20);
         }, [entry.id, formElementRef.current]);
 
+        if (model.isBeingDeleted) {
+            return <>Model is being deleted.</>;
+        }
+
         return (
             <ContentEntryFormProvider
                 model={model}
                 entry={entry}
+                onChange={onChange}
                 onAfterCreate={onAfterCreate || defaultOnAfterCreate}
                 setSaveEntry={setSaveEntry}
                 confirmNavigationIfDirty={true}
@@ -78,7 +88,7 @@ export const ContentEntryForm = makeDecoratable(
             >
                 <ModelProvider model={model}>
                     {header ? header : null}
-                    <FormWrapper data-testid={"cms-content-form"} ref={formElementRef}>
+                    <FormWrapper {...props} data-testid={"cms-content-form"} ref={formElementRef}>
                         {formRenderer ? (
                             <CustomLayout model={model} formRenderer={formRenderer} />
                         ) : (

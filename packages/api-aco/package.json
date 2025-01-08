@@ -37,11 +37,6 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.9",
-    "@babel/core": "^7.24.0",
-    "@babel/preset-env": "^7.24.0",
-    "@babel/preset-typescript": "^7.23.3",
-    "@babel/runtime": "^7.24.0",
     "@webiny/api-admin-users": "0.0.0",
     "@webiny/api-file-manager": "0.0.0",
     "@webiny/api-i18n-ddb": "0.0.0",
@@ -53,10 +48,10 @@
     "@webiny/plugins": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "@webiny/wcp": "0.0.0",
-    "graphql": "^15.8.0",
-    "prettier": "^2.8.3",
-    "rimraf": "^5.0.5",
-    "ttypescript": "^1.5.13",
+    "graphql": "^15.9.0",
+    "prettier": "^2.8.8",
+    "rimraf": "^6.0.1",
+    "ttypescript": "^1.5.15",
     "typescript": "4.9.5"
   }
 }
