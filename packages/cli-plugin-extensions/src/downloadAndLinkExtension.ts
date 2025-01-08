@@ -116,7 +116,6 @@ export const downloadAndLinkExtension = async ({
             ? JSON.parse(fs.readFileSync(extensionJsonPath, "utf-8"))
             : {};
 
-
         await fsAsync.cp(extensionsFolderToCopyPath, EXTENSIONS_ROOT_FOLDER, {
             recursive: true
         });
