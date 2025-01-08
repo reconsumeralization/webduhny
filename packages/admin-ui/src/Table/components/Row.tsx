@@ -20,4 +20,4 @@ const Row = ({ className, selected, ...props }: RowProps) => (
     <tr className={cn(rowVariants({ selected }), className)} {...props} />
 );
 
-export { Row };
+export { Row, type RowProps };

@@ -12,6 +12,14 @@ import {
     Row
 } from "~/Table/components";
 
+const tableWrapperVariants = cva("relative w-full overflow-auto", {
+    variants: {
+        sticky: {
+            true: "overflow-clip"
+        }
+    }
+});
+
 const tableVariants = cva("w-full caption-bottom text-sm", {
     variants: {
         bordered: {
@@ -22,10 +30,12 @@ const tableVariants = cva("w-full caption-bottom text-sm", {
 
 interface TableProps
     extends React.HTMLAttributes<HTMLTableElement>,
-        VariantProps<typeof tableVariants> {}
+        VariantProps<typeof tableVariants> {
+    sticky?: boolean;
+}
 
-const BaseTable = ({ className, bordered, ...props }: TableProps) => (
-    <div className="relative w-full overflow-auto">
+const BaseTable = ({ className, bordered, sticky, ...props }: TableProps) => (
+    <div className={cn(tableWrapperVariants({ sticky }))}>
         <table className={cn(tableVariants({ bordered }), className)} {...props} />
     </div>
 );
@@ -42,4 +52,4 @@ const Table = withStaticProps(BaseTable, {
     Row
 });
 
-export { Table };
+export { Table, type TableProps };

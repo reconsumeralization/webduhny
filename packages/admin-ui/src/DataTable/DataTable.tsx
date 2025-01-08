@@ -1,8 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-
 import {
     Cell,
-    Column as DefaultColumn,
+    Column,
     ColumnDef,
     ColumnSort,
     flexRender,
@@ -15,24 +14,20 @@ import {
     useReactTable,
     VisibilityState
 } from "@tanstack/react-table";
-
-import { Checkbox } from "~/Checkbox";
+import { CheckboxPrimitive } from "~/Checkbox";
+import { Skeleton } from "~/Skeleton";
 import { Table } from "~/Table";
-import { ColumnsVisibility } from "./ColumnsVisibility";
+import { ColumnSorter, ColumnsVisibility } from "./components";
 
-export interface Column<T> {
+interface DataTableColumn<T> {
     /*
      * Column header component.
      */
-    header: string | number | JSX.Element;
+    header?: string | number | JSX.Element;
     /*
      * Cell renderer, receives the full row and returns the value to render inside the cell.
      */
     cell?: (row: T) => string | number | JSX.Element | null;
-    /*
-     * Additional props to add to both header and row cells. Refer to RMWC documentation.
-     */
-    meta?: any; // TODO: fix this meta
     /*
      * Column size.
      */
@@ -55,11 +50,11 @@ export interface Column<T> {
     enableHiding?: boolean;
 }
 
-export type Columns<T> = {
-    [P in keyof T]?: Column<T>;
+type DataTableColumns<T> = {
+    [P in keyof T]?: DataTableColumn<T>;
 };
 
-export type DefaultData = {
+type DataTableDefaultData = {
     id: string;
     /*
      * Define if a specific row can be selected.
@@ -67,19 +62,19 @@ export type DefaultData = {
     $selectable?: boolean;
 };
 
-export type TableRow<T> = Row<DefaultData & T>;
+type DataTableRow<T> = Row<DataTableDefaultData & T>;
 
-export type Sorting = SortingState;
+type DataTableSorting = SortingState;
 
-export { ColumnSort };
+type DataTableColumnSort = ColumnSort;
 
-export type OnSortingChange = OnChangeFn<Sorting>;
+type OnDataTableSortingChange = OnChangeFn<DataTableSorting>;
 
-export type ColumnVisibility = VisibilityState;
+type DataTableColumnVisibility = VisibilityState;
 
-export type OnColumnVisibilityChange = OnChangeFn<ColumnVisibility>;
+type OnDataTableColumnVisibilityChange = OnChangeFn<DataTableColumnVisibility>;
 
-interface Props<T> {
+interface DataTableProps<TEntry> {
     /**
      * Show or hide borders.
      */
@@ -91,73 +86,69 @@ interface Props<T> {
     /**
      * Columns definition.
      */
-    columns: Columns<T>;
+    columns: DataTableColumns<TEntry>;
     /**
      * The column visibility state.
      */
-    columnVisibility?: ColumnVisibility;
+    columnVisibility?: DataTableColumnVisibility;
     /**
      * Callback that receives current column visibility state.
      */
-    onColumnVisibilityChange?: OnColumnVisibilityChange;
+    onColumnVisibilityChange?: OnDataTableColumnVisibilityChange;
     /**
      * Data to display into DataTable body.
      */
-    data: T[];
+    data: TEntry[];
     /**
      * Callback that is called to determine if the row is selectable.
      */
-    isRowSelectable?: (row: Row<T>) => boolean;
+    isRowSelectable?: (row: Row<TEntry>) => boolean;
     /**
-     * Render the skeleton state at the initial data loading.
+     * Render the skeleton state while data are loading.
      */
-    loadingInitial?: boolean;
+    loading?: boolean;
     /**
      * Callback that receives the selected rows.
      */
-    onSelectRow?: (rows: T[]) => void;
+    onSelectRow?: (rows: TEntry[]) => void;
     /**
      * Callback that receives the toggled row.
      */
-    onToggleRow?: (row: T) => void;
+    onToggleRow?: (row: TEntry) => void;
     /**
      * Callback that receives current sorting state.
      */
-    onSortingChange?: OnSortingChange;
+    onSortingChange?: OnDataTableSortingChange;
     /**
      * Selected rows.
      */
-    selectedRows?: T[];
+    selectedRows?: TEntry[];
     /**
      * Sorting state.
      */
-    sorting?: Sorting;
+    sorting?: DataTableSorting;
     /**
      * Initial sorting state.
      */
-    initialSorting?: Sorting;
+    initialSorting?: DataTableSorting;
     /**
-     * The number of columns to affix to the side of the table when scrolling.
+     * Enable sticky header.
      */
-    stickyColumns?: number;
-    /**
-     * The number of rows to affix to the top of the table when scrolling.
-     */
-    stickyRows?: number;
+    stickyHeader?: boolean;
 }
 
-interface DefineColumnsOptions<T> {
+interface DefineColumnsOptions<TEntry> {
     canSelectAllRows: boolean;
-    onSelectRow?: Props<T>["onSelectRow"];
-    onToggleRow: Props<T>["onToggleRow"];
-    loadingInitial: Props<T>["loadingInitial"];
+    onSelectRow?: DataTableProps<TEntry>["onSelectRow"];
+    onToggleRow: DataTableProps<TEntry>["onToggleRow"];
+    loading: DataTableProps<TEntry>["loading"];
 }
 
 const defineColumns = <T,>(
-    columns: Props<T>["columns"],
+    columns: DataTableProps<T>["columns"],
     options: DefineColumnsOptions<T>
 ): ColumnDef<T>[] => {
-    const { canSelectAllRows, onSelectRow, onToggleRow, loadingInitial } = options;
+    const { canSelectAllRows, onSelectRow, onToggleRow, loading } = options;
 
     return useMemo(() => {
         const columnsList = Object.keys(columns).map(key => ({
@@ -174,7 +165,6 @@ const defineColumns = <T,>(
                 enableSorting = false,
                 header,
                 id,
-                meta,
                 size = 100
             } = column;
 
@@ -182,20 +172,19 @@ const defineColumns = <T,>(
                 id,
                 accessorKey: id,
                 header: () => header,
-                cell: info => {
+                cell: props => {
                     if (cell && typeof cell === "function") {
-                        return cell(info.row.original);
+                        return cell(props.row.original);
                     } else {
                         // Automatically convert any cell value to a string for rendering,
                         // ensuring the table displays values correctly. This aligns with React's
                         // rendering, which expects JSX, strings or null.
                         // https://github.com/TanStack/table/issues/1042
-                        return info.getValue() ? String(info.getValue()) : null;
+                        return props.getValue() ? String(props.getValue()) : null;
                     }
                 },
                 enableSorting,
                 meta: {
-                    ...meta,
                     className
                 },
                 enableResizing,
@@ -204,67 +193,68 @@ const defineColumns = <T,>(
             };
         });
 
-        const isSelectable = onToggleRow || onSelectRow;
+        let columnsDefs = defaults;
 
-        const select: ColumnDef<T>[] = isSelectable
-            ? [
-                  {
-                      id: "datatable-select-column",
-                      header: ({ table }) => {
-                          if (!canSelectAllRows) {
-                              return null;
-                          }
+        if (onToggleRow || onSelectRow) {
+            const firstColumn = defaults[0];
+            columnsDefs = [
+                {
+                    ...firstColumn,
+                    accessorKey: firstColumn.id as string,
+                    header: props => {
+                        return (
+                            <div className={"flex items-center gap-sm-extra"}>
+                                <CheckboxPrimitive
+                                    indeterminate={props.table.getIsSomeRowsSelected()}
+                                    checked={props.table.getIsAllRowsSelected()}
+                                    onCheckedChange={props.table.toggleAllPageRowsSelected}
+                                    aria-label="Select all"
+                                    disabled={!canSelectAllRows}
+                                />
+                                {firstColumn.header
+                                    ? React.createElement(firstColumn.header, props)
+                                    : null}
+                            </div>
+                        );
+                    },
+                    cell: props => {
+                        return (
+                            <div className={"flex items-center gap-sm-extra"}>
+                                <CheckboxPrimitive
+                                    checked={props.row.getIsSelected()}
+                                    onCheckedChange={value => props.row.toggleSelected(!!value)}
+                                    disabled={!props.row.getCanSelect()}
+                                    aria-label="Select row"
+                                />
+                                {firstColumn.cell
+                                    ? React.createElement(firstColumn.cell, props)
+                                    : null}
+                            </div>
+                        );
+                    }
+                },
+                ...defaults.slice(1)
+            ];
+        }
 
-                          return (
-                              !loadingInitial && (
-                                  <Checkbox
-                                      label={""}
-                                      indeterminate={table.getIsSomeRowsSelected()}
-                                      checked={table.getIsAllRowsSelected()}
-                                      onCheckedChange={table.toggleAllPageRowsSelected}
-                                  />
-                              )
-                          );
-                      },
-                      cell: info => {
-                          if (!info.row.getCanSelect()) {
-                              return <></>;
-                          }
-                          return (
-                              <Checkbox
-                                  label={""}
-                                  indeterminate={info.row.getIsSomeSelected()}
-                                  checked={info.row.getIsSelected()}
-                                  onCheckedChange={info.row.getToggleSelectedHandler}
-                              />
-                          );
-                      },
-                      enableSorting: false,
-                      enableResizing: false,
-                      enableHiding: false,
-                      size: 56
-                  }
-              ]
-            : [];
-
-        return [...select, ...defaults].map(column => {
-            if (loadingInitial) {
+        return columnsDefs.map(column => {
+            if (loading) {
                 return {
                     ...column,
-                    cell: () => <>{"Loading Skeleton"}</>
+                    cell: () => <Skeleton className={"w-full h-md"} />
                 };
             }
 
             return column;
         });
-    }, [columns, onSelectRow, onToggleRow, loadingInitial]);
+    }, [columns, onSelectRow, onToggleRow, loading]);
 };
 
 const typedMemo: <T>(component: T) => T = memo;
 
 interface TableCellProps<T> {
     cell: Cell<T, unknown>;
-    getColumnWidth: (column: DefaultColumn<T>) => number;
+    getColumnWidth: (column: Column<T>) => number;
 }
 
 const TableCell = <T,>({ cell, getColumnWidth }: TableCellProps<T>) => {
@@ -282,11 +272,10 @@ const MemoTableCell = typedMemo(TableCell);
 interface TableRowProps<T> {
     selected: boolean;
     cells: Cell<T, unknown>[];
-    getColumnWidth: (column: DefaultColumn<T>) => number;
+    getColumnWidth: (column: Column<T>) => number;
 }
 
 const TableRow = <T,>({ selected, cells, getColumnWidth }: TableRowProps<T>) => {
-    // TODO: support selected={selected}
     return (
         <Table.Row selected={selected}>
             {cells.map(cell => (
@@ -299,32 +288,31 @@ const TableRow = <T,>({ selected, cells, getColumnWidth }: TableRowProps<T>) => 
 const MemoTableRow = typedMemo(TableRow);
 
 /**
- * Empty array must be defined outside of the React component so it does not force rerendering of the DataTable
+ * Empty array must be defined outside the React component so it does not force rerendering of the DataTable
  */
 const emptyArray = Array(10).fill({});
 
-export const DataTable = <T extends Record<string, any> & DefaultData>({
-    data: initialData,
-    columns: initialColumns,
-    onSelectRow,
-    onToggleRow,
-    loadingInitial,
-    stickyColumns,
-    stickyRows,
+const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
     bordered,
-    sorting,
-    columnVisibility,
-    onColumnVisibilityChange,
-    onSortingChange,
-    isRowSelectable,
     canSelectAllRows = true,
+    columnVisibility,
+    columns: initialColumns,
+    data: initialData,
+    initialSorting,
+    isRowSelectable,
+    loading,
+    onColumnVisibilityChange,
+    onSelectRow,
+    onSortingChange,
+    onToggleRow,
     selectedRows = [],
-    initialSorting
-}: Props<T>) => {
+    sorting,
+    stickyHeader
+}: DataTableProps<T>) => {
     const tableRef = useRef<HTMLDivElement>(null);
     const [tableWidth, setTableWidth] = useState(1);
 
-    const data = loadingInitial ? emptyArray : initialData;
+    const data = loading ? emptyArray : initialData;
 
     useEffect(() => {
         const updateElementWidth = () => {
@@ -388,33 +376,33 @@ export const DataTable = <T extends Record<string, any> & DefaultData>({
         canSelectAllRows,
         onSelectRow,
         onToggleRow,
-        loadingInitial
+        loading
     });
 
     const table = useReactTable<T>({
-        data,
-        columns,
-        enableColumnResizing: true,
         columnResizeMode: "onChange",
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        state: {
-            rowSelection,
-            sorting: tableSorting,
-            columnVisibility
-        },
+        columns,
+        data,
+        enableColumnResizing: true,
+        enableHiding: !!onColumnVisibilityChange,
         enableRowSelection: isRowSelectable,
-        onRowSelectionChange,
         enableSorting: !!onSortingChange,
         enableSortingRemoval: false,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         manualSorting: true,
+        onColumnVisibilityChange,
+        onRowSelectionChange,
         onSortingChange,
-        enableHiding: !!onColumnVisibilityChange,
-        onColumnVisibilityChange
+        state: {
+            columnVisibility,
+            rowSelection,
+            sorting: tableSorting
+        }
     });
 
     const getColumnWidth = useCallback(
-        (column: DefaultColumn<T>): number => {
+        (column: Column<T>): number => {
             if (!column.getCanResize()) {
                 return column.getSize();
             }
@@ -426,6 +414,7 @@ export const DataTable = <T extends Record<string, any> & DefaultData>({
         },
         [table, tableWidth]
     );
+
     /**
      * Had to memoize the rows to avoid browser freeze.
      */
@@ -435,9 +424,8 @@ export const DataTable = <T extends Record<string, any> & DefaultData>({
 
     return (
         <div ref={tableRef}>
-            {/*// TODO: support stickyColumns stickyRows*/}
-            <Table bordered={bordered}>
-                <Table.Header>
+            <Table bordered={bordered} sticky={stickyHeader}>
+                <Table.Header sticky={stickyHeader}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <Table.Row key={headerGroup.id}>
                             {headerGroup.headers.map((header, index) => {
@@ -452,25 +440,23 @@ export const DataTable = <T extends Record<string, any> & DefaultData>({
                                         style={{ width, maxWidth: width }}
                                     >
                                         {header.isPlaceholder ? null : (
-                                            <>
+                                            <ColumnSorter
+                                                onClick={header.column.getToggleSortingHandler()}
+                                                sortable={header.column.getCanSort()}
+                                            >
                                                 {flexRender(
                                                     header.column.columnDef.header,
                                                     header.getContext()
                                                 )}
-                                                {header.column.getCanSort() && (
-                                                    <Table.Direction
-                                                        onClick={header.column.getToggleSortingHandler()}
-                                                        direction={
-                                                            header.column.getIsSorted() || undefined
-                                                        }
-                                                    />
-                                                )}
+                                                <Table.Direction
+                                                    direction={header.column.getIsSorted() || null}
+                                                />
                                                 {isLastCell && (
                                                     <ColumnsVisibility
                                                         columns={table.getAllColumns()}
                                                     />
                                                 )}
-                                            </>
+                                            </ColumnSorter>
                                         )}
                                         {header.column.getCanResize() && (
                                             <Table.Resizer
@@ -501,4 +487,18 @@ export const DataTable = <T extends Record<string, any> & DefaultData>({
             </Table>
         </div>
     );
+};
+
+export {
+    DataTable,
+    type DataTableProps,
+    type DataTableColumn,
+    type DataTableColumns,
+    type DataTableDefaultData,
+    type DataTableRow,
+    type DataTableSorting,
+    type DataTableColumnSort,
+    type OnDataTableSortingChange,
+    type DataTableColumnVisibility,
+    type OnDataTableColumnVisibilityChange
 };

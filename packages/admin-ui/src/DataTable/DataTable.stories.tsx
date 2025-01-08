@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import type { Meta } from "@storybook/react";
-import { Columns, DataTable } from "./DataTable";
+import type { Meta, StoryObj } from "@storybook/react";
+import { DataTableColumns, DataTable, DataTableDefaultData, DataTableSorting } from "./DataTable";
+import { Avatar } from "~/Avatar";
+import { Text } from "~/Text";
 
 const meta: Meta<typeof DataTable> = {
     title: "Components/DataTable",
@@ -12,6 +14,7 @@ const meta: Meta<typeof DataTable> = {
 };
 
 export default meta;
+type Story<T extends Record<string, any> & DataTableDefaultData> = StoryObj<typeof DataTable<T>>;
 
 // Declare the data structure.
 interface Entry {
@@ -23,8 +26,8 @@ interface Entry {
     $selectable?: boolean;
 }
 
-// Define the columns structure for your table.
-const columns: Columns<Entry> = {
+// Define the columns structure for the table.
+const columns: DataTableColumns<Entry> = {
     name: {
         header: "Title"
     },
@@ -39,67 +42,116 @@ const columns: Columns<Entry> = {
     }
 };
 
-// Define the data you want to display.
-const data: Entry[] = [
-    {
-        id: "entry-1",
-        name: "Entry 1",
-        createdBy: "John Doe",
-        lastModified: "3 days ago",
-        status: "Draft"
-    },
-    {
-        id: "entry-2",
-        name: "Entry 2",
-        createdBy: "John Doe",
-        lastModified: "1 day ago",
-        status: "Published"
-    },
-    {
-        id: "entry-3",
-        name: "Entry 3",
-        createdBy: "John Doe",
-        lastModified: "1 hour ago",
-        status: "Published"
-    }
-];
+// Define the data to display.
+function generateEntries(count = 20) {
+    const statuses = ["Draft", "Published", "Unpublished"];
+    const randomStatus = () => statuses[Math.floor(Math.random() * statuses.length)];
+    const randomTime = () => {
+        const times = ["1 hour ago", "3 hours ago", "1 day ago", "3 days ago", "1 week ago"];
+        return times[Math.floor(Math.random() * times.length)];
+    };
 
-export const Default = {
+    const entries = [];
+    for (let i = 1; i <= count; i++) {
+        entries.push({
+            id: `entry-${i}`,
+            name: `Entry ${i}`,
+            createdBy: "John Doe",
+            lastModified: randomTime(),
+            status: randomStatus()
+        });
+    }
+
+    return entries;
+}
+
+const data = generateEntries();
+
+export const Default: Story<Entry> = {
     args: {
         data,
         columns
     }
 };
 
-export const Bordered = {
+export const Bordered: Story<Entry> = {
     args: {
         ...Default.args,
         bordered: true
     }
 };
 
-export const WithSelectableRows = {
+export const WithStickyHeader: Story<Entry> = {
     args: {
         ...Default.args,
-        isRowSelectable: () => true
-    },
+        stickyHeader: true
+    }
+};
+
+export const WithSelectableRows: Story<Entry> = {
+    args: Default.args,
     render: args => {
-        const [selectedRows, onSelectRow] = useState([]);
+        const [selectedRows, setSelectedRows] = useState<Entry[]>([]);
 
-        console.log("Selected rows:", selectedRows);
-
-        return <DataTable {...args} selectedRows={selectedRows} onSelectRow={onSelectRow} />;
+        return (
+            <DataTable
+                {...args}
+                selectedRows={selectedRows}
+                onSelectRow={rows => setSelectedRows(rows)}
+            />
+        );
     }
 };
 
-export const WithLoading = {
+export const WithLoading: Story<Entry> = {
     args: {
         ...Default.args,
-        loadingInitial: true
+        loading: true
     }
 };
 
-export const WithCustomSize = {
+export const WithCustomCellRenderer: Story<Entry> = {
+    args: {
+        ...Default.args,
+        columns: {
+            ...columns,
+            name: {
+                ...columns.name,
+                cell: (entry: Entry) => {
+                    return (
+                        <div className={"flex items-center gap-sm-extra"}>
+                            <Avatar
+                                image={
+                                    <Avatar.Image
+                                        src="https://github.com/webiny-bot.png"
+                                        alt="@webiny"
+                                    />
+                                }
+                                fallback={<Avatar.Fallback>{entry.name.charAt(0)}</Avatar.Fallback>}
+                                size={"xl"}
+                            />
+                            <div>
+                                <Text
+                                    text={entry.name}
+                                    className={"text-neutral-primary"}
+                                    as={"div"}
+                                />
+                                <Text
+                                    text={`Last updated: ${entry.lastModified}`}
+                                    size={"sm"}
+                                    className={"text-neutral-strong"}
+                                    as={"div"}
+                                />
+                            </div>
+                        </div>
+                    );
+                }
+            }
+        }
+    }
+};
+
+export const WithCustomColumnSize: Story<Entry> = {
     args: {
         ...Default.args,
         columns: {
@@ -112,7 +164,20 @@ export const WithCustomSize = {
     }
 };
 
-export const WithSorting = {
+export const WithCustomColumnClassName: Story<Entry> = {
+    args: {
+        ...Default.args,
+        columns: {
+            ...columns,
+            lastModified: {
+                ...columns.lastModified,
+                className: "bg-primary-subtle"
+            }
+        }
+    }
+};
+
+export const WithSorting: Story<Entry> = {
     args: {
         ...Default.args,
         columns: {
@@ -120,33 +185,21 @@ export const WithSorting = {
             name: {
                 ...columns.name,
                 enableSorting: true
+            },
+            lastModified: {
+                ...columns.lastModified,
+                enableSorting: true
             }
-        }
-    }
-};
-
-export const WithResizing = {
-    args: {
-        ...Default.args,
-        columns: {
-            ...columns,
-            name: {
-                ...columns.name,
-                enableResizing: true
+        },
+        sorting: [
+            {
+                id: "lastModified",
+                desc: true
             }
-        }
-    }
-};
-
-export const WithHiding = {
-    args: {
-        ...Default.args,
-        columns: {
-            ...columns,
-            name: {
-                ...columns.name,
-                enableHiding: true
-            }
-        }
+        ]
+    },
+    render: ({ sorting: argsSorting = [], ...args }) => {
+        const [sorting, setSorting] = useState<DataTableSorting>(argsSorting);
+        return <DataTable {...args} sorting={sorting} onSortingChange={setSorting} />;
     }
 };

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
 import { Column } from "@tanstack/react-table";
-import { IconButton } from "~/Button";
+import { Button, IconButton } from "~/Button";
 import { Checkbox } from "~/Checkbox";
 import { DropdownMenu } from "~/DropdownMenu";
 
@@ -56,17 +56,20 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
 
     return (
         <DropdownMenu trigger={<IconButton icon={<SettingsIcon />} />}>
-            <DropdownMenu.Label content={"Toggle column visibility"}></DropdownMenu.Label>
+            <DropdownMenu.Label content={"Toggle column visibility"} />
             <DropdownMenu.Separator />
             {options.map(option => {
                 return (
-                    <DropdownMenu.Item key={option.id}>
-                        <Checkbox
-                            label={option.header}
-                            onCheckedChange={option.onChange}
-                            checked={option.getValue()}
-                        />
-                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                        key={option.id}
+                        content={
+                            <Checkbox
+                                label={option.header}
+                                onCheckedChange={option.onChange}
+                                checked={option.getValue()}
+                            />
+                        }
+                    />
                 );
             })}
         </DropdownMenu>
