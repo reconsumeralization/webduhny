@@ -1,59 +1,107 @@
 #!/usr/bin/env node
-"use strict";
 
-const chalk = require("chalk");
-const verifyConfig = require("./utils/verifyConfig");
-const { SystemRequirements } = require("@webiny/system-requirements");
+// Ensure system requirements are met.
+require("@webiny/system-requirements").ensureSystemRequirements();
 
-(async () => {
-    const systemRequirements = SystemRequirements.validate();
+// Verify `.webiny` config file and continue.
+require("./utils/ensureConfig").ensureConfig();
 
-    if (systemRequirements.valid) {
-        // Verify `.webiny` config file and continue.
-        await verifyConfig();
+const yargs = require("yargs");
+const packageJson = require("./package.json");
+const createProject = require("./utils/createProject");
 
-        require("./index");
-    }
+process.on("unhandledRejection", err => {
+    throw err;
+});
 
-    // Check Node.js version.
-    if (!systemRequirements.node.valid) {
-        console.error(
-            chalk.red(
-                [
-                    `You are running Node.js ${systemRequirements.node.currentVersion}, but Webiny requires version ${systemRequirements.node.requiredVersion}.`,
-                    `Please switch to one of the required versions and try again.`,
-                    "For more information, please visit https://www.webiny.com/docs/get-started/install-webiny#prerequisites."
-                ].join(" ")
-            )
-        );
+yargs
+    .usage("Usage: create-webiny-project <project-name> [options]")
+    .version(packageJson.version)
+    .demandCommand(1)
+    .help()
+    .alias("help", "h")
+    .scriptName("create-webiny-project")
+    .fail(function (msg, err) {
+        if (msg) {
+            console.log(msg);
+        }
+        if (err) {
+            console.log(err);
+        }
         process.exit(1);
-    }
+    });
 
-    // Check NPM version.
-    if (!systemRequirements.npm.valid) {
-        console.error(
-            chalk.red(
-                [
-                    `Webiny requires npm@^${systemRequirements.npm.requiredVersion}.`,
-                    `Please run ${chalk.green(
-                        "npm install npm@latest -g"
-                    )}, to get the latest version.`
-                ].join("\n")
-            )
-        );
-        process.exit(1);
-    }
+// noinspection BadExpressionStatementJS
+yargs.command(
+    "$0 <project-name> [options]",
+    "Name of application and template to use",
+    yargs => {
+        yargs.positional("project-name", {
+            describe: "Project name"
+        });
+        yargs.option("force", {
+            describe: "All project creation within an existing folder",
+            default: false,
+            type: "boolean",
+            demandOption: false
+        });
+        yargs.option("template", {
+            describe: `Name of template to use, if no template is provided it will default to "aws" template`,
+            alias: "t",
+            type: "string",
+            default: "aws",
+            demandOption: false
+        });
+        yargs.option("template-options", {
+            describe: `A JSON containing template-specific options (usually used in non-interactive environments)`,
+            default: null,
+            type: "string",
+            demandOption: false
+        });
+        yargs.option("assign-to-yarnrc", {
+            describe: `A JSON containing additional options that will be assigned into the "yarnrc.yml" configuration file`,
+            default: null,
+            type: "string",
+            demandOption: false
+        });
+        yargs.option("tag", {
+            describe: "NPM tag to use for @webiny packages",
+            type: "string",
+            default: "latest",
+            demandOption: false
+        });
+        yargs.option("interactive", {
+            describe: "Enable interactive mode for all commands",
+            default: true,
+            type: "boolean",
+            demandOption: false
+        });
+        yargs.option("log", {
+            describe:
+                "Creates a log file to see output of installation. Defaults to create-webiny-project-logs.txt in current directory",
+            alias: "l",
+            default: "create-webiny-project-logs.txt",
+            type: "string",
+            demandOption: false
+        });
+        yargs.option("debug", {
+            describe: "Turn on debug logs",
+            default: false,
+            type: "boolean",
+            demandOption: false
+        });
+        yargs.option("cleanup", {
+            describe: "If an error occurs upon project creation, deletes all generated files",
+            alias: "c",
+            default: true,
+            type: "boolean",
+            demandOption: false
+        });
 
-    // Check Yarn version.
-    if (!systemRequirements.yarn.valid) {
-        console.error(
-            chalk.red(
-                [
-                    `Webiny requires yarn@^${systemRequirements.yarn.requiredVersion}.`,
-                    `Please visit https://yarnpkg.com/ to install ${chalk.green("yarn")}.`
-                ].join("\n")
-            )
-        );
-        process.exit(1);
-    }
-})();
+        yargs.example("$0 <project-name>");
+        yargs.example("$0 <project-name> --template=aws");
+        yargs.example("$0 <project-name> --template=../path/to/template");
+        yargs.example("$0 <project-name> --log=./my-logs.txt");
+    },
+    argv => createProject(argv)
+).argv;

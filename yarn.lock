@@ -15879,12 +15879,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/system-requirements@npm:0.0.0, @webiny/system-requirements@workspace:packages/cli-system-requirements":
+"@webiny/system-requirements@npm:0.0.0, @webiny/system-requirements@workspace:packages/system-requirements":
   version: 0.0.0-use.local
-  resolution: "@webiny/system-requirements@workspace:packages/cli-system-requirements"
+  resolution: "@webiny/system-requirements@workspace:packages/system-requirements"
   dependencies:
     "@webiny/telemetry": "npm:0.0.0"
     "@webiny/wcp": "npm:0.0.0"
+    cli-table3: "npm:^0.6.5"
     execa: "npm:^5.0.0"
     semver: "npm:^7.3.5"
   bin:
@@ -19082,6 +19083,19 @@ __metadata:
   version: 2.9.2
   resolution: "cli-spinners@npm:2.9.2"
   checksum: 10/a0a863f442df35ed7294424f5491fa1756bd8d2e4ff0c8736531d886cec0ece4d85e8663b77a5afaf1d296e3cbbebff92e2e99f52bbea89b667cbe789b994794
+  languageName: node
+  linkType: hard
+
+"cli-table3@npm:^0.6.5":
+  version: 0.6.5
+  resolution: "cli-table3@npm:0.6.5"
+  dependencies:
+    "@colors/colors": "npm:1.5.0"
+    string-width: "npm:^4.2.0"
+  dependenciesMeta:
+    "@colors/colors":
+      optional: true
+  checksum: 10/8dca71256f6f1367bab84c33add3f957367c7c43750a9828a4212ebd31b8df76bd7419d386e3391ac7419698a8540c25f1a474584028f35b170841cde2e055c5
   languageName: node
   linkType: hard
 
