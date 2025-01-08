@@ -58,12 +58,10 @@ describe("CheckboxPresenter", () => {
         // default: only mandatory props
         {
             presenter.init({
-                onCheckedChange,
-                label: "Label"
+                onCheckedChange
             });
             expect(presenter.vm.item).toEqual({
                 id: expect.any(String),
-                label: "Label",
                 checked: false,
                 indeterminate: false,
                 disabled: false

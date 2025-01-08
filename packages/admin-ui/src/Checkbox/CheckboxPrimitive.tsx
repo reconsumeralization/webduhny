@@ -25,7 +25,7 @@ const IndeterminateIcon = () => {
  */
 const checkboxVariants = cva(
     [
-        "group peer h-md w-md shrink-0 rounded-sm border-sm mt-xxs",
+        "group peer h-md w-md shrink-0 rounded-sm border-sm ",
         "border-neutral-muted bg-neutral-base fill-neutral-base ring-offset-background",
         "hover:border-neutral-dark",
         "focus:outline-none focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
@@ -44,6 +44,9 @@ const checkboxVariants = cva(
                     "data-[state=checked]:focus-visible:border-accent-default",
                     "data-[state=checked]:disabled:border-transparent"
                 ]
+            },
+            hasLabel: {
+                true: "mt-xxs"
             }
         }
     }
@@ -77,7 +80,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                 ref={ref}
                 {...props}
                 id={id}
-                className={cn(checkboxVariants({ indeterminate }), className)}
+                className={cn(checkboxVariants({ indeterminate, hasLabel: !!label }), className)}
                 onCheckedChange={changeChecked}
             >
                 <span className={cn("flex items-center justify-center")}>
@@ -87,7 +90,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                     </CheckboxPrimitives.Indicator>
                 </span>
             </CheckboxPrimitives.Root>
-            <Label id={id} text={label} weight={"light"} className={"text-md"} />
+            {label && <Label id={id} text={label} weight={"light"} className={"text-md"} />}
         </div>
     );
 });
