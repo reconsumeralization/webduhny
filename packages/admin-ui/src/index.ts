@@ -15,6 +15,7 @@ export * from "./RadioGroup";
 export * from "./RangeSlider";
 export * from "./Select";
 export * from "./Separator";
+export * from "./Skeleton";
 export * from "./Slider";
 export * from "./Switch";
 export * from "./Table";
