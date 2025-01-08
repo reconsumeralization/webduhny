@@ -115,7 +115,7 @@ const EditorLoader = React.lazy(() =>
     import(
         /* webpackChunkName: "PageBuilderEditor" */
         "./editor/Editor"
-        ).then(m => ({
+    ).then(m => ({
         default: m.Editor
     }))
 );
