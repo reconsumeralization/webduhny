@@ -88,12 +88,7 @@ export const downloadAndLinkExtension = async ({
         await setTimeout(1000);
 
         let extensionsFolderToCopyPath = path.join(downloadFolderPath, "extensions");
-
-        const extensionJsonPath = path.join(downloadFolderPath, "extension.json");
-        const extensionJsonExists = fs.existsSync(extensionJsonPath);
-        const extensionJson: ExtensionJson = extensionJsonExists
-            ? JSON.parse(fs.readFileSync(extensionJsonPath, "utf-8"))
-            : {};
+        let extensionJsonPath = path.join(downloadFolderPath, "extension.json");
 
         // If we have `extensions` folder in the root of the downloaded extension.
         // it means the example extension is not versioned, and we can just copy it.
@@ -113,7 +108,14 @@ export const downloadAndLinkExtension = async ({
             );
 
             extensionsFolderToCopyPath = path.join(downloadFolderPath, versionToUse, "extensions");
+            extensionJsonPath = path.join(downloadFolderPath, versionToUse, "extension.json");
         }
+
+        const extensionJsonExists = fs.existsSync(extensionJsonPath);
+        const extensionJson: ExtensionJson = extensionJsonExists
+            ? JSON.parse(fs.readFileSync(extensionJsonPath, "utf-8"))
+            : {};
+
 
         await fsAsync.cp(extensionsFolderToCopyPath, EXTENSIONS_ROOT_FOLDER, {
             recursive: true
@@ -144,6 +146,8 @@ export const downloadAndLinkExtension = async ({
         await linkAllExtensions();
         await runYarnInstall();
 
+        const nextStepsToDisplay: ExtensionMessage[] = [];
+
         if (downloadedExtensions.length === 1) {
             const [downloadedExtension] = downloadedExtensions;
             ora.succeed(
@@ -152,26 +156,7 @@ export const downloadAndLinkExtension = async ({
                 )}.`
             );
 
-            // Next Steps section.
-            const nextStepsToDisplay = downloadedExtension.getNextSteps();
-
-            const nextStepsFromExtensionJson = extensionJson.nextSteps;
-            if (nextStepsFromExtensionJson) {
-                const { clearExisting, messages } = nextStepsFromExtensionJson;
-                if (clearExisting) {
-                    nextStepsToDisplay.length = 0;
-                }
-
-                if (Array.isArray(messages)) {
-                    nextStepsToDisplay.push(...messages);
-                }
-            }
-
-            console.log();
-            console.log(chalk.bold("Next Steps"));
-            nextStepsToDisplay.forEach(({ text, variables = [] }) => {
-                console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
-            });
+            nextStepsToDisplay.push(...downloadedExtension.getNextSteps());
         } else {
             const paths = downloadedExtensions.map(ext => ext.getLocation());
             ora.succeed("Multiple extensions downloaded successfully in:");
@@ -179,6 +164,25 @@ export const downloadAndLinkExtension = async ({
                 console.log(`  ‣ ${context.success.hl(p)}`);
             });
         }
+
+        // Next Steps section.
+        const nextStepsFromExtensionJson = extensionJson.nextSteps;
+        if (nextStepsFromExtensionJson) {
+            const { clearExisting, messages } = nextStepsFromExtensionJson;
+            if (clearExisting) {
+                nextStepsToDisplay.length = 0;
+            }
+
+            if (Array.isArray(messages)) {
+                nextStepsToDisplay.push(...messages);
+            }
+        }
+
+        console.log();
+        console.log(chalk.bold("Next Steps"));
+        nextStepsToDisplay.forEach(({ text, variables = [] }) => {
+            console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
+        });
 
         // Additional Notes section.
         const additionalNotesToDisplay: ExtensionMessage[] = [
