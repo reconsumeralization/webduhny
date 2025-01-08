@@ -23,7 +23,7 @@ export interface ExtensionMessage {
 }
 
 export type ExtensionJson = Partial<{
-    nextSteps?: {
+    nextSteps: {
         clearExisting: boolean;
         messages: ExtensionMessage[];
     };
