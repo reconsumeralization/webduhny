@@ -11590,13 +11590,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sparticuz/chromium@npm:123.0.1":
-  version: 123.0.1
-  resolution: "@sparticuz/chromium@npm:123.0.1"
+"@sparticuz/chromium@npm:131.0.1":
+  version: 131.0.1
+  resolution: "@sparticuz/chromium@npm:131.0.1"
   dependencies:
-    follow-redirects: "npm:^1.15.6"
-    tar-fs: "npm:^3.0.5"
-  checksum: 10/5991aee6d954dcfdc68245d1aa80e5ebb48106bdda73edeafc0f36ea689d163c59cc3d7d637813bd3726db9214b9b5532ee61ffa308201a935d2ea9ede0d02ce
+    follow-redirects: "npm:^1.15.9"
+    tar-fs: "npm:^3.0.6"
+  checksum: 10/0ec2ecc4daded47c938698f9c13abdc01216b723ecbff186518e383c0ab966c9a934e24e568306b343d4ab124891f57d6c1521d00d34b8bd65f2ad4bd6d718bd
   languageName: node
   linkType: hard
 
@@ -13632,12 +13632,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.10.1":
-  version: 22.10.2
-  resolution: "@types/node@npm:22.10.2"
+"@types/node@npm:^20.17.10":
+  version: 20.17.12
+  resolution: "@types/node@npm:20.17.12"
   dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10/451adfefed4add58b069407173e616220fd4aaa3307cdde1bb701aa053b65b54ced8483db2f870dcedec7a58cb3b06101fbc19d85852716672ec1fd3660947fa
+    undici-types: "npm:~6.19.2"
+  checksum: 10/d4748de76c6c4fa0371802429d4bcd68ecd638f5cd7d8a4510d3196302d417b6bb17e31c5b1117bfa09b58276d05c14a5fde73b9da2547200195e819e4b43368
   languageName: node
   linkType: hard
 
@@ -13727,7 +13727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/puppeteer-core@npm:^7.0.4":
+"@types/puppeteer-core@npm:7.0.4":
   version: 7.0.4
   resolution: "@types/puppeteer-core@npm:7.0.4"
   dependencies:
@@ -15646,10 +15646,17 @@ __metadata:
     "@webiny/api-headless-cms": "npm:0.0.0"
     "@webiny/api-headless-cms-bulk-actions": "npm:0.0.0"
     "@webiny/api-headless-cms-import-export": "npm:0.0.0"
+    "@webiny/api-i18n": "npm:0.0.0"
+    "@webiny/api-security": "npm:0.0.0"
+    "@webiny/api-tenancy": "npm:0.0.0"
+    "@webiny/api-wcp": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/db": "npm:0.0.0"
     "@webiny/error": "npm:0.0.0"
+    "@webiny/handler": "npm:0.0.0"
+    "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-graphql": "npm:0.0.0"
+    "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
@@ -15996,7 +16003,6 @@ __metadata:
     dataloader: "npm:^2.2.2"
     jest: "npm:^29.7.0"
     jest-dynalite: "npm:^3.6.1"
-    lodash: "npm:^4.17.21"
     rimraf: "npm:^6.0.1"
     ttypescript: "npm:^1.5.15"
     typescript: "npm:4.9.5"
@@ -16092,9 +16098,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/api-prerendering-service@workspace:packages/api-prerendering-service"
   dependencies:
-    "@sparticuz/chromium": "npm:123.0.1"
+    "@sparticuz/chromium": "npm:131.0.1"
     "@types/object-hash": "npm:^2.2.1"
-    "@types/puppeteer-core": "npm:^7.0.4"
+    "@types/puppeteer-core": "npm:7.0.4"
     "@webiny/api": "npm:0.0.0"
     "@webiny/api-log": "npm:0.0.0"
     "@webiny/aws-sdk": "npm:0.0.0"
@@ -16113,9 +16119,8 @@ __metadata:
     posthtml-noopener: "npm:^1.0.5"
     posthtml-plugin-link-preload: "npm:^1.0.0"
     prettier: "npm:^2.8.8"
-    puppeteer-core: "npm:^23.9.0"
+    puppeteer-core: "npm:^23.11.1"
     rimraf: "npm:^6.0.1"
-    shortid: "npm:^2.1.6"
     srcset: "npm:^4.0.0"
     ttypescript: "npm:^1.5.15"
     typescript: "npm:4.9.5"
@@ -16967,7 +16972,6 @@ __metadata:
     react-google-recaptcha: "npm:^1.1.0"
     react-hotkeyz: "npm:^1.0.4"
     rimraf: "npm:^6.0.1"
-    shortid: "npm:^2.1.6"
     ttypescript: "npm:^1.5.15"
     typescript: "npm:4.9.5"
   languageName: unknown
@@ -17675,6 +17679,7 @@ __metadata:
     apollo-link: "npm:^1.2.14"
     apollo-link-batch-http: "npm:^1.2.14"
     graphql-tag: "npm:^2.12.6"
+    lz-string: "npm:^1.5.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     react-helmet: "npm:^6.1.0"
@@ -18230,7 +18235,6 @@ __metadata:
     "@webiny/cli": "npm:0.0.0"
     "@webiny/db": "npm:0.0.0"
     "@webiny/error": "npm:0.0.0"
-    "@webiny/handler-db": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
@@ -18633,7 +18637,6 @@ __metadata:
     "@webiny/api-headless-cms-ddb-es": "npm:0.0.0"
     "@webiny/aws-sdk": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
-    "@webiny/cli-plugin-deploy-pulumi": "npm:0.0.0"
     "@webiny/data-migration": "npm:0.0.0"
     "@webiny/db-dynamodb": "npm:0.0.0"
     "@webiny/error": "npm:0.0.0"
@@ -18644,16 +18647,10 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     elastic-ts: "npm:^0.12.0"
-    execa: "npm:^5.1.1"
-    fast-glob: "npm:^3.2.7"
     jest-dynalite: "npm:^3.6.1"
-    jsonpack: "npm:^1.1.5"
     lodash: "npm:^4.17.21"
-    pino-pretty: "npm:^9.4.0"
-    pluralize: "npm:^8.0.0"
     ttypescript: "npm:^1.5.15"
     typescript: "npm:4.9.5"
-    yargs: "npm:^17.7.2"
   languageName: unknown
   linkType: soft
 
@@ -19168,11 +19165,11 @@ __metadata:
     "@types/react-color": "npm:^2.17.11"
     "@types/react-custom-scrollbars": "npm:^4.0.10"
     "@types/react-transition-group": "npm:^4.4.4"
-    "@types/shortid": "npm:^0.0.29"
     "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
+    "@webiny/utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
     babel-loader: "npm:^9.2.1"
     classnames: "npm:^2.5.1"
@@ -19197,7 +19194,6 @@ __metadata:
     react-spinner-material: "npm:1.1.4"
     react-transition-group: "npm:^4.4.5"
     rimraf: "npm:^6.0.1"
-    shortid: "npm:^2.1.6"
     timeago-react: "npm:^3.0.6"
     ttypescript: "npm:^1.5.15"
     typescript: "npm:4.9.5"
@@ -22342,6 +22338,18 @@ __metadata:
   version: 1.0.3
   resolution: "chrome-trace-event@npm:1.0.3"
   checksum: 10/b5fbdae5bf00c96fa3213de919f2b2617a942bfcb891cdf735fbad2a6f4f3c25d42e3f2b1703328619d352c718b46b9e18999fd3af7ef86c26c91db6fae1f0da
+  languageName: node
+  linkType: hard
+
+"chromium-bidi@npm:0.11.0":
+  version: 0.11.0
+  resolution: "chromium-bidi@npm:0.11.0"
+  dependencies:
+    mitt: "npm:3.0.1"
+    zod: "npm:3.23.8"
+  peerDependencies:
+    devtools-protocol: "*"
+  checksum: 10/065d0b47a8a5fd8cfcae8820fbf5600d0c14f8ba00e5acbd736ebf4bd614652564d0a7e2f4c4057f801c42890977ab864d3a06ac3a03873175472585be568b63
   languageName: node
   linkType: hard
 
@@ -37453,7 +37461,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:*, puppeteer-core@npm:^23.9.0":
+"puppeteer-core@npm:*":
   version: 23.10.4
   resolution: "puppeteer-core@npm:23.10.4"
   dependencies:
@@ -37482,6 +37490,20 @@ __metadata:
     rimraf: "npm:^2.6.1"
     ws: "npm:^6.1.0"
   checksum: 10/fcbf80c954f9562f88b53886dc377595bf478abbb47c005f9131a56b6704cdd0a26b60f2646d2340866ed9f5059aae2b9f06a0f04310f5f14520ec94a687fbe6
+  languageName: node
+  linkType: hard
+
+"puppeteer-core@npm:^23.11.1":
+  version: 23.11.1
+  resolution: "puppeteer-core@npm:23.11.1"
+  dependencies:
+    "@puppeteer/browsers": "npm:2.6.1"
+    chromium-bidi: "npm:0.11.0"
+    debug: "npm:^4.4.0"
+    devtools-protocol: "npm:0.0.1367902"
+    typed-query-selector: "npm:^2.12.0"
+    ws: "npm:^8.18.0"
+  checksum: 10/cd8d1514f3fc53b6103a5be20a33af4e830daaeb2350216d96d121cdc33a031ebf388d182e9c5c3a93b41e51bec9e973631cf1d9686bb9a0d769411f0379b0fc
   languageName: node
   linkType: hard
 
@@ -39417,7 +39439,7 @@ __metadata:
     "@types/fs-extra": "npm:^11.0.4"
     "@types/hoist-non-react-statics": "npm:^3.3.5"
     "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.10.1"
+    "@types/node": "npm:^20.17.10"
     "@types/prettier": "npm:^2.7.3"
     "@types/react": "npm:18.2.79"
     "@types/react-dom": "npm:18.2.25"
@@ -40076,7 +40098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shortid@npm:^2.1.6, shortid@npm:^2.2.16":
+"shortid@npm:^2.2.16":
   version: 2.2.16
   resolution: "shortid@npm:2.2.16"
   dependencies:
@@ -41409,9 +41431,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"systeminformation@npm:^5.7":
-  version: 5.22.6
-  resolution: "systeminformation@npm:5.22.6"
+"systeminformation@npm:^5.23.18":
+  version: 5.25.4
+  resolution: "systeminformation@npm:5.25.4"
   bin:
     systeminformation: lib/cli.js
   conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
@@ -41501,23 +41523,6 @@ __metadata:
     pump: "npm:^3.0.0"
     tar-stream: "npm:^3.1.5"
   checksum: 10/070f35bdde283dbcb05cd22abd5fc1b6df2f190688b8a82d62eadb1fd873e4602586218e88e722b3f292441a651dfb27a9b8e7ef8db6ba5601f93a57a540856a
-  languageName: node
-  linkType: hard
-
-"tar-fs@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "tar-fs@npm:3.0.5"
-  dependencies:
-    bare-fs: "npm:^2.1.1"
-    bare-path: "npm:^2.1.0"
-    pump: "npm:^3.0.0"
-    tar-stream: "npm:^3.1.5"
-  dependenciesMeta:
-    bare-fs:
-      optional: true
-    bare-path:
-      optional: true
-  checksum: 10/a15c18e80b872918c7dff22ff29db367c8014d1b3d34b0ec57cfe11645836dc01487c078a975a9d5e358f078f59e7b8adc5c671cc0848ba27b9b429669722bd8
   languageName: node
   linkType: hard
 
@@ -42694,10 +42699,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.20.0":
-  version: 6.20.0
-  resolution: "undici-types@npm:6.20.0"
-  checksum: 10/583ac7bbf4ff69931d3985f4762cde2690bb607844c16a5e2fbb92ed312fe4fa1b365e953032d469fa28ba8b224e88a595f0b10a449332f83fa77c695e567dbe
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
   languageName: node
   linkType: hard
 
