@@ -1,4 +1,3 @@
-const { Worker } = require("worker_threads");
 const path = require("path");
 const chalk = require("chalk");
 const { BasePackagesWatcher } = require("./BasePackagesWatcher");
@@ -24,12 +23,13 @@ class MultiplePackagesWatcher extends BasePackagesWatcher {
         }
 
         const commandOptions = { env, debug };
-        const log = createLog({ context });
 
         const tasksList = [];
 
         for (let i = 0; i < packages.length; i++) {
             const pkg = packages[i];
+            const log = createLog(pkg.name);
+
             tasksList.push(
                 new Promise(resolve => {
                     const buildConfig = JSON.stringify({
@@ -46,8 +46,6 @@ class MultiplePackagesWatcher extends BasePackagesWatcher {
                     if (child.stdout) {
                         child.stdout.on("data", chunk => {
                             log(pkg.name, chunk);
-
-                            // process.stdout.write(`[${pkg.paths}] ${chunk}`);
                         });
                     }
 
@@ -55,8 +53,6 @@ class MultiplePackagesWatcher extends BasePackagesWatcher {
                     if (child.stderr) {
                         child.stderr.on("data", chunk => {
                             log(pkg.name, chunk, "error");
-
-                            // process.stderr.write(`[${pkg.paths}] ${chunk}`);
                         });
                     }
 
@@ -89,20 +85,10 @@ class MultiplePackagesWatcher extends BasePackagesWatcher {
     }
 }
 
-const createLog = ({ context }) => {
-    return (packageName, message, type) => {
-        const prefix = chalk.hex(getRandomColorForString(packageName))(packageName) + ": ";
-
-        let send = "";
-        if (Array.isArray(message)) {
-            message = message.filter(Boolean);
-            if (message.length) {
-                const [first, ...rest] = message;
-                send = [prefix + first, ...rest].join(" ");
-            }
-        } else {
-            send = prefix + message;
-        }
+const createLog = packageName => {
+    const prefix = chalk.hex(getRandomColorForString(packageName))(packageName) + ": ";
+    return (message, type) => {
+        let send = prefix + message;
 
         if (type) {
             if (type === "error") {
@@ -113,24 +99,9 @@ const createLog = ({ context }) => {
             }
         }
 
-        send = send.trim().replace(/^\s+|\s+$/g, "");
-        if (!send) {
-            return;
-        }
-
         console.log(send);
     };
 };
 
-const parseMessage = message => {
-    try {
-        return JSON.parse(message);
-    } catch (e) {
-        return {
-            type: "error",
-            message: `Could not parse received watch result (JSON): ${message}`
-        };
-    }
-};
-
 module.exports = { MultiplePackagesWatcher };
+

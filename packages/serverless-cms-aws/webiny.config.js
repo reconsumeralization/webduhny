@@ -22,10 +22,7 @@ async function buildHandlers(options) {
                             return {
                                 title: path.dirname(handlerPath).replace(__dirname, "."),
                                 async task() {
-                                    await require(handlerPath).commands.build({
-                                        ...options,
-                                        logs: false
-                                    });
+                                    await require(handlerPath).commands.build(options);
                                 }
                             };
                         })

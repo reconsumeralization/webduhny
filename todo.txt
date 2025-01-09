@@ -1,6 +1,3 @@
-MH
-- check overrides.rspack (and prolly overrides in general)
-
 WH
 - jest babel config
 - replace ts-jest with swc/jest, any gains?

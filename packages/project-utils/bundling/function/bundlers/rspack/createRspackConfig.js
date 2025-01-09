@@ -23,7 +23,8 @@ const createRspackConfig = params => {
     const definitions = overrides.define ? JSON.parse(overrides.define) : {};
     const tsChecksEnabled = process.env.WEBINY_ENABLE_TS_CHECKS === "true";
 
-    return {
+    /** @type {import('@rspack/core').Configuration} */
+    let rspackConfig = {
         watch,
         entry: [
             sourceMaps && require.resolve("source-map-support/register"),
@@ -102,6 +103,13 @@ const createRspackConfig = params => {
             extensions: [".ts", ".mjs", ".js", ".json", ".css"]
         }
     };
+
+    // User overrides.
+    if (typeof overrides.rspack === "function") {
+        rspackConfig = overrides.rspack(rspackConfig);
+    }
+
+    return rspackConfig;
 };
 
 module.exports = { createRspackConfig };
