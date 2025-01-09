@@ -20,7 +20,7 @@ const tableWrapperVariants = cva("relative w-full overflow-auto", {
     }
 });
 
-const tableVariants = cva("w-full caption-bottom text-sm", {
+const tableVariants = cva("w-full caption-bottom text-sm bg-white", {
     variants: {
         bordered: {
             true: "border-neutral-dimmed border-solid border-sm"
