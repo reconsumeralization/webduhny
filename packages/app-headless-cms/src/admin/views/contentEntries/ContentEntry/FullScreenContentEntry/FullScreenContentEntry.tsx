@@ -15,7 +15,7 @@ import {
 } from "./FullScreenContentEntry.styled";
 import { FullScreenContentEntryProvider } from "./useFullScreenContentEntry";
 import { ContentEntryEditorConfig } from "~/ContentEntryEditorConfig";
-import { allowCmsLegacyEntryEditor } from "~/utils/allowCmsLegacyEntryEditor";
+import { cmsLegacyEntryEditor } from "~/utils/cmsLegacyEntryEditor";
 
 const { ContentEntry } = ContentEntryEditorConfig;
 
@@ -79,7 +79,7 @@ const FullScreenContentEntryFormHeaderDecorator =
     });
 
 export const FullScreenContentEntry = () => {
-    if (allowCmsLegacyEntryEditor) {
+    if (cmsLegacyEntryEditor) {
         return null;
     }
 
