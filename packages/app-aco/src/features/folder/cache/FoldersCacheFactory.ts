@@ -1,16 +1,17 @@
-import { FoldersCache } from "./FoldersCache";
+import { Folder } from "../Folder";
+import { ListCache } from "~/features/folder/cache/ListCache";
 
 export class FoldersCacheFactory {
-    private cache: Map<string, FoldersCache> = new Map();
+    private cache: Map<string, ListCache<Folder>> = new Map();
 
     getCache(namespace: string) {
         const cacheKey = this.getCacheKey(namespace);
 
         if (!this.cache.has(cacheKey)) {
-            this.cache.set(cacheKey, new FoldersCache());
+            this.cache.set(cacheKey, new ListCache<Folder>());
         }
 
-        return this.cache.get(cacheKey) as FoldersCache;
+        return this.cache.get(cacheKey) as ListCache<Folder>;
     }
 
     private getCacheKey(namespace: string) {

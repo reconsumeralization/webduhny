@@ -4,11 +4,12 @@ import { IListFoldersGateway } from "./IListFoldersGateway";
 import { ListFoldersRepository } from "./ListFoldersRepository";
 import { ListFoldersUseCaseWithLoading } from "./ListFoldersUseCaseWithLoading";
 import { ListFoldersUseCase } from "./ListFoldersUseCase";
-import { folderCacheFactory, FoldersCache } from "../cache";
+import { folderCacheFactory, ListCache } from "../cache";
+import { Folder } from "~/features/folder";
 
 interface IListFoldersInstance {
     useCase: IListFoldersUseCase;
-    folders: FoldersCache;
+    folders: ListCache<Folder>;
     loading: LoadingRepository;
 }
 

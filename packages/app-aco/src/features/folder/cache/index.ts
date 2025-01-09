@@ -1,3 +1,2 @@
-export * from "./FoldersCache";
 export * from "./FoldersCacheFactory";
-export * from "./ICache";
+export * from "./ListCache";

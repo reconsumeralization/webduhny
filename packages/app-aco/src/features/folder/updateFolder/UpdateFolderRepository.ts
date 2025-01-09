@@ -1,15 +1,15 @@
 import { makeAutoObservable } from "mobx";
 import { IUpdateFolderRepository } from "./IUpdateFolderRepository";
-import { FoldersCache } from "../cache";
+import { ListCache } from "../cache";
 import { Folder } from "../Folder";
 import { IUpdateFolderGateway } from "./IUpdateFolderGateway";
 import { FolderDto } from "./FolderDto";
 
 export class UpdateFolderRepository implements IUpdateFolderRepository {
-    private cache: FoldersCache;
+    private cache: ListCache<Folder>;
     private gateway: IUpdateFolderGateway;
 
-    constructor(cache: FoldersCache, gateway: IUpdateFolderGateway) {
+    constructor(cache: ListCache<Folder>, gateway: IUpdateFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
         makeAutoObservable(this);
@@ -25,6 +25,12 @@ export class UpdateFolderRepository implements IUpdateFolderRepository {
         };
 
         const result = await this.gateway.execute(dto);
-        await this.cache.update(folder.id, Folder.create(result));
+        this.cache.updateItems(f => {
+            if (f.id === folder.id) {
+                return Folder.create(result);
+            }
+
+            return Folder.create(f);
+        });
     }
 }

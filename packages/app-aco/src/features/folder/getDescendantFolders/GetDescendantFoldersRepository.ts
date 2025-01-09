@@ -1,13 +1,13 @@
 import { makeAutoObservable } from "mobx";
 import { IGetDescendantFoldersRepository } from "./IGetDescendantFoldersRepository";
-import { FoldersCache } from "../cache";
+import { ListCache } from "../cache";
 import { Folder } from "../Folder";
 import { ROOT_FOLDER } from "~/constants";
 
 export class GetDescendantFoldersRepository implements IGetDescendantFoldersRepository {
-    private readonly cache: FoldersCache;
+    private readonly cache: ListCache<Folder>;
 
-    constructor(cache: FoldersCache) {
+    constructor(cache: ListCache<Folder>) {
         this.cache = cache;
         makeAutoObservable(this);
     }

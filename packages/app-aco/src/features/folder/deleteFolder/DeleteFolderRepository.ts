@@ -1,14 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import { IDeleteFolderRepository } from "./IDeleteFolderRepository";
-import { FoldersCache } from "../cache";
+import { ListCache } from "../cache";
 import { Folder } from "../Folder";
 import { IDeleteFolderGateway } from "./IDeleteFolderGateway";
 
 export class DeleteFolderRepository implements IDeleteFolderRepository {
-    private cache: FoldersCache;
+    private cache: ListCache<Folder>;
     private gateway: IDeleteFolderGateway;
 
-    constructor(cache: FoldersCache, gateway: IDeleteFolderGateway) {
+    constructor(cache: ListCache<Folder>, gateway: IDeleteFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
         makeAutoObservable(this);
@@ -16,6 +16,6 @@ export class DeleteFolderRepository implements IDeleteFolderRepository {
 
     async execute(folder: Folder) {
         await this.gateway.execute(folder.id);
-        await this.cache.remove(folder.id);
+        this.cache.removeItems(f => f.id === folder.id);
     }
 }

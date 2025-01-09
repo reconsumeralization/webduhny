@@ -1,14 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import { Folder } from "../Folder";
-import { FoldersCache } from "../cache";
+import { ListCache } from "../cache";
 import { IGetFolderRepository } from "./IGetFolderRepository";
 import { IGetFolderGateway } from "./IGetFolderGateway";
 
 export class GetFolderRepository implements IGetFolderRepository {
-    private cache: FoldersCache;
+    private cache: ListCache<Folder>;
     private gateway: IGetFolderGateway;
 
-    constructor(cache: FoldersCache, gateway: IGetFolderGateway) {
+    constructor(cache: ListCache<Folder>, gateway: IGetFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
         makeAutoObservable(this);
@@ -16,6 +16,6 @@ export class GetFolderRepository implements IGetFolderRepository {
 
     async execute(id: string) {
         const response = await this.gateway.execute(id);
-        await this.cache.set(Folder.create(response));
+        this.cache.addItems([Folder.create(response)]);
     }
 }
