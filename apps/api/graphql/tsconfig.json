@@ -72,6 +72,9 @@
       "path": "../../../packages/api-page-builder-so-ddb/tsconfig.build.json"
     },
     {
+      "path": "../../../packages/api-prerendering-service-aws/tsconfig.build.json"
+    },
+    {
       "path": "../../../packages/api-security/tsconfig.build.json"
     },
     {
@@ -182,7 +185,12 @@
       ],
       "@webiny/api-page-builder-so-ddb/*": ["../../../packages/api-page-builder-so-ddb/src/*"],
       "@webiny/api-page-builder-so-ddb": ["../../../packages/api-page-builder-so-ddb/src"],
-      "@webiny/api-prerendering-service": ["../../../packages/api-prerendering-service/src"],
+      "@webiny/api-prerendering-service-aws/*": [
+        "../../../packages/api-prerendering-service-aws/src/*"
+      ],
+      "@webiny/api-prerendering-service-aws": [
+        "../../../packages/api-prerendering-service-aws/src"
+      ],
       "@webiny/api-security/*": ["../../../packages/api-security/src/*"],
       "@webiny/api-security": ["../../../packages/api-security/src"],
       "@webiny/api-security-cognito/*": ["../../../packages/api-security-cognito/src/*"],
