@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { IUpdateFolderRepository } from "./IUpdateFolderRepository";
 import { ListCache } from "../cache";
 import { Folder } from "../Folder";
@@ -12,7 +11,6 @@ export class UpdateFolderRepository implements IUpdateFolderRepository {
     constructor(cache: ListCache<Folder>, gateway: IUpdateFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
-        makeAutoObservable(this);
     }
 
     async execute(folder: Folder) {

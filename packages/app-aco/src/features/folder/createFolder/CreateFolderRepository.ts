@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { ICreateFolderRepository } from "./ICreateFolderRepository";
 import { ListCache } from "../cache";
 import { Folder } from "../Folder";
@@ -14,7 +13,6 @@ export class CreateFolderRepository implements ICreateFolderRepository {
         this.cache = cache;
         this.gateway = gateway;
         this.type = type;
-        makeAutoObservable(this);
     }
 
     async execute(folder: Folder) {

@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { IGetDescendantFoldersRepository } from "./IGetDescendantFoldersRepository";
 import { ListCache } from "../cache";
 import { Folder } from "../Folder";
@@ -9,7 +8,6 @@ export class GetDescendantFoldersRepository implements IGetDescendantFoldersRepo
 
     constructor(cache: ListCache<Folder>) {
         this.cache = cache;
-        makeAutoObservable(this);
     }
 
     execute(id: string): Folder[] {

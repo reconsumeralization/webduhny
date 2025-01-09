@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { Folder } from "../Folder";
 import { ListCache } from "../cache";
 import { IGetFolderRepository } from "./IGetFolderRepository";
@@ -11,7 +10,6 @@ export class GetFolderRepository implements IGetFolderRepository {
     constructor(cache: ListCache<Folder>, gateway: IGetFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
-        makeAutoObservable(this);
     }
 
     async execute(id: string) {

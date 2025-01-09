@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { IDeleteFolderRepository } from "./IDeleteFolderRepository";
 import { ListCache } from "../cache";
 import { Folder } from "../Folder";
@@ -11,7 +10,6 @@ export class DeleteFolderRepository implements IDeleteFolderRepository {
     constructor(cache: ListCache<Folder>, gateway: IDeleteFolderGateway) {
         this.cache = cache;
         this.gateway = gateway;
-        makeAutoObservable(this);
     }
 
     async execute(folder: Folder) {
