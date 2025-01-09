@@ -14065,6 +14065,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/tinycolor2@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "@types/tinycolor2@npm:1.4.6"
+  checksum: 10/a662fd177135d27779b7ccba39881a85167f969787c71c7bf51903d288a519ad5b9526e0a4af7bde6444df6b7abe88bae893d569c6d804108c03dfec9509bdf6
+  languageName: node
+  linkType: hard
+
 "@types/tmp@npm:^0.2.6":
   version: 0.2.6
   resolution: "@types/tmp@npm:0.2.6"
@@ -14881,6 +14888,7 @@ __metadata:
     "@storybook/theming": "npm:7.6.20"
     "@svgr/webpack": "npm:^6.1.1"
     "@types/react": "npm:18.2.79"
+    "@types/tinycolor2": "npm:^1.4.6"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-composition": "npm:0.0.0"
@@ -19623,6 +19631,7 @@ __metadata:
     core-js: "npm:^3.0.1"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.0.4"
+    my-custom-extension: "npm:1.0.0"
     prop-types: "npm:^15.7.2"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -33650,6 +33659,15 @@ __metadata:
   checksum: 10/59d4b5ebff6c265b452d6630ae8873d573c82e36fdc1ed9c34c7901a0bf2d3d357022f49db8e9bded127b743f709c7ef7befec249a2b3967578d649a8029aa06
   languageName: node
   linkType: hard
+
+"my-custom-extension@npm:1.0.0, my-custom-extension@workspace:extensions/myCustomExtension":
+  version: 0.0.0-use.local
+  resolution: "my-custom-extension@workspace:extensions/myCustomExtension"
+  dependencies:
+    "@webiny/app-serverless-cms": "npm:0.0.0"
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
 
 "mz@npm:^2.7.0":
   version: 2.7.0
