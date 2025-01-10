@@ -21,6 +21,8 @@ export * from "./base/ui/NotFound";
 
 // Base admin app
 export { Admin } from "./base/Admin";
+export * from "./config/AdminConfig";
+
 export type { AdminProps } from "./base/Admin";
 export { useViewComposition } from "./base/providers/ViewCompositionProvider";
 export type { ViewCompositionContext, ViewElement } from "./base/providers/ViewCompositionProvider";

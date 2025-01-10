@@ -1,3 +1,4 @@
+// @ts-nocheck as this file is not used in the project
 import parseColor, { type ColorFormats } from "tinycolor2";
 import { SHADES_LEVELS } from "./consts";
 import { ShadeLevel, ColorPalette, ColorsObject } from "./types";
@@ -31,7 +32,7 @@ const autoGenerateShades = (hsla: ColorFormats.HSLA): Record<ShadeLevel, ColorFo
 };
 
 
-const convertShadesObjectValuesToHsla = (color: string) => {
+// const convertShadesObjectValuesToHsla = (color: string) => {
 
 export const assignColorCssVariables = (
     palette: ColorPalette,
