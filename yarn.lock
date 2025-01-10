@@ -19609,6 +19609,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"admin-logo@npm:1.0.0, admin-logo@workspace:extensions/adminLogo":
+  version: 0.0.0-use.local
+  resolution: "admin-logo@workspace:extensions/adminLogo"
+  dependencies:
+    "@webiny/app-serverless-cms": "npm:0.0.0"
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
+
 "admin@workspace:apps/admin":
   version: 0.0.0-use.local
   resolution: "admin@workspace:apps/admin"
@@ -19628,6 +19637,7 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/react-properties": "npm:0.0.0"
     "@webiny/serverless-cms-aws": "npm:0.0.0"
+    admin-logo: "npm:1.0.0"
     core-js: "npm:^3.0.1"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.0.4"

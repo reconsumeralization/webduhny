@@ -1,12 +1,6 @@
 import React from "react";
 import { makeDecoratable } from "~/index";
-import { Property, useIdGenerator } from "@webiny/react-properties";
-
-declare module "graphql" {
-    interface DocumentNode {
-        __cacheKey: string;
-    }
-}
+import { Property } from "@webiny/react-properties";
 
 export interface ThemeConfig {
     name: string;
@@ -14,39 +8,37 @@ export interface ThemeConfig {
 }
 
 export interface ThemeProps {
-    name: string;
-    label?: string;
     children?: React.ReactNode;
-    remove?: boolean;
-    before?: string;
-    after?: string;
 }
 
-export const Theme = makeDecoratable(
-    "AdminTheme",
-    ({ name, label, children, remove, before, after }: ThemeProps) => {
-        const getId = useIdGenerator("theme");
+const ThemeBase = makeDecoratable("AdminTheme", ({ children = null }: ThemeProps) => {
+    return (
+        <>
+            <Property name={"themes"} array={true}>
+                {children}
+            </Property>
+        </>
+    );
+});
 
-        const placeAfter = after !== undefined ? getId(after) : undefined;
-        const placeBefore = before !== undefined ? getId(before) : undefined;
+export interface AdminThemeColor {
+    palette: "primary" | "secondary" | "neutral" | "success" | "warning" | "danger";
+    color: string;
+    shade?: "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+}
 
-        return (
-            <>
-                <Property
-                    id={getId(name)}
-                    name={"themes"}
-                    remove={remove}
-                    array={true}
-                    before={placeBefore}
-                    after={placeAfter}
-                >
-                    <Property id={getId(name, "name")} name={"name"} value={name} />
-                    {label ? (
-                        <Property id={getId(name, "label")} name={"label"} value={label} />
-                    ) : null}
-                    {children ?? null}
-                </Property>
-            </>
-        );
-    }
-);
+const Color = makeDecoratable("AdminThemeColor", ({ palette, color, shade }: AdminThemeColor) => {
+    return (
+        <>
+            <Property name={"colors"} array={true}>
+                <Property name={"palette"} value={palette} />
+                <Property name={"color"} value={color} />
+                <Property name={"shade"} value={shade} />
+            </Property>
+        </>
+    );
+});
+
+export const Theme = Object.assign(ThemeBase, {
+    Color
+});

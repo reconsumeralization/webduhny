@@ -75,6 +75,7 @@ export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
     // has been resolved, then it becomes either `null` or `WcpProject`, and that's when we can continue
     // rendering child React components.
     if (project === undefined) {
+        console.log('rendering loader')
         return loader || null;
     }
 

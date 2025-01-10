@@ -20,7 +20,8 @@
 			"extensions/theme",
 			"scripts/buildPackages",
 			"scripts/prepublishOnly",
-			"extensions/myCustomExtension"
+			"extensions/myCustomExtension",
+			"extensions/adminLogo"
 		]
 	},
 	"author": "Webiny Ltd.",
