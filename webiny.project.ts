@@ -34,13 +34,10 @@ export default {
                                 return typeof m.value.default === "function"
                                     ? m.value.default()
                                     : m.value.default;
-                            } catch (e) {
-                                console.log("woot", e);
+                            } catch {
                                 // This one is most likely not built yet.
                                 return null;
                             }
-                        } else {
-                            console.log(m.status, m.reason);
                         }
                     })
                     .filter(Boolean);
