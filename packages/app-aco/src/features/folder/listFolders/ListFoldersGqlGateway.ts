@@ -1,6 +1,6 @@
 import ApolloClient from "apollo-client";
 import gql from "graphql-tag";
-import { IListFoldersGateway } from "./IListFoldersGateway";
+import { IListFoldersGateway, ListFoldersGatewayParams } from "./IListFoldersGateway";
 import { AcoError, FolderItem } from "~/types";
 import { ROOT_FOLDER } from "~/constants";
 
@@ -72,14 +72,14 @@ export class ListFoldersGqlGateway implements IListFoldersGateway {
         this.client = client;
     }
 
-    async execute(type: string) {
+    async execute(params: ListFoldersGatewayParams) {
         const { data: response } = await this.client.query<
             ListFoldersResponse,
             ListFoldersQueryVariables
         >({
             query: LIST_FOLDERS,
             variables: {
-                type,
+                ...params,
                 limit: 10000
             },
             fetchPolicy: "network-only"

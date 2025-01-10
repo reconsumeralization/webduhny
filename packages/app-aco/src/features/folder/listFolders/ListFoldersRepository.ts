@@ -15,7 +15,7 @@ export class ListFoldersRepository implements IListFoldersRepository {
     }
 
     async execute() {
-        const items = await this.gateway.execute(this.type);
+        const items = await this.gateway.execute({ type: this.type });
         this.cache.clear();
         this.cache.addItems(items.map(item => Folder.create(item)));
     }
