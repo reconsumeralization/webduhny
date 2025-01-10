@@ -294,7 +294,8 @@ export const pullRequests = createWorkflow({
                 ...installBuildSteps,
                 {
                     name: "Sync Dependencies Verification",
-                    run: "yarn webiny verify-dependencies"
+                    run: "yarn webiny verify-dependencies",
+                    "working-directory": DIR_WEBINY_JS
                 }
             ]
         }),
