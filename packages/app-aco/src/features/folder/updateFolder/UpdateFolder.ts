@@ -4,6 +4,7 @@ import { IUpdateFolderGateway } from "./IUpdateFolderGateway";
 import { UpdateFolderRepository } from "./UpdateFolderRepository";
 import { UpdateFolderUseCase } from "./UpdateFolderUseCase";
 import { UpdateFolderUseCaseWithLoading } from "./UpdateFolderUseCaseWithLoading";
+import { UpdateFolderUseCaseWithoutInheritedPermissions } from "./UpdateFolderUseCaseWithoutInheritedPermissions";
 import { folderCacheFactory } from "../cache";
 
 export class UpdateFolder {
@@ -12,6 +13,11 @@ export class UpdateFolder {
         const loadingRepository = loadingRepositoryFactory.getRepository(type);
         const repository = new UpdateFolderRepository(foldersCache, gateway);
         const useCase = new UpdateFolderUseCase(repository);
-        return new UpdateFolderUseCaseWithLoading(loadingRepository, useCase);
+        const useCaseWithoutInheritedPermissions =
+            new UpdateFolderUseCaseWithoutInheritedPermissions(useCase);
+        return new UpdateFolderUseCaseWithLoading(
+            loadingRepository,
+            useCaseWithoutInheritedPermissions
+        );
     }
 }
