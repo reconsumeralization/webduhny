@@ -10,7 +10,7 @@ import { FolderTree } from "~/components";
 import { ROOT_FOLDER } from "~/constants";
 import { useDialogs } from "@webiny/app-admin";
 import { DialogFoldersContainer } from "~/dialogs/styled";
-import { useFolders } from "~/hooks";
+import { useUpdateFolder } from "~/features";
 import { FolderItem } from "~/types";
 
 interface ShowDialogParams {
@@ -72,7 +72,7 @@ const FormComponent = ({ folder }: FormComponentProps) => {
 
 export const useEditDialog = (): UseEditDialogResponse => {
     const dialog = useDialogs();
-    const { updateFolder } = useFolders();
+    const { updateFolder } = useUpdateFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (folder: FolderItem, data: GenericFormData) => {

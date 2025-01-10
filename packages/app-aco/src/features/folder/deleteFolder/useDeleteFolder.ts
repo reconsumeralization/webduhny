@@ -12,7 +12,7 @@ export const useDeleteFolder = () => {
     const foldersContext = useContext(FoldersContext);
 
     if (!foldersContext) {
-        throw new Error("useFolders must be used within a FoldersProvider");
+        throw new Error("useDeleteFolder must be used within a FoldersProvider");
     }
 
     const { type } = foldersContext;

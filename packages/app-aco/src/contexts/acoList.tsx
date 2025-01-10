@@ -11,7 +11,8 @@ import {
     ListSearchRecordsSort,
     SearchRecordItem
 } from "~/types";
-import { useAcoApp, useFolders, useNavigateFolder } from "~/hooks";
+import { useAcoApp, useNavigateFolder } from "~/hooks";
+import { useGetDescendantFolders, useListFolders } from "~/features";
 import { FoldersContext } from "~/contexts/folders";
 import { SearchRecordsContext } from "~/contexts/records";
 import { sortTableItems, validateOrGetDefaultDbSort } from "~/sorting";
@@ -120,11 +121,8 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { identity } = useSecurity();
     const { currentFolderId } = useNavigateFolder();
     const { folderIdPath, folderIdInPath } = useAcoApp();
-    const {
-        folders: originalFolders,
-        loading: foldersLoading,
-        getDescendantFolders
-    } = useFolders();
+    const { folders: originalFolders, loading: foldersLoading } = useListFolders();
+    const { getDescendantFolders } = useGetDescendantFolders();
     const folderContext = useContext(FoldersContext);
     const searchContext = useContext(SearchRecordsContext);
 

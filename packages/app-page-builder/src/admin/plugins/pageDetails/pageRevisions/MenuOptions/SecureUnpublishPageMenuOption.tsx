@@ -1,17 +1,18 @@
 import React, { useMemo } from "react";
 import { usePagesPermissions } from "~/hooks/permissions";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 
 import { UnpublishPageMenuOption, UnpublishPageMenuOptionProps } from "./UnpublishPageMenuOption";
 
 export const SecureUnpublishPageMenuOption = (props: UnpublishPageMenuOptionProps) => {
     const { page } = props;
     const { canUnpublish: pagesCanUnpublish } = usePagesPermissions();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
 
     const hasAccess = useMemo(() => {
-        return pagesCanUnpublish() && flp.canManageContent(page.wbyAco_location?.folderId);
-    }, [page]);
+        return pagesCanUnpublish() && canManageContent(page.wbyAco_location?.folderId);
+    }, [page, canManageContent]);
 
     if (!hasAccess) {
         return null;

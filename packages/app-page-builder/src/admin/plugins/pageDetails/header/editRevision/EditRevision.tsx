@@ -9,7 +9,7 @@ import { i18n } from "@webiny/app/i18n";
 import { useMutation } from "@apollo/react-hooks";
 import { usePagesPermissions } from "~/hooks/permissions";
 import { useNavigatePage } from "~/admin/hooks/useNavigatePage";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 import { usePage } from "~/admin/views/Pages/PageDetails";
 import { makeDecoratable } from "@webiny/react-composition";
 
@@ -17,7 +17,8 @@ const t = i18n.ns("app-headless-cms/app-page-builder/page-details/header/edit");
 
 const EditRevision = makeDecoratable("EditRevision", () => {
     const { canUpdate: pagesCanUpdate } = usePagesPermissions();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
     const [inProgress, setInProgress] = useState<boolean>();
     const { showSnackbar } = useSnackbar();
     const [createPageFrom] = useMutation(CREATE_PAGE);
@@ -46,8 +47,8 @@ const EditRevision = makeDecoratable("EditRevision", () => {
 
     const folderId = page.wbyAco_location?.folderId;
     const canEdit = useMemo(() => {
-        return pagesCanUpdate(page.createdBy?.id) && flp.canManageContent(folderId);
-    }, [flp, folderId]);
+        return pagesCanUpdate(page.createdBy?.id) && canManageContent(folderId);
+    }, [canManageContent, folderId]);
 
     if (!canEdit) {
         return null;

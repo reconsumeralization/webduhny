@@ -21,7 +21,7 @@ import { plugins } from "@webiny/plugins";
 import { PbPageData, PbPageDetailsHeaderRightOptionsMenuItemPlugin, PbPageTemplate } from "~/types";
 import { SecureView } from "@webiny/app-security";
 import { useAdminPageBuilder } from "~/admin/hooks/useAdminPageBuilder";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 import { useTemplatesPermissions } from "~/hooks/permissions";
 import { PreviewPage } from "./PreviewPage";
 import { DuplicatePage } from "./DuplicatePage";
@@ -84,13 +84,14 @@ const PageOptionsMenu = (props: PageOptionsMenuProps) => {
         [page]
     );
 
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
     const { canCreate: templatesCanCreate } = useTemplatesPermissions();
 
     const canCreateTemplate = templatesCanCreate();
 
     const folderId = page.wbyAco_location?.folderId;
-    const flpCanManageContent = flp.canManageContent(folderId);
+    const flpCanManageContent = canManageContent(folderId);
 
     const isTemplatePage = page.content?.data?.template;
     return (

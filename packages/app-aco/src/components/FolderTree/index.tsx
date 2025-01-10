@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { useFolders } from "~/hooks/useFolders";
+import { useGetFolderLevelPermission, useListFolders } from "~/features";
 import { CreateButton } from "./ButtonCreate";
 import { Empty } from "./Empty";
 import { Loader } from "./Loader";
@@ -29,7 +29,10 @@ export const FolderTree = ({
     onFolderClick,
     rootFolderLabel
 }: FolderTreeProps) => {
-    const { folders, folderLevelPermissions: flp, loading } = useFolders();
+    const { loading, folders } = useListFolders();
+    const { getFolderLevelPermission: canManageStructure } =
+        useGetFolderLevelPermission("canManageStructure");
+
     const localFolders = useMemo(() => {
         if (!folders) {
             return [];
@@ -50,7 +53,7 @@ export const FolderTree = ({
 
         let createButton = null;
         if (enableCreate) {
-            const canCreate = flp.canManageStructure(focusedFolderId!);
+            const canCreate = canManageStructure(focusedFolderId!);
 
             createButton = <CreateButton disabled={!canCreate} />;
 

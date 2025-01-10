@@ -30,7 +30,14 @@ describe("DeleteFolder", () => {
         const item = foldersCache.getItem(folder => folder.id === "any-folder-id");
         expect(item?.id).toEqual("any-folder-id");
 
-        await deleteFolder.execute({ id: "any-folder-id" });
+        await deleteFolder.execute({
+            id: "any-folder-id",
+            title: "New Folder",
+            slug: "new-folder",
+            parentId: null,
+            permissions: [],
+            type
+        });
 
         expect(gateway.execute).toHaveBeenCalledTimes(1);
         expect(foldersCache.hasItems()).toBeFalse();

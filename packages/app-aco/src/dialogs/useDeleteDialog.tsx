@@ -1,7 +1,7 @@
 import { useSnackbar } from "@webiny/app-admin";
 
 import { useDialogs } from "@webiny/app-admin";
-import { useFolders } from "~/hooks";
+import { useDeleteFolder } from "~/features";
 import { FolderItem } from "~/types";
 import { useCallback } from "react";
 
@@ -15,7 +15,7 @@ interface UseDeleteDialogResponse {
 
 export const useDeleteDialog = (): UseDeleteDialogResponse => {
     const dialogs = useDialogs();
-    const { deleteFolder } = useFolders();
+    const { deleteFolder } = useDeleteFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (folder: FolderItem) => {

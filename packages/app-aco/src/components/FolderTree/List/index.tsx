@@ -13,7 +13,7 @@ import { Node } from "../Node";
 import { NodePreview } from "../NodePreview";
 import { Placeholder } from "../Placeholder";
 import { createInitialOpenList, createTreeData } from "./utils";
-import { useFolders } from "~/hooks";
+import { useGetFolderLevelPermission, useUpdateFolder } from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { FolderProvider } from "~/contexts/folder";
@@ -33,7 +33,9 @@ export const List = ({
     hiddenFolderIds,
     enableActions
 }: ListProps) => {
-    const { updateFolder, folderLevelPermissions: flp } = useFolders();
+    const { updateFolder } = useUpdateFolder();
+    const { getFolderLevelPermission: canManageStructure } =
+        useGetFolderLevelPermission("canManageStructure");
     const { showSnackbar } = useSnackbar();
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
     const [initialOpenList, setInitialOpenList] = useState<undefined | InitialOpen>();
@@ -95,9 +97,9 @@ export const List = ({
     const canDrag = useCallback(
         (folderId: string) => {
             const isRootFolder = folderId === ROOT_FOLDER;
-            return !isRootFolder && flp.canManageStructure(folderId);
+            return !isRootFolder && canManageStructure(folderId);
         },
-        [flp.canManageStructure]
+        [canManageStructure]
     );
 
     return (

@@ -6,8 +6,13 @@ import {
     useGetFolderLevelPermission,
     useListFolders,
     useUpdateFolder
-} from "~/features/folder";
+} from "~/features";
 
+/**
+ * Custom hook to manage folder operations.
+ *
+ * @deprecated This hook is deprecated. Use the individual hooks directly from "~/features" instead.
+ */
 export const useFolders = () => {
     const { createFolder } = useCreateFolder();
     const { deleteFolder } = useDeleteFolder();

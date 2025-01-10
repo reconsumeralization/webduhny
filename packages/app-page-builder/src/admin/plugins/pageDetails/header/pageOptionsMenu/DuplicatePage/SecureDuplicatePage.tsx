@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 import { usePage } from "~/admin/views/Pages/PageDetails";
 import { usePagesPermissions } from "~/hooks/permissions";
 import { DuplicatePage } from "./DuplicatePage";
@@ -7,7 +7,8 @@ import { DuplicatePage } from "./DuplicatePage";
 export const SecureDuplicatePage = DuplicatePage.createDecorator(Original => {
     return function SecurePageDetailsDuplicatePageRenderer() {
         const { page } = usePage();
-        const { folderLevelPermissions: flp } = useFolders();
+        const { getFolderLevelPermission: canManageContent } =
+            useGetFolderLevelPermission("canManageContent");
         const { canWrite: pagesCanWrite } = usePagesPermissions();
 
         const canDuplicate = useMemo(() => {
@@ -17,10 +18,9 @@ export const SecureDuplicatePage = DuplicatePage.createDecorator(Original => {
             }
 
             return (
-                pagesCanWrite(page.createdBy.id) &&
-                flp.canManageContent(page.wbyAco_location.folderId)
+                pagesCanWrite(page.createdBy.id) && canManageContent(page.wbyAco_location.folderId)
             );
-        }, [flp, page]);
+        }, [canManageContent, page]);
 
         if (!canDuplicate) {
             return null;
