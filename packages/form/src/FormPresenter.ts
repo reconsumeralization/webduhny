@@ -8,7 +8,7 @@ import { FormField } from "./FormField";
 import { FormValidator } from "./FormValidator";
 import { FieldValidationResult } from "./FormFieldValidator";
 
-interface FormInvalidFields {
+export interface FormInvalidFields {
     [name: string]: string;
 }
 
@@ -104,6 +104,7 @@ export class FormPresenter<T extends GenericFormData = GenericFormData> {
     setFieldValue(name: string, value: unknown) {
         const field = this.formFields.get(name);
         if (!field) {
+            this.commitValueToData(name, value);
             return;
         }
 

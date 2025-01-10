@@ -3,7 +3,8 @@ import {
     AWS_REGION,
     BUILD_PACKAGES_RUNNER,
     listPackagesWithJestTests,
-    NODE_VERSION
+    NODE_VERSION,
+    runNodeScript
 } from "./utils";
 import { createJob } from "./jobs";
 import {
@@ -12,13 +13,9 @@ import {
     createInstallBuildSteps,
     createRunBuildCacheSteps,
     createSetupVerdaccioSteps,
-    createYarnCacheSteps
+    createYarnCacheSteps,
+    withCommonParams
 } from "./steps";
-
-const withCommonParams = (
-    steps: NonNullable<NormalJob["steps"]>,
-    commonParams: Record<string, any>
-) => steps.map(step => ({ ...step, ...commonParams }));
 
 const createPushWorkflow = (branchName: string) => {
     const ucFirstBranchName = branchName.charAt(0).toUpperCase() + branchName.slice(1);
@@ -157,6 +154,13 @@ const createPushWorkflow = (branchName: string) => {
                 ...createDeployWebinySteps({ workingDirectory: DIR_TEST_PROJECT }),
                 ...withCommonParams(
                     [
+                        {
+                            name: "Deployment Summary",
+                            run: `${runNodeScript(
+                                "printDeploymentSummary",
+                                `../${DIR_TEST_PROJECT}`
+                            )} >> $GITHUB_STEP_SUMMARY`
+                        },
                         {
                             name: "Create Cypress config",
                             run: `yarn setup-cypress --projectFolder ../${DIR_TEST_PROJECT}`
@@ -315,7 +319,11 @@ const createPushWorkflow = (branchName: string) => {
                             { name: "Check code formatting", run: "yarn prettier:check" },
                             { name: "Check dependencies", run: "yarn adio" },
                             { name: "Check TS configs", run: "yarn check-ts-configs" },
-                            { name: "ESLint", run: "yarn eslint" }
+                            { name: "ESLint", run: "yarn eslint" },
+                            {
+                                name: "Sync Dependencies Verification",
+                                run: "yarn webiny verify-dependencies"
+                            }
                         ],
                         { "working-directory": DIR_WEBINY_JS }
                     )

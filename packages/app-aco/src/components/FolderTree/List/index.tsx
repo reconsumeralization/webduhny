@@ -74,7 +74,7 @@ export const List = ({
                 parentId: dropTargetId !== ROOT_FOLDER ? (dropTargetId as string) : null
             });
         } catch (error) {
-            // If an error occurs, revert the tree back to its original state
+            // If an error occurred, revert the tree back to its previous state
             setTreeData(oldTree);
             return showSnackbar(error.message);
         }

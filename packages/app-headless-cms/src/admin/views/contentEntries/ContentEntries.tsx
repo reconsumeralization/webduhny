@@ -8,9 +8,15 @@ import {
     ContentEntryListWithConfig
 } from "~/admin/config/contentEntries";
 import { ContentEntriesProvider } from "~/admin/views/contentEntries/ContentEntriesContext";
+import { ContentEntriesDebounceRenderer } from "~/admin/views/contentEntries/ContentEntriesDebounceRender";
+import { ModelIsBeingDeletedError } from "~/admin/components/ContentModelEditor/ModelIsBeingDeletedError";
 
 export const ContentEntries = makeDecoratable("ContentEntries", () => {
     const { model } = useModel();
+
+    if (model.isBeingDeleted) {
+        return <ModelIsBeingDeletedError model={model} />;
+    }
 
     return (
         <ContentEntriesProvider contentModel={model} key={model.modelId}>
@@ -18,7 +24,9 @@ export const ContentEntries = makeDecoratable("ContentEntries", () => {
                 <ContentEntryEditorWithConfig>
                     <AcoWithConfig>
                         <DialogsProvider>
-                            <CmsAcoTable />
+                            <ContentEntriesDebounceRenderer>
+                                <CmsAcoTable />
+                            </ContentEntriesDebounceRenderer>
                         </DialogsProvider>
                     </AcoWithConfig>
                 </ContentEntryEditorWithConfig>

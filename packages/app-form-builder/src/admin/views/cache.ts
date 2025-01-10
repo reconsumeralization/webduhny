@@ -23,7 +23,15 @@ export const updateLatestRevisionInListCache = (
         return;
     }
     const { formBuilder } = response;
+
+    if (!formBuilder.listForms?.data) {
+        return;
+    }
+
     const index = formBuilder.listForms.data.findIndex(item => item.id.startsWith(uniqueId));
+    if (index < 0) {
+        return;
+    }
 
     cache.writeQuery({
         ...gqlParams,
@@ -47,7 +55,7 @@ export const addFormToListCache = (cache: DataProxy, revision: FbRevisionModel):
         data: {
             formBuilder: dotProp.set(formBuilder, `listForms.data`, [
                 revision,
-                ...formBuilder.listForms.data
+                ...(formBuilder.listForms.data || [])
             ])
         }
     });
@@ -75,7 +83,7 @@ export const addRevisionToRevisionsCache = (
         data: {
             formBuilder: dotProp.set(formBuilder, `revisions.data`, [
                 newRevision,
-                ...formBuilder.revisions.data
+                ...(formBuilder.revisions.data || [])
             ])
         }
     });
@@ -89,8 +97,14 @@ export const removeFormFromListCache = (cache: DataProxy, form: FbRevisionModel)
         return;
     }
     const { formBuilder } = response;
+    if (!formBuilder.listForms?.data) {
+        return;
+    }
 
     const index = formBuilder.listForms.data.findIndex(item => item.id === form.id);
+    if (index < 0) {
+        return;
+    }
 
     cache.writeQuery({
         ...gqlParams,
@@ -118,8 +132,14 @@ export const removeRevisionFromFormCache = (
         return [];
     }
     let { formBuilder } = response;
+    if (!formBuilder.revisions?.data) {
+        return [];
+    }
 
     const index = formBuilder.revisions.data.findIndex(item => item.id === revision.id);
+    if (index < 0) {
+        return formBuilder.revisions.data;
+    }
 
     formBuilder = dotProp.delete(
         formBuilder,
@@ -134,5 +154,5 @@ export const removeRevisionFromFormCache = (
     });
 
     // Return new revisions
-    return formBuilder.revisions.data;
+    return formBuilder.revisions.data || [];
 };

@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { PbEditorElement } from "~/types";
+import { DynamicDocument, PbEditorElementTree } from "~/types";
 
 interface PageCategoryType {
     slug: string;
@@ -8,18 +8,19 @@ interface PageCategoryType {
 }
 
 export interface PageWithContent extends PageAtomType {
-    content: PbEditorElement;
+    content: PbEditorElementTree;
 }
 
-export interface PageAtomType {
+export interface PageAtomType extends DynamicDocument {
     id: string;
     title?: string;
     pid?: string;
     path: string;
     status: string;
-    settings?: {
-        general?: {
-            layout?: string;
+    settings: {
+        general: {
+            layout: string;
+            tags: string[];
         };
     };
     parent?: string;
@@ -42,8 +43,16 @@ export const pageAtom = atom<PageAtomType>({
         version: 1,
         published: false,
         snippet: null,
+        dataSources: [],
+        dataBindings: [],
         createdBy: {
             id: null
+        },
+        settings: {
+            general: {
+                layout: "static",
+                tags: []
+            }
         },
         path: "",
         status: ""

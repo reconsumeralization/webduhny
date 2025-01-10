@@ -31,6 +31,7 @@ import { Module as MailerSettings } from "@webiny/app-mailer";
 import { Websockets } from "@webiny/app-websockets";
 import { RecordLocking } from "@webiny/app-record-locking";
 import { TrashBinConfigs } from "@webiny/app-trash-bin";
+import { DynamicPages } from "@webiny/app-dynamic-pages/admin";
 
 export interface AdminProps extends Omit<BaseAdminProps, "createApolloClient"> {
     createApolloClient?: BaseAdminProps["createApolloClient"];
@@ -67,6 +68,7 @@ const App = (props: AdminProps) => {
             <AuditLogs />
             <MailerSettings />
             <TrashBinConfigs />
+            <DynamicPages />
             {props.children}
         </BaseAdmin>
     );

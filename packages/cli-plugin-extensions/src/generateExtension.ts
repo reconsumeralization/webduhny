@@ -19,6 +19,7 @@ import { Extension } from "~/extensions/Extension";
 import { CliContext } from "@webiny/cli/types";
 import { Ora } from "ora";
 import { updateDependencies } from "./utils";
+import { setWebinyPackageVersions } from "~/utils/setWebinyPackageVersions";
 
 const EXTENSIONS_ROOT_FOLDER = "extensions";
 
@@ -92,9 +93,26 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
                 }
 
                 try {
-                    const { stdout } = await execa("npm", ["view", packageName, "version", "json"]);
+                    const parsedPackageName = (() => {
+                        const parts = packageName.split("@");
+                        if (packageName.startsWith("@")) {
+                            return { name: parts[0] + parts[1], version: parts[2] };
+                        }
 
-                    packageJsonUpdates[packageName] = `^${stdout}`;
+                        return { name: parts[0], version: parts[1] };
+                    })();
+
+                    if (parsedPackageName.version) {
+                        packageJsonUpdates[parsedPackageName.name] = parsedPackageName.version;
+                    } else {
+                        const { stdout } = await execa("npm", [
+                            "view",
+                            parsedPackageName.name,
+                            "version"
+                        ]);
+
+                        packageJsonUpdates[packageName] = `^${stdout}`;
+                    }
                 } catch (e) {
                     throw new Error(
                         `Could not find ${log.error.hl(
@@ -115,6 +133,13 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
             packageName
         });
 
+        // Despite the fact that the above code ensures that correct Webiny package versions are
+        // used, note that it only handles the `input.dependencies` field. We still need to run
+        // this because the `package.json` file that the selected template creates might also have
+        // Webiny packages that need to be updated. For example, this is the case with the `pbElement`
+        // extension (see: `packages/cli-plugin-extensions/templates/pbElement/package.json`).
+        await setWebinyPackageVersions(extension, context.version);
+
         await extension.link();
 
         // Sleep for 1 second before proceeding with yarn installation.
@@ -133,6 +158,14 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
                 console.log(`‣ ${message}`);
             });
         }
+
+        console.log();
+        console.log(chalk.bold("Additional Notes"));
+        console.log(
+            `‣ if you already have the ${context.success.hl(
+                "webiny watch"
+            )} command running, you'll need to restart it`
+        );
     } catch (err) {
         ora.fail("Could not create extension. Please check the logs below.");
         console.log();

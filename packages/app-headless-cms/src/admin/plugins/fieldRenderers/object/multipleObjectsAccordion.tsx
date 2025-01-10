@@ -24,6 +24,7 @@ import {
 import { generateAlphaNumericLowerCaseId } from "@webiny/utils";
 import { FieldSettings } from "./FieldSettings";
 import { AccordionRenderSettings, getAccordionRenderSettings } from "../AccordionRenderSettings";
+import { useConfirmationDialog } from "@webiny/app-admin";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -38,6 +39,12 @@ interface ActionsProps {
 
 const Actions = ({ setHighlightIndex, bind, index }: ActionsProps) => {
     const { moveValueDown, moveValueUp } = bind.field;
+
+    const { showConfirmation } = useConfirmationDialog({
+        message: `Are you sure you want to delete this item? This action is not reversible.`,
+        acceptLabel: `Yes, I'm sure!`,
+        cancelLabel: `No, leave it.`
+    });
 
     const onDown = useCallback(
         (ev: React.BaseSyntheticEvent) => {
@@ -63,18 +70,25 @@ const Actions = ({ setHighlightIndex, bind, index }: ActionsProps) => {
         [moveValueUp, index]
     );
 
-    return index > 0 ? (
+    const onDelete = (ev: React.BaseSyntheticEvent) => {
+        ev.stopPropagation();
+        showConfirmation(() => {
+            bind.field.removeValue(index);
+        });
+    };
+
+    return (
         <>
             <IconButton icon={<ArrowDown />} onClick={onDown} />
             <IconButton icon={<ArrowUp />} onClick={onUp} />
-            <IconButton icon={<DeleteIcon />} onClick={() => bind.field.removeValue(index)} />
+            <IconButton icon={<DeleteIcon />} onClick={onDelete} />
         </>
-    ) : null;
+    );
 };
 
 const ObjectsRenderer = (props: CmsModelFieldRendererProps) => {
     const [highlightMap, setHighlightIndex] = useState<{ [key: number]: string }>({});
-    const { field, contentModel } = props;
+    const { field, contentModel, getBind } = props;
 
     const fieldSettings = FieldSettings.createFrom(field);
 
@@ -86,47 +100,58 @@ const ObjectsRenderer = (props: CmsModelFieldRendererProps) => {
     const settings = fieldSettings.getSettings();
     const { open } = getAccordionRenderSettings(field);
 
+    const Bind = getBind();
+
     return (
-        <RootAccordion>
-            <AccordionItem title={field.label} description={field.helpText} open={open}>
-                <DynamicSection
-                    {...props}
-                    emptyValue={{}}
-                    showLabel={false}
-                    gridClassName={dynamicSectionGridStyle}
-                >
-                    {({ Bind, bind, index }) => (
-                        <ObjectItem>
-                            {highlightMap[index] ? (
-                                <ItemHighLight key={highlightMap[index]} />
-                            ) : null}
-                            <Accordion
-                                title={`${props.field.label} #${index + 1}`}
-                                action={
-                                    <Actions
-                                        setHighlightIndex={setHighlightIndex}
-                                        index={index}
-                                        bind={bind}
-                                    />
-                                }
-                                // Open first Accordion by default
-                                defaultValue={index === 0}
+        <Bind>
+            {({ value }) => {
+                const values = value || [];
+                const label = `${field.label} ${values.length ? `(${values.length})` : ""}`;
+
+                return (
+                    <RootAccordion>
+                        <AccordionItem title={label} description={field.helpText} open={open}>
+                            <DynamicSection
+                                {...props}
+                                emptyValue={{}}
+                                showLabel={false}
+                                gridClassName={dynamicSectionGridStyle}
                             >
-                                <Cell span={12} className={fieldsWrapperStyle}>
-                                    <Fields
-                                        Bind={Bind}
-                                        contentModel={contentModel}
-                                        fields={settings.fields}
-                                        layout={settings.layout}
-                                        gridClassName={fieldsGridStyle}
-                                    />
-                                </Cell>
-                            </Accordion>
-                        </ObjectItem>
-                    )}
-                </DynamicSection>
-            </AccordionItem>
-        </RootAccordion>
+                                {({ Bind, bind, index }) => (
+                                    <ObjectItem>
+                                        {highlightMap[index] ? (
+                                            <ItemHighLight key={highlightMap[index]} />
+                                        ) : null}
+                                        <Accordion
+                                            title={`${props.field.label} #${index + 1}`}
+                                            action={
+                                                <Actions
+                                                    setHighlightIndex={setHighlightIndex}
+                                                    index={index}
+                                                    bind={bind}
+                                                />
+                                            }
+                                            // Open first Accordion by default
+                                            defaultValue={index === 0}
+                                        >
+                                            <Cell span={12} className={fieldsWrapperStyle}>
+                                                <Fields
+                                                    Bind={Bind}
+                                                    contentModel={contentModel}
+                                                    fields={settings.fields}
+                                                    layout={settings.layout}
+                                                    gridClassName={fieldsGridStyle}
+                                                />
+                                            </Cell>
+                                        </Accordion>
+                                    </ObjectItem>
+                                )}
+                            </DynamicSection>
+                        </AccordionItem>
+                    </RootAccordion>
+                );
+            }}
+        </Bind>
     );
 };
 

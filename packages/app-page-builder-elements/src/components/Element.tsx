@@ -21,7 +21,7 @@ export const Element = makeDecoratable("Element", (props: ElementProps) => {
 
     const ElementRenderer = renderers ? renderers[element.type] : null;
     if (!ElementRenderer) {
-        return null;
+        return <div>Missing renderer for {element.type}</div>;
     }
 
     const meta = {
@@ -31,7 +31,7 @@ export const Element = makeDecoratable("Element", (props: ElementProps) => {
     };
 
     return (
-        <ErrorBoundary>
+        <ErrorBoundary element={element}>
             <ElementRenderer {...props} meta={meta} />
         </ErrorBoundary>
     );

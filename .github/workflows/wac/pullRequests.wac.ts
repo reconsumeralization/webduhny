@@ -210,7 +210,10 @@ export const pullRequests = createWorkflow({
         assignMilestone: createJob({
             name: "Assign milestone",
             needs: "constants",
-            if: "needs.constants.outputs.is-fork-pr != 'true'",
+            if: [
+                "needs.constants.outputs.is-fork-pr != 'true'",
+                "github.event.pull_request.milestone == null"
+            ].join(" && "),
             steps: [
                 {
                     name: "Print latest Webiny version",
@@ -267,7 +270,11 @@ export const pullRequests = createWorkflow({
                         { name: "Check code formatting", run: "yarn prettier:check" },
                         { name: "Check dependencies", run: "yarn adio" },
                         { name: "Check TS configs", run: "yarn check-ts-configs" },
-                        { name: "ESLint", run: "yarn eslint" }
+                        { name: "ESLint", run: "yarn eslint" },
+                        {
+                            name: "Sync Dependencies Verification",
+                            run: "yarn webiny verify-dependencies"
+                        }
                     ],
                     { "working-directory": DIR_WEBINY_JS }
                 )
