@@ -299,7 +299,6 @@ export const pullRequests = createWorkflow({
                 }
             ]
         }),
-
         staticCodeAnalysisTs: createJob({
             name: "Static code analysis (TypeScript)",
             "runs-on": BUILD_PACKAGES_RUNNER,
