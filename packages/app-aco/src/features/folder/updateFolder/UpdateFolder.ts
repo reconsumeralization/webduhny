@@ -4,7 +4,7 @@ import { IUpdateFolderGateway } from "./IUpdateFolderGateway";
 import { UpdateFolderRepository } from "./UpdateFolderRepository";
 import { UpdateFolderUseCase } from "./UpdateFolderUseCase";
 import { UpdateFolderUseCaseWithLoading } from "./UpdateFolderUseCaseWithLoading";
-import { folderCacheFactory } from "~/features/folder";
+import { folderCacheFactory } from "../cache";
 
 export class UpdateFolder {
     public static instance(type: string, gateway: IUpdateFolderGateway): IUpdateFolderUseCase {

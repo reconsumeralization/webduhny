@@ -1,4 +1,7 @@
-import { IGetFolderLevelPermissionUseCase } from "./IGetFolderLevelPermissionUseCase";
+import {
+    GetFolderLevelPermissionParams,
+    IGetFolderLevelPermissionUseCase
+} from "./IGetFolderLevelPermissionUseCase";
 import { IGetFolderLevelPermissionRepository } from "./IGetFolderLevelPermissionRepository";
 
 export class GetFolderLevelPermissionWithFlpUseCase implements IGetFolderLevelPermissionUseCase {
@@ -8,7 +11,7 @@ export class GetFolderLevelPermissionWithFlpUseCase implements IGetFolderLevelPe
         this.repository = repository;
     }
 
-    execute(id: string) {
-        return this.repository.execute(id);
+    execute(params: GetFolderLevelPermissionParams) {
+        return this.repository.execute(params.id);
     }
 }

@@ -1,3 +1,7 @@
+export interface GetFolderLevelPermissionParams {
+    id: string;
+}
+
 export interface IGetFolderLevelPermissionUseCase {
-    execute: (id: string) => boolean;
+    execute: (params: GetFolderLevelPermissionParams) => boolean;
 }

@@ -26,7 +26,7 @@ export const useGetFolderLevelPermission = (permissionName: FolderPermissionName
                 permissionName,
                 canUseFolderLevelPermissions()
             );
-            return instance.execute(id);
+            return instance.execute({ id });
         },
         [type, canUseFolderLevelPermissions]
     );
