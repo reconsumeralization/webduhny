@@ -35,7 +35,7 @@ export default {
                                     ? m.value.default()
                                     : m.value.default;
                             } catch (e) {
-                                console.log('woot', e)
+                                console.log("woot", e);
                                 // This one is most likely not built yet.
                                 return null;
                             }
