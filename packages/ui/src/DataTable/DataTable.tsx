@@ -62,7 +62,7 @@ type TableRow<T> = DataTableRow<T>;
 interface DataTableProps<TEntry>
     extends Omit<AdminDataTableProps<TEntry>, "loading" | "stickyHeader"> {
     loadingInitial?: AdminDataTableProps<TEntry>["loading"];
-    stickyHeader?: number;
+    stickyRows?: number;
 }
 
 /**
@@ -71,10 +71,10 @@ interface DataTableProps<TEntry>
  */
 const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
     loadingInitial,
-    stickyHeader,
+    stickyRows,
     ...props
 }: DataTableProps<T>) => {
-    return <AdminDataTable {...props} loading={loadingInitial} stickyHeader={!!stickyHeader} />;
+    return <AdminDataTable {...props} loading={loadingInitial} stickyHeader={!!stickyRows} />;
 };
 
 export {
