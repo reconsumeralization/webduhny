@@ -9,7 +9,7 @@ const Head = ({ className, children, ...props }: React.ThHTMLAttributes<HTMLTabl
         )}
         {...props}
     >
-        <div className={"flex items-center gap-xxs"}>{children}</div>
+        {children}
     </th>
 );
 

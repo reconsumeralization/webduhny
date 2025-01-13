@@ -1,7 +1,7 @@
 import React from "react";
 import { cn, cva, VariantProps } from "~/utils";
 
-const columnSorterVariants = cva("cursor-auto", {
+const columnSorterVariants = cva("flex items-center gap-xxs cursor-auto", {
     variants: {
         sortable: {
             true: "cursor-pointer"
