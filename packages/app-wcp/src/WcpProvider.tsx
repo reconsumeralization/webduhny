@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useMemo, useState} from "react";
 import { WcpProviderComponent } from "./contexts";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -54,7 +54,7 @@ interface WcpProviderProps {
     children: React.ReactNode;
 }
 
-export const WcpProvider = React.memo(({ children, loader }: WcpProviderProps) => {
+export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
     // If `REACT_APP_WCP_PROJECT_ID` environment variable is missing, we can immediately exit.
     if (!process.env.REACT_APP_WCP_PROJECT_ID) {
         return <WcpProviderComponent project={null}>{children}</WcpProviderComponent>;
@@ -71,6 +71,7 @@ export const WcpProvider = React.memo(({ children, loader }: WcpProviderProps) =
         // Do nothing.
         return undefined;
     }, []);
+
 
     const [project, setProject] = useState<WcpProject | null | undefined>(cachedProject);
 
@@ -94,6 +95,4 @@ export const WcpProvider = React.memo(({ children, loader }: WcpProviderProps) =
     }
 
     return <WcpProviderComponent project={project}>{children}</WcpProviderComponent>;
-});
-
-WcpProvider.displayName = "WcpProvider";
+};
