@@ -2,8 +2,14 @@ import React from "react";
 import {
     DataTable as AdminDataTable,
     DataTableDefaultData,
-    DataTableProps as AdminDataTableProps
+    DataTableProps as AdminDataTableProps,
+    DataTableSorting,
+    OnDataTableSortingChange
 } from "@webiny/admin-ui";
+
+type DefaultData = DataTableDefaultData;
+type OnSortingChange = OnDataTableSortingChange;
+type Sorting = DataTableSorting;
 
 interface DataTableProps<TEntry>
     extends Omit<AdminDataTableProps<TEntry>, "loading" | "stickyHeader"> {
@@ -15,10 +21,12 @@ interface DataTableProps<TEntry>
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `DataTable` component from the `@webiny/admin-ui` package instead.
  */
-export const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
+const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
     loadingInitial,
     stickyHeader,
     ...props
 }: DataTableProps<T>) => {
     return <AdminDataTable {...props} loading={loadingInitial} stickyHeader={!!stickyHeader} />;
 };
+
+export { DataTable, type DefaultData, type OnSortingChange, type Sorting };
