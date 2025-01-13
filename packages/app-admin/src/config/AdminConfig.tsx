@@ -13,7 +13,7 @@ interface AdminConfig {
     themes: ThemeConfig[];
 }
 
-function useAdminConfig() {
+function use() {
     const config = base.useConfig();
 
     return {
@@ -21,17 +21,17 @@ function useAdminConfig() {
     };
 }
 
-export function AdminConfigProvider({ children }:any) {
-    const config = base.useConfig();
-    console.log('running base.useConfig in AdminConfigProvider', config);
-    return (
-        <AdminWithConfig>
-            {children}
-        </AdminWithConfig>
-    );
-}
+export const AdminConfigProvider = createProvider(Original => {
+    return function AdminConfigProvider({ children }) {
+        return (
+            <AdminWithConfig>
+                <Original>{children}</Original>
+            </AdminWithConfig>
+        );
+    };
+});
 
 export const AdminConfig = Object.assign(base.Config, {
     Theme,
-    useAdminConfig
+    use
 });

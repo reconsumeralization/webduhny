@@ -28,6 +28,7 @@ export interface AdminThemeColor {
 }
 
 const Color = makeDecoratable("AdminThemeColor", ({ palette, color, shade }: AdminThemeColor) => {
+    console.log('yeeey');
     return (
         <>
             <Property name={"colors"} array={true}>

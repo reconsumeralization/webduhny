@@ -15,6 +15,7 @@ import { NavigationProvider } from "./ui/Navigation";
 import { createDialogsProvider } from "~/components/Dialogs/DialogsContext";
 import { DefaultIcons, IconPickerConfigProvider } from "~/components/IconPicker/config";
 import { AdminConfigProvider } from "~/config/AdminConfig";
+import { AssignAdminTheme } from "~/components/AssignAdminTheme";
 
 export interface AdminProps {
     createApolloClient: ApolloClientFactory;
@@ -31,29 +32,28 @@ export const Admin = ({ children, createApolloClient }: AdminProps) => {
 
     return (
         <ApolloProvider>
-            <AdminConfigProvider>
-                <ThemeProvider>
-                    <WcpProvider loader={<CircularProgress label={"Loading..."} />}>
-                        <App
-                            providers={[
-                                TelemetryProvider,
-                                UIProviders,
-                                UiStateProvider,
-                                SearchProvider,
-                                UserMenuProvider,
-                                NavigationProvider,
-                                DialogsProvider,
-                                IconPickerConfigProvider,
-                                AdminUiStateProvider
-                            ]}
-                        >
-                            <Base />
-                            <DefaultIcons />
-                            {children}
-                        </App>
-                    </WcpProvider>
-                </ThemeProvider>
-            </AdminConfigProvider>
+            <ThemeProvider>
+                <WcpProvider loader={<CircularProgress label={"Loading..."} />}>
+                    <App
+                        providers={[
+                            TelemetryProvider,
+                            UIProviders,
+                            UiStateProvider,
+                            SearchProvider,
+                            UserMenuProvider,
+                            NavigationProvider,
+                            DialogsProvider,
+                            IconPickerConfigProvider,
+                            AdminConfigProvider,
+                            AdminUiStateProvider
+                        ]}
+                    >
+                        <Base />
+                        <DefaultIcons />
+                        {children}
+                    </App>
+                </WcpProvider>
+            </ThemeProvider>
         </ApolloProvider>
     );
 };

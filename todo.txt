@@ -1,4 +1,5 @@
 - add comments in utils.ts
 - theme base on tenant
 - react config api
-- inspect React.memo in AdminTheme comp
+- multi theme assignment
+- caching of wcp license
