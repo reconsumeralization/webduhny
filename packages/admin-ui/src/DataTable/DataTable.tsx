@@ -210,6 +210,7 @@ const defineColumns = <T,>(
                                     onCheckedChange={props.table.toggleAllPageRowsSelected}
                                     aria-label="Select all"
                                     disabled={!canSelectAllRows}
+                                    onClick={e => e.stopPropagation()}
                                 />
                                 {firstColumn.header
                                     ? React.createElement(firstColumn.header, props)
