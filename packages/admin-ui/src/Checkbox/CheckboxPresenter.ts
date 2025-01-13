@@ -36,7 +36,8 @@ class CheckboxPresenter implements ICheckboxPresenter {
 
     get vm() {
         return {
-            item: this.item ? CheckboxItemMapper.toFormatted(this.item) : undefined
+            item: this.item ? CheckboxItemMapper.toFormatted(this.item) : undefined,
+            hasLabel: this.item ? !!this.item.label : false
         };
     }
 

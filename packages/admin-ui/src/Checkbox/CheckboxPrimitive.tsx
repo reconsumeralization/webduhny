@@ -68,19 +68,20 @@ interface CheckboxPrimitiveVm {
 type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange"> &
     NonNullable<CheckboxPrimitiveVm["item"]> & {
         changeChecked: (checked: boolean) => void;
+        hasLabel: boolean;
     };
 
 const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitives.Root>,
     CheckboxPrimitiveRendererProps
->(({ label, id, indeterminate, changeChecked, className, ...props }, ref) => {
+>(({ label, id, hasLabel, indeterminate, changeChecked, className, ...props }, ref) => {
     return (
         <div className="flex items-start space-x-sm-extra">
             <CheckboxPrimitives.Root
                 ref={ref}
                 {...props}
                 id={id}
-                className={cn(checkboxVariants({ indeterminate, hasLabel: !!label }), className)}
+                className={cn(checkboxVariants({ indeterminate, hasLabel }), className)}
                 onCheckedChange={changeChecked}
             >
                 <span className={cn("flex items-center justify-center")}>
@@ -90,7 +91,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                     </CheckboxPrimitives.Indicator>
                 </span>
             </CheckboxPrimitives.Root>
-            {label && <Label id={id} text={label} weight={"light"} className={"text-md"} />}
+            {hasLabel && <Label id={id} text={label} weight={"light"} className={"text-md"} />}
         </div>
     );
 });
@@ -117,6 +118,7 @@ const DecoratableCheckboxPrimitive = React.forwardRef<
         <CheckboxPrimitiveRenderer
             {...props}
             {...vm.item}
+            hasLabel={vm.hasLabel}
             changeChecked={changeChecked}
             ref={ref}
         />
