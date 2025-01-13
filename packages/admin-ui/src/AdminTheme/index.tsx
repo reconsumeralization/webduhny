@@ -1,4 +1,3 @@
-// @ts-nocheck as this file is not used in the project
 import React from "react";
 import { ColorsObject } from "./types";
 import { assignColorCssVariables } from "./utils";

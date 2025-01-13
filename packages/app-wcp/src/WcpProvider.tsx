@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { WcpProviderComponent } from "./contexts";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { GetWcpProjectGqlResponse, WcpProject } from "~/types";
+
+const LOCAL_STORAGE_KEY = `webiny_wcp_project`;
 
 export const GET_WCP_PROJECT = gql`
     query GetWcpProject {
@@ -52,15 +54,27 @@ interface WcpProviderProps {
     children: React.ReactNode;
 }
 
-export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
+export const WcpProvider = React.memo(({ children, loader }: WcpProviderProps) => {
     // If `REACT_APP_WCP_PROJECT_ID` environment variable is missing, we can immediately exit.
     if (!process.env.REACT_APP_WCP_PROJECT_ID) {
         return <WcpProviderComponent project={null}>{children}</WcpProviderComponent>;
     }
 
-    const [project, setProject] = useState<WcpProject | null | undefined>(undefined);
+    const cachedProject = useMemo(() => {
+        try {
+            const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (localData) {
+                return JSON.parse(localData);
+            }
+        } catch {}
+
+        // Do nothing.
+        return undefined;
+    }, []);
+
+    const [project, setProject] = useState<WcpProject | null | undefined>(cachedProject);
+
     useQuery<GetWcpProjectGqlResponse>(GET_WCP_PROJECT, {
-        skip: project !== undefined,
         context: {
             headers: {
                 "x-tenant": "root"
@@ -68,6 +82,7 @@ export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
         },
         onCompleted: response => {
             setProject(response.wcp.getProject.data);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response.wcp.getProject.data));
         }
     });
 
@@ -75,9 +90,10 @@ export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
     // has been resolved, then it becomes either `null` or `WcpProject`, and that's when we can continue
     // rendering child React components.
     if (project === undefined) {
-        console.log('rendering loader')
         return loader || null;
     }
 
     return <WcpProviderComponent project={project}>{children}</WcpProviderComponent>;
-};
+});
+
+WcpProvider.displayName = "WcpProvider";
