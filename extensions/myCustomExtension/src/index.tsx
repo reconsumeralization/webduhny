@@ -1,12 +1,14 @@
 // extensions/adminTheme/src/index.tsx
 import React from "react";
-import { AdminConfig } from "@webiny/app-admin";
-import {useSecurity} from "@webiny/app-serverless-cms";
+import { AdminConfig, Plugin } from "@webiny/app-admin";
+import { useSecurity } from "@webiny/app-serverless-cms";
 // import { IsNotRootTenant, IsRootTenant } from "@webiny/app-tenant-manager";
 // import { useSecurity } from "@webiny/app-serverless-cms";
 
 const { Theme } = AdminConfig;
-export const Extension = () => {
+
+const SomethingWithSecurityMustBeChildOfPlugin = () => {
+    console.log("Try using security");
     const sec = useSecurity();
     console.log(sec)
     return null;
@@ -30,4 +32,13 @@ export const Extension = () => {
     //         </IsNotRootTenant>
     //     </>
     // );
+};
+
+export const Extension = () => {
+    return (
+        <Plugin>
+            {/* <Plugin> element makes its children render here: `packages/app/src/App.tsx:144` */}
+            <SomethingWithSecurityMustBeChildOfPlugin />
+        </Plugin>
+    );
 };
