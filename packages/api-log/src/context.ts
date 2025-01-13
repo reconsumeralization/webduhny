@@ -10,6 +10,7 @@ export interface ICreateLoggerContextParams {
     documentClient?: DynamoDBDocument;
     getTenant?: () => string;
     getLocale?: () => string;
+    createGraphQL?: boolean;
 }
 
 const getDocumentClient = (context: Context) => {
@@ -59,7 +60,7 @@ export const createContextPlugin = (params?: ICreateLoggerContextParams) => {
                 checkPermission: checkPermissionFactory({ getContext })
             })
         };
-        context.plugins.register(createGraphQl());
+        context.plugins.register(createGraphQl(params));
     });
 
     plugin.name = "logger.createContext";
