@@ -28,6 +28,6 @@ export interface SkeletonProps {
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Skeleton` component from the `@webiny/admin-ui` package instead.
  */
-export const Skeleton = ({}: SkeletonProps) => {
-    return <AdminSkeleton className={"w-full, h-full"} />;
+export const Skeleton = ({ className }: SkeletonProps) => {
+    return <AdminSkeleton className={className} />;
 };

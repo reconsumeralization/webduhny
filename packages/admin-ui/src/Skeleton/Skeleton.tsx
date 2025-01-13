@@ -4,7 +4,7 @@ import { cn, makeDecoratable } from "~/utils";
 const DecoratableSkeleton = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <div
-            className={cn("animate-pulse rounded-md bg-neutral-dimmed w-full h-full", className)}
+            className={cn("animate-pulse rounded-md bg-neutral-dimmed size-full", className)}
             {...props}
         />
     );
