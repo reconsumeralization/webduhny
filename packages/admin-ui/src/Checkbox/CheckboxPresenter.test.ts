@@ -13,7 +13,7 @@ describe("CheckboxPresenter", () => {
                 label: "Label"
             });
             expect(presenter.vm.item?.label).toEqual("Label");
-            expect(presenter.vm.hasLabel).toEqual(true);
+            expect(presenter.vm.item?.hasLabel).toEqual(true);
         }
 
         // `id`
@@ -61,9 +61,9 @@ describe("CheckboxPresenter", () => {
                 id: expect.any(String),
                 checked: false,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: false
             });
-            expect(presenter.vm.hasLabel).toEqual(false);
         }
     });
 

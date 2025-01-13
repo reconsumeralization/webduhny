@@ -3,6 +3,7 @@ export * from "./Avatar";
 export * from "./Button";
 export * from "./Card";
 export * from "./Checkbox";
+export * from "./CodeEditor";
 export * from "./DataTable";
 export * from "./FormComponent";
 export * from "./Grid";

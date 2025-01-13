@@ -9,7 +9,8 @@ export class CheckboxItemMapper {
             value: item.value,
             checked: item.checked,
             indeterminate: item.indeterminate,
-            disabled: item.disabled
+            disabled: item.disabled,
+            hasLabel: !!item.label
         };
     }
 }

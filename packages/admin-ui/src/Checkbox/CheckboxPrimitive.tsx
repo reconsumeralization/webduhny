@@ -68,7 +68,6 @@ interface CheckboxPrimitiveVm {
 type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange"> &
     NonNullable<CheckboxPrimitiveVm["item"]> & {
         changeChecked: (checked: boolean) => void;
-        hasLabel: boolean;
     };
 
 const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
@@ -118,7 +117,6 @@ const DecoratableCheckboxPrimitive = React.forwardRef<
         <CheckboxPrimitiveRenderer
             {...props}
             {...vm.item}
-            hasLabel={vm.hasLabel}
             changeChecked={changeChecked}
             ref={ref}
         />

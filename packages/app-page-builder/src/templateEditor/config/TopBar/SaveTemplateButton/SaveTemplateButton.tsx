@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import styled from "@emotion/styled";
-import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useRouter } from "@webiny/react-router";
+import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";

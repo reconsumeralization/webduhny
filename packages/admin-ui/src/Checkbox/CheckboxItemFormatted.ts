@@ -7,4 +7,5 @@ export interface CheckboxItemFormatted {
     checked: boolean;
     indeterminate: boolean;
     disabled: boolean;
+    hasLabel: boolean;
 }
