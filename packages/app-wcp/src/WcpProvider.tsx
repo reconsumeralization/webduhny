@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, { useState } from "react";
 import { WcpProviderComponent } from "./contexts";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -54,26 +54,25 @@ interface WcpProviderProps {
     children: React.ReactNode;
 }
 
+const projectFromLocalStorage = () => {
+    try {
+        const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (localData) {
+            return JSON.parse(localData);
+        }
+    } catch {}
+
+    // Do nothing.
+    return undefined;
+};
+
 export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
     // If `REACT_APP_WCP_PROJECT_ID` environment variable is missing, we can immediately exit.
     if (!process.env.REACT_APP_WCP_PROJECT_ID) {
         return <WcpProviderComponent project={null}>{children}</WcpProviderComponent>;
     }
 
-    const cachedProject = useMemo(() => {
-        try {
-            const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
-            if (localData) {
-                return JSON.parse(localData);
-            }
-        } catch {}
-
-        // Do nothing.
-        return undefined;
-    }, []);
-
-
-    const [project, setProject] = useState<WcpProject | null | undefined>(cachedProject);
+    const [project, setProject] = useState<WcpProject | null | undefined>(projectFromLocalStorage);
 
     useQuery<GetWcpProjectGqlResponse>(GET_WCP_PROJECT, {
         context: {
