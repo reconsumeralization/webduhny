@@ -12460,7 +12460,7 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
-    aws-elasticsearch-connector: "npm:^9.2.0"
+    aws-elasticsearch-connector: "patch:aws-elasticsearch-connector@npm%3A9.2.0#~/.yarn/patches/aws-elasticsearch-connector-npm-9.2.0-e1245671b1.patch"
     elastic-ts: "npm:^0.12.0"
     rimraf: "npm:^6.0.1"
     typescript: "npm:5.3.3"
@@ -17912,7 +17912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-elasticsearch-connector@npm:^9.2.0":
+"aws-elasticsearch-connector@npm:9.2.0":
   version: 9.2.0
   resolution: "aws-elasticsearch-connector@npm:9.2.0"
   dependencies:
@@ -17921,6 +17921,18 @@ __metadata:
     "@elastic/elasticsearch": ">=6"
     aws-sdk: ^2.831.0
   checksum: 10/e81e01f7eec78346c047d66414de72ed8a93cabe62f3994680b384476899fcbbc9b2a30a012f9de280cab5d2dd062ec1b48dbafbcc20b9e04472386b85a8256c
+  languageName: node
+  linkType: hard
+
+"aws-elasticsearch-connector@patch:aws-elasticsearch-connector@npm%3A9.2.0#~/.yarn/patches/aws-elasticsearch-connector-npm-9.2.0-e1245671b1.patch":
+  version: 9.2.0
+  resolution: "aws-elasticsearch-connector@patch:aws-elasticsearch-connector@npm%3A9.2.0#~/.yarn/patches/aws-elasticsearch-connector-npm-9.2.0-e1245671b1.patch::version=9.2.0&hash=f6a025"
+  dependencies:
+    aws4: "npm:^1.11.0"
+  peerDependencies:
+    "@elastic/elasticsearch": ">=6"
+    aws-sdk: ^2.831.0
+  checksum: 10/253bfcdd489af5cc4147953f8a1e4e9dcbc0286f0f730f1f133ea63839669b156cfea79da71a63157b1f0c1d3d6f6aa5ef8b2bc30b8aacfd75e4623e781ce595
   languageName: node
   linkType: hard
 
