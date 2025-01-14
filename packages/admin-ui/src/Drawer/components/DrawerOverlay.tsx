@@ -1,12 +1,12 @@
 import * as React from "react";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
+import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { cn } from "~/utils";
 
-export const SheetOverlay = React.forwardRef<
-    React.ElementRef<typeof SheetPrimitive.Overlay>,
-    React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+export const DrawerOverlay = React.forwardRef<
+    React.ElementRef<typeof DrawerPrimitive.Overlay>,
+    React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-    <SheetPrimitive.Overlay
+    <DrawerPrimitive.Overlay
         ref={ref}
         className={cn(
             "fixed inset-0 z-50 bg-neutral-dark/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -16,4 +16,4 @@ export const SheetOverlay = React.forwardRef<
     />
 ));
 
-SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
+DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;

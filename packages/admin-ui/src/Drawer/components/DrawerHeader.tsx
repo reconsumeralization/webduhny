@@ -1,26 +1,26 @@
 import * as React from "react";
 import { cn } from "~/utils";
-import { type SheetProps } from "../Sheet";
-import { SheetTitle } from "./SheetTitle";
-import { SheetDescription } from "./SheetDescription";
+import { type DrawerProps } from "../Drawer";
+import { DrawerTitle } from "./DrawerTitle";
+import { DrawerDescription } from "./DrawerDescription";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-export type SheetHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<SheetProps, "title" | "description">;
+export type DrawerHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
+    Pick<DrawerProps, "title" | "description">;
 
-export const SheetHeader = ({ title, description, className, ...props }: SheetHeaderProps) => {
-    let renderedTitle = <SheetTitle>{title}</SheetTitle>;
+export const DrawerHeader = ({ title, description, className, ...props }: DrawerHeaderProps) => {
+    let renderedTitle = <DrawerTitle>{title}</DrawerTitle>;
     if (!title) {
         renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
     }
 
     // If there is no description, use the title as the description, but visually hide it.
     // We're doing this because, without a description, warnings are thrown in the console.
-    let renderedDescription = <SheetDescription>{description}</SheetDescription>;
+    let renderedDescription = <DrawerDescription>{description}</DrawerDescription>;
     if (!description) {
         renderedDescription = (
             <VisuallyHidden.Root>
-                <SheetDescription>{title}</SheetDescription>
+                <DrawerDescription>{title}</DrawerDescription>
             </VisuallyHidden.Root>
         );
     }

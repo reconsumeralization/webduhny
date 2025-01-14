@@ -1,25 +1,25 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Sheet } from "./Sheet";
+import { Drawer } from "./Drawer";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
 import { Tabs, TabsContent, TabsTrigger } from "~/Tabs";
 
-const meta: Meta<typeof Sheet> = {
-    title: "Components/Sheet",
-    component: Sheet,
+const meta: Meta<typeof Drawer> = {
+    title: "Components/Drawer",
+    component: Drawer,
     tags: ["autodocs"],
     argTypes: {}
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Sheet>;
+type Story = StoryObj<typeof Drawer>;
 
 export const Default: Story = {
     args: {
         trigger: <Button variant="primary" text={"Open"} />,
-        title: "Sheet Title",
+        title: "Drawer Title",
         description: "A short dialog description.",
         info: (
             <>
@@ -36,12 +36,12 @@ export const Default: Story = {
             </>
         ),
         onOpenChange: opened => {
-            console.log(`Sheet is ${opened ? "opened" : "closed"}.`);
+            console.log(`Drawer is ${opened ? "opened" : "closed"}.`);
         },
         actions: (
             <>
-                <Sheet.CancelButton />
-                <Sheet.ConfirmButton />
+                <Drawer.CancelButton />
+                <Drawer.ConfirmButton />
             </>
         )
     },
@@ -55,7 +55,7 @@ export const ControlledVisibility: Story = {
         return (
             <>
                 <Button variant="primary" text={"Open"} onClick={() => setOpen(true)} />
-                <Sheet
+                <Drawer
                     {...props}
                     open={open}
                     onOpenChange={open => {
@@ -77,10 +77,10 @@ export const WithDropdownMenu: Story = {
         return (
             <>
                 <DropdownMenu trigger={<Button variant="primary" text={"Open"} />}>
-                    <DropdownMenu.Item content={"Open Sheet"} onClick={() => setOpen(true)} />
+                    <DropdownMenu.Item content={"Open Drawer"} onClick={() => setOpen(true)} />
                 </DropdownMenu>
 
-                <Sheet {...props} open={open} onOpenChange={() => setOpen(false)} />
+                <Drawer {...props} open={open} onOpenChange={() => setOpen(false)} />
             </>
         );
     },
@@ -140,7 +140,7 @@ export const WithTabs: Story = {
     }
 };
 
-export const DropdownMenuInSheet: Story = {
+export const DropdownMenuInDrawer: Story = {
     args: {
         ...Default.args,
         children: (

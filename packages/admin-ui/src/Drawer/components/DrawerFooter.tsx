@@ -1,12 +1,12 @@
 import * as React from "react";
 import { cn } from "~/utils";
 
-export interface SheetFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     actions?: React.ReactNode;
     info?: React.ReactNode;
 }
 
-export const SheetFooter = ({ actions, info, className, ...props }: SheetFooterProps) => {
+export const DrawerFooter = ({ actions, info, className, ...props }: DrawerFooterProps) => {
     if (!actions && !info) {
         return null;
     }
@@ -21,4 +21,4 @@ export const SheetFooter = ({ actions, info, className, ...props }: SheetFooterP
     );
 };
 
-SheetFooter.displayName = "SheetFooter";
+DrawerFooter.displayName = "DrawerFooter";

@@ -4,8 +4,8 @@ import {
     DrawerHeaderProps as RmwcDrawerHeaderProps
 } from "@rmwc/drawer";
 
-import { Sheet as AdminUiSheet, type SheetProps as AdminUiSheetProps } from "@webiny/admin-ui";
-import { SheetHeader as AdminUiSheetHeader } from "@webiny/admin-ui/Sheet/components/SheetHeader";
+import { Drawer as AdminUiDrawer, type DrawerProps as AdminUiDrawerProps } from "@webiny/admin-ui";
+import { DrawerHeader as AdminUiDrawerHeader } from "@webiny/admin-ui/Drawer/components/DrawerHeader";
 
 /**
  * Use Drawer component to display navigation for the whole app or just a small section of it.
@@ -14,7 +14,7 @@ import { SheetHeader as AdminUiSheetHeader } from "@webiny/admin-ui/Sheet/compon
  */
 const Drawer = ({ onClose, children, ...props }: DrawerProps) => {
     return (
-        <AdminUiSheet
+        <AdminUiDrawer
             side={"left"}
             onOpenChange={opened => {
                 if (!opened && onClose) {
@@ -24,7 +24,7 @@ const Drawer = ({ onClose, children, ...props }: DrawerProps) => {
             {...props}
         >
             {children}
-        </AdminUiSheet>
+        </AdminUiDrawer>
     );
 };
 
@@ -61,7 +61,7 @@ type DrawerHeaderProps = RmwcDrawerHeaderProps & {
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
 const DrawerHeader = (props: DrawerHeaderProps) => {
-    return <AdminUiSheetHeader title={props.children} description={""} />;
+    return <AdminUiDrawerHeader title={props.children} description={""} />;
 };
 
 export type DrawerContentProps = RmwcDrawerContentProps & {
@@ -84,7 +84,7 @@ const DrawerContent = (props: DrawerContentProps) => {
     return <>{props.children}</>;
 };
 
-export interface DrawerProps extends AdminUiSheetProps {
+export interface DrawerProps extends AdminUiDrawerProps {
     /**
      * @deprecated Property is no longer supported.
      */

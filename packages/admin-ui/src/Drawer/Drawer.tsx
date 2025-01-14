@@ -1,19 +1,19 @@
 import * as React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
-import { SheetContent } from "./components/SheetContent";
-import { SheetFooter } from "./components/SheetFooter";
-import { SheetHeader } from "./components/SheetHeader";
-import { SheetOverlay } from "./components/SheetOverlay";
-import { SheetPortal } from "./components/SheetPortal";
-import { SheetRoot } from "./components/SheetRoot";
-import { SheetTrigger } from "./components/SheetTrigger";
-import { SheetClose } from "./components/SheetClose";
+import { DrawerContent } from "./components/DrawerContent";
+import { DrawerFooter } from "./components/DrawerFooter";
+import { DrawerHeader } from "./components/DrawerHeader";
+import { DrawerOverlay } from "./components/DrawerOverlay";
+import { DrawerPortal } from "./components/DrawerPortal";
+import { DrawerRoot } from "./components/DrawerRoot";
+import { DrawerTrigger } from "./components/DrawerTrigger";
+import { DrawerClose } from "./components/DrawerClose";
 import { Button, ButtonProps } from "~/Button";
 import { Separator } from "~/Separator";
 
-export interface SheetProps
-    extends React.ComponentPropsWithoutRef<typeof SheetRoot>,
-        Omit<React.ComponentPropsWithoutRef<typeof SheetContent>, "title"> {
+export interface DrawerProps
+    extends React.ComponentPropsWithoutRef<typeof DrawerRoot>,
+        Omit<React.ComponentPropsWithoutRef<typeof DrawerContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode | string;
     showCloseButton?: boolean;
@@ -26,7 +26,7 @@ export interface SheetProps
     tabs?: boolean;
 }
 
-const SheetBase = (props: SheetProps) => {
+const DrawerBase = (props: DrawerProps) => {
     const { rootProps, triggerProps, contentProps, headerProps, footerProps, otherProps } =
         React.useMemo(() => {
             const {
@@ -76,46 +76,44 @@ const SheetBase = (props: SheetProps) => {
         }, [props]);
 
     return (
-        <SheetRoot {...rootProps}>
-            {triggerProps.children && <SheetTrigger {...triggerProps} asChild />}
-            <SheetPortal>
-                <SheetOverlay />
-                <SheetContent {...contentProps}>
+        <DrawerRoot {...rootProps}>
+            {triggerProps.children && <DrawerTrigger {...triggerProps} asChild />}
+            <DrawerPortal>
+                <DrawerOverlay />
+                <DrawerContent {...contentProps}>
                     <div>
-                        <SheetHeader {...headerProps} />
+                        <DrawerHeader {...headerProps} />
                         {otherProps.separators && <Separator />}
                     </div>
-                    <div className={"h-full"}>
-                        {contentProps.children}
-                    </div>
+                    <div className={"h-full"}>{contentProps.children}</div>
 
                     <div>
                         {otherProps.separators && <Separator />}
-                        <SheetFooter {...footerProps} />
+                        <DrawerFooter {...footerProps} />
                     </div>
-                </SheetContent>
-            </SheetPortal>
-        </SheetRoot>
+                </DrawerContent>
+            </DrawerPortal>
+        </DrawerRoot>
     );
 };
 
-SheetBase.displayName = "Sheet";
+DrawerBase.displayName = "Drawer";
 
-const DecoratableSheet = makeDecoratable("Sheet", SheetBase);
+const DecoratableDrawer = makeDecoratable("Drawer", DrawerBase);
 
 const ConfirmButton = (props: ButtonProps) => (
     <Button text={"Confirm"} {...props} variant="primary" />
 );
 
 const CancelButton = (props: ButtonProps) => (
-    <SheetClose asChild>
+    <DrawerClose asChild>
         <Button text={"Cancel"} {...props} variant="secondary" />
-    </SheetClose>
+    </DrawerClose>
 );
 
-const Sheet = withStaticProps(DecoratableSheet, {
+const Drawer = withStaticProps(DecoratableDrawer, {
     ConfirmButton,
     CancelButton
 });
 
-export { Sheet };
+export { Drawer };

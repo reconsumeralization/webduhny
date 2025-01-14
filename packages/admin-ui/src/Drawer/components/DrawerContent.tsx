@@ -1,17 +1,17 @@
 import * as React from "react";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
+import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { cn, cva, VariantProps } from "~/utils";
 import { IconButton } from "~/Button";
 
-export interface SheetContentProps
-    extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-        VariantProps<typeof sheetVariants> {
+export interface DrawerContentProps
+    extends React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>,
+        VariantProps<typeof drawerVariants> {
     showCloseButton?: boolean;
     width?: string;
 }
 
-const sheetVariants = cva(
+const drawerVariants = cva(
     [
         "fixed z-50 gap-4 bg-neutral-base py-md pl-lg pr-md text-md text-neutral-strong focus-visible:outline-none",
         "transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
@@ -35,29 +35,29 @@ const sheetVariants = cva(
     }
 );
 
-const SheetContent = React.forwardRef<
-    React.ElementRef<typeof SheetPrimitive.Content>,
-    SheetContentProps
+const DrawerContent = React.forwardRef<
+    React.ElementRef<typeof DrawerPrimitive.Content>,
+    DrawerContentProps
 >(({ side = "right", className, style = {}, children, showCloseButton, ...props }, ref) => (
-    <SheetPrimitive.Content
+    <DrawerPrimitive.Content
         ref={ref}
         {...props}
-        className={cn(sheetVariants({ side }), className)}
+        className={cn(drawerVariants({ side }), className)}
         style={{ width: props.width, ...style }}
     >
         {/* We needed to add this wrapper so that absolute-positioned elements can be placed */}
         {/* inside the dialog. We noticed this while showing a loader inside the dialog. */}
         <div className={"relative flex flex-col justify-between h-full"}>
             {showCloseButton !== false && (
-                <SheetPrimitive.Close asChild className="absolute right-0 top-0">
+                <DrawerPrimitive.Close asChild className="absolute right-0 top-0">
                     <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
-                </SheetPrimitive.Close>
+                </DrawerPrimitive.Close>
             )}
             {children}
         </div>
-    </SheetPrimitive.Content>
+    </DrawerPrimitive.Content>
 ));
 
-SheetContent.displayName = SheetPrimitive.Content.displayName;
+DrawerContent.displayName = DrawerPrimitive.Content.displayName;
 
-export { SheetContent };
+export { DrawerContent };
