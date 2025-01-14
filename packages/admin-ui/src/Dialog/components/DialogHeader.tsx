@@ -4,12 +4,36 @@ import { type DialogProps } from "../Dialog";
 import { DialogTitle } from "./DialogTitle";
 import { DialogDescription } from "./DialogDescription";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { IconButton } from "~/Button";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Icon } from "~/Icon";
 
 export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<DialogProps, "title" | "description">;
+    Pick<DialogProps, "title" | "titleIcon" | "description" | "showCloseButton">;
 
-export const DialogHeader = ({ title, description, className, ...props }: DialogHeaderProps) => {
-    let renderedTitle = <DialogTitle>{title}</DialogTitle>;
+export const DialogHeader = ({
+    title,
+    titleIcon,
+    description,
+    showCloseButton,
+    className,
+    ...props
+}: DialogHeaderProps) => {
+    let renderedTitle = (
+        <DialogTitle>
+            {titleIcon && (
+                <Icon
+                    icon={titleIcon}
+                    label={"asd"}
+                    size={"lg"}
+                    color={"neutral-strong"}
+                    className={"pt-xs"}
+                />
+            )}
+            {title}
+        </DialogTitle>
+    );
     if (!title) {
         renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
     }
@@ -32,11 +56,18 @@ export const DialogHeader = ({ title, description, className, ...props }: Dialog
         <div
             {...props}
             className={cn(
-                "flex flex-col gap-y-xxs mb-lg text-center sm:text-left text-neutral-primary",
+                "flex flex-col gap-sm px-lg py-md text-center sm:text-left text-neutral-primary",
                 className
             )}
         >
-            {renderedTitle}
+            <div className={"relative"}>
+                {showCloseButton !== false && (
+                    <DialogPrimitive.Close asChild className="absolute right-0 top-0">
+                        <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
+                    </DialogPrimitive.Close>
+                )}
+                {renderedTitle}
+            </div>
             {renderedDescription}
         </div>
     );

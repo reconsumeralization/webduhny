@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
+import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -118,6 +119,13 @@ export const DropdownMenuInDialog: Story = {
                 </DropdownMenu>
             </>
         )
+    }
+};
+
+export const WithTitleIcon: Story = {
+    args: {
+        ...Default.args,
+        titleIcon: <DoorbellIcon />
     }
 };
 

@@ -1,4 +1,0 @@
-- missing icon in title
-- vertical align of h4 and X icon
-- dropdown menus issue
-- tabs

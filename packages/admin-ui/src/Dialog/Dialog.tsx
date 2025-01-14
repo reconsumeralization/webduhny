@@ -1,8 +1,9 @@
 import * as React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
 import { DialogContent } from "./components/DialogContent";
-import { DialogFooter } from "~/Dialog/components/DialogFooter";
 import { DialogHeader } from "~/Dialog/components/DialogHeader";
+import { DialogBody } from "~/Dialog/components/DialogBody";
+import { DialogFooter } from "~/Dialog/components/DialogFooter";
 import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
 import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
@@ -15,8 +16,10 @@ export interface DialogProps
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode | string;
+    titleIcon?: React.ReactElement;
     showCloseButton?: boolean;
     preventOutsideDismiss?: boolean;
+    bodyPadding?: boolean;
     description?: React.ReactNode | string;
     children: React.ReactNode;
     actions?: React.ReactNode;
@@ -24,7 +27,7 @@ export interface DialogProps
 }
 
 const DialogBase = (props: DialogProps) => {
-    const { rootProps, triggerProps, contentProps, headerProps, footerProps } =
+    const { rootProps, triggerProps, contentProps, headerProps, bodyProps, footerProps } =
         React.useMemo(() => {
             const {
                 // Root props.
@@ -39,7 +42,13 @@ const DialogBase = (props: DialogProps) => {
 
                 // Header props.
                 title,
+                titleIcon,
                 description,
+                showCloseButton,
+
+                // Body props.
+                children,
+                bodyPadding,
 
                 // Footer props.
                 actions,
@@ -62,7 +71,8 @@ const DialogBase = (props: DialogProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div className={"inline-block"}>{trigger}</div>
                 },
-                headerProps: { title, description },
+                headerProps: { title, titleIcon, description, showCloseButton },
+                bodyProps: { children, bodyPadding },
                 footerProps: { info, actions },
                 contentProps
             };
@@ -74,11 +84,8 @@ const DialogBase = (props: DialogProps) => {
             <DialogPortal>
                 <DialogOverlay />
                 <DialogContent {...contentProps}>
-                    <div>
-                        <DialogHeader {...headerProps} />
-                        {contentProps.children}
-                    </div>
-
+                    <DialogHeader {...headerProps} />
+                    <DialogBody {...bodyProps} />
                     <DialogFooter {...footerProps} />
                 </DialogContent>
             </DialogPortal>
