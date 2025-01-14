@@ -43,7 +43,7 @@ const separatorVariants = cva("shrink-0", {
     }
 });
 
-export type SeparatorProps = React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> &
+type SeparatorProps = React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> &
     VariantProps<typeof separatorVariants>;
 
 const SeparatorBase = ({
@@ -62,8 +62,6 @@ const SeparatorBase = ({
     />
 );
 
-SeparatorBase.displayName = SeparatorPrimitive.Root.displayName;
-
 const Separator = makeDecoratable("Separator", SeparatorBase);
 
-export { Separator };
+export { Separator, type SeparatorProps };

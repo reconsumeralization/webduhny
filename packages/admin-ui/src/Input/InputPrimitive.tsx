@@ -80,12 +80,16 @@ const InputIcon = ({ icon, disabled, position, inputSize, className }: InputIcon
 
 /**
  * Input
+ *
+ * We support both `disabled` and `data-disabled` as well as `focused` and `data-focused` variants
+ * because these variants can be used by both input and div elements. The last one is used by `MultiAutocomplete` component,
+ * where the `inputVariants` is used to style a div that wraps multiple elements (input, Tags, icons, etc.)
  */
 const inputVariants = cva(
     [
-        "w-full border-sm text-md",
+        "w-full border-sm text-md peer",
         "focus-visible:outline-none",
-        "disabled:cursor-not-allowed",
+        "disabled:cursor-not-allowed data-[disabled=true]:cursor-not-allowed",
         "file:bg-transparent file:border-none file:text-sm file:font-semibold"
     ],
     {
@@ -109,19 +113,25 @@ const inputVariants = cva(
                     "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:border-neutral-strong",
                     "focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:border-neutral-black",
+                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:border-neutral-dimmed data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 secondary: [
                     "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:bg-neutral-dimmed",
                     "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
+                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 ghost: [
                     "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:bg-neutral-dimmed/95",
                     "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
+                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-transparent data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ]
             },
             iconPosition: {
@@ -137,7 +147,9 @@ const inputVariants = cva(
                     "border-destructive-default",
                     "hover:border-destructive-default",
                     "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
+                    "data-[focused=true]:border-destructive-default",
+                    "disabled:border-destructive-default",
+                    "data-[disabled=true]:border-destructive-default"
                 ]
             }
         },
@@ -187,7 +199,9 @@ const inputVariants = cva(
                     "border-destructive-subtle bg-destructive-subtle",
                     "hover:border-destructive-subtle",
                     "focus:border-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
+                    "data-[focused=true]:border-destructive-subtle",
+                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle",
+                    "data-[disabled=true]:bg-destructive-subtle data-[disabled=true]:border-destructive-subtle"
                 ]
             }
         ],

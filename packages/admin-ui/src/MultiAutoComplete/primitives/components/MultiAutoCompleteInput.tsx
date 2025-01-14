@@ -4,10 +4,10 @@ import { Command, CommandOptionFormatted } from "~/Command";
 import { Tag } from "~/Tag";
 import { cn, cva, VariantProps } from "~/utils";
 
-const multiAutoCompleteInputVariants = cva("relative", {
+const multiAutoCompleteInputVariants = cva("relative placeholder:text-neutral-dimmed", {
     variants: {
         disabled: {
-            true: "cursor-not-allowed"
+            true: "cursor-not-allowed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
         }
     }
 });
@@ -42,6 +42,7 @@ const MultiAutoCompleteInput = ({
     className,
     ...props
 }: MultiAutoCompleteInputProps) => {
+    const [focused, setFocused] = React.useState<boolean>(false);
     const inputRef = React.useRef<HTMLInputElement>(null);
     const iconPosition = getIconPosition(startIcon, endIcon);
 
@@ -87,7 +88,10 @@ const MultiAutoCompleteInput = ({
                     return;
                 }
                 inputRef?.current?.focus();
+                setFocused(true);
             }}
+            data-disabled={disabled}
+            data-focused={focused}
         >
             {startIcon && (
                 <InputIcon
@@ -105,9 +109,21 @@ const MultiAutoCompleteInput = ({
                     onValueChange={changeValue}
                     placeholder={placeholder}
                     disabled={disabled}
-                    onBlur={closeList}
-                    onFocus={openList}
-                    inputElement={<input type="text" ref={inputRef} />}
+                    onBlur={() => {
+                        setFocused(false);
+                        closeList();
+                    }}
+                    onFocus={() => {
+                        setFocused(true);
+                        openList();
+                    }}
+                    inputElement={
+                        <input
+                            type="text"
+                            ref={inputRef}
+                            className={cn(multiAutoCompleteInputVariants({ disabled }))}
+                        />
+                    }
                 />
             </div>
             {endIcon && (

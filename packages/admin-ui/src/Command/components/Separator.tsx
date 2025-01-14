@@ -5,7 +5,7 @@ import { Separator as SeparatorPrimitive } from "~/Separator";
 type SeparatorProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>;
 
 const Separator = (props: SeparatorProps) => (
-    <CommandPrimitive.Separator asChild {...props}>
+    <CommandPrimitive.Separator {...props}>
         <SeparatorPrimitive variant={"strong"} margin={"md"} />
     </CommandPrimitive.Separator>
 );
