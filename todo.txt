@@ -6,9 +6,3 @@
 - no icon
 - no close btn?
 - all dialog refactors baiscally
-
-DIALOG
-TITLE ICON component
- - works when no icon is set?
-make decoratable on confirm btns
-with tabs storiy
