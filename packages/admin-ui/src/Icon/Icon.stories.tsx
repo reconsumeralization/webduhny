@@ -81,6 +81,13 @@ export const ColorInherit: Story = {
     }
 };
 
+export const SizeXs: Story = {
+    args: {
+        ...Default.args,
+        size: "xs"
+    }
+};
+
 export const SizeSm: Story = {
     args: {
         ...Default.args,
