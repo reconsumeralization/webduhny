@@ -152,7 +152,8 @@ export const createCore = (params: ICreateCoreParams): ICreateCoreResult => {
             ...adminUsersStorage.plugins,
             ...security.plugins,
             createLogger({
-                documentClient
+                documentClient,
+                createGraphQL: true
             }),
             createAdminUsersApp({
                 storageOperations: adminUsersStorage.storageOperations
