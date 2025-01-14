@@ -31,7 +31,7 @@ export interface IPruneLogsExecuteParams<
     I extends IPruneLogsInput = IPruneLogsInput,
     O extends IPruneLogsOutput = IPruneLogsOutput
 > {
-    store: IStore;
+    store: Pick<IStore, "getValue" | "removeValue">;
     list: ILoggerCrudListLogsCallable;
     input: I;
     response: ITaskResponse<I, O>;
