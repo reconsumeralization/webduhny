@@ -7,27 +7,30 @@ import { DrawerOverlay } from "./components/DrawerOverlay";
 import { DrawerPortal } from "./components/DrawerPortal";
 import { DrawerRoot } from "./components/DrawerRoot";
 import { DrawerTrigger } from "./components/DrawerTrigger";
-import { DrawerClose } from "./components/DrawerClose";
-import { Button, ButtonProps } from "~/Button";
-import { Separator } from "~/Separator";
+import { DrawerBody } from "~/Drawer/components/DrawerBody";
+import { TitleIcon } from "./components/TitleIcon";
+import { ConfirmButton } from "./components/ConfirmButton";
+import { CancelButton } from "./components/CancelButton";
 
 export interface DrawerProps
     extends React.ComponentPropsWithoutRef<typeof DrawerRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DrawerContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode | string;
+    titleIcon?: React.ReactElement;
+    modal?: boolean;
     showCloseButton?: boolean;
+    bodyPadding?: boolean;
     description?: React.ReactNode | string;
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
     width?: string;
-    separators?: boolean;
     tabs?: boolean;
 }
 
 const DrawerBase = (props: DrawerProps) => {
-    const { rootProps, triggerProps, contentProps, headerProps, footerProps, otherProps } =
+    const { rootProps, triggerProps, contentProps, headerProps, bodyProps, footerProps } =
         React.useMemo(() => {
             const {
                 // Root props.
@@ -42,14 +45,17 @@ const DrawerBase = (props: DrawerProps) => {
 
                 // Header props.
                 title,
+                titleIcon,
                 description,
+                showCloseButton,
+
+                // Body props.
+                children,
+                bodyPadding,
 
                 // Footer props.
                 actions,
                 info,
-
-                // Other props.
-                separators,
 
                 // Content props.
                 ...rest
@@ -68,29 +74,24 @@ const DrawerBase = (props: DrawerProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div>{trigger}</div>
                 },
-                headerProps: { title, description },
+                headerProps: { title, titleIcon, description, showCloseButton },
+                bodyProps: { children, bodyPadding },
                 footerProps: { info, actions },
-                contentProps: rest,
-                otherProps: { separators }
+                contentProps: rest
             };
         }, [props]);
 
+    console.log('rootProps', rootProps);
     return (
         <DrawerRoot {...rootProps}>
             {triggerProps.children && <DrawerTrigger {...triggerProps} asChild />}
             <DrawerPortal>
-                <DrawerOverlay />
-                <DrawerContent {...contentProps}>
-                    <div>
-                        <DrawerHeader {...headerProps} />
-                        {otherProps.separators && <Separator />}
-                    </div>
-                    <div className={"h-full"}>{contentProps.children}</div>
+                {rootProps.modal && <DrawerOverlay />}
 
-                    <div>
-                        {otherProps.separators && <Separator />}
-                        <DrawerFooter {...footerProps} />
-                    </div>
+                <DrawerContent {...contentProps}>
+                    <DrawerHeader {...headerProps} />
+                    <DrawerBody {...bodyProps} />
+                    <DrawerFooter {...footerProps} />
                 </DrawerContent>
             </DrawerPortal>
         </DrawerRoot>
@@ -101,19 +102,10 @@ DrawerBase.displayName = "Drawer";
 
 const DecoratableDrawer = makeDecoratable("Drawer", DrawerBase);
 
-const ConfirmButton = (props: ButtonProps) => (
-    <Button text={"Confirm"} {...props} variant="primary" />
-);
-
-const CancelButton = (props: ButtonProps) => (
-    <DrawerClose asChild>
-        <Button text={"Cancel"} {...props} variant="secondary" />
-    </DrawerClose>
-);
-
 const Drawer = withStaticProps(DecoratableDrawer, {
     ConfirmButton,
-    CancelButton
+    CancelButton,
+    TitleIcon
 });
 
 export { Drawer };

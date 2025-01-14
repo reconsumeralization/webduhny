@@ -4,25 +4,34 @@ import { type DrawerProps } from "../Drawer";
 import { DrawerTitle } from "./DrawerTitle";
 import { DrawerDescription } from "./DrawerDescription";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { IconButton } from "~/Button";
+import * as DrawerPrimitive from "@radix-ui/react-dialog";
 
 export type DrawerHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<DrawerProps, "title" | "description">;
+    Pick<DrawerProps, "title" | "titleIcon" | "description" | "showCloseButton">;
 
-export const DrawerHeader = ({ title, description, className, ...props }: DrawerHeaderProps) => {
-    let renderedTitle = <DrawerTitle>{title}</DrawerTitle>;
+export const DrawerHeader = ({
+    title,
+    titleIcon,
+    description,
+    showCloseButton,
+    className,
+    ...props
+}: DrawerHeaderProps) => {
+    let renderedTitle = (
+        <DrawerTitle>
+            {titleIcon}
+            {title}
+        </DrawerTitle>
+    );
     if (!title) {
         renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
     }
 
-    // If there is no description, use the title as the description, but visually hide it.
-    // We're doing this because, without a description, warnings are thrown in the console.
     let renderedDescription = <DrawerDescription>{description}</DrawerDescription>;
     if (!description) {
-        renderedDescription = (
-            <VisuallyHidden.Root>
-                <DrawerDescription>{title}</DrawerDescription>
-            </VisuallyHidden.Root>
-        );
+        renderedDescription = <VisuallyHidden.Root>{renderedDescription}</VisuallyHidden.Root>;
     }
 
     if (!title && !description) {
@@ -38,11 +47,18 @@ export const DrawerHeader = ({ title, description, className, ...props }: Drawer
         <div
             {...props}
             className={cn(
-                "flex flex-col gap-y-xs mb-lg text-center sm:text-left text-neutral-primary",
+                "flex flex-col gap-sm px-lg py-md text-center sm:text-left text-neutral-primary",
                 className
             )}
         >
-            {renderedTitle}
+            <div className={"relative"}>
+                {showCloseButton !== false && (
+                    <DrawerPrimitive.Close asChild className="absolute right-0 top-0">
+                        <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
+                    </DrawerPrimitive.Close>
+                )}
+                {renderedTitle}
+            </div>
             {renderedDescription}
         </div>
     );

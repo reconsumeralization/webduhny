@@ -4,6 +4,7 @@ import { Drawer } from "./Drawer";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
 import { Tabs, TabsContent, TabsTrigger } from "~/Tabs";
+import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
 
 const meta: Meta<typeof Drawer> = {
     title: "Components/Drawer",
@@ -96,13 +97,13 @@ export const CustomWidth: Story = {
 };
 
 export const WithSeparators: Story = {
-    args: { ...Default.args, separators: true }
+    args: { ...Default.args }
 };
 
 export const WithTabs: Story = {
     args: {
         ...Default.args,
-        separators: true,
+        bodyPadding: false,
         children: (
             <>
                 <Tabs
@@ -152,5 +153,12 @@ export const DropdownMenuInDrawer: Story = {
                 </DropdownMenu>
             </>
         )
+    }
+};
+
+export const WithTitleIcon: Story = {
+    args: {
+        ...Default.args,
+        titleIcon: <Drawer.TitleIcon icon={<DoorbellIcon />} label={"Icon label..."} />
     }
 };

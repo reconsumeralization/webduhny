@@ -12,7 +12,7 @@ export const DrawerFooter = ({ actions, info, className, ...props }: DrawerFoote
     }
 
     return (
-        <div {...props} className={cn("w-full flex justify-between pt-md", className)}>
+        <div {...props} className={cn("flex justify-between p-lg pt-md-extra", className)}>
             <div className={"text-sm flex items-center"}>
                 <div>{info}</div>
             </div>
