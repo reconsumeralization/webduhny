@@ -28,10 +28,6 @@ const DropdownMenuBase = React.forwardRef<
             open,
             onOpenChange,
 
-            // By auto-assigning the prop to `false`, we're resolving the following issue:
-            // https://github.com/radix-ui/primitives/issues/3141
-            modal = false,
-
             dir,
 
             // Trigger props.
@@ -46,13 +42,12 @@ const DropdownMenuBase = React.forwardRef<
                 defaultOpen,
                 open,
                 onOpenChange,
-                modal,
                 dir
             },
             triggerProps: {
                 // Temporary fix. We need this because `ref` doesn't get passed to components
                 // that are decorated with `makeDecoratable`. This will be fixed in the future.
-                children: <div>{trigger}</div>
+                children: <div className={"inline-block"}>{trigger}</div>
             },
             contentProps: rest
         };

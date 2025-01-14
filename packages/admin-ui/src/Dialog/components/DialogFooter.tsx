@@ -12,7 +12,7 @@ export const DialogFooter = ({ actions, info, className, ...props }: DialogFoote
     }
 
     return (
-        <div {...props} className={cn("flex justify-between", className)}>
+        <div {...props} className={cn("flex justify-between p-lg pt-md-extra", className)}>
             <div className={"text-sm flex items-center"}>
                 <div>{info}</div>
             </div>

@@ -254,7 +254,7 @@ const createThemeScss = normalizedFigmaExport => {
                     ],
                     [
                         `--text-h4: 20px;`,
-                        `--text-h4-leading: 30px;`,
+                        `--text-h4-leading: 32px;`,
                         `--text-h4-tracking: initial;`,
                         `--text-h4-weight: var(--font-weight-semibold);`
                     ],
