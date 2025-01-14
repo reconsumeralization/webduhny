@@ -91,7 +91,7 @@ export type DialogOnClose = () => void;
 
 export interface DialogProps extends AdminUiDialogProps {
     onClose?: DialogOnClose;
-
+    onOpened?: () => void;
     preventOutsideDismiss?: boolean;
 }
 
@@ -99,7 +99,7 @@ export interface DialogProps extends AdminUiDialogProps {
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-export const Dialog = ({ onClose, open, showCloseButton, children, preventOutsideDismiss, ...rest }: DialogProps) => {
+export const Dialog = ({ onClose, onOpened, open, showCloseButton, children, preventOutsideDismiss, ...rest }: DialogProps) => {
     return (
         <AdminUiDialog
             open={open}
@@ -109,6 +109,12 @@ export const Dialog = ({ onClose, open, showCloseButton, children, preventOutsid
                 if (!opened && onClose) {
                     onClose();
                 }
+
+                if (opened && onOpened) {
+                    onOpened();
+                }
+
+
             }}
             {...rest}
         >
