@@ -134,6 +134,19 @@ export const createGraphQlPlugin = () => {
                 error: LogQueryResponseError
             }
 
+            type LogMutationPruneLogsResponseDataTask {
+                id: ID!
+            }
+            
+            type LogMutationPruneLogsResponseData {
+                task: LogMutationPruneLogsResponseDataTask!
+            }
+
+            type LogMutationPruneLogsResponse {
+                data: LogMutationPruneLogsResponseData
+                error: LogQueryResponseError
+            }
+
             input DeleteLogWhereInput {
                 id: ID!
             }
@@ -143,6 +156,7 @@ export const createGraphQlPlugin = () => {
             }
 
             extend type LogsMutation {
+                pruneLogs: LogMutationPruneLogsResponse!
                 deleteLog(where: DeleteLogWhereInput!): LogMutationDeleteLogResponse!
                 deleteLogs(where: DeleteLogsWhereInput!): LogMutationDeleteLogsResponse!
             }
@@ -191,6 +205,11 @@ export const createGraphQlPlugin = () => {
                             throw createZodError(result.error);
                         }
                         return await context.logger.deleteLogs(result.data);
+                    });
+                },
+                pruneLogs: async (_: unknown, __: unknown, context) => {
+                    return resolve(async () => {
+                        return await context.logger.pruneLogs();
                     });
                 }
             }

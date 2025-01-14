@@ -56,6 +56,7 @@ export const createContextPlugin = (params?: ICreateLoggerContextParams) => {
         context.logger = {
             log: logger,
             ...createCrud({
+                getContext,
                 storageOperations,
                 checkPermission: checkPermissionFactory({ getContext })
             })

@@ -66,6 +66,7 @@ export interface ICreateCoreResult {
     adminUsersStorage: AdminUsersStorageOperations;
     tenant: Pick<Tenant, "id" | "name" | "parent">;
     login: (identity?: SecurityIdentity | null) => void;
+    logout: () => void;
 }
 
 export const createCore = (params: ICreateCoreParams): ICreateCoreResult => {
@@ -99,6 +100,7 @@ export const createCore = (params: ICreateCoreParams): ICreateCoreResult => {
         adminUsersStorage: adminUsersStorage.storageOperations,
         tenant: security.tenant,
         login: security.login,
+        logout: security.logout,
         plugins: [
             enableBenchmarkOnEnvironmentVariable(),
             createWcpContext(),
