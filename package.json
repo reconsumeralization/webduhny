@@ -242,7 +242,6 @@
     "@grpc/grpc-js": "^1.11.1",
     "postcss": "^8.4.35",
     "semver": "^7.6.3",
-    "http-proxy-middleware": "^2.0.7",
     "lerna@8.1.2": "patch:lerna@npm%3A8.1.2#./.yarn/patches/lerna-npm-8.1.2-be48ad2329.patch",
     "apollo-link@^1.2.14": "patch:apollo-link@npm%3A1.2.14#./.yarn/patches/apollo-link-npm-1.2.14-74f0ba01f9.patch",
     "apollo-link@^1.0.0": "patch:apollo-link@npm%3A1.2.14#./.yarn/patches/apollo-link-npm-1.2.14-74f0ba01f9.patch",
