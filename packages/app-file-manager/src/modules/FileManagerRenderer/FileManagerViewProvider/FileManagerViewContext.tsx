@@ -32,7 +32,7 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     hasOnSelectCallback: boolean;
     listTitle: string;
     loadMoreFiles: () => void;
-    meta: ListMeta | undefined;
+    meta: ListMeta;
     moveFileToFolder: (fileId: string, folderId: string) => Promise<void>;
     multiple: boolean;
     onClose: () => void;
@@ -83,14 +83,14 @@ const getCurrentFolderList = (
 };
 
 export interface FileManagerViewProviderProps {
-    onChange?: (value: FileItem[] | FileItem) => void;
+    onChange?: (value: FileItem[] | FileItem, context: FileManagerViewContext) => void;
     onClose?: () => void;
     multiple?: boolean;
     accept: string[];
     maxSize?: number | string;
     multipleMaxCount?: number;
     multipleMaxSize?: number | string;
-    onUploadCompletion?: (files: FileItem[]) => void;
+    onUploadCompletion?: (files: FileItem[], context: FileManagerViewContext) => void;
     tags?: string[];
     scope?: string;
     own?: boolean;
@@ -111,7 +111,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     const tags = useTags(modifiers);
     const [state, setState] = useStateIfMounted(initializeState());
 
-    const { loading, files, meta, listFiles, setFiles, getListVariables } = useListFiles({
+    const { loading, files, meta, listFiles, setFiles, setMeta, getListVariables } = useListFiles({
         folderId: currentFolderId,
         modifiers,
         state
@@ -138,7 +138,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     };
 
     const loadMoreFiles = () => {
-        if (meta?.cursor) {
+        if (meta.cursor) {
             loadFiles("LIST_MORE", { after: meta.cursor });
         }
     };
@@ -181,6 +181,11 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         if (!file) {
             // No file found - must be deleted by previous operation
             setFiles(files => files.filter(file => file.id !== id));
+            // Decrease totalCount without performing a new API call
+            setMeta(meta => ({
+                ...meta,
+                totalCount: --meta.totalCount
+            }));
         } else {
             setFiles(prevFiles => {
                 const fileIndex = prevFiles.findIndex(file => file.id === id);
@@ -200,6 +205,11 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
                     ...prevFiles.slice(fileIndex + 1)
                 ];
             });
+            // Increase totalCount without performing a new API call
+            setMeta(meta => ({
+                ...meta,
+                totalCount: ++meta.totalCount
+            }));
         }
 
         return file;
@@ -236,6 +246,11 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         if (newFile) {
             newFile.tags = removeScopePrefix(newFile.tags || []);
             setFiles(files => [newFile, ...files]);
+            // Increase totalCount without performing a new API call
+            setMeta(meta => ({
+                ...meta,
+                totalCount: ++meta.totalCount
+            }));
         }
         return newFile;
     };
@@ -290,6 +305,12 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
                 return files;
             }
 
+            // Decrease totalCount without performing a new API call
+            setMeta(meta => ({
+                ...meta,
+                totalCount: --meta.totalCount
+            }));
+
             return [...files.slice(0, index), ...files.slice(index + 1)];
         });
     };
@@ -315,6 +336,11 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         if (newFile) {
             newFile.tags = removeScopePrefix(newFile.tags);
             setFiles(files => [newFile, ...files]);
+            // Increase totalCount without performing a new API call
+            setMeta(meta => ({
+                ...meta,
+                totalCount: ++meta.totalCount
+            }));
         }
         return newFile;
     };
@@ -325,6 +351,11 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     ) => {
         await updateFile(fileId, { location: { folderId } });
         setFiles(files => files.filter(file => file.id !== fileId));
+        // Decrease totalCount without performing a new API call
+        setMeta(meta => ({
+            ...meta,
+            totalCount: --meta.totalCount
+        }));
     };
 
     const addScopePrefix = (tags: string[] = []) => {
@@ -381,10 +412,8 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         multiple: Boolean(props.multiple),
         onChange(value: FileItem[] | FileItem) {
             if (typeof props.onChange === "function") {
-                props.onChange(value);
+                props.onChange(value, context);
             }
-
-            context.onClose();
         },
         onClose() {
             if (typeof props.onClose === "function") {
@@ -398,8 +427,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
             }));
 
             if (typeof props.onUploadCompletion === "function") {
-                props.onUploadCompletion(files);
-                context.onClose();
+                props.onUploadCompletion(files, context);
             }
         },
         own: Boolean(props.own),

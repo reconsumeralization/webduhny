@@ -96,8 +96,8 @@ export const ListItemMeta = ({
             <ListActions>
                 <DropdownMenu
                     trigger={handle}
-                    // Should prevent first item from being autofocused, but it doesn't. 🤷‍
-                    // focusOnOpen={false}
+                    // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
+                    // portalZIndex={101}
                 >
                     {TARGET_LEVELS.map(level => (
                         <DropdownMenu.CheckboxItem

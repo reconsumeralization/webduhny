@@ -4,6 +4,7 @@ export * from "./Avatar";
 export * from "./Button";
 export * from "./Card";
 export * from "./Checkbox";
+export * from "./CodeEditor";
 export * from "./DropdownMenu";
 export * from "./FormComponent";
 export * from "./Grid";
