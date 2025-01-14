@@ -13,6 +13,7 @@ export * from "./Icon";
 export * from "./Input";
 export * from "./Label";
 export * from "./MultiAutoComplete";
+export * from "./Popover";
 export * from "./Progress";
 export * from "./Providers";
 export * from "./RadioGroup";

@@ -9,7 +9,7 @@ const List = ({ className, ...props }: ListProps) => {
         <CommandPrimitive.List
             className={cn(
                 [
-                    "block max-h-96 min-w-56 w-full shadow-lg py-sm overflow-y-auto overflow-x-hidden rounded-sm border-sm border-neutral-muted bg-neutral-base text-neutral-strong"
+                    "block max-h-96 w-full py-sm overflow-y-auto overflow-x-hidden bg-neutral-base text-neutral-strong"
                 ],
                 className
             )}

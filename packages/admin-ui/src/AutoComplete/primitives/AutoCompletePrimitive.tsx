@@ -1,5 +1,6 @@
 import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
+import { Popover } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
@@ -89,38 +90,50 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Command label={props.label} onKeyDown={handleKeyDown}>
-            <Command.Input
-                value={vm.inputVm.value}
-                onValueChange={searchOption}
-                placeholder={vm.inputVm.placeholder}
-                size={props.size}
-                variant={props.variant}
-                disabled={props.disabled}
-                invalid={props.invalid}
-                startIcon={props.startIcon}
-                endIcon={
-                    <AutoCompleteInputIcons
-                        displayResetAction={vm.inputVm.displayResetAction}
-                        isDisabled={props.disabled}
-                        onResetValue={resetSelectedOption}
-                        onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
-                    />
-                }
-                onBlur={() => setListOpenState(false)}
-                onFocus={() => setListOpenState(true)}
-            />
-            <AutoCompleteList
-                options={vm.optionsListVm.options}
-                onOptionSelect={handleSelectOption}
-                isEmpty={vm.optionsListVm.isEmpty}
-                isLoading={props.isLoading}
-                isOpen={vm.optionsListVm.isOpen}
-                loadingMessage={vm.optionsListVm.loadingMessage}
-                emptyMessage={vm.optionsListVm.emptyMessage}
-                optionRenderer={props.optionRenderer}
-            />
-        </Command>
+        <Popover open={vm.optionsListVm.isOpen} onOpenChange={() => setListOpenState(true)}>
+            <Command label={props.label} onKeyDown={handleKeyDown}>
+                <Popover.Trigger asChild>
+                    <span>
+                        <Command.Input
+                            value={vm.inputVm.value}
+                            onValueChange={searchOption}
+                            placeholder={vm.inputVm.placeholder}
+                            size={props.size}
+                            variant={props.variant}
+                            disabled={props.disabled}
+                            invalid={props.invalid}
+                            startIcon={props.startIcon}
+                            endIcon={
+                                <AutoCompleteInputIcons
+                                    displayResetAction={vm.inputVm.displayResetAction}
+                                    isDisabled={props.disabled}
+                                    onResetValue={resetSelectedOption}
+                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
+                                />
+                            }
+                            onBlur={() => setListOpenState(false)}
+                            onFocus={() => setListOpenState(true)}
+                        />
+                    </span>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content
+                        style={{ width: "var(--radix-popover-trigger-width)" }}
+                        onOpenAutoFocus={e => e.preventDefault()}
+                    >
+                        <AutoCompleteList
+                            options={vm.optionsListVm.options}
+                            onOptionSelect={handleSelectOption}
+                            isEmpty={vm.optionsListVm.isEmpty}
+                            isLoading={props.isLoading}
+                            loadingMessage={vm.optionsListVm.loadingMessage}
+                            emptyMessage={vm.optionsListVm.emptyMessage}
+                            optionRenderer={props.optionRenderer}
+                        />
+                    </Popover.Content>
+                </Popover.Portal>
+            </Command>
+        </Popover>
     );
 };
 

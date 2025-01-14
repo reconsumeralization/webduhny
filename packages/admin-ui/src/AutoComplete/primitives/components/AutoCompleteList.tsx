@@ -1,26 +1,12 @@
 import React from "react";
 import { CommandOptionFormatted } from "~/Command/domain/CommandOptionFormatted";
 import { Command } from "~/Command";
-import { cn, cva } from "~/utils";
-
-const autoCompleteListWrapperVariants = cva(
-    "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
-    {
-        variants: {
-            isOpen: {
-                true: "block",
-                false: "hidden"
-            }
-        }
-    }
-);
 
 interface AutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
     options: CommandOptionFormatted[];
     emptyMessage?: React.ReactNode;
     isEmpty?: boolean;
     isLoading?: boolean;
-    isOpen?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionSelect: (value: string) => void;
     optionRenderer?: (item: any, index: number) => React.ReactNode;
@@ -30,7 +16,6 @@ export const AutoCompleteList = ({
     emptyMessage,
     isEmpty,
     isLoading,
-    isOpen,
     loadingMessage,
     onOptionSelect,
     optionRenderer,
@@ -74,17 +59,13 @@ export const AutoCompleteList = ({
     );
 
     return (
-        <div className="relative">
-            <div className={cn(autoCompleteListWrapperVariants({ isOpen }))}>
-                <Command.List {...props}>
-                    {isLoading ? (
-                        <Command.Loading>{loadingMessage}</Command.Loading>
-                    ) : (
-                        renderOptions(options)
-                    )}
-                    {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
-                </Command.List>
-            </div>
-        </div>
+        <Command.List {...props}>
+            {isLoading ? (
+                <Command.Loading>{loadingMessage}</Command.Loading>
+            ) : (
+                renderOptions(options)
+            )}
+            {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
+        </Command.List>
     );
 };

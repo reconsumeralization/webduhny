@@ -1,25 +1,11 @@
 import React from "react";
 import { CommandOptionFormatted } from "~/Command/domain/CommandOptionFormatted";
 import { Command } from "~/Command";
-import { cn, cva } from "~/utils";
-
-const multiAutoCompleteListWrapperVariants = cva(
-    "animate-in fade-in-0 zoom-in-95 absolute top-xs-plus z-10 w-full outline-none",
-    {
-        variants: {
-            isOpen: {
-                true: "block",
-                false: "hidden"
-            }
-        }
-    }
-);
 
 interface MultiAutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
     emptyMessage?: React.ReactNode;
     isEmpty?: boolean;
     isLoading?: boolean;
-    isOpen?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionCreate?: (value: string) => void;
     onOptionSelect: (value: string) => void;
@@ -32,7 +18,6 @@ export const MultiAutoCompleteList = ({
     emptyMessage,
     isEmpty,
     isLoading,
-    isOpen,
     loadingMessage,
     onOptionCreate,
     onOptionSelect,
@@ -98,17 +83,13 @@ export const MultiAutoCompleteList = ({
     );
 
     return (
-        <div className="relative">
-            <div className={cn(multiAutoCompleteListWrapperVariants({ isOpen }))}>
-                <Command.List {...props}>
-                    {isLoading ? (
-                        <Command.Loading>{loadingMessage}</Command.Loading>
-                    ) : (
-                        renderOptions(options)
-                    )}
-                    {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
-                </Command.List>
-            </div>
-        </div>
+        <Command.List {...props}>
+            {isLoading ? (
+                <Command.Loading>{loadingMessage}</Command.Loading>
+            ) : (
+                renderOptions(options)
+            )}
+            {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
+        </Command.List>
     );
 };

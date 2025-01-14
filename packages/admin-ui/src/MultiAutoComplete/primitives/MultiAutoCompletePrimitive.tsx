@@ -1,5 +1,6 @@
 import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
+import { Popover } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
 import {
@@ -116,50 +117,58 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Command
-            label={props.label}
-            onKeyDown={handleKeyDown}
-            className={"h-auto overflow-visible"}
-        >
-            <MultiAutoCompleteInput
-                value={vm.inputVm.value}
-                placeholder={vm.inputVm.placeholder}
-                changeValue={searchOption}
-                closeList={() => setListOpenState(false)}
-                openList={() => setListOpenState(true)}
-                variant={props.variant}
-                size={props.size}
-                invalid={props.invalid}
-                removeSelectedOption={removeSelectedOption}
-                selectedOptionRenderer={props.selectedOptionRenderer}
-                selectedOptions={vm.selectedOptionsVm.options}
-                disabled={props.disabled}
-                startIcon={props.startIcon}
-                endIcon={
-                    <MultiAutoCompleteInputIcons
-                        displayResetAction={
-                            !vm.selectedOptionsVm.isEmpty && vm.inputVm.displayResetAction
-                        }
-                        isDisabled={props.disabled}
-                        onResetValue={resetSelectedOptions}
-                        onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
-                    />
-                }
-            />
-
-            <MultiAutoCompleteList
-                emptyMessage={vm.optionsListVm.emptyMessage}
-                isEmpty={vm.optionsListVm.isEmpty}
-                isLoading={props.isLoading}
-                isOpen={vm.optionsListVm.isOpen}
-                loadingMessage={vm.optionsListVm.loadingMessage}
-                onOptionCreate={handleCreateOption}
-                onOptionSelect={handleSelectOption}
-                optionRenderer={props.optionRenderer}
-                options={vm.optionsListVm.options}
-                temporaryOption={vm.temporaryOptionVm.option}
-            />
-        </Command>
+        <Popover open={vm.optionsListVm.isOpen} onOpenChange={() => setListOpenState(true)}>
+            <Command label={props.label} onKeyDown={handleKeyDown}>
+                <Popover.Trigger asChild>
+                    <span>
+                        <MultiAutoCompleteInput
+                            value={vm.inputVm.value}
+                            placeholder={vm.inputVm.placeholder}
+                            changeValue={searchOption}
+                            closeList={() => setListOpenState(false)}
+                            openList={() => setListOpenState(true)}
+                            variant={props.variant}
+                            size={props.size}
+                            invalid={props.invalid}
+                            removeSelectedOption={removeSelectedOption}
+                            selectedOptionRenderer={props.selectedOptionRenderer}
+                            selectedOptions={vm.selectedOptionsVm.options}
+                            disabled={props.disabled}
+                            startIcon={props.startIcon}
+                            endIcon={
+                                <MultiAutoCompleteInputIcons
+                                    displayResetAction={
+                                        !vm.selectedOptionsVm.isEmpty &&
+                                        vm.inputVm.displayResetAction
+                                    }
+                                    isDisabled={props.disabled}
+                                    onResetValue={resetSelectedOptions}
+                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
+                                />
+                            }
+                        />
+                    </span>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content
+                        style={{ width: "var(--radix-popover-trigger-width)" }}
+                        onOpenAutoFocus={e => e.preventDefault()}
+                    >
+                        <MultiAutoCompleteList
+                            emptyMessage={vm.optionsListVm.emptyMessage}
+                            isEmpty={vm.optionsListVm.isEmpty}
+                            isLoading={props.isLoading}
+                            loadingMessage={vm.optionsListVm.loadingMessage}
+                            onOptionCreate={handleCreateOption}
+                            onOptionSelect={handleSelectOption}
+                            optionRenderer={props.optionRenderer}
+                            options={vm.optionsListVm.options}
+                            temporaryOption={vm.temporaryOptionVm.option}
+                        />
+                    </Popover.Content>
+                </Popover.Portal>
+            </Command>
+        </Popover>
     );
 };
 

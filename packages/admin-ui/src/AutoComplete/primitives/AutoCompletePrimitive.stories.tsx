@@ -310,7 +310,6 @@ export const WithCustomOptionRenderer: Story = {
             {
                 label: "Fiji Time (FJT)",
                 value: "fjt",
-                separator: true,
                 item: {
                     name: "Fiji Time (FJT)",
                     time_difference: "+12:00",
