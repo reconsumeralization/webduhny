@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as PersonIcon } from "@material-design-icons/svg/outlined/person.svg";
 import { ReactComponent as LockIcon } from "@material-design-icons/svg/outlined/lock.svg";
 
-import { Tabs, TabsContent, TabsTrigger } from "./Tabs";
+import { Tabs } from "./Tabs";
 import * as React from "react";
 
 const meta: Meta<typeof Tabs> = {
@@ -20,16 +20,16 @@ type Story = StoryObj<typeof Tabs>;
 export const Default: Story = {
     args: {
         triggers: [
-            <TabsTrigger key="account" value="account" text={"Account"} />,
-            <TabsTrigger key="password" value="password" text={"Password"} />
+            <Tabs.Trigger key="account" value="account" text={"Account"} />,
+            <Tabs.Trigger key="password" value="password" text={"Password"} />
         ],
         contents: [
-            <TabsContent
+            <Tabs.Content
                 key="account"
                 value="account"
-                text={"Make changes to your account here."}
+                content={"Make changes to your account here."}
             />,
-            <TabsContent key="password" value="password" text={"Change your password here."} />
+            <Tabs.Content key="password" value="password" content={"Change your password here."} />
         ]
     }
 };
@@ -73,8 +73,18 @@ export const WithTriggerIcons: Story = {
     args: {
         ...Default.args,
         triggers: [
-            <TabsTrigger key="account" value="account" text={"Account"} icon={<PersonIcon />} />,
-            <TabsTrigger key="password" value="password" text={"Password"} icon={<LockIcon />} />
+            <Tabs.Trigger key="account" value="account" text={"Account"} icon={<PersonIcon />} />,
+            <Tabs.Trigger key="password" value="password" text={"Password"} icon={<LockIcon />} />
+        ]
+    }
+};
+
+export const WithDisabledTrigger: Story = {
+    args: {
+        ...Default.args,
+        triggers: [
+            <Tabs.Trigger key="account" value="account" text={"Account"} disabled={true} />,
+            <Tabs.Trigger key="password" value="password" text={"Password"} />
         ]
     }
 };

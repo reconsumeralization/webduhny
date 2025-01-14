@@ -28,7 +28,7 @@ const twMerge = extendTailwindMerge({
                 "border-success",
                 "border-success-default"
             ],
-            "border-w": ["border-sm", "border-sm", "border-none"],
+            "border-w": ["border-md", "border-sm", "border-none"],
             "ring-color": [
                 "ring-primary",
                 "ring-primary-dimmed",
