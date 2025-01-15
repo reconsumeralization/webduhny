@@ -33,25 +33,25 @@ const textareaVariants = cva(
                 xl: ["px-md-extra p-md rounded-lg"]
             },
             invalid: {
-                true: [
-                    "border-destructive-default",
-                    "hover:border-destructive-default",
-                    "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
-                ]
+                true: ""
             }
         },
         compoundVariants: [
-            // Add specific classNames in case of invalid `ghost` textarea.
+            // Add specific classNames in case of invalid textarea: note the difference between the ghost and the other variants.
+            {
+                variant: "primary",
+                invalid: true,
+                class: "!border-destructive-default"
+            },
+            {
+                variant: "secondary",
+                invalid: true,
+                class: "!border-destructive-default"
+            },
             {
                 variant: "ghost",
                 invalid: true,
-                class: [
-                    "border-destructive-subtle bg-destructive-subtle",
-                    "hover:border-destructive-subtle hover:bg-destructive-subtle",
-                    "focus:border-destructive-subtle  focus:bg-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
-                ]
+                class: "!border-destructive-subtle !bg-destructive-subtle"
             }
         ],
         defaultVariants: {

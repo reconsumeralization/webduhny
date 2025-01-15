@@ -15,15 +15,17 @@ const flattenConfigObject = (prefix: string, config: Record<string, any>): strin
 
     for (const key in config) {
         if (key === "DEFAULT") {
+            keys.push(prefix);
             continue;
-        } // Skip "DEFAULT" keys
+        }
+
         if (typeof config[key] === "object") {
             keys.push(...flattenConfigObject(`${prefix}-${key}`, config[key]));
-        } else {
-            keys.push(`${prefix}-${key}`);
+            continue;
         }
-    }
 
+        keys.push(`${prefix}-${key}`);
+    }
     return keys;
 };
 

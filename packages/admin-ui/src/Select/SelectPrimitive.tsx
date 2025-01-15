@@ -78,35 +78,25 @@ const triggerVariants = cva(
                 ]
             },
             invalid: {
-                true: [
-                    "border-destructive-default",
-                    "hover:border-destructive-default",
-                    "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
-                ]
+                true: ""
             }
         },
         compoundVariants: [
-            // Add specific classNames in case of invalid variant.
+            // Add specific classNames in case of invalid select: note the difference between the ghost and the other variants.
+            {
+                variant: "primary",
+                invalid: true,
+                class: "!border-destructive-default"
+            },
             {
                 variant: "secondary",
                 invalid: true,
-                class: [
-                    "bg-neutral-base border-destructive-default",
-                    "hover:bg-neutral-dimmed hover:border-destructive-default",
-                    "focus:bg-neutral-base focus:border-destructive-default",
-                    "disabled:bg-neutral-disabled disabled:border-destructive-default"
-                ]
+                class: "!border-destructive-default"
             },
             {
                 variant: "ghost",
                 invalid: true,
-                class: [
-                    "border-none bg-destructive-subtle",
-                    "hover:bg-destructive-subtle",
-                    "focus:bg-destructive-subtle",
-                    "disabled:bg-destructive-subtle"
-                ]
+                class: "!border-destructive-subtle !bg-destructive-subtle"
             }
         ],
         defaultVariants: {
