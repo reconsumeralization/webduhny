@@ -8,7 +8,6 @@ import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
 import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
 import { DialogTrigger } from "./components/DialogTrigger";
-import { DialogClose } from "./components/DialogClose";
 import { TitleIcon } from "./components/TitleIcon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
