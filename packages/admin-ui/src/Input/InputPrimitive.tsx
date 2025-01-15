@@ -1,18 +1,18 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Icon as BaseIcon } from "~/Icon";
-import { cn, makeDecoratable } from "~/utils";
+import { cn } from "~/utils";
 
 /**
  * Icon
  */
-const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutral-xstrong", {
+const inputIconVariants = cva("absolute fill-neutral-xstrong", {
     variants: {
         // Define dummy variants to be used in combination with `compoundVariants` below.
         inputSize: {
-            md: "",
-            lg: "",
-            xl: ""
+            md: "top-sm",
+            lg: "top-sm-extra",
+            xl: "top-md"
         },
         position: {
             start: "",
@@ -61,14 +61,15 @@ const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutr
     ]
 });
 
-interface IconWrapperProps extends VariantProps<typeof iconVariants> {
+interface InputIconProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof inputIconVariants> {
     icon: React.ReactElement;
-    disabled?: boolean;
 }
 
-const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
+const InputIcon = ({ icon, disabled, position, inputSize, className }: InputIconProps) => {
     return (
-        <div className={cn(iconVariants({ position, disabled, inputSize }))}>
+        <div className={cn(inputIconVariants({ position, disabled, inputSize }), className)}>
             {React.cloneElement(icon, {
                 ...icon.props,
                 size: inputSize === "xl" ? "lg" : "sm" // Map icon size based on the input size.
@@ -79,12 +80,16 @@ const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
 
 /**
  * Input
+ *
+ * We support both `disabled` and `data-disabled` as well as `focused` and `data-focused` variants
+ * because these variants can be used by both input and div elements. The last one is used by `MultiAutocomplete` component,
+ * where the `inputVariants` is used to style a div that wraps multiple elements (input, Tags, icons, etc.)
  */
 const inputVariants = cva(
     [
-        "w-full border-sm text-md",
+        "w-full border-sm text-md peer",
         "focus-visible:outline-none",
-        "disabled:cursor-not-allowed",
+        "disabled:cursor-not-allowed data-[disabled=true]:cursor-not-allowed",
         "file:bg-transparent file:border-none file:text-sm file:font-semibold"
     ],
     {
@@ -108,19 +113,25 @@ const inputVariants = cva(
                     "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:border-neutral-strong",
                     "focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:border-neutral-black",
+                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:border-neutral-dimmed data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 secondary: [
                     "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:bg-neutral-dimmed",
                     "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
+                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 ghost: [
                     "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
                     "hover:bg-neutral-dimmed/95",
                     "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
+                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
+                    "data-[disabled=true]:bg-transparent data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
                 ]
             },
             iconPosition: {
@@ -136,7 +147,9 @@ const inputVariants = cva(
                     "border-destructive-default",
                     "hover:border-destructive-default",
                     "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
+                    "data-[focused=true]:border-destructive-default",
+                    "disabled:border-destructive-default",
+                    "data-[disabled=true]:border-destructive-default"
                 ]
             }
         },
@@ -186,7 +199,9 @@ const inputVariants = cva(
                     "border-destructive-subtle bg-destructive-subtle",
                     "hover:border-destructive-subtle",
                     "focus:border-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
+                    "data-[focused=true]:border-destructive-subtle",
+                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle",
+                    "data-[disabled=true]:bg-destructive-subtle data-[disabled=true]:border-destructive-subtle"
                 ]
             }
         ],
@@ -203,6 +218,7 @@ interface InputPrimitiveProps
     startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
+    inputRef?: React.Ref<HTMLInputElement>;
 }
 
 const getIconPosition = (
@@ -221,39 +237,49 @@ const getIconPosition = (
     return;
 };
 
-const DecoratableInputPrimitive = React.forwardRef<HTMLInputElement, InputPrimitiveProps>(
-    (
-        { className, disabled, invalid, startIcon, maxLength, size, endIcon, variant, ...props },
-        ref
-    ) => {
-        const iconPosition = getIconPosition(startIcon, endIcon);
+const InputPrimitive = ({
+    className,
+    disabled,
+    invalid,
+    startIcon,
+    maxLength,
+    size,
+    endIcon,
+    variant,
+    inputRef,
+    ...props
+}: InputPrimitiveProps) => {
+    const iconPosition = getIconPosition(startIcon, endIcon);
 
-        return (
-            <div className={cn("relative flex items-center w-full", className)}>
-                {startIcon && (
-                    <Icon
-                        disabled={disabled}
-                        icon={startIcon}
-                        inputSize={size}
-                        position={"start"}
-                    />
-                )}
-                <input
-                    className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
-                    ref={ref}
+    return (
+        <div className={cn("relative flex items-center w-full", className)}>
+            {startIcon && (
+                <InputIcon
                     disabled={disabled}
-                    size={maxLength}
-                    {...props}
+                    icon={startIcon}
+                    inputSize={size}
+                    position={"start"}
                 />
-                {endIcon && (
-                    <Icon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
-                )}
-            </div>
-        );
-    }
-);
-DecoratableInputPrimitive.displayName = "InputPrimitive";
+            )}
+            <input
+                ref={inputRef}
+                className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
+                disabled={disabled}
+                size={maxLength}
+                {...props}
+            />
+            {endIcon && (
+                <InputIcon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
+            )}
+        </div>
+    );
+};
 
-const InputPrimitive = makeDecoratable("InputPrimitive", DecoratableInputPrimitive);
-
-export { InputPrimitive, type InputPrimitiveProps };
+export {
+    InputIcon,
+    InputPrimitive,
+    getIconPosition,
+    inputVariants,
+    type InputIconProps,
+    type InputPrimitiveProps
+};

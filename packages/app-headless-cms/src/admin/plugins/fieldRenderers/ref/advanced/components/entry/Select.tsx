@@ -45,7 +45,6 @@ const Icon = styled("div")(({ selected }: IconProps) => {
 });
 
 const Text = styled("span")({
-    fontFamily: "Source Sans Pro",
     fontWeight: 500,
     fontSize: "14px",
     lineHeight: "20px",
