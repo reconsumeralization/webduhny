@@ -1,7 +1,6 @@
 // extensions/adminTheme/src/index.tsx
 import React from "react";
-import { AdminConfig, Plugin } from "@webiny/app-admin";
-import { IsNotRootTenant, IsRootTenant } from "@webiny/app-tenant-manager";
+import { AdminConfig, Plugin, IsNotRootTenant, IsRootTenant } from "@webiny/app-serverless-cms";
 
 const { Theme } = AdminConfig;
 
@@ -11,7 +10,7 @@ const SomethingWithSecurityMustBeChildOfPlugin = () => {
             <IsRootTenant>
                 <AdminConfig>
                     <Theme>
-                        <Theme.Color palette={"primary"} color={"red"} />
+                        <Theme.Color palette={"primary"} color={"purple"} />
                     </Theme>
                 </AdminConfig>
             </IsRootTenant>

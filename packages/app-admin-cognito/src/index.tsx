@@ -101,7 +101,7 @@ export const createAuthentication: AuthenticationFactory = ({
 
     const Authentication = (props: AuthenticationProps) => {
         const { children } = props;
-        const [loadingIdentity, setLoadingIdentity] = useState(false);
+        const [loadingIdentity, setLoadingIdentity] = useState(true);
         const { setIdentity, setIdTokenProvider } = useSecurity();
         const client = useApolloClient();
 
