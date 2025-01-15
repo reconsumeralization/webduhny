@@ -1,23 +1,23 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn, cva, type VariantProps } from "~/utils";
+import { Icon } from "~/Icon";
 
 const triggerVariants = cva(
     [
-        "group inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-all",
-        "text-neutral-strong, fill-neutral-strong",
-        "border-4 border-accent-default border-solid",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "disabled:pointer-events-none disabled:text-neutral-disabled disabled:fill-neutral-disabled",
-        "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:fill-foreground"
+        "group inline-flex items-center justify-center whitespace-nowrap outline-none transition-all",
+        "text-neutral-strong hover:text-neutral-primary",
+        "border-b-md border-transparent border-solid",
+        "data-[state=active]:border-accent-default data-[state=active]:text-neutral-primary data-[state=active]:font-semibold",
+        "disabled:pointer-events-none disabled:!text-neutral-disabled disabled:!fill-neutral-disabled disabled:!border-transparent"
     ],
     {
         variants: {
             size: {
                 sm: "text-sm h-[40px]",
-                md: "text-md px-xs",
-                lg: "text-lg px-xs-plus",
-                xl: "text-xl px-sm"
+                md: "text-md h-[48px]",
+                lg: "text-lg h-[56px]",
+                xl: "text-xl h-[64px]"
             }
         },
         defaultVariants: {
@@ -27,14 +27,18 @@ const triggerVariants = cva(
 );
 
 const innerTriggerVariants = cva(
-    ["group-hover:bg-neutral-dimmed group-hover:text-neutral-primary"],
+    [
+        "inline-flex items-center justify-start gap-xs",
+        "group-hover:bg-neutral-dimmed",
+        "group-focus-visible:ring-lg group-focus-visible:ring-primary-dimmed"
+    ],
     {
         variants: {
             size: {
-                sm: "rounded-sm p-xs gap-xs",
-                md: "rounded-sm",
-                lg: "rounded-sm",
-                xl: "rounded-lg"
+                sm: "rounded-sm p-xs",
+                md: "rounded-sm px-xs py-xs-plus",
+                lg: "rounded-sm px-xs-plus py-sm-plus",
+                xl: "rounded-lg px-sm py-sm-plus"
             }
         },
         defaultVariants: {
@@ -46,13 +50,14 @@ const innerTriggerVariants = cva(
 type TriggerProps = Omit<TabsPrimitive.TabsTriggerProps, "children"> &
     VariantProps<typeof triggerVariants> & {
         text: React.ReactNode;
-        icon?: React.ReactNode;
+        icon?: React.ReactElement;
     };
 
 const Trigger = ({ className, size, icon, text, ...props }: TriggerProps) => (
     <TabsPrimitive.Trigger className={cn(triggerVariants({ size }), className)} {...props}>
         <div className={cn(innerTriggerVariants({ size }))}>
-            {icon} {text}
+            {icon && <Icon icon={icon} size={"sm"} label={String(text)} color={"neutral-light"} />}{" "}
+            {text}
         </div>
     </TabsPrimitive.Trigger>
 );

@@ -1,16 +1,19 @@
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as PersonIcon } from "@material-design-icons/svg/outlined/person.svg";
 import { ReactComponent as LockIcon } from "@material-design-icons/svg/outlined/lock.svg";
-
 import { Tabs } from "./Tabs";
-import * as React from "react";
 
 const meta: Meta<typeof Tabs> = {
     title: "Components/Tabs",
     component: Tabs,
     tags: ["autodocs"],
-    argTypes: {
-        size: { control: "select", options: ["sm", "md", "lg", "xl"] }
+    parameters: {
+        layout: "padded"
+    },
+    render: args => {
+        const [value, setValue] = useState(args.value);
+        return <Tabs {...args} value={value} onValueChange={setValue} />;
     }
 };
 
@@ -65,7 +68,7 @@ export const ExtraLarge: Story = {
 export const WithDefaultValue: Story = {
     args: {
         ...Default.args,
-        defaultValue: "password"
+        value: "password"
     }
 };
 

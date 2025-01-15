@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useMemo, useState } from "react";
-import { Tabs as TabsBase, TabsTrigger, TabsContent } from "@webiny/admin-ui";
+import { Tabs as AdminTabs } from "@webiny/admin-ui";
 import { TabProps } from "./Tab";
 
 const VALUE_PREFIX = "tab-";
@@ -73,7 +73,7 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
         .filter(item => item.visible)
         .map((item, index) => {
             return (
-                <TabsTrigger
+                <AdminTabs.Trigger
                     key={`${VALUE_PREFIX}${index}`}
                     data-testid={item["data-testid"]}
                     value={`${VALUE_PREFIX}${index}`}
@@ -86,10 +86,10 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
 
     const contents = tabs.filter(Boolean).map((tab, index) => {
         return (
-            <TabsContent
+            <AdminTabs.Content
                 key={`${VALUE_PREFIX}${index}`}
                 value={`${VALUE_PREFIX}${index}`}
-                text={tab.children}
+                content={tab.children}
             />
         );
     });
@@ -118,7 +118,7 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
 
     return (
         <>
-            <TabsBase
+            <AdminTabs
                 {...props}
                 defaultValue={`${VALUE_PREFIX}${activeIndex}`}
                 onValueChange={onValueChange}
