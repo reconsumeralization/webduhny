@@ -8,6 +8,7 @@ import {
 import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
 import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
 import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
+import { DialogBody } from "@webiny/admin-ui/Dialog/components/DialogBody";
 
 export interface DialogActionsProps {
     children: React.ReactNode[] | React.ReactNode;
@@ -18,7 +19,7 @@ export interface DialogActionsProps {
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
 export const DialogActions = (props: DialogActionsProps) => {
-    return <AdminUiDialogFooter style={{ marginTop: 32 }} actions={props.children} />;
+    return <AdminUiDialogFooter actions={props.children} />;
 };
 
 export interface DialogButtonProps extends AdminUiButtonProps {
@@ -68,7 +69,7 @@ export interface DialogContentProps {
  * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
 export const DialogContent = (props: DialogContentProps) => {
-    return <>{props.children}</>;
+    return <DialogBody>{props.children}</DialogBody>;
 };
 
 DialogContent.displayName = "DialogContent";
@@ -111,6 +112,7 @@ export const Dialog = ({
     return (
         <AdminUiDialog
             open={open}
+            bodyPadding={false}
             preventOutsideDismiss={preventOutsideDismiss}
             showCloseButton={showCloseButton}
             onOpenChange={opened => {
