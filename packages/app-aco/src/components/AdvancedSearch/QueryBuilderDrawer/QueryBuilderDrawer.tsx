@@ -72,7 +72,8 @@ export const QueryBuilderDrawer = observer(({ filter, ...props }: QueryBuilderDr
         <DrawerRight
             open={props.vm.isOpen}
             onClose={props.onClose}
-            width={"10002px"}
+            modal={true}
+            width={1000}
             title={"Advanced search filter"}
             description={"Create a filter to search for specific content."}
             info={<ButtonDefault onClick={onSave}>Save filter</ButtonDefault>}

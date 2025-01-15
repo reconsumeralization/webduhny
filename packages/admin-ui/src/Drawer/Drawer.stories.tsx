@@ -93,7 +93,7 @@ export const WithoutCloseButton: Story = {
 };
 
 export const CustomWidth: Story = {
-    args: { ...Default.args, width: "1000px" }
+    args: { ...Default.args, width: 1000 }
 };
 
 export const WithSeparators: Story = {

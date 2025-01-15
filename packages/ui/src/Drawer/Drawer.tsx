@@ -1,9 +1,4 @@
 import React from "react";
-import {
-    DrawerContentProps as RmwcDrawerContentProps,
-    DrawerHeaderProps as RmwcDrawerHeaderProps
-} from "@rmwc/drawer";
-
 import { Drawer as AdminUiDrawer, type DrawerProps as AdminUiDrawerProps } from "@webiny/admin-ui";
 import { DrawerHeader as AdminUiDrawerHeader } from "@webiny/admin-ui/Drawer/components/DrawerHeader";
 
@@ -44,7 +39,7 @@ const DrawerLeft = (props: DrawerProps) => {
     return <Drawer side={"left"} {...props} />;
 };
 
-type DrawerHeaderProps = RmwcDrawerHeaderProps & {
+type DrawerHeaderProps = {
     /**
      * Drawer content.
      */
@@ -64,7 +59,7 @@ const DrawerHeader = (props: DrawerHeaderProps) => {
     return <AdminUiDrawerHeader title={props.children} description={""} />;
 };
 
-export type DrawerContentProps = RmwcDrawerContentProps & {
+export type DrawerContentProps = {
     /**
      * Drawer content.
      */
