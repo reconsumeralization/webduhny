@@ -14,7 +14,7 @@ export type TabProps = {
     /**
      * The icon to use for the tab.
      */
-    icon?: React.ReactNode;
+    icon?: React.ReactElement;
     /**
      * Is tab visible?
      */

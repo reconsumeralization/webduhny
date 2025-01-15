@@ -4,43 +4,35 @@ import { generateId as baseGenerateId } from "@webiny/utils/generateId";
 import { extendTailwindMerge } from "tailwind-merge";
 import { cva, type VariantProps } from "class-variance-authority";
 export { makeDecoratable } from "@webiny/react-composition";
-import { borderWidth, borderColor } from "../tailwind.config.theme";
-
-const flattenConfigObject = (prefix: string, config: Record<string, any>): string[] => {
-    if (!prefix) {
-        return [];
-    }
-
-    const keys: string[] = [];
-
-    for (const key in config) {
-        if (key === "DEFAULT") {
-            keys.push(prefix);
-            continue;
-        }
-
-        if (typeof config[key] === "object") {
-            keys.push(...flattenConfigObject(`${prefix}-${key}`, config[key]));
-            continue;
-        }
-
-        keys.push(`${prefix}-${key}`);
-    }
-    return keys;
-};
 
 const twMerge = extendTailwindMerge({
     override: {
         theme: {
-            borderWidth: Object.keys(borderWidth),
-            borderColor: Object.keys(flattenConfigObject("border", borderColor))
+            borderWidth: ["sm", "md", "none"]
         },
-        /**
-         * Note: `ringWidth` and `ringColor` cannot be used in the above theme configuration.
-         * For more details, refer to the Tailwind Merge documentation:
-         * @link https://github.com/dcastil/tailwind-merge/blob/main/docs/configuration.md#theme
-         */
         classGroups: {
+            "border-color": [
+                "border-transparent",
+                "border-white",
+                "border-accent",
+                "border-accent-default",
+                "border-accent-dimmed",
+                "border-accent-subtle",
+                "border-destructive",
+                "border-destructive-default",
+                "border-destructive-subtle",
+                "border-neutral",
+                "border-neutral-base",
+                "border-neutral-black",
+                "border-neutral-dark",
+                "border-neutral-dimmed",
+                "border-neutral-muted",
+                "border-neutral-strong",
+                "border-neutral-subtle",
+                "border-success",
+                "border-success-default",
+                "border-success-subtle"
+            ],
             "ring-color": [
                 "ring-primary",
                 "ring-primary-dimmed",
