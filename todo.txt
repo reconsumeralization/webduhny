@@ -1,5 +1,3 @@
-- add comments in utils.ts
-- theme base on tenant
-- react config api
-- multi theme assignment
-- caching of wcp license
+- serverles-cms export
+- dbl check figma export / create theme files
+- skip colors with alpha
