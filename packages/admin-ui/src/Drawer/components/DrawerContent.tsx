@@ -5,8 +5,7 @@ import { cn, cva, VariantProps } from "~/utils";
 export interface DrawerContentProps
     extends React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>,
         VariantProps<typeof drawerVariants> {
-    showCloseButton?: boolean;
-    width?: string;
+    width?: React.CSSProperties["width"];
 }
 
 const drawerVariants = cva(
@@ -36,12 +35,12 @@ const drawerVariants = cva(
 const DrawerContent = React.forwardRef<
     React.ElementRef<typeof DrawerPrimitive.Content>,
     DrawerContentProps
->(({ side = "right", className, style = {}, children, showCloseButton, ...props }, ref) => (
+>(({ side = "right", className, width, style = {}, children, ...props }, ref) => (
     <DrawerPrimitive.Content
         ref={ref}
         {...props}
         className={cn(drawerVariants({ side }), className)}
-        style={{ width: props.width, ...style }}
+        style={{ width, ...style }}
     >
         <div className={"flex flex-col justify-between h-full"}>{children}</div>
     </DrawerPrimitive.Content>
