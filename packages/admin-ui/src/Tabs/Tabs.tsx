@@ -5,23 +5,24 @@ import { Content, ContentProps, List, Trigger, TriggerProps } from "./components
 
 const Root = TabsPrimitive.Root;
 
-interface TabsProps extends Omit<TabsPrimitive.TabsProps, "defaultValue"> {
+interface TabsProps extends TabsPrimitive.TabsProps {
     triggers: React.ReactElement<TriggerProps>[];
     contents: React.ReactElement<ContentProps>[];
     size?: "sm" | "md" | "lg" | "xl";
 }
 
 const DecoratableTabs = ({
-    value: baseValue,
+    defaultValue: baseDefaultValue,
     size = "md",
     triggers,
     contents,
     ...props
 }: TabsProps) => {
-    const value = baseValue || triggers.find(trigger => !trigger.props.disabled)?.props.value;
+    const defaultValue =
+        baseDefaultValue || triggers.find(trigger => !trigger.props.disabled)?.props.value;
 
     return (
-        <Root {...props} value={value}>
+        <Root {...props} defaultValue={defaultValue}>
             <List>
                 {triggers.map(trigger =>
                     React.cloneElement(trigger, { size, key: `tab-trigger-${trigger.key}` })
