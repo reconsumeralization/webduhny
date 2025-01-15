@@ -14,8 +14,6 @@ export const CurrentTenant = () => {
     };
 
     const currentTenantId = currentTenant ? currentTenant.id : "unknown";
-
-    console.log('currentTwwenantId', currentTenantId)
     const defaultTenantId = defaultTenant ? defaultTenant.id : "unknown";
 
     const closeDialog = useCallback(() => showSettings(false), []);
