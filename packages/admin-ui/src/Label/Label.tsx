@@ -95,7 +95,7 @@ const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
 
 const labelVariants = cva(
     [
-        "inline-flex items-center justify-between w-full text-sm leading-none",
+        "inline-flex items-center justify-between w-full text-sm",
         "text-neutral-primary",
         "peer-disabled:text-neutral-disabled peer-disabled:cursor-not-allowed"
     ],

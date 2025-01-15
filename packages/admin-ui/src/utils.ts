@@ -45,6 +45,53 @@ const twMerge = extendTailwindMerge({
             ],
             "ring-w": ["ring-sm", "ring-md", "ring-lg"]
         }
+    },
+    extend: {
+        theme: {
+            padding: [
+                "lg",
+                "md",
+                "md-extra",
+                "none",
+                "sm",
+                "sm-extra",
+                "sm-plus",
+                "xl",
+                "xs",
+                "xs-plus",
+                "xxl",
+                "xxs"
+            ],
+            margin: [
+                "lg",
+                "md",
+                "md-plus",
+                "none",
+                "sm",
+                "sm-extra",
+                "sm-plus",
+                "xl",
+                "xs",
+                "xs-plus",
+                "xxl",
+                "xxs"
+            ],
+            spacing: [
+                "3xl",
+                "lg",
+                "md",
+                "md-plus",
+                "none",
+                "sm",
+                "sm-extra",
+                "sm-plus",
+                "xl",
+                "xs",
+                "xs-plus",
+                "xxl",
+                "xxs"
+            ]
+        }
     }
 });
 
