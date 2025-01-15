@@ -1,5 +1,5 @@
 import * as React from "react";
-import {cn, makeDecoratable} from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 import { Icon, IconProps } from "~/Icon";
 
 type TitleIconProps = IconProps;

@@ -13,7 +13,6 @@ import { TitleIcon } from "./components/TitleIcon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
-
 export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
