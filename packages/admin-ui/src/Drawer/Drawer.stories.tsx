@@ -162,3 +162,10 @@ export const WithTitleIcon: Story = {
         titleIcon: <Drawer.TitleIcon icon={<DoorbellIcon />} label={"Icon label..."} />
     }
 };
+
+export const AsModal: Story = {
+    args: {
+        ...Default.args,
+        modal: true,
+    }
+};

@@ -37,7 +37,9 @@ const DrawerBase = (props: DrawerProps) => {
                 defaultOpen,
                 open,
                 onOpenChange,
-                modal,
+
+                // We want the drawer to always allow interaction with the outside elements.
+                modal = false,
                 dir,
 
                 // Trigger props.
@@ -81,7 +83,6 @@ const DrawerBase = (props: DrawerProps) => {
             };
         }, [props]);
 
-    console.log('rootProps', rootProps);
     return (
         <DrawerRoot {...rootProps}>
             {triggerProps.children && <DrawerTrigger {...triggerProps} asChild />}

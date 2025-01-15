@@ -1,8 +1,0 @@
-- center vertically close button (abs pos)
-- ... inspect visually with figma
-- divider on/off
-- dbl check ui/drawer.tsx for maybe misses
-- no backdrop
-- no icon
-- no close btn?
-- all dialog refactors baiscally
