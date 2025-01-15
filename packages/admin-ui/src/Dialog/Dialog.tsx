@@ -9,7 +9,9 @@ import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
 import { DialogTrigger } from "./components/DialogTrigger";
 import { DialogClose } from "./components/DialogClose";
-import { Button, ButtonProps } from "~/Button";
+import { TitleIcon } from "./components/TitleIcon";
+import { ConfirmButton } from "./components/ConfirmButton";
+import { CancelButton } from "./components/CancelButton";
 
 export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
@@ -97,19 +99,10 @@ DialogBase.displayName = "Dialog";
 
 const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 
-const ConfirmButton = makeDecoratable("ConfirmButton", (props: ButtonProps) => (
-    <Button text={"Confirm"} {...props} variant="primary" />
-));
-
-const CancelButton = makeDecoratable("CancelButton", (props: ButtonProps) => (
-    <DialogClose asChild>
-        <Button text={"Cancel"} {...props} variant="secondary" />
-    </DialogClose>
-));
-
 const Dialog = withStaticProps(DecoratableDialog, {
     ConfirmButton,
-    CancelButton
+    CancelButton,
+    TitleIcon
 });
 
 export { Dialog };

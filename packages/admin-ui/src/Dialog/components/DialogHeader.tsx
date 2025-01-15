@@ -7,7 +7,6 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Icon } from "~/Icon";
 
 export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
     Pick<DialogProps, "title" | "titleIcon" | "description" | "showCloseButton">;
@@ -22,15 +21,7 @@ export const DialogHeader = ({
 }: DialogHeaderProps) => {
     let renderedTitle = (
         <DialogTitle>
-            {titleIcon && (
-                <Icon
-                    icon={titleIcon}
-                    label={"asd"}
-                    size={"lg"}
-                    color={"neutral-strong"}
-                    className={"pt-xs"}
-                />
-            )}
+            {titleIcon}
             {title}
         </DialogTitle>
     );
