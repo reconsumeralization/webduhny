@@ -166,6 +166,6 @@ export const WithTitleIcon: Story = {
 export const AsModal: Story = {
     args: {
         ...Default.args,
-        modal: true,
+        modal: true
     }
 };

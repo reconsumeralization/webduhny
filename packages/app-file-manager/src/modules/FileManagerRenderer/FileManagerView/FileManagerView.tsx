@@ -193,10 +193,7 @@ const FileManagerView = () => {
                 return null;
             }
             return (
-                <ButtonPrimary
-                    flat={true}
-                    onClick={browseFiles as ButtonProps["onClick"]}
-                >
+                <ButtonPrimary flat={true} onClick={browseFiles as ButtonProps["onClick"]}>
                     <ButtonIcon icon={<UploadIcon />} />
                     {t`Upload...`}
                 </ButtonPrimary>
