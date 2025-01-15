@@ -10,12 +10,12 @@ export interface DialogContentProps
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
     DialogContentProps
->(({ className, children, ...props }, ref) => {
+>(({ className, preventOutsideDismiss, children, ...props }, ref) => {
     let preventOutsideDismissProps: Pick<
         DialogPrimitive.DialogContentProps,
         "onInteractOutside" | "onEscapeKeyDown"
     > = {};
-    if (props.preventOutsideDismiss) {
+    if (preventOutsideDismiss) {
         preventOutsideDismissProps = {
             onInteractOutside: event => event.preventDefault(),
             onEscapeKeyDown: event => event.preventDefault()
