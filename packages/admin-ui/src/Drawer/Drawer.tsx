@@ -25,7 +25,7 @@ export interface DrawerProps
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
-    width?: string;
+    width?: React.CSSProperties["width"];
     tabs?: boolean;
 }
 
