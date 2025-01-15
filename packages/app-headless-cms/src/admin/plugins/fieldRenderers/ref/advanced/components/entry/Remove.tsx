@@ -6,8 +6,6 @@ import { useConfirmationDialog } from "@webiny/app-admin";
 import { ButtonLink } from "./elements/ButtonLink";
 
 const Text = styled("span")({
-    fontFamily: "Source Sans Pro",
-    fontWeight: 500,
     fontSize: "14px",
     lineHeight: "20px",
     letterSpacing: "0.1px",
