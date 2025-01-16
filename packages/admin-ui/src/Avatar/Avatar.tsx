@@ -40,13 +40,13 @@ interface AvatarProps
     fallback?: React.ReactElement<AvatarFallbackProps>;
 }
 
-const avatarVariants = cva("relative flex shrink-0 overflow-hidden border-sm border-transparent", {
+const avatarVariants = cva("relative flex shrink-0 overflow-hidden", {
     variants: {
         size: {
-            sm: "text-h6 rounded-sm p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-md",
-            md: "text-h6 rounded-md p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-lg",
-            lg: "text-h6 rounded-md p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-lg",
-            xl: "text-h4 rounded-lg p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-xl"
+            sm: "text-h6 rounded-sm size-[24px] [&_svg]:size-[16px]",
+            md: "text-h6 rounded-md size-[32px] [&_svg]:size-[24px]",
+            lg: "text-h6 rounded-md size-[40px] [&_svg]:size-[24px]",
+            xl: "text-h4 rounded-lg size-[48px] [&_svg]:size-[24px]"
         },
         variant: {
             strong: "bg-primary text-neutral-light [&_svg]:fill-neutral-base",

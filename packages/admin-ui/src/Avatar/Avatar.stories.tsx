@@ -7,18 +7,6 @@ const meta: Meta<typeof Avatar> = {
     title: "Components/Avatar",
     component: Avatar,
     tags: ["autodocs"],
-    argTypes: {}
-};
-
-export default meta;
-
-type Story = StoryObj<typeof Avatar>;
-
-export const Default: Story = {
-    args: {
-        image: <Avatar.Image src="https://github.com/webiny-bot.png" alt="@webiny" />,
-        fallback: <Avatar.Fallback delayMs={0}>W</Avatar.Fallback>
-    },
     argTypes: {
         size: {
             control: "select",
@@ -30,6 +18,17 @@ export const Default: Story = {
             options: ["strong", "subtle", "light", "quiet", "outlined"],
             defaultValue: "strong"
         }
+    }
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Avatar>;
+
+export const Default: Story = {
+    args: {
+        image: <Avatar.Image src="https://i.pravatar.cc/300" alt="@webiny" />,
+        fallback: <Avatar.Fallback delayMs={0}>W</Avatar.Fallback>
     }
 };
 
