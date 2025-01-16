@@ -78,13 +78,7 @@
     --bg-destructive-xstrong: var(--color-destructive-800);
 
     --bg-neutral-base: var(--color-neutral-0);
-    --bg-neutral-base-a20: var(--color-neutral-0-a20);
-    --bg-neutral-base-a30: var(--color-neutral-0-a30);
-    --bg-neutral-base-a80: var(--color-neutral-0-a80);
     --bg-neutral-dark: var(--color-neutral-900);
-    --bg-neutral-dark-a10: var(--color-neutral-900-a10);
-    --bg-neutral-dark-a5: var(--color-neutral-900-a5);
-    --bg-neutral-dark-a50: var(--color-neutral-900-a50);
     --bg-neutral-dimmed: var(--color-neutral-200);
     --bg-neutral-disabled: var(--color-neutral-200);
     --bg-neutral-light: var(--color-neutral-100);
@@ -155,21 +149,19 @@
     --border-width-sm: 1px;
 
     // Fill.
-    --fill-accent-default: 15 95.6% 55.9%;
+    --fill-accent-default: var(--color-primary-500);
 
-    --fill-destructive: 0 71% 48.6%;
+    --fill-destructive: var(--color-destructive-500);
 
-    --fill-neutral-base: 0 0% 100%;
-    --fill-neutral-base-a50: 0 0% 100%;
-    --fill-neutral-dark: 215 11.1% 21.2%;
-    --fill-neutral-disabled: 219 12.1% 77.3%;
-    --fill-neutral-strong: 218 10.7% 65.3%;
-    --fill-neutral-xstrong: 213 10.1% 38.8%;
-    --fill-neutral-xstrong-a30: 214 12.3% 11.2%;
+    --fill-neutral-base: var(--color-neutral-0);
+    --fill-neutral-dark: var(--color-neutral-800);
+    --fill-neutral-disabled: var(--color-neutral-400);
+    --fill-neutral-strong: var(--color-neutral-500);
+    --fill-neutral-xstrong: var(--color-neutral-700);
 
-    --fill-success: 170 100% 37.5%;
+    --fill-success: var(--color-success-500);
 
-    --fill-warning: 45 95.7% 63.7%;
+    --fill-warning: var(--color-warning-500);
 
     // Font.
     --font-sans: "Inter", sans-serif;
