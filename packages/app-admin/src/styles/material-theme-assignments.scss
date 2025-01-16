@@ -30,7 +30,6 @@
   display: flex;
 }
 
-
 // list
 .mdc-deprecated-list {
   @include list.deprecated-item-primary-text-ink-color($mdc-theme-text-primary-on-background);
@@ -135,7 +134,6 @@
     background-color: var(--mdc-theme-on-surface);
   }
 }
-
 
 // when grid is inside another grid cell, child grid should not have any padding
 .mdc-layout-grid {
