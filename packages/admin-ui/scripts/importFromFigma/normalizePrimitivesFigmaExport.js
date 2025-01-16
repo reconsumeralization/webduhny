@@ -40,7 +40,6 @@ const normalizePrimitivesFigmaExport = () => {
                 return null;
             }
 
-
             const type = getVariableType(variable.name);
 
             if (isColorWithAlpha(variantName)) {

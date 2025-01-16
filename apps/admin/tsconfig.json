@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig",
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "../../../packages/app-admin/tsconfig.build.json"
@@ -11,12 +9,8 @@
   "compilerOptions": {
     "composite": false,
     "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@webiny/app-admin/*": [
-        "../../../packages/app-admin/src/*"
-      ]
+      "~/*": ["./src/*"],
+      "@webiny/app-admin/*": ["../../../packages/app-admin/src/*"]
     },
     "baseUrl": "."
   }
