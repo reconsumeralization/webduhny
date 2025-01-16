@@ -16,12 +16,12 @@ export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
-    title?: React.ReactNode | string;
+    title?: React.ReactNode;
     titleIcon?: React.ReactElement;
     showCloseButton?: boolean;
     preventOutsideDismiss?: boolean;
     bodyPadding?: boolean;
-    description?: React.ReactNode | string;
+    description?: React.ReactNode;
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
