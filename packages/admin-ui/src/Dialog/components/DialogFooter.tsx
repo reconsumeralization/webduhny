@@ -18,7 +18,7 @@ export const DialogFooter = ({ actions, info, className, ...props }: DialogFoote
                     <div>{info}</div>
                 </div>
             )}
-            {actions && <div className={"flex gap-x-sm"}>{actions}</div>}
+            {actions && <div className={"flex gap-x-sm ml-auto"}>{actions}</div>}
         </div>
     );
 };
