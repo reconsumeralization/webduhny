@@ -149,24 +149,22 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                         />
                     </span>
                 </Popover.Trigger>
-                <Popover.Portal>
-                    <Popover.Content
-                        style={{ width: "var(--radix-popover-trigger-width)" }}
-                        onOpenAutoFocus={e => e.preventDefault()}
-                    >
-                        <MultiAutoCompleteList
-                            emptyMessage={vm.optionsListVm.emptyMessage}
-                            isEmpty={vm.optionsListVm.isEmpty}
-                            isLoading={props.isLoading}
-                            loadingMessage={vm.optionsListVm.loadingMessage}
-                            onOptionCreate={handleCreateOption}
-                            onOptionSelect={handleSelectOption}
-                            optionRenderer={props.optionRenderer}
-                            options={vm.optionsListVm.options}
-                            temporaryOption={vm.temporaryOptionVm.option}
-                        />
-                    </Popover.Content>
-                </Popover.Portal>
+                <Popover.Content
+                    style={{ width: "var(--radix-popover-trigger-width)" }}
+                    onOpenAutoFocus={e => e.preventDefault()}
+                >
+                    <MultiAutoCompleteList
+                        emptyMessage={vm.optionsListVm.emptyMessage}
+                        isEmpty={vm.optionsListVm.isEmpty}
+                        isLoading={props.isLoading}
+                        loadingMessage={vm.optionsListVm.loadingMessage}
+                        onOptionCreate={handleCreateOption}
+                        onOptionSelect={handleSelectOption}
+                        optionRenderer={props.optionRenderer}
+                        options={vm.optionsListVm.options}
+                        temporaryOption={vm.temporaryOptionVm.option}
+                    />
+                </Popover.Content>
             </Command>
         </Popover>
     );

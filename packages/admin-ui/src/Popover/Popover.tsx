@@ -30,7 +30,6 @@ const PopoverContent = ({
 const Popover = withStaticProps(PopoverPrimitive.Root, {
     Anchor: PopoverPrimitive.Anchor,
     Content: PopoverContent,
-    Portal: PopoverPrimitive.Portal,
     Trigger: PopoverPrimitive.Trigger
 });
 
