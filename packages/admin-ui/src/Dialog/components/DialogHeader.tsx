@@ -18,6 +18,10 @@ export const DialogHeader = ({
     className,
     ...props
 }: DialogHeaderProps) => {
+    if (!title && !description) {
+        return null;
+    }
+
     return (
         <div
             {...props}
