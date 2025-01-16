@@ -7,5 +7,3 @@ export type DialogTitleProps = React.ComponentPropsWithoutRef<typeof DialogPrimi
 export const DialogTitle = ({ className, ...props }: DialogTitleProps) => (
     <DialogPrimitive.Title {...props} className={cn("text-h4 flex gap-sm", className)} />
 );
-
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
