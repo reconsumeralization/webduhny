@@ -3,7 +3,6 @@ import { cn } from "~/utils";
 import { type DialogProps } from "../Dialog";
 import { DialogTitle } from "./DialogTitle";
 import { DialogDescription } from "./DialogDescription";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -19,30 +18,6 @@ export const DialogHeader = ({
     className,
     ...props
 }: DialogHeaderProps) => {
-    let renderedTitle = (
-        <DialogTitle>
-            {titleIcon}
-            {title}
-        </DialogTitle>
-    );
-    if (!title) {
-        renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
-    }
-
-    let renderedDescription = <DialogDescription>{description}</DialogDescription>;
-    if (!description) {
-        renderedDescription = <VisuallyHidden.Root>{renderedDescription}</VisuallyHidden.Root>;
-    }
-
-    if (!title && !description) {
-        return (
-            <>
-                {renderedTitle}
-                {renderedDescription}
-            </>
-        );
-    }
-
     return (
         <div
             {...props}
@@ -57,9 +32,12 @@ export const DialogHeader = ({
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
                     </DialogPrimitive.Close>
                 )}
-                {renderedTitle}
+                <DialogTitle>
+                    {titleIcon}
+                    {title}
+                </DialogTitle>
             </div>
-            {renderedDescription}
+            <DialogDescription>{description}</DialogDescription>
         </div>
     );
 };
