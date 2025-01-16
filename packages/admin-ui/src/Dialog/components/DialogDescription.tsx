@@ -12,5 +12,3 @@ export const DialogDescription = ({ className, ...props }: DialogDescriptionProp
         className={cn("text-sm text-neutral-strong", className)}
     />
 );
-
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
