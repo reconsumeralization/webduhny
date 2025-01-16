@@ -11,16 +11,18 @@ const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
     DialogContentProps
 >(({ className, preventOutsideDismiss, children, ...props }, ref) => {
-    let preventOutsideDismissProps: Pick<
-        DialogPrimitive.DialogContentProps,
-        "onInteractOutside" | "onEscapeKeyDown"
-    > = {};
-    if (preventOutsideDismiss) {
-        preventOutsideDismissProps = {
-            onInteractOutside: event => event.preventDefault(),
-            onEscapeKeyDown: event => event.preventDefault()
-        };
-    }
+    const preventOutsideDismissProps = React.useMemo<
+        Pick<DialogPrimitive.DialogContentProps, "onInteractOutside" | "onEscapeKeyDown">
+    >(() => {
+        if (preventOutsideDismiss) {
+            return {
+                onInteractOutside: event => event.preventDefault(),
+                onEscapeKeyDown: event => event.preventDefault()
+            };
+        }
+
+        return {};
+    }, [preventOutsideDismiss]);
 
     return (
         <DialogPrimitive.Content
