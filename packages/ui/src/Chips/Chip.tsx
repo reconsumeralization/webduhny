@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Tag as AdminTag } from "@webiny/admin-ui";
+import omit from "lodash/omit";
 
 export interface RmwcChipProps {
     /** Text for your Chip. */
@@ -86,7 +87,14 @@ export const Chip = (props: ChipProps) => {
 
     return (
         <AdminTag
-            {...rest}
+            {...omit(rest, [
+                "selected",
+                "icon",
+                "trailingIconRemovesChip",
+                "onTrailingIconInteraction",
+                "checkmark",
+                "foundationRef"
+            ])}
             content={children || label}
             dismissIconElement={createIconElement(trailingIcon)}
             onDismiss={onRemoveCb}
