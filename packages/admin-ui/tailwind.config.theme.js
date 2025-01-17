@@ -326,7 +326,6 @@ module.exports = {
             DEFAULT: "hsl(var(--text-neutral-default))",
             dimmed: "hsl(var(--text-neutral-dimmed))",
             disabled: "hsl(var(--text-neutral-disabled))",
-            "disabled-negative": "hsl(var(--text-neutral-disabled-negative))",
             light: "hsl(var(--text-neutral-light))",
             muted: "hsl(var(--text-neutral-muted))",
             primary: "hsl(var(--text-neutral-primary))",
