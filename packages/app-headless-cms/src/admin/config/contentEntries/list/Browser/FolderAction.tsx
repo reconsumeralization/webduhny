@@ -1,5 +1,4 @@
 import React from "react";
-import { CompositionScope } from "@webiny/react-composition";
 import { AcoConfig, FolderActionConfig } from "@webiny/app-aco";
 import { useModel } from "~/admin/hooks";
 
@@ -19,11 +18,9 @@ const BaseFolderAction = ({ modelIds = [], ...props }: FolderActionProps) => {
     }
 
     return (
-        <CompositionScope name={"cms"}>
-            <AcoConfig>
-                <Folder.Action {...props} />
-            </AcoConfig>
-        </CompositionScope>
+        <AcoConfig>
+            <Folder.Action {...props} />
+        </AcoConfig>
     );
 };
 

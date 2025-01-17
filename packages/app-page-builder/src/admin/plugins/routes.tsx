@@ -71,7 +71,7 @@ const plugins: RoutePlugin[] = [
                         <RenderPluginsLoader>
                             <AdminLayout>
                                 <Helmet title={"Page Builder - Pages"} />
-                                <CompositionScope name={"pb.page"}>
+                                <CompositionScope name={"pb.pages"}>
                                     <Pages />
                                 </CompositionScope>
                             </AdminLayout>
@@ -196,3 +196,6 @@ const plugins: RoutePlugin[] = [
 ];
 
 export default plugins;
+
+// *, pb.page, grid.background, fm
+// *, pb.page, fm

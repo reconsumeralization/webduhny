@@ -82,3 +82,5 @@ const isFolderRow = (row: BaseTableItem): row is FolderTableItem => {
 };
 
 export const Column = Object.assign(BaseColumn, { isFolderRow, createUseTableRow });
+
+Column["displayName"] = "AcoColumn";

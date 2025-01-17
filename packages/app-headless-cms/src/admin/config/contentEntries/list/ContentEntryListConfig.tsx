@@ -1,10 +1,21 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { createConfigurableComponent } from "@webiny/react-properties";
 import { Browser, BrowserConfig } from "./Browser";
+import { CompositionScope } from "@webiny/react-composition";
 
 const base = createConfigurableComponent<ContentEntryListConfig>("ContentEntryListConfig");
 
-export const ContentEntryListConfig = Object.assign(base.Config, { Browser });
+const ScopedContentEntryListConfig = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <CompositionScope name={"cms"}>
+            <base.Config>{children}</base.Config>
+        </CompositionScope>
+    );
+};
+
+ScopedContentEntryListConfig.displayName = "ContentEntryListConfig";
+
+export const ContentEntryListConfig = Object.assign(ScopedContentEntryListConfig, { Browser });
 export const ContentEntryListWithConfig = base.WithConfig;
 
 interface ContentEntryListConfig {

@@ -1,5 +1,4 @@
 import React from "react";
-import { CompositionScope } from "@webiny/react-composition";
 import {
     AcoConfig,
     AdvancedSearchFieldRendererConfig as FieldRendererConfig
@@ -23,11 +22,9 @@ const BaseFieldRenderer = ({ modelIds = [], ...props }: FieldRendererProps) => {
     }
 
     return (
-        <CompositionScope name={"cms"}>
-            <AcoConfig>
-                <AdvancedSearch.FieldRenderer {...props} />
-            </AcoConfig>
-        </CompositionScope>
+        <AcoConfig>
+            <AdvancedSearch.FieldRenderer {...props} />
+        </AcoConfig>
     );
 };
 

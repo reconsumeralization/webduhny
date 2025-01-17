@@ -1,5 +1,5 @@
 import React from "react";
-import { CompositionScope, makeDecoratable } from "@webiny/react-composition";
+import { makeDecoratable } from "@webiny/react-composition";
 import { AcoConfig, RecordActionConfig } from "@webiny/app-aco";
 import { IsApplicableToCurrentModel } from "~/admin/config/IsApplicableToCurrentModel";
 
@@ -15,13 +15,11 @@ const BaseEntryAction = makeDecoratable(
     "EntryAction",
     ({ modelIds = [], ...props }: EntryActionProps) => {
         return (
-            <CompositionScope name={"cms"}>
-                <AcoConfig>
-                    <IsApplicableToCurrentModel modelIds={modelIds}>
-                        <Record.Action {...props} />
-                    </IsApplicableToCurrentModel>
-                </AcoConfig>
-            </CompositionScope>
+            <AcoConfig>
+                <IsApplicableToCurrentModel modelIds={modelIds}>
+                    <Record.Action {...props} />
+                </IsApplicableToCurrentModel>
+            </AcoConfig>
         );
     }
 );
