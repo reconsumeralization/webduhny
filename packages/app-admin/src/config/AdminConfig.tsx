@@ -14,7 +14,7 @@ interface AdminConfig {
     // Add properties here. At the moment, we don't have any.
 }
 
-function use() {
+function useAdminConfig() {
     return base.useConfig();
 }
 
@@ -30,5 +30,5 @@ export const AdminConfigProvider = createProvider(Original => {
 
 export const AdminConfig = Object.assign(base.Config, {
     Theme,
-    use
+    use: useAdminConfig
 });
