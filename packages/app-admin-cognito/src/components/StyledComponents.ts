@@ -5,8 +5,7 @@ export const Wrapper = styled("section")({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    minHeight: "100vh",
-    color: "var(--mdc-theme-on-surface)"
+    minHeight: "100vh"
 });
 
 export const LogoWrapper = styled("div")({
@@ -24,7 +23,6 @@ export const LoginContent = styled("div")({
     },
     a: {
         textDecoration: "none",
-        color: "var(--mdc-theme-primary)",
         fontWeight: 600,
         "&:hover": {
             textDecoration: "underline"
@@ -41,8 +39,7 @@ export const Footer = styled("div")({
     textAlign: "center",
     marginBottom: 75,
     a: {
-        textDecoration: "none",
-        color: "var(--mdc-theme-primary)"
+        textDecoration: "none"
     }
 });
 
