@@ -35,6 +35,7 @@ export const assignColor = (palette: ColorPalette, color: string, shade?: ColorS
         return;
     }
 
+    console.log('assignam color')
     generateShades(colorInstance).forEach(([shadeLevel, shade]) => {
         assignColorToCssVar(palette, shadeLevel, shade);
     });
