@@ -119,7 +119,6 @@ export const Authenticator = ({ onToken, children }: AuthenticatorProps) => {
         data: AuthData | null = null,
         message: AuthMessage | null = null
     ) => {
-        console.log('onCHangestate', authState, data, message)
         setState({
             message: message || null
         });
