@@ -196,6 +196,3 @@ const plugins: RoutePlugin[] = [
 ];
 
 export default plugins;
-
-// *, pb.page, grid.background, fm
-// *, pb.page, fm
