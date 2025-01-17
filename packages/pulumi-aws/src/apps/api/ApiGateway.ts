@@ -31,8 +31,8 @@ export const ApiGateway = createAppModule({
                     // have the required permissions to write logs to CloudWatch logs. More:
                     // https://coady.tech/aws-cloudwatch-logs-arn/
                     // loggingLevel: "INFO",
-                    throttlingBurstLimit: 100000,
-                    throttlingRateLimit: 100000
+                    throttlingBurstLimit: 5000,
+                    throttlingRateLimit: 10000
                 }
             }
         });
