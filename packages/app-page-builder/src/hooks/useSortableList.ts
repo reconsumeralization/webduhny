@@ -21,15 +21,15 @@ interface DragItem {
     type: string;
 }
 interface UseSortableListArgs {
-    index: number;
     id: string;
+    index: number;
     type: string;
     move: (current: number, next: number) => void;
     beginDrag?: (monitor: DragSourceMonitor) => DragItem;
     endDrag?: (item: DraggableItem | undefined, monitor: DragSourceMonitor) => void;
 }
 
-export const useSortableList = ({ index, move, type, beginDrag, endDrag }: UseSortableListArgs) => {
+export const useSortableList = ({ id, index, type, move, beginDrag, endDrag }: UseSortableListArgs) => {
     const ref = useRef<HTMLDivElement>(null);
     const [dropItemAbove, setDropItemAbove] = useState(false);
     const isDraggingDownwardsRef = useRef<boolean>(false);
@@ -110,7 +110,8 @@ export const useSortableList = ({ index, move, type, beginDrag, endDrag }: UseSo
             if (typeof beginDrag === "function") {
                 return beginDrag(monitor);
             }
-            return null;
+
+            return { id, index, type }
         },
         collect: monitor => ({
             isDragging: monitor.isDragging()

@@ -1,5 +1,6 @@
 import React, { createContext } from "react";
 import { PbDataBinding, PbDataSource } from "~/types";
+import { DeveloperUtilities } from "./editor/DeveloperUtilities";
 
 const passthrough = (cb: Updater<any>) => cb([]);
 
@@ -50,6 +51,7 @@ export const DynamicDocumentProvider = ({
         <DynamicDocumentContext.Provider
             value={{ dataSources, dataBindings, updateDataSources, updateDataBindings }}
         >
+            <DeveloperUtilities />
             {children}
         </DynamicDocumentContext.Provider>
     );

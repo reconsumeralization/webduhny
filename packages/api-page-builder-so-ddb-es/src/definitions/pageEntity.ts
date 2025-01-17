@@ -90,6 +90,16 @@ export const createPageEntity = (params: Params): Entity<any> => {
                 type: "list",
                 default: []
             },
+            // Dynamic pages
+            dataSources: {
+                type: "list"
+            },
+            dataBindings: {
+                type: "list"
+            },
+            blockVariables: {
+                type: "list"
+            },
             ...(attributes || {})
         }
     });

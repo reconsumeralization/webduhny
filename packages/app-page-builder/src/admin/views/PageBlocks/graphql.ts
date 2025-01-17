@@ -10,6 +10,22 @@ const PAGE_BLOCK_BASE_FIELDS = `
     blockCategory
     name
     content
+    dataSources {
+        name
+        type
+        config
+    }
+    dataBindings {
+        dataSource
+        bindTo
+        bindFrom
+    }
+    blockVariables {
+        blockId
+        elementId
+        label
+        inputName
+    }
     createdOn
     createdBy {
         id

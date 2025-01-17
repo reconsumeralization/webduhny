@@ -79,7 +79,6 @@ const TreeViewItem = ({ element, level, children, index }: TreeViewItemProps) =>
         dropItemAbove
     } = useSortableList({
         move,
-        id: elementId,
         index,
         type: element.type,
         endDrag: () => {

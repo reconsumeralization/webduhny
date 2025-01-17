@@ -183,10 +183,12 @@ const plugins: RoutePlugin[] = [
                 element={
                     <SecureRoute permission={ROLE_PB_PAGES}>
                         <EditorPluginsLoader>
-                            <Helmet title={"Page Builder - Edit block"} />
-                            <CompositionScope name={"pb.blockEditor"}>
-                                <BlockEditor />
-                            </CompositionScope>
+                            <RenderPluginsLoader>
+                                <Helmet title={"Page Builder - Edit block"} />
+                                <CompositionScope name={"pb.blockEditor"}>
+                                    <BlockEditor />
+                                </CompositionScope>
+                            </RenderPluginsLoader>
                         </EditorPluginsLoader>
                     </SecureRoute>
                 }

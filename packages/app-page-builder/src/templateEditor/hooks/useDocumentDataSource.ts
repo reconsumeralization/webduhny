@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useTemplate } from "./useTemplate";
 import { PbDataSource } from "~/types";
 
@@ -10,10 +10,6 @@ export const useDocumentDataSource = () => {
     const [template, updateTemplate] = useTemplate();
     const dataSources = template.dataSources;
     const key = JSON.stringify(dataSources);
-
-    useEffect(() => {
-        console.log({ dataSources: template.dataSources, dataBindings: template.dataBindings });
-    }, [JSON.stringify(template)]);
 
     const getDataSource = useCallback(
         (name: string) => {

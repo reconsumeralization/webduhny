@@ -48,7 +48,8 @@ export class PageTemplateExporter {
                 layout: template.layout,
                 pageCategory: template.pageCategory,
                 dataBindings: template.dataBindings,
-                dataSources: template.dataSources
+                dataSources: template.dataSources,
+                blockVariables: template.blockVariables
             },
             files: imageFilesData
         };

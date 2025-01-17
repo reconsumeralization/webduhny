@@ -16,6 +16,7 @@ export const createPageBlockGraphQL = new GraphQLSchemaPlugin<PbContext>({
             content: JSON
             dataSources: [DataSource!]
             dataBindings: [DataBinding!]
+            blockVariables: [BlockVariable!]
         }
 
         input PbCreatePageBlockInput {
@@ -30,6 +31,7 @@ export const createPageBlockGraphQL = new GraphQLSchemaPlugin<PbContext>({
             content: JSON
             dataSources: [DataSourceInput!]
             dataBindings: [DataBindingInput!]
+            blockVariables: [BlockVariableInput!]
         }
 
         input PbListPageBlocksWhereInput {
@@ -97,6 +99,9 @@ export const createPageBlockGraphQL = new GraphQLSchemaPlugin<PbContext>({
                     compression: "gzip",
                     value: value.toString("base64")
                 };
+            },
+            blockVariables: (block: PageBlock) => {
+                return block.blockVariables || [];
             }
         }
     }

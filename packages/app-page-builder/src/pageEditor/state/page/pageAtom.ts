@@ -45,6 +45,7 @@ export const pageAtom = atom<PageAtomType>({
         snippet: null,
         dataSources: [],
         dataBindings: [],
+        blockVariables: [],
         createdBy: {
             id: null
         },

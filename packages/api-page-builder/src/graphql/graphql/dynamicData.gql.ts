@@ -26,6 +26,20 @@ export const createDynamicDataSchema = () => {
                 type: String!
                 config: JSON!
             }
+
+            type BlockVariable {
+                blockId: String!
+                elementId: String!
+                label: String!
+                inputName: String!
+            }
+
+            input BlockVariableInput {
+                blockId: String!
+                elementId: String!
+                label: String!
+                inputName: String!
+            }
         `
     });
 };

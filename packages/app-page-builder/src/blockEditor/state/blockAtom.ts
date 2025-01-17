@@ -1,11 +1,11 @@
 import { atom } from "recoil";
-import { PbEditorElementTree } from "~/types";
+import { PbEditorElementTree, DynamicDocument } from "~/types";
 
 export interface BlockWithContent extends BlockAtomType {
     content: PbEditorElementTree;
 }
 
-export interface BlockAtomType {
+export interface BlockAtomType extends DynamicDocument {
     id: string;
     name: string;
     blockCategory: string;
@@ -21,6 +21,9 @@ export const blockAtom = atom<BlockAtomType>({
         id: "",
         name: "",
         blockCategory: "",
+        blockVariables: [],
+        dataBindings: [],
+        dataSources: [],
         createdBy: {
             id: null
         }

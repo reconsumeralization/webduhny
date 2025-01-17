@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { autorun } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { PbPageBlock } from "~/types";
+import type { PbPageBlock } from "~/types";
 import { blocksRepositoryFactory } from "./BlocksRepositoryFactory";
+import type { UpdatePageBlockInput } from "./BlocksRepository";
 
 export function usePageBlocks() {
     const client = useApolloClient();
@@ -50,7 +51,7 @@ export function usePageBlocks() {
     );
 
     const updateBlock = useCallback(
-        (pageBlock: { id: string; name?: string; content?: unknown; category?: string }) => {
+        (pageBlock: UpdatePageBlockInput) => {
             return blocksRepository.updatePageBlock(pageBlock);
         },
         [blocksRepository]

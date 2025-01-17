@@ -199,7 +199,7 @@ export interface PbElementDataTypeSource {
 export type PbElementDataType = {
     blockId?: string;
     variableId?: string;
-    variables?: PbBlockVariable[];
+    variables?: LEGACY_PbBlockVariable[];
     action?: {
         href: string;
         newTab: boolean;
@@ -258,7 +258,7 @@ export interface PbElement<TData = PbElementDataType> {
     elements: PbElement<TData>[];
 }
 
-export interface PbBlockVariable<TValue = any> {
+export interface LEGACY_PbBlockVariable<TValue = any> {
     id: string;
     type: string;
     label: string;
@@ -268,7 +268,7 @@ export interface PbBlockVariable<TValue = any> {
 export type PbBlockEditorCreateVariablePlugin = Plugin & {
     type: "pb-block-editor-create-variable";
     elementType: string;
-    createVariables: (params: { element: PbEditorElement }) => PbBlockVariable[];
+    createVariables: (params: { element: PbEditorElement }) => LEGACY_PbBlockVariable[];
     getVariableValue: (params: { element: PbEditorElement; variableId?: string }) => any;
 };
 
@@ -277,7 +277,10 @@ export type PbEditorPageElementVariableRendererPlugin = Plugin & {
     elementType: string;
     getVariableValue: (element: PbEditorElement | null) => any;
     renderVariableInput: (variableId: string) => ReactNode;
-    setElementValue: (element: PbEditorElementTree, variables: PbBlockVariable[]) => PbElement;
+    setElementValue: (
+        element: PbEditorElementTree,
+        variables: LEGACY_PbBlockVariable[]
+    ) => PbElement;
 };
 
 /**
@@ -916,9 +919,17 @@ export interface PbPageBlock extends DynamicDocument {
     createdBy: PbIdentity;
 }
 
+export interface PbBlockVariable {
+    blockId: string;
+    elementId: string;
+    label: string;
+    inputName: string;
+}
+
 export interface DynamicDocument {
     dataSources: PbDataSource[];
     dataBindings: PbDataBinding[];
+    blockVariables: PbBlockVariable[];
 }
 
 export interface PbDataSource {

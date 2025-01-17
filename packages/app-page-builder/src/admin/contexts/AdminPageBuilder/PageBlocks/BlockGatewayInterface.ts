@@ -1,7 +1,12 @@
-import { PbPageBlock } from "~/types";
+import { PbBlockVariable, PbDataBinding, PbDataSource, PbPageBlock } from "~/types";
 
 export type CreatePageBlockInput = Pick<PbPageBlock, "name" | "blockCategory" | "content">;
-export type UpdatePageBlockInput = Pick<PbPageBlock, "id"> & CreatePageBlockInput;
+export type UpdatePageBlockInput = Pick<PbPageBlock, "id"> &
+    CreatePageBlockInput & {
+        dataSources: PbDataSource[];
+        dataBindings: PbDataBinding[];
+        blockVariables: PbBlockVariable[];
+    };
 
 export interface BlockGatewayInterface {
     list(): Promise<PbPageBlock[]>;

@@ -13,25 +13,18 @@ export const elementInputs = {
         getDefaultValue: ({ element }) => {
             return element.data.text.data.text;
         }
-    }),
-    /**
-     * `tag` is an element input which exists for backwards compatibility with older rich-text implementations.
-     */
-    tag: ElementInput.create<string>({
-        name: "tag",
-        type: "htmlTag",
-        getDefaultValue: ({ element }) => {
-            return element.data.text.desktop.tag;
-        }
     })
 };
 
 export const HeadingRenderer = createRenderer<unknown, typeof elementInputs>(
     () => {
-        const { getInputValues } = useRenderer();
+        const { getElement, getInputValues } = useRenderer();
         const inputs = getInputValues<typeof elementInputs>();
         const content = inputs.text || "";
-        const tag = inputs.tag || "h1";
+        const element = getElement();
+
+        // This exists for backwards compatibility with older rich-text implementations (Medium).
+        const tag = element.data.text?.desktop?.tag || "h1";
 
         if (isJson(content) || !isHtml(content)) {
             return null;

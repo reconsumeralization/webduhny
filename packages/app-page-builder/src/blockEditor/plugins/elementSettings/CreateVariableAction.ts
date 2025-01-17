@@ -1,48 +1,63 @@
 import React, { useCallback } from "react";
-import { plugins } from "@webiny/plugins";
+import type { Element } from "@webiny/app-page-builder-elements/types";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
-import { useUpdateElement } from "~/editor/hooks/useUpdateElement";
 import { useCurrentBlockElement } from "~/editor/hooks/useCurrentBlockElement";
-import { PbBlockEditorCreateVariablePlugin } from "~/types";
+import { useElementRendererInputs } from "~/blockEditor";
+import { useBlockVariables } from "~/blockVariables/useBlockVariables";
+import type { PbBlockVariable, PbDataBinding, PbEditorElement } from "~/types";
+import { useDynamicDocument } from "~/dataInjection";
 
 interface CreateVariableActionPropsType {
     children: React.ReactElement;
 }
 
+const variableToId = (v: PbBlockVariable) => {
+    return `${v.blockId};${v.elementId};${v.inputName}`;
+};
+
 const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
-    const [element] = useActiveElement();
+    const [element] = useActiveElement<PbEditorElement>();
+    const { inputs } = useElementRendererInputs(element);
     const { block } = useCurrentBlockElement();
-    const updateElement = useUpdateElement();
+    const { updateBlockVariables } = useBlockVariables();
+    const { updateDataBindings } = useDynamicDocument();
 
     const onClick = useCallback((): void => {
-        if (element && block) {
-            const createVariablePlugins = plugins.byType<PbBlockEditorCreateVariablePlugin>(
-                "pb-block-editor-create-variable"
-            );
-            const variablePlugin = createVariablePlugins.find(
-                plugin => plugin.elementType === element.type
-            );
+        if (!block) {
+            return;
+        }
 
-            if (!variablePlugin) {
-                return;
-            }
+        const newVariables: PbBlockVariable[] = [];
+        const newBindings: PbDataBinding[] = [];
 
-            updateElement({
-                ...element,
-                data: { ...element.data, variableId: element.id }
+        for (const input of inputs) {
+            newVariables.push({
+                blockId: block.id,
+                elementId: element.id,
+                label: input.getName(),
+                inputName: input.getName()
             });
-            updateElement({
-                ...block,
-                data: {
-                    ...block.data,
-                    variables: [
-                        ...(block.data?.variables || []),
-                        ...variablePlugin.createVariables({ element })
-                    ]
-                }
+
+            newBindings.push({
+                dataSource: "static",
+                bindFrom: input.getDefaultValue(element as Element),
+                bindTo: `element:${element.id}.${input.getName()}`
             });
         }
-    }, [element, block, updateElement]);
+
+        updateBlockVariables(variables => {
+            const existingVarsIds = variables.map(variableToId);
+
+            return [
+                ...variables,
+                ...newVariables.filter(v => !existingVarsIds.includes(variableToId(v)))
+            ];
+        });
+
+        updateDataBindings(bindings => {
+            return [...bindings, ...newBindings];
+        });
+    }, [element, block]);
 
     return React.cloneElement(children, { onClick });
 };

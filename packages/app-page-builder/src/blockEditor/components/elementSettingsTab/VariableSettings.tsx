@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import capitalize from "lodash/capitalize";
 import { ButtonPrimary } from "@webiny/ui/Button";
 import { ReactComponent as InfoIcon } from "@webiny/app-admin/assets/icons/info.svg";
-import { PbEditorElement, PbBlockVariable } from "~/types";
+import { PbEditorElement, LEGACY_PbBlockVariable } from "~/types";
 import TextInput from "./TextInput";
 import { useCurrentBlockElement } from "~/editor/hooks/useCurrentBlockElement";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
@@ -22,7 +22,7 @@ const VariableSettings = ({ element }: { element: PbEditorElement }) => {
 
     const elementVariables = useMemo(() => {
         const variables = block?.data?.variables?.filter(
-            (variable: PbBlockVariable) => variable.id.split(".")[0] === element?.data?.variableId
+            (variable: LEGACY_PbBlockVariable) => variable.id.split(".")[0] === element?.data?.variableId
         );
 
         return variables ?? [];
@@ -31,7 +31,7 @@ const VariableSettings = ({ element }: { element: PbEditorElement }) => {
     const onChange = useCallback(
         (label: string, variableId: string) => {
             if (block && block.id) {
-                const newVariables = block.data?.variables?.map((variable: PbBlockVariable) => {
+                const newVariables = block.data?.variables?.map((variable: LEGACY_PbBlockVariable) => {
                     if (variable?.id === variableId) {
                         return {
                             ...variable,
@@ -69,7 +69,7 @@ const VariableSettings = ({ element }: { element: PbEditorElement }) => {
                 if (block && block.id) {
                     const variables = block.data.variables ?? [];
                     const updatedVariables = variables.filter(
-                        (variable: PbBlockVariable) =>
+                        (variable: LEGACY_PbBlockVariable) =>
                             variable.id.split(".")[0] !== element?.data?.variableId
                     );
                     updateElement({

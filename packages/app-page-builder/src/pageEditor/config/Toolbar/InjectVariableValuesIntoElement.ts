@@ -1,6 +1,6 @@
 import { plugins } from "@webiny/plugins";
 import {
-    PbBlockVariable,
+    LEGACY_PbBlockVariable,
     PbEditorElementTree,
     PbEditorPageElementVariableRendererPlugin
 } from "~/types";
@@ -13,7 +13,7 @@ export class InjectVariableValuesIntoElement {
             "pb-editor-page-element-variable-renderer"
         );
     }
-    execute(element: PbEditorElementTree, variables: PbBlockVariable[]): PbEditorElementTree {
+    execute(element: PbEditorElementTree, variables: LEGACY_PbBlockVariable[]): PbEditorElementTree {
         element.elements = element.elements.map(element => {
             const { variableId } = element.data;
 

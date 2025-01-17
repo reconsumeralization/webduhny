@@ -18,5 +18,15 @@ export const dynamicData = {
                 bindTo: zod.string()
             })
         )
+        .optional(),
+    blockVariables: zod
+        .array(
+            zod.object({
+                blockId: zod.string(),
+                elementId: zod.string(),
+                label: zod.string(),
+                inputName: zod.string()
+            })
+        )
         .optional()
 };

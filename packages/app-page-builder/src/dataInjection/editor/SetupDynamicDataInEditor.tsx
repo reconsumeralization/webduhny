@@ -29,7 +29,6 @@ const ContentDecorator = Ui.Content.createDecorator(Original => {
 export const SetupDynamicDataInEditor = () => {
     return (
         <>
-            <DeveloperUtilities />
             <ContentDecorator />
             <InjectDynamicValues />
             <AddBindingContext />

@@ -23,6 +23,7 @@ import { ContentWrapper, classes } from "../components/StyledComponents";
 import { applyFallbackDisplayMode } from "../elementSettingsUtils";
 import { useDisplayMode } from "~/editor/hooks/useDisplayMode";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
+import { BindToVariable } from "~/editor/plugins/elementSettings/components/BindToVariable";
 
 const positions = [
     "top left",
@@ -138,11 +139,13 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
                 {options.image !== false && (
                     <React.Fragment>
                         <Wrapper label={"Image"} containerClassName={classes.simpleGrid}>
-                            <SingleImageUpload
-                                className={imageSelect}
-                                onChange={setImage}
-                                value={{ src: backgroundImageSrc }}
-                            />
+                            <BindToVariable name={"background.image"} label={"Background Image"}>
+                                <SingleImageUpload
+                                    className={imageSelect}
+                                    onChange={setImage}
+                                    value={{ src: backgroundImageSrc }}
+                                />
+                            </BindToVariable>
                         </Wrapper>
                         <Wrapper label={"Scaling"} containerClassName={classes.simpleGrid}>
                             <SelectField

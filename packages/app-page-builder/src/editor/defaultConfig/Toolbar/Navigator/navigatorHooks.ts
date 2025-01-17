@@ -59,7 +59,6 @@ interface DragItem {
 
 interface UseSortableListArgs {
     index: number;
-    id: string;
     type: string;
     move: (current: number, next: number) => void;
     beginDrag?: (monitor: DragSourceMonitor) => DragItem;

@@ -1,9 +1,8 @@
 import lodashDebounce from "lodash/debounce";
-import { plugins } from "@webiny/plugins";
-import { SaveBlockActionArgsType } from "./types";
-import { BlockEventActionCallable } from "~/blockEditor/types";
-import { PbElement, PbBlockVariable, PbBlockEditorCreateVariablePlugin } from "~/types";
-import { UpdatePageBlockInput } from "~/admin/contexts/AdminPageBuilder/PageBlocks/BlockGatewayInterface";
+import type { SaveBlockActionArgsType } from "./types";
+import type { BlockEventActionCallable } from "~/blockEditor/types";
+import type { PbElement } from "~/types";
+import type { UpdatePageBlockInput } from "~/admin/contexts/AdminPageBuilder/PageBlocks/BlockGatewayInterface";
 
 export const findElementByVariableId = (elements: PbElement[], variableId: string): any => {
     for (const element of elements) {
@@ -27,33 +26,33 @@ export const findElementByVariableId = (elements: PbElement[], variableId: strin
  *
  * TODO: Ideally, we would update variable values as the element state itself gets updated, to avoid this entire piece of logic.
  */
-const syncBlockVariables = (block: PbElement) => {
-    const createVariablePlugins = plugins.byType<PbBlockEditorCreateVariablePlugin>(
-        "pb-block-editor-create-variable"
-    );
-
-    const syncedVariables = block.data?.variables?.reduce(function (
-        result: Array<PbBlockVariable>,
-        variable: PbBlockVariable
-    ) {
-        const element = findElementByVariableId(block.elements, variable.id.split(".")[0]);
-        const createVariablePlugin = createVariablePlugins.find(
-            plugin => plugin.elementType === element?.type
-        );
-
-        if (createVariablePlugin) {
-            result.push({
-                ...variable,
-                value: createVariablePlugin.getVariableValue({ element, variableId: variable.id })
-            });
-        }
-
-        return result;
-    },
-    []);
-
-    return { ...block, data: { ...block.data, variables: syncedVariables } };
-};
+// const syncBlockVariables = (block: PbElement) => {
+//     const createVariablePlugins = plugins.byType<PbBlockEditorCreateVariablePlugin>(
+//         "pb-block-editor-create-variable"
+//     );
+//
+//     const syncedVariables = block.data?.variables?.reduce(function (
+//         result: Array<LEGACY_PbBlockVariable>,
+//         variable: LEGACY_PbBlockVariable
+//     ) {
+//         const element = findElementByVariableId(block.elements, variable.id.split(".")[0]);
+//         const createVariablePlugin = createVariablePlugins.find(
+//             plugin => plugin.elementType === element?.type
+//         );
+//
+//         if (createVariablePlugin) {
+//             result.push({
+//                 ...variable,
+//                 value: createVariablePlugin.getVariableValue({ element, variableId: variable.id })
+//             });
+//         }
+//
+//         return result;
+//     },
+//     []);
+//
+//     return { ...block, data: { ...block.data, variables: syncedVariables } };
+// };
 
 const triggerOnFinish = (args?: SaveBlockActionArgsType): void => {
     if (!args || !args.onFinish || typeof args.onFinish !== "function") {
@@ -69,7 +68,6 @@ export const saveBlockAction: BlockEventActionCallable<SaveBlockActionArgsType> 
     meta,
     args
 ) => {
-    // TODO: make sure the API call is not sent if the data was not changed since the last invocation of this event.
     // See `pageEditor` for an example and feel free to copy that same logic over here.
     const element = (await state.getElementTree()) as PbElement;
 
@@ -79,7 +77,10 @@ export const saveBlockAction: BlockEventActionCallable<SaveBlockActionArgsType> 
         blockCategory: state.block.blockCategory,
         // We need to grab the contents of the "document" element, and we can safely just grab the first element
         // because we only have 1 block in the block editor.
-        content: syncBlockVariables(element.elements[0])
+        content: element.elements[0],
+        dataSources: state.block.dataSources || [],
+        dataBindings: state.block.dataBindings || [],
+        blockVariables: state.block.blockVariables || []
     };
 
     if (debouncedSave) {

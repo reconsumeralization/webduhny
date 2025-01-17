@@ -2,7 +2,7 @@ import lodashDebounce from "lodash/debounce";
 import { plugins } from "@webiny/plugins";
 import { SaveTemplateActionArgsType } from "./types";
 import { TemplateEventActionCallable } from "~/templateEditor/types";
-import { PbElement, PbBlockVariable, PbBlockEditorCreateVariablePlugin } from "~/types";
+import { PbElement, LEGACY_PbBlockVariable, PbBlockEditorCreateVariablePlugin } from "~/types";
 import { useUpdatePageTemplate } from "~/features";
 
 export const findElementByVariableId = (elements: PbElement[], variableId: string): any => {
@@ -25,8 +25,8 @@ const syncTemplateBlockVariables = (block: PbElement) => {
     );
 
     const syncedVariables = block.data?.variables?.reduce(function (
-        result: Array<PbBlockVariable>,
-        variable: PbBlockVariable
+        result: Array<LEGACY_PbBlockVariable>,
+        variable: LEGACY_PbBlockVariable
     ) {
         const element = findElementByVariableId(block.elements, variable.id.split(".")[0]);
         const createVariablePlugin = createVariablePlugins.find(

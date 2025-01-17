@@ -7,12 +7,8 @@ export interface DataSourceUpdater {
 }
 
 export const useDocumentDataSource = () => {
-    const { dataSources, dataBindings, updateDataSources } = useDynamicDocument();
+    const { dataSources, updateDataSources } = useDynamicDocument();
     const key = JSON.stringify(dataSources);
-
-    useEffect(() => {
-        console.log({ dataSources, dataBindings });
-    }, [JSON.stringify(dataSources), JSON.stringify(dataBindings)]);
 
     const getDataSource = useCallback(
         (name: string) => {

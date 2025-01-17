@@ -9,24 +9,7 @@ type MoverProps = {
     type: string;
 };
 const DragBlockIndicator = ({ type }: MoverProps) => {
-    const [, drag] = useDrag({
-        type,
-        item: { type } as DraggableItem,
-        collect: monitor => ({
-            isDragging: monitor.isDragging()
-        }),
-        canDrag: false
-    });
-
-    if (type !== BLOCK) {
-        return null;
-    }
-
-    return (
-        <div ref={drag}>
-            <DragIndicatorIcon className={"drag-indicator"} />
-        </div>
-    );
+    return <DragIndicatorIcon className={"drag-indicator"} />
 };
 
 export default DragBlockIndicator;

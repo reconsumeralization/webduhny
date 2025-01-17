@@ -63,6 +63,10 @@ export const createPageBlockEntity = (params: Params): Entity<any> => {
                 type: "list",
                 default: []
             },
+            blockVariables: {
+                type: "list",
+                default: []
+            },
             ...(attributes || {})
         }
     });

@@ -6,6 +6,10 @@ import { PbEditorBlockPlugin, PbPageBlock } from "~/types";
 import { getDefaultBlockContent } from "./defaultBlockContent";
 import { createBlockPlugin } from "./createBlockPlugin";
 
+export type UpdatePageBlockInput = Partial<
+    Pick<PbPageBlock, "name" | "blockVariables" | "content" | "dataSources" | "dataBindings">
+> & { id: PbPageBlock["id"]; category: PbPageBlock["blockCategory"] };
+
 export class BlocksRepository {
     private gateway: BlockGatewayInterface;
     private loading: Loading;
@@ -129,12 +133,7 @@ export class BlocksRepository {
         return processedBlock;
     }
 
-    async updatePageBlock(pageBlock: {
-        id: string;
-        name?: string;
-        category?: string;
-        content?: unknown;
-    }) {
+    async updatePageBlock(pageBlock: UpdatePageBlockInput) {
         const block = await this.getById(pageBlock.id);
 
         if (!block) {
@@ -145,7 +144,10 @@ export class BlocksRepository {
             ...block,
             name: pageBlock.name ?? block.name,
             blockCategory: pageBlock.category ?? block.blockCategory,
-            content: pageBlock.content ?? block.content
+            content: pageBlock.content ?? block.content,
+            blockVariables: pageBlock.blockVariables ?? block.blockVariables,
+            dataSources: pageBlock.dataSources ?? block.dataSources,
+            dataBindings: pageBlock.dataBindings ?? block.dataBindings
         };
 
         await this.runWithLoading(
@@ -154,7 +156,10 @@ export class BlocksRepository {
                     id: updatePageBlock.id,
                     name: updatePageBlock.name,
                     content: updatePageBlock.content,
-                    blockCategory: updatePageBlock.blockCategory
+                    blockCategory: updatePageBlock.blockCategory,
+                    blockVariables: updatePageBlock.blockVariables,
+                    dataSources: updatePageBlock.dataSources,
+                    dataBindings: updatePageBlock.dataBindings
                 });
             },
             "Updating page block",
