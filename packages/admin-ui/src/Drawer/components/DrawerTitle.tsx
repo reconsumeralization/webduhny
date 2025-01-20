@@ -7,5 +7,3 @@ export type DrawerTitleProps = React.ComponentPropsWithoutRef<typeof DrawerPrimi
 export const DrawerTitle = ({ className, ...props }: DrawerTitleProps) => (
     <DrawerPrimitive.Title {...props} className={cn("text-h4 flex gap-sm", className)} />
 );
-
-DrawerTitle.displayName = DrawerPrimitive.Title.displayName;

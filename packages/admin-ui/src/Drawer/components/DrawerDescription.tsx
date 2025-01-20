@@ -12,5 +12,3 @@ export const DrawerDescription = ({ className, ...props }: DrawerDescriptionProp
         className={cn("text-sm text-neutral-strong", className)}
     />
 );
-
-DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
