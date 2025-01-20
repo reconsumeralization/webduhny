@@ -4,7 +4,12 @@ import { cn } from "~/utils";
 const Head = ({ className, children, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) => (
     <th
         className={cn(
-            "group relative px-lg py-sm-extra text-sm text-left align-middle font-semibold text-neutral-strong fill-neutral-xstrong",
+            [
+                "group relative px-md py-sm text-sm text-left align-middle font-normal text-neutral-strong fill-neutral-xstrong",
+                "hover:bg-neutral-subtle",
+                "overflow-hidden whitespace-nowrap truncate",
+                "[&:has([role=checkbox])]:pl-lg"
+            ],
             className
         )}
         {...props}

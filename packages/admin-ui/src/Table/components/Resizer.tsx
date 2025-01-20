@@ -3,14 +3,14 @@ import { cn, cva, VariantProps } from "~/utils";
 
 const resizerVariants = cva(
     [
-        "absolute right-0 top-0 w-xs h-full cursor-col-resize select-none touch-none",
-        "opacity-0 bg-neutral-light",
+        "absolute right-0 top-0 w-xxs h-full cursor-col-resize select-none touch-none",
+        "opacity-0 bg-primary-default",
         "group-hover:opacity-100"
     ],
     {
         variants: {
             isResizing: {
-                true: "bg-neutral-muted opacity-100"
+                true: "bg-primary-default opacity-100"
             }
         }
     }

@@ -84,10 +84,13 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
                 onCheckedChange={changeChecked}
             >
                 <span className={cn("flex items-center justify-center")}>
-                    {indeterminate && <IndeterminateIcon />}
-                    <CheckboxPrimitives.Indicator>
-                        <CheckIcon className={"!size-sm-extra"} />
-                    </CheckboxPrimitives.Indicator>
+                    {indeterminate ? (
+                        <IndeterminateIcon />
+                    ) : (
+                        <CheckboxPrimitives.Indicator>
+                            <CheckIcon className={"!size-sm-extra"} />
+                        </CheckboxPrimitives.Indicator>
+                    )}
                 </span>
             </CheckboxPrimitives.Root>
             {hasLabel && <Label id={id} text={label} weight={"light"} className={"text-md"} />}

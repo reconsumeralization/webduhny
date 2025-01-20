@@ -18,6 +18,7 @@ import { CheckboxPrimitive } from "~/Checkbox";
 import { Skeleton } from "~/Skeleton";
 import { Table } from "~/Table";
 import { ColumnSorter, ColumnsVisibility } from "./components";
+import { cn } from "~/utils";
 
 interface DataTableColumn<T> {
     /*
@@ -203,7 +204,7 @@ const defineColumns = <T,>(
                     accessorKey: firstColumn.id as string,
                     header: props => {
                         return (
-                            <div className={"flex items-center gap-sm-extra"}>
+                            <div className={"flex items-center gap-xl"}>
                                 <CheckboxPrimitive
                                     indeterminate={props.table.getIsSomeRowsSelected()}
                                     checked={props.table.getIsAllRowsSelected()}
@@ -220,12 +221,13 @@ const defineColumns = <T,>(
                     },
                     cell: props => {
                         return (
-                            <div className={"flex items-center gap-sm-extra"}>
+                            <div className={"flex items-center gap-xl"}>
                                 <CheckboxPrimitive
                                     checked={props.row.getIsSelected()}
                                     onCheckedChange={value => props.row.toggleSelected(!!value)}
                                     disabled={!props.row.getCanSelect()}
                                     aria-label="Select row"
+                                    className={cn(!props.row.getCanSelect() ? "invisible" : "")}
                                 />
                                 {firstColumn.cell
                                     ? React.createElement(firstColumn.cell, props)
@@ -445,10 +447,12 @@ const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
                                                 onClick={header.column.getToggleSortingHandler()}
                                                 sortable={header.column.getCanSort()}
                                             >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                <div className="overflow-hidden whitespace-nowrap truncate">
+                                                    {flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                                </div>
                                                 <Table.Direction
                                                     direction={header.column.getIsSorted() || null}
                                                 />

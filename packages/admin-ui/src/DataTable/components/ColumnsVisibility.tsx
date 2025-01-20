@@ -55,9 +55,10 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
     }
 
     return (
-        <DropdownMenu trigger={<IconButton icon={<SettingsIcon />} variant={"ghost"} />}>
-            <DropdownMenu.Label content={"Toggle column visibility"} />
-            <DropdownMenu.Separator />
+        <DropdownMenu
+            trigger={<IconButton icon={<SettingsIcon />} variant={"ghost"} size={"xs"} />}
+        >
+            <DropdownMenu.Label content={"Display columns"} />
             {options.map(option => {
                 return (
                     <DropdownMenu.Item

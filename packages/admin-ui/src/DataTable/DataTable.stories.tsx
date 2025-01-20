@@ -133,7 +133,7 @@ export const WithCustomCellRenderer: Story<Entry> = {
                             <div>
                                 <Text
                                     text={entry.name}
-                                    className={"text-neutral-primary"}
+                                    className={"text-neutral-primary font-semibold"}
                                     as={"div"}
                                 />
                                 <Text
