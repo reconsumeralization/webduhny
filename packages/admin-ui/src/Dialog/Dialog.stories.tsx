@@ -133,7 +133,7 @@ export const WithTitleIcon: Story = {
 export const PreventOutsideDismiss: Story = {
     args: {
         ...Default.args,
-        preventOutsideDismiss: true
+        dismissible: false
     }
 };
 

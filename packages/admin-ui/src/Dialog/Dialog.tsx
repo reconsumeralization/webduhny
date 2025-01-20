@@ -19,7 +19,7 @@ export interface DialogProps
     title?: React.ReactNode;
     titleIcon?: React.ReactElement;
     showCloseButton?: boolean;
-    preventOutsideDismiss?: boolean;
+    dismissible?: boolean;
     bodyPadding?: boolean;
     description?: React.ReactNode;
     children: React.ReactNode;

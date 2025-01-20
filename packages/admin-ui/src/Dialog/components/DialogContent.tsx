@@ -4,17 +4,17 @@ import { cn } from "~/utils";
 
 export interface DialogContentProps
     extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
-    preventOutsideDismiss?: boolean;
+    dismissible?: boolean;
 }
 
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
     DialogContentProps
->(({ className, preventOutsideDismiss, children, ...props }, ref) => {
-    const preventOutsideDismissProps = React.useMemo<
+>(({ className, dismissible, children, ...props }, ref) => {
+    const dismissibleProps = React.useMemo<
         Pick<DialogPrimitive.DialogContentProps, "onInteractOutside" | "onEscapeKeyDown">
     >(() => {
-        if (preventOutsideDismiss) {
+        if (dismissible === false) {
             return {
                 onInteractOutside: event => event.preventDefault(),
                 onEscapeKeyDown: event => event.preventDefault()
@@ -22,11 +22,11 @@ const DialogContent = React.forwardRef<
         }
 
         return {};
-    }, [preventOutsideDismiss]);
+    }, [dismissible]);
 
     return (
         <DialogPrimitive.Content
-            {...preventOutsideDismissProps}
+            {...dismissibleProps}
             {...props}
             ref={ref}
             className={cn(
