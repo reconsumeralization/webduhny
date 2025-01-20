@@ -6,6 +6,7 @@ export * from "./Card";
 export * from "./Checkbox";
 export * from "./CodeEditor";
 export * from "./DataTable";
+export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./FormComponent";
 export * from "./Grid";

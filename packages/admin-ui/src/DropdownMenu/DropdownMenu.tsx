@@ -13,7 +13,7 @@ import { DropdownMenuPortal } from "./components/DropdownMenuPortal";
 interface DropdownMenuProps
     extends React.ComponentPropsWithoutRef<typeof DropdownMenuRoot>,
         React.ComponentPropsWithoutRef<typeof DropdownMenuContent> {
-    trigger: React.ReactNode;
+    trigger?: React.ReactNode;
     children: React.ReactNode;
 }
 
@@ -27,7 +27,7 @@ const DropdownMenuBase = React.forwardRef<
             defaultOpen,
             open,
             onOpenChange,
-            modal,
+
             dir,
 
             // Trigger props.
@@ -42,12 +42,12 @@ const DropdownMenuBase = React.forwardRef<
                 defaultOpen,
                 open,
                 onOpenChange,
-                modal,
                 dir
             },
             triggerProps: {
-                // Temporary fix.
-                children: <div>{trigger}</div>
+                // Temporary fix. We need this because `ref` doesn't get passed to components
+                // that are decorated with `makeDecoratable`. This will be fixed in the future.
+                children: <div className={"inline-s"}>{trigger}</div>
             },
             contentProps: rest
         };
@@ -55,7 +55,7 @@ const DropdownMenuBase = React.forwardRef<
 
     return (
         <DropdownMenuRoot {...rootProps}>
-            <DropdownMenuTrigger {...triggerProps} asChild />
+            {triggerProps.children && <DropdownMenuTrigger {...triggerProps} asChild />}
             <DropdownMenuPortal>
                 <DropdownMenuContent {...contentProps} ref={ref} />
             </DropdownMenuPortal>
