@@ -8,11 +8,11 @@ import { IconButton } from "~/Button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<DialogProps, "title" | "titleIcon" | "description" | "showCloseButton">;
+    Pick<DialogProps, "title" | "icon" | "description" | "showCloseButton">;
 
 export const DialogHeader = ({
     title,
-    titleIcon,
+    icon,
     description,
     showCloseButton,
     className,
@@ -37,7 +37,7 @@ export const DialogHeader = ({
                     </DialogPrimitive.Close>
                 )}
                 <DialogTitle>
-                    {titleIcon}
+                    {icon}
                     {title}
                 </DialogTitle>
             </div>

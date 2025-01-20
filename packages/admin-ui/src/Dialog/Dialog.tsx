@@ -8,7 +8,7 @@ import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
 import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
 import { DialogTrigger } from "./components/DialogTrigger";
-import { TitleIcon } from "./components/TitleIcon";
+import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
@@ -17,7 +17,7 @@ export interface DialogProps
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode;
-    titleIcon?: React.ReactElement;
+    icon?: React.ReactElement;
     showCloseButton?: boolean;
     dismissible?: boolean;
     bodyPadding?: boolean;
@@ -43,7 +43,7 @@ const DialogBase = (props: DialogProps) => {
 
                 // Header props.
                 title,
-                titleIcon,
+                icon,
                 description,
                 showCloseButton,
 
@@ -72,7 +72,7 @@ const DialogBase = (props: DialogProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div>{trigger}</div>
                 },
-                headerProps: { title, titleIcon, description, showCloseButton },
+                headerProps: { title, icon, description, showCloseButton },
                 bodyProps: { children, bodyPadding },
                 footerProps: { info, actions },
                 contentProps
@@ -101,7 +101,7 @@ const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 const Dialog = withStaticProps(DecoratableDialog, {
     ConfirmButton,
     CancelButton,
-    TitleIcon
+    Icon
 });
 
 export { Dialog };
