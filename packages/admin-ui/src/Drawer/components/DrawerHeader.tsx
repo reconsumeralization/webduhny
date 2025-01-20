@@ -3,7 +3,6 @@ import { cn } from "~/utils";
 import { type DrawerProps } from "../Drawer";
 import { DrawerTitle } from "./DrawerTitle";
 import { DrawerDescription } from "./DrawerDescription";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
@@ -19,28 +18,8 @@ export const DrawerHeader = ({
     className,
     ...props
 }: DrawerHeaderProps) => {
-    let renderedTitle = (
-        <DrawerTitle>
-            {titleIcon}
-            {title}
-        </DrawerTitle>
-    );
-    if (!title) {
-        renderedTitle = <VisuallyHidden.Root>{renderedTitle}</VisuallyHidden.Root>;
-    }
-
-    let renderedDescription = <DrawerDescription>{description}</DrawerDescription>;
-    if (!description) {
-        renderedDescription = <VisuallyHidden.Root>{renderedDescription}</VisuallyHidden.Root>;
-    }
-
     if (!title && !description) {
-        return (
-            <>
-                {renderedTitle}
-                {renderedDescription}
-            </>
-        );
+        return null;
     }
 
     return (
@@ -57,9 +36,12 @@ export const DrawerHeader = ({
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
                     </DrawerPrimitive.Close>
                 )}
-                {renderedTitle}
+                <DrawerTitle>
+                    {titleIcon}
+                    {title}
+                </DrawerTitle>
             </div>
-            {renderedDescription}
+            <DrawerDescription>{description}</DrawerDescription>
         </div>
     );
 };
