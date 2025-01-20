@@ -56,7 +56,7 @@ type TriggerProps = Omit<TabsPrimitive.TabsTriggerProps, "children"> &
 const Trigger = ({ className, size, icon, text, ...props }: TriggerProps) => (
     <TabsPrimitive.Trigger className={cn(triggerVariants({ size }), className)} {...props}>
         <div className={cn(innerTriggerVariants({ size }))}>
-            {icon && <Icon icon={icon} size={"sm"} label={String(text)} color={"neutral-light"} />}{" "}
+            {icon && <Icon icon={icon} size={"sm"} label={String(text)} color={"neutral-light"} />}
             {text}
         </div>
     </TabsPrimitive.Trigger>
