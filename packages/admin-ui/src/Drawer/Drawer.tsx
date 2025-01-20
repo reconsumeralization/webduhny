@@ -16,12 +16,12 @@ export interface DrawerProps
     extends React.ComponentPropsWithoutRef<typeof DrawerRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DrawerContent>, "title"> {
     trigger?: React.ReactNode;
-    title?: React.ReactNode | string;
+    title?: React.ReactNode;
     titleIcon?: React.ReactElement;
     modal?: boolean;
     showCloseButton?: boolean;
     bodyPadding?: boolean;
-    description?: React.ReactNode | string;
+    description?: React.ReactNode;
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
