@@ -8,11 +8,11 @@ import { IconButton } from "~/Button";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
 
 export type DrawerHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<DrawerProps, "title" | "titleIcon" | "description" | "showCloseButton">;
+    Pick<DrawerProps, "title" | "icon" | "description" | "showCloseButton">;
 
 export const DrawerHeader = ({
     title,
-    titleIcon,
+    icon,
     description,
     showCloseButton,
     className,
@@ -37,7 +37,7 @@ export const DrawerHeader = ({
                     </DrawerPrimitive.Close>
                 )}
                 <DrawerTitle>
-                    {titleIcon}
+                    {icon}
                     {title}
                 </DrawerTitle>
             </div>

@@ -8,7 +8,7 @@ import { DrawerPortal } from "./components/DrawerPortal";
 import { DrawerRoot } from "./components/DrawerRoot";
 import { DrawerTrigger } from "./components/DrawerTrigger";
 import { DrawerBody } from "~/Drawer/components/DrawerBody";
-import { TitleIcon } from "./components/TitleIcon";
+import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
@@ -17,7 +17,7 @@ export interface DrawerProps
         Omit<React.ComponentPropsWithoutRef<typeof DrawerContent>, "title"> {
     trigger?: React.ReactNode;
     title?: React.ReactNode;
-    titleIcon?: React.ReactElement;
+    icon?: React.ReactElement;
     modal?: boolean;
     showCloseButton?: boolean;
     bodyPadding?: boolean;
@@ -47,7 +47,7 @@ const DrawerBase = (props: DrawerProps) => {
 
                 // Header props.
                 title,
-                titleIcon,
+                icon,
                 description,
                 showCloseButton,
 
@@ -76,7 +76,7 @@ const DrawerBase = (props: DrawerProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div>{trigger}</div>
                 },
-                headerProps: { title, titleIcon, description, showCloseButton },
+                headerProps: { title, icon, description, showCloseButton },
                 bodyProps: { children, bodyPadding },
                 footerProps: { info, actions },
                 contentProps: rest
@@ -106,7 +106,7 @@ const DecoratableDrawer = makeDecoratable("Drawer", DrawerBase);
 const Drawer = withStaticProps(DecoratableDrawer, {
     ConfirmButton,
     CancelButton,
-    TitleIcon
+    Icon
 });
 
 export { Drawer };

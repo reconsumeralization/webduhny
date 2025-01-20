@@ -156,10 +156,10 @@ export const DropdownMenuInDrawer: Story = {
     }
 };
 
-export const WithTitleIcon: Story = {
+export const WithIcon: Story = {
     args: {
         ...Default.args,
-        titleIcon: <Drawer.TitleIcon icon={<DoorbellIcon />} label={"Icon label..."} />
+        icon: <Drawer.Icon icon={<DoorbellIcon />} label={"Icon label..."} />
     }
 };
 
