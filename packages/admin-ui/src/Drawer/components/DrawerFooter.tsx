@@ -13,12 +13,12 @@ export const DrawerFooter = ({ actions, info, className, ...props }: DrawerFoote
 
     return (
         <div {...props} className={cn("flex justify-between p-lg pt-md-extra", className)}>
-            <div className={"text-sm flex items-center"}>
-                <div>{info}</div>
-            </div>
-            <div className={"flex gap-x-sm"}>{actions}</div>
+            {info && (
+                <div className={"text-sm flex items-center"}>
+                    <div>{info}</div>
+                </div>
+            )}
+            {actions && <div className={"flex gap-x-sm ml-auto"}>{actions}</div>}
         </div>
     );
 };
-
-DrawerFooter.displayName = "DrawerFooter";
