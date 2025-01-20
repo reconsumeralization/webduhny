@@ -73,7 +73,6 @@ export const DialogContainer = () => {
                     <DialogAccept
                         data-testid={"confirmationdialog-confirm-action"}
                         onClick={handleConfirm}
-                        text={actions.accept.label}
                     >
                         {actions.accept.label}
                     </DialogAccept>

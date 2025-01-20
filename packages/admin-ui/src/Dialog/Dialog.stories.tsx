@@ -123,17 +123,17 @@ export const DropdownMenuInDialog: Story = {
     }
 };
 
-export const WithTitleIcon: Story = {
+export const WithIcon: Story = {
     args: {
         ...Default.args,
-        titleIcon: <Dialog.TitleIcon icon={<DoorbellIcon />} label={"Title icon"} />
+        icon: <Dialog.Icon icon={<DoorbellIcon />} label={"Title icon"} />
     }
 };
 
 export const PreventOutsideDismiss: Story = {
     args: {
         ...Default.args,
-        preventOutsideDismiss: true
+        dismissible: false
     }
 };
 

@@ -8,7 +8,7 @@ import { DialogOverlay } from "~/Dialog/components/DialogOverlay";
 import { DialogPortal } from "./components/DialogPortal";
 import { DialogRoot } from "./components/DialogRoot";
 import { DialogTrigger } from "./components/DialogTrigger";
-import { TitleIcon } from "./components/TitleIcon";
+import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
@@ -16,12 +16,12 @@ export interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
-    title?: React.ReactNode | string;
-    titleIcon?: React.ReactElement;
+    title?: React.ReactNode;
+    icon?: React.ReactElement;
     showCloseButton?: boolean;
-    preventOutsideDismiss?: boolean;
+    dismissible?: boolean;
     bodyPadding?: boolean;
-    description?: React.ReactNode | string;
+    description?: React.ReactNode;
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
@@ -43,7 +43,7 @@ const DialogBase = (props: DialogProps) => {
 
                 // Header props.
                 title,
-                titleIcon,
+                icon,
                 description,
                 showCloseButton,
 
@@ -72,7 +72,7 @@ const DialogBase = (props: DialogProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div>{trigger}</div>
                 },
-                headerProps: { title, titleIcon, description, showCloseButton },
+                headerProps: { title, icon, description, showCloseButton },
                 bodyProps: { children, bodyPadding },
                 footerProps: { info, actions },
                 contentProps
@@ -101,7 +101,7 @@ const DecoratableDialog = makeDecoratable("Dialog", DialogBase);
 const Dialog = withStaticProps(DecoratableDialog, {
     ConfirmButton,
     CancelButton,
-    TitleIcon
+    Icon
 });
 
 export { Dialog };
