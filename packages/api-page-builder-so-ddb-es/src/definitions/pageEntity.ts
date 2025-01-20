@@ -83,15 +83,6 @@ export const createPageEntity = (params: Params): Entity<any> => {
                 type: "string"
             },
             dataSources: {
-                type: "list",
-                default: []
-            },
-            dataBindings: {
-                type: "list",
-                default: []
-            },
-            // Dynamic pages
-            dataSources: {
                 type: "list"
             },
             dataBindings: {

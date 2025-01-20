@@ -1,19 +1,6 @@
 import React from "react";
 import { IconRenderer } from "@webiny/app-page-builder-elements/renderers/icon";
 import { useElementVariables } from "~/hooks/useElementVariables";
-import { PbBlockVariable } from "~/types";
-
-const getVariableValues = (variables: PbBlockVariable<{ markup: string }>[]) => {
-    const value = variables[0].value;
-    if ("svg" in value) {
-        // This is a legacy variable value.
-        return {
-            markup: value.svg as string
-        };
-    }
-
-    return value;
-};
 
 export const IconRendererWithVariables = IconRenderer.createDecorator(Original => {
     return function ButtonRenderer(props) {
@@ -23,7 +10,8 @@ export const IconRendererWithVariables = IconRenderer.createDecorator(Original =
             return <Original {...props} />;
         }
 
-        const variableValues = getVariableValues(variables);
+        // TODO: get variable values using the new data bindings
+        const variableValues = { markup: undefined };
 
         return (
             <Original

@@ -1,13 +1,6 @@
 import React from "react";
 import { ParagraphRenderer } from "@webiny/app-page-builder-elements/renderers/paragraph";
 import { useElementVariables } from "~/hooks/useElementVariables";
-import { PbBlockVariable } from "~/types";
-
-const getVariableValues = (variables: PbBlockVariable<string>[]) => {
-    return {
-        text: variables[0]?.value || undefined
-    };
-};
 
 export const ParagraphRendererWithVariables = ParagraphRenderer.createDecorator(Original => {
     return function ParagraphRenderer(props) {
@@ -17,7 +10,8 @@ export const ParagraphRendererWithVariables = ParagraphRenderer.createDecorator(
             return <Original {...props} />;
         }
 
-        const variableValues = getVariableValues(variables);
+        // TODO: get variable values using the new data bindings
+        const variableValues = { text: undefined };
 
         return (
             <Original

@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
 import { useUpdateElement } from "~/editor/hooks/useUpdateElement";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
-import { removeElementVariableIds } from "~/pageEditor/helpers";
 import { PbElement } from "~/types";
 
 interface UnlinkBlockActionPropsType {
@@ -20,16 +19,14 @@ const UnlinkBlockAction = ({ children }: UnlinkBlockActionPropsType) => {
             return;
         }
 
-        const variables = element.data.variables || [];
         const newElement = structuredClone(element);
         delete newElement.data["blockId"];
         delete newElement.data["templateBlockId"];
         delete newElement.data["variables"];
 
         const fullElementTree = (await getElementTree({ element: newElement })) as PbElement;
-        const cleanElement = removeElementVariableIds(fullElementTree, variables);
 
-        updateElement(cleanElement);
+        updateElement(fullElementTree);
     }, [element, updateElement]);
 
     return React.cloneElement(children, { onClick });

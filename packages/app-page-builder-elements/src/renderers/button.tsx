@@ -75,6 +75,7 @@ const ButtonText = ({ text }: ButtonTextProps) => {
 
 export interface ButtonElementData {
     buttonText: string;
+    type: string;
     link: {
         newTab: boolean;
         href: string;
@@ -106,6 +107,14 @@ export const elementInputs = {
         type: "text",
         getDefaultValue: ({ element }) => {
             return element.data.buttonText;
+        }
+    }),
+    buttonType: ElementInput.create<string, ButtonElementData>({
+        name: "buttonType",
+        translatable: false,
+        type: "text",
+        getDefaultValue: ({ element }) => {
+            return element.data.type;
         }
     }),
     iconPosition: ElementInput.create<string, ButtonElementData>({
@@ -152,6 +161,8 @@ export const ButtonRenderer = createRenderer<Props, typeof elementInputs>(
         const { getElement, getInputValues } = useRenderer();
         const element = getElement<ButtonElementData>();
         const inputs = getInputValues<typeof elementInputs>();
+
+        // Legacy property, we don't need to handle this via inputs.
         const { link } = element.data;
 
         const buttonText = inputs.buttonText || "";

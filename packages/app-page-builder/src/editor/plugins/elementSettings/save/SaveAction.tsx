@@ -66,7 +66,8 @@ const SaveAction = ({ children }: { children: React.ReactElement }) => {
                 if (formData.overwrite) {
                     await updateBlock({
                         id: element.source,
-                        content: newContent
+                        content: newContent,
+                        category: formData.blockCategory
                     });
                 } else {
                     await createBlock({

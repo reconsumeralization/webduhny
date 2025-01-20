@@ -2,19 +2,14 @@ import React, { createContext } from "react";
 import { PbDataBinding, PbDataSource } from "~/types";
 import { DeveloperUtilities } from "./editor/DeveloperUtilities";
 
-const passthrough = (cb: Updater<any>) => cb([]);
-
-export const DynamicDocumentContext = createContext<{
+export interface DynamicDocumentContext {
     dataSources: PbDataSource[];
     dataBindings: PbDataBinding[];
     updateDataSources: (cb: Updater<PbDataSource>) => void;
     updateDataBindings: (cb: Updater<PbDataBinding>) => void;
-}>({
-    dataSources: [],
-    dataBindings: [],
-    updateDataBindings: passthrough,
-    updateDataSources: passthrough
-});
+}
+
+export const DynamicDocumentContext = createContext<DynamicDocumentContext | undefined>(undefined);
 
 interface Props {
     children: React.ReactNode;

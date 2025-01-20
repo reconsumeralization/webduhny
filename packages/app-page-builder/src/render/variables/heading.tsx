@@ -1,13 +1,6 @@
 import React from "react";
 import { HeadingRenderer } from "@webiny/app-page-builder-elements/renderers/heading";
 import { useElementVariables } from "~/hooks/useElementVariables";
-import { PbBlockVariable } from "~/types";
-
-const getVariableValues = (variables: PbBlockVariable<string>[]) => {
-    return {
-        text: variables[0]?.value || undefined
-    };
-};
 
 export const HeadingRendererWithVariables = HeadingRenderer.createDecorator(Original => {
     return function HeadingRenderer(props) {
@@ -17,7 +10,8 @@ export const HeadingRendererWithVariables = HeadingRenderer.createDecorator(Orig
             return <Original {...props} />;
         }
 
-        const variableValues = getVariableValues(variables);
+        // TODO: get variable values using the new data bindings
+        const variableValues = { text: undefined };
 
         return (
             <Original

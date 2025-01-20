@@ -4,7 +4,6 @@ import type { PbBlockVariable } from "~/types";
 import { useSortableList } from "~/hooks/useSortableList";
 import { Collapsable } from "~/editor/defaultConfig/Toolbar/Navigator/StyledComponents";
 import { ReactComponent as DragIndicatorIcon } from "~/editor/defaultConfig/Toolbar/Navigator/assets/drag_indicator_24px.svg";
-import { ReactComponent as DeleteIcon } from "~/editor/assets/icons/delete.svg";
 
 const VariableItem = styled("div")({
     display: "flex",
@@ -24,25 +23,6 @@ const VariableItem = styled("div")({
 
     "&>svg": {
         cursor: "move"
-    }
-});
-
-const DeleteIconWrapper = styled("div")({
-    display: "none",
-    marginLeft: "auto",
-    marginRight: "16px",
-    height: "24px",
-    cursor: "pointer",
-
-    "&>svg": {
-        fill: "var(--mdc-theme-text-secondary-on-background)",
-        transition: "fill 0.2s"
-    },
-
-    "&:hover": {
-        "&>svg": {
-            fill: "var(--mdc-theme-text-primary-on-background)"
-        }
     }
 });
 
@@ -79,10 +59,9 @@ interface VariableListItemProps {
     variable: PbBlockVariable;
     index: number;
     move: (current: number, next: number) => void;
-    onRemove: (variable: PbBlockVariable) => void;
 }
 
-export const VariablesListItem = ({ variable, index, move, onRemove }: VariableListItemProps) => {
+export const VariablesListItem = ({ variable, index, move }: VariableListItemProps) => {
     const {
         ref: dragAndDropRef,
         handlerId,
@@ -105,9 +84,6 @@ export const VariablesListItem = ({ variable, index, move, onRemove }: VariableL
         <Collapsable ref={dragAndDropRef} data-handler-id={handlerId} highlightItem={highlightItem}>
             <VariableItem>
                 {variable.label} ({variable.elementId})
-                <DeleteIconWrapper>
-                    <DeleteIcon onClick={() => onRemove(variable)} />
-                </DeleteIconWrapper>
                 <DragIndicatorIcon />
             </VariableItem>
         </Collapsable>

@@ -897,7 +897,7 @@ export interface DataSource {
 
 export interface DataBinding {
     dataSource: string;
-    bindFrom: string;
+    bindFrom?: string | null;
     bindTo: string;
 }
 

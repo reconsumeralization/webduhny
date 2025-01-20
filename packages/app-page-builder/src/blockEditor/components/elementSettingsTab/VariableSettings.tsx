@@ -1,14 +1,15 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import styled from "@emotion/styled";
 import capitalize from "lodash/capitalize";
 import { ButtonPrimary } from "@webiny/ui/Button";
 import { ReactComponent as InfoIcon } from "@webiny/app-admin/assets/icons/info.svg";
-import { PbEditorElement, LEGACY_PbBlockVariable } from "~/types";
+import type { PbEditorElement, PbBlockVariable } from "~/types";
 import TextInput from "./TextInput";
-import { useCurrentBlockElement } from "~/editor/hooks/useCurrentBlockElement";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
-import { useUpdateElement } from "~/editor/hooks/useUpdateElement";
 import { ElementLinkStatusWrapper } from "./ElementNotLinked";
+import { useElementRendererInputs } from "~/blockEditor";
+import { ElementInput } from "@webiny/app-page-builder-elements";
+import { useBlockVariables } from "~/blockVariables/useBlockVariables";
 
 const FormWrapper = styled("div")({
     padding: "16px",
@@ -16,46 +17,63 @@ const FormWrapper = styled("div")({
     rowGap: "16px"
 });
 
-const VariableSettings = ({ element }: { element: PbEditorElement }) => {
-    const { block } = useCurrentBlockElement();
-    const updateElement = useUpdateElement();
+type VariableInput = {
+    id: string;
+    input: ElementInput;
+    variable?: PbBlockVariable;
+    label: string;
+    enabled: boolean;
+};
 
-    const elementVariables = useMemo(() => {
-        const variables = block?.data?.variables?.filter(
-            (variable: LEGACY_PbBlockVariable) => variable.id.split(".")[0] === element?.data?.variableId
-        );
+class PbBlockVariableId {
+    static create(variable: PbBlockVariable) {
+        return `${variable.blockId}/${variable.elementId}/${variable.inputName}`;
+    }
+}
 
-        return variables ?? [];
-    }, [block, element]);
+const useVariableInputs = (
+    element: PbEditorElement,
+    inputs: ElementInput[],
+    variables: PbBlockVariable[]
+) => {
+    return inputs.reduce<VariableInput[]>((acc, input) => {
+        const variable = variables.find(v => v.inputName === input.getName());
 
-    const onChange = useCallback(
-        (label: string, variableId: string) => {
-            if (block && block.id) {
-                const newVariables = block.data?.variables?.map((variable: LEGACY_PbBlockVariable) => {
-                    if (variable?.id === variableId) {
-                        return {
-                            ...variable,
-                            label
-                        };
-                    } else {
-                        return variable;
-                    }
-                });
-                updateElement(
-                    {
-                        ...block,
-                        data: {
-                            ...block.data,
-                            variables: newVariables
-                        }
-                    },
-                    {
-                        history: false
-                    }
-                );
+        return [
+            ...acc,
+            {
+                id: `${element.id}/${input.getName()}`,
+                input,
+                variable,
+                label: variable?.label ?? capitalize(input.getName()),
+                enabled: !!variable
             }
+        ];
+    }, []);
+};
+
+export interface VariableSettingsProps {
+    element: PbEditorElement;
+    variables: PbBlockVariable[];
+}
+
+const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
+    const { inputs } = useElementRendererInputs(element);
+    const { removeBlockVariables, updateBlockVariables } = useBlockVariables();
+    const variableInputs = useVariableInputs(element, inputs, variables);
+
+    const updateVariable = useCallback(
+        (variable: PbBlockVariable, label: string) => {
+            updateBlockVariables(variables => {
+                return variables.map(existing => {
+                    if (PbBlockVariableId.create(existing) === PbBlockVariableId.create(variable)) {
+                        return { ...existing, label };
+                    }
+                    return existing;
+                });
+            });
         },
-        [block, element]
+        [element, updateBlockVariables]
     );
 
     const { showConfirmation } = useConfirmationDialog({
@@ -63,59 +81,31 @@ const VariableSettings = ({ element }: { element: PbEditorElement }) => {
         message: <p>Are you sure you want to remove element variable?</p>
     });
 
-    const onRemove = useCallback(
+    const unlinkElement = useCallback(
         () =>
             showConfirmation(() => {
-                if (block && block.id) {
-                    const variables = block.data.variables ?? [];
-                    const updatedVariables = variables.filter(
-                        (variable: LEGACY_PbBlockVariable) =>
-                            variable.id.split(".")[0] !== element?.data?.variableId
-                    );
-                    updateElement({
-                        ...block,
-                        data: {
-                            ...block.data,
-                            variables: updatedVariables
-                        }
-                    });
-
-                    // element "variableId" value should be dropped
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    const { variableId, ...updatedElementData } = element.data;
-                    updateElement(
-                        {
-                            ...element,
-                            data: updatedElementData
-                        },
-                        {
-                            history: false
-                        }
-                    );
-                }
+                removeBlockVariables(element);
             }),
-        [block, element]
+        [element]
     );
 
     return (
         <>
             <FormWrapper>
-                {elementVariables.map((variable, index) => (
+                {variableInputs.map(variableInput => (
                     <TextInput
-                        key={index}
-                        label={`${capitalize(variable.type)} ${capitalize(
-                            variable.id.split(".")[1]
-                        )} Variable Label`}
-                        value={variable?.label}
-                        onChange={value => onChange(value, variable.id)}
+                        key={variableInput.id}
+                        label={`${variableInput.input.getName()} Input Label`}
+                        value={variableInput.label}
+                        onChange={value => updateVariable(variableInput.variable!, value)}
                     />
                 ))}
             </FormWrapper>
             <ElementLinkStatusWrapper>
                 <strong>Element is linked</strong>
                 To prevent users from changing the value of this element, you need to unlink it from
-                a variable.
-                <ButtonPrimary onClick={onRemove}>Unlink Element</ButtonPrimary>
+                variables.
+                <ButtonPrimary onClick={unlinkElement}>Unlink Element</ButtonPrimary>
                 <div className="info-wrapper">
                     <InfoIcon /> Click here to learn more about how block variables work
                 </div>

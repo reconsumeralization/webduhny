@@ -16,18 +16,8 @@ export interface VariablesListProps {
 }
 
 const VariablesList = ({ variables }: VariablesListProps) => {
-    const { moveBlockVariable, removeBlockVariable } = useBlockVariables();
+    const { moveBlockVariable } = useBlockVariables();
 
-    const { showConfirmation } = useConfirmationDialog({
-        title: "Remove variable",
-        message: <p>Are you sure you want to remove this variable?</p>
-    });
-
-    const onRemove = useCallback((variable: PbBlockVariable) => {
-        showConfirmation(async () => {
-            removeBlockVariable(variable);
-        });
-    }, [removeBlockVariable]);
 
     const onMove = useCallback(
         (currentIndex: number, newIndex: number) => {
@@ -47,7 +37,6 @@ const VariablesList = ({ variables }: VariablesListProps) => {
                     index={index}
                     variable={variable}
                     move={onMove}
-                    onRemove={onRemove}
                 />
             ))}
         </>

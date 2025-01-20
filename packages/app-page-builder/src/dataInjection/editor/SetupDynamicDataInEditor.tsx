@@ -4,7 +4,6 @@ import { InjectDynamicValues } from "./InjectDynamicValues";
 import { AddBindingContext, DataSourceProvider, useDynamicDocument } from "~/dataInjection";
 import { DataSourceConfigAndBindings } from "./DataSourceConfigAndBindings";
 import { ElementInputs } from "~/dataInjection/editor/DataSourceProperties/ElementInputs";
-import { DeveloperUtilities } from "./DeveloperUtilities";
 
 const { Ui } = EditorConfig;
 

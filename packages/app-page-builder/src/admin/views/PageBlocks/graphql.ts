@@ -1,6 +1,12 @@
 import gql from "graphql-tag";
 
-import { PbPageBlock, PbErrorResponse } from "~/types";
+import {
+    PbPageBlock,
+    PbErrorResponse,
+    PbDataSource,
+    PbDataBinding,
+    PbBlockVariable
+} from "~/types";
 
 import { PAGE_BLOCK_CATEGORY_BASE_FIELDS } from "~/admin/views/BlockCategories/graphql";
 export { LIST_BLOCK_CATEGORIES } from "~/admin/views/BlockCategories/graphql";
@@ -166,6 +172,9 @@ export interface UpdatePageBlockMutationVariables {
         name: string;
         blockCategory: string;
         content: any;
+        dataSources: PbDataSource[];
+        dataBindings: PbDataBinding[];
+        blockVariables: PbBlockVariable[];
     };
 }
 export const UPDATE_PAGE_BLOCK = gql`

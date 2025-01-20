@@ -17,7 +17,6 @@ export const DefaultBlockEditorConfig = React.memo(() => {
             <DefaultEditorConfig />
             <EventActionHandlerDecorator />
             <EditorConfig>
-                <SetupDynamicDocument />
                 <EventActionHandlers />
                 <Ui.TopBar.Element name={"buttonBack"} group={"left"} element={<BackButton />} />
                 <Ui.TopBar.Element name={"title"} group={"left"} element={<Title />} />
@@ -30,6 +29,8 @@ export const DefaultBlockEditorConfig = React.memo(() => {
                 <Ui.Toolbar.Element name={"savingIndicator"} remove />
                 <ElementSettingsDecorator />
                 <SetupBlockVariables />
+                {/* DynamicDocument decorator has to be the last one registered, to be the first one mounted. */}
+                <SetupDynamicDocument />
             </EditorConfig>
         </>
     );

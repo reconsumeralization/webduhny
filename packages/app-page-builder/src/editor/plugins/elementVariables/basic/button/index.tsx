@@ -1,3 +1,4 @@
+// @ts-nocheck This will be removed.
 import React from "react";
 import { PbBlockVariable, PbEditorPageElementVariableRendererPlugin } from "~/types";
 import TextVariableInput from "~/editor/plugins/elementSettings/variable/TextVariableInput";

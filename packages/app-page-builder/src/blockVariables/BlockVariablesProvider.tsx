@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import type { PbBlockVariable } from "~/types";
+import type { PbBlockVariable, PbEditorElement } from "~/types";
 import { useDynamicDocument } from "~/dataInjection";
 
 interface Updater<T> {
@@ -9,7 +9,7 @@ interface Updater<T> {
 export interface BlockVariablesContext {
     blockVariables: PbBlockVariable[];
     updateBlockVariables: (cb: Updater<PbBlockVariable>) => void;
-    removeBlockVariable: (variable: PbBlockVariable) => void;
+    removeBlockVariables: (element: PbEditorElement) => void;
     moveBlockVariable: (variable: PbBlockVariable, moveToIndex: number) => void;
 }
 
@@ -17,6 +17,10 @@ export interface BlockVariablesProviderProps {
     blockVariables: PbBlockVariable[];
     onBlockVariables: (blockVariables: PbBlockVariable[]) => void;
     children: React.ReactNode;
+}
+
+export interface Filter<T> {
+    (item: T): boolean;
 }
 
 export const BlockVariablesContext = createContext<BlockVariablesContext | undefined>(undefined);
@@ -32,24 +36,30 @@ export const BlockVariablesProvider = ({
         onBlockVariables(cb(blockVariables));
     };
 
-    const removeBlockVariable = (variable: PbBlockVariable) => {
+    const removeBlockVariables = (element: PbEditorElement) => {
+        const toDelete: PbBlockVariable[] = [];
+
         updateBlockVariables(variables => {
-            return variables.filter(
-                v =>
-                    !(
-                        v.blockId === variable.blockId &&
-                        v.elementId === variable.elementId &&
-                        v.inputName === variable.inputName
-                    )
-            );
+            return variables.filter(v => {
+                const match = v.elementId === element.id;
+
+                if (match) {
+                    toDelete.push(v);
+                }
+
+                return !match;
+            });
         });
 
         updateDataBindings(bindings => {
-            return bindings.filter(
-                b =>
-                    b.dataSource === "static" &&
-                    b.bindTo !== `element:${variable.elementId}.${variable.inputName}`
-            );
+            return bindings.filter(b => {
+                return !toDelete.find(td => {
+                    return (
+                        b.dataSource === "static" &&
+                        b.bindTo === `element:${td.elementId}.${td.inputName}`
+                    );
+                });
+            });
         });
     };
 
@@ -87,7 +97,12 @@ export const BlockVariablesProvider = ({
 
     return (
         <BlockVariablesContext.Provider
-            value={{ blockVariables, updateBlockVariables, moveBlockVariable, removeBlockVariable }}
+            value={{
+                blockVariables,
+                updateBlockVariables,
+                moveBlockVariable,
+                removeBlockVariables
+            }}
         >
             {children}
         </BlockVariablesContext.Provider>

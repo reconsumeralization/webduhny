@@ -25,7 +25,7 @@ export const ElementSettingsDecorator = EditorConfig.Ui.Sidebar.Elements.createD
                 <>
                     {isBlock ? <VariablesList variables={variables} /> : <Original {...props} />}
                     {canHaveVariable && !hasVariable && <ElementNotLinked />}
-                    {canHaveVariable && hasVariable && <VariableSettings element={element} />}
+                    {hasVariable && <VariableSettings element={element} variables={variables} />}
                 </>
             );
         };

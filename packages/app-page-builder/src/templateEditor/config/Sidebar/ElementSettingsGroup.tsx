@@ -21,9 +21,10 @@ export const ElementSettingsGroup = () => {
 
     return (
         <>
-            {isBlock && !blockReference ? <VariablesList block={element} /> : null}
+            {/* TODO: fetch variables */}
+            {isBlock && !blockReference ? <VariablesList variables={[]} /> : null}
             {canHaveVariable && !hasVariable && <ElementNotLinked />}
-            {canHaveVariable && hasVariable && <VariableSettings element={element} />}
+            {canHaveVariable && hasVariable && <VariableSettings element={element} variables={[]} />}
         </>
     );
 };

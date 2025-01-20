@@ -14,7 +14,7 @@ export const dynamicData = {
         .array(
             zod.object({
                 dataSource: zod.string(),
-                bindFrom: zod.string(),
+                bindFrom: zod.string().optional().nullish(),
                 bindTo: zod.string()
             })
         )

@@ -4,7 +4,6 @@ import { set } from "dot-prop-immutable";
 import { DragObjectWithTypeWithTarget as BaseDragObjectWithTypeWithTarget } from "./components/Droppable";
 import { plugins } from "@webiny/plugins";
 import {
-    PbBlockVariable,
     PbEditorBlockPlugin,
     PbEditorElement,
     PbEditorElementTree,
@@ -192,18 +191,6 @@ function prefixElementVariableId(
     }
 
     return data;
-}
-
-/**
- * Update all block element variable IDs with the given `blockId` prefix.
- */
-export function generateBlockVariableIds(variables: PbBlockVariable[], blockId: string) {
-    return variables.map(variable => {
-        const variableId = variable.id.split("#").pop();
-        const newId = [blockId, variableId].join("#");
-
-        return { ...variable, id: newId };
-    });
 }
 
 /**

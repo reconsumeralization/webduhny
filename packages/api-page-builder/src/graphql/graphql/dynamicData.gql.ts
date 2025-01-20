@@ -17,7 +17,7 @@ export const createDynamicDataSchema = () => {
 
             input DataBindingInput {
                 dataSource: String!
-                bindFrom: String!
+                bindFrom: String
                 bindTo: String!
             }
 

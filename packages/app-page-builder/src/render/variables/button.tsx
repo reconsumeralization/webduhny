@@ -1,14 +1,6 @@
 import React from "react";
 import { ButtonRenderer } from "@webiny/app-page-builder-elements/renderers/button";
 import { useElementVariables } from "~/hooks/useElementVariables";
-import { PbBlockVariable } from "~/types";
-
-const getVariableValues = (variables: PbBlockVariable<string>[]) => {
-    return {
-        label: variables.find(variable => variable.id.endsWith(".label"))?.value || undefined,
-        url: variables.find(variable => variable.id.endsWith(".url"))?.value || undefined
-    };
-};
 
 export const ButtonRendererWithVariables = ButtonRenderer.createDecorator(Original => {
     return function ButtonRenderer(props) {
@@ -18,7 +10,8 @@ export const ButtonRendererWithVariables = ButtonRenderer.createDecorator(Origin
             return <Original {...props} />;
         }
 
-        const variableValues = getVariableValues(variables);
+        // TODO: get variable values using the new data bindings
+        const variableValues = { label: undefined, url: undefined };
 
         return (
             <Original
