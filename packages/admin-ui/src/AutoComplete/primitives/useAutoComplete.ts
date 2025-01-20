@@ -19,6 +19,7 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             onOpenChange: props.onOpenChange,
             onValueChange: props.onValueChange,
             onValueReset: props.onValueReset,
+            onValueSearch: props.onValueSearch,
             displayResetAction: props.displayResetAction
         }),
         [
@@ -30,6 +31,7 @@ export const useAutoComplete = (props: AutoCompletePrimitiveProps) => {
             props.onOpenChange,
             props.onValueChange,
             props.onValueReset,
+            props.onValueSearch,
             props.displayResetAction
         ]
     );

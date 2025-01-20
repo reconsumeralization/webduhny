@@ -36,6 +36,10 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      */
     onValueReset?: () => void;
     /**
+     * Callback triggered when a value has been searched by the user.
+     */
+    onValueSearch?: (value: string) => void;
+    /**
      * List of options for the autocomplete.
      */
     options?: AutoCompleteOption[];

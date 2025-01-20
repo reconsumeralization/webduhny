@@ -11,6 +11,7 @@ interface AutoCompletePresenterParams {
     onOpenChange?: (open: boolean) => void;
     onValueChange: (value: string) => void;
     onValueReset?: () => void;
+    onValueSearch?: (value: string) => void;
     options?: AutoCompleteOption[];
     placeholder?: string;
     value?: string;
@@ -74,6 +75,7 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
+        this.params?.onValueSearch?.(value);
     };
 
     public setSelectedOption = (value: string) => {
