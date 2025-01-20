@@ -39,6 +39,8 @@ export const AutoComplete = ({
     renderItem,
     noResultFound,
     useSimpleValues,
+    loading,
+    onInput,
     ...props
 }: AutoCompleteProps) => {
     const inputSize = useMemo(() => {
@@ -94,9 +96,11 @@ export const AutoComplete = ({
             value={value}
             options={options}
             onValueChange={onValueChange}
+            onValueSearch={onInput}
             size={inputSize}
             optionRenderer={renderItem}
             emptyMessage={noResultFound}
+            isLoading={loading}
         />
     );
 };
