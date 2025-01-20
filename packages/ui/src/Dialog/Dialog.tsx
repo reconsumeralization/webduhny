@@ -113,7 +113,7 @@ export const Dialog = ({
         <AdminUiDialog
             open={open}
             bodyPadding={false}
-            preventOutsideDismiss={preventOutsideDismiss}
+            dismissible={preventOutsideDismiss === true ? false : true}
             showCloseButton={showCloseButton}
             onOpenChange={opened => {
                 if (!opened && onClose) {
