@@ -15,7 +15,7 @@ const DecoratableCheckbox = ({ description, note, validation, ...props }: Checkb
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
-        <div className={"wby-w-full"}>
+        <div className={"w-full"}>
             <FormComponentDescription text={description} />
             <CheckboxPrimitive {...props} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />

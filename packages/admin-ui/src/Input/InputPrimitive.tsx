@@ -6,20 +6,20 @@ import { cn } from "~/utils";
 /**
  * Icon
  */
-const inputIconVariants = cva("absolute fill-neutral-xstrong", {
+const inputIconVariants = cva("wby-absolute wby-fill-neutral-xstrong", {
     variants: {
         // Define dummy variants to be used in combination with `compoundVariants` below.
         inputSize: {
-            md: "top-sm",
-            lg: "top-sm-extra",
-            xl: "top-md"
+            md: "wby-top-sm",
+            lg: "wby-top-sm-extra",
+            xl: "wby-top-md"
         },
         position: {
             start: "",
             end: ""
         },
         disabled: {
-            true: "fill-neutral-disabled"
+            true: "wby-fill-neutral-disabled"
         }
     },
     defaultVariants: {
@@ -31,32 +31,32 @@ const inputIconVariants = cva("absolute fill-neutral-xstrong", {
         {
             inputSize: "md",
             position: "start",
-            class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "md",
             position: "end",
-            class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
             position: "start",
-            class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
             position: "end",
-            class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
             position: "start",
-            class: "left-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
             position: "end",
-            class: "right-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         }
     ]
 });
@@ -87,69 +87,69 @@ const InputIcon = ({ icon, disabled, position, inputSize, className }: InputIcon
  */
 const inputVariants = cva(
     [
-        "w-full border-sm text-md peer",
-        "focus-visible:outline-none",
-        "disabled:cursor-not-allowed data-[disabled=true]:cursor-not-allowed",
-        "file:bg-transparent file:border-none file:text-sm file:font-semibold"
+        "wby-w-full wby-border-sm wby-text-md wby-peer",
+        "wby-focus-visible:outline-none",
+        "wby-disabled:cursor-not-allowed wby-data-[disabled=true]:cursor-not-allowed",
+        "wby-file:bg-transparent wby-file:border-none wby-file:text-sm wby-file:font-semibold"
     ],
     {
         variants: {
             size: {
                 md: [
-                    "rounded-md",
-                    "py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                    "wby-rounded-md",
+                    "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 lg: [
-                    "rounded-md",
-                    "py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                    "wby-rounded-md",
+                    "wby-py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 xl: [
-                    "rounded-lg leading-6",
-                    "py-[calc(theme(padding.md)-theme(borderWidth.sm))] px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
+                    "wby-rounded-lg wby-leading-6",
+                    "wby-py-[calc(theme(padding.md)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
                 ]
             },
             variant: {
                 primary: [
-                    "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:border-neutral-strong",
-                    "focus:border-neutral-black",
-                    "data-[focused=true]:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
-                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:border-neutral-dimmed data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-base wby-border-neutral-muted wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:border-neutral-strong",
+                    "wby-focus:border-neutral-black",
+                    "wby-data-[focused=true]:border-neutral-black",
+                    "wby-disabled:bg-neutral-disabled wby-disabled:border-neutral-dimmed wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled",
+                    "wby-data-[disabled=true]:bg-neutral-disabled wby-data-[disabled=true]:border-neutral-dimmed wby-data-[disabled=true]:text-neutral-disabled wby-data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 secondary: [
-                    "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
-                    "data-[disabled=true]:bg-neutral-disabled data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:bg-neutral-dimmed",
+                    "wby-focus:bg-neutral-base wby-focus:border-neutral-black",
+                    "wby-data-[focused=true]:bg-neutral-base wby-data-[focused=true]:border-neutral-black",
+                    "wby-disabled:bg-neutral-disabled wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled",
+                    "wby-data-[disabled=true]:bg-neutral-disabled wby-data-[disabled=true]:text-neutral-disabled wby-data-[disabled=true]:placeholder:text-neutral-disabled"
                 ],
                 ghost: [
-                    "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed/95",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "data-[focused=true]:bg-neutral-base data-[focused=true]:border-neutral-black",
-                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled",
-                    "data-[disabled=true]:bg-transparent data-[disabled=true]:text-neutral-disabled data-[disabled=true]:placeholder:text-neutral-disabled"
+                    "wby-bg-transparent wby-border-transparent wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:bg-neutral-dimmed/95",
+                    "wby-focus:bg-neutral-base wby-focus:border-neutral-black",
+                    "wby-data-[focused=true]:bg-neutral-base wby-data-[focused=true]:border-neutral-black",
+                    "wby-disabled:bg-transparent wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled",
+                    "wby-data-[disabled=true]:bg-transparent wby-data-[disabled=true]:text-neutral-disabled wby-data-[disabled=true]:placeholder:text-neutral-disabled"
                 ]
             },
             iconPosition: {
-                start: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                end: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                start: "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                end: "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
                 both: [
-                    "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
                 ]
             },
             invalid: {
                 true: [
-                    "border-destructive-default",
-                    "hover:border-destructive-default",
-                    "focus:border-destructive-default",
-                    "data-[focused=true]:border-destructive-default",
-                    "disabled:border-destructive-default",
-                    "data-[disabled=true]:border-destructive-default"
+                    "wby-border-destructive-default",
+                    "wby-hover:border-destructive-default",
+                    "wby-focus:border-destructive-default",
+                    "wby-data-[focused=true]:border-destructive-default",
+                    "wby-disabled:border-destructive-default",
+                    "wby-data-[disabled=true]:border-destructive-default"
                 ]
             }
         },
@@ -158,37 +158,37 @@ const inputVariants = cva(
             {
                 size: "lg",
                 iconPosition: "start",
-                class: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                class: "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
                 size: "lg",
                 iconPosition: "end",
-                class: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                class: "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
                 size: "lg",
                 iconPosition: "both",
                 class: [
-                    "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
                 ]
             },
             {
                 size: "xl",
                 iconPosition: "start",
-                class: "pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                class: "wby-pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
                 size: "xl",
                 iconPosition: "end",
-                class: "pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                class: "wby-pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
                 size: "xl",
                 iconPosition: "both",
                 class: [
-                    "pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
                 ]
             },
             // Add specific classNames in case of invalid `ghost` input.
@@ -196,12 +196,12 @@ const inputVariants = cva(
                 variant: "ghost",
                 invalid: true,
                 class: [
-                    "border-destructive-subtle bg-destructive-subtle",
-                    "hover:border-destructive-subtle",
-                    "focus:border-destructive-subtle",
-                    "data-[focused=true]:border-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle",
-                    "data-[disabled=true]:bg-destructive-subtle data-[disabled=true]:border-destructive-subtle"
+                    "wby-border-destructive-subtle wby-bg-destructive-subtle",
+                    "wby-hover:border-destructive-subtle",
+                    "wby-focus:border-destructive-subtle",
+                    "wby-data-[focused=true]:border-destructive-subtle",
+                    "wby-disabled:bg-destructive-subtle wby-disabled:border-destructive-subtle",
+                    "wby-data-[disabled=true]:bg-destructive-subtle wby-data-[disabled=true]:border-destructive-subtle"
                 ]
             }
         ],

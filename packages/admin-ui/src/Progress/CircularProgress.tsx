@@ -16,12 +16,12 @@ const CircularProgressBase = React.forwardRef<HTMLDivElement, CircularProgressPr
             <div
                 ref={ref}
                 className={cn(
-                    "w-full h-full absolute bg-white bg-opacity-75 top-0 left-0 z-30",
+                    "wby-w-full wby-h-full wby-absolute wby-bg-white wby-bg-opacity-75 wby-top-0 wby-left-0 wby-z-30",
                     className
                 )}
                 {...divProps}
             >
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                <div className="wby-absolute wby-top-1/2 wby-left-1/2 wby-transform -wby-translate-x-1/2 -wby-translate-y-1/2 wby-flex wby-flex-col wby-justify-center wby-items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width={spinnerWidth}
@@ -32,7 +32,7 @@ const CircularProgressBase = React.forwardRef<HTMLDivElement, CircularProgressPr
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={"animate-spin text-accent-primary"}
+                        className={"wby-animate-spin wby-text-accent-primary"}
                     >
                         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                     </svg>
