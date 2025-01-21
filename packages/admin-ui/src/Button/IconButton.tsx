@@ -4,55 +4,55 @@ import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 
 const iconButtonVariants = cva(
     [
-        "border-transparent rounded flex items-center justify-center ring-offset-background cursor-pointer transition-colors [&_svg]pointer-events-none [&_svg]:shrink-0",
-        "aria-disabled:pointer-events-none",
-        "focus-visible:outline-none focus-visible:border-accent-default"
+        "wby-border-transparent wby-rounded wby-flex wby-items-center wby-justify-center wby-ring-offset-background wby-cursor-pointer wby-transition-colors [&_svg]:pointer-events-none [&_svg]:wby-shrink-0",
+        "aria-disabled:wby-pointer-events-none",
+        "focus-visible:wby-outline-none focus-visible:wby-border-accent-default"
     ],
     {
         variants: {
             variant: {
                 primary: [
-                    "bg-primary fill-neutral-base",
-                    "hover:bg-primary-strong",
-                    "active:bg-primary-xstrong",
-                    "aria-disabled:bg-primary-disabled",
-                    "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
+                    "wby-bg-primary wby-fill-neutral-base",
+                    "hover:wby-bg-primary-strong",
+                    "active:wby-bg-primary-xstrong",
+                    "aria-disabled:wby-bg-primary-disabled",
+                    "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 secondary: [
-                    "bg-neutral-dimmed fill-neutral-xstrong",
-                    "hover:bg-neutral-muted",
-                    "active:bg-neutral-strong",
-                    "aria-disabled:bg-neutral-disabled aria-disabled:fill-neutral-strong",
-                    "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
+                    "wby-bg-neutral-dimmed wby-fill-neutral-xstrong",
+                    "hover:wby-bg-neutral-muted",
+                    "active:wby-bg-neutral-strong",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-fill-neutral-strong",
+                    "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 tertiary: [
-                    "bg-neutral-base border-neutral-muted fill-neutral-xstrong",
-                    "hover:bg-neutral-light",
-                    "active:bg-neutral-muted",
-                    "aria-disabled:bg-neutral-disabled aria-disabled:fill-neutral-strong aria-disabled:border-neutral-dimmed",
-                    "focus-visible:ring-lg focus-visible:ring-primary-dimmed"
+                    "wby-bg-neutral-base wby-border-neutral-muted wby-fill-neutral-xstrong",
+                    "hover:wby-bg-neutral-light",
+                    "active:wby-bg-neutral-muted",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-fill-neutral-strong aria-disabled:wby-border-neutral-dimmed",
+                    "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 ghost: [
-                    "fill-neutral-xstrong",
-                    "hover:bg-neutral-dimmed",
-                    "active:bg-neutral-muted",
-                    "aria-disabled:fill-neutral-strong hover:aria-disabled:bg-transparent active:aria-disabled:bg-transparent"
+                    "wby-fill-neutral-xstrong",
+                    "hover:wby-bg-neutral-dimmed",
+                    "active:wby-bg-neutral-muted",
+                    "aria-disabled:wby-fill-neutral-strong hover:aria-disabled:wby-bg-transparent active:aria-disabled:wby-bg-transparent"
                 ],
                 "ghost-negative": [
-                    "fill-neutral-base",
-                    "hover:bg-neutral-base/20",
-                    "active:bg-neutral-base/30",
-                    "focus-visible:!border-neutral-base",
-                    "aria-disabled:fill-neutral-base aria-disabled:opacity-50 hover:aria-disabled:bg-transparent active:aria-disabled:bg-transparent"
+                    "wby-fill-neutral-base",
+                    "hover:wby-bg-neutral-base/20",
+                    "active:wby-bg-neutral-base/30",
+                    "focus-visible:!wby-border-neutral-base",
+                    "aria-disabled:wby-fill-neutral-base aria-disabled:wby-opacity-50 hover:aria-disabled:wby-bg-transparent active:aria-disabled:wby-bg-transparent"
                 ]
             },
             size: {
-                xxs: "border-sm rounded-xs size-sm-extra [&_svg]:size-md",
-                xs: "border-sm rounded-xs size-md [&_svg]:size-md",
-                sm: "border-sm rounded-sm",
-                md: "border-sm rounded-md",
-                lg: "border-sm rounded-md",
-                xl: "border-md rounded-lg p-[calc(theme(padding.md)-theme(borderWidth.md))] [&_svg]:size-lg"
+                xxs: "wby-border-sm wby-rounded-xs wby-size-sm-extra [&_svg]:wby-size-md",
+                xs: "wby-border-sm wby-rounded-xs wby-size-md [&_svg]:wby-size-md",
+                sm: "wby-border-sm wby-rounded-sm",
+                md: "wby-border-sm wby-rounded-md",
+                lg: "wby-border-sm wby-rounded-md",
+                xl: "wby-border-md wby-rounded-lg wby-p-[calc(theme(padding.md)-theme(borderWidth.md))] [&_svg]:wby-size-lg"
             },
             iconSize: {
                 default: "",

@@ -26,13 +26,13 @@ export const DialogHeader = ({
         <div
             {...props}
             className={cn(
-                "flex flex-col gap-sm px-lg py-md text-center sm:text-left text-neutral-primary",
+                "wby-flex wby-flex-col wby-gap-sm wby-px-lg wby-py-md wby-text-center sm:wby-text-left wby-text-neutral-primary",
                 className
             )}
         >
-            <div className={"relative"}>
+            <div className={"wby-relative"}>
                 {showCloseButton !== false && (
-                    <DialogPrimitive.Close asChild className="absolute right-0 top-0">
+                    <DialogPrimitive.Close asChild className="wby-absolute wby-right-0 wby-top-0">
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
                     </DialogPrimitive.Close>
                 )}
