@@ -58,10 +58,7 @@ export class AutoCompleteListOptionsPresenter implements IAutoCompleteListOption
 
     setSelectedOption = (value: string) => {
         this.options.updateItems(option => {
-            if (option.value === value) {
-                option.selected = true;
-            }
-
+            option.selected = option.value === value;
             return option;
         });
     };
