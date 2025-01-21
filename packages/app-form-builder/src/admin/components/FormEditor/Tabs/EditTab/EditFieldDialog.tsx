@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import { css } from "emotion";
 import styled from "@emotion/styled";
 import {
     Dialog,
     DialogActions,
     DialogButton,
     DialogCancel,
+    DialogAccept,
     DialogContent,
     DialogTitle
 } from "@webiny/ui/Dialog";
@@ -21,13 +21,6 @@ import { useFormEditor } from "../../Context";
 import { FbBuilderFieldPlugin, FbFormModelField } from "~/types";
 
 const t = i18n.namespace("FormEditor.EditFieldDialog");
-
-const dialogBody = css({
-    "&.webiny-ui-dialog__content": {
-        width: 875,
-        height: 450
-    }
-});
 
 const FbFormModelFieldList = styled("div")({
     display: "flex",
@@ -87,7 +80,7 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
                     <Form data={current} onSubmit={onSubmit}>
                         {form => (
                             <>
-                                <DialogContent className={dialogBody}>
+                                <DialogContent>
                                     <Tabs>
                                         <Tab label={t`General`}>
                                             <GeneralTab form={form} field={current} />
@@ -99,20 +92,14 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
                                         )}
                                     </Tabs>
                                 </DialogContent>
-                                <DialogActions
-                                    style={{
-                                        justifyContent: isNewField ? "space-between" : "flex-end"
-                                    }}
-                                >
+                                <DialogActions>
                                     {isNewField && (
                                         <DialogButton
                                             onClick={() => setScreen("fieldType")}
                                         >{t`Go back`}</DialogButton>
                                     )}
-                                    <div>
-                                        <DialogButton onClick={onClose}>{t`Cancel`}</DialogButton>
-                                        <DialogButton onClick={form.submit}>{t`Save`}</DialogButton>
-                                    </div>
+                                    <DialogButton onClick={onClose}>{t`Cancel`}</DialogButton>
+                                    <DialogAccept onClick={form.submit}>{t`Save`}</DialogAccept>
                                 </DialogActions>
                             </>
                         )}
@@ -123,7 +110,7 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
             default:
                 render = (
                     <>
-                        <DialogContent className={dialogBody}>
+                        <DialogContent>
                             <FbFormModelFieldList>
                                 {plugins
                                     .byType<FbBuilderFieldPlugin>("form-editor-field-type")
