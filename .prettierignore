@@ -1,3 +1,4 @@
+.nx/
 .webiny/
 .verdaccio/
 **/build/
@@ -8,7 +9,9 @@
 .webiny/**
 packages/ui/src/RichTextEditor/editorjs/**
 packages/cli-plugin-deploy-pulumi/commands/newWatch/handler/mqtt.js
+packages/cli-plugin-scaffold-ci/src/githubActions/files/workflows/
 lerna.json
 coverage/**
 packages/cli/files/**/*.json
 packages/create-webiny-project/utils/binaries/**
+.github/workflows/**/*.yml

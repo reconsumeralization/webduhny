@@ -99,6 +99,36 @@ jobs:
       - name: ESLint
         run: yarn eslint
         working-directory: dev
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max_old_space_size=4096'
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+  staticCodeAnalysisVerifyDependencies:
+    needs:
+      - constants
+      - build
+    name: Static code analysis (verify dependencies)
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/checkout@v4
+        with:
+          path: dev
+      - uses: actions/cache@v4
+        with:
+          path: dev/.yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/cache@v4
+        with:
+          path: dev/.webiny/cached-packages
+          key: ${{ needs.constants.outputs.run-cache-key }}
+      - name: Install dependencies
+        run: yarn --immutable
+        working-directory: dev
+      - name: Build packages
+        run: yarn build:quick
+        working-directory: dev
       - name: Sync Dependencies Verification
         run: yarn webiny verify-dependencies
         working-directory: dev
