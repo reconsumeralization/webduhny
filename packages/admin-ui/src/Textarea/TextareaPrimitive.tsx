@@ -3,41 +3,41 @@ import { cn, cva, type VariantProps } from "~/utils";
 
 const textareaVariants = cva(
     [
-        "flex min-h-[80px] w-full border-sm text-md focus-visible:outline-none disabled:cursor-not-allowed"
+        "wby-flex wby-min-h-[80px] wby-w-full wby-border-sm wby-text-md wby-focus-visible:outline-none wby-disabled:cursor-not-allowed"
     ],
     {
         variants: {
             variant: {
                 primary: [
-                    "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:border-neutral-strong",
-                    "focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-base wby-border-neutral-muted wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:border-neutral-strong",
+                    "wby-focus:border-neutral-black",
+                    "wby-disabled:bg-neutral-disabled wby-disabled:border-neutral-dimmed wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled"
                 ],
                 secondary: [
-                    "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:bg-neutral-dimmed",
+                    "wby-focus:bg-neutral-base wby-focus:border-neutral-black",
+                    "wby-disabled:bg-neutral-disabled wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled"
                 ],
                 ghost: [
-                    "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed/95",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-transparent wby-border-transparent wby-text-neutral-strong wby-placeholder:text-neutral-dimmed",
+                    "wby-hover:bg-neutral-dimmed/95",
+                    "wby-focus:bg-neutral-base wby-focus:border-neutral-black",
+                    "wby-disabled:bg-transparent wby-disabled:text-neutral-disabled wby-disabled:placeholder:text-neutral-disabled"
                 ]
             },
             size: {
-                md: ["px-sm-extra py-xs-plus rounded-md"],
-                lg: ["px-sm-extra py-sm-plus rounded-md"],
-                xl: ["px-md-extra p-md rounded-lg"]
+                md: ["wby-px-sm-extra wby-py-xs-plus wby-rounded-md"],
+                lg: ["wby-px-sm-extra wby-py-sm-plus wby-rounded-md"],
+                xl: ["wby-px-md-extra wby-p-md wby-rounded-lg"]
             },
             invalid: {
                 true: [
-                    "border-destructive-default",
-                    "hover:border-destructive-default",
-                    "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
+                    "wby-border-destructive-default",
+                    "wby-hover:border-destructive-default",
+                    "wby-focus:border-destructive-default",
+                    "wby-disabled:border-destructive-default"
                 ]
             }
         },
@@ -47,10 +47,10 @@ const textareaVariants = cva(
                 variant: "ghost",
                 invalid: true,
                 class: [
-                    "border-destructive-subtle bg-destructive-subtle",
-                    "hover:border-destructive-subtle hover:bg-destructive-subtle",
-                    "focus:border-destructive-subtle  focus:bg-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
+                    "wby-border-destructive-subtle wby-bg-destructive-subtle",
+                    "wby-hover:border-destructive-subtle wby-hover:bg-destructive-subtle",
+                    "wby-focus:border-destructive-subtle wby-focus:bg-destructive-subtle",
+                    "wby-disabled:bg-destructive-subtle wby-disabled:border-destructive-subtle"
                 ]
             }
         ],

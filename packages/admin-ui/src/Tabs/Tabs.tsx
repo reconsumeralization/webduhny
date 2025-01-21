@@ -17,7 +17,7 @@ const TabsListBase = React.forwardRef<
     <TabsPrimitive.List
         ref={ref}
         className={cn(
-            "w-full inline-flex items-center justify-start bg-muted fill-muted-foreground p-1 text-muted-foreground",
+            "wby-w-full wby-inline-flex wby-items-center wby-justify-start wby-bg-muted wby-fill-muted-foreground wby-p-1 wby-text-muted-foreground",
             className
         )}
         {...props}
@@ -31,14 +31,14 @@ const TabsList = makeDecoratable("TabsList", TabsListBase);
  * Tabs trigger
  */
 const tabsTriggerVariants = cva(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:fill-foreground data-[state=active]:shadow-sm",
+    "wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-rounded-sm wby-font-medium wby-ring-offset-background wby-transition-all wby-focus-visible:outline-none wby-focus-visible:ring-2 wby-focus-visible:ring-ring wby-focus-visible:ring-offset-2 wby-disabled:pointer-events-none wby-disabled:opacity-50 wby-data-[state=active]:bg-background wby-data-[state=active]:text-foreground wby-data-[state=active]:fill-foreground wby-data-[state=active]:shadow-sm",
     {
         variants: {
             size: {
-                sm: "text-xs px-2 py-1",
-                md: "text-sm px-3 py-1.5",
-                lg: "text-lg px-4 py-2",
-                xl: "text-xl px-6 py-3"
+                sm: "wby-text-xs wby-px-2 wby-py-1",
+                md: "wby-text-sm wby-px-3 wby-py-1.5",
+                lg: "wby-text-lg wby-px-4 wby-py-2",
+                xl: "wby-text-xl wby-px-6 wby-py-3"
             }
         },
         defaultVariants: {
@@ -73,14 +73,14 @@ const TabsTrigger = makeDecoratable("TabsTrigger", TabsTriggerBase);
  * Tabs content
  */
 const tabsContentVariants = cva(
-    "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-muted",
+    "wby-ring-offset-background wby-focus-visible:outline-none wby-focus-visible:ring-2 wby-focus-visible:ring-ring wby-focus-visible:ring-offset-2 wby-bg-muted",
     {
         variants: {
             size: {
-                sm: "text-xs p-2",
-                md: "text-sm p-4",
-                lg: "text-lg p-6",
-                xl: "text-xl p-8"
+                sm: "wby-text-xs wby-p-2",
+                md: "wby-text-sm wby-p-4",
+                lg: "wby-text-lg wby-p-6",
+                xl: "wby-text-xl wby-p-8"
             }
         },
         defaultVariants: {

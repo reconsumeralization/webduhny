@@ -38,7 +38,7 @@ const DecoratableRangeSliderPrimitiveRenderer = ({
     ...sliderProps
 }: RangeSliderPrimitiveVm) => {
     return (
-        <div className={"flex h-md w-full"}>
+        <div className={"wby-flex wby-h-md wby-w-full"}>
             <SliderPrimitiveRoot {...sliderProps} value={values}>
                 <SliderPrimitiveTrack />
                 <SliderPrimitiveThumb
