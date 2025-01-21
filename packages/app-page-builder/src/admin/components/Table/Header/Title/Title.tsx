@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 import { Skeleton } from "@webiny/ui/Skeleton";
 
@@ -8,10 +8,10 @@ export interface TitleProps {
     title?: string;
 }
 
-export const Title = ({ title }: TitleProps) => {
+export const Title = ({ title }: TitleProps): ReactElement => {
     return (
         <Name use={"headline6"} tag={"h1"}>
-            {title || <Skeleton theme={"dark"} />}
+            {title !== undefined ? title : <Skeleton theme={"dark"} />}
         </Name>
     );
 };
