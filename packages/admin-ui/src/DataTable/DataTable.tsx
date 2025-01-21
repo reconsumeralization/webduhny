@@ -447,7 +447,7 @@ const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
                                                 onClick={header.column.getToggleSortingHandler()}
                                                 sortable={header.column.getCanSort()}
                                             >
-                                                <div className="overflow-hidden whitespace-nowrap truncate">
+                                                <div className="w-full overflow-hidden whitespace-nowrap truncate">
                                                     {flexRender(
                                                         header.column.columnDef.header,
                                                         header.getContext()

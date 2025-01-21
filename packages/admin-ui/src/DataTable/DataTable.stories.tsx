@@ -110,6 +110,23 @@ export const WithLoading: Story<Entry> = {
     }
 };
 
+export const WithLongColumnContent: Story<Entry> = {
+    args: {
+        ...Default.args,
+        columns: {
+            ...columns,
+            name: {
+                ...columns.name,
+                header: "Name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            }
+        },
+        data: data.map(entry => ({
+            ...entry,
+            name: `${entry.name} - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+        }))
+    }
+};
+
 export const WithCustomCellRenderer: Story<Entry> = {
     args: {
         ...Default.args,
@@ -172,6 +189,10 @@ export const WithCustomColumnClassName: Story<Entry> = {
             lastModified: {
                 ...columns.lastModified,
                 className: "bg-primary-subtle"
+            },
+            status: {
+                ...columns.status,
+                className: "text-right"
             }
         }
     }
