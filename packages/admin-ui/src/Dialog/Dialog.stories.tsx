@@ -162,7 +162,7 @@ export const WithTabs: Story = {
                         },
                         {
                             value: "development",
-                            trigger: "development",
+                            trigger: "Development",
                             content: "Make changes to your development settings here."
                         }
                     ]}
