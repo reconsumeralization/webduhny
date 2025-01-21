@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import { i18n } from "@webiny/app/i18n";
 import { useDialog } from "@webiny/app-admin/hooks/useDialog";
 import { Typography } from "@webiny/ui/Typography";
@@ -13,15 +12,6 @@ import { PbRevisionType } from "~/contexts/PageBuilder";
 
 const t = i18n.ns("app-page-builder/editor/plugins/defaultBar/exportPageButton");
 
-const confirmationMessageStyles = css`
-    width: 600px;
-`;
-
-const gridStyles = css`
-    &.mdc-layout-grid {
-        padding-top: 0;
-    }
-`;
 interface ExportPageDialogMessageProps {
     selected: string[];
 }
@@ -31,8 +21,8 @@ const ExportPageDialogMessage = ({ selected }: ExportPageDialogMessageProps) => 
     const { revisionType: value, setRevisionType: setValue } = exportPageData;
 
     return (
-        <div className={confirmationMessageStyles}>
-            <Grid className={gridStyles}>
+        <>
+            <Grid>
                 <Cell span={12}>
                     <Typography
                         use={"subtitle1"}
@@ -82,7 +72,7 @@ const ExportPageDialogMessage = ({ selected }: ExportPageDialogMessageProps) => 
                 </Cell>
             </Grid>
             {selected.length === 0 && (
-                <Grid className={gridStyles}>
+                <Grid>
                     <Cell span={12}>
                         <Alert title={t`Note:`} type={"info"}>
                             {t`You're about to export all pages. This operation might take a few minutes to complete.`}
@@ -90,7 +80,7 @@ const ExportPageDialogMessage = ({ selected }: ExportPageDialogMessageProps) => 
                     </Cell>
                 </Grid>
             )}
-        </div>
+        </>
     );
 };
 
@@ -98,12 +88,14 @@ interface UseExportPageRevisionSelectorDialogShowParams {
     onAccept: () => void;
     selected: string[];
 }
+
 interface UseExportPageRevisionSelectorDialog {
     showExportPageRevisionSelectorDialog: (
         params: UseExportPageRevisionSelectorDialogShowParams
     ) => void;
     hideDialog: () => void;
 }
+
 const useExportPageRevisionSelectorDialog = (): UseExportPageRevisionSelectorDialog => {
     const { showDialog, hideDialog } = useDialog();
 

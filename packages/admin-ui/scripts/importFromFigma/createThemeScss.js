@@ -253,20 +253,20 @@ const createThemeScss = normalizedFigmaExport => {
                         `--text-h3-weight: var(--font-weight-semibold);`
                     ],
                     [
-                        `--text-h4: 20px;`,
-                        `--text-h4-leading: 30px;`,
+                        `--text-h4: var(--text-xl);`,
+                        `--text-h4-leading: var(--text-xl-leading);`,
                         `--text-h4-tracking: initial;`,
                         `--text-h4-weight: var(--font-weight-semibold);`
                     ],
                     [
-                        `--text-h5: 16px;`,
-                        `--text-h5-leading: 20px;`,
+                        `--text-h5: var(--text-lg);`,
+                        `--text-h5-leading: var(--text-lg-leading);`,
                         `--text-h5-tracking: initial;`,
                         `--text-h5-weight: var(--font-weight-semibold);`
                     ],
                     [
-                        `--text-h6: 14px;`,
-                        `--text-h6-leading: 20px;`,
+                        `--text-h6: var(--text-md);`,
+                        `--text-h6-leading: var(--text-md-leading);`,
                         `--text-h6-tracking: initial;`,
                         `--text-h6-weight: var(--font-weight-semibold);`
                     ]

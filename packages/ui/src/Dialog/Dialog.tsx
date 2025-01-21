@@ -1,178 +1,132 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import {
-    Dialog as RmwcDialog,
-    DialogActions as RmwcDialogActions,
-    DialogActionsProps as RmwcDialogActionsProps,
-    DialogButton as RmwcDialogButton,
-    DialogButtonProps as RmwcDialogButtonProps,
-    DialogContent as RmwcDialogContent,
-    DialogContentProps as RmwcDialogContentProps,
-    DialogOnCloseEventT,
-    DialogProps as RmwcDialogProps,
-    DialogTitle as RmwcDialogTitle,
-    DialogTitleProps as RmwcDialogTitleProps
-} from "@rmwc/dialog";
-import { css } from "emotion";
-import { getClasses } from "~/Helpers";
+    Button as AdminUiButton,
+    type ButtonProps as AdminUiButtonProps,
+    Dialog as AdminUiDialog,
+    type DialogProps as AdminUiDialogProps
+} from "@webiny/admin-ui";
+import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
+import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
+import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
+import { DialogBody } from "@webiny/admin-ui/Dialog/components/DialogBody";
 
-export type DialogOnClose = (event: DialogOnCloseEventT) => void;
-
-export interface DialogProps extends RmwcDialogProps {
-    className?: string;
-
-    // Component's custom in-line styles.
-    style?: React.CSSProperties;
-
-    onClose?: (evt: DialogOnCloseEventT) => void;
-
-    preventOutsideDismiss?: boolean;
-
-    children?: React.ReactNode;
-}
-
-export class Dialog extends React.Component<DialogProps> {
-    container: HTMLElement;
-
-    constructor(props: DialogProps) {
-        super(props);
-        /**
-         * We can safely cast
-         */
-        this.container = document.getElementById("dialog-container") as HTMLElement;
-
-        if (!this.container) {
-            this.container = document.createElement("div");
-            this.container.setAttribute("id", "dialog-container");
-            const container = this.container;
-            document.body && document.body.appendChild(container);
-        }
-    }
-
-    public override render() {
-        const { children, ...props } = this.props;
-        const container = this.container;
-
-        // Let's pass "permanent" / "persistent" / "temporary" flags as "mode" prop instead.
-        return ReactDOM.createPortal(
-            <RmwcDialog {...getClasses(props, "webiny-ui-dialog")}>{children}</RmwcDialog>,
-            container
-        );
-    }
-}
-
-export interface DialogTitleProps extends RmwcDialogTitleProps {
-    /**
-     * Title text.
-     */
+export interface DialogActionsProps {
     children: React.ReactNode[] | React.ReactNode;
 }
 
 /**
- * Dialog's header, which can accept DialogHeaderTitle component or any other set of components.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-export const DialogTitle = (props: DialogTitleProps) => (
-    <RmwcDialogTitle
-        {...getClasses(props, "webiny-ui-dialog__title")}
-        style={{ marginBottom: "0" }}
-    />
-);
+export const DialogActions = (props: DialogActionsProps) => {
+    return <AdminUiDialogFooter actions={props.children} />;
+};
 
-export type DialogContentProps = RmwcDialogContentProps & {
-    /**
-     * Dialog content.
-     */
-    children: React.ReactNode[] | React.ReactNode;
+export interface DialogButtonProps extends AdminUiButtonProps {
+    children?: React.ReactNode[] | React.ReactNode;
+}
 
-    className?: string;
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
+ */
+export const DialogButton = (props: DialogButtonProps) => {
+    return <AdminUiButton {...props} variant={"secondary"} text={props.text || props.children} />;
+};
+
+export interface DialogAcceptProps extends AdminUiButtonProps {
+    children?: React.ReactNode[] | React.ReactNode;
+}
+
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
+ */
+export const DialogAccept = (props: DialogAcceptProps) => {
+    return <AdminUiButton {...props} variant={"primary"} text={props.text || props.children} />;
 };
 
 /**
- * A simple component for showing dialog's body.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-export const DialogContent = (props: DialogContentProps) => (
-    <RmwcDialogContent {...getClasses(props, "webiny-ui-dialog__content")} />
-);
-
-export interface DialogActionsProps extends RmwcDialogActionsProps {
-    /**
-     * Action buttons.
-     */
-    children: React.ReactNode[] | React.ReactNode;
-
-    // Dialog component's custom in-line styles.
-    style?: React.CSSProperties;
-}
-
-const addMargin = css`
-    button:last-of-type {
-        margin-left: 8px;
-    }
-`;
-
-/**
- * Can be used to show accept and cancel buttons.
- */
-export const DialogActions = (props: DialogActionsProps) => (
-    <RmwcDialogActions {...getClasses(props, [addMargin, "webiny-ui-dialog__actions"])} />
-);
-
-interface DialogButtonProps extends RmwcDialogButtonProps {
-    /**
-     * Callback to execute then button is clicked.
-     */
-    onClick?: (e: React.MouseEvent) => void;
-
-    className?: string;
-}
-
-/**
- * Use this to show a simple button.
- */
-export const DialogButton = (props: DialogButtonProps) => (
-    <RmwcDialogButton {...getClasses(props, "webiny-ui-dialog__button")} />
-);
-
-interface DialogCancelProps extends RmwcDialogButtonProps {
-    /**
-     * Callback to execute then button is clicked.
-     */
-    onClick?: (e: React.MouseEvent) => void;
-}
-
-/**
- * Use this to close the dialog without taking any additional action.
- */
-export const DialogCancel = (props: DialogCancelProps) => {
+export const DialogCancel = (props: DialogButtonProps) => {
     return (
-        <DialogButton
-            {...getClasses(props, "webiny-ui-dialog__button webiny-ui-dialog__button--cancel")}
-            action="close"
-            data-testid="dialog-cancel"
-        >
-            {props.children}
-        </DialogButton>
+        <AdminUiDialogClose asChild>
+            <AdminUiButton {...props} variant={"secondary"} text={props.text || props.children} />
+        </AdminUiDialogClose>
     );
 };
 
-interface DialogAcceptProps extends RmwcDialogButtonProps {
-    /**
-     * Callback to execute then button is clicked.
-     */
-    onClick?: (e: React.MouseEvent) => void;
+DialogActions.displayName = "DialogActions";
+
+export interface DialogContentProps {
+    children: React.ReactNode[] | React.ReactNode;
 }
 
 /**
- * Use this to close the dialog without taking any additional action.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
  */
-export const DialogAccept = (props: DialogAcceptProps) => {
+export const DialogContent = (props: DialogContentProps) => {
+    return <DialogBody>{props.children}</DialogBody>;
+};
+
+DialogContent.displayName = "DialogContent";
+
+export interface DialogTitleProps {
+    children: React.ReactNode[] | React.ReactNode;
+}
+
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
+ */
+export const DialogTitle = (props: DialogTitleProps) => {
+    return <AdminUiDialogHeader title={props.children} />;
+};
+
+DialogTitle.displayName = "DialogTitle";
+
+export type DialogOnClose = () => void;
+
+export interface DialogProps extends AdminUiDialogProps {
+    onClose?: DialogOnClose;
+    onOpened?: () => void;
+    preventOutsideDismiss?: boolean;
+}
+
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Dialog` component from the `@webiny/admin-ui` package instead.
+ */
+export const Dialog = ({
+    onClose,
+    onOpened,
+    open,
+    showCloseButton,
+    children,
+    preventOutsideDismiss,
+    ...rest
+}: DialogProps) => {
     return (
-        <DialogButton
-            {...getClasses(props, "webiny-ui-dialog__button webiny-ui-dialog__button--accept")}
-            action="accept"
-            data-testid="dialog-accept"
+        <AdminUiDialog
+            open={open}
+            bodyPadding={false}
+            dismissible={preventOutsideDismiss === true ? false : true}
+            showCloseButton={showCloseButton}
+            onOpenChange={opened => {
+                if (!opened && onClose) {
+                    onClose();
+                }
+
+                if (opened && onOpened) {
+                    onOpened();
+                }
+            }}
+            {...rest}
         >
-            {props.children}
-        </DialogButton>
+            {children}
+        </AdminUiDialog>
     );
 };
