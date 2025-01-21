@@ -18,6 +18,9 @@ const triggerVariants = cva(
                 md: "text-md h-[48px]",
                 lg: "text-lg h-[56px]",
                 xl: "text-xl h-[64px]"
+            },
+            visible: {
+                false: "hidden"
             }
         },
         defaultVariants: {
@@ -51,10 +54,11 @@ type TriggerProps = Omit<TabsPrimitive.TabsTriggerProps, "children"> &
     VariantProps<typeof triggerVariants> & {
         text: React.ReactNode;
         icon?: React.ReactElement;
+        "data-testid"?: string;
     };
 
-const Trigger = ({ className, size, icon, text, ...props }: TriggerProps) => (
-    <TabsPrimitive.Trigger className={cn(triggerVariants({ size }), className)} {...props}>
+const Trigger = ({ className, size, icon, text, visible, ...props }: TriggerProps) => (
+    <TabsPrimitive.Trigger className={cn(triggerVariants({ size, visible }), className)} {...props}>
         <div className={cn(innerTriggerVariants({ size }))}>
             {icon && <Icon icon={icon} size={"sm"} label={String(text)} color={"neutral-light"} />}
             {text}

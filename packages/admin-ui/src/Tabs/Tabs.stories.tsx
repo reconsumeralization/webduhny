@@ -10,10 +10,6 @@ const meta: Meta<typeof Tabs> = {
     tags: ["autodocs"],
     parameters: {
         layout: "padded"
-    },
-    render: args => {
-        const [value, setValue] = useState(args.value);
-        return <Tabs {...args} value={value} onValueChange={setValue} />;
     }
 };
 
@@ -22,17 +18,19 @@ type Story = StoryObj<typeof Tabs>;
 
 export const Default: Story = {
     args: {
-        triggers: [
-            <Tabs.Trigger key="account" value="account" text={"Account"} />,
-            <Tabs.Trigger key="password" value="password" text={"Password"} />
-        ],
-        contents: [
-            <Tabs.Content
-                key="account"
-                value="account"
-                content={"Make changes to your account here."}
-            />,
-            <Tabs.Content key="password" value="password" content={"Change your password here."} />
+        tabs: [
+            {
+                value: "account",
+                trigger: "Account",
+                content:
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum."
+            },
+            {
+                value: "password",
+                trigger: "Password",
+                content:
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
+            }
         ]
     }
 };
@@ -68,26 +66,81 @@ export const ExtraLarge: Story = {
 export const WithDefaultValue: Story = {
     args: {
         ...Default.args,
-        value: "password"
+        defaultValue: "password"
     }
 };
 
-export const WithTriggerIcons: Story = {
+export const WithControlledValue: Story = {
     args: {
         ...Default.args,
-        triggers: [
-            <Tabs.Trigger key="account" value="account" text={"Account"} icon={<PersonIcon />} />,
-            <Tabs.Trigger key="password" value="password" text={"Password"} icon={<LockIcon />} />
+        value: "password"
+    },
+    render: args => {
+        const [value, setValue] = useState(args.value);
+        return <Tabs {...args} value={value} onValueChange={setValue} />;
+    }
+};
+
+export const WithIcons: Story = {
+    args: {
+        ...Default.args,
+        tabs: [
+            {
+                value: "account",
+                trigger: "Account",
+                content:
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
+                icon: <PersonIcon />
+            },
+            {
+                value: "password",
+                trigger: "Password",
+                content:
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec.",
+                icon: <LockIcon />
+            }
         ]
     }
 };
 
-export const WithDisabledTrigger: Story = {
+export const WithDisabledTab: Story = {
     args: {
         ...Default.args,
-        triggers: [
-            <Tabs.Trigger key="account" value="account" text={"Account"} disabled={true} />,
-            <Tabs.Trigger key="password" value="password" text={"Password"} />
+        tabs: [
+            {
+                value: "account",
+                trigger: "Account",
+                content:
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
+                disabled: true
+            },
+            {
+                value: "password",
+                trigger: "Password",
+                content:
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
+            }
+        ]
+    }
+};
+
+export const WithHiddenTab: Story = {
+    args: {
+        ...Default.args,
+        tabs: [
+            {
+                value: "account",
+                trigger: "Account",
+                content:
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
+                visible: false
+            },
+            {
+                value: "password",
+                trigger: "Password",
+                content:
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
+            }
         ]
     }
 };

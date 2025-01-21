@@ -1,47 +1,72 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { makeDecoratable, withStaticProps } from "~/utils";
-import { Content, ContentProps, List, Trigger, TriggerProps } from "./components";
+import { makeDecoratable } from "~/utils";
+import { Content, List, Trigger } from "./components";
 
 const Root = TabsPrimitive.Root;
 
-interface TabsProps extends TabsPrimitive.TabsProps {
-    triggers: React.ReactElement<TriggerProps>[];
-    contents: React.ReactElement<ContentProps>[];
+interface Tab extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "content"> {
+    value: string;
+    trigger: React.ReactNode;
+    content: React.ReactNode;
+    icon?: React.ReactElement;
+    disabled?: boolean;
+    visible?: boolean;
+    "data-testid"?: string;
+}
+
+interface TabsProps extends Omit<TabsPrimitive.TabsProps, "children"> {
+    tabs: Tab[];
     size?: "sm" | "md" | "lg" | "xl";
 }
 
 const DecoratableTabs = ({
     defaultValue: baseDefaultValue,
     size = "md",
-    triggers,
-    contents,
+    tabs,
     ...props
 }: TabsProps) => {
-    const defaultValue =
-        baseDefaultValue || triggers.find(trigger => !trigger.props.disabled)?.props.value;
+    const defaultValue = React.useMemo(
+        () => baseDefaultValue || tabs.find(tab => !tab.disabled && tab.visible !== false)?.value,
+        [baseDefaultValue, tabs]
+    );
+
+    const triggers = React.useMemo(
+        () => (
+            <List>
+                {tabs.map((tab, index) => (
+                    <Trigger
+                        key={`${tab.value}-${index}`}
+                        value={tab.value}
+                        text={tab.trigger}
+                        icon={tab.icon}
+                        disabled={tab.disabled}
+                        visible={tab.visible}
+                        size={size}
+                        data-testid={tab["data-testid"]}
+                    />
+                ))}
+            </List>
+        ),
+        [tabs, size]
+    );
+
+    const contents = React.useMemo(
+        () =>
+            tabs.map((tab, index) => (
+                <Content key={`${tab.value}-${index}`} value={tab.value} content={tab.content} />
+            )),
+        [tabs]
+    );
 
     return (
         <Root {...props} defaultValue={defaultValue}>
-            <List>
-                {triggers.map(trigger =>
-                    React.cloneElement(trigger, { size, key: `tab-trigger-${trigger.key}` })
-                )}
-            </List>
-            {contents.map(content => (
-                <React.Fragment key={`tab-content-${content.key}`}>
-                    {React.cloneElement(content)}
-                </React.Fragment>
-            ))}
+            {triggers}
+            {contents}
         </Root>
     );
 };
 
-const BaseTabs = makeDecoratable("Tabs", DecoratableTabs);
+const Tabs = makeDecoratable("Tabs", DecoratableTabs);
 
-const Tabs = withStaticProps(BaseTabs, {
-    Trigger,
-    Content
-});
-
-export { Tabs, type TabsProps };
+export { Tabs, type TabsProps, type Tab };

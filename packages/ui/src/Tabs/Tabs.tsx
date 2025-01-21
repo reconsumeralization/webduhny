@@ -69,29 +69,16 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
     );
 
     /* We need to generate a key like this to trigger a proper component re-render when child tabs change. */
-    const triggers = tabs
-        .filter(item => item.visible)
-        .map((item, index) => {
-            return (
-                <AdminTabs.Trigger
-                    key={`${VALUE_PREFIX}${index}`}
-                    data-testid={item["data-testid"]}
-                    value={`${VALUE_PREFIX}${index}`}
-                    disabled={item.disabled}
-                    text={item.label}
-                    icon={item.icon}
-                />
-            );
-        });
-
-    const contents = tabs.filter(Boolean).map((tab, index) => {
-        return (
-            <AdminTabs.Content
-                key={`${VALUE_PREFIX}${index}`}
-                value={`${VALUE_PREFIX}${index}`}
-                content={tab.children}
-            />
-        );
+    const newTabs = tabs.map((tab, index) => {
+        return {
+            value: `${VALUE_PREFIX}${index}`,
+            trigger: tab.label,
+            content: tab.children,
+            icon: tab.icon,
+            disabled: tab.disabled,
+            visible: tab.visible !== false,
+            "data-testid": tab["data-testid"]
+        };
     });
 
     const context: TabsContext = useMemo(
@@ -120,10 +107,9 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
         <>
             <AdminTabs
                 {...props}
-                defaultValue={`${VALUE_PREFIX}${activeIndex}`}
+                value={`${VALUE_PREFIX}${activeIndex}`}
                 onValueChange={onValueChange}
-                triggers={triggers}
-                contents={contents}
+                tabs={newTabs}
             />
             <TabsContext.Provider value={context}>{props.children}</TabsContext.Provider>
         </>
