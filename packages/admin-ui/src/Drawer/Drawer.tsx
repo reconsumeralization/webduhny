@@ -88,8 +88,7 @@ const DrawerBase = (props: DrawerProps) => {
             {triggerProps.children && <DrawerTrigger {...triggerProps} asChild />}
             <DrawerPortal>
                 {rootProps.modal && <DrawerOverlay />}
-
-                <DrawerContent {...contentProps}>
+                <DrawerContent {...contentProps} modal={rootProps.modal}>
                     <DrawerHeader {...headerProps} />
                     <DrawerBody {...bodyProps} />
                     <DrawerFooter {...footerProps} />

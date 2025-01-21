@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { cn, cva, VariantProps } from "~/utils";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 export interface DrawerContentProps
     extends React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>,
         VariantProps<typeof drawerVariants> {
     width?: React.CSSProperties["width"];
+    modal?: boolean;
 }
 
 const drawerVariants = cva(
@@ -35,16 +37,33 @@ const drawerVariants = cva(
 const DrawerContent = React.forwardRef<
     React.ElementRef<typeof DrawerPrimitive.Content>,
     DrawerContentProps
->(({ side = "right", className, width, style = {}, children, ...props }, ref) => (
-    <DrawerPrimitive.Content
-        ref={ref}
-        {...props}
-        className={cn(drawerVariants({ side }), className)}
-        style={{ width, ...style }}
-    >
-        <div className={"flex flex-col justify-between h-full"}>{children}</div>
-    </DrawerPrimitive.Content>
-));
+>(({ side = "right", modal, width, className, style = {}, children, ...props }, ref) => {
+    // When modal is set to false, we want to prevent the user from closing the drawer by clicking outside of it.
+    // Only by clicking on "X" icon or by pressing the escape key should the drawer be closed.
+    const modalProps = React.useMemo<
+        Pick<DialogPrimitive.DialogContentProps, "onInteractOutside">
+    >(() => {
+        if (modal === false) {
+            return {
+                onInteractOutside: event => event.preventDefault()
+            };
+        }
+
+        return {};
+    }, [modal]);
+
+    return (
+        <DrawerPrimitive.Content
+            {...modalProps}
+            {...props}
+            ref={ref}
+            className={cn(drawerVariants({ side }), className)}
+            style={{ width, ...style }}
+        >
+            <div className={"flex flex-col justify-between h-full"}>{children}</div>
+        </DrawerPrimitive.Content>
+    );
+});
 
 DrawerContent.displayName = DrawerPrimitive.Content.displayName;
 
