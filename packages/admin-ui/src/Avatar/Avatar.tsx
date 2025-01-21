@@ -10,7 +10,7 @@ const AvatarImageBase = React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Image>,
     AvatarImageProps
 >(({ className, ...props }, ref) => (
-    <AvatarPrimitive.Image ref={ref} className={cn("aspect-square", className)} {...props} />
+    <AvatarPrimitive.Image ref={ref} className={cn("wby-aspect-square", className)} {...props} />
 ));
 AvatarImageBase.displayName = AvatarPrimitive.Image.displayName;
 
@@ -24,7 +24,7 @@ const AvatarFallbackBase = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Fallback
         ref={ref}
-        className={cn("flex h-full w-full items-center justify-center rounded-sm", className)}
+        className={cn("wby-flex wby-h-full wby-w-full wby-items-center wby-justify-center wby-rounded-sm", className)}
         {...props}
     />
 ));
@@ -40,21 +40,21 @@ interface AvatarProps
     fallback?: React.ReactElement<AvatarFallbackProps>;
 }
 
-const avatarVariants = cva("relative flex shrink-0 overflow-hidden border-sm border-transparent", {
+const avatarVariants = cva("wby-relative wby-flex wby-shrink-0 wby-overflow-hidden wby-border-sm wby-border-transparent", {
     variants: {
         size: {
-            sm: "text-h6 rounded-sm p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-md",
-            md: "text-h6 rounded-md p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:size-lg",
-            lg: "text-h6 rounded-md p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-lg",
-            xl: "text-h4 rounded-lg p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:size-xl"
+            sm: "wby-text-h6 wby-rounded-sm wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:wby-size-md",
+            md: "wby-text-h6 wby-rounded-md wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&>*]:wby-size-lg",
+            lg: "wby-text-h6 wby-rounded-md wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:wby-size-lg",
+            xl: "wby-text-h4 wby-rounded-lg wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&>*]:wby-size-xl"
         },
         variant: {
-            strong: "bg-primary text-neutral-light [&_svg]:fill-neutral-base",
-            subtle: "bg-neutral-light text-neutral-primary [&_svg]:fill-neutral-xstrong",
-            light: "bg-neutral-dimmed text-neutral-primary [&_svg]:fill-neutral-xstrong",
-            quiet: "bg-transparent text-neutral-primary [&_svg]:fill-neutral-xstrong",
+            strong: "wby-bg-primary wby-text-neutral-light [&_svg]:wby-fill-neutral-base",
+            subtle: "wby-bg-neutral-light wby-text-neutral-primary [&_svg]:wby-fill-neutral-xstrong",
+            light: "wby-bg-neutral-dimmed wby-text-neutral-primary [&_svg]:wby-fill-neutral-xstrong",
+            quiet: "wby-bg-transparent wby-text-neutral-primary [&_svg]:wby-fill-neutral-xstrong",
             outlined:
-                "bg-neutral-base !border-neutral-muted border-sm text-accent-primary [&_svg]:fill-neutral-xstrong"
+                "wby-bg-neutral-base !wby-border-neutral-muted wby-border-sm wby-text-accent-primary [&_svg]:wby-fill-neutral-xstrong"
         }
     },
     defaultVariants: {
