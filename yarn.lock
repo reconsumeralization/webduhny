@@ -9237,7 +9237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:^1.1.2":
+"@radix-ui/react-dialog@npm:^1.1.2, @radix-ui/react-dialog@npm:^1.1.4":
   version: 1.1.4
   resolution: "@radix-ui/react-dialog@npm:1.1.4"
   dependencies:
@@ -9344,7 +9344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dropdown-menu@npm:^2.1.2":
+"@radix-ui/react-dropdown-menu@npm:^2.1.4":
   version: 2.1.4
   resolution: "@radix-ui/react-dropdown-menu@npm:2.1.4"
   dependencies:
@@ -14983,7 +14983,8 @@ __metadata:
     "@radix-ui/react-accessible-icon": "npm:^1.1.0"
     "@radix-ui/react-avatar": "npm:^1.1.0"
     "@radix-ui/react-checkbox": "npm:^1.1.2"
-    "@radix-ui/react-dropdown-menu": "npm:^2.1.2"
+    "@radix-ui/react-dialog": "npm:^1.1.4"
+    "@radix-ui/react-dropdown-menu": "npm:^2.1.4"
     "@radix-ui/react-label": "npm:^2.1.0"
     "@radix-ui/react-popover": "npm:^1.1.4"
     "@radix-ui/react-radio-group": "npm:^1.2.1"
@@ -19226,7 +19227,6 @@ __metadata:
     "@emotion/styled": "npm:11.10.6"
     "@material-design-icons/svg": "npm:^0.14.3"
     "@rmwc/data-table": "npm:^14.2.2"
-    "@rmwc/dialog": "npm:^14.2.2"
     "@rmwc/drawer": "npm:^14.2.2"
     "@rmwc/grid": "npm:^14.2.2"
     "@rmwc/list": "npm:^14.2.2"
