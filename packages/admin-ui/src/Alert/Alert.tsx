@@ -36,42 +36,50 @@ const alertVariants = cva(
             {
                 type: "info",
                 variant: "strong",
-                className: "wby-bg-neutral-dark wby-text-neutral-light [&_a]:!wby-text-neutral-light"
+                className:
+                    "wby-bg-neutral-dark wby-text-neutral-light [&_a]:!wby-text-neutral-light"
             },
             {
                 type: "info",
                 variant: "subtle",
-                className: "wby-bg-neutral-dimmed wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
+                className:
+                    "wby-bg-neutral-dimmed wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
             },
             {
                 type: "success",
                 variant: "strong",
-                className: "wby-bg-secondary-default wby-text-neutral-light [&_a]:!wby-text-neutral-light"
+                className:
+                    "wby-bg-secondary-default wby-text-neutral-light [&_a]:!wby-text-neutral-light"
             },
             {
                 type: "success",
                 variant: "subtle",
-                className: "wby-bg-success-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
+                className:
+                    "wby-bg-success-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
             },
             {
                 type: "warning",
                 variant: "strong",
-                className: "wby-bg-warning-default wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
+                className:
+                    "wby-bg-warning-default wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
             },
             {
                 type: "warning",
                 variant: "subtle",
-                className: "wby-bg-warning-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
+                className:
+                    "wby-bg-warning-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
             },
             {
                 type: "danger",
                 variant: "strong",
-                className: "wby-bg-destructive-default wby-text-neutral-light [&_a]:!wby-text-neutral-light"
+                className:
+                    "wby-bg-destructive-default wby-text-neutral-light [&_a]:!wby-text-neutral-light"
             },
             {
                 type: "danger",
                 variant: "subtle",
-                className: "wby-bg-destructive-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
+                className:
+                    "wby-bg-destructive-subtle wby-text-neutral-primary [&_a]:!wby-text-neutral-primary"
             }
         ]
     }

@@ -55,7 +55,10 @@ const SliderPrimitiveTrack = makeDecoratable(
  * Slider Tooltip
  */
 const sliderTooltipVariants = cva(
-    ["wby-px-xs-plus wby-py-xxs wby-rounded-sm wby-absolute wby-left-1/2 -wby-translate-x-1/2", "wby-bg-neutral-muted"],
+    [
+        "wby-px-xs-plus wby-py-xxs wby-rounded-sm wby-absolute wby-left-1/2 -wby-translate-x-1/2",
+        "wby-bg-neutral-muted"
+    ],
     {
         variants: {
             side: {

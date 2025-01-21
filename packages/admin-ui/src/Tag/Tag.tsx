@@ -118,7 +118,9 @@ const DecoratableTag = ({
             )}
             aria-disabled={disabled}
         >
-            <span className={"wby-overflow-hidden wby-truncate wby-whitespace-nowrap"}>{content}</span>
+            <span className={"wby-overflow-hidden wby-truncate wby-whitespace-nowrap"}>
+                {content}
+            </span>
             {onDismiss && (
                 <IconButton
                     icon={<Icon icon={dismissIconElement} label={dismissIconLabel} size={"sm"} />}

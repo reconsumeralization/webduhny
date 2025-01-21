@@ -78,7 +78,11 @@ const DecoratableToastActions = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
 >(({ children, ...props }, ref) => (
-    <div {...props} className={"wby-mt-md wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-sm"} ref={ref}>
+    <div
+        {...props}
+        className={"wby-mt-md wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-sm"}
+        ref={ref}
+    >
         {children}
     </div>
 ));

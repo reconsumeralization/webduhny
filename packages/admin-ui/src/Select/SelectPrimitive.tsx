@@ -261,7 +261,9 @@ const DecoratableSelectLabel = React.forwardRef<
     <SelectPrimitives.Label
         ref={ref}
         className={cn(
-            ["wby-py-sm wby-px-md wby-text-neutral-strong wby-text-sm wby-font-semibold wby-uppercase"],
+            [
+                "wby-py-sm wby-px-md wby-text-neutral-strong wby-text-sm wby-font-semibold wby-uppercase"
+            ],
             className
         )}
         {...props}
