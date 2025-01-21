@@ -1,6 +1,0 @@
-- drawer - kreso discuss
--
-
-
-DIALOG
-- paddings - kreso said it's fine iff paddings left/right
