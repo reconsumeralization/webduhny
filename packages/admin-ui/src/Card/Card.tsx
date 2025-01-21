@@ -52,8 +52,8 @@ CardRootBase.displayName = "CardRoot";
 const CardRoot = makeDecoratable("CardRoot", CardRootBase);
 
 interface CardProps extends CardRootProps, VariantProps<typeof cardRootVariants> {
-    title?: React.ReactNode | string;
-    description?: React.ReactNode | string;
+    title?: React.ReactNode;
+    description?: React.ReactNode;
     actions?: React.ReactNode;
     options?: React.ReactNode;
 }
