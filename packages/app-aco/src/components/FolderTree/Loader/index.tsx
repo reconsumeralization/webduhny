@@ -1,23 +1,11 @@
 import React from "react";
 import { Skeleton } from "@webiny/ui/Skeleton";
+import { Container, SkeletonWrapper } from "./styled";
 
-interface LoaderProps {
-    count?: number;
-}
-
-export const Loader = ({ count = 4 }: LoaderProps) => {
-    const lines = Array.from({ length: count });
-
+export const Loader = ({ count }: { count?: number }) => {
     return (
-        <div className={"p-xs"}>
-            {lines.map((_, index) => {
-                return (
-                    <Skeleton
-                        key={`folder-skeleton-${index}`}
-                        className={"h-lg my-sm content-center"}
-                    />
-                );
-            })}
-        </div>
+        <Container>
+            <Skeleton count={count ?? 4} inline={true} height={"100%"} wrapper={SkeletonWrapper} />
+        </Container>
     );
 };
