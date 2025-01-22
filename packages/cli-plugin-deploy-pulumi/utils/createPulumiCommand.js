@@ -84,7 +84,8 @@ const createPulumiCommand = ({
                     projectApplication,
                     context,
                     inputs: params,
-                    env: params.env
+                    env: params.env,
+                    variant: params.variant
                 });
             }
 

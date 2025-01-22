@@ -2,17 +2,39 @@ const getStackOutput = require("@webiny/cli-plugin-deploy-pulumi/utils/getStackO
 const path = require("path");
 const { blue } = require("chalk");
 
-const getInfo = async env => {
+const getInfo = async params => {
+    if (typeof params !== "object" || !params.env) {
+        throw new Error("Please provide an object with `env` and `variant` properties.");
+    }
+    const { env, variant } = params;
     const apiOutputPromise = new Promise(resolve => {
-        resolve(getStackOutput({ folder: "apps/api", env }));
+        resolve(
+            getStackOutput({
+                folder: "apps/api",
+                env,
+                variant
+            })
+        );
     });
 
     const adminOutputPromise = new Promise(resolve => {
-        resolve(getStackOutput({ folder: "apps/admin", env }));
+        resolve(
+            getStackOutput({
+                folder: "apps/admin",
+                env,
+                variant
+            })
+        );
     });
 
     const websiteOutputPromise = new Promise(resolve => {
-        resolve(getStackOutput({ folder: "apps/website", env }));
+        resolve(
+            getStackOutput({
+                folder: "apps/website",
+                env,
+                variant
+            })
+        );
     });
 
     const outputs = await Promise.all([apiOutputPromise, adminOutputPromise, websiteOutputPromise]);

@@ -17,6 +17,7 @@ module.exports = async ({ projectApplication, inputs }) => {
     replaceInPath(path.join(projectApplication.paths.workspace, "/**/*.{ts,js,yaml}"), [
         { find: "{PROJECT_ID}", replaceWith: projectApplication.id },
         { find: "{PROJECT_DESCRIPTION}", replaceWith: projectApplication.description },
-        { find: "{DEPLOY_ENV}", replaceWith: inputs.env }
+        { find: "{DEPLOY_ENV}", replaceWith: inputs.env },
+        { find: "{DEPLOY_VARIANT}", replaceWith: inputs.variant }
     ]);
 };

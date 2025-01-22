@@ -423,6 +423,13 @@ module.exports = [
                         required: true
                     });
 
+                    yargs.option("variant", {
+                        describe: `Variant`,
+                        type: "string",
+                        required: false,
+                        default: ""
+                    });
+
                     yargs.option("force", {
                         describe: `!!USE WITH CAUTION!! Force execution of the migrations.`,
                         type: "boolean",
