@@ -6,6 +6,6 @@ export type DrawerBodyProps = Pick<DrawerProps, "children" | "bodyPadding">;
 
 export const DrawerBody = ({ bodyPadding, children }: DrawerBodyProps) => {
     return (
-        <div className={cn("h-full py-sm ", { "px-lg": bodyPadding !== false })}>{children}</div>
+        <div className={cn("h-full py-sm overflow-auto", { "px-lg": bodyPadding !== false })}>{children}</div>
     );
 };
