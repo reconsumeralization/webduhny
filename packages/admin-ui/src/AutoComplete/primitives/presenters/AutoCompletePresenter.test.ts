@@ -11,13 +11,15 @@ describe("AutoCompletePresenter", () => {
     it("should return the compatible `vm.inputVm` based on params", () => {
         // `placeholder`
         {
-            presenter.init({ onValueChange, placeholder: "Custom placeholder" });
+            presenter.init({ onValueChange });
+            presenter.initInput({ placeholder: "Custom placeholder" });
             expect(presenter.vm.inputVm.placeholder).toEqual("Custom placeholder");
         }
 
         {
             // default: no params
             presenter.init({ onValueChange });
+            presenter.initInput({});
             expect(presenter.vm.inputVm.placeholder).toEqual("Start typing or select");
             expect(presenter.vm.inputVm.displayResetAction).toEqual(false);
         }
@@ -247,6 +249,10 @@ describe("AutoCompletePresenter", () => {
             ]
         });
 
+        presenter.initInput({
+            value: "option-1"
+        });
+
         expect(presenter.vm.optionsListVm.options).toEqual([
             {
                 label: "Option 1",
@@ -377,9 +383,10 @@ describe("AutoCompletePresenter", () => {
                     label: "Option 2",
                     value: "option-2"
                 }
-            ],
-            displayResetAction: false
+            ]
         });
+
+        presenter.initInput({ displayResetAction: false });
 
         presenter.setSelectedOption("option-2");
         expect(onValueChange).toHaveBeenCalledWith("option-2");
