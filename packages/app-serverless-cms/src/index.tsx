@@ -27,6 +27,7 @@ export {
     CompositionScope,
     Plugins,
     Plugin,
+    AdminConfig,
     makeComposable,
     makeDecoratable,
     createComponentPlugin,
@@ -67,5 +68,12 @@ export { HasPermission, useSecurity, usePermission } from "@webiny/app-security"
 
 export { useTenancy } from "@webiny/app-tenancy";
 export type { Tenant } from "@webiny/app-tenancy";
+
+export {
+    IsTenant,
+    IsRootTenant,
+    IsNotRootTenant,
+    useCurrentTenant
+} from "@webiny/app-tenant-manager";
 
 export * from "./apolloClientFactory";

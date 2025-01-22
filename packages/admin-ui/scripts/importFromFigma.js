@@ -1,8 +1,10 @@
 const fs = require("fs");
 const { green } = require("chalk");
 const path = require("path");
-const aliasTokensExport = require("./importFromFigma/exports/Alias tokens.json");
 const { normalizeFigmaExport } = require("./importFromFigma/normalizeFigmaExport");
+const {
+    normalizePrimitivesFigmaExport
+} = require("./importFromFigma/normalizePrimitivesFigmaExport");
 const { createTailwindConfigTheme } = require("./importFromFigma/createTailwindConfigTheme");
 const { createThemeScss } = require("./importFromFigma/createThemeScss");
 const { formatCode } = require("./importFromFigma/formatCode");
@@ -13,13 +15,18 @@ const saveFileAndFormat = async (filePath, content) => {
 };
 
 (async () => {
-    const normalizedFigmaExport = normalizeFigmaExport(aliasTokensExport);
+    const normalizedFigmaExport = normalizeFigmaExport();
+    const normalizedPrimitivesFigmaExport = normalizePrimitivesFigmaExport();
     const tailwindConfigTheme = createTailwindConfigTheme(normalizedFigmaExport);
-    const stylesScss = createThemeScss(normalizedFigmaExport, tailwindConfigTheme);
+    const stylesScss = createThemeScss(normalizedFigmaExport, normalizedPrimitivesFigmaExport);
 
     const paths = {
         cwd: process.cwd(),
         normalizedFigmaExport: path.join(__dirname, "../.normalizedFigmaExport.json"),
+        normalizedPrimitivesFigmaExport: path.join(
+            __dirname,
+            "../.normalizedPrimitivesFigmaExport.json"
+        ),
         createTailwindConfigTheme: path.join(__dirname, "../tailwind.config.theme.js"),
         stylesScss: path.join(__dirname, "../src/theme.scss")
     };
@@ -40,6 +47,11 @@ const saveFileAndFormat = async (filePath, content) => {
     await saveFileAndFormat(
         paths.normalizedFigmaExport,
         JSON.stringify(normalizedFigmaExport, null, 2)
+    );
+
+    await saveFileAndFormat(
+        paths.normalizedPrimitivesFigmaExport,
+        JSON.stringify(normalizedPrimitivesFigmaExport, null, 2)
     );
 
     await saveFileAndFormat(
