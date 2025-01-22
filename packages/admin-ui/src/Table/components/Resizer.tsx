@@ -24,4 +24,4 @@ const Resizer = ({ className, isResizing, ...props }: ResizerProps) => (
     <div className={cn(resizerVariants({ isResizing }), className)} {...props} />
 );
 
-export { Resizer, ResizerProps };
+export { Resizer, type ResizerProps };
