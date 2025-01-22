@@ -6,6 +6,7 @@ import { DrawerDescription } from "./DrawerDescription";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
+import { useMemo } from "react";
 
 export type DrawerHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
     Pick<DrawerProps, "title" | "icon" | "description" | "showCloseButton">;
@@ -18,7 +19,11 @@ export const DrawerHeader = ({
     className,
     ...props
 }: DrawerHeaderProps) => {
-    if (!title && !description) {
+    const nothingToRender = useMemo(() => {
+        return !title && !description && !icon && !showCloseButton;
+    }, [title, description, icon, showCloseButton]);
+
+    if (nothingToRender) {
         return null;
     }
 
@@ -30,17 +35,18 @@ export const DrawerHeader = ({
                 className
             )}
         >
-            <div className={"relative"}>
+            <DrawerTitle className={"flex justify-between"}>
+                <div>
+                    {icon}
+                    {title}
+                </div>
+
                 {showCloseButton !== false && (
-                    <DrawerPrimitive.Close asChild className="absolute right-0 top-0">
+                    <DrawerPrimitive.Close asChild>
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
                     </DrawerPrimitive.Close>
                 )}
-                <DrawerTitle>
-                    {icon}
-                    {title}
-                </DrawerTitle>
-            </div>
+            </DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
         </div>
     );

@@ -6,6 +6,7 @@ import { DialogDescription } from "./DialogDescription";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { useMemo } from "react";
 
 export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
     Pick<DialogProps, "title" | "icon" | "description" | "showCloseButton">;
@@ -18,7 +19,11 @@ export const DialogHeader = ({
     className,
     ...props
 }: DialogHeaderProps) => {
-    if (!title && !description) {
+    const nothingToRender = useMemo(() => {
+        return !title && !description && !icon && !showCloseButton;
+    }, [title, description, icon, showCloseButton]);
+
+    if (nothingToRender) {
         return null;
     }
 
@@ -30,17 +35,18 @@ export const DialogHeader = ({
                 className
             )}
         >
-            <div className={"relative"}>
+            <DialogTitle className={"flex justify-between"}>
+                <div>
+                    {icon}
+                    {title}
+                </div>
+
                 {showCloseButton !== false && (
-                    <DialogPrimitive.Close asChild className="absolute right-0 top-0">
+                    <DialogPrimitive.Close asChild>
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
                     </DialogPrimitive.Close>
                 )}
-                <DialogTitle>
-                    {icon}
-                    {title}
-                </DialogTitle>
-            </div>
+            </DialogTitle>
             <DialogDescription>{description}</DialogDescription>
         </div>
     );
