@@ -6,7 +6,7 @@ type ListProps = TabsPrimitive.TabsListProps;
 
 const List = ({ className, ...props }: ListProps) => (
     <TabsPrimitive.List
-        className={cn("w-full inline-flex items-center justify-start gap-sm px-sm", className)}
+        className={cn("w-full inline-flex items-center justify-start gap-sm", className)}
         {...props}
     />
 );

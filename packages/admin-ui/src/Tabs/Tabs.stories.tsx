@@ -19,18 +19,22 @@ type Story = StoryObj<typeof Tabs>;
 export const Default: Story = {
     args: {
         tabs: [
-            {
-                value: "account",
-                trigger: "Account",
-                content:
+            <Tabs.Tab
+                key={"account"}
+                value={"account"}
+                trigger={"Account"}
+                content={
                     "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum."
-            },
-            {
-                value: "password",
-                trigger: "Password",
-                content:
-                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
-            }
+                }
+            />,
+            <Tabs.Tab
+                key={"password"}
+                value={"password"}
+                trigger={"Password"}
+                content={
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. "
+                }
+            />
         ]
     }
 };
@@ -85,20 +89,24 @@ export const WithIcons: Story = {
     args: {
         ...Default.args,
         tabs: [
-            {
-                value: "account",
-                trigger: "Account",
-                content:
-                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
-                icon: <PersonIcon />
-            },
-            {
-                value: "password",
-                trigger: "Password",
-                content:
-                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec.",
-                icon: <LockIcon />
-            }
+            <Tabs.Tab
+                key={"account"}
+                value={"account"}
+                trigger={"Account"}
+                content={
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum."
+                }
+                icon={<PersonIcon />}
+            />,
+            <Tabs.Tab
+                key={"password"}
+                value={"password"}
+                trigger={"Password"}
+                content={
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. "
+                }
+                icon={<LockIcon />}
+            />
         ]
     }
 };
@@ -107,19 +115,23 @@ export const WithDisabledTab: Story = {
     args: {
         ...Default.args,
         tabs: [
-            {
-                value: "account",
-                trigger: "Account",
-                content:
-                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
-                disabled: true
-            },
-            {
-                value: "password",
-                trigger: "Password",
-                content:
-                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
-            }
+            <Tabs.Tab
+                key={"account"}
+                value={"account"}
+                trigger={"Account"}
+                content={
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum."
+                }
+                disabled={true}
+            />,
+            <Tabs.Tab
+                key={"password"}
+                value={"password"}
+                trigger={"Password"}
+                content={
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. "
+                }
+            />
         ]
     }
 };
@@ -128,19 +140,23 @@ export const WithHiddenTab: Story = {
     args: {
         ...Default.args,
         tabs: [
-            {
-                value: "account",
-                trigger: "Account",
-                content:
-                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum.",
-                visible: false
-            },
-            {
-                value: "password",
-                trigger: "Password",
-                content:
-                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec."
-            }
+            <Tabs.Tab
+                key={"account"}
+                value={"account"}
+                trigger={"Account"}
+                content={
+                    "Account content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum."
+                }
+                visible={false}
+            />,
+            <Tabs.Tab
+                key={"password"}
+                value={"password"}
+                trigger={"Password"}
+                content={
+                    "Password content - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel libero nec libero lacinia fermentum. Nullam nec nunc nec libero lacinia fermentum. "
+                }
+            />
         ]
     }
 };

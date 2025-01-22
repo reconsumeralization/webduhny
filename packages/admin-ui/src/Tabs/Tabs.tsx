@@ -1,42 +1,48 @@
-import * as React from "react";
+import React, { useMemo, useState } from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { makeDecoratable } from "~/utils";
-import { Content, List, Trigger } from "./components";
+import { makeDecoratable, withStaticProps } from "~/utils";
+import {
+    Content,
+    ITabsContext,
+    List,
+    Tab,
+    TabItem,
+    TabProps,
+    TabsContext,
+    Trigger
+} from "./components";
 
 const Root = TabsPrimitive.Root;
 
-interface Tab extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "content"> {
-    value: string;
-    trigger: React.ReactNode;
-    content: React.ReactNode;
-    icon?: React.ReactElement;
-    disabled?: boolean;
-    visible?: boolean;
-    "data-testid"?: string;
-}
-
 interface TabsProps extends Omit<TabsPrimitive.TabsProps, "children"> {
-    tabs: Tab[];
+    tabs: React.ReactElement<TabProps>[];
     size?: "sm" | "md" | "lg" | "xl";
 }
 
 const DecoratableTabs = ({
-    defaultValue: baseDefaultValue,
+    defaultValue: initialValue,
     size = "md",
-    tabs,
+    tabs: tabComponents,
     ...props
 }: TabsProps) => {
-    const defaultValue = React.useMemo(
-        () => baseDefaultValue || tabs.find(tab => !tab.disabled && tab.visible !== false)?.value,
-        [baseDefaultValue, tabs]
-    );
+    const [tabs, setTabs] = useState<TabItem[]>([]);
 
-    const triggers = React.useMemo(
+    const defaultValue = useMemo(() => {
+        // `defaultValue` prop works only at first render so we need to use the `tabComponents` instead of the `TabItems`
+        return (
+            initialValue ||
+            tabComponents.find(tab => !tab.props.disabled && tab.props.visible !== false)?.props
+                .value
+        );
+    }, [initialValue, tabComponents]);
+
+    const triggers = useMemo(
         () => (
-            <List>
-                {tabs.map((tab, index) => (
+            // We need to generate a key like this to trigger a proper component re-render when child tabs change.
+            <List key={tabs.map(tab => tab.id).join(";")}>
+                {tabs.map(tab => (
                     <Trigger
-                        key={`${tab.value}-${index}`}
+                        key={tab.id}
                         value={tab.value}
                         text={tab.trigger}
                         icon={tab.icon}
@@ -51,22 +57,46 @@ const DecoratableTabs = ({
         [tabs, size]
     );
 
-    const contents = React.useMemo(
-        () =>
-            tabs.map((tab, index) => (
-                <Content key={`${tab.value}-${index}`} value={tab.value} content={tab.content} />
-            )),
+    const contents = useMemo(
+        () => tabs.map(tab => <Content key={tab.id} value={tab.value} content={tab.content} />),
         [tabs]
+    );
+
+    const context: ITabsContext = useMemo(
+        () => ({
+            addTab(props) {
+                setTabs(tabs => {
+                    const existingIndex = tabs.findIndex(tab => tab.value === props.value);
+                    if (existingIndex > -1) {
+                        return [
+                            ...tabs.slice(0, existingIndex),
+                            props,
+                            ...tabs.slice(existingIndex + 1)
+                        ];
+                    }
+                    return [...tabs, props];
+                });
+            },
+            removeTab(id) {
+                setTabs(tabs => tabs.filter(tab => tab.id === id));
+            }
+        }),
+        [setTabs]
     );
 
     return (
         <Root {...props} defaultValue={defaultValue}>
             {triggers}
             {contents}
+            <TabsContext.Provider value={context}>{tabComponents}</TabsContext.Provider>
         </Root>
     );
 };
 
-const Tabs = makeDecoratable("Tabs", DecoratableTabs);
+const BaseTabs = makeDecoratable("Tabs", DecoratableTabs);
 
-export { Tabs, type TabsProps, type Tab };
+const Tabs = withStaticProps(BaseTabs, {
+    Tab
+});
+
+export { Tabs, type TabsProps };

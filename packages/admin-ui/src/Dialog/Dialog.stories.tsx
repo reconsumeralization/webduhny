@@ -142,29 +142,30 @@ export const WithTabs: Story = {
         ...Default.args,
         bodyPadding: false,
         children: (
+            /* eslint-disable react/jsx-key */
             <>
                 <Tabs
                     tabs={[
-                        {
-                            value: "account",
-                            trigger: "Account",
-                            content: "Make changes to your account here."
-                        },
-                        {
-                            value: "company",
-                            trigger: "Company",
-                            content: "Make changes to your company info here."
-                        },
-                        {
-                            value: "security",
-                            trigger: "Security",
-                            content: "Make changes to your security settings here."
-                        },
-                        {
-                            value: "development",
-                            trigger: "Development",
-                            content: "Make changes to your development settings here."
-                        }
+                        <Tabs.Tab
+                            value={"account"}
+                            trigger={"Account"}
+                            content={"Make changes to your account here."}
+                        />,
+                        <Tabs.Tab
+                            value={"company"}
+                            trigger={"Company"}
+                            content={"Make changes to your company info here."}
+                        />,
+                        <Tabs.Tab
+                            value={"security"}
+                            trigger={"Security"}
+                            content={"Make changes to your security settings here."}
+                        />,
+                        <Tabs.Tab
+                            value={"development"}
+                            trigger={"Development"}
+                            content={"Make changes to your development settings here."}
+                        />
                     ]}
                 />
             </>

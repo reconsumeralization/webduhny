@@ -35,13 +35,13 @@ interface TabItem extends TabProps {
     id: string;
 }
 
-interface TabsContext {
+interface DeprecatedTabsContext {
     addTab(props: TabItem): void;
 
     removeTab(id: string): void;
 }
 
-export const TabsContext = createContext<TabsContext | undefined>(undefined);
+export const DeprecatedTabsContext = createContext<DeprecatedTabsContext | undefined>(undefined);
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
@@ -70,18 +70,21 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
 
     /* We need to generate a key like this to trigger a proper component re-render when child tabs change. */
     const newTabs = tabs.map((tab, index) => {
-        return {
-            value: `${VALUE_PREFIX}${index}`,
-            trigger: tab.label,
-            content: tab.children,
-            icon: tab.icon,
-            disabled: tab.disabled,
-            visible: tab.visible !== false,
-            "data-testid": tab["data-testid"]
-        };
+        return (
+            <AdminTabs.Tab
+                key={`${VALUE_PREFIX}${index}`}
+                value={`${VALUE_PREFIX}${index}`}
+                trigger={tab.label}
+                content={tab.children}
+                icon={tab.icon}
+                disabled={tab.disabled}
+                visible={tab.visible !== false}
+                data-testid={tab["data-testid"]}
+            />
+        );
     });
 
-    const context: TabsContext = useMemo(
+    const context: DeprecatedTabsContext = useMemo(
         () => ({
             addTab(props) {
                 setTabs(tabs => {
@@ -111,7 +114,9 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
                 onValueChange={onValueChange}
                 tabs={newTabs}
             />
-            <TabsContext.Provider value={context}>{props.children}</TabsContext.Provider>
+            <DeprecatedTabsContext.Provider value={context}>
+                {props.children}
+            </DeprecatedTabsContext.Provider>
         </>
     );
 };
