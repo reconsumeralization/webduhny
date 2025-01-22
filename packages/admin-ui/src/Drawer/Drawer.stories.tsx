@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Drawer } from "./Drawer";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
-import { Tabs, TabsContent, TabsTrigger } from "~/Tabs";
+import { Tabs } from "~/Tabs";
 import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
 
 const meta: Meta<typeof Drawer> = {
@@ -107,32 +107,30 @@ export const WithTabs: Story = {
         children: (
             <>
                 <Tabs
-                    triggers={[
-                        <TabsTrigger key="account" value="account" text={"Account"} />,
-                        <TabsTrigger key="company" value="company" text={"Company"} />,
-                        <TabsTrigger key="security" value="security" text={"Security"} />,
-                        <TabsTrigger key="development" value="development" text={"development"} />
-                    ]}
-                    contents={[
-                        <TabsContent
+                    tabs={[
+                        <Tabs.Tab
                             key="account"
                             value="account"
-                            text={"Make changes to your account here."}
+                            trigger={"Account"}
+                            content={"Make changes to your account here."}
                         />,
-                        <TabsContent
+                        <Tabs.Tab
                             key="company"
                             value="company"
-                            text={"Make changes to your company info here."}
+                            trigger={"Company"}
+                            content={"Make changes to your company info here."}
                         />,
-                        <TabsContent
+                        <Tabs.Tab
                             key="security"
                             value="security"
-                            text={"Make changes to your security settings here."}
+                            trigger={"Security"}
+                            content={"Make changes to your security settings here."}
                         />,
-                        <TabsContent
+                        <Tabs.Tab
                             key="development"
                             value="development"
-                            text={"Make changes to your development settings here."}
+                            trigger={"Development"}
+                            content={"Make changes to your development settings here."}
                         />
                     ]}
                 />
