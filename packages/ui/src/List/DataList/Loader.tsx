@@ -13,39 +13,37 @@ const LoaderWrapper = styled("div")`
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: space-around;
+    justify-content: start;
+    gap: 24px;
 `;
 
 const Graphic = styled("div")`
     width: 36px;
+    height: 36px;
 `;
 
 const Data = styled("div")`
-    width: calc(-42px + 75%);
+    flex: 1;
+    height: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
 
-    .data-skeleton-container {
-        height: 36px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+const ActionsContainer = styled("div")`
+    justify-self: end;
 `;
 
 const Actions = styled("div")`
-    width: calc(-42px + 25%);
-    margin-left: 10px;
     text-align: right;
-
-    .actions-skeleton-container {
-        height: 24px;
-        display: flex;
-        justify-content: end;
-    }
+    height: 24px;
+    display: flex;
+    justify-content: end;
+    gap: 8px;
 
     .actions-skeleton {
         width: 24px;
         height: 24px;
-        margin-left: 16px;
     }
 `;
 
@@ -58,23 +56,19 @@ const Loader = (): ReactElement => {
                 <li key={"list-" + line}>
                     <LoaderWrapper>
                         <Graphic>
-                            <Skeleton height={36} />
+                            <Skeleton />
                         </Graphic>
                         <Data>
-                            <Skeleton
-                                inline={true}
-                                count={2}
-                                containerClassName={"data-skeleton-container"}
-                            />
+                            <Skeleton className={"h-md"} />
+                            <Skeleton className={"h-md"} />
                         </Data>
-                        <Actions>
-                            <Skeleton
-                                inline={true}
-                                count={2}
-                                className={"actions-skeleton"}
-                                containerClassName={"actions-skeleton-container"}
-                            />
-                        </Actions>
+                        <ActionsContainer>
+                            {" "}
+                            <Actions>
+                                <Skeleton className={"actions-skeleton"} />
+                                <Skeleton className={"actions-skeleton"} />
+                            </Actions>
+                        </ActionsContainer>
                     </LoaderWrapper>
                 </li>
             ))}

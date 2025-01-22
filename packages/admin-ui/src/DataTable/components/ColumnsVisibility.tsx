@@ -3,8 +3,7 @@ import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outli
 import { Column } from "@tanstack/react-table";
 import { IconButton } from "~/Button";
 import { Checkbox } from "~/Checkbox";
-import { Menu, MenuDivider } from "~/Menu";
-import { ColumnsVisibilityMenuHeader, ColumnsVisibilityMenuItem } from "~/DataTable/styled";
+import { DropdownMenu } from "~/DropdownMenu";
 
 interface ColumnsVisibilityProps<T> {
     columns: Column<T>[];
@@ -56,22 +55,24 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
     }
 
     return (
-        <Menu handle={<IconButton icon={<SettingsIcon />} />}>
-            <ColumnsVisibilityMenuHeader use={"subtitle2"} tag={"h6"}>
-                {"Toggle column visibility"}
-            </ColumnsVisibilityMenuHeader>
-            <MenuDivider />
+        <DropdownMenu
+            trigger={<IconButton icon={<SettingsIcon />} variant={"ghost"} size={"xs"} />}
+        >
+            <DropdownMenu.Label content={"Display columns"} />
             {options.map(option => {
                 return (
-                    <ColumnsVisibilityMenuItem key={option.id}>
-                        <Checkbox
-                            label={option.header}
-                            onChange={option.onChange}
-                            value={option.getValue()}
-                        />
-                    </ColumnsVisibilityMenuItem>
+                    <DropdownMenu.Item
+                        key={option.id}
+                        content={
+                            <Checkbox
+                                label={option.header}
+                                onCheckedChange={option.onChange}
+                                checked={option.getValue()}
+                            />
+                        }
+                    />
                 );
             })}
-        </Menu>
+        </DropdownMenu>
     );
 };
