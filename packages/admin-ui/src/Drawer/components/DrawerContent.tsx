@@ -37,7 +37,7 @@ const drawerVariants = cva(
 const DrawerContent = React.forwardRef<
     React.ElementRef<typeof DrawerPrimitive.Content>,
     DrawerContentProps
->(({ side = "right", modal, width, className, style = {}, children, ...props }, ref) => {
+>(({ side, modal, width, className, style = {}, children, ...props }, ref) => {
     // When modal is set to false, we want to prevent the user from closing the drawer by clicking outside of it.
     // Only by clicking on "X" icon or by pressing the escape key should the drawer be closed.
     const modalProps = React.useMemo<
