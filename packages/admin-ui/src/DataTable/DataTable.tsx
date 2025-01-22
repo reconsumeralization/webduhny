@@ -195,9 +195,10 @@ const defineColumns = <T,>(
         });
 
         let columnsDefs = defaults;
+        const firstColumn = defaults[0];
+        const isSelectable = onToggleRow || onSelectRow;
 
-        if (onToggleRow || onSelectRow) {
-            const firstColumn = defaults[0];
+        if (isSelectable && firstColumn) {
             columnsDefs = [
                 {
                     ...firstColumn,
