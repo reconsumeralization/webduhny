@@ -13,13 +13,13 @@ describe("CheckboxPresenter", () => {
                 label: "Label"
             });
             expect(presenter.vm.item?.label).toEqual("Label");
+            expect(presenter.vm.item?.hasLabel).toEqual(true);
         }
 
         // `id`
         {
             presenter.init({
                 onCheckedChange,
-                label: "Label",
                 id: "id"
             });
             expect(presenter.vm.item?.id).toEqual("id");
@@ -29,7 +29,6 @@ describe("CheckboxPresenter", () => {
         {
             presenter.init({
                 onCheckedChange,
-                label: "Label",
                 checked: true
             });
             expect(presenter.vm.item?.checked).toBeTruthy();
@@ -39,7 +38,6 @@ describe("CheckboxPresenter", () => {
         {
             presenter.init({
                 onCheckedChange,
-                label: "Label",
                 indeterminate: true
             });
             expect(presenter.vm.item?.indeterminate).toBeTruthy();
@@ -49,7 +47,6 @@ describe("CheckboxPresenter", () => {
         {
             presenter.init({
                 onCheckedChange,
-                label: "Label",
                 disabled: true
             });
             expect(presenter.vm.item?.disabled).toBeTruthy();
@@ -58,22 +55,21 @@ describe("CheckboxPresenter", () => {
         // default: only mandatory props
         {
             presenter.init({
-                onCheckedChange,
-                label: "Label"
+                onCheckedChange
             });
             expect(presenter.vm.item).toEqual({
                 id: expect.any(String),
-                label: "Label",
                 checked: false,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: false
             });
         }
     });
 
     it("should call `onCheckedChange` callback when `changeChecked` is called", () => {
         const presenter = new CheckboxPresenter();
-        presenter.init({ onCheckedChange, label: "Label" });
+        presenter.init({ onCheckedChange });
         presenter.changeChecked(true);
         expect(onCheckedChange).toHaveBeenCalledWith(true);
     });

@@ -25,8 +25,8 @@ const IndeterminateIcon = () => {
  */
 const checkboxVariants = cva(
     [
-        "group peer h-md w-md shrink-0 rounded-sm border-sm mt-xxs",
-        "border-neutral-muted bg-neutral-base fill-neutral-base ring-offset-background",
+        "group peer h-md w-md shrink-0 rounded-sm border-sm ",
+        "border-neutral-muted bg-neutral-base [&_svg]:!fill-neutral-base ring-offset-background",
         "hover:border-neutral-dark",
         "focus:outline-none focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
         "disabled:cursor-not-allowed disabled:border-transparent disabled:bg-neutral-disabled",
@@ -44,6 +44,9 @@ const checkboxVariants = cva(
                     "data-[state=checked]:focus-visible:border-accent-default",
                     "data-[state=checked]:disabled:border-transparent"
                 ]
+            },
+            hasLabel: {
+                true: "mt-xxs"
             }
         }
     }
@@ -70,24 +73,27 @@ type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedCha
 const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitives.Root>,
     CheckboxPrimitiveRendererProps
->(({ label, id, indeterminate, changeChecked, className, ...props }, ref) => {
+>(({ label, id, hasLabel, indeterminate, changeChecked, className, ...props }, ref) => {
     return (
         <div className="flex items-start space-x-sm-extra">
             <CheckboxPrimitives.Root
                 ref={ref}
                 {...props}
                 id={id}
-                className={cn(checkboxVariants({ indeterminate }), className)}
+                className={cn(checkboxVariants({ indeterminate, hasLabel }), className)}
                 onCheckedChange={changeChecked}
             >
                 <span className={cn("flex items-center justify-center")}>
-                    {indeterminate && <IndeterminateIcon />}
-                    <CheckboxPrimitives.Indicator>
-                        <CheckIcon className={"h-sm-extra w-sm-extra"} />
-                    </CheckboxPrimitives.Indicator>
+                    {indeterminate ? (
+                        <IndeterminateIcon />
+                    ) : (
+                        <CheckboxPrimitives.Indicator>
+                            <CheckIcon className={"!size-sm-extra"} />
+                        </CheckboxPrimitives.Indicator>
+                    )}
                 </span>
             </CheckboxPrimitives.Root>
-            <Label id={id} text={label} weight={"light"} className={"text-md"} />
+            {hasLabel && <Label id={id} text={label} weight={"light"} className={"text-md"} />}
         </div>
     );
 });
