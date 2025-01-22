@@ -1,17 +1,51 @@
 const fs = require("fs");
 
-const createThemeScss = normalizedFigmaExport => {
+// We don't need tokens that end with `-a{one or two numbers}` because they are used for
+// alpha colors. We don't need these because we can use the /alpha function in Tailwind CSS.
+const isColorWithAlpha = variantName => {
+    return variantName.match(/^.*-a\d{1,2}$/);
+};
+
+const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport) => {
     // Generate `theme.scss` file.
     let stylesScss = fs.readFileSync(__dirname + "/templates/theme.scss.txt", "utf8");
+
+    // 0. Colors
+    {
+        let currentBgColorGroup = null;
+        const bgColors = normalizedPrimitivesFigmaExport
+            .filter(item => item.type === "colors")
+            .map(variable => {
+                const [colorGroup] = variable.variantName.split("-");
+                const cssVar = `--color-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+
+                if (!currentBgColorGroup) {
+                    currentBgColorGroup = colorGroup;
+                    return cssVar;
+                }
+
+                if (!currentBgColorGroup || currentBgColorGroup !== colorGroup) {
+                    currentBgColorGroup = colorGroup;
+                    return ["", cssVar];
+                }
+                return cssVar;
+            })
+            .flat()
+            .reverse();
+
+        stylesScss = stylesScss.replace("{COLORS}", bgColors.join("\n"));
+    }
 
     // 1. Background color.
     {
         let currentBgColorGroup = null;
         const bgColors = normalizedFigmaExport
             .filter(item => item.type === "backgroundColor")
+            .filter(variable => !isColorWithAlpha(variable.variantName))
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--bg-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--bg-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentBgColorGroup) {
                     currentBgColorGroup = colorGroup;
@@ -34,9 +68,11 @@ const createThemeScss = normalizedFigmaExport => {
         let currentBorderColor = null;
         const borderColors = normalizedFigmaExport
             .filter(item => item.type === "borderColor")
+            .filter(variable => !isColorWithAlpha(variable.variantName))
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--border-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--border-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentBorderColor) {
                     currentBorderColor = colorGroup;
@@ -81,9 +117,11 @@ const createThemeScss = normalizedFigmaExport => {
         let currentFillColorGroup = null;
         const fillColors = normalizedFigmaExport
             .filter(item => item.type === "fill")
+            .filter(variable => !isColorWithAlpha(variable.variantName))
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--fill-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--fill-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentFillColorGroup) {
                     currentFillColorGroup = colorGroup;
@@ -139,9 +177,11 @@ const createThemeScss = normalizedFigmaExport => {
         let currentRingColorGroup = null;
         const ringColors = normalizedFigmaExport
             .filter(item => item.type === "ringColor")
+            .filter(variable => !isColorWithAlpha(variable.variantName))
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--ring-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--ring-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentRingColorGroup) {
                     currentRingColorGroup = colorGroup;
@@ -191,9 +231,11 @@ const createThemeScss = normalizedFigmaExport => {
         let currentTextColor = null;
         const textColors = normalizedFigmaExport
             .filter(item => item.type === "textColor")
+            .filter(variable => !isColorWithAlpha(variable.variantName))
             .map(variable => {
                 const [colorGroup] = variable.variantName.split("-");
-                const cssVar = `--text-${variable.variantName}: ${variable.hsla.h} ${variable.hsla.s}% ${variable.hsla.l}%;`;
+                const cssVarName = variable.aliasName.replace("colors/colors-", "color-");
+                const cssVar = `--text-${variable.variantName}: var(--${cssVarName});`;
 
                 if (!currentTextColor) {
                     currentTextColor = colorGroup;

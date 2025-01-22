@@ -35,6 +35,8 @@ const DialogContent = React.forwardRef<
                 className
             )}
         >
+            {/* We needed to add this wrapper so that absolute-positioned elements can be placed */}
+            {/* inside the dialog. We noticed this while showing a loader inside the dialog. */}
             <div className={"flex flex-col"}>{children}</div>
         </DialogPrimitive.Content>
     );

@@ -6,76 +6,133 @@
 
 @layer base {
   :root {
+    // Colors.
+    --color-warning-900: 45 96.6% 11.6%;
+    --color-warning-800: 45 98.2% 21.6%;
+    --color-warning-700: 45 100% 37.3%;
+    --color-warning-600: 45 100% 42.5%;
+    --color-warning-500: 45 95.7% 63.7%;
+    --color-warning-400: 45 95.7% 63.7%;
+    --color-warning-300: 45 95.1% 75.9%;
+    --color-warning-200: 45 96.9% 87.5%;
+    --color-warning-100: 43 100% 96.5%;
+
+    --color-success-900: 160 100% 14.5%;
+    --color-success-800: 160 100% 19.6%;
+    --color-success-700: 165 100% 28.6%;
+    --color-success-600: 168 100% 34.7%;
+    --color-success-500: 170 100% 37.5%;
+    --color-success-400: 169 59.8% 64.9%;
+    --color-success-300: 168 58.1% 79.4%;
+    --color-success-200: 170 57.1% 91.8%;
+    --color-success-100: 168 50% 96.1%;
+
+    --color-secondary-900: 160 100% 14.5%;
+    --color-secondary-800: 160 100% 19.6%;
+    --color-secondary-700: 165 100% 28.6%;
+    --color-secondary-600: 168 100% 34.7%;
+    --color-secondary-500: 170 100% 37.5%;
+    --color-secondary-400: 169 59.8% 64.9%;
+    --color-secondary-300: 168 58.1% 79.4%;
+    --color-secondary-200: 170 57.1% 91.8%;
+    --color-secondary-100: 168 50% 96.1%;
+
+    --color-primary-900: 14 100% 25.5%;
+    --color-primary-800: 14 100% 32.2%;
+    --color-primary-700: 14 94.1% 40%;
+    --color-primary-600: 14 81.4% 48.4%;
+    --color-primary-500: 15 95.6% 55.9%;
+    --color-primary-400: 15 100% 63.5%;
+    --color-primary-300: 14 94.7% 77.8%;
+    --color-primary-200: 15 94.2% 86.5%;
+    --color-primary-100: 5 100% 97.5%;
+
+    --color-neutral-900: 214 12.3% 11.2%;
+    --color-neutral-800: 215 11.1% 21.2%;
+    --color-neutral-700: 213 10.1% 38.8%;
+    --color-neutral-600: 215 9.6% 51%;
+    --color-neutral-500: 218 10.7% 65.3%;
+    --color-neutral-50: 180 11.1% 98.2%;
+    --color-neutral-400: 219 12.1% 77.3%;
+    --color-neutral-300: 225 16.7% 90.6%;
+    --color-neutral-200: 220 11.1% 94.7%;
+    --color-neutral-100: 210 14.3% 97.3%;
+    --color-neutral-0: 0 0% 100%;
+
+    --color-destructive-900: 359 81.6% 17.1%;
+    --color-destructive-800: 0 83.6% 21.6%;
+    --color-destructive-700: 359 72.8% 28.8%;
+    --color-destructive-600: 0 76.4% 38.2%;
+    --color-destructive-500: 0 71% 48.6%;
+    --color-destructive-400: 0 66.3% 62.7%;
+    --color-destructive-300: 1 83.2% 76.7%;
+    --color-destructive-200: 0 96.4% 89.2%;
+    --color-destructive-100: 0 100% 96.9%;
+
     // Background colors.
-    --bg-destructive-default: 0 71% 48.6%;
-    --bg-destructive-disabled: 1 83.2% 76.7%;
-    --bg-destructive-muted: 0 66.3% 62.7%;
-    --bg-destructive-strong: 0 76.4% 38.2%;
-    --bg-destructive-subtle: 0 100% 96.9%;
-    --bg-destructive-xstrong: 0 83.6% 21.6%;
+    --bg-destructive-default: var(--color-destructive-500);
+    --bg-destructive-disabled: var(--color-destructive-300);
+    --bg-destructive-muted: var(--color-destructive-400);
+    --bg-destructive-strong: var(--color-destructive-600);
+    --bg-destructive-subtle: var(--color-destructive-100);
+    --bg-destructive-xstrong: var(--color-destructive-800);
 
-    --bg-neutral-base: 0 0% 100%;
-    --bg-neutral-base-a20: 0 0% 100%;
-    --bg-neutral-base-a30: 0 0% 100%;
-    --bg-neutral-base-a80: 0 0% 100%;
-    --bg-neutral-dark: 214 12.3% 11.2%;
-    --bg-neutral-dark-a10: 214 12.3% 11.2%;
-    --bg-neutral-dark-a5: 214 12.3% 11.2%;
-    --bg-neutral-dark-a50: 214 12.3% 11.2%;
-    --bg-neutral-dimmed: 220 11.1% 94.7%;
-    --bg-neutral-disabled: 220 11.1% 94.7%;
-    --bg-neutral-light: 210 14.3% 97.3%;
-    --bg-neutral-muted: 225 16.7% 90.6%;
-    --bg-neutral-strong: 219 12.1% 77.3%;
-    --bg-neutral-subtle: 180 11.1% 98.2%;
-    --bg-neutral-xstrong: 213 10.1% 38.8%;
+    --bg-neutral-base: var(--color-neutral-0);
+    --bg-neutral-dark: var(--color-neutral-900);
+    --bg-neutral-dimmed: var(--color-neutral-200);
+    --bg-neutral-disabled: var(--color-neutral-200);
+    --bg-neutral-light: var(--color-neutral-100);
+    --bg-neutral-muted: var(--color-neutral-300);
+    --bg-neutral-strong: var(--color-neutral-400);
+    --bg-neutral-subtle: var(--color-neutral-50);
+    --bg-neutral-xstrong: var(--color-neutral-700);
 
-    --bg-primary-default: 15 95.6% 55.9%;
-    --bg-primary-disabled: 14 94.7% 77.8%;
-    --bg-primary-muted: 14 94.7% 77.8%;
-    --bg-primary-strong: 14 94.1% 40%;
-    --bg-primary-subtle: 5 100% 97.5%;
-    --bg-primary-xstrong: 14 100% 25.5%;
+    --bg-primary-default: var(--color-primary-500);
+    --bg-primary-disabled: var(--color-primary-300);
+    --bg-primary-muted: var(--color-primary-300);
+    --bg-primary-strong: var(--color-primary-700);
+    --bg-primary-subtle: var(--color-primary-100);
+    --bg-primary-xstrong: var(--color-primary-900);
 
-    --bg-secondary-default: 170 100% 37.5%;
-    --bg-secondary-disabled: 169 59.8% 64.9%;
-    --bg-secondary-muted: 169 59.8% 64.9%;
-    --bg-secondary-strong: 165 100% 28.6%;
-    --bg-secondary-subtle: 170 57.1% 91.8%;
-    --bg-secondary-xstrong: 160 100% 14.5%;
+    --bg-secondary-default: var(--color-success-500);
+    --bg-secondary-disabled: var(--color-success-400);
+    --bg-secondary-muted: var(--color-success-400);
+    --bg-secondary-strong: var(--color-success-700);
+    --bg-secondary-subtle: var(--color-success-200);
+    --bg-secondary-xstrong: var(--color-success-900);
 
-    --bg-success-default: 170 100% 37.5%;
-    --bg-success-disabled: 168 58.1% 79.4%;
-    --bg-success-muted: 169 59.8% 64.9%;
-    --bg-success-strong: 165 100% 28.6%;
-    --bg-success-subtle: 170 57.1% 91.8%;
-    --bg-success-xstrong: 160 100% 14.5%;
+    --bg-success-default: var(--color-success-500);
+    --bg-success-disabled: var(--color-success-300);
+    --bg-success-muted: var(--color-success-400);
+    --bg-success-strong: var(--color-secondary-700);
+    --bg-success-subtle: var(--color-success-200);
+    --bg-success-xstrong: var(--color-secondary-900);
 
-    --bg-warning-default: 45 95.7% 63.7%;
-    --bg-warning-disabled: 45 96.9% 87.5%;
-    --bg-warning-muted: 45 95.1% 75.9%;
-    --bg-warning-strong: 45 100% 37.3%;
-    --bg-warning-subtle: 43 100% 96.5%;
-    --bg-warning-xstrong: 45 98.2% 21.6%;
+    --bg-warning-default: var(--color-warning-500);
+    --bg-warning-disabled: var(--color-warning-200);
+    --bg-warning-muted: var(--color-warning-300);
+    --bg-warning-strong: var(--color-warning-700);
+    --bg-warning-subtle: var(--color-warning-100);
+    --bg-warning-xstrong: var(--color-warning-800);
 
     // Border color.
-    --border-accent-default: 15 95.6% 55.9%;
-    --border-accent-dimmed: 15 94.2% 86.5%;
-    --border-accent-subtle: 5 100% 97.5%;
+    --border-accent-default: var(--color-primary-500);
+    --border-accent-dimmed: var(--color-primary-200);
+    --border-accent-subtle: var(--color-primary-100);
 
-    --border-destructive-default: 0 71% 48.6%;
-    --border-destructive-subtle: 0 100% 96.9%;
+    --border-destructive-default: var(--color-destructive-500);
+    --border-destructive-subtle: var(--color-destructive-100);
 
-    --border-neutral-base: 0 0% 100%;
-    --border-neutral-black: 214 12.3% 11.2%;
-    --border-neutral-dark: 215 9.6% 51%;
-    --border-neutral-dimmed: 220 11.1% 94.7%;
-    --border-neutral-muted: 219 12.1% 77.3%;
-    --border-neutral-strong: 218 10.7% 65.3%;
-    --border-neutral-subtle: 210 14.3% 97.3%;
+    --border-neutral-base: var(--color-neutral-0);
+    --border-neutral-black: var(--color-neutral-900);
+    --border-neutral-dark: var(--color-neutral-600);
+    --border-neutral-dimmed: var(--color-neutral-200);
+    --border-neutral-muted: var(--color-neutral-400);
+    --border-neutral-strong: var(--color-neutral-500);
+    --border-neutral-subtle: var(--color-neutral-100);
 
-    --border-success-default: 170 100% 37.5%;
-    --border-success-subtle: 170 57.1% 91.8%;
+    --border-success-default: var(--color-success-500);
+    --border-success-subtle: var(--color-success-200);
 
     // Border radius.
     --radius-3Xl: 36px;
@@ -92,21 +149,19 @@
     --border-width-sm: 1px;
 
     // Fill.
-    --fill-accent-default: 15 95.6% 55.9%;
+    --fill-accent-default: var(--color-primary-500);
 
-    --fill-destructive: 0 71% 48.6%;
+    --fill-destructive: var(--color-destructive-500);
 
-    --fill-neutral-base: 0 0% 100%;
-    --fill-neutral-base-a50: 0 0% 100%;
-    --fill-neutral-dark: 215 11.1% 21.2%;
-    --fill-neutral-disabled: 219 12.1% 77.3%;
-    --fill-neutral-strong: 218 10.7% 65.3%;
-    --fill-neutral-xstrong: 213 10.1% 38.8%;
-    --fill-neutral-xstrong-a30: 214 12.3% 11.2%;
+    --fill-neutral-base: var(--color-neutral-0);
+    --fill-neutral-dark: var(--color-neutral-800);
+    --fill-neutral-disabled: var(--color-neutral-400);
+    --fill-neutral-strong: var(--color-neutral-500);
+    --fill-neutral-xstrong: var(--color-neutral-700);
 
-    --fill-success: 170 100% 37.5%;
+    --fill-success: var(--color-success-500);
 
-    --fill-warning: 45 95.7% 63.7%;
+    --fill-warning: var(--color-warning-500);
 
     // Font.
     --font-sans: "Inter", sans-serif;
@@ -144,13 +199,13 @@
     --padding-xxs: 2px;
 
     // Ring color.
-    --ring-primary-dimmed: 15 94.2% 86.5%;
-    --ring-primary-strong: 15 95.6% 55.9%;
-    --ring-primary-subtle: 5 100% 97.5%;
+    --ring-primary-dimmed: var(--color-primary-200);
+    --ring-primary-strong: var(--color-primary-500);
+    --ring-primary-subtle: var(--color-primary-100);
 
-    --ring-success-dimmed: 170 57.1% 91.8%;
-    --ring-success-strong: 170 100% 37.5%;
-    --ring-success-subtle: 168 50% 96.1%;
+    --ring-success-dimmed: var(--color-success-200);
+    --ring-success-strong: var(--color-success-500);
+    --ring-success-subtle: var(--color-success-100);
 
     // Ring width.
     --ring-width-lg: 4px;
@@ -181,25 +236,24 @@
     --spacing-xxs: 2px;
 
     // Text color.
-    --text-accent-muted: 14 94.7% 77.8%;
-    --text-accent-primary: 15 95.6% 55.9%;
-    --text-accent-subtle: 5 100% 97.5%;
+    --text-accent-muted: var(--color-primary-300);
+    --text-accent-primary: var(--color-primary-500);
+    --text-accent-subtle: var(--color-primary-100);
 
-    --text-destructive-muted: 1 83.2% 76.7%;
-    --text-destructive-primary: 0 71% 48.6%;
-    --text-destructive-subtle: 0 100% 96.9%;
+    --text-destructive-muted: var(--color-destructive-300);
+    --text-destructive-primary: var(--color-destructive-500);
+    --text-destructive-subtle: var(--color-destructive-100);
 
-    --text-neutral-dimmed: 219 12.1% 77.3%;
-    --text-neutral-disabled: 219 12.1% 77.3%;
-    --text-neutral-disabled-negative: 0 0% 100%;
-    --text-neutral-light: 0 0% 100%;
-    --text-neutral-muted: 218 10.7% 65.3%;
-    --text-neutral-primary: 214 12.3% 11.2%;
-    --text-neutral-strong: 213 10.1% 38.8%;
+    --text-neutral-dimmed: var(--color-neutral-400);
+    --text-neutral-disabled: var(--color-neutral-400);
+    --text-neutral-light: var(--color-neutral-0);
+    --text-neutral-muted: var(--color-neutral-500);
+    --text-neutral-primary: var(--color-neutral-900);
+    --text-neutral-strong: var(--color-neutral-700);
 
-    --text-success-muted: 169 59.8% 64.9%;
-    --text-success-primary: 170 100% 37.5%;
-    --text-success-subtle: 170 57.1% 91.8%;
+    --text-success-muted: var(--color-success-400);
+    --text-success-primary: var(--color-success-500);
+    --text-success-subtle: var(--color-success-200);
 
     // Text size.
     --text-h1: var(--text-4xl);

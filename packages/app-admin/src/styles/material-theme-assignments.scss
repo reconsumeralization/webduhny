@@ -1,67 +1,9 @@
 @use "@material/top-app-bar/_mixins.scss" as topAppBar;
-@use "@material/elevation/mixins" as elevation;
-@use "@material/button/mixins" as button;
-@use "@material/icon-button/mixins" as iconButton;
 @use "@material/drawer/mixins" as drawer;
+@use "@material/list/mixins" as list;
 @use "@material/tab-bar/mixins" as tabBar;
 @use "@material/tab/mixins" as tab;
 @use "@material/tab-indicator/mixins" as tabIndicator;
-@use "@material/list/mixins" as list;
-@use "@material/switch" as switch;
-@use "@material/textfield/mixins" as textfield;
-@use "@material/select/mixins" as select;
-@use "@material/checkbox/mixins" as checkbox;
-@use "@material/radio/mixins" as radio;
-@use "@material/snackbar/mixins" as snackbar;
-
-// top app bar should use theme-surface as the fill color
-.mdc-top-app-bar {
-  @include topAppBar.fill-color($mdc-theme-surface);
-}
-
-.mdc-top-app-bar.primary {
-  @include topAppBar.fill-color($mdc-theme-primary);
-}
-
-// elevation should use theme-surface as fill color so it can be used as surface
-.mdc-elevation--z1 {
-  @include elevation.elevation(1, $mdc-theme-on-surface);
-}
-
-.mdc-elevation--z2 {
-  @include elevation.elevation(2, $mdc-theme-on-surface);
-}
-
-.mdc-elevation--z3 {
-  @include elevation.elevation(3, $mdc-theme-on-surface);
-}
-
-.mdc-elevation--z1,
-.mdc-elevation--z2,
-.mdc-elevation--z3,
-.mdc-elevation--z4,
-.mdc-elevation--z5,
-.mdc-elevation--z6,
-.mdc-elevation--z7,
-.mdc-elevation--z8,
-.mdc-elevation--z9 {
-  background-color: $mdc-theme-surface;
-}
-
-// button styles
-.mdc-button {
-  @include button.shape-radius(2px);
-  .mdc-button__label {
-    display: flex;
-    align-items: center;
-  }
-}
-
-// set icon colors
-.mdc-icon,
-.mdc-icon-button {
-  @include iconButton.ink-color($mdc-theme-text-secondary-on-background);
-}
 
 // drawer
 .mcd-drawer {
@@ -86,24 +28,6 @@
 // fix drawer display so we can have a nice drawer footer
 .mdc-drawer--modal.mdc-drawer--open {
   display: flex;
-}
-
-// tabs
-.mdc-tab-bar {
-  @include tabBar.width("100%");
-
-  .mdc-tab {
-    @include tab.fixed-width("100px");
-    @include tab.text-label-color($mdc-theme-text-primary-on-background);
-    @include tab.icon-color($mdc-theme-text-primary-on-background);
-
-    // fixes tab width
-    flex: 1 0;
-  }
-
-  .mdc-tab-indicator {
-    @include tabIndicator.underline-color($mdc-theme-primary);
-  }
 }
 
 // list
@@ -137,86 +61,9 @@
   }
 }
 
-// switch
-.mdc-switch {
-  @include switch.theme-styles(
-    (
-      selected-focus-handle-color: $mdc-theme-secondary,
-      selected-focus-state-layer-color: $mdc-theme-secondary,
-      selected-focus-track-color: rgba($mdc-theme-secondary, 0.54),
-      selected-handle-color: $mdc-theme-secondary,
-      selected-hover-handle-color: $mdc-theme-secondary,
-      selected-hover-state-layer-color: $mdc-theme-secondary,
-      selected-hover-track-color: rgba($mdc-theme-secondary, 0.54),
-      selected-pressed-handle-color: $mdc-theme-secondary,
-      selected-pressed-state-layer-color: $mdc-theme-secondary,
-      selected-pressed-track-color: rgba($mdc-theme-secondary, 0.54),
-      selected-track-color: rgba($mdc-theme-secondary, 0.54),
-      unselected-focus-handle-color: $mdc-theme-surface,
-      unselected-focus-track-color: rgba($mdc-theme-on-surface, 0.38),
-      unselected-handle-color: $mdc-theme-surface,
-      unselected-hover-handle-color: $mdc-theme-surface,
-      unselected-hover-track-color: rgba($mdc-theme-on-surface, 0.38),
-      unselected-pressed-handle-color: $mdc-theme-surface,
-      unselected-pressed-track-color: rgba($mdc-theme-on-surface, 0.38),
-      unselected-track-color: rgba($mdc-theme-on-surface, 0.38)
-    )
-  );
-
-  margin-left: 5px;
-  margin-right: 10px;
-
-  .mdc-switch__icons {
-    display: none;
-  }
-}
-
 // menu
 .mdc-menu {
   background-color: $mdc-theme-surface;
-}
-
-/*
-Fix the width of input components when inside grids
- */
-.mdc-text-field {
-  width: 100%;
-  @include textfield.shape-radius(0);
-  @include textfield.textarea-shape-radius(0);
-  @include textfield.fill-color($mdc-theme-on-background);
-  @include textfield.label-color($mdc-theme-text-primary-on-background);
-  @include textfield.ink-color($mdc-theme-on-surface);
-  &.mdc-text-field--textarea {
-    &.--focused {
-      .mdc-floating-label.mdc-floating-label {
-        top: 0px;
-      }
-    }
-  }
-  &.mdc-text-field--disabled {
-    background-color: $mdc-theme-background;
-    opacity: 0.55;
-    .mdc-text-field__input {
-      color: $mdc-theme-text-primary-on-background;
-      &::placeholder {
-        color: $mdc-theme-text-primary-on-background;
-      }
-    }
-  }
-  .mdc-text-field__input {
-    width: 100%;
-    resize: none;
-    //border: 1px solid $mdc-theme-on-background;
-  }
-}
-
-// textfield helper - color fix
-.mdc-text-field-helper-text {
-  margin-left: 2px !important;
-  color: $mdc-theme-text-secondary-on-background;
-  &--error {
-    color: $mdc-theme-primary !important;
-  }
 }
 
 // dialog
@@ -285,81 +132,6 @@ Fix the width of input components when inside grids
   &.mdc-dialog--open .mdc-dialog__scrim {
     opacity: 0.7;
     background-color: var(--mdc-theme-on-surface);
-  }
-}
-
-// select
-.mdc-select {
-  width: 100%;
-  @include select.ink-color($mdc-theme-text-primary-on-background);
-  @include select.label-color($mdc-theme-text-secondary-on-background);
-  @include select.bottom-line-color(
-    (
-      default: $mdc-theme-text-secondary-on-background,
-      hover: $mdc-theme-text-primary-on-background
-    )
-  );
-  @include select.container-fill-color($mdc-theme-on-background);
-  @include select.filled-shape-radius(0);
-  @include select.outline-shape-radius(2);
-  @include select.dropdown-icon-color(
-    (
-      default: $mdc-theme-text-primary-on-background,
-      focused: $mdc-theme-primary
-    )
-  );
-
-  /*
-  Fix for select box appearance. For some reason browser prefix css attributes are striped away.
-   */
-  .mdc-select__native-control {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border-radius: 2px;
-  }
-
-  &.mdc-select--box {
-    border-radius: 2px;
-    .mdc-select__native-control {
-      padding-top: 10px;
-    }
-  }
-  &:not(.mdc-select--disabled).mdc-select--focused {
-    .mdc-floating-label {
-      color: rgba(0, 0, 0, 0.6);
-    }
-  }
-}
-
-// checkbox
-.mdc-checkbox {
-  @include checkbox.container-colors("text-secondary-on-background");
-}
-
-// radio button
-.mdc-radio {
-  @include radio.unchecked-stroke-color("text-secondary-on-background");
-}
-
-// snackbar
-.mdc-snackbar {
-  @include snackbar.shape-radius(2px);
-  @include snackbar.z-index(1000);
-}
-
-.mdc-snackbar__action:not(:disabled) {
-  color: var(--mdc-theme-primary);
-  &::before {
-    background-color: var(--mdc-theme-primary);
-  }
-  &::after {
-    background-color: var(--mdc-theme-primary);
-  }
-}
-
-.mdc-snackbar__actions {
-  .mdc-icon-button {
-    color: var(--mdc-theme-text-primary-on-dark);
   }
 }
 
