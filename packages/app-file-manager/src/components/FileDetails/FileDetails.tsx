@@ -1,13 +1,13 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import ReactDOM from "react-dom";
 import noop from "lodash/noop";
 // @ts-expect-error This package has no types.
 import { useHotkeys } from "react-hotkeyz";
 import styled from "@emotion/styled";
 import { FileItem } from "@webiny/app-admin/types";
-import { Form, FormOnSubmit } from "@webiny/form";
+import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { prepareFormData } from "@webiny/app-headless-cms-common";
-import { DrawerRight, DrawerContent } from "@webiny/ui/Drawer";
+import { DrawerRight } from "@webiny/ui/Drawer";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
@@ -15,30 +15,13 @@ import { FileDetailsProvider } from "~/components/FileDetails/FileDetailsProvide
 import { Preview } from "./components/Preview";
 import { PreviewMeta } from "./components/PreviewMeta";
 import { Actions } from "./components/Actions";
-import { Header } from "./components/Header";
-import { Elevation } from "@webiny/ui/Elevation";
 import { Content } from "./components/Content";
 import { SimpleForm } from "@webiny/app-admin/components/SimpleForm";
-import { Footer } from "./components/Footer";
 import { Extensions } from "./components/Extensions";
 import { useFileModel } from "~/hooks/useFileModel";
 import { useFileManagerViewConfig } from "~/index";
 import { FileProvider } from "~/contexts/FileProvider";
-
-type FileDetailsDrawerProps = React.ComponentProps<typeof DrawerRight> & { width: string };
-
-const FileDetailsDrawer = styled(DrawerRight)<FileDetailsDrawerProps>`
-    z-index: 70;
-    &.mdc-drawer {
-        width: ${props => props.width};
-    }
-    .mdc-drawer__content {
-        overflow-y: hidden;
-    }
-    & + .mdc-drawer-scrim {
-        z-index: 65;
-    }
-`;
+import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 
 const FormContainer = styled(SimpleForm)`
     margin: 0;
@@ -46,11 +29,20 @@ const FormContainer = styled(SimpleForm)`
 
 interface FileDetailsInnerProps {
     file: FileItem;
+    onForm: (form: FormAPI) => void;
     onClose: () => void;
     onSubmit: (fileData: FileItem) => void;
 }
 
-const FileDetailsInner = ({ file, ...props }: FileDetailsInnerProps) => {
+const FileDetailsInner = ({ file, onForm, ...props }: FileDetailsInnerProps) => {
+    const formRef = React.createRef<FormAPI>();
+
+    useEffect(() => {
+        if (formRef.current) {
+            onForm(formRef.current);
+        }
+    }, []);
+
     const fileModel = useFileModel();
     const { fileDetails } = useFileManagerViewConfig();
 
@@ -83,17 +75,14 @@ const FileDetailsInner = ({ file, ...props }: FileDetailsInnerProps) => {
         extensionFields.length > 0 ? <Extensions model={fileModel} /> : null;
 
     return (
-        <Form data={file} onSubmit={onSubmit}>
+        <Form data={file} onSubmit={onSubmit} ref={formRef}>
             {() => (
                 <FormContainer>
-                    <Header />
                     <Content>
                         <Content.Panel flex={parseFloat(leftPanel)}>
-                            <Elevation z={2} style={{ margin: 20 }}>
-                                <Actions />
-                                <Preview />
-                                <PreviewMeta />
-                            </Elevation>
+                            <Actions />
+                            <Preview />
+                            <PreviewMeta />
                         </Content.Panel>
                         <Content.Panel flex={parseFloat(rightPanel)}>
                             {fileDetails.groupFields ? (
@@ -109,7 +98,6 @@ const FileDetailsInner = ({ file, ...props }: FileDetailsInnerProps) => {
                             )}
                         </Content.Panel>
                     </Content>
-                    <Footer />
                 </FormContainer>
             )}
         </Form>
@@ -165,26 +153,42 @@ export const FileDetails = ({
 
     const drawerWidth = fileDetails.width.split(",")[0];
 
+    const formRef = useRef<FormAPI | null>(null);
+
     return (
         <FileDetailsPortal>
-            <FileDetailsDrawer
+            <DrawerRight
+                title={"File Details"}
                 width={drawerWidth}
-                modal
                 open={open}
+                className={"z-50"}
                 onClose={onClose}
                 data-testid={"fm.file-details.drawer"}
+                actions={
+                    <>
+                        <ButtonDefault onClick={onClose}>Cancel</ButtonDefault>
+                        <ButtonPrimary onClick={() => formRef.current?.submit()}>
+                            Save File
+                        </ButtonPrimary>
+                    </>
+                }
             >
-                <DrawerContent>
-                    {loading && <CircularProgress label={loading} />}
-                    {file && (
-                        <FileProvider file={file}>
-                            <FileDetailsProvider hideFileDetails={onClose} onSetFile={onSetFile}>
-                                <FileDetailsInner file={file} onClose={onClose} onSubmit={onSave} />
-                            </FileDetailsProvider>
-                        </FileProvider>
-                    )}
-                </DrawerContent>
-            </FileDetailsDrawer>
+                {loading && <CircularProgress label={loading} />}
+                {file && (
+                    <FileProvider file={file}>
+                        <FileDetailsProvider hideFileDetails={onClose} onSetFile={onSetFile}>
+                            <FileDetailsInner
+                                onForm={form => {
+                                    formRef.current = form;
+                                }}
+                                file={file}
+                                onClose={onClose}
+                                onSubmit={onSave}
+                            />
+                        </FileDetailsProvider>
+                    </FileProvider>
+                )}
+            </DrawerRight>
         </FileDetailsPortal>
     );
 };

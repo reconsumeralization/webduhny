@@ -1,24 +1,24 @@
 import * as React from "react";
 import { cn } from "~/utils";
-import { type DialogProps } from "../Dialog";
-import { DialogTitle } from "./DialogTitle";
-import { DialogDescription } from "./DialogDescription";
+import { type DrawerProps } from "../Drawer";
+import { DrawerTitle } from "./DrawerTitle";
+import { DrawerDescription } from "./DrawerDescription";
 import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
 import { IconButton } from "~/Button";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { useMemo } from "react";
 
-export type DialogHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    Pick<DialogProps, "title" | "icon" | "description" | "showCloseButton">;
+export type DrawerHeaderProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
+    Pick<DrawerProps, "title" | "icon" | "description" | "showCloseButton">;
 
-export const DialogHeader = ({
+export const DrawerHeader = ({
     title,
     icon,
     description,
     showCloseButton,
     className,
     ...props
-}: DialogHeaderProps) => {
+}: DrawerHeaderProps) => {
     const nothingToRender = useMemo(() => {
         return !title && !description && !icon && !showCloseButton;
     }, [title, description, icon, showCloseButton]);
@@ -35,19 +35,19 @@ export const DialogHeader = ({
                 className
             )}
         >
-            <DialogTitle className={"flex justify-between"}>
+            <DrawerTitle className={"flex justify-between"}>
                 <div>
                     {icon}
                     {title}
                 </div>
 
                 {showCloseButton !== false && (
-                    <DialogPrimitive.Close asChild>
+                    <DrawerPrimitive.Close asChild>
                         <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
-                    </DialogPrimitive.Close>
+                    </DrawerPrimitive.Close>
                 )}
-            </DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            </DrawerTitle>
+            <DrawerDescription>{description}</DrawerDescription>
         </div>
     );
 };

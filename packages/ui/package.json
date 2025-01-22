@@ -17,7 +17,6 @@
     "@editorjs/editorjs": "2.26.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
-    "@rmwc/drawer": "^14.2.2",
     "@rmwc/grid": "^14.2.2",
     "@rmwc/list": "^14.2.2",
     "@rmwc/menu": "^14.2.2",

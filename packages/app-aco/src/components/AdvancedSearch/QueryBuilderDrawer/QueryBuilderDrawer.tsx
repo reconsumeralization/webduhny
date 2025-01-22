@@ -1,17 +1,15 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { FormAPI } from "@webiny/form";
-import { DrawerContent } from "@webiny/ui/Drawer";
+import { DrawerRight } from "@webiny/ui/Drawer";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
 import { QueryBuilder } from "./QueryBuilder";
 
 import { FieldDTOWithElement, FilterDTO } from "~/components/AdvancedSearch/domain";
 
-import { DrawerContainer } from "./QueryBuilderDrawer.styled";
 import { QueryBuilderDrawerPresenter, QueryBuilderFormData } from "./QueryBuilderDrawerPresenter";
+import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 
 interface QueryBuilderDrawerProps {
     fields: FieldDTOWithElement[];
@@ -71,27 +69,39 @@ export const QueryBuilderDrawer = observer(({ filter, ...props }: QueryBuilderDr
     const ref = useRef<FormAPI | null>(null);
 
     return (
-        <DrawerContainer modal open={props.vm.isOpen} onClose={props.onClose}>
-            <DrawerContent>
-                <Header onClose={props.onClose} />
-                <QueryBuilder
-                    onForm={form => (ref.current = form)}
-                    onSubmit={onApply}
-                    onChange={data => onChange(data)}
-                    onDeleteGroup={groupIndex => presenter.deleteGroup(groupIndex)}
-                    onSetFilterFieldData={(groupIndex, filterIndex, data) =>
-                        presenter.setFilterFieldData(groupIndex, filterIndex, data)
-                    }
-                    onDeleteFilterFromGroup={(groupIndex, filterIndex) =>
-                        presenter.deleteFilterFromGroup(groupIndex, filterIndex)
-                    }
-                    onAddNewFilterToGroup={groupIndex => presenter.addNewFilterToGroup(groupIndex)}
-                    onAddGroup={() => presenter.addGroup()}
-                    fields={props.fields}
-                    vm={presenter.vm}
-                />
-                <Footer formRef={ref} onClose={props.onClose} onSave={onSave} />
-            </DrawerContent>
-        </DrawerContainer>
+        <DrawerRight
+            open={props.vm.isOpen}
+            onClose={props.onClose}
+            modal={true}
+            width={1000}
+            title={"Advanced search filter"}
+            description={"Create a filter to search for specific content."}
+            info={<ButtonDefault onClick={onSave}>Save filter</ButtonDefault>}
+            actions={
+                <>
+                    <ButtonDefault onClick={props.onClose}>Cancel</ButtonDefault>
+                    <ButtonPrimary onClick={() => ref.current?.submit()}>
+                        Apply filter
+                    </ButtonPrimary>
+                </>
+            }
+        >
+            <QueryBuilder
+                onForm={form => (ref.current = form)}
+                onSubmit={onApply}
+                onChange={data => onChange(data)}
+                onDeleteGroup={groupIndex => presenter.deleteGroup(groupIndex)}
+                onSetFilterFieldData={(groupIndex, filterIndex, data) =>
+                    presenter.setFilterFieldData(groupIndex, filterIndex, data)
+                }
+                onDeleteFilterFromGroup={(groupIndex, filterIndex) =>
+                    presenter.deleteFilterFromGroup(groupIndex, filterIndex)
+                }
+                onAddNewFilterToGroup={groupIndex => presenter.addNewFilterToGroup(groupIndex)}
+                onAddGroup={() => presenter.addGroup()}
+                fields={props.fields}
+                vm={presenter.vm}
+            />
+        </DrawerRight>
     );
 });

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { cn } from "~/utils";
 
-export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     actions?: React.ReactNode;
     info?: React.ReactNode;
 }
 
-export const DialogFooter = ({ actions, info, className, ...props }: DialogFooterProps) => {
+export const DrawerFooter = ({ actions, info, className, ...props }: DrawerFooterProps) => {
     if (!actions && !info) {
         return null;
     }
