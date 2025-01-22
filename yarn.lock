@@ -19646,7 +19646,6 @@ __metadata:
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
-    "@rmwc/drawer": "npm:^14.2.2"
     "@rmwc/grid": "npm:^14.2.2"
     "@rmwc/list": "npm:^14.2.2"
     "@rmwc/menu": "npm:^14.2.2"
