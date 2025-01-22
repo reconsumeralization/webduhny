@@ -8,7 +8,7 @@ const triggerVariants = cva(
         "group inline-flex items-center justify-center whitespace-nowrap outline-none transition-all",
         "text-neutral-strong hover:text-neutral-primary",
         "border-b-md border-transparent border-solid",
-        "data-[state=active]:border-accent-default data-[state=active]:text-neutral-primary data-[state=active]:font-semibold",
+        "data-[state=active]:border-accent-default data-[state=active]:text-neutral-primary",
         "disabled:pointer-events-none disabled:!text-neutral-disabled disabled:!fill-neutral-disabled disabled:!border-transparent"
     ],
     {
