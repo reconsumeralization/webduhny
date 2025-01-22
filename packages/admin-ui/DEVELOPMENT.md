@@ -13,12 +13,19 @@ One of the main things we define via the [`tailwind.config.js`](./tailwind.confi
 But, do note that all the default theme-values are not actually defined in the `tailwind.config.js` file, but rather in the `tailwind.config.theme.js` file, which is a file that is generated from a Figma export (more on this in the next section).
 
 ### Figma To Code
-Since manually transferring values from the mentioned Figma file into code has shown to be a very cumbersome process, we've created a script that basically takes a Figma export and generates all the necessary Tailwind CSS configuration. Note that when we say "Figma export", we basically mean an export of Alias tokens, created by this [Export/Import Variables](https://www.figma.com/community/plugin/1256972111705530093/export-import-variables) plugin.
+Since manually transferring values from the mentioned Figma file into code has shown to be a very cumbersome process, we've created a script that basically takes a Figma export and generates all the necessary Tailwind CSS configuration. 
 
-Once the export is downloaded, we place it in `packages/admin-ui/scripts/importFromFigma/exports/Alias tokens.json`, and then we run the following command from project root:
+When we say "Figma export", we basically mean exports of (1) Primitives and (2) Alias tokens, which are created by this [Export/Import Variables](https://www.figma.com/community/plugin/1256972111705530093/export-import-variables) plugin.
+
+The exports need to be downloaded and place into the `packages/admin-ui/scripts/importFromFigma/exports` folder. Ultimately, we should end up with the following two:
+
+1. `packages/admin-ui/scripts/importFromFigma/exports/Alias tokens.json`
+2. `packages/admin-ui/scripts/importFromFigma/exports/Primitives.json`
+
+Finally, from project root, we run the following script:
 
 ```bash
 yarn webiny-admin-import-from-figma
 ```
 
-This will generate a new `tailwind.config.theme.js` file, which will contain all the necessary Tailwind CSS configuration. On top of that, it will also generate a `src/styles.scss` file, which contains actual values for CSS variables that are referenced in the `tailwind.config.theme.js` file.
+First, the script will regenerate the `tailwind.config.theme.js` file, which will contain all the necessary Tailwind CSS configuration. Second, it will also regenerate the `src/styles.scss` file, which contains actual values for CSS variables that are referenced in the `tailwind.config.theme.js` file.

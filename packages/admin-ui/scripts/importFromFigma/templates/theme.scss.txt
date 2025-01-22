@@ -6,6 +6,9 @@
 
 @layer base {
   :root {
+    // Colors.
+    {COLORS}
+
     // Background colors.
     {BACKGROUND_COLOR}
 
