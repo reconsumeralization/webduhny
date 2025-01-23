@@ -40,6 +40,12 @@ export interface CreateReactPulumiAppParams {
      * https://www.webiny.com/docs/architecture/deployment-modes/production
      */
     productionEnvironments?: PulumiAppParam<string[]>;
+
+    rest?: Array<{
+        path: string;
+        method: string;
+        functionUrl: aws.lambda.FunctionUrl;
+    }>;
 }
 
 export const createReactPulumiApp = (projectAppParams: CreateReactPulumiAppParams) => {
@@ -75,12 +81,64 @@ export const createReactPulumiApp = (projectAppParams: CreateReactPulumiAppParam
 
             const bucket = createPrivateAppBucket(app, `${name}-app`);
 
+            const restOrderedCacheBehaviors =
+                projectAppParams.rest?.map(item => {
+                    let allowedMethods = ["GET", "HEAD", "OPTIONS"];
+                    if (item.method !== "GET") {
+                        allowedMethods = [
+                            "GET",
+                            "HEAD",
+                            "OPTIONS",
+                            "PUT",
+                            "POST",
+                            "PATCH",
+                            "DELETE"
+                        ];
+                    }
+
+                    return {
+                        pathPattern: item.path,
+                        allowedMethods,
+                        cachedMethods: ["GET", "HEAD", "OPTIONS"],
+                        targetOriginId: item.functionUrl.urlId,
+                        compress: true,
+                        viewerProtocolPolicy: "redirect-to-https",
+                        forwardedValues: {
+                            cookies: {
+                                forward: "none"
+                            },
+                            headers: ["Authorization"],
+                            queryString: true
+                        },
+                        // MinTTL <= DefaultTTL <= MaxTTL
+                        minTtl: 0,
+                        defaultTtl: 0,
+                        maxTtl: 31536000
+                    };
+                }) || [];
+
+            const restOrigins =
+                projectAppParams.rest?.map(item => {
+                    return {
+                        customOriginConfig: {
+                            httpPort: 80,
+                            httpsPort: 443,
+                            originProtocolPolicy: "https-only",
+                            originSslProtocols: ["TLSv1.2"]
+                        },
+                        originId: item.functionUrl.urlId,
+                        domainName: item.functionUrl.functionUrl.apply((url: string) =>
+                            String(new URL(url).hostname)
+                        )
+                    };
+                }) || [];
+
             const cloudfront = app.addResource(aws.cloudfront.Distribution, {
                 name: `${name}-app-cdn`,
                 config: {
                     enabled: true,
                     waitForDeployment: false,
-                    origins: [bucket.origin],
+                    origins: [...restOrigins, bucket.origin],
                     defaultRootObject: "index.html",
                     defaultCacheBehavior: {
                         compress: true,
@@ -97,6 +155,7 @@ export const createReactPulumiApp = (projectAppParams: CreateReactPulumiAppParam
                         defaultTtl: 600,
                         maxTtl: 600
                     },
+                    orderedCacheBehaviors: [...restOrderedCacheBehaviors],
                     priceClass: "PriceClass_100",
                     customErrorResponses: [
                         { errorCode: 404, responseCode: 404, responsePagePath: "/index.html" }
