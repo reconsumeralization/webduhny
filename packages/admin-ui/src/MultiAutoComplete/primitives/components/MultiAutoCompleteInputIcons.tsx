@@ -6,6 +6,7 @@ import { Icon } from "~/Icon";
 
 interface MultiAutoCompleteInputIconsProps {
     displayResetAction: boolean;
+    inputSize?: "md" | "lg" | "xl" | null;
     isDisabled?: boolean;
     onOpenChange: (open: boolean) => void;
     onResetValue: () => void;
@@ -16,7 +17,7 @@ export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsPr
         <div className={"wby-flex wby-items-center wby-gap-sm"}>
             {props.displayResetAction && (
                 <IconButton
-                    size={"xs"}
+                    size={props.inputSize === "xl" ? "sm" : "xs"} // Map button size based on the input size.
                     variant={"secondary"}
                     icon={<Icon icon={<Close />} label={"Reset"} />}
                     disabled={props.isDisabled}
@@ -27,7 +28,7 @@ export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsPr
                 />
             )}
             <Icon
-                size={"sm"}
+                size={props.inputSize === "xl" ? "lg" : "sm"} // Map icon size based on the input size.
                 icon={<ChevronDown />}
                 label={"Open list"}
                 onClick={event => {

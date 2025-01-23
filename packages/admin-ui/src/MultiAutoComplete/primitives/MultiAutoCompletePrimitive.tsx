@@ -137,6 +137,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                             startIcon={props.startIcon}
                             endIcon={
                                 <MultiAutoCompleteInputIcons
+                                    inputSize={props.size}
                                     displayResetAction={
                                         !vm.selectedOptionsVm.isEmpty &&
                                         vm.inputVm.displayResetAction

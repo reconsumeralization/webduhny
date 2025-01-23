@@ -1,7 +1,6 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { Icon as BaseIcon } from "~/Icon";
-import { cn } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 /**
  * Icon
@@ -276,6 +275,7 @@ export {
     InputPrimitive,
     getIconPosition,
     inputVariants,
+    inputIconVariants,
     type InputIconProps,
     type InputPrimitiveProps
 };

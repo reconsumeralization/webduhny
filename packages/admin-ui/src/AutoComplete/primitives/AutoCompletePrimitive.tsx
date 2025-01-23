@@ -111,6 +111,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                             startIcon={props.startIcon}
                             endIcon={
                                 <AutoCompleteInputIcons
+                                    inputSize={props.size}
                                     displayResetAction={vm.inputVm.displayResetAction}
                                     isDisabled={props.disabled}
                                     onResetValue={resetSelectedOption}
