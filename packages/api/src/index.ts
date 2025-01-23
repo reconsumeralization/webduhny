@@ -1,3 +1,4 @@
-export * from "~/Context";
-export * from "~/ServiceDiscovery";
-export * from "~/plugins/ContextPlugin";
+export * from "./Context";
+export * from "./decorateContext";
+export * from "./ServiceDiscovery";
+export * from "./plugins/ContextPlugin";
