@@ -1,4 +1,5 @@
 const { createPulumiCommand, processHooks } = require("../utils");
+const { getStackName } = require("../utils/getStackName");
 
 module.exports = createPulumiCommand({
     name: "destroy",
@@ -6,7 +7,12 @@ module.exports = createPulumiCommand({
     // without the deployment happening initially (e.g. CI/CD scaffold's `pullRequestClosed.yml` workflow).
     createProjectApplicationWorkspace: true,
     command: async ({ inputs, context, projectApplication, pulumi, getDuration }) => {
-        const { env, folder } = inputs;
+        const { env, variant, folder } = inputs;
+
+        const stackName = getStackName({
+            env,
+            variant
+        });
 
         let stackExists = true;
         try {
@@ -14,7 +20,7 @@ module.exports = createPulumiCommand({
             const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
             await pulumi.run({
-                command: ["stack", "select", env],
+                command: ["stack", "select", stackName],
                 args: {
                     secretsProvider: PULUMI_SECRETS_PROVIDER
                 },
@@ -29,11 +35,15 @@ module.exports = createPulumiCommand({
         }
 
         if (!stackExists) {
-            context.error(`Project application %s (%s} environment) does not exist.`, folder, env);
+            context.error(
+                `Project application %s (%s} environment) does not exist.`,
+                folder,
+                stackName
+            );
             return;
         }
 
-        const hooksParams = { context, env, projectApplication };
+        const hooksParams = { context, env, variant, projectApplication };
 
         await processHooks("hook-before-destroy", hooksParams);
 
@@ -47,6 +57,7 @@ module.exports = createPulumiCommand({
                 stdio: "inherit",
                 env: {
                     WEBINY_ENV: env,
+                    WEBINY_VARIANT: variant || "",
                     WEBINY_PROJECT_NAME: context.project.name
                 }
             }

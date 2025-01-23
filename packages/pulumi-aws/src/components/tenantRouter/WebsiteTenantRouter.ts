@@ -36,8 +36,8 @@ export class WebsiteTenantRouter extends pulumi.ComponentResource {
         const { region, dynamoDbTable } = getStackOutput<{ region: string; dynamoDbTable: string }>(
             {
                 folder: config?.apiFolder || "api",
-                env: config?.apiEnv || String(process.env.WEBINY_ENV),
-                variant: config?.apiVariant || String(process.env.WEBINY_VARIANT)
+                env: config?.apiEnv || process.env.WEBINY_ENV || "",
+                variant: config?.apiVariant || process.env.WEBINY_VARIANT || ""
             }
         );
 

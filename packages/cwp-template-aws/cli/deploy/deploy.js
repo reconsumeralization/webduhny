@@ -48,7 +48,13 @@ module.exports = async (inputs, context) => {
         installed && console.log();
 
         // 2. Check if first deployment.
-        const isFirstDeployment = !isCI && !getStackOutput({ folder: "apps/core", env, variant });
+        const isFirstDeployment =
+            !isCI &&
+            !getStackOutput({
+                folder: "apps/core",
+                env,
+                variant
+            });
         if (isFirstDeployment) {
             context.info(`Looks like this is your first time deploying the project.`);
             context.info(

@@ -1,10 +1,16 @@
 const { createPulumiCommand } = require("../utils");
+const { getStackName } = require("../utils/getStackName");
 
 module.exports = createPulumiCommand({
     name: "output",
     createProjectApplicationWorkspace: false,
     command: async ({ inputs, context, pulumi }) => {
-        const { env, folder, json } = inputs;
+        const { env, variant, folder, json } = inputs;
+
+        const stackName = getStackName({
+            env,
+            variant
+        });
 
         let stackExists = true;
         try {
@@ -12,7 +18,7 @@ module.exports = createPulumiCommand({
             const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
             await pulumi.run({
-                command: ["stack", "select", env],
+                command: ["stack", "select", `${stackName}`],
                 args: {
                     secretsProvider: PULUMI_SECRETS_PROVIDER
                 },
@@ -27,12 +33,14 @@ module.exports = createPulumiCommand({
         }
 
         if (stackExists) {
-            return pulumi.run({
+            return await pulumi.run({
                 command: ["stack", "output"],
                 args: {
                     json
                 },
-                execa: { stdio: "inherit" }
+                execa: {
+                    stdio: "inherit"
+                }
             });
         }
 
