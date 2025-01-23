@@ -57,7 +57,7 @@ module.exports = createPulumiCommand({
                 stdio: "inherit",
                 env: {
                     WEBINY_ENV: env,
-                    WEBINY_VARIANT: variant || "",
+                    WEBINY_ENV_VARIANT: variant || "",
                     WEBINY_PROJECT_NAME: context.project.name
                 }
             }

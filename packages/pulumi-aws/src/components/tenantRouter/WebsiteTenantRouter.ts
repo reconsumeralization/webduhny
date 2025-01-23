@@ -37,7 +37,7 @@ export class WebsiteTenantRouter extends pulumi.ComponentResource {
             {
                 folder: config?.apiFolder || "api",
                 env: config?.apiEnv || process.env.WEBINY_ENV || "",
-                variant: config?.apiVariant || process.env.WEBINY_VARIANT || ""
+                variant: config?.apiVariant || process.env.WEBINY_ENV_VARIANT || ""
             }
         );
 
