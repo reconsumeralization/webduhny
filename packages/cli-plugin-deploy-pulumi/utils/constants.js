@@ -1,1 +1,5 @@
-export const VARIANT_SEPARATOR = "___";
+const VARIANT_SEPARATOR = "___";
+
+module.exports = {
+    VARIANT_SEPARATOR
+};
