@@ -138,8 +138,6 @@ module.exports = {
                         return splitStackName(path.basename(current, ".json"));
                     });
 
-                    console.log(existingEnvs);
-
                     if (existingEnvs.length === 0) {
                         context.info(
                             "It seems that no environments have been deployed yet. Please deploy the project first."
