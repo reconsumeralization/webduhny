@@ -35,10 +35,12 @@ module.exports = createPulumiCommand({
         }
 
         if (!stackExists) {
+            const variantNameMessage = variant ? `, %s variant` : "";
             context.error(
-                `Project application %s (%s} environment) does not exist.`,
+                `Project application %s (%s environment${variantNameMessage}) does not exist.`,
                 folder,
-                stackName
+                env,
+                variant
             );
             return;
         }

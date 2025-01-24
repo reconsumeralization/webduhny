@@ -48,6 +48,13 @@ module.exports = createPulumiCommand({
             return console.log(JSON.stringify(null));
         }
 
-        context.error(`Project application %s (%s environment) does not exist.`, folder, env);
+        const variantMessage = variant ? `, %s variant` : "";
+
+        context.error(
+            `Project application %s (%s environment${variantMessage}) does not exist.`,
+            folder,
+            env,
+            variant
+        );
     }
 });

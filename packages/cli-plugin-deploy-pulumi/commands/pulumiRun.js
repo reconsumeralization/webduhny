@@ -37,10 +37,11 @@ module.exports = createPulumiCommand({
             }
 
             if (!stackExists) {
+                const variantNameMessage = variant ? `, ${context.error.hl(variant)} variant` : "";
                 throw new Error(
                     `Project application ${context.error.hl(folder)} (${context.error.hl(
-                        stackName
-                    )} environment) does not exist.`
+                        env
+                    )} environment${variantNameMessage}) does not exist.`
                 );
             }
         }
