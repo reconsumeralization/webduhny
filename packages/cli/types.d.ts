@@ -1,3 +1,5 @@
+import type yargs from "yargs";
+
 /**
  * Rename file to types.ts when switching the package to Typescript.
  */
@@ -10,6 +12,7 @@ export type NonEmptyArray<T> = [T, ...T[]];
  * Not in relation with "@webiny/plugins" package.
  */
 export interface PluginsContainer {
+    register(...args: any[]): void;
     byType<T extends Plugin>(type: T["type"]): T[];
 
     byName<T extends Plugin>(name: T["name"]): T;
@@ -39,6 +42,19 @@ interface Project {
      * Root path of the project.
      */
     root: string;
+}
+
+
+export interface IProjectApplicationPackage {
+    name: string;
+    paths: {
+        root: string;
+        relative: string;
+        packageJson: string;
+        config: string;
+    };
+    packageJson: Record<string, any>;
+    get config(): any;
 }
 
 export interface ProjectApplication {
@@ -82,16 +98,7 @@ export interface ProjectApplication {
     /**
      * A list of all the packages in the project application.
      */
-    get packages(): Array<{
-        name: string;
-        paths: {
-            root: string;
-            packageJson: string;
-            config: string;
-        };
-        packageJson: Record<string, any>;
-        get config(): any;
-    }>;
+    get packages(): IProjectApplicationPackage[];
 }
 
 /**
@@ -112,6 +119,10 @@ export interface CliContext {
      * All registered plugins.
      */
     plugins: PluginsContainer;
+    /**
+     * Load environment variables from a given file.
+     */
+    loadEnv(filePath: string, options?: {debug?: boolean}): Promise<void>;
     /**
      * All the environment variables.
      */
@@ -177,7 +188,7 @@ export interface CliContext {
  * @category Cli
  */
 export interface CliCommandPluginArgs {
-    yargs: any;
+    yargs: typeof yargs;
     context: CliContext;
 }
 

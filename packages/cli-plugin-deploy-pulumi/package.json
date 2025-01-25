@@ -38,6 +38,14 @@
     "p-retry": "^4.6.2",
     "replace-in-path": "^1.1.0"
   },
+  "devDependencies": {
+    "@types/humanize-duration": "^3.27.4",
+    "@types/node-notifier": "^8.0.5",
+    "@webiny/project-utils": "0.0.0",
+    "execa": "^5.1.1",
+    "rimraf": "^6.0.1",
+    "typescript": "5.3.3"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -46,7 +54,6 @@
   "adio": {
     "ignoreDirs": [
       "/node_modules/",
-      "/dist/",
       "commands/newWatch/handler"
     ],
     "ignore": {
@@ -55,5 +62,8 @@
       ]
     }
   },
-  "gitHead": "b8aec8a1be3f25c3b428b357fe1e352c7cbff9ae"
+  "scripts": {
+    "build": "yarn webiny run build",
+    "watch": "yarn webiny run watch"
+  }
 }

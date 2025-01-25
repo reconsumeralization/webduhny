@@ -1,0 +1,20 @@
+const getStackOutput = require("./getStackOutput");
+
+export interface IGetDeploymentId {
+    env?: string;
+    variant?: string;
+}
+
+export const getDeploymentId = params => {
+    if (!params.env) {
+        throw new Error(`Please specify environment, for example "dev".`);
+    }
+
+    const coreStackOutput = getStackOutput({
+        folder: "core",
+        env: params.env,
+        variant: params.variant
+    });
+
+    return coreStackOutput.deploymentId;
+};

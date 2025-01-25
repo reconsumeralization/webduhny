@@ -10697,6 +10697,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/humanize-duration@npm:^3.27.4":
+  version: 3.27.4
+  resolution: "@types/humanize-duration@npm:3.27.4"
+  checksum: 10/aa7fa41af839021c846a1728d2f097b7885f80acbc5050623a9804d23fd8fee19d2654eaae331f000a4e551b88d99cd0b5f6cc97aa99f869b9205f6248066827
+  languageName: node
+  linkType: hard
+
 "@types/inquirer@npm:8.2.10, @types/inquirer@npm:^8.2.10":
   version: 8.2.10
   resolution: "@types/inquirer@npm:8.2.10"
@@ -10947,6 +10954,15 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10/670c9b377c48189186ec415e3c8ed371f141ecc1a79ab71b213b20816adeffecba44dae4f8406cc0d09e6349a4db14eb8c5893f643d8e00fa19fc035cf49dee0
+  languageName: node
+  linkType: hard
+
+"@types/node-notifier@npm:^8.0.5":
+  version: 8.0.5
+  resolution: "@types/node-notifier@npm:8.0.5"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/ba8cec2f840f10d6daa901889ac60efedbf9608c8721384d85b4aeea3c85ba842f2ff10222cf62cf0334c4c31877aeddaf3bb1c9fb072c453c634e9a8d861753
   languageName: node
   linkType: hard
 
@@ -14960,11 +14976,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/cli-plugin-deploy-pulumi@workspace:packages/cli-plugin-deploy-pulumi"
   dependencies:
+    "@types/humanize-duration": "npm:^3.27.4"
+    "@types/node-notifier": "npm:^8.0.5"
     "@webiny/aws-sdk": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/data-migration": "npm:0.0.0"
     "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
     "@webiny/pulumi-sdk": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     body-parser: "npm:1.20.3"
@@ -14987,6 +15006,8 @@ __metadata:
     ora: "npm:4.1.1"
     p-retry: "npm:^4.6.2"
     replace-in-path: "npm:^1.1.0"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
 
