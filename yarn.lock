@@ -10856,6 +10856,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/listr@npm:^0.14.9":
+  version: 0.14.9
+  resolution: "@types/listr@npm:0.14.9"
+  dependencies:
+    "@types/node": "npm:*"
+    rxjs: "npm:^6.5.1"
+  checksum: 10/96f2b7611d798724fc02183167b1f8979fab48d7abe8a9bb300c066643ce9490080e786d8d9440e28abd92790f04b116ece1d1236094b177b67907057410820c
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.17.13":
   version: 4.17.13
   resolution: "@types/lodash@npm:4.17.13"
@@ -14977,6 +14987,7 @@ __metadata:
   resolution: "@webiny/cli-plugin-deploy-pulumi@workspace:packages/cli-plugin-deploy-pulumi"
   dependencies:
     "@types/humanize-duration": "npm:^3.27.4"
+    "@types/listr": "npm:^0.14.9"
     "@types/node-notifier": "npm:^8.0.5"
     "@webiny/aws-sdk": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
@@ -35686,7 +35697,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^6.3.3, rxjs@npm:^6.6.2, rxjs@npm:^6.6.7":
+"rxjs@npm:^6.3.3, rxjs@npm:^6.5.1, rxjs@npm:^6.6.2, rxjs@npm:^6.6.7":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:

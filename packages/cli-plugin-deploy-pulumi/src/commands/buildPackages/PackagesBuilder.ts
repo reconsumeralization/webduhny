@@ -1,7 +1,7 @@
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
 
 export class PackagesBuilder extends BasePackagesBuilder {
-    public async build(): Promise<void> {
+    public override async build(): Promise<void> {
         const BuilderClass = this.getBuilderClass();
 
         const builder = new BuilderClass({

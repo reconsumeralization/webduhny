@@ -7,7 +7,7 @@ import { measureDuration } from "../../utils";
 import { IProjectApplicationPackage } from "@webiny/cli/types";
 
 export class MultiplePackagesBuilder extends BasePackagesBuilder {
-    async build(): Promise<void> {
+    public override async build(): Promise<void> {
         const packages = this.packages;
         const context = this.context;
         const inputs = this.inputs;
@@ -82,7 +82,10 @@ export class MultiplePackagesBuilder extends BasePackagesBuilder {
             console.log();
             context.error(`Failed to build all packages. For more details, check the logs below.`);
             console.log();
-
+            /**
+             * Seems List package has wrong types or this never worked.
+             */
+            // @ts-expect-error
             err.errors.forEach(({ package: pkg, error }, i) => {
                 const number = `${i + 1}.`;
                 const name = context.error.hl(pkg.name);

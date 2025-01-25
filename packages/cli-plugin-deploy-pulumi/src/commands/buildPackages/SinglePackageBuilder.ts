@@ -1,8 +1,31 @@
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
 import { gray } from "chalk";
+import { Context } from "../../types";
 
-class SinglePackageBuilder extends BasePackagesBuilder {
-    async build() {
+interface IOptions {
+    env: string;
+    debug?: boolean;
+    cwd: string;
+    logs: boolean;
+}
+
+interface ILoadedConfigResultParams {
+    options: IOptions;
+    context: Context;
+}
+
+interface IConfigResult {
+    commands: {
+        build: (options: IOptions) => Promise<void>;
+    };
+}
+
+interface ILoadedConfigResult extends IConfigResult {
+    (params: ILoadedConfigResultParams): IConfigResult;
+}
+
+export class SinglePackageBuilder extends BasePackagesBuilder {
+    public override async build() {
         const pkg = this.packages[0];
         const context = this.context;
         const inputs = this.inputs;
@@ -13,20 +36,19 @@ class SinglePackageBuilder extends BasePackagesBuilder {
         const pkgRelativePath = gray(`(${pkg.paths.relative})`);
         context.info(`Building %s package...`, `${pkgName} ${pkgRelativePath}`);
 
-        const options = {
+        const options: IOptions = {
             env,
             debug,
             cwd: pkg.paths.root,
-
             // Not much sense in turning off logs when a single package is being built.
             logs: true
         };
-        // TODO left off here
-        let config = await this.loadConfig(pkg.paths.config);
-
-        let config = require(pkg.paths.config).default || require(pkg.paths.config);
-        if (typeof config === "function") {
-            config = config({ options, context });
+        const loadedConfig = await this.loadConfig(pkg.paths.config);
+        let config: IConfigResult;
+        if (typeof loadedConfig === "function") {
+            config = loadedConfig({ options, context });
+        } else {
+            config = loadedConfig;
         }
 
         const hasBuildCommand = config.commands && typeof config.commands.build === "function";
@@ -37,9 +59,7 @@ class SinglePackageBuilder extends BasePackagesBuilder {
         await config.commands.build(options);
     }
 
-    private async loadConfig(target: string) {
-        const loaded = await import(target);
+    private async loadConfig(target: string): Promise<ILoadedConfigResult> {
+        return await import(target);
     }
 }
-
-module.exports = { SinglePackageBuilder };
