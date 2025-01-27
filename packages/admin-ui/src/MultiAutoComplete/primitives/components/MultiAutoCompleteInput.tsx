@@ -7,7 +7,7 @@ import { cn, cva, VariantProps } from "~/utils";
 const multiAutoCompleteInputVariants = cva("wby-relative placeholder:wby-text-neutral-dimmed", {
     variants: {
         disabled: {
-            true: "wby-cursor-not-allowed disabled:text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled"
+            true: "wby-cursor-not-allowed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled"
         }
     }
 });

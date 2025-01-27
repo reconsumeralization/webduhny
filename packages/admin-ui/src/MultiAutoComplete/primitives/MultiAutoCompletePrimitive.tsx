@@ -27,6 +27,11 @@ type MultiAutoCompletePrimitiveProps = Omit<
      */
     emptyMessage?: React.ReactNode;
     /**
+     * Message to display when there are no options loaded or selected.
+     * Use it to invite the user to interact with the autocomplete by typing a value.
+     */
+    initialMessage?: React.ReactNode;
+    /**
      * Indicates if the autocomplete is loading options.
      */
     loading?: boolean;

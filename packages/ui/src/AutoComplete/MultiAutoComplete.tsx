@@ -161,7 +161,7 @@ export const MultiAutoComplete = ({
                 emptyMessage={noResultFound}
                 onValuesChange={onValuesChange}
                 onValueSearch={onInput}
-                isLoading={loading}
+                loading={loading}
                 allowFreeInput={allowFreeInput}
                 uniqueValues={unique}
             />

@@ -178,6 +178,14 @@ export const WithCustomEmptyMessage: Story = {
     }
 };
 
+export const WithCustomInitialMessage: Story = {
+    args: {
+        ...Default.args,
+        initialMessage: "Custom initial message.",
+        options: []
+    }
+};
+
 export const WithAllowFreeInput: Story = {
     args: {
         ...Default.args,

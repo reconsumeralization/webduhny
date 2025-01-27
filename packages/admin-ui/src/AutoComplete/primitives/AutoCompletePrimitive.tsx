@@ -12,6 +12,11 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      */
     label?: string;
     /**
+     * Message to display when there are no options loaded or selected.
+     * Use it to invite the user to interact with the autocomplete by typing a value.
+     */
+    initialMessage?: React.ReactNode;
+    /**
      * Message to display when there are no options.
      */
     emptyMessage?: React.ReactNode;

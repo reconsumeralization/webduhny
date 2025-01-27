@@ -11,6 +11,7 @@ interface MultiAutoCompletePresenterParams {
     displayResetAction?: boolean;
     emptyMessage?: any;
     loadingMessage?: any;
+    initialMessage?: any;
     options?: MultiAutoCompleteOption[];
     placeholder?: string;
     values?: string[];
@@ -65,7 +66,8 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
         this.optionsListPresenter.init({
             options: listOptions,
             emptyMessage: params.emptyMessage,
-            loadingMessage: params.loadingMessage
+            loadingMessage: params.loadingMessage,
+            initialMessage: params.initialMessage
         });
         this.selectedOptionsPresenter.init({
             options: this.getSelectedOptions(listOptions, params.values)
@@ -90,6 +92,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
+        this.optionsListPresenter.setLoadedOptions(true);
         this.params?.onValueSearch?.(value);
     };
 
