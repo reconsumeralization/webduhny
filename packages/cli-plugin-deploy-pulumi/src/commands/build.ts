@@ -10,7 +10,7 @@ export interface IBuildParams {
     cwd: string;
 }
 
-export const build = (params: IBuildParams, context: Context) => {
+export const buildCommand = (params: IBuildParams, context: Context) => {
     const command = createPulumiCommand({
         name: "build",
         createProjectApplicationWorkspace: true,

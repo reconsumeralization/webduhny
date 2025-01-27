@@ -1,4 +1,5 @@
 import { CliContext } from "@webiny/cli/types";
+import path from "path";
 // Tries to load env files from a couple of different places, for a stack and a given environment.
 
 // 1. Load from {PROJECT_APPLICATION_FOLDER}/.env.{PROVIDED_ENV}
@@ -10,9 +11,10 @@ export interface ILoadEnvVariablesInputs {
     debug?: boolean;
 }
 
-export const loadEnvVariables = async (inputs: ILoadEnvVariablesInputs, context: CliContext) => {
-    const path = require("path");
-
+export const loadEnvVariables = async (
+    inputs: ILoadEnvVariablesInputs,
+    context: CliContext
+): Promise<void> => {
     const { folder, env, debug } = inputs;
 
     const projectRoot = context.project.root;

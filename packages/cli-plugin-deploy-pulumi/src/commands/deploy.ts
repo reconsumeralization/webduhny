@@ -18,7 +18,7 @@ export interface IDeployParams {
     cwd: string;
 }
 
-export const deploy = (params: IDeployParams, context: CliContext) => {
+export const deployCommand = (params: IDeployParams, context: CliContext) => {
     const command = createPulumiCommand({
         name: "deploy",
         createProjectApplicationWorkspace: params.build,

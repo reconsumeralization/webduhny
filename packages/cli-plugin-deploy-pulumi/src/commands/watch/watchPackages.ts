@@ -24,7 +24,7 @@ export interface IWatchPackagesParams {
     context: Context;
 }
 
-export default async ({ inputs, output, context }: IWatchPackagesParams) => {
+export const watchPackages = async ({ inputs, output, context }: IWatchPackagesParams) => {
     const packages = await getPackages({ inputs, output, context });
     if (packages.length === 0) {
         output.log({

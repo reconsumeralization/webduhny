@@ -1,7 +1,7 @@
 import { createPulumiCommand } from "../utils";
 import { getStackName } from "../utils/getStackName";
 
-export const pulumiRun = createPulumiCommand({
+export const pulumiRunCommand = createPulumiCommand({
     name: "pulumi",
     createProjectApplicationWorkspace: false,
     command: async ({ inputs, context, pulumi }) => {

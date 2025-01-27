@@ -71,7 +71,7 @@ export const commands: CliCommandPlugin[] = [
                             /**
                              * TODO figure out how to pass generic to args.
                              */
-                            const { env, allowLocalStateFiles } = args as Record<string, any>;
+                            const { env, allowLocalStateFiles } = args as Record<string, string>;
 
                             // If the folder is not defined, we are destroying the whole project.
                             // In that case, we must confirm the environment name to destroy.
@@ -106,7 +106,15 @@ export const commands: CliCommandPlugin[] = [
                         });
                 },
                 async argv => {
-                    return require("./deploy")(argv, context);
+                    const { deployCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.deployCommand" */
+                        "./deploy"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return deployCommand(argv, context);
                 }
             );
 
@@ -141,7 +149,15 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    return require("./build")(argv, context);
+                    const { buildCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.buildCommand" */
+                        "./build"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return buildCommand(argv, context);
                 }
             );
 
@@ -216,7 +232,15 @@ export const commands: CliCommandPlugin[] = [
                         });
                     },
                     async argv => {
-                        return require("./newWatch")(argv, context);
+                        const { newWatch } = await import(
+                            /* webpackChunkName: "cli.plugin.deployPulumi.newWatchCommand" */
+                            "./newWatch"
+                        );
+                        /**
+                         * We expect all args to be set.
+                         */
+                        // @ts-expect-error
+                        return newWatch(argv, context);
                     }
                 );
             } else {
@@ -296,7 +320,15 @@ export const commands: CliCommandPlugin[] = [
                         });
                     },
                     async argv => {
-                        return require("./watch")(argv, context);
+                        const { watchCommand } = await import(
+                            /* webpackChunkName: "cli.plugin.deployPulumi.watchCommand" */
+                            "./watch"
+                        );
+                        /**
+                         * We expect all args to be set.
+                         */
+                        // @ts-expect-error
+                        return watchCommand(argv, context);
                     }
                 );
             }
@@ -326,7 +358,6 @@ export const commands: CliCommandPlugin[] = [
                             type: "string"
                         })
                         .check(args => {
-                            const { red } = require("chalk");
                             const { folder, confirmDestroyEnv } = args;
 
                             // If the folder is not defined, we are destroying the whole project.
@@ -359,7 +390,15 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    return require("./destroy")(argv, context);
+                    const { destroyCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.destroyCommand" */
+                        "./destroy"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return destroyCommand(argv, context);
                 }
             );
 
@@ -393,7 +432,15 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    return require("./output")(argv, context);
+                    const { outputCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.outputCommand" */
+                        "./output"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return outputCommand(argv, context);
                 }
             );
 
@@ -424,7 +471,15 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    return require("./pulumiRun")(argv, context);
+                    const { pulumiRunCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.pulumiRunCommand" */
+                        "./pulumiRun"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return pulumiRunCommand(argv, context);
                 }
             );
 
@@ -458,7 +513,15 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    return require("./executeMigrations")(argv, context);
+                    const { executeMigrationsCommand } = await import(
+                        /* webpackChunkName: "cli.plugin.deployPulumi.executeMigrationsCommand" */
+                        "./executeMigrations"
+                    );
+                    /**
+                     * We expect all args to be set.
+                     */
+                    // @ts-expect-error
+                    return executeMigrationsCommand(argv, context);
                 }
             );
         }

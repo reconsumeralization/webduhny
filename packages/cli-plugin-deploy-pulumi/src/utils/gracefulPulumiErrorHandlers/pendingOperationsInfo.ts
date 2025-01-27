@@ -1,4 +1,5 @@
 import { ProjectApplication } from "@webiny/cli/types";
+import chalk from "chalk";
 import { IUserCommandInput } from "~/types";
 
 const MATCH_STRING = "the stack is currently locked by";
@@ -22,7 +23,6 @@ export const pendingOperationsInfo = ({ error, context }: IPendingOperationsInfo
     if (typeof message === "string" && message.includes(MATCH_STRING)) {
         const cmd = `yarn webiny pulumi ${projectApplicationName} --env ${environmentName} -- cancel`;
 
-        const chalk = require("chalk");
         const message = [
             `The Pulumi error you've just experienced can occur`,
             `if one of the previous deployments has been interrupted or another deployment`,

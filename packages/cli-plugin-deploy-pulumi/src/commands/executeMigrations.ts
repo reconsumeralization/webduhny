@@ -16,7 +16,10 @@ export interface IExecuteMigrationsParams {
     force?: boolean;
 }
 
-export const executeMigrations = async (params: IExecuteMigrationsParams, context: Context) => {
+export const executeMigrationsCommand = async (
+    params: IExecuteMigrationsParams,
+    context: Context
+) => {
     const apiOutput = getStackOutput({
         folder: "apps/api",
         env: params.env,

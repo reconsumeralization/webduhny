@@ -17,7 +17,7 @@ import exitHook from "exit-hook";
 // is still in preview mode, so it's definitely not wise to use it on production environments.
 const WATCH_DISABLED_ENVIRONMENTS = ["prod", "production"];
 
-export default async (inputs: IUserCommandInput, context: Context) => {
+export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     // 1. Initial checks for deploy and build commands.
     if (!inputs.folder && !inputs.package) {
         throw new Error(

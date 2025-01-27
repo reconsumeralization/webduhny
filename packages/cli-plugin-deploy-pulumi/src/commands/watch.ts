@@ -14,7 +14,7 @@ import simpleOutput, { SimpleOutput } from "./watch/output/simpleOutput";
 import { listPackages } from "./watch/listPackages";
 import minimatch from "minimatch";
 import glob from "fast-glob";
-import watchPackages from "./watch/watchPackages";
+import { watchPackages } from "./watch/watchPackages";
 import { PackagesWatcher } from "./watch/watchers/PackagesWatcher";
 import {
     getPulumi,
@@ -23,7 +23,7 @@ import {
     loadEnvVariables,
     login,
     runHook
-} from "../utils";
+} from "~/utils";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -33,7 +33,7 @@ const PULUMI_WATCH_SUPPORTED = os.platform() !== "win32";
 
 // Note: we are not using `createPulumiCommand` here because this command has a bit specific
 // behaviour which is not encapsulated by `createPulumiCommand`. Maybe we can improve in the future.
-export default async (inputs: IUserCommandInput, context: Context) => {
+export const watchCommand = async (inputs: IUserCommandInput, context: Context) => {
     // 1. Initial checks for deploy and build commands.
     if (!inputs.folder && !inputs.package) {
         throw new Error(

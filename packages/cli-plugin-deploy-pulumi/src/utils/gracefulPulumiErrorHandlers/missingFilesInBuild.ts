@@ -1,4 +1,4 @@
-const { red } = require("chalk");
+import { red } from "chalk";
 
 const MATCH_STRING = "failed to compute archive hash for";
 

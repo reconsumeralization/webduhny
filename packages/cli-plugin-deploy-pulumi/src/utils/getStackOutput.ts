@@ -1,18 +1,18 @@
 import { getProject } from "@webiny/cli/utils";
 import { mapStackOutput } from "./mapStackOutput";
+import execa from "execa";
 
 const cache: Record<string, any> = {};
 
 export interface IGetOutputJsonParams {
     folder: string;
     env: string;
-    cwd: string | undefined;
+    cwd?: string | undefined;
     variant: string | undefined;
 }
 
-const getOutputJson = ({ folder, env, cwd, variant }: Partial<IGetOutputJsonParams>) => {
+const getOutputJson = ({ folder, env, cwd, variant }: IGetOutputJsonParams) => {
     const project = getProject();
-    const execa = require("execa");
 
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
 
@@ -21,12 +21,20 @@ const getOutputJson = ({ folder, env, cwd, variant }: Partial<IGetOutputJsonPara
     }
 
     try {
-        const command = ["webiny", "output", folder, "--env", env, "--json", "--no-debug"];
+        const command: string[] = [
+            "webiny",
+            "output",
+            folder,
+            "--env",
+            env,
+            "--json",
+            "--no-debug"
+        ];
         if (variant) {
             command.push("--variant", variant);
         }
 
-        const { stdout } = execa.sync("yarn", command.filter(Boolean), {
+        const { stdout } = execa.sync("yarn", command, {
             cwd: cwd || project.root
         });
 
@@ -42,6 +50,7 @@ export interface IGetStackOutputParams {
     folder: string;
     env: string;
     variant: string | undefined;
+    cwd?: string;
     map?: Record<string, any>;
 }
 
@@ -115,7 +124,12 @@ export const getStackOutput = <T extends IStackOutput = IStackOutput>(
         throw new Error(`Please specify environment, for example "dev".`);
     }
 
-    const output = getOutputJson(args);
+    const output = getOutputJson({
+        folder: args.folder,
+        env: args.env,
+        variant: args.variant,
+        cwd: args.cwd
+    });
     if (!output) {
         return output;
     }

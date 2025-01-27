@@ -1,4 +1,7 @@
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
+import { ZeroPackagesBuilder } from "./ZeroPackagesBuilder";
+import { SinglePackageBuilder } from "./SinglePackageBuilder";
+import { MultiplePackagesBuilder } from "./MultiplePackagesBuilder";
 
 export class PackagesBuilder extends BasePackagesBuilder {
     public override async build(): Promise<void> {
@@ -16,16 +19,13 @@ export class PackagesBuilder extends BasePackagesBuilder {
     private getBuilderClass() {
         const packagesCount = this.packages.length;
         if (packagesCount === 0) {
-            const { ZeroPackagesBuilder } = require("./ZeroPackagesBuilder");
             return ZeroPackagesBuilder;
         }
 
         if (packagesCount === 1) {
-            const { SinglePackageBuilder } = require("./SinglePackageBuilder");
             return SinglePackageBuilder;
         }
 
-        const { MultiplePackagesBuilder } = require("./MultiplePackagesBuilder");
         return MultiplePackagesBuilder;
     }
 }

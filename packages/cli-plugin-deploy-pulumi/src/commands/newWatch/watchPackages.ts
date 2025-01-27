@@ -4,7 +4,7 @@ import fs from "fs";
 import { Worker } from "worker_threads";
 import chalk from "chalk";
 import execa from "execa";
-import { getRandomColorForString } from "../../utils";
+import { getRandomColorForString } from "~/utils";
 import { SimpleOutput } from "../watch/output/simpleOutput";
 
 const parseMessage = (message: string) => {
@@ -24,7 +24,12 @@ export interface IWatchPackagesParams {
     context: Pick<Context, "debug" | "info" | "error" | "warning">;
 }
 
-export default async ({ inputs, output, context }: IWatchPackagesParams) => {
+/**
+ * TODO @adrian
+ *
+ * Cant find where is this imported (it used to be default export)
+ */
+export const watchPackages = async ({ inputs, output, context }: IWatchPackagesParams) => {
     const packages = await getPackages({ inputs, output, context });
     if (packages.length === 0) {
         output.log({
