@@ -1,8 +1,7 @@
 import { Context, IPulumi, IUserCommandInput } from "~/types";
-
-const { measureDuration } = require("../../utils");
-const ora = require("ora");
-const isCI = require("is-ci");
+import { measureDuration } from "~/utils";
+import ora from "ora";
+import { isCI } from "ci-info";
 
 const spinnerMessages: [number, string][] = [
     [60, "Still deploying..."],
