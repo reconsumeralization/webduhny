@@ -3,10 +3,12 @@ import { ReactComponent as Close } from "@material-design-icons/svg/outlined/clo
 import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
 import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
+import { Loader } from "~/Loader";
 
 interface MultiAutoCompleteInputIconsProps {
     displayResetAction: boolean;
     inputSize?: "md" | "lg" | "xl" | null;
+    loading?: boolean;
     disabled?: boolean;
     onOpenChange: (open: boolean) => void;
     onResetValue: () => void;
@@ -15,6 +17,7 @@ interface MultiAutoCompleteInputIconsProps {
 export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsProps) => {
     return (
         <div className={"wby-flex wby-items-center wby-gap-sm"}>
+            {props.loading && <Loader size={props.inputSize === "xl" ? "sm" : "xs"} />}
             {props.displayResetAction && (
                 <IconButton
                     size={props.inputSize === "xl" ? "sm" : "xs"} // Map button size based on the input size.

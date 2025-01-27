@@ -119,6 +119,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                                     inputSize={props.size}
                                     displayResetAction={vm.inputVm.displayResetAction}
                                     disabled={props.disabled}
+                                    loading={props.loading}
                                     onResetValue={resetSelectedOption}
                                     onOpenChange={() => setListOpenState(!vm.optionsListVm.open)}
                                 />

@@ -87,6 +87,13 @@ export const WithStartIcon: Story = {
     }
 };
 
+export const WithLoading: Story = {
+    args: {
+        ...Default.args,
+        loading: true
+    }
+};
+
 export const WithoutResetAction: Story = {
     args: {
         ...Default.args,
