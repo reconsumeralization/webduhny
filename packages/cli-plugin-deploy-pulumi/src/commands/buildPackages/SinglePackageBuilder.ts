@@ -61,7 +61,10 @@ export class SinglePackageBuilder extends BasePackagesBuilder {
     }
 
     private async loadConfig(target: string): Promise<ILoadedConfigResult> {
-        const module = await import(target);
+        const module = await import(
+            /* webpackChunkName: "cli.plugin.deployPulumi.SinglePackageBuilder" */
+            target
+        );
         return module.default ? module.default : module;
     }
 }

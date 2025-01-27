@@ -57,7 +57,10 @@ export class SinglePackageWatcher extends BasePackagesWatcher {
     }
 
     private async loadConfig(target: string): Promise<ILoadedConfigResult> {
-        const module = await import(target);
+        const module = await import(
+            /* webpackChunkName: "cli.plugin.deployPulumi.SinglePackageWatcher" */
+            target
+        );
         return module.default ? module.default : module;
     }
 }

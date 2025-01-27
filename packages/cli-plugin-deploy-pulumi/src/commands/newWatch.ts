@@ -11,6 +11,7 @@ import { listPackages } from "./newWatch/listPackages";
 import { PackagesWatcher } from "./newWatch/watchers/PackagesWatcher";
 import { initInvocationForwarding } from "./newWatch/initInvocationForwarding";
 import { replaceLambdaFunctions } from "./newWatch/replaceLambdaFunctions";
+import exitHook from "exit-hook";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -154,9 +155,6 @@ export default async (inputs: IUserCommandInput, context: Context) => {
     );
 
     console.log();
-
-    // eslint-disable-next-line
-    const { default: exitHook } = await import("exit-hook");
 
     exitHook(() => {
         console.log();

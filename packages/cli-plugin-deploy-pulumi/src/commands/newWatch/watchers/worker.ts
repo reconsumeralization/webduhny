@@ -43,6 +43,10 @@ for (let i = 0; i < types.length; i++) {
 (async () => {
     try {
         const { options, package: pckg } = workerData;
+        /**
+         * We disable the required import comment because we do not know what will be here.
+         */
+        // eslint-disable-next-line
         let config = await import(pckg.config);
         if (config.default) {
             config = config.default;

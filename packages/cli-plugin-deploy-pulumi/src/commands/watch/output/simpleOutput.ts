@@ -112,7 +112,7 @@ export class SimpleOutput {
             .map(log => {
                 let message = log.message;
                 if (this.showTimestamps) {
-                    let timestamp = this.getTimestamp(log.createdOn);
+                    const timestamp = this.getTimestamp(log.createdOn);
                     message = `${gray(timestamp)} ${message}`;
                 }
                 return message;
@@ -164,7 +164,7 @@ export class SimpleOutput {
     }
 
     private stopDeploying({ error }: ISimpleOutputStopDeployParams = {}): void {
-        let duration = this.getDeploymentDuration();
+        const duration = this.getDeploymentDuration();
         let deploymentStatus = green("‣ " + duration + "s ‣ Deployment successful.");
         if (error) {
             deploymentStatus = red("‣ " + duration + "s ‣ Deployment failed.");

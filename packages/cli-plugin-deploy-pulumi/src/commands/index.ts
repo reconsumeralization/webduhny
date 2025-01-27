@@ -81,7 +81,7 @@ export const commands: CliCommandPlugin[] = [
                                 return true;
                             }
 
-                            let pulumiBackend =
+                            const pulumiBackend =
                                 process.env.WEBINY_PULUMI_BACKEND ||
                                 process.env.WEBINY_PULUMI_BACKEND_URL ||
                                 process.env.PULUMI_LOGIN;

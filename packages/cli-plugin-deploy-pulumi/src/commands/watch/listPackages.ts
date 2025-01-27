@@ -1,7 +1,6 @@
-import { IProjectApplicationPackage, IUserCommandInput } from "../../types";
-
-const execa = require("execa");
-const { WebinyConfigFile } = require("./WebinyConfigFile");
+import { IUserCommandInput } from "../../types";
+import execa from "execa";
+import { WebinyConfigFile } from "./WebinyConfigFile";
 
 interface IListPackagesParams {
     inputs: IUserCommandInput;

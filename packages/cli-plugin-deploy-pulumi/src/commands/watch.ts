@@ -130,8 +130,8 @@ export default async (inputs: IUserCommandInput, context: Context) => {
     }
 
     // 1.1. Check if the project application and Pulumi stack exist.
-    let PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
-    let PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
+    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
+    const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
     if (inputs.deploy && projectApplication) {
         const { env, variant } = inputs;
@@ -464,7 +464,7 @@ interface IPrintLogParams {
 
 const printLog = ({ pattern = "*", consoleLog, output }: IPrintLogParams) => {
     const plainPrefix = `${consoleLog.meta.functionName}: `;
-    let message = consoleLog.args.join(" ").trim();
+    const message = consoleLog.args.join(" ").trim();
     if (message) {
         if (minimatch(plainPrefix, pattern)) {
             const coloredPrefix = chalk.hex(getRandomColorForString(plainPrefix)).bold(plainPrefix);
