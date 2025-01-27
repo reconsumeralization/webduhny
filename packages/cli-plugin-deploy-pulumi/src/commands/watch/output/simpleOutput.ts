@@ -27,13 +27,13 @@ export interface IDeployment {
 
 export interface ISimpleOutputLogParams {
     message: string;
-    type: "build" | "logs";
+    type: "build" | "logs" | "deploy";
 }
 
 export interface ISimpleOutputLogInitializeParams {
     build?: boolean;
     deploy?: boolean;
-    remoteRuntimeLogs?: number;
+    remoteRuntimeLogs?: string;
     showTimestamps?: boolean;
 }
 

@@ -6,7 +6,7 @@ export interface IRunHookParamsArgs {
     env: string;
     variant: string | undefined;
     inputs: IUserCommandInput;
-    projectApplication: ProjectApplication;
+    projectApplication: ProjectApplication | undefined;
     [key: string]: any;
 }
 

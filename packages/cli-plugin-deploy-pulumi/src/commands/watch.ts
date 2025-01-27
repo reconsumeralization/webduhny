@@ -1,27 +1,29 @@
-const os = require("os");
-const fs = require("fs");
-const chalk = require("chalk");
-const path = require("path");
-const localtunnel = require("localtunnel");
-const express = require("express");
-const bodyParser = require("body-parser");
-const { getProjectApplication, getProject } = require("@webiny/cli/utils");
-const get = require("lodash/get");
-const merge = require("lodash/merge");
-const simpleOutput = require("./watch/output/simpleOutput");
-const listPackages = require("./watch/listPackages");
-const minimatch = require("minimatch");
-const glob = require("fast-glob");
-const watchPackages = require("./watch/watchPackages");
-const { PackagesWatcher } = require("./watch/watchers/PackagesWatcher");
-const {
-    login,
+import { Context, IUserCommandInput, ProjectApplication } from "../types";
+import os from "os";
+import fs from "fs";
+import chalk from "chalk";
+import path from "path";
+// @ts-expect-error
+import localtunnel from "localtunnel";
+import express from "express";
+import bodyParser from "body-parser";
+import { getProject, getProjectApplication } from "@webiny/cli/utils";
+import get from "lodash/get";
+import merge from "lodash/merge";
+import simpleOutput, { SimpleOutput } from "./watch/output/simpleOutput";
+import { listPackages } from "./watch/listPackages";
+import minimatch from "minimatch";
+import glob from "fast-glob";
+import watchPackages from "./watch/watchPackages";
+import { PackagesWatcher } from "./watch/watchers/PackagesWatcher";
+import {
     getPulumi,
     getRandomColorForString,
+    getStackName,
     loadEnvVariables,
+    login,
     runHook
-} = require("../utils");
-const { getStackName } = require("../utils/getStackName");
+} from "../utils";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -31,7 +33,7 @@ const PULUMI_WATCH_SUPPORTED = os.platform() !== "win32";
 
 // Note: we are not using `createPulumiCommand` here because this command has a bit specific
 // behaviour which is not encapsulated by `createPulumiCommand`. Maybe we can improve in the future.
-module.exports = async (inputs, context) => {
+export default async (inputs: IUserCommandInput, context: Context) => {
     // 1. Initial checks for deploy and build commands.
     if (!inputs.folder && !inputs.package) {
         throw new Error(
@@ -39,7 +41,7 @@ module.exports = async (inputs, context) => {
         );
     }
 
-    let projectApplication;
+    let projectApplication: ProjectApplication | undefined;
     if (inputs.folder) {
         // Detect if an app alias was provided.
         const project = getProject();
@@ -128,7 +130,7 @@ module.exports = async (inputs, context) => {
     }
 
     // 1.1. Check if the project application and Pulumi stack exist.
-    let PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
+    let PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
     let PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
     if (inputs.deploy && projectApplication) {
@@ -168,7 +170,7 @@ module.exports = async (inputs, context) => {
     const output = simpleOutput;
 
     if (typeof output.initialize === "function") {
-        await output.initialize(inputs);
+        output.initialize(inputs);
     }
 
     const logging = {
@@ -182,8 +184,8 @@ module.exports = async (inputs, context) => {
 
             logging.url = tunnel.url;
 
-            const uniqueLocalTunnelErrorMessages = [];
-            tunnel.on("error", e => {
+            const uniqueLocalTunnelErrorMessages: string[] = [];
+            tunnel.on("error", (e: Error) => {
                 // We're ensuring the same message is not printed twice or more.
                 // We're doing this because we've seen the same error message being printed
                 // multiple times, and it's not really helpful. This way we're ensuring
@@ -298,7 +300,7 @@ module.exports = async (inputs, context) => {
 
             // The final array of values that will be sent to Pulumi CLI's "--path" argument.
             // NOTE: for Windows, there's a bug in Pulumi preventing us to use path filtering.
-            let pathArg = undefined;
+            let pathArg: string[] | undefined = undefined;
             if (PULUMI_WATCH_SUPPORTED) {
                 pathArg = [...buildFolders];
 
@@ -330,26 +332,42 @@ module.exports = async (inputs, context) => {
                 args: {
                     secretsProvider: PULUMI_SECRETS_PROVIDER,
                     color: "always",
+                    /**
+                     * TODO @adrian
+                     *
+                     * "path" expects a string or undefined. "pathArg" is an array
+                     */
+                    // @ts-expect-error
                     path: pathArg,
-                    debug: inputs.debug
+                    debug: !!inputs.debug
                 },
                 execa: {
                     env: {
                         WEBINY_ENV: inputs.env,
                         WEBINY_ENV_VARIANT: inputs.variant || "",
                         WEBINY_PROJECT_NAME: context.project.name,
-                        WEBINY_LOGS_FORWARD_URL: logging.url
+                        WEBINY_LOGS_FORWARD_URL: logging.url || undefined
                     }
                 }
             });
-
-            watchCloudInfrastructure.stdout.on("data", data => {
-                const lines = data.toString().split("\n");
+            /**
+             * TODO @adrian
+             *
+             * Possibly undefined stdout. Do we need to check?
+             */
+            watchCloudInfrastructure.stdout!.on("data", data => {
+                const lines: string[] = data.toString().split("\n");
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
                     try {
+                        /**
+                         * TODO @adrian
+                         *
+                         * Match is possibly null. do we need to check?
+                         */
                         const [, , name, message] = line
-                            .match(/(.*)\[(.*)\] (.*)/)
+                            // added ! at the end of next line
+                            .match(/(.*)\[(.*)\] (.*)/)!
                             .map(item => item.trim());
 
                         if (name) {
@@ -372,8 +390,12 @@ module.exports = async (inputs, context) => {
                     }
                 }
             });
-
-            watchCloudInfrastructure.stderr.on("data", data => {
+            /**
+             * TODO @adrian
+             *
+             * possibly undefined stderr. Do we need to check?
+             */
+            watchCloudInfrastructure.stderr!.on("data", data => {
                 output.log({
                     type: "deploy",
                     message: data.toString()
@@ -429,7 +451,18 @@ module.exports = async (inputs, context) => {
     }
 };
 
-const printLog = ({ pattern = "*", consoleLog, output }) => {
+interface IPrintLogParams {
+    pattern: string | undefined;
+    consoleLog: {
+        meta: {
+            functionName: string;
+        };
+        args: string[];
+    };
+    output: SimpleOutput;
+}
+
+const printLog = ({ pattern = "*", consoleLog, output }: IPrintLogParams) => {
     const plainPrefix = `${consoleLog.meta.functionName}: `;
     let message = consoleLog.args.join(" ").trim();
     if (message) {

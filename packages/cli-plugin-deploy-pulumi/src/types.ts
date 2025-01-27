@@ -15,7 +15,7 @@ export interface IUserCommandInput {
     debug?: boolean;
     cwd?: string;
     telemetry?: boolean;
-    logs?: boolean;
+    logs?: string;
     json?: boolean;
     build?: boolean;
     deploy?: boolean;
@@ -24,6 +24,7 @@ export interface IUserCommandInput {
     inspect?: boolean;
     depth?: number;
     allowProduction?: boolean;
+    remoteRuntimeLogs?: string;
     increaseTimeout?: number;
     deploymentLogs?: boolean;
     _: (string | boolean | number)[];

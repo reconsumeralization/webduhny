@@ -22,6 +22,7 @@ const decompressAndJsonParse = async (input: string) => {
      *
      * jsonStringResult is a buffer. TS complains.
      */
+    // @ts-expect-error
     return JSON.parse(jsonStringResult);
 };
 
@@ -33,7 +34,7 @@ export interface IInitInvocationForwardingParamsLambdaFunction {
 export interface IInitInvocationForwardingParams {
     iotEndpoint: string;
     iotEndpointTopic: string;
-    sessionId: string;
+    sessionId: number;
     lambdaFunctions: IInitInvocationForwardingParamsLambdaFunction[];
 }
 
@@ -72,6 +73,7 @@ export const initInvocationForwarding = async ({
                              * TODO @adrian
                              * Do we expect lambda to exist?
                              */
+                            // @ts-expect-error
                             path: invokedLambdaFunction.path,
                             args: await decompressAndJsonParse(payload.data.compressedArgs)
                         }

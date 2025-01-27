@@ -17,7 +17,7 @@ export interface IReplaceLambdaFunctionsParamsLambdaFunction {
 export interface IReplaceLambdaFunctionsParams {
     iotEndpoint: string;
     iotEndpointTopic: string;
-    sessionId: string;
+    sessionId: number;
     lambdaFunctions: IReplaceLambdaFunctionsParamsLambdaFunction[];
     increaseTimeout?: number;
 }

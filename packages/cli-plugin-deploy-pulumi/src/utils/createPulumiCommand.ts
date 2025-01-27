@@ -3,7 +3,7 @@ import path from "path";
 import { getProject, getProjectApplication, sendEvent } from "@webiny/cli/utils";
 import {
     createProjectApplicationWorkspace,
-    ICreateProjectApplicationWorkspaceParams
+    ICreateProjectApplicationWorkspaceCallable
 } from "./createProjectApplicationWorkspace";
 import { login } from "./login";
 import { loadEnvVariables } from "./loadEnvVariables";
@@ -22,13 +22,13 @@ export interface ICreatePulumiCommandParamsCommandParams {
 }
 
 export interface ICreatePulumiCommandParamsCommand {
-    (params: ICreatePulumiCommandParamsCommandParams): Promise<any>;
+    (params: ICreatePulumiCommandParamsCommandParams): Promise<unknown>;
 }
 
 export interface ICreatePulumiCommandParams {
     name: string;
     command: ICreatePulumiCommandParamsCommand;
-    createProjectApplicationWorkspace?: boolean;
+    createProjectApplicationWorkspace?: ICreateProjectApplicationWorkspaceCallable | false;
     telemetry?: boolean;
 }
 
@@ -86,7 +86,7 @@ export const createPulumiCommand = ({
             commandParams: JSON.stringify(params)
         };
 
-        let projectApplication: ProjectApplication | null = null;
+        let projectApplication: ProjectApplication | undefined = undefined;
 
         try {
             if (sendTelemetryEvents) {
@@ -108,10 +108,15 @@ export const createPulumiCommand = ({
             if (createProjectApplicationWorkspaceParam !== false) {
                 await createProjectApplicationWorkspace({
                     projectApplication,
-                    context,
-                    inputs: params,
-                    env: params.env,
-                    variant: params.variant
+                    inputs: params
+                    /**
+                     * TODO @adrian
+                     *
+                     * These vars are not used in the function, should we remove them?
+                     */
+                    // context,
+                    // env: params.env,
+                    // variant: params.variant
                 });
             }
 
@@ -144,7 +149,15 @@ export const createPulumiCommand = ({
             return result;
         } catch (e) {
             const gracefulError = GracefulPulumiError.from(e, {
-                projectApplication,
+                projectApplication: {
+                    id: projectApplication?.id || "unknown"
+                },
+                /**
+                 * TODO @adrian
+                 *
+                 * command is a function, this does not work.
+                 */
+                // @ts-expect-error
                 commandName: command,
                 commandParams: params
             });

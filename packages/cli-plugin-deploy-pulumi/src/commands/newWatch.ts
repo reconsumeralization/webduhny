@@ -1,17 +1,16 @@
 import { Context, IUserCommandInput, ProjectApplication } from "../types";
-
-const chalk = require("chalk");
-const path = require("path");
-const { getProjectApplication, getProject } = require("@webiny/cli/utils");
-const get = require("lodash/get");
-const merge = require("lodash/merge");
-const { loadEnvVariables, runHook, getDeploymentId } = require("../utils");
-const { getIotEndpoint } = require("./newWatch/getIotEndpoint");
-const { listLambdaFunctions } = require("./newWatch/listLambdaFunctions");
-const listPackages = require("./newWatch/listPackages");
-const { PackagesWatcher } = require("./newWatch/watchers/PackagesWatcher");
-const { initInvocationForwarding } = require("./newWatch/initInvocationForwarding");
-const { replaceLambdaFunctions } = require("./newWatch/replaceLambdaFunctions");
+import chalk from "chalk";
+import path from "path";
+import { getProject, getProjectApplication } from "@webiny/cli/utils";
+import get from "lodash/get";
+import merge from "lodash/merge";
+import { getDeploymentId, loadEnvVariables, runHook } from "../utils";
+import { getIotEndpoint } from "./newWatch/getIotEndpoint";
+import { listLambdaFunctions } from "./newWatch/listLambdaFunctions";
+import { listPackages } from "./newWatch/listPackages";
+import { PackagesWatcher } from "./newWatch/watchers/PackagesWatcher";
+import { initInvocationForwarding } from "./newWatch/initInvocationForwarding";
+import { replaceLambdaFunctions } from "./newWatch/replaceLambdaFunctions";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -90,7 +89,13 @@ export default async (inputs: IUserCommandInput, context: Context) => {
         }
     }
 
-    const hookArgs = { context, env: inputs.env, inputs, projectApplication };
+    const hookArgs = {
+        context,
+        env: inputs.env,
+        variant: inputs.variant,
+        inputs,
+        projectApplication
+    };
 
     await runHook({
         hook: "hook-before-watch",
@@ -160,7 +165,7 @@ export default async (inputs: IUserCommandInput, context: Context) => {
         context.info(`Terminating local AWS Lambda development session.`);
         context.warning(
             `Note that once the session is terminated, the %s application will no longer work. To fix this, you %s redeploy it via the %s command. Learn more: %s.`,
-            projectApplication.name,
+            projectApplication?.name,
             "MUST",
             deployCommand,
             learnMoreLink
@@ -187,8 +192,12 @@ export default async (inputs: IUserCommandInput, context: Context) => {
         lambdaFunctions,
         increaseTimeout
     });
-
-    let inspector;
+    /**
+     * TODO @adrian
+     *
+     * Maybe we can import in the top and then handle the rest here?
+     */
+    let inspector: any;
     if (inputs.inspect) {
         inspector = require("inspector");
         inspector.open(9229, "127.0.0.1");
@@ -205,6 +214,12 @@ export default async (inputs: IUserCommandInput, context: Context) => {
         iotEndpointTopic,
         lambdaFunctions,
         sessionId,
+        /**
+         * TODO @adrian
+         *
+         * This does not exist in initInvocationForwarding params
+         */
+        // @ts-expect-error
         inspector
     });
 

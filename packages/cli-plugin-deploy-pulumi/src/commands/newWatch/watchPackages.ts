@@ -92,6 +92,7 @@ export default async ({ inputs, output, context }: IWatchPackagesParams) => {
                      *
                      * This does not work properly
                      */
+                    // @ts-expect-error
                     log(e);
 
                     resolve({

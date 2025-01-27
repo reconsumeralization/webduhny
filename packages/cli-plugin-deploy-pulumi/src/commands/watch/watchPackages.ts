@@ -5,6 +5,7 @@ import chalk from "chalk";
 import execa from "execa";
 import { getRandomColorForString } from "../../utils";
 import { WebinyConfigFile } from "./WebinyConfigFile";
+import { SimpleOutput } from "./output/simpleOutput";
 
 const parseMessage = (message: string) => {
     try {
@@ -19,7 +20,7 @@ const parseMessage = (message: string) => {
 
 export interface IWatchPackagesParams {
     inputs: IUserCommandInput;
-    output: unknown;
+    output: SimpleOutput;
     context: Context;
 }
 
@@ -86,7 +87,11 @@ export default async ({ inputs, output, context }: IWatchPackagesParams) => {
                             current.name
                         )}:`
                     );
-
+                    /**
+                     * TODO @adrian
+                     * This never worked...?
+                     */
+                    // @ts-expect-error
                     log(e);
 
                     resolve({
@@ -103,31 +108,38 @@ export default async ({ inputs, output, context }: IWatchPackagesParams) => {
     await Promise.all(promises);
 };
 
-const getPackages = async ({ inputs, context, output }) => {
-    let packagesList = [];
+interface IGetPackagesParams {
+    inputs: IUserCommandInput;
+    output: SimpleOutput;
+    context: Context;
+}
+
+const getPackages = async ({ inputs, context, output }: IGetPackagesParams) => {
+    let packagesList: string[] = [];
     if (inputs.package) {
         packagesList = Array.isArray(inputs.package) ? inputs.package : [inputs.package];
     } else {
-        packagesList = await execa("yarn", [
+        const command: string[] = [
             "webiny",
             "workspaces",
             "tree",
             "--json",
             "--depth",
-            inputs.depth,
+            String(inputs.depth || ""),
             "--distinct",
             "--folder",
             inputs.folder
-        ]).then(({ stdout }) => JSON.parse(stdout));
+        ];
+        packagesList = await execa("yarn", command).then(({ stdout }) => JSON.parse(stdout));
     }
 
-    const commandArgs = [
+    const commandArgs: string[] = [
         "webiny",
         "workspaces",
         "list",
         "--json",
         "--withPath",
-        ...packagesList.reduce((current, item) => {
+        ...packagesList.reduce<string[]>((current, item) => {
             current.push("--scope", item);
             return current;
         }, [])
@@ -185,7 +197,7 @@ const getPackages = async ({ inputs, context, output }) => {
 
 interface ICreateLogParams {
     multipleWatches: boolean;
-    output: unknown;
+    output: SimpleOutput;
     context: Context;
 }
 

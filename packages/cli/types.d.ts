@@ -57,6 +57,16 @@ export interface IProjectApplicationPackage {
     get config(): any;
 }
 
+export interface IProjectApplicationConfigCli {
+    watch?: boolean;
+}
+
+export interface IProjectApplicationConfig {
+    appAliases?: Record<string, string>;
+    cli?: IProjectApplicationConfigCli;
+    [key: string]: unknown
+}
+
 export interface ProjectApplication {
     /**
      * Unique ID of the project application.
@@ -89,7 +99,7 @@ export interface ProjectApplication {
     /**
      * Project application config (exported via `webiny.application.ts` file).
      */
-    config: Record<string, any>;
+    config: IProjectApplicationConfig;
     /**
      * Project application package.json.
      */
