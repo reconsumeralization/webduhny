@@ -1,5 +1,6 @@
 import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
+import { requireConfig } from "~/utils";
 
 require("@webiny/cli/utils/importModule");
 
@@ -37,10 +38,14 @@ process.stderr.write = (chunk, encoding, callback) => {
 };
 
 const { options, package: pckg } = workerData;
-let config = require(pckg.config).default || require(pckg.config);
-if (typeof config === "function") {
-    config = config({ options: { ...options, cwd: pckg.root }, context: cli });
-}
+
+const config = requireConfig(pckg.config, {
+    options: {
+        ...options,
+        cwd: pckg.root
+    },
+    context: cli
+});
 
 const hasBuildCommand = config.commands && typeof config.commands.build === "function";
 if (!hasBuildCommand) {

@@ -1,5 +1,6 @@
 import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
+import { requireConfig } from "~/utils";
 
 require("@webiny/cli/utils/importModule");
 
@@ -32,20 +33,14 @@ for (let i = 0; i < types.length; i++) {
 (async () => {
     try {
         const { options, package: pckg } = workerData;
-        /**
-         * TODO @adrian
-         *
-         * Do we want to have some common config loader?
-         * We have a ton of these in the codebase.
-         */
-        let config = require(pckg.config);
-        if (config.default) {
-            config = config.default;
-        }
 
-        if (typeof config === "function") {
-            config = config({ options: { ...options, cwd: pckg.root }, context: cli });
-        }
+        const config = requireConfig(pckg.config, {
+            options: {
+                ...options,
+                cwd: pckg.root
+            },
+            context: cli
+        });
 
         if (typeof config.commands.watch !== "function") {
             console.log(

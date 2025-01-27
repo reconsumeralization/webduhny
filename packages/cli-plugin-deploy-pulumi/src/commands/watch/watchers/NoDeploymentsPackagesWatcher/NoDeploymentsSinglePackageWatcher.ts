@@ -1,4 +1,5 @@
 import { BasePackagesWatcher } from "./../BasePackagesWatcher";
+import { requireConfig } from "~/utils";
 
 export class NoDeploymentsSinglePackageWatcher extends BasePackagesWatcher {
     public override async watch(): Promise<void> {
@@ -16,17 +17,16 @@ export class NoDeploymentsSinglePackageWatcher extends BasePackagesWatcher {
             // Not much sense in turning off logs when a single package is being built.
             logs: true
         };
-        // TODO @bruno use some general config loader
-        let config = require(pkg.paths.config).default || require(pkg.paths.config);
-        if (typeof config === "function") {
-            config = config({ options, context });
-        }
+        const config = requireConfig(pkg.paths.config, {
+            options,
+            context
+        });
 
         const hasWatchCommand = config.commands && typeof config.commands.watch === "function";
         if (!hasWatchCommand) {
             throw new Error("Watch command not found.");
         }
 
-        await config.commands.watch(options);
+        await config.commands.watch(options, context);
     }
 }

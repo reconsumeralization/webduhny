@@ -1,6 +1,7 @@
 import { IUserCommandInput } from "~/types";
 import execa from "execa";
 import { WebinyConfigFile } from "./WebinyConfigFile";
+import { requireConfig } from "~/utils";
 
 interface IListPackagesParams {
     inputs: IUserCommandInput;
@@ -51,9 +52,11 @@ export const listPackages = async ({ inputs }: IListPackagesParams) => {
                 continue;
             }
 
+            const config = requireConfig(configPath);
+
             packages.push({
                 name: packageName,
-                config: require(configPath).default || require(configPath),
+                config,
                 paths: {
                     root,
                     config: configPath

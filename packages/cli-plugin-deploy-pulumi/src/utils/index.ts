@@ -15,3 +15,4 @@ export * from "./login";
 export * from "./mapStackOutput";
 export * from "./measureDuration";
 export * from "./getRandomColorForString";
+export * from "./requireConfig";

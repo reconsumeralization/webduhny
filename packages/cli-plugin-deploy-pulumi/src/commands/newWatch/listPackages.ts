@@ -2,6 +2,7 @@ import { IUserCommandInput } from "~/types";
 import execa from "execa";
 import fs from "fs";
 import path from "path";
+import { requireConfig } from "~/utils";
 
 export interface IListPackagesParams {
     inputs: Pick<IUserCommandInput, "package" | "depth" | "folder" | "env">;
@@ -79,9 +80,11 @@ export const listPackages = async ({ inputs }: IListPackagesParams) => {
                 continue;
             }
 
+            const config = requireConfig(configPath);
+
             packages.push({
                 name: packageName,
-                config: require(configPath).default || require(configPath),
+                config,
                 paths: {
                     root,
                     config: configPath

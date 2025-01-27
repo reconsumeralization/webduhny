@@ -4,7 +4,7 @@ import fs from "fs";
 import { Worker } from "worker_threads";
 import chalk from "chalk";
 import execa from "execa";
-import { getRandomColorForString } from "~/utils";
+import { getRandomColorForString, requireConfig } from "~/utils";
 import { SimpleOutput } from "../watch/output/simpleOutput";
 
 const parseMessage = (message: string) => {
@@ -165,9 +165,11 @@ const getPackages = async ({ inputs, context, output }: IGetPackagesParams) => {
                 : path.join(root, "webiny.config.js");
 
             try {
+                const config = requireConfig(configPath);
+
                 packages.push({
                     name: packageName,
-                    config: require(configPath).default || require(configPath),
+                    config,
                     paths: {
                         root,
                         config: configPath
