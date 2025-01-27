@@ -11,7 +11,7 @@ import { ProjectApplication } from "../types";
 
 const SELF_MANAGED_BACKEND = ["s3://", "azblob://", "gs://"];
 
-export const login = async (projectApplication: ProjectApplication) => {
+export const login = async (projectApplication: Pick<ProjectApplication, "paths" | "project">) => {
     // Do the login with Pulumi CLI.
     const pulumi = await getPulumi({ projectApplication });
 

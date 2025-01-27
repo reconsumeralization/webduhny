@@ -10,7 +10,7 @@ import fs from "fs";
 import { ProjectApplication } from "@webiny/cli/types";
 
 export interface IGetPulumiParams {
-    projectApplication: ProjectApplication;
+    projectApplication: Pick<ProjectApplication, "paths">;
     pulumi?: unknown;
     install?: boolean;
 }

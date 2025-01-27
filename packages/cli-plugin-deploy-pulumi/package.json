@@ -50,7 +50,11 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public",
-    "directory": "."
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "yarn webiny run build",
+    "watch": "yarn webiny run watch"
   },
   "adio": {
     "ignoreDirs": [
@@ -62,9 +66,5 @@
         "exit-hook"
       ]
     }
-  },
-  "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
   }
 }

@@ -1,28 +1,34 @@
 import path from "path";
+// @ts-expect-error
 import { getProject, getProjectApplication, sendEvent } from "@webiny/cli/utils";
-import { createProjectApplicationWorkspace } from "./createProjectApplicationWorkspace";
+import {
+    createProjectApplicationWorkspace,
+    ICreateProjectApplicationWorkspaceParams
+} from "./createProjectApplicationWorkspace";
 import { login } from "./login";
 import { loadEnvVariables } from "./loadEnvVariables";
 import { getPulumi } from "./getPulumi";
 import { measureDuration } from "./measureDuration";
 import { GracefulPulumiError } from "./GracefulPulumiError";
 import { ProjectApplication } from "@webiny/cli/types";
-import { Context, IUserCommandParams } from "../types";
+import { Context, IPulumi, IUserCommandInput } from "../types";
 
 export interface ICreatePulumiCommandParamsCommandParams {
-    inputs: IUserCommandParams;
+    inputs: IUserCommandInput;
     context: Context;
+    getDuration: () => string;
+    pulumi: IPulumi;
     projectApplication: ProjectApplication;
 }
 
 export interface ICreatePulumiCommandParamsCommand {
-    (params: ICreatePulumiCommandParamsCommandParams, context: Context): Promise<any>;
+    (params: ICreatePulumiCommandParamsCommandParams): Promise<any>;
 }
 
 export interface ICreatePulumiCommandParams {
     name: string;
     command: ICreatePulumiCommandParamsCommand;
-    createProjectApplicationWorkspace?: (() => void) | boolean;
+    createProjectApplicationWorkspace?: boolean;
     telemetry?: boolean;
 }
 
@@ -32,7 +38,7 @@ export const createPulumiCommand = ({
     createProjectApplicationWorkspace: createProjectApplicationWorkspaceParam,
     telemetry
 }: ICreatePulumiCommandParams) => {
-    return async (params: IUserCommandParams, context: Context) => {
+    return async (params: IUserCommandInput, context: Context) => {
         // If folder not specified, that means we want to deploy the whole project (all project applications).
         // For that, we look if there are registered plugins that perform that.
         if (!params.folder) {

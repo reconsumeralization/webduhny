@@ -5,11 +5,11 @@ const ncp = util.promisify(ncpBase.ncp);
 import { replaceInPath } from "replace-in-path";
 // @ts-expect-error
 import { createProjectApplicationWorkspace as baseCreateProjectApplicationWorkspace } from "@webiny/cli/utils";
-import { IUserCommandParams, ProjectApplication } from "../types";
+import { IUserCommandInput, ProjectApplication } from "../types";
 
 export interface ICreateProjectApplicationWorkspaceParams {
     projectApplication: ProjectApplication;
-    inputs: IUserCommandParams;
+    inputs: IUserCommandInput;
 }
 
 export const createProjectApplicationWorkspace = async ({

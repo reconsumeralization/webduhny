@@ -1,11 +1,11 @@
 import { ProjectApplication } from "@webiny/cli/types";
-import { IUserCommandParams } from "../../types";
+import { IUserCommandInput } from "../../types";
 
 const MATCH_STRING = "the stack is currently locked by";
 
 export interface IPendingOperationsInfoParamsContext {
     projectApplication: Pick<ProjectApplication, "id">;
-    commandParams: Pick<IUserCommandParams, "env">;
+    commandParams: Pick<IUserCommandInput, "env">;
 }
 
 export interface IPendingOperationsInfoParams {

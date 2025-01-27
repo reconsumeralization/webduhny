@@ -6,8 +6,8 @@ const cache: Record<string, any> = {};
 export interface IGetOutputJsonParams {
     folder: string;
     env: string;
-    cwd?: string;
-    variant?: string;
+    cwd: string | undefined;
+    variant: string | undefined;
 }
 
 const getOutputJson = ({ folder, env, cwd, variant }: Partial<IGetOutputJsonParams>) => {
@@ -41,6 +41,7 @@ const getOutputJson = ({ folder, env, cwd, variant }: Partial<IGetOutputJsonPara
 export interface IGetStackOutputParams {
     folder: string;
     env: string;
+    variant: string | undefined;
     map?: string;
 }
 

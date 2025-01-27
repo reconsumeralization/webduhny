@@ -1,6 +1,5 @@
-import { BasePackagesBuilder } from "./BasePackagesBuilder";
-import { gray } from "chalk";
-import { Context } from "../../types";
+import { BasePackagesWatcher } from "./BasePackagesWatcher";
+import { Context } from "../../../types";
 
 interface IOptions {
     env: string;
@@ -16,7 +15,7 @@ interface ILoadedConfigResultParams {
 
 interface IConfigResult {
     commands: {
-        build: (options: IOptions) => Promise<void>;
+        watch: (options: IOptions) => Promise<void>;
     };
 }
 
@@ -24,22 +23,19 @@ interface ILoadedConfigResult extends IConfigResult {
     (params: ILoadedConfigResultParams): IConfigResult;
 }
 
-export class SinglePackageBuilder extends BasePackagesBuilder {
-    public override async build() {
+export class SinglePackageWatcher extends BasePackagesWatcher {
+    public override async watch(): Promise<void> {
         const pkg = this.packages[0];
         const context = this.context;
         const inputs = this.inputs;
 
         const { env, debug } = inputs;
 
-        const pkgName = pkg.name;
-        const pkgRelativePath = gray(`(${pkg.paths.relative})`);
-        context.info(`Building %s package...`, `${pkgName} ${pkgRelativePath}`);
-
-        const options: IOptions = {
+        const options = {
             env,
             debug,
             cwd: pkg.paths.root,
+
             // Not much sense in turning off logs when a single package is being built.
             logs: true
         };
@@ -52,12 +48,12 @@ export class SinglePackageBuilder extends BasePackagesBuilder {
             config = loadedConfig;
         }
 
-        const hasBuildCommand = config.commands && typeof config.commands.build === "function";
-        if (!hasBuildCommand) {
-            throw new Error("Build command not found.");
+        const hasWatchCommand = config.commands && typeof config.commands.watch === "function";
+        if (!hasWatchCommand) {
+            throw new Error("Watch command not found.");
         }
 
-        await config.commands.build(options);
+        await config.commands.watch(options);
     }
 
     private async loadConfig(target: string): Promise<ILoadedConfigResult> {

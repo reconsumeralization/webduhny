@@ -1,10 +1,10 @@
-const { createPulumiCommand, runHook, notify } = require("../utils");
-const { BeforeDeployPlugin } = require("../plugins/BeforeDeployPlugin");
-const { PackagesBuilder } = require("./buildPackages/PackagesBuilder");
-const pulumiLoginSelectStack = require("./deploy/pulumiLoginSelectStack");
-const executeDeploy = require("./deploy/executeDeploy");
-const executePreview = require("./deploy/executePreview");
-const { setTimeout } = require("node:timers/promises");
+import { createPulumiCommand, notify, runHook } from "../utils";
+import { BeforeDeployPlugin } from "../plugins/BeforeDeployPlugin";
+import { PackagesBuilder } from "./buildPackages/PackagesBuilder";
+import pulumiLoginSelectStack from "./deploy/pulumiLoginSelectStack";
+import executeDeploy from "./deploy/executeDeploy";
+import executePreview from "./deploy/executePreview";
+import { setTimeout } from "node:timers/promises";
 import { CliContext } from "@webiny/cli/types";
 
 export interface IDeployParams {
@@ -14,6 +14,7 @@ export interface IDeployParams {
     env: string;
     variant: string;
     folder: string;
+    cwd: string;
 }
 
 export interface IDeployCommandParams {
@@ -25,7 +26,7 @@ export interface IDeployCommandParams {
 }
 
 export const deploy = (params: IDeployParams, context: CliContext) => {
-    const command = createPulumiCommand<IDeployCommandParams>({
+    const command = createPulumiCommand({
         name: "deploy",
         createProjectApplicationWorkspace: params.build,
         telemetry: true,

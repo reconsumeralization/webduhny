@@ -1,8 +1,12 @@
-import { Context } from "../types";
+import { Context, IUserCommandInput, ProjectApplication } from "../types";
 import { processHooks } from "./processHooks";
 
 export interface IRunHookParamsArgs {
     context: Context;
+    env: string;
+    variant: string | undefined;
+    inputs: IUserCommandInput;
+    projectApplication: ProjectApplication;
     [key: string]: any;
 }
 

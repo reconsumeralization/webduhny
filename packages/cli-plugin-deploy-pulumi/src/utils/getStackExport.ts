@@ -1,10 +1,41 @@
-import { IUserCommandParams } from "../types";
+import { IUserCommandInput } from "../types";
+import execa from "execa";
+// @ts-expect-error
+import { getProject } from "@webiny/cli/utils";
 
-const execa = require("execa");
-const { getProject } = require("@webiny/cli/utils");
+interface ILambdaFunctionResourceOutputsCodeAsset {
+    path: string;
+}
+
+interface ILambdaFunctionResource {
+    type: "aws:lambda/function:Function";
+    outputs: {
+        name: string;
+        code: {
+            assets: {
+                [key: string]: ILambdaFunctionResourceOutputsCodeAsset;
+            };
+        };
+    };
+}
+
+export type IStackExportResponseDeploymentResource = ILambdaFunctionResource;
+
+export interface IStackExportResponseDeployment {
+    resources: IStackExportResponseDeploymentResource[];
+}
+
+export interface IStackExportResponse {
+    deployment: IStackExportResponseDeployment;
+}
 
 const cache: Record<string, any> = {};
-const getOutputJson = ({ folder, env, variant, cwd }: IUserCommandParams) => {
+const getOutputJson = ({
+    folder,
+    env,
+    variant,
+    cwd
+}: Pick<IUserCommandInput, "folder" | "env" | "variant" | "cwd">) => {
     const project = getProject();
 
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
@@ -29,7 +60,9 @@ const getOutputJson = ({ folder, env, variant, cwd }: IUserCommandParams) => {
     }
 };
 
-export const getStackExport = (args: IUserCommandParams) => {
+export const getStackExport = (
+    args: Pick<IUserCommandInput, "folder" | "env" | "variant" | "cwd">
+): IStackExportResponse => {
     if (!args.folder) {
         throw new Error(`Please specify a project application folder, for example "apps/admin".`);
     }
