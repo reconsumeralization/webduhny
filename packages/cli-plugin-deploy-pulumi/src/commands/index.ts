@@ -298,11 +298,6 @@ export const commands: CliCommandPlugin[] = [
                             describe: `Enable base compilation-related logs`,
                             type: "boolean"
                         });
-                        yargs.option("remoteRuntimeLogs", {
-                            alias: "r",
-                            describe: `Forward logs from deployed application code to your terminal (optionally accepts a glob pattern for filtering purposes)`,
-                            type: "string"
-                        });
                         yargs.option("show-timestamps", {
                             alias: "t",
                             describe: `Includes timestamps in the logs`,

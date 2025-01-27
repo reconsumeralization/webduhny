@@ -24,7 +24,6 @@ export interface IUserCommandInput {
     inspect?: boolean;
     depth?: number;
     allowProduction?: boolean;
-    remoteRuntimeLogs?: string;
     increaseTimeout?: number;
     deploymentLogs?: boolean;
     _: (string | boolean | number)[];

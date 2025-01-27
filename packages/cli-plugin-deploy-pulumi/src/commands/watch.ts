@@ -3,16 +3,11 @@ import os from "os";
 import fs from "fs";
 import chalk from "chalk";
 import path from "path";
-// @ts-expect-error
-import localtunnel from "localtunnel";
-import express from "express";
-import bodyParser from "body-parser";
 import { getProject, getProjectApplication } from "@webiny/cli/utils";
 import get from "lodash/get";
 import merge from "lodash/merge";
-import simpleOutput, { SimpleOutput } from "./watch/output/simpleOutput";
+import simpleOutput from "./watch/output/simpleOutput";
 import { listPackages } from "./watch/listPackages";
-import minimatch from "minimatch";
 import glob from "fast-glob";
 import { watchPackages } from "./watch/watchPackages";
 import { PackagesWatcher } from "./watch/watchers/PackagesWatcher";
@@ -98,12 +93,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
         throw new Error(`Both re-build and re-deploy actions were disabled, can't continue.`);
     }
 
-    if (inputs.deploy) {
-        if (typeof inputs.remoteRuntimeLogs === "string" && inputs.remoteRuntimeLogs === "") {
-            inputs.remoteRuntimeLogs = "*";
-        }
-    }
-
     const hookArgs = {
         context,
         env: inputs.env,
@@ -176,120 +165,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
     const logging = {
         url: null
     };
-
-    // Forward logs from the cloud to here, using the "localtunnel" library.
-    if (inputs.remoteRuntimeLogs) {
-        try {
-            const tunnel = await localtunnel({ port: 3010 });
-
-            logging.url = tunnel.url;
-
-            const uniqueLocalTunnelErrorMessages: string[] = [];
-            tunnel.on("error", (e: Error) => {
-                // We're ensuring the same message is not printed twice or more.
-                // We're doing this because we've seen the same error message being printed
-                // multiple times, and it's not really helpful. This way we're ensuring
-                // the user sees the error only once.
-                if (!uniqueLocalTunnelErrorMessages.includes(e.message)) {
-                    uniqueLocalTunnelErrorMessages.push(e.message);
-
-                    if (uniqueLocalTunnelErrorMessages.length === 1) {
-                        output.log({
-                            type: "logs",
-                            message: chalk.red("Could not initialize logs forwarding.")
-                        });
-                    }
-
-                    output.log({
-                        type: "logs",
-                        message: chalk.red("Could not initialize logs forwarding.")
-                    });
-
-                    output.log({
-                        type: "logs",
-                        message: chalk.red(e.message)
-                    });
-
-                    if (inputs.debug) {
-                        output.log({
-                            type: "logs",
-                            message: chalk.red(e.stack)
-                        });
-                    }
-                }
-            });
-
-            const app = express();
-            app.use(bodyParser.urlencoded({ extended: false }));
-            app.use(bodyParser.json());
-
-            app.post("/", (req, res) => {
-                if (Array.isArray(req.body)) {
-                    req.body.forEach(consoleLog => {
-                        printLog({
-                            output,
-                            consoleLog,
-                            /**
-                             * TODO @adrian
-                             *
-                             * Why is logs passed into pattern?
-                             * Logs is boolean...?
-                             */
-                            // @ts-expect-error
-                            pattern: inputs.logs
-                        });
-                    });
-                }
-                res.send("Message received.");
-            });
-
-            app.listen(3010);
-
-            [
-                `webiny ${chalk.blueBright(
-                    "info"
-                )}: Log forwarding enabled. Listening for incoming logs on port ${chalk.blueBright(
-                    3010
-                )}.`,
-                `webiny ${chalk.blueBright(
-                    "info"
-                )}: Everything you log in your application code will be forwarded here over ${chalk.bold(
-                    "public internet"
-                )}. Learn more: https://webiny.link/enable-logs-forwarding.`
-            ].forEach(message => output.log({ type: "logs", message }));
-
-            output.log({ type: "logs", message: "" });
-
-            if (inputs.remoteRuntimeLogs !== "*") {
-                output.log({
-                    type: "logs",
-                    message: chalk.gray(
-                        `Only showing logs that match the following pattern: ${inputs.remoteRuntimeLogs}`
-                    )
-                });
-            }
-        } catch (e) {
-            output.log({
-                type: "logs",
-                message: chalk.red(e.message)
-            });
-
-            if (inputs.debug) {
-                output.log({
-                    type: "logs",
-                    message: chalk.red(e.stack)
-                });
-            }
-        }
-    } else if (inputs.deploy) {
-        [
-            `webiny ${chalk.blueBright(
-                "info"
-            )}: To enable log forwarding, rerun the command with the ${chalk.blueBright(
-                "-r"
-            )} flag. Learn more: https://webiny.link/enable-logs-forwarding.`
-        ].forEach(message => output.log({ type: "logs", message }));
-    }
 
     // Add deploy logs.
     if (inputs.deploy && projectApplication) {
@@ -408,18 +283,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     message: data.toString()
                 });
             });
-
-            // If logs are enabled, inform user that we're updating the WEBINY_LOGS_FORWARD_URL env variable.
-            if (inputs.remoteRuntimeLogs) {
-                setTimeout(() => {
-                    output.log({
-                        type: "deploy",
-                        message: `Logs enabled - updating ${chalk.gray(
-                            "WEBINY_LOGS_FORWARD_URL"
-                        )} environment variable...`
-                    });
-                }, 3000);
-            }
         } catch (e) {
             output.log({
                 type: "deploy",
@@ -454,31 +317,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     message: chalk.red(e.stack)
                 });
             }
-        }
-    }
-};
-
-interface IPrintLogParams {
-    pattern: string | undefined;
-    consoleLog: {
-        meta: {
-            functionName: string;
-        };
-        args: string[];
-    };
-    output: SimpleOutput;
-}
-
-const printLog = ({ pattern = "*", consoleLog, output }: IPrintLogParams) => {
-    const plainPrefix = `${consoleLog.meta.functionName}: `;
-    const message = consoleLog.args.join(" ").trim();
-    if (message) {
-        if (minimatch(plainPrefix, pattern)) {
-            const coloredPrefix = chalk.hex(getRandomColorForString(plainPrefix)).bold(plainPrefix);
-            output.log({
-                type: "logs",
-                message: coloredPrefix + message
-            });
         }
     }
 };

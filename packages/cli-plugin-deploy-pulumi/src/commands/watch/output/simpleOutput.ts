@@ -33,7 +33,6 @@ export interface ISimpleOutputLogParams {
 export interface ISimpleOutputLogInitializeParams {
     build?: boolean;
     deploy?: boolean;
-    remoteRuntimeLogs?: string;
     showTimestamps?: boolean;
 }
 
@@ -61,8 +60,7 @@ export class SimpleOutput {
     }
 
     public initialize(args: ISimpleOutputLogInitializeParams): void {
-        this.usesSingleLogType =
-            (args.build ? 1 : 0) + (args.deploy ? 1 : 0) + (args.remoteRuntimeLogs ? 1 : 0) === 1;
+        this.usesSingleLogType = (args.build ? 1 : 0) + (args.deploy ? 1 : 0) === 1;
         this.showTimestamps = !!args.showTimestamps;
     }
 
