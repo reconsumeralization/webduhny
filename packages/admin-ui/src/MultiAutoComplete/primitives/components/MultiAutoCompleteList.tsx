@@ -28,7 +28,7 @@ export const MultiAutoCompleteList = ({
 }: MultiAutoCompleteListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
-            if (isEmpty) {
+            if (isEmpty && !temporaryOption) {
                 return null;
             }
 

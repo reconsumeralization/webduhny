@@ -14,6 +14,7 @@ interface MultiAutoCompletePresenterParams {
     options?: MultiAutoCompleteOption[];
     placeholder?: string;
     values?: string[];
+    onValueSearch?: (value: string) => void;
     onValuesReset?: () => void;
     onValuesChange: (values: string[]) => void;
     onOpenChange?: (open: boolean) => void;
@@ -89,6 +90,7 @@ class MultiAutoCompletePresenter implements IMultiAutoCompletePresenter {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
+        this.params?.onValueSearch?.(value);
     };
 
     public setSelectedOption = (value: string) => {

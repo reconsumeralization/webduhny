@@ -47,6 +47,10 @@ type MultiAutoCompletePrimitiveProps = Omit<
      */
     onValuesReset?: () => void;
     /**
+     * Callback triggered when a value has been searched by the user.
+     */
+    onValueSearch?: (value: string) => void;
+    /**
      * Custom renderer for the options.
      */
     optionRenderer?: (item: any, index: number) => React.ReactNode;
