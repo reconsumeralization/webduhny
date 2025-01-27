@@ -41,7 +41,7 @@ describe("MultiAutoCompletePresenterWithFreeInput", () => {
         // Let's create the first option
         presenter.searchOption("New Option 1");
         presenter.createOption("New Option 1");
-        expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(false);
+        expect(presenter.vm.selectedOptionsVm.empty).toEqual(false);
         expect(presenter.vm.selectedOptionsVm.options).toEqual([
             {
                 label: "New Option 1",
@@ -58,7 +58,7 @@ describe("MultiAutoCompletePresenterWithFreeInput", () => {
         // Let's create the second option
         presenter.searchOption("New Option 2");
         presenter.createOption("New Option 2");
-        expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(false);
+        expect(presenter.vm.selectedOptionsVm.empty).toEqual(false);
         expect(presenter.vm.selectedOptionsVm.options).toEqual([
             {
                 label: "New Option 1",

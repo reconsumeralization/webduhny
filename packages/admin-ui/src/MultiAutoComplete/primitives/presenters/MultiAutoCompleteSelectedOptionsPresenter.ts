@@ -11,7 +11,7 @@ interface MultiAutoCompleteSelectedOptionsParams {
 interface IMultiAutoCompleteSelectedOptionsPresenter {
     vm: {
         options: CommandOptionFormatted[];
-        isEmpty: boolean;
+        empty: boolean;
     };
     init: (params: MultiAutoCompleteSelectedOptionsParams) => void;
     addOption: (option: CommandOption) => void;
@@ -41,7 +41,7 @@ class MultiAutoCompleteSelectedOptionPresenter
     get vm() {
         return {
             options: this.options.getItems().map(option => CommandOptionFormatter.format(option)),
-            isEmpty: !this.options.hasItems()
+            empty: !this.options.hasItems()
         };
     }
 
