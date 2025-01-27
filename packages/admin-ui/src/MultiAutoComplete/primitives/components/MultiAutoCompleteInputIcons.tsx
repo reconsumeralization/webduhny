@@ -7,7 +7,7 @@ import { Icon } from "~/Icon";
 interface MultiAutoCompleteInputIconsProps {
     displayResetAction: boolean;
     inputSize?: "md" | "lg" | "xl" | null;
-    isDisabled?: boolean;
+    disabled?: boolean;
     onOpenChange: (open: boolean) => void;
     onResetValue: () => void;
 }
@@ -20,7 +20,7 @@ export const MultiAutoCompleteInputIcons = (props: MultiAutoCompleteInputIconsPr
                     size={props.inputSize === "xl" ? "sm" : "xs"} // Map button size based on the input size.
                     variant={"secondary"}
                     icon={<Icon icon={<Close />} label={"Reset"} />}
-                    disabled={props.isDisabled}
+                    disabled={props.disabled}
                     onClick={event => {
                         event.stopPropagation();
                         props.onResetValue();

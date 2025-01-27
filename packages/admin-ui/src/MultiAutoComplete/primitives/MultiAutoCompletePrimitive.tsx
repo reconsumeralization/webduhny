@@ -150,7 +150,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                                     displayResetAction={
                                         !vm.selectedOptionsVm.empty && vm.inputVm.displayResetAction
                                     }
-                                    isDisabled={props.disabled}
+                                    disabled={props.disabled}
                                     onResetValue={resetSelectedOptions}
                                     onOpenChange={() => setListOpenState(!vm.optionsListVm.open)}
                                 />
