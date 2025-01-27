@@ -1,10 +1,7 @@
 import * as React from "react";
-import {
-    CircularProgress as CircularProgressBase,
-    CircularProgressProps as CircularProgressPropsBase
-} from "@webiny/admin-ui";
+import { OverlayLoader } from "@webiny/admin-ui";
 
-interface CircularProgressProps extends CircularProgressPropsBase {
+interface CircularProgressProps {
     /**
      * @deprecated Use `text` instead.
      */
@@ -28,7 +25,7 @@ interface CircularProgressProps extends CircularProgressPropsBase {
 
 // We needed this default export for backwards compatibility.
 const CircularProgress = (props: CircularProgressProps) => {
-    return <CircularProgressBase {...props} />;
+    return <OverlayLoader text={props.label} />;
 };
 
 CircularProgress.displayName = "CircularProgress";
