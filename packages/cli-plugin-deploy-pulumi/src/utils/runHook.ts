@@ -1,4 +1,4 @@
-import { Context, IUserCommandInput, ProjectApplication } from "../types";
+import { Context, IUserCommandInput, ProjectApplication } from "~/types";
 import { processHooks } from "./processHooks";
 
 export interface IRunHookParamsArgs {

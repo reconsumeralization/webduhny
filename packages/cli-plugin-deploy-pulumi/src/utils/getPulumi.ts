@@ -2,7 +2,6 @@ import { green, red } from "chalk";
 import { Pulumi } from "@webiny/pulumi-sdk";
 import ora from "ora";
 import merge from "lodash/merge";
-// @ts-expect-error
 import { getProject } from "@webiny/cli/utils";
 import path from "path";
 import fs from "fs";

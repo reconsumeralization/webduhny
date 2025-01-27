@@ -1,11 +1,18 @@
-const { parentPort, workerData } = require("worker_threads");
+import { parentPort, workerData } from "worker_threads";
+import { cli } from "@webiny/cli";
+
 require("@webiny/cli/utils/importModule");
-const { cli } = require("@webiny/cli");
 
 let processStdout = "";
 let processStderr = "";
 
 const originalStdoutWrite = process.stdout.write.bind(process.stdout);
+/**
+ * TODO @adrian
+ *
+ * TS is complaining
+ */
+// @ts-expect-error
 process.stdout.write = (chunk, encoding, callback) => {
     if (typeof chunk === "string") {
         processStdout += chunk;
@@ -15,6 +22,12 @@ process.stdout.write = (chunk, encoding, callback) => {
 };
 
 const originalStderrWrite = process.stderr.write.bind(process.stderr);
+/**
+ * TODO @adrian
+ *
+ * TS is complaining
+ */
+// @ts-expect-error
 process.stderr.write = (chunk, encoding, callback) => {
     if (typeof chunk === "string") {
         processStderr += chunk;
@@ -37,12 +50,17 @@ if (!hasBuildCommand) {
 config.commands
     .build(options)
     .then(() => {
-        parentPort.postMessage(
+        /**
+         * TODO @adrian
+         *
+         * parentPort is possibly null. do we check or force TS?
+         */
+        parentPort!.postMessage(
             JSON.stringify({ type: "success", stdout: processStdout, stderr: processStderr })
         );
     })
-    .catch(e => {
-        parentPort.postMessage(
+    .catch((e: Error) => {
+        parentPort!.postMessage(
             JSON.stringify({
                 type: "error",
                 stdout: processStdout,

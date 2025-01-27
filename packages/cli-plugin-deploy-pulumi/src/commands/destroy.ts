@@ -15,13 +15,13 @@ export const destroyCommand = createPulumiCommand({
 
         let stackExists = true;
         try {
-            const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
+            const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
             const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
             await pulumi.run({
                 command: ["stack", "select", stackName],
                 args: {
-                    secretsProvider: PULUMI_SECRETS_PROVIDER as string
+                    secretsProvider: PULUMI_SECRETS_PROVIDER
                 },
                 execa: {
                     env: {

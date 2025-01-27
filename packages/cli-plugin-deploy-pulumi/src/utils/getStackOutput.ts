@@ -1,5 +1,5 @@
-// @ts-expect-error
 import { getProject } from "@webiny/cli/utils";
+import { mapStackOutput } from "./mapStackOutput";
 
 const cache: Record<string, any> = {};
 
@@ -42,14 +42,55 @@ export interface IGetStackOutputParams {
     folder: string;
     env: string;
     variant: string | undefined;
-    map?: string;
+    map?: Record<string, any>;
 }
 
-export const getStackOutput = (
+export interface IStackOutput {
+    deploymentId: string;
+    region: string;
+    dynamoDbTable: string;
+    migrationLambdaArn: string;
+    iotAuthorizerName: string;
+    apiDomain: string;
+    apiUrl: string;
+    graphqlLambdaRole: string;
+    apwSchedulerEventRule: string | undefined;
+    apwSchedulerEventTargetId: string | undefined;
+    apwSchedulerExecuteAction: string | undefined;
+    apwSchedulerScheduleAction: string | undefined;
+    cognitoUserPoolArn: string;
+    cognitoAppClientId: string;
+    cognitoUserPoolId: string;
+    cognitoUserPoolPasswordPolicy: string;
+    websocketApiUrl: string;
+    fileManagerBucketId: string;
+    primaryDynamodbTableArn: string;
+    primaryDynamodbTableName: string;
+    primaryDynamodbTableHashKey: string;
+    primaryDynamodbTableRangeKey: string;
+    logDynamodbTableArn: string;
+    logDynamodbTableName: string;
+    logDynamodbTableHashKey: string;
+    logDynamodbTableRangeKey: string;
+    eventBusName: string;
+    eventBusArn: string;
+    vpcPublicSubnetIds: string[] | undefined;
+    vpcPrivateSubnetIds: string[] | undefined;
+    vpcSecurityGroupIds: string[] | undefined;
+    elasticsearchDomainArn: string | undefined;
+    elasticsearchDomainEndpoint: string | undefined;
+    elasticsearchDynamodbTableArn: string | undefined;
+    elasticsearchDynamodbTableName: string | undefined;
+    appStorage: string;
+    websiteRouterOriginRequestFunction?: string;
+    // TODO @bruno maybe add key: string | string[] | undefined ?
+}
+
+export const getStackOutput = <T extends IStackOutput = IStackOutput>(
     folderOrArgs: IGetStackOutputParams | string,
     env?: string,
-    map?: string
-) => {
+    map?: Record<string, any>
+): T => {
     if (!folderOrArgs) {
         throw new Error("Missing initial argument.");
     }
@@ -83,6 +124,5 @@ export const getStackOutput = (
         return output;
     }
 
-    const mapStackOutput = require("./mapStackOutput");
-    return mapStackOutput(output, args.map);
+    return mapStackOutput<T>(output, args.map);
 };

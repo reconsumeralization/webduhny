@@ -4,7 +4,6 @@ import { Plugin } from "@webiny/plugins";
 export interface CallableParams {
     inputs: Record<string, any>;
     env: string;
-    // TODO put to optional
     variant: string;
     projectApplication: ProjectApplication;
 }

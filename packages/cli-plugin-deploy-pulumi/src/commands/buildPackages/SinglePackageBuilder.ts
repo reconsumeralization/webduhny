@@ -1,6 +1,6 @@
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
 import { gray } from "chalk";
-import { Context } from "../../types";
+import { Context } from "~/types";
 
 interface IOptions {
     env: string;

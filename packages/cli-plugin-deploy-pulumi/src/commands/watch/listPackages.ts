@@ -1,4 +1,4 @@
-import { IUserCommandInput } from "../../types";
+import { IUserCommandInput } from "~/types";
 import execa from "execa";
 import { WebinyConfigFile } from "./WebinyConfigFile";
 
@@ -17,7 +17,7 @@ export const listPackages = async ({ inputs }: IListPackagesParams) => {
             "tree",
             "--json",
             "--depth",
-            inputs.depth,
+            String(inputs.depth || ""),
             "--distinct",
             "--folder",
             inputs.folder

@@ -1,11 +1,11 @@
-const getStackOutput = require("./getStackOutput");
+import { getStackOutput } from "./getStackOutput";
 
 export interface IGetDeploymentId {
     env?: string;
     variant?: string;
 }
 
-export const getDeploymentId = params => {
+export const getDeploymentId = (params: IGetDeploymentId) => {
     if (!params.env) {
         throw new Error(`Please specify environment, for example "dev".`);
     }

@@ -1,6 +1,7 @@
 import path from "path";
 // @ts-expect-error
-import { getProject, getProjectApplication, sendEvent } from "@webiny/cli/utils";
+import { sendEvent } from "@webiny/cli/utils";
+import { getProject, getProjectApplication } from "@webiny/cli/utils";
 import {
     createProjectApplicationWorkspace,
     ICreateProjectApplicationWorkspaceCallable
@@ -11,7 +12,7 @@ import { getPulumi } from "./getPulumi";
 import { measureDuration } from "./measureDuration";
 import { GracefulPulumiError } from "./GracefulPulumiError";
 import { ProjectApplication } from "@webiny/cli/types";
-import { Context, IPulumi, IUserCommandInput } from "../types";
+import { Context, IPulumi, IUserCommandInput } from "~/types";
 
 export interface ICreatePulumiCommandParamsCommandParams {
     inputs: IUserCommandInput;
@@ -28,7 +29,7 @@ export interface ICreatePulumiCommandParamsCommand {
 export interface ICreatePulumiCommandParams {
     name: string;
     command: ICreatePulumiCommandParamsCommand;
-    createProjectApplicationWorkspace?: ICreateProjectApplicationWorkspaceCallable | false;
+    createProjectApplicationWorkspace?: ICreateProjectApplicationWorkspaceCallable | boolean;
     telemetry?: boolean;
 }
 

@@ -18,7 +18,7 @@ const jsonStringifyAndCompress = (input: any) => {
 
 const decompressAndJsonParse = async (input: any) => {
     const inputBuffer = Buffer.from(input);
-    const jsonStringResult = await new Promise(function (resolve, reject) {
+    const jsonStringResult = await new Promise<Buffer>(function (resolve, reject) {
         zlib.gunzip(inputBuffer, {}, function (error, result) {
             if (error) {
                 reject(error);
@@ -27,11 +27,22 @@ const decompressAndJsonParse = async (input: any) => {
             }
         });
     });
-
+    /**
+     * TODO @adrian
+     *
+     * jsonStringResult is buffer. TS is complaining about JSON.parse.
+     */
+    // @ts-expect-error
     return JSON.parse(jsonStringResult);
 };
 
 export default async (...args: any[]) => {
+    /**
+     * TODO @adrian
+     *
+     * Why do we import local mqtt?
+     */
+    // @ts-expect-error
     const client = await mqtt.connectAsync(webinyWatchArgs.iotEndpoint);
 
     await client.subscribeAsync(webinyWatchArgs.iotEndpointTopic);
@@ -52,6 +63,10 @@ export default async (...args: any[]) => {
     await client.publish(webinyWatchArgs.iotEndpointTopic, JSON.stringify(fnInvocationPayload));
 
     return new Promise((resolve, reject) => {
+        /**
+         * TODO fix when figure out mqtt
+         */
+        // @ts-expect-error
         client.on("message", async (_, message) => {
             const payload = JSON.parse(message.toString());
 

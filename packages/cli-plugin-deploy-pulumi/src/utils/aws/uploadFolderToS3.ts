@@ -1,6 +1,6 @@
-import * as isString from "lodash/isString";
-import * as chunk from "lodash/chunk";
-import * as fs from "fs";
+import isString from "lodash/isString";
+import chunk from "lodash/chunk";
+import fs from "fs";
 import {
     createS3,
     HeadObjectCommand,
@@ -8,10 +8,10 @@ import {
     PutObjectCommand,
     PutObjectCommandInput
 } from "@webiny/aws-sdk/client-s3";
-import * as mime from "mime";
+import mime from "mime";
 import { relative } from "path";
 import { crawlDirectory } from "../crawlDirectory";
-import * as crypto from "crypto";
+import crypto from "crypto";
 
 function getFileChecksum(file: string): Promise<string> {
     const hash = crypto.createHash("md5");
@@ -68,7 +68,7 @@ export const uploadFolderToS3 = async ({
         throw new Error("Cannot continue, folder does not exist.");
     }
 
-    const paths = [];
+    const paths: string[] = [];
 
     await crawlDirectory(root, async path => {
         paths.push(path);
@@ -114,7 +114,7 @@ export const uploadFolderToS3 = async ({
                             });
                             const existingObject = await s3.send(cmd);
 
-                            if (existingObject.Metadata.checksum === checksum) {
+                            if (existingObject.Metadata?.checksum === checksum) {
                                 skipUpload = true;
                             }
                         } catch {

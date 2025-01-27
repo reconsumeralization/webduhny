@@ -1,9 +1,9 @@
-import { Context, IUserCommandInput } from "../../types";
+import { Context, IPulumi, IUserCommandInput } from "~/types";
 
 export interface IExecutePreviewParams {
     inputs: IUserCommandInput;
     context: Context;
-    pulumi: unknown;
+    pulumi: Pick<IPulumi, "run">;
 }
 
 export const executePreview = async ({ inputs, context, pulumi }: IExecutePreviewParams) => {
@@ -13,7 +13,7 @@ export const executePreview = async ({ inputs, context, pulumi }: IExecutePrevie
         command: "preview",
         args: {
             diff: true,
-            debug: inputs.debug
+            debug: !!inputs.debug
             // Preview command does not accept "--secrets-provider" argument.
             // secretsProvider: PULUMI_SECRETS_PROVIDER
         },
@@ -26,9 +26,13 @@ export const executePreview = async ({ inputs, context, pulumi }: IExecutePrevie
             }
         }
     });
-
-    subprocess.stdout.pipe(process.stdout);
-    subprocess.stderr.pipe(process.stderr);
+    /**
+     * TODO @adrian
+     *
+     * stdout is possibly undefined. do we force or check?
+     */
+    subprocess.stdout!.pipe(process.stdout);
+    subprocess.stderr!.pipe(process.stderr);
 
     await subprocess;
 

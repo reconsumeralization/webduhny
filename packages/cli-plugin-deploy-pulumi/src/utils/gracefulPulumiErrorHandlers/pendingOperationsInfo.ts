@@ -1,5 +1,5 @@
 import { ProjectApplication } from "@webiny/cli/types";
-import { IUserCommandInput } from "../../types";
+import { IUserCommandInput } from "~/types";
 
 const MATCH_STRING = "the stack is currently locked by";
 

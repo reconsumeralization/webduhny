@@ -4,7 +4,7 @@ import {
 } from "./PulumiCommandLifecycleEventHookPlugin";
 
 export class AfterDeployPlugin extends PulumiCommandLifecycleEventHookPlugin {
-    static type = "hook-after-deploy";
+    public static override type = "hook-after-deploy";
 }
 
 export const createAfterDeployPlugin = (callable: Callable) => {

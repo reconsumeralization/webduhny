@@ -1,4 +1,4 @@
-const { VARIANT_SEPARATOR } = require("./constants");
+import { VARIANT_SEPARATOR } from "./constants";
 
 /**
  * We want to have stack name as env-variant.

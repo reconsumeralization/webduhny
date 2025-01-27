@@ -1,13 +1,21 @@
-import { Context, IProjectApplicationPackage, IUserCommandInput } from "../../../types";
+import { Context, IUserCommandInput } from "~/types";
+
+export interface IBasePackagesWatcherPackage {
+    name: string;
+    paths: {
+        config: string;
+        root: string;
+    };
+}
 
 export interface IBasePackagesWatcherParams {
-    packages: IProjectApplicationPackage[];
+    packages: IBasePackagesWatcherPackage[];
     inputs: IUserCommandInput;
     context: Context;
 }
 
 export class BasePackagesWatcher {
-    public readonly packages: IProjectApplicationPackage[];
+    public readonly packages: IBasePackagesWatcherPackage[];
     public readonly inputs: IUserCommandInput;
     public readonly context: Context;
 

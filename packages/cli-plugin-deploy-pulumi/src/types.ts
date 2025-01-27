@@ -15,7 +15,7 @@ export interface IUserCommandInput {
     debug?: boolean;
     cwd?: string;
     telemetry?: boolean;
-    logs?: string;
+    logs?: boolean;
     json?: boolean;
     build?: boolean;
     deploy?: boolean;

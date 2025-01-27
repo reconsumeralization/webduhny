@@ -1,14 +1,20 @@
-const { parentPort, workerData } = require("worker_threads");
+import { parentPort, workerData } from "worker_threads";
 require("@webiny/cli/utils/importModule");
-const { cli } = require("@webiny/cli");
+import { cli } from "@webiny/cli";
 
 // We need this because tools have internal console.log calls. So,
 // let's intercept those and make sure messages are just forwarded
 // to the main thread.
-const types = ["log", "error", "warn"];
+const types = ["log", "error", "warn"] as const;
 for (let i = 0; i < types.length; i++) {
     const type = types[i];
-    console[type] = (...message) => {
+    console[type] = (...message: (string | Error)[]) => {
+        /**
+         * TODO @adrian
+         *
+         * parentPort is possibly null. do we check or force TS?
+         */
+        // @ts-expect-error
         parentPort.postMessage(
             JSON.stringify({
                 type,
@@ -26,6 +32,11 @@ for (let i = 0; i < types.length; i++) {
 (async () => {
     try {
         const { options, package: pckg } = workerData;
+        /**
+         * TODO @adrian
+         *
+         * Do we want to have some common config loader?
+         */
         let config = require(pckg.config);
         if (config.default) {
             config = config.default;

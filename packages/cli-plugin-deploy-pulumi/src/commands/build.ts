@@ -1,8 +1,9 @@
-import { Context } from "../types";
+import { Context } from "~/types";
 import { createPulumiCommand, runHook } from "../utils";
 import { PackagesBuilder } from "./buildPackages/PackagesBuilder";
 
 export interface IBuildParams {
+    _: string[];
     folder: string;
     env: string;
     variant: string;

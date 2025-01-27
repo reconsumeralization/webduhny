@@ -1,4 +1,4 @@
-import { Context, IUserCommandInput, ProjectApplication } from "../types";
+import { Context, IUserCommandInput, ProjectApplication } from "~/types";
 import chalk from "chalk";
 import path from "path";
 import { getProject, getProjectApplication } from "@webiny/cli/utils";

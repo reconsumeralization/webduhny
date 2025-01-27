@@ -1,4 +1,4 @@
-import { Context, IUserCommandInput, ProjectApplication } from "../types";
+import { Context, IUserCommandInput, ProjectApplication } from "~/types";
 import os from "os";
 import fs from "fs";
 import chalk from "chalk";
@@ -229,6 +229,13 @@ export default async (inputs: IUserCommandInput, context: Context) => {
                         printLog({
                             output,
                             consoleLog,
+                            /**
+                             * TODO @adrian
+                             *
+                             * Why is logs passed into pattern?
+                             * Logs is boolean...?
+                             */
+                            // @ts-expect-error
                             pattern: inputs.logs
                         });
                     });

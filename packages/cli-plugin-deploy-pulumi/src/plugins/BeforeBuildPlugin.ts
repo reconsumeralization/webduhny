@@ -4,7 +4,7 @@ import {
 } from "./PulumiCommandLifecycleEventHookPlugin";
 
 export class BeforeBuildPlugin extends PulumiCommandLifecycleEventHookPlugin {
-    static type = "hook-before-build";
+    public static override type = "hook-before-build";
 }
 
 export const createBeforeBuildPlugin = (callable: Callable) => {

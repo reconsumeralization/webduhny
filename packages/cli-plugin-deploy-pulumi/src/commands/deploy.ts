@@ -18,14 +18,6 @@ export interface IDeployParams {
     cwd: string;
 }
 
-export interface IDeployCommandParams {
-    inputs: IDeployParams;
-    context: CliContext;
-    projectApplication: any;
-    pulumi: any;
-    getDuration: () => string;
-}
-
 export const deploy = (params: IDeployParams, context: CliContext) => {
     const command = createPulumiCommand({
         name: "deploy",

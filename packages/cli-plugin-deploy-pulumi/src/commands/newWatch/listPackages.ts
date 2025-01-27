@@ -1,4 +1,4 @@
-import { IUserCommandInput } from "../../types";
+import { IUserCommandInput } from "~/types";
 import execa from "execa";
 import fs from "fs";
 import path from "path";

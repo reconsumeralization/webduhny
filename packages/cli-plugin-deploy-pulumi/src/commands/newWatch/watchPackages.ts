@@ -1,4 +1,4 @@
-import { Context, IUserCommandInput } from "../../types";
+import { Context, IUserCommandInput } from "~/types";
 import path from "path";
 import fs from "fs";
 import { Worker } from "worker_threads";

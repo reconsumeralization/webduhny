@@ -1,5 +1,4 @@
-import { Context } from "../types";
-
+import { Context } from "~/types";
 import { LambdaClient } from "@webiny/aws-sdk/client-lambda";
 import { getStackOutput } from "../utils";
 import {

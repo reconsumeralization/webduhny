@@ -1,4 +1,4 @@
-import { Context, IUserCommandInput } from "../../types";
+import { Context, IPulumi, IUserCommandInput } from "~/types";
 
 const { measureDuration } = require("../../utils");
 const ora = require("ora");
@@ -26,14 +26,14 @@ const spinnerMessages: [number, string][] = [
 export interface IExecuteDeployParams {
     inputs: IUserCommandInput;
     context: Context;
-    pulumi: unknown;
+    pulumi: Pick<IPulumi, "run">;
 }
 
 export const executeDeploy = async ({ inputs, context, pulumi }: IExecuteDeployParams) => {
     // We always show deployment logs when doing previews.
     const showDeploymentLogs = isCI || inputs.deploymentLogs;
 
-    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
+    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
     const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
     const getDeploymentDuration = measureDuration();
@@ -47,7 +47,7 @@ export const executeDeploy = async ({ inputs, context, pulumi }: IExecuteDeployP
                 yes: true,
                 skipPreview: true,
                 secretsProvider: PULUMI_SECRETS_PROVIDER,
-                debug: inputs.debug
+                debug: !!inputs.debug
             },
             execa: {
                 env: {
@@ -60,7 +60,14 @@ export const executeDeploy = async ({ inputs, context, pulumi }: IExecuteDeployP
         });
 
         if (showDeploymentLogs) {
+            /**
+             * TODO @adrian
+             *
+             * stdout is possibly undefined. do we force or check?
+             */
+            // @ts-expect-error
             subprocess.stdout.pipe(process.stdout);
+            // @ts-expect-error
             subprocess.stderr.pipe(process.stderr);
             await subprocess;
         } else {

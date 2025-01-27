@@ -1,8 +1,11 @@
 import get from "lodash/get";
 import { yellow } from "chalk";
 
-export const mapStackOutput = (output: Record<string, any>, map: Record<string, any>) => {
-    const values: Record<string, any> = {};
+export const mapStackOutput = <T extends Record<string, any> = Record<string, any>>(
+    output: Record<string, any>,
+    map: Record<string, any>
+): T => {
+    const values: T = {} as T;
     const regex = /\${(.*)}/;
 
     Object.keys(map).forEach(key => {
@@ -15,10 +18,14 @@ export const mapStackOutput = (output: Record<string, any>, map: Record<string, 
                 console.log(yellow(`Could not map "${valuePath}" to "${key}" - value missing.`));
                 return;
             }
-
+            /**
+             * It is ok to expect error here.
+             */
             if (typeof value === "object" && value !== null) {
+                // @ts-expect-error
                 values[key] = valuePattern.replace(replace, JSON.stringify(value));
             } else {
+                // @ts-expect-error
                 values[key] = valuePattern.replace(replace, value);
             }
         }

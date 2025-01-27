@@ -14,7 +14,7 @@ export const output = createPulumiCommand({
 
         let stackExists = true;
         try {
-            const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
+            const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
             const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
             await pulumi.run({
@@ -36,7 +36,7 @@ export const output = createPulumiCommand({
             return await pulumi.run({
                 command: ["stack", "output"],
                 args: {
-                    json
+                    json: !!json
                 },
                 execa: {
                     stdio: "inherit"

@@ -1,5 +1,5 @@
 import { BasePackagesWatcher } from "./BasePackagesWatcher";
-import { Context } from "../../../types";
+import { Context } from "~/types";
 
 interface IOptions {
     env: string;

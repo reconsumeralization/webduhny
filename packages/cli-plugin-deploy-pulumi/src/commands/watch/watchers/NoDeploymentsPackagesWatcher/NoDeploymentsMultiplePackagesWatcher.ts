@@ -3,7 +3,7 @@ import { Worker } from "worker_threads";
 import chalk from "chalk";
 import { getRandomColorForString } from "../../../../utils";
 import { BasePackagesWatcher } from "../BasePackagesWatcher";
-import { Context } from "../../../../types";
+import { Context } from "~/types";
 
 export class NoDeploymentsMultiplePackagesWatcher extends BasePackagesWatcher {
     public override async watch(): Promise<void> {

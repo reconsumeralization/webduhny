@@ -4,7 +4,6 @@ import { CliContext, ProjectApplication } from "@webiny/cli/types";
 export interface CallableParams {
     inputs: Record<string, any>;
     env: string;
-    // TODO put to optional
     variant: string;
     projectApplication: ProjectApplication;
 }

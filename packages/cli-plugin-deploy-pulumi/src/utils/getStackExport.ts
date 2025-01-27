@@ -1,6 +1,5 @@
-import { IUserCommandInput } from "../types";
+import { IUserCommandInput } from "~/types";
 import execa from "execa";
-// @ts-expect-error
 import { getProject } from "@webiny/cli/utils";
 
 interface ILambdaFunctionResourceOutputsCodeAsset {
