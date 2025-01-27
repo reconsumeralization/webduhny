@@ -100,7 +100,6 @@ export const AutoComplete = ({
             size={inputSize}
             optionRenderer={renderItem}
             emptyMessage={noResultFound}
-            isLoading={loading}
         />
     );
 };

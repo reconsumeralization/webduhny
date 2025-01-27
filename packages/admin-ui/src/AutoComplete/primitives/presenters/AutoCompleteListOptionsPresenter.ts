@@ -15,8 +15,8 @@ export interface IAutoCompleteListOptionsPresenter {
         options: CommandOptionFormatted[];
         emptyMessage: string;
         loadingMessage: string;
-        isOpen: boolean;
-        isEmpty: boolean;
+        open: boolean;
+        empty: boolean;
     };
     init: (params: IAutoCompleteListOptionsPresenterParams) => void;
     setListOpenState: (open: boolean) => void;
@@ -26,7 +26,7 @@ export interface IAutoCompleteListOptionsPresenter {
 }
 
 export class AutoCompleteListOptionsPresenter implements IAutoCompleteListOptionsPresenter {
-    private isOpen = false;
+    private open = false;
     private emptyMessage = "No results.";
     private loadingMessage = "Loading...";
     private options = new ListCache<CommandOption>();
@@ -47,13 +47,13 @@ export class AutoCompleteListOptionsPresenter implements IAutoCompleteListOption
             options: this.options.getItems().map(option => CommandOptionFormatter.format(option)),
             emptyMessage: this.emptyMessage,
             loadingMessage: this.loadingMessage,
-            isOpen: this.isOpen,
-            isEmpty: !this.options.hasItems()
+            open: this.open,
+            empty: !this.options.hasItems()
         };
     }
 
     setListOpenState = (open: boolean) => {
-        this.isOpen = open;
+        this.open = open;
     };
 
     setSelectedOption = (value: string) => {

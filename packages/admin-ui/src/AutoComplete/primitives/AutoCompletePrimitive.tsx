@@ -18,7 +18,7 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     /**
      * Indicates if the autocomplete is loading options.
      */
-    isLoading?: boolean;
+    loading?: boolean;
     /**
      * Message to display while loading options.
      */
@@ -96,7 +96,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     }, [setListOpenState]);
 
     return (
-        <Popover open={vm.optionsListVm.isOpen} onOpenChange={() => setListOpenState(true)}>
+        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
                 <Popover.Trigger asChild>
                     <span>
@@ -115,7 +115,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                                     displayResetAction={vm.inputVm.displayResetAction}
                                     isDisabled={props.disabled}
                                     onResetValue={resetSelectedOption}
-                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
+                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.open)}
                                 />
                             }
                             onBlur={handleOnBlur}
@@ -130,8 +130,8 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                     <AutoCompleteList
                         options={vm.optionsListVm.options}
                         onOptionSelect={handleSelectOption}
-                        isEmpty={vm.optionsListVm.isEmpty}
-                        isLoading={props.isLoading}
+                        empty={vm.optionsListVm.empty}
+                        loading={props.loading}
                         loadingMessage={vm.optionsListVm.loadingMessage}
                         emptyMessage={vm.optionsListVm.emptyMessage}
                         optionRenderer={props.optionRenderer}
