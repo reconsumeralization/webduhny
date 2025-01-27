@@ -14997,12 +14997,10 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/pulumi-sdk": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
-    body-parser: "npm:1.20.3"
     chalk: "npm:^4.1.2"
     ci-info: "npm:^3.9.0"
     execa: "npm:^5.1.1"
     exit-hook: "npm:^4.0.0"
-    express: "npm:^4.21.2"
     fast-glob: "npm:^3.2.7"
     humanize-duration: "npm:3.32.1"
     listr: "npm:^0.14.3"
@@ -23349,7 +23347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:4.21.2, express@npm:^4.17.3, express@npm:^4.21.2":
+"express@npm:4.21.2, express@npm:^4.17.3":
   version: 4.21.2
   resolution: "express@npm:4.21.2"
   dependencies:

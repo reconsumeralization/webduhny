@@ -3,11 +3,7 @@ import { parentPort, workerData } from "worker_threads";
 (async (): Promise<void> => {
     const { handler: handlerParams } = workerData;
     try {
-        /**
-         * We disable the required import comment because we do not know what will be here.
-         */
-        // eslint-disable-next-line
-        const { handler } = await import(handlerParams.path);
+        const { handler } = require(handlerParams.path);
         const result = await handler(...handlerParams.args);
         /**
          * TODO @adrian

@@ -1,5 +1,6 @@
 import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
+import { requireConfig } from "~/utils";
 
 // We need this because tools have internal console.log calls. So,
 // let's intercept those and make sure messages are just forwarded
@@ -43,18 +44,14 @@ for (let i = 0; i < types.length; i++) {
 (async () => {
     try {
         const { options, package: pckg } = workerData;
-        /**
-         * We disable the required import comment because we do not know what will be here.
-         */
-        // eslint-disable-next-line
-        let config = await import(pckg.config);
-        if (config.default) {
-            config = config.default;
-        }
 
-        if (typeof config === "function") {
-            config = config({ options: { ...options, cwd: pckg.root }, context: cli });
-        }
+        const config = requireConfig(pckg.config, {
+            options: {
+                ...options,
+                cwd: pckg.root
+            },
+            context: cli
+        });
 
         if (typeof config.commands.watch !== "function") {
             console.log(

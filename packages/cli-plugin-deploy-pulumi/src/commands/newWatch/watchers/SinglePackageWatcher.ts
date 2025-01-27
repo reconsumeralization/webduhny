@@ -40,7 +40,7 @@ export class SinglePackageWatcher extends BasePackagesWatcher {
             logs: true
         };
 
-        const loadedConfig = await this.loadConfig(pkg.paths.config);
+        const loadedConfig = this.loadConfig(pkg.paths.config);
         let config: IConfigResult;
         if (typeof loadedConfig === "function") {
             config = loadedConfig({ options, context });
@@ -56,11 +56,8 @@ export class SinglePackageWatcher extends BasePackagesWatcher {
         await config.commands.watch(options);
     }
 
-    private async loadConfig(target: string): Promise<ILoadedConfigResult> {
-        const module = await import(
-            /* webpackChunkName: "cli.plugin.deployPulumi.SinglePackageWatcher" */
-            target
-        );
+    private loadConfig(target: string): ILoadedConfigResult {
+        const module = require(target);
         return module.default ? module.default : module;
     }
 }

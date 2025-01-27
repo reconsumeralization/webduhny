@@ -106,14 +106,7 @@ export const commands: CliCommandPlugin[] = [
                         });
                 },
                 async argv => {
-                    const { deployCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.deployCommand" */
-                        "./deploy"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { deployCommand } = require("./deploy");
                     return deployCommand(argv, context);
                 }
             );
@@ -149,14 +142,7 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    const { buildCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.buildCommand" */
-                        "./build"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { buildCommand } = require("./build");
                     return buildCommand(argv, context);
                 }
             );
@@ -232,14 +218,7 @@ export const commands: CliCommandPlugin[] = [
                         });
                     },
                     async argv => {
-                        const { newWatch } = await import(
-                            /* webpackChunkName: "cli.plugin.deployPulumi.newWatchCommand" */
-                            "./newWatch"
-                        );
-                        /**
-                         * We expect all args to be set.
-                         */
-                        // @ts-expect-error
+                        const { newWatch } = require("./newWatch");
                         return newWatch(argv, context);
                     }
                 );
@@ -315,14 +294,7 @@ export const commands: CliCommandPlugin[] = [
                         });
                     },
                     async argv => {
-                        const { watchCommand } = await import(
-                            /* webpackChunkName: "cli.plugin.deployPulumi.watchCommand" */
-                            "./watch"
-                        );
-                        /**
-                         * We expect all args to be set.
-                         */
-                        // @ts-expect-error
+                        const { watchCommand } = require("./watch");
                         return watchCommand(argv, context);
                     }
                 );
@@ -385,14 +357,7 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    const { destroyCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.destroyCommand" */
-                        "./destroy"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { destroyCommand } = require("./destroy");
                     return destroyCommand(argv, context);
                 }
             );
@@ -427,14 +392,7 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    const { outputCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.outputCommand" */
-                        "./output"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { outputCommand } = require("./output");
                     return outputCommand(argv, context);
                 }
             );
@@ -466,14 +424,7 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    const { pulumiRunCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.pulumiRunCommand" */
-                        "./pulumiRun"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { pulumiRunCommand } = require("./pulumiRun");
                     return pulumiRunCommand(argv, context);
                 }
             );
@@ -508,14 +459,7 @@ export const commands: CliCommandPlugin[] = [
                     });
                 },
                 async argv => {
-                    const { executeMigrationsCommand } = await import(
-                        /* webpackChunkName: "cli.plugin.deployPulumi.executeMigrationsCommand" */
-                        "./executeMigrations"
-                    );
-                    /**
-                     * We expect all args to be set.
-                     */
-                    // @ts-expect-error
+                    const { executeMigrationsCommand } = require("./executeMigrations");
                     return executeMigrationsCommand(argv, context);
                 }
             );
