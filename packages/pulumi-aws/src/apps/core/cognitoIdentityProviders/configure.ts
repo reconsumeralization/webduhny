@@ -73,7 +73,7 @@ export const configureAdminCognitoFederation = (
     for (const idp of config.identityProviders) {
         providers.push(
             app.addResource(aws.cognito.IdentityProvider, {
-                name: idp.type,
+                name: idp.name || idp.type,
                 config: getIdpConfig(idp.type, userPool.output.id, idp)
             })
         );
@@ -81,7 +81,7 @@ export const configureAdminCognitoFederation = (
 
     appClient.config.supportedIdentityProviders([
         "COGNITO",
-        ...providers.map(p => p.output.providerType)
+        ...providers.map(p => p.output.providerName)
     ]);
 
     appClient.config.allowedOauthScopes(["profile", "email", "openid"]);
