@@ -1,7 +1,7 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
-import { Skeleton as AdminSkeleton } from "@webiny/admin-ui";
+import { Skeleton as AdminSkeleton, SkeletonProps as AdminSkeletonProps } from "@webiny/admin-ui";
 
-export interface SkeletonProps {
+export interface SkeletonProps extends AdminSkeletonProps {
     //SkeletonStyleProps from "react-loading-skeleton"
     baseColor?: string;
     highlightColor?: string;
@@ -28,6 +28,6 @@ export interface SkeletonProps {
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Skeleton` component from the `@webiny/admin-ui` package instead.
  */
-export const Skeleton = ({ className }: SkeletonProps) => {
-    return <AdminSkeleton className={className} />;
+export const Skeleton = ({ className, type, size }: SkeletonProps) => {
+    return <AdminSkeleton className={className} type={type} size={size} />;
 };

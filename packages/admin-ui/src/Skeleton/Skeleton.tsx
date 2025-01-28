@@ -47,4 +47,4 @@ const DecoratableSkeleton = ({ size, type, className, ...props }: SkeletonProps)
 
 const Skeleton = makeDecoratable("Skeleton", DecoratableSkeleton);
 
-export { Skeleton };
+export { Skeleton, type SkeletonProps };
