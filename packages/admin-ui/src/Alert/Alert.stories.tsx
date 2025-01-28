@@ -5,7 +5,6 @@ import React from "react";
 const meta: Meta<typeof Alert> = {
     title: "Components/Alert",
     component: Alert,
-    tags: ["autodocs"],
     argTypes: {},
     decorators: [
         Story => (

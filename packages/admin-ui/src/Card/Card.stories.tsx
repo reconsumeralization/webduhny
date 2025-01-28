@@ -7,7 +7,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof Card> = {
     title: "Components/Card",
     component: Card,
-    tags: ["autodocs"],
     decorators: [
         Story => (
             <div className="bg-[#f4f4f4] h-[500px] w-[700px] rounded-[5px] px-[50px] content-center">
