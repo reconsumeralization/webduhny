@@ -13,10 +13,10 @@ import { useRangeSlider } from "~/RangeSlider/useRangeSlider";
 /**
  * Range Slider Value
  */
-const rangeSliderValueVariants = cva("font-normal text-sm leading-none", {
+const rangeSliderValueVariants = cva("wby-font-normal wby-text-sm wby-leading-none", {
     variants: {
         disabled: {
-            true: "text-neutral-disabled cursor-not-allowed"
+            true: "wby-text-neutral-disabled wby-cursor-not-allowed"
         }
     }
 });
@@ -47,18 +47,18 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
     const { vm, changeValues, commitValues } = useRangeSlider(props);
 
     return (
-        <div className={"w-full"}>
+        <div className={"wby-w-full"}>
             <FormComponentLabel
                 text={props.label}
                 required={props.required}
                 disabled={props.disabled}
             />
             <FormComponentDescription text={props.description} />
-            <div className={"flex flex-row items-center justify-between"}>
-                <div className={"basis-1/12 pr-xxs"}>
+            <div className={"wby-flex wby-flex-row wby-items-center wby-justify-between"}>
+                <div className={"wby-basis-1/12 wby-pr-xxs"}>
                     <RangeSliderValue value={vm.textValues[0]} disabled={props.disabled} />
                 </div>
-                <div className={"basis-10/12"}>
+                <div className={"wby-basis-10/12"}>
                     <RangeSliderPrimitiveRenderer
                         {...props}
                         {...vm}
@@ -66,7 +66,7 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
                         onValueCommit={commitValues}
                     />
                 </div>
-                <div className={"basis-1/12 pl-xxs text-right"}>
+                <div className={"wby-basis-1/12 wby-pl-xxs wby-text-right"}>
                     <RangeSliderValue value={vm.textValues[1]} disabled={props.disabled} />
                 </div>
             </div>

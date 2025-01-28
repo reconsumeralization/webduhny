@@ -5,33 +5,36 @@ import { Heading } from "~/Heading";
 import { Text } from "~/Text";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const cardRootVariants = cva("flex flex-col bg-neutral-base gap-y-md-plus text-sm", {
-    variants: {
-        padding: {
-            standard: "p-lg",
-            comfortable: "p-xl",
-            compact: "p-md"
+const cardRootVariants = cva(
+    "wby-flex wby-flex-col wby-bg-neutral-base wby-gap-y-md-plus wby-text-sm",
+    {
+        variants: {
+            padding: {
+                standard: "wby-p-lg",
+                comfortable: "wby-p-xl",
+                compact: "wby-p-md"
+            },
+            elevation: {
+                none: "",
+                xs: "wby-shadow-xs",
+                sm: "wby-shadow-sm",
+                md: "wby-shadow-md",
+                lg: "wby-shadow-lg",
+                xl: "wby-shadow-xl"
+            },
+            borderRadius: {
+                none: "wby-rounded-none",
+                sm: "wby-rounded-sm",
+                md: "wby-rounded-md"
+            }
         },
-        elevation: {
-            none: "",
-            xs: "shadow-xs",
-            sm: "shadow-sm",
-            md: "shadow-md",
-            lg: "shadow-lg",
-            xl: "shadow-xl"
-        },
-        borderRadius: {
-            none: "rounded-none",
-            sm: "rounded-sm",
-            md: "rounded-md"
+        defaultVariants: {
+            padding: "standard",
+            elevation: "none",
+            borderRadius: "md"
         }
-    },
-    defaultVariants: {
-        padding: "standard",
-        elevation: "none",
-        borderRadius: "md"
     }
-});
+);
 
 interface CardRootProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
@@ -52,8 +55,8 @@ CardRootBase.displayName = "CardRoot";
 const CardRoot = makeDecoratable("CardRoot", CardRootBase);
 
 interface CardProps extends CardRootProps, VariantProps<typeof cardRootVariants> {
-    title?: React.ReactNode | string;
-    description?: React.ReactNode | string;
+    title?: React.ReactNode;
+    description?: React.ReactNode;
     actions?: React.ReactNode;
     options?: React.ReactNode;
 }
@@ -66,11 +69,11 @@ const CardHeaderBase = ({ title, description, options }: CardHeaderProps) => {
     }
 
     return (
-        <div className={"flex flex-row justify-between"}>
-            <div className={"flex flex-col gap-y-xs"}>
+        <div className={"wby-flex wby-flex-row wby-justify-between"}>
+            <div className={"wby-flex wby-flex-col wby-gap-y-xs"}>
                 {typeof title === "string" ? <Heading level={6} as={"h1"} text={title} /> : title}
                 {typeof description === "string" ? (
-                    <Text text={description} size="sm" className={"text-neutral-strong"} />
+                    <Text text={description} size="sm" className={"wby-text-neutral-strong"} />
                 ) : (
                     description
                 )}
@@ -91,7 +94,7 @@ const CardFooterBase = ({ actions }: CardFooterProps) => {
         return null;
     }
 
-    return <div className={"flex justify-end gap-sm"}>{actions}</div>;
+    return <div className={"wby-flex wby-justify-end wby-gap-sm"}>{actions}</div>;
 };
 
 CardFooterBase.displayName = "CardFooter";

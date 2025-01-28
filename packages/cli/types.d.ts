@@ -1,10 +1,9 @@
 /**
  * Rename file to types.ts when switching the package to Typescript.
  */
+export type GenericRecord<K extends PropertyKey = PropertyKey, V = any> = Record<K, V>;
 
-export type GenericRecordKey = string | number | symbol;
-
-export type GenericRecord<K extends GenericRecordKey = GenericRecordKey, V = any> = Record<K, V>;
+export type NonEmptyArray<T> = [T, ...T[]];
 
 /**
  * A simplified plugins container interface, used specifically within the Webiny CLI.
@@ -170,4 +169,26 @@ export interface CliContext {
         set: (key: string, value: string) => Record<string, any>;
         get: (key: string) => any;
     };
+}
+
+/**
+ * Arguments for CliPlugin.create
+ *
+ * @category Cli
+ */
+export interface CliCommandPluginArgs {
+    yargs: any;
+    context: CliContext;
+}
+
+/**
+ * A plugin defining cli-command type.
+ *
+ * @category Plugin
+ * @category Cli
+ */
+export interface CliCommandPlugin extends Plugin {
+    type: "cli-command";
+    name: string;
+    create: (args: CliCommandPluginArgs) => void;
 }

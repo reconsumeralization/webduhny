@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import { ButtonProps } from "./Button";
 import { useMappedButtonProps } from "~/Button/useMappedButtonProps";
-import { Button as AdminUiButton } from "@webiny/admin-ui";
+import { IconButton as AdminUiBIconButton } from "@webiny/admin-ui";
 
 export interface IconButtonProps extends ButtonProps {
     /**
@@ -22,5 +22,5 @@ export interface IconButtonProps extends ButtonProps {
  */
 export const IconButton = (props: IconButtonProps) => {
     const mappedProps = useMappedButtonProps(props);
-    return <AdminUiButton {...props} {...mappedProps} variant={"ghost"} />;
+    return <AdminUiBIconButton {...mappedProps} variant={"ghost"} />;
 };

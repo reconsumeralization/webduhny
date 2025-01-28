@@ -2,15 +2,16 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as MoreVertical } from "@material-design-icons/svg/filled/more_vert.svg";
 import { Card } from "./Card";
-import { Button } from "~/Button";
+import { Button, IconButton } from "~/Button";
+import { Icon } from "~/Icon";
 
 const meta: Meta<typeof Card> = {
     title: "Components/Card",
     component: Card,
     decorators: [
         Story => (
-            <div className="bg-[#f4f4f4] h-[500px] w-[700px] rounded-[5px] px-[50px] content-center">
-                <div className={"m-auto w-[300px]"}>
+            <div className="wby-bg-[#f4f4f4] wby-h-[500px] wby-w-[700px] wby-rounded-[5px] wby-px-[50px] wby-content-center">
+                <div className={"wby-m-auto wby-w-[300px]"}>
                     <Story />
                 </div>
             </div>
@@ -97,9 +98,10 @@ export const WithOptions: Story = {
         ...Default.args,
         actions: null,
         options: (
-            <Button
+            <IconButton
                 variant={"ghost"}
-                icon={<MoreVertical />}
+                icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                size={"sm"}
                 iconSize={"lg"}
                 onClick={() => alert("Custom action button clicked.")}
             />

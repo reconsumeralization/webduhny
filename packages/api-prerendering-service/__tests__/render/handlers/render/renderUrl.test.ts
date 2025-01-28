@@ -1,6 +1,6 @@
 import render from "~/render/renderUrl";
 import prettier from "prettier";
-import { Context } from "@webiny/handler/types";
+import { Context } from "~/render/types";
 
 const BASE_HTML = `<html lang="en"><head><meta charset="utf-8" /></head><body><div id="root">A sample page.</div></body></html>`;
 
@@ -15,7 +15,9 @@ describe(`"renderUrl" Function Test`, () => {
             renderUrlFunction: async () => {
                 return {
                     content: BASE_HTML,
-                    meta: {}
+                    meta: {
+                        interceptedRequests: []
+                    }
                 };
             }
         });
@@ -58,7 +60,9 @@ describe(`"renderUrl" Function Test`, () => {
             renderUrlFunction: async () => {
                 return {
                     content: BASE_HTML,
-                    meta: {}
+                    meta: {
+                        interceptedRequests: []
+                    }
                 };
             }
         });

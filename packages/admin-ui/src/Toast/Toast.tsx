@@ -7,6 +7,7 @@ import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Heading } from "~/Heading";
 import { Text } from "~/Text";
 import { Icon, IconProps } from "~/Icon";
+import { IconButton } from "~/Button";
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -20,7 +21,7 @@ const DecoratableToastViewport = React.forwardRef<
     <ToastPrimitives.Viewport
         ref={ref}
         className={cn(
-            "fixed top-0 right-0 bottom-auto z-[100] flex max-h-screen flex-col p-4",
+            "wby-fixed wby-top-0 wby-right-0 wby-bottom-auto wby-z-[100] wby-flex wby-max-h-screen wby-flex-col wby-p-4",
             className
         )}
         {...props}
@@ -35,17 +36,17 @@ const ToastViewport = makeDecoratable("ToastViewport", DecoratableToastViewport)
  */
 const toastVariants = cva(
     [
-        "group pointer-events-auto relative flex w-full items-center justify-start p-md gap-sm-extra self-stretch overflow-hidden rounded-md border-sm border-neutral-dimmed shadow-lg transition-all",
-        "data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full"
+        "wby-group wby-pointer-events-auto wby-relative wby-flex wby-w-full wby-items-center wby-justify-start wby-p-md wby-gap-sm-extra wby-self-stretch wby-overflow-hidden wby-rounded-md wby-border-sm wby-border-neutral-dimmed wby-shadow-lg wby-transition-all",
+        "data-[swipe=cancel]:wby-translate-x-0 data-[swipe=end]:wby-translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:wby-translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:wby-transition-none data-[state=open]:wby-animate-in data-[state=closed]:wby-animate-out data-[swipe=end]:wby-animate-out data-[state=closed]:wby-fade-out-80 data-[state=closed]:wby-slide-out-to-right-full data-[state=open]:wby-slide-in-from-top-full"
     ],
     {
         variants: {
             variant: {
-                default: "default-variant bg-neutral-dark",
-                subtle: "subtle-variant bg-white"
+                default: "wby-default-variant wby-bg-neutral-dark",
+                subtle: "wby-subtle-variant wby-bg-white"
             },
             hasDescription: {
-                true: "has-description items-start justify-start"
+                true: "wby-has-description wby-items-start wby-justify-start"
             }
         },
         defaultVariants: {
@@ -77,7 +78,11 @@ const DecoratableToastActions = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
 >(({ children, ...props }, ref) => (
-    <div {...props} className={"mt-md flex w-full items-center justify-start gap-sm"} ref={ref}>
+    <div
+        {...props}
+        className={"wby-mt-md wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-sm"}
+        ref={ref}
+    >
         {children}
     </div>
 ));
@@ -88,19 +93,22 @@ const ToastActions = makeDecoratable("ToastActions", DecoratableToastActions);
 /**
  * Toast Close Icon
  */
+
+interface ToastCloseProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close> {
+    variant?: VariantProps<typeof toastVariants>["variant"];
+}
+
 const DecoratableToastClose = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Close>,
-    React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
->(({ className, ...props }, ref) => (
-    <ToastPrimitives.Close
-        ref={ref}
-        className={cn(
-            "focus:outline-none group-[.default-variant]:fill-neutral-base group-[.subtle-variant]:fill-neutral-xstrong",
-            className
-        )}
-        {...props}
-    >
-        <Icon label={"Close"} icon={<CloseIcon />} aria-hidden={true} />
+    ToastCloseProps
+>(({ variant, ...props }, ref) => (
+    <ToastPrimitives.Close ref={ref} {...props} asChild>
+        <IconButton
+            icon={<Icon label={"Close"} icon={<CloseIcon />} />}
+            size={"sm"}
+            iconSize={"lg"}
+            variant={variant === "subtle" ? "ghost" : "ghost-negative"}
+        />
     </ToastPrimitives.Close>
 ));
 DecoratableToastClose.displayName = ToastPrimitives.Close.displayName;
@@ -121,8 +129,8 @@ const DecoratableNotificationIcon = () => (
 const NotificationIcon = makeDecoratable("NotificationIcon", DecoratableNotificationIcon);
 
 const DecoratableToastIcon = ({ icon = <NotificationIcon /> }: ToastIconProps) => (
-    <div className={"fill-accent-default"}>
-        <span className="h-3 w-3">{icon}</span>
+    <div className={"wby-fill-accent-default"}>
+        <span className="wby-h-3 wby-w-3">{icon}</span>
     </div>
 );
 
@@ -144,7 +152,7 @@ const DecoratableToastTitle = React.forwardRef<
         {...props}
         asChild
         className={cn(
-            "group-[.default-variant]:text-neutral-light group-[.subtle-variant]:text-neutral-primary font-normal group-[.has-description]:font-semibold",
+            "group-[.wby-default-variant]:wby-text-neutral-light group-[.wby-subtle-variant]:wby-text-neutral-primary wby-font-normal group-[.wby-has-description]:wby-font-semibold",
             className
         )}
     >
@@ -171,11 +179,11 @@ const DecoratableToastDescription = React.forwardRef<
         {...props}
         asChild
         className={cn(
-            "mt-xs-plus group-[.default-variant]:text-neutral-dimmed group-[.subtle-variant]:text-neutral-strong",
+            "wby-mt-xs-plus group-[.wby-default-variant]:wby-text-neutral-dimmed group-[.wby-subtle-variant]:wby-text-neutral-strong",
             className
         )}
     >
-        <Text text={text} as={"div"} size={"md"} className={"text-neutral-dimmed"} />
+        <Text text={text} as={"div"} size={"md"} className={"wby-text-neutral-dimmed"} />
     </ToastPrimitives.Description>
 ));
 DecoratableToastDescription.displayName = ToastPrimitives.Description.displayName;
@@ -198,12 +206,12 @@ const DecoratableToast = ({ title, description, icon, actions, ...props }: Toast
     return (
         <ToastRoot hasDescription={!!description || !!actions} {...props}>
             <ToastIcon icon={icon} />
-            <div className="w-64">
+            <div className="wby-w-64">
                 {title}
                 {description && description}
                 {actions && actions}
             </div>
-            <ToastClose />
+            <ToastClose variant={props.variant} />
         </ToastRoot>
     );
 };

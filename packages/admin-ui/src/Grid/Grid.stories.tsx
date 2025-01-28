@@ -16,7 +16,7 @@ type Story = StoryObj<typeof Grid>;
 
 export const Default: Story = {
     args: {
-        className: "bg-neutral-light p-4",
+        className: "wby-bg-neutral-light wby-p-4",
         children: (
             <>
                 <StyledColumn index={1} />

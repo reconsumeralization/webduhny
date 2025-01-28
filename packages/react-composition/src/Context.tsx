@@ -10,6 +10,7 @@ import { useCompositionScope } from "~/CompositionScope";
 import {
     ComposedFunction,
     ComposeWith,
+    Decoratable,
     DecoratableComponent,
     DecoratableHook,
     Decorator,
@@ -64,45 +65,95 @@ interface CompositionContext {
     composeComponent(
         component: ComponentType<unknown>,
         hocs: Enumerable<ComposeWith>,
-        scope?: string
+        scope?: string[]
     ): void;
 }
 
 const CompositionContext = createContext<CompositionContext | undefined>(undefined);
 
+export type DecoratorsTuple = [Decoratable, Decorator<any>[]];
+export type DecoratorsCollection = Array<DecoratorsTuple>;
+
 interface CompositionProviderProps {
+    decorators?: DecoratorsCollection;
     children: React.ReactNode;
 }
 
-export const CompositionProvider = ({ children }: CompositionProviderProps) => {
-    const [components, setComponents] = useState<ComponentScopes>(new Map());
+/**
+ * Scopes are ordered in reverse, to go from child to parent. As we iterate over scopes, we try to find the latest component
+ * recipe (a "recipe" is a base component + all decorators registered so far). If none exist, we return an empty recipe.
+ */
+const findComponentRecipe = (
+    component: GenericComponent | GenericHook,
+    lookupScopes: string[],
+    components: ComponentScopes
+) => {
+    for (const scope of lookupScopes) {
+        const scopeMap: ComposedComponents = components.get(scope) || new Map();
+        const recipe = scopeMap.get(component);
+        if (recipe) {
+            return recipe;
+        }
+    }
+
+    return { component: null, hocs: [] };
+};
+
+const composeComponents = (
+    components: ComponentScopes,
+    decorators: Array<[GenericComponent | GenericHook, Decorator<any>[]]>,
+    scopes: string[] = []
+) => {
+    const targetScope = scopes[scopes.length - 1];
+    const targetComponents = components.get(targetScope) || new Map();
+    const lookupScopes = scopes.reverse();
+
+    for (const [component, hocs] of decorators) {
+        const recipe = findComponentRecipe(component, lookupScopes, components);
+
+        const newHocs = [...(recipe.hocs || []), ...hocs] as Decorator<
+            GenericHook | GenericComponent
+        >[];
+
+        targetComponents.set(component, {
+            component: compose(...[...newHocs].reverse())(component),
+            hocs: newHocs
+        });
+
+        components.set(targetScope, targetComponents);
+    }
+
+    return components;
+};
+
+export const CompositionProvider = ({ decorators = [], children }: CompositionProviderProps) => {
+    const [components, setComponents] = useState<ComponentScopes>(() => {
+        return composeComponents(
+            new Map(),
+            decorators.map(tuple => {
+                return [tuple[0].original, tuple[1]];
+            }),
+            ["*"]
+        );
+    });
 
     const composeComponent = useCallback(
         (
-            component: GenericHook | GenericComponent,
+            component: GenericComponent | GenericHook,
             hocs: HigherOrderComponent<any, any>[],
-            scope: string | undefined = "*"
+            scopes: string[] = []
         ) => {
             setComponents(prevComponents => {
-                const components = new Map(prevComponents);
-                const scopeMap: ComposedComponents = components.get(scope) || new Map();
-                const recipe = scopeMap.get(component) || { component: null, hocs: [] };
-
-                const newHocs = [...(recipe.hocs || []), ...hocs] as Decorator<
-                    GenericHook | GenericComponent
-                >[];
-
-                scopeMap.set(component, {
-                    component: compose(...[...newHocs].reverse())(component),
-                    hocs: newHocs
-                });
-
-                components.set(scope, scopeMap);
-                return components;
+                return composeComponents(
+                    new Map(prevComponents),
+                    [[component, hocs]],
+                    ["*", ...scopes]
+                );
             });
 
             // Return a function that will remove the added HOCs.
             return () => {
+                const scope = scopes[scopes.length - 1];
                 setComponents(prevComponents => {
                     const components = new Map(prevComponents);
                     const scopeMap: ComposedComponents = components.get(scope) || new Map();

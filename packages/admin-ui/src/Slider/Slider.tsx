@@ -18,10 +18,10 @@ import { useSlider } from "~/Slider/useSlider";
 /**
  * Slider Value
  */
-const sliderValueVariants = cva("font-normal text-sm leading-none", {
+const sliderValueVariants = cva("wby-font-normal wby-text-sm wby-leading-none", {
     variants: {
         disabled: {
-            true: "text-neutral-disabled cursor-not-allowed"
+            true: "wby-text-neutral-disabled wby-cursor-not-allowed"
         }
     }
 });
@@ -50,8 +50,8 @@ interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps 
 
 const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
     return (
-        <div className={"w-full flex flex-row items-center justify-between"}>
-            <div className={"basis-2/12 pr-sm"}>
+        <div className={"wby-w-full wby-flex wby-flex-row wby-items-center wby-justify-between"}>
+            <div className={"wby-basis-2/12 wby-pr-sm"}>
                 <Label
                     text={props.label}
                     required={props.required}
@@ -59,10 +59,10 @@ const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideVal
                     weight={"light"}
                 />
             </div>
-            <div className={"basis-9/12"}>
+            <div className={"wby-basis-9/12"}>
                 <SliderPrimitiveRenderer {...props} />
             </div>
-            <div className={"basis-1/12 pl-sm text-right"}>
+            <div className={"wby-basis-1/12 wby-pl-sm wby-text-right"}>
                 <SliderValue value={props.textValue} disabled={props.disabled} />
             </div>
         </div>
@@ -87,7 +87,7 @@ const DecoratableSlider = ({ description, note, validation, ...props }: SliderPr
 
     if (props.labelPosition === "side") {
         return (
-            <div className={"w-full"}>
+            <div className={"wby-w-full"}>
                 <FormComponentDescription text={description} />
                 <SliderRendererWithSideValue
                     {...props}
@@ -102,7 +102,7 @@ const DecoratableSlider = ({ description, note, validation, ...props }: SliderPr
     }
 
     return (
-        <div className={"w-full"}>
+        <div className={"wby-w-full"}>
             <FormComponentLabel
                 text={<Label text={props.label} value={vm.textValue} />}
                 disabled={props.disabled}

@@ -18,7 +18,7 @@ const DecoratableFormComponentErrorMessage = (props: FormComponentErrorMessagePr
             text={props.text}
             size={"sm"}
             as={"div"}
-            className={"mt-xs text-destructive-primary font-semibold"}
+            className={"wby-mt-xs wby-text-destructive-primary wby-font-semibold"}
         />
     );
 };

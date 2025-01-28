@@ -37,6 +37,7 @@ export const AutoComplete = (props: AutoCompleteProps) => {
                     onInput={props.onInput}
                     options={props.vm.options}
                     loading={props.vm.loading}
+                    valueProp={"entryId"}
                 />
             )}
         </Bind>

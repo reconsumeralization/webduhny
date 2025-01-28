@@ -2,7 +2,6 @@ import React from "react";
 import { App } from "@webiny/app";
 import { ThemeProvider } from "@webiny/app-theme";
 import { WcpProvider } from "@webiny/app-wcp";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { ApolloClientFactory, createApolloProvider } from "./providers/ApolloProvider";
 import { Base } from "./Base";
 import { createTelemetryProvider } from "./providers/TelemetryProvider";
@@ -14,6 +13,7 @@ import { UserMenuProvider } from "./ui/UserMenu";
 import { NavigationProvider } from "./ui/Navigation";
 import { createDialogsProvider } from "~/components/Dialogs/DialogsContext";
 import { DefaultIcons, IconPickerConfigProvider } from "~/components/IconPicker/config";
+import { AdminConfigProvider } from "~/config/AdminConfig";
 
 export interface AdminProps {
     createApolloClient: ApolloClientFactory;
@@ -31,7 +31,7 @@ export const Admin = ({ children, createApolloClient }: AdminProps) => {
     return (
         <ApolloProvider>
             <ThemeProvider>
-                <WcpProvider loader={<CircularProgress label={"Loading..."} />}>
+                <WcpProvider>
                     <App
                         providers={[
                             TelemetryProvider,
@@ -42,6 +42,7 @@ export const Admin = ({ children, createApolloClient }: AdminProps) => {
                             NavigationProvider,
                             DialogsProvider,
                             IconPickerConfigProvider,
+                            AdminConfigProvider,
                             AdminUiStateProvider
                         ]}
                     >

@@ -14,7 +14,7 @@ const IndeterminateIcon = () => {
     return (
         <span
             className={
-                "block w-sm h-xxs rounded-sm bg-primary-default group-disabled:bg-primary-disabled"
+                "wby-block wby-w-sm wby-h-xxs wby-rounded-sm wby-bg-primary-default group-disabled:wby-bg-primary-disabled"
             }
         />
     );
@@ -25,25 +25,28 @@ const IndeterminateIcon = () => {
  */
 const checkboxVariants = cva(
     [
-        "group peer h-md w-md shrink-0 rounded-sm border-sm mt-xxs",
-        "border-neutral-muted bg-neutral-base fill-neutral-base ring-offset-background",
-        "hover:border-neutral-dark",
-        "focus:outline-none focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
-        "disabled:cursor-not-allowed disabled:border-transparent disabled:bg-neutral-disabled",
-        "data-[state=checked]:bg-primary-default data-[state=checked]:border-transparent",
-        "data-[state=checked]:hover:bg-primary-strong",
-        "data-[state=checked]:disabled:bg-neutral-disabled data-[state=checked]:disabled:fill-neutral-strong"
+        "wby-group wby-peer wby-h-md wby-w-md wby-shrink-0 wby-rounded-sm wby-border-sm ",
+        "wby-border-neutral-muted wby-bg-neutral-base [&_svg]:!wby-fill-neutral-base wby-ring-offset-background",
+        "hover:wby-border-neutral-dark",
+        "focus:wby-outline-none focus-visible:wby-border-accent-default focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed focus-visible:wby-ring-offset-0",
+        "disabled:wby-cursor-not-allowed disabled:wby-border-transparent disabled:wby-bg-neutral-disabled",
+        "data-[state=checked]:wby-bg-primary-default data-[state=checked]:wby-border-transparent",
+        "data-[state=checked]:hover:wby-bg-primary-strong",
+        "data-[state=checked]:disabled:wby-bg-neutral-disabled data-[state=checked]:disabled:wby-fill-neutral-strong"
     ],
     {
         variants: {
             indeterminate: {
                 true: [
-                    "border-neutral-muted",
-                    "data-[state=checked]:bg-neutral-base data-[state=checked]:border-neutral-muted",
-                    "data-[state=checked]:hover:bg-neutral-base data-[state=checked]:hover:border-neutral-strong",
-                    "data-[state=checked]:focus-visible:border-accent-default",
-                    "data-[state=checked]:disabled:border-transparent"
+                    "wby-border-neutral-muted",
+                    "data-[state=checked]:wby-bg-neutral-base data-[state=checked]:wby-border-neutral-muted",
+                    "data-[state=checked]:hover:wby-bg-neutral-base data-[state=checked]:hover:wby-border-neutral-strong",
+                    "data-[state=checked]:focus-visible:wby-border-accent-default",
+                    "data-[state=checked]:disabled:wby-border-transparent"
                 ]
+            },
+            hasLabel: {
+                true: "wby-mt-xxs"
             }
         }
     }
@@ -70,24 +73,27 @@ type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedCha
 const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitives.Root>,
     CheckboxPrimitiveRendererProps
->(({ label, id, indeterminate, changeChecked, className, ...props }, ref) => {
+>(({ label, id, hasLabel, indeterminate, changeChecked, className, ...props }, ref) => {
     return (
-        <div className="flex items-start space-x-sm-extra">
+        <div className="wby-flex wby-items-start wby-space-x-sm-extra">
             <CheckboxPrimitives.Root
                 ref={ref}
                 {...props}
                 id={id}
-                className={cn(checkboxVariants({ indeterminate }), className)}
+                className={cn(checkboxVariants({ indeterminate, hasLabel }), className)}
                 onCheckedChange={changeChecked}
             >
-                <span className={cn("flex items-center justify-center")}>
-                    {indeterminate && <IndeterminateIcon />}
-                    <CheckboxPrimitives.Indicator>
-                        <CheckIcon className={"h-sm-extra w-sm-extra"} />
-                    </CheckboxPrimitives.Indicator>
+                <span className={cn("wby-flex wby-items-center wby-justify-center")}>
+                    {indeterminate ? (
+                        <IndeterminateIcon />
+                    ) : (
+                        <CheckboxPrimitives.Indicator>
+                            <CheckIcon className={"!wby-size-sm-extra"} />
+                        </CheckboxPrimitives.Indicator>
+                    )}
                 </span>
             </CheckboxPrimitives.Root>
-            <Label id={id} text={label} weight={"light"} className={"text-md"} />
+            {hasLabel && <Label id={id} text={label} weight={"light"} className={"wby-text-md"} />}
         </div>
     );
 });

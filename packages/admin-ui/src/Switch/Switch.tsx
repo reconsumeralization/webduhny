@@ -15,7 +15,7 @@ const DecoratableSwitch = ({ description, note, validation, ...props }: SwitchPr
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
-        <div className={"w-full"}>
+        <div className={"wby-w-full"}>
             <FormComponentDescription text={description} />
             <SwitchPrimitive {...props} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />

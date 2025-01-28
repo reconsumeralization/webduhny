@@ -70,7 +70,7 @@ export const WithValue: Story = {
         value: 24
     },
     render: args => (
-        <div className="w-64">
+        <div className="wby-w-64">
             <Label {...args} />
         </div>
     )
@@ -87,7 +87,7 @@ export const Disabled: Story = {
         value: 24
     },
     render: args => (
-        <div className="w-64">
+        <div className="wby-w-64">
             <Label {...args} />
         </div>
     )

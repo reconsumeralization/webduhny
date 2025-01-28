@@ -6,6 +6,9 @@
 
 @layer base {
   :root {
+    // Colors.
+    {COLORS}
+
     // Background colors.
     {BACKGROUND_COLOR}
 
@@ -55,6 +58,12 @@
 
 @layer base {
   body {
-    @apply font-sans antialiased;
+    // Styles all text that was not rendered via the Text component.
+    @apply wby-font-sans wby-antialiased wby-text-md wby-text-neutral-primary;
+  }
+
+  a {
+    // Styles all links that were not rendered via the Link component.
+    @apply wby-text-accent-primary wby-hover:underline wby-focus-visible:outline-none wby-focus-visible:ring-lg wby-focus-visible:ring-primary-dimmed wby-rounded-xs;
   }
 }

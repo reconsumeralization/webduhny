@@ -27,7 +27,6 @@ export const ButtonsCreate = ({
             disabled={!canCreateFolder}
             data-testid="new-folder-button"
             onClick={onCreateFolder}
-            small={true}
         >
             <ButtonIcon icon={<Add />} />
             {t`New Folder`}
@@ -48,7 +47,6 @@ export const ButtonsCreate = ({
             data-testid="new-page-button"
             onClick={onCreatePage}
             flat={true}
-            small={true}
         >
             <ButtonIcon icon={<Add />} />
             {t`New Page`}

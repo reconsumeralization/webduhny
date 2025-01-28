@@ -12,7 +12,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@types/aws-lambda": "^8.10.131",
     "@webiny/api": "0.0.0",
     "@webiny/api-headless-cms": "0.0.0",
     "@webiny/api-websockets": "0.0.0",
@@ -31,11 +30,10 @@
     "@webiny/api-wcp": "0.0.0",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
-    "graphql": "^15.8.0",
-    "rimraf": "^5.0.5",
-    "ttypescript": "^1.5.13",
-    "type-fest": "^2.19.0",
-    "typescript": "4.9.5"
+    "graphql": "^15.9.0",
+    "rimraf": "^6.0.1",
+    "type-fest": "4.14.0",
+    "typescript": "5.3.3"
   },
   "publishConfig": {
     "access": "public",
@@ -45,15 +43,5 @@
     "build": "yarn webiny run build",
     "watch": "yarn webiny run watch"
   },
-  "gitHead": "8476da73b653c89cc1474d968baf55c1b0ae0e5f",
-  "adio": {
-    "ignore": {
-      "src": [
-        "aws-lambda"
-      ],
-      "dependencies": [
-        "@types/aws-lambda"
-      ]
-    }
-  }
+  "gitHead": "8476da73b653c89cc1474d968baf55c1b0ae0e5f"
 }

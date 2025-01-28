@@ -28,7 +28,7 @@ const Alert = (props: AlertProps) => {
     const { title, type, children, ...rest } = props;
 
     return (
-        <AdminUiAlert type={type} variant={"strong"} {...rest}>
+        <AdminUiAlert type={type} variant={"subtle"} {...rest}>
             <div>
                 <strong>{title}</strong>
             </div>

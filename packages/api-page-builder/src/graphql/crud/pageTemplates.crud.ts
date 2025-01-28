@@ -25,6 +25,7 @@ import WebinyError from "@webiny/error";
 import { createTopic } from "@webiny/pubsub";
 import { mdbid } from "@webiny/utils";
 import { PageTemplatesPermissions } from "~/graphql/crud/permissions/PageTemplatesPermissions";
+import { dynamicData } from "~/graphql/crud/dynamicData.validation";
 
 const createSchema = zod.object({
     title: zod.string().max(100),
@@ -32,8 +33,9 @@ const createSchema = zod.object({
     tags: zod.string().array(),
     description: zod.string().max(100),
     layout: zod.string().max(100).optional(),
-    pageCategory: zod.string().max(100),
-    content: zod.any()
+    pageCategory: zod.string().max(100).default("static"),
+    content: zod.any(),
+    ...dynamicData
 });
 
 const updateSchema = zod.object({
@@ -43,7 +45,8 @@ const updateSchema = zod.object({
     description: zod.string().max(100).optional(),
     layout: zod.string().max(100).optional(),
     pageCategory: zod.string().max(100).optional(),
-    content: zod.any()
+    content: zod.any(),
+    ...dynamicData
 });
 
 const getDefaultContent = () => {

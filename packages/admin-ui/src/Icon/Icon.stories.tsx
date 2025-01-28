@@ -27,7 +27,7 @@ export const Default: Story = {
         },
         color: {
             control: "select",
-            options: ["accent", "neutral", "neutral-strong", "neutral-light"]
+            options: ["accent", "neutral", "neutral-strong", "neutral-light", "inherit"]
         }
     }
 };
@@ -42,7 +42,7 @@ export const ColorAccent: Story = {
 export const ColorNeutral: Story = {
     decorators: [
         Story => (
-            <div className="bg-[#25292e] p-[300px] rounded-[5px]">
+            <div className="wby-bg-[#25292e] wby-p-[300px] wby-rounded-[5px]">
                 <Story />
             </div>
         )
@@ -64,6 +64,27 @@ export const ColorNeutralXStrong: Story = {
     args: {
         ...Default.args,
         color: "neutral-strong"
+    }
+};
+
+export const ColorInherit: Story = {
+    decorators: [
+        Story => (
+            <div className="wby-fill-success">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Default.args,
+        color: "inherit"
+    }
+};
+
+export const SizeXs: Story = {
+    args: {
+        ...Default.args,
+        size: "xs"
     }
 };
 

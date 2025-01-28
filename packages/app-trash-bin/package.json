@@ -11,15 +11,15 @@
   "author": "Webiny Ltd.",
   "license": "MIT",
   "dependencies": {
-    "@emotion/styled": "^11.10.6",
-    "@material-design-icons/svg": "^0.14.3",
+    "@emotion/styled": "11.10.6",
+    "@material-design-icons/svg": "^0.14.13",
     "@webiny/app-aco": "0.0.0",
     "@webiny/app-admin": "0.0.0",
     "@webiny/app-utils": "0.0.0",
     "@webiny/react-composition": "0.0.0",
     "@webiny/react-properties": "0.0.0",
     "@webiny/ui": "0.0.0",
-    "graphql": "^15.7.2",
+    "graphql": "^15.9.0",
     "lodash": "4.17.21",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
@@ -32,9 +32,8 @@
     "@webiny/project-utils": "0.0.0",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
-    "rimraf": "^5.0.5",
-    "ttypescript": "^1.5.12",
-    "typescript": "4.9.5"
+    "rimraf": "^6.0.1",
+    "typescript": "5.3.3"
   },
   "publishConfig": {
     "access": "public",

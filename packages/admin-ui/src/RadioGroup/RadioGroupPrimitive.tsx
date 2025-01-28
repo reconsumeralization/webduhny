@@ -15,7 +15,7 @@ const DecoratableRadioGroupPrimitiveRoot = React.forwardRef<
 >(({ className, ...props }, ref) => {
     return (
         <RadioGroupPrimitives.Root
-            className={cn("grid gap-sm-extra", className)}
+            className={cn("wby-grid wby-gap-sm-extra", className)}
             {...props}
             ref={ref}
         />

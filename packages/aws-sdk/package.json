@@ -6,34 +6,35 @@
   "license": "MIT",
   "author": "Webiny Ltd.",
   "dependencies": {
-    "@aws-sdk/client-apigatewaymanagementapi": "^3.654.0",
-    "@aws-sdk/client-cloudfront": "^3.654.0",
-    "@aws-sdk/client-cloudwatch-events": "^3.654.0",
-    "@aws-sdk/client-cloudwatch-logs": "^3.654.0",
-    "@aws-sdk/client-cognito-identity-provider": "^3.654.0",
-    "@aws-sdk/client-dynamodb": "^3.654.0",
-    "@aws-sdk/client-dynamodb-streams": "^3.654.0",
-    "@aws-sdk/client-eventbridge": "^3.654.0",
-    "@aws-sdk/client-iam": "^3.654.0",
-    "@aws-sdk/client-iot": "^3.654.0",
-    "@aws-sdk/client-lambda": "^3.654.0",
-    "@aws-sdk/client-s3": "^3.654.0",
-    "@aws-sdk/client-sfn": "^3.654.0",
-    "@aws-sdk/client-sqs": "^3.654.0",
-    "@aws-sdk/client-sts": "^3.654.0",
-    "@aws-sdk/credential-providers": "^3.654.0",
-    "@aws-sdk/lib-dynamodb": "^3.654.0",
-    "@aws-sdk/lib-storage": "^3.654.0",
-    "@aws-sdk/s3-presigned-post": "^3.654.0",
-    "@aws-sdk/s3-request-presigner": "^3.654.0",
-    "@aws-sdk/util-dynamodb": "^3.654.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "3.726.1",
+    "@aws-sdk/client-cloudfront": "3.726.1",
+    "@aws-sdk/client-cloudwatch-events": "3.726.1",
+    "@aws-sdk/client-cloudwatch-logs": "3.726.1",
+    "@aws-sdk/client-cognito-identity-provider": "3.726.1",
+    "@aws-sdk/client-dynamodb": "3.726.1",
+    "@aws-sdk/client-dynamodb-streams": "3.726.1",
+    "@aws-sdk/client-eventbridge": "3.726.1",
+    "@aws-sdk/client-iam": "3.726.1",
+    "@aws-sdk/client-iot": "3.726.1",
+    "@aws-sdk/client-lambda": "3.726.1",
+    "@aws-sdk/client-s3": "3.726.1",
+    "@aws-sdk/client-sfn": "3.726.1",
+    "@aws-sdk/client-sqs": "3.726.1",
+    "@aws-sdk/client-sts": "3.726.1",
+    "@aws-sdk/credential-providers": "3.726.1",
+    "@aws-sdk/lib-dynamodb": "3.726.1",
+    "@aws-sdk/lib-storage": "3.726.1",
+    "@aws-sdk/s3-presigned-post": "3.726.1",
+    "@aws-sdk/s3-request-presigner": "3.726.1",
+    "@aws-sdk/util-dynamodb": "3.726.1",
+    "@types/aws-lambda": "8.10.145",
     "@webiny/utils": "0.0.0"
   },
   "devDependencies": {
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
-    "rimraf": "^5.0.5",
-    "typescript": "4.9.5"
+    "rimraf": "^6.0.1",
+    "typescript": "5.3.3"
   },
   "publishConfig": {
     "access": "public",
@@ -42,5 +43,15 @@
   "scripts": {
     "build": "yarn webiny run build",
     "watch": "yarn webiny run watch"
+  },
+  "adio": {
+    "ignore": {
+      "dependencies": [
+        "@types/aws-lambda"
+      ],
+      "src": [
+        "aws-lambda"
+      ]
+    }
   }
 }

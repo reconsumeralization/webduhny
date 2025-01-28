@@ -29,7 +29,7 @@ const meta: Meta<typeof Toast> = {
 
             return (
                 <Toast.Provider>
-                    <div className="w-full h-64 flex justify-center items-center">
+                    <div className="wby-w-full wby-h-64 wby-flex wby-justify-center wby-items-center">
                         <Button
                             text={"Display Toast"}
                             onClick={() => {

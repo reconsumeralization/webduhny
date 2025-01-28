@@ -7,20 +7,22 @@ import { cn } from "~/utils";
 const iconVariants = cva("", {
     variants: {
         size: {
-            sm: "size-md",
-            md: "size-md-plus",
-            lg: "size-lg"
+            xs: "wby-size-sm-extra",
+            sm: "wby-size-md",
+            md: "wby-size-md-plus",
+            lg: "wby-size-lg"
         },
         color: {
-            accent: "fill-accent-default",
-            neutral: "fill-neutral-base",
-            "neutral-light": "fill-neutral-strong",
-            "neutral-strong": "fill-neutral-xstrong"
+            inherit: "wby-fill-inherit",
+            accent: "wby-fill-accent-default",
+            neutral: "wby-fill-neutral-base",
+            "neutral-light": "wby-fill-neutral-strong",
+            "neutral-strong": "wby-fill-neutral-xstrong"
         }
     },
     defaultVariants: {
         size: "md",
-        color: "accent"
+        color: "inherit"
     }
 });
 

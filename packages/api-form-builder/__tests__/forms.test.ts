@@ -40,7 +40,7 @@ describe('Form Builder "Form" Test', () => {
         }
     });
 
-    test("should create a form and return it in the list of latest forms", async () => {
+    it("should create a form and return it in the list of latest forms", async () => {
         const [create] = await createForm({ data: { name: "contact-us" } });
         const { id } = create.data.formBuilder.createForm.data;
 
@@ -70,7 +70,7 @@ describe('Form Builder "Form" Test', () => {
         expect(data[0].id).toEqual(id);
     });
 
-    test("should update form and return new data from storage", async () => {
+    it("should update form and return new data from storage", async () => {
         const [create] = await createForm({ data: { name: "contact-us" } });
         const { id } = create.data.formBuilder.createForm.data;
 
@@ -219,7 +219,7 @@ describe('Form Builder "Form" Test', () => {
         expect(revisions[0].version).toEqual(2);
     });
 
-    test("should delete a form and all of its revisions", async () => {
+    it("should delete a form and all of its revisions", async () => {
         const [create] = await createForm({ data: { name: "contact-us" } });
         const { id } = create.data.formBuilder.createForm.data;
 
@@ -246,7 +246,7 @@ describe('Form Builder "Form" Test', () => {
         expect(list.data.formBuilder.listForms.data.length).toBe(0);
     });
 
-    test("should publish, add views and unpublish", async () => {
+    it("should publish, add views and unpublish", async () => {
         const [create] = await createForm({ data: { name: "contact-us" } });
         const { id } = create.data.formBuilder.createForm.data;
 
@@ -307,18 +307,42 @@ describe('Form Builder "Form" Test', () => {
     });
 
     test("should create, list and export submissions to file", async () => {
-        const [create] = await createForm({ data: { name: "contact-us" } });
+        const formName = "contact-us";
+        const [create] = await createForm({
+            data: {
+                name: formName
+            }
+        });
         const { id } = create.data.formBuilder.createForm.data;
 
         // Add fields definitions
         await updateRevision({
             revision: id,
-            data: { fields, steps: [{ title: "Test Step", layout: [] }] }
+            data: {
+                fields,
+                steps: [
+                    {
+                        title: "Test Step",
+                        layout: []
+                    }
+                ]
+            }
         });
 
-        await publishRevision({ revision: id });
-
-        await new Promise(res => setTimeout(res, 2000));
+        const [publishedForm] = await publishRevision({ revision: id });
+        expect(publishedForm).toMatchObject({
+            data: {
+                formBuilder: {
+                    publishRevision: {
+                        data: {
+                            name: formName,
+                            status: "published"
+                        },
+                        error: null
+                    }
+                }
+            }
+        });
 
         // Create form submissions
         const [createSubmission1Response] = await createFormSubmission({
@@ -337,8 +361,6 @@ describe('Form Builder "Form" Test', () => {
                 }
             }
         });
-
-        await new Promise(res => setTimeout(res, 2000));
 
         const [createSubmission2Response] = await createFormSubmission({
             revision: id,

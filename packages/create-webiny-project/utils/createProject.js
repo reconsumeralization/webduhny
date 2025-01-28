@@ -135,7 +135,7 @@ module.exports = async function createProject({
                 // Setup yarn
                 title: "Setup Yarn",
                 task: async () => {
-                    const yarnVersion = "3.6.4";
+                    const yarnVersion = "4.6.0";
                     const yarnFile = `yarn-${yarnVersion}.cjs`;
                     const yarnPath = `.yarn`;
                     const yarnReleasesPath = path.join(yarnPath, "releases");

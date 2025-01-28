@@ -16,32 +16,32 @@ const DecoratableRadio = React.forwardRef<
     RadioProps
 >(({ className, label, id, ...props }, ref) => {
     return (
-        <div className="flex items-start space-x-sm-extra">
+        <div className="wby-flex wby-items-start wby-space-x-sm-extra">
             <RadioGroupPrimitive.Item
                 ref={ref}
                 id={id}
                 className={cn(
                     [
-                        "group peer aspect-square h-md w-md rounded-xl mt-xxs",
-                        "bg-neutral-base border-sm border-neutral-muted ring-offset-background",
-                        "focus:outline-none  focus-visible:border-accent-default focus-visible:ring-lg focus-visible:ring-primary-dimmed focus-visible:ring-offset-0",
-                        "disabled:cursor-not-allowed disabled:border-neutral-muted disabled:bg-neutral-disabled"
+                        "wby-group wby-peer wby-aspect-square wby-h-md wby-w-md wby-rounded-xl wby-mt-xxs",
+                        "wby-bg-neutral-base wby-border-sm wby-border-neutral-muted wby-ring-offset-background",
+                        "focus:wby-outline-none focus-visible:wby-border-accent-default focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed focus-visible:wby-ring-offset-0",
+                        "disabled:wby-cursor-not-allowed disabled:wby-border-neutral-muted disabled:wby-bg-neutral-disabled"
                     ],
                     className
                 )}
                 {...props}
             >
-                <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
+                <RadioGroupPrimitive.Indicator className="wby-flex wby-items-center wby-justify-center">
                     <span
                         className={cn([
-                            "h-sm w-sm rounded-xl",
-                            "bg-primary-default",
-                            "group-disabled:bg-neutral-strong"
+                            "wby-h-sm wby-w-sm wby-rounded-xl",
+                            "wby-bg-primary-default",
+                            "group-disabled:wby-bg-neutral-strong"
                         ])}
                     />
                 </RadioGroupPrimitive.Indicator>
             </RadioGroupPrimitive.Item>
-            <Label id={id} text={label} weight={"light"} className={"text-md"} />
+            <Label id={id} text={label} weight={"light"} className={"wby-text-md"} />
         </div>
     );
 });

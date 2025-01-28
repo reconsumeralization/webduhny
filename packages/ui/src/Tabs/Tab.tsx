@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
-import shortid from "shortid";
-import { TabsContext } from "./Tabs";
+import { generateAlphaNumericId } from "@webiny/utils/generateId";
+import { DeprecatedTabsContext } from "./Tabs";
 
 export type TabProps = {
     /**
@@ -14,7 +14,7 @@ export type TabProps = {
     /**
      * The icon to use for the tab.
      */
-    icon?: React.ReactNode;
+    icon?: React.ReactElement;
     /**
      * Is tab visible?
      */
@@ -42,8 +42,8 @@ export type TabProps = {
  * Please find out the new `Tabs` component props from the `@webiny/admin-ui` package instead.
  */
 export const Tab = React.memo((props: TabProps) => {
-    const tabsContext = useContext(TabsContext);
-    const idRef = useRef(shortid.generate());
+    const tabsContext = useContext(DeprecatedTabsContext);
+    const idRef = useRef(generateAlphaNumericId(12));
 
     useEffect(() => {
         tabsContext!.addTab({ ...props, id: idRef.current, visible: props.visible ?? true });

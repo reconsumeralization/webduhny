@@ -6,7 +6,10 @@ export interface StyledColumnProps extends ColumnProps {
 }
 
 export const StyledColumn = (props: StyledColumnProps) => (
-    <Grid.Column className="bg-primary text-neutral-light p-2 text-md rounded-sm" {...props}>
+    <Grid.Column
+        className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm"
+        {...props}
+    >
         Col {props.index}
         {props.span && (
             <>

@@ -1,25 +1,25 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Icon as BaseIcon } from "~/Icon";
-import { cn, makeDecoratable } from "~/utils";
+import { cn } from "~/utils";
 
 /**
  * Icon
  */
-const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutral-xstrong", {
+const inputIconVariants = cva("wby-absolute wby-fill-neutral-xstrong", {
     variants: {
         // Define dummy variants to be used in combination with `compoundVariants` below.
         inputSize: {
-            md: "",
-            lg: "",
-            xl: ""
+            md: "wby-top-sm",
+            lg: "wby-top-sm-extra",
+            xl: "wby-top-md"
         },
         position: {
             start: "",
             end: ""
         },
         disabled: {
-            true: "fill-neutral-disabled"
+            true: "wby-fill-neutral-disabled"
         }
     },
     defaultVariants: {
@@ -31,44 +31,45 @@ const iconVariants = cva("absolute transform top-1/2 -translate-y-1/2 fill-neutr
         {
             inputSize: "md",
             position: "start",
-            class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "md",
             position: "end",
-            class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
             position: "start",
-            class: "left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "lg",
             position: "end",
-            class: "right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.sm-plus)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
             position: "start",
-            class: "left-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
+            class: "wby-left-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         },
         {
             inputSize: "xl",
             position: "end",
-            class: "right-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
+            class: "wby-right-[calc(theme(spacing.md)-theme(borderWidth.sm))]"
         }
     ]
 });
 
-interface IconWrapperProps extends VariantProps<typeof iconVariants> {
+interface InputIconProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof inputIconVariants> {
     icon: React.ReactElement;
-    disabled?: boolean;
 }
 
-const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
+const InputIcon = ({ icon, disabled, position, inputSize, className }: InputIconProps) => {
     return (
-        <div className={cn(iconVariants({ position, disabled, inputSize }))}>
+        <div className={cn(inputIconVariants({ position, disabled, inputSize }), className)}>
             {React.cloneElement(icon, {
                 ...icon.props,
                 size: inputSize === "xl" ? "lg" : "sm" // Map icon size based on the input size.
@@ -79,65 +80,70 @@ const Icon = ({ icon, disabled, position, inputSize }: IconWrapperProps) => {
 
 /**
  * Input
+ *
+ * We support both `disabled` and `data-disabled` as well as `focused` and `data-focused` variants
+ * because these variants can be used by both input and div elements. The last one is used by `MultiAutocomplete` component,
+ * where the `inputVariants` is used to style a div that wraps multiple elements (input, Tags, icons, etc.)
  */
 const inputVariants = cva(
     [
-        "w-full border-sm text-md",
-        "focus-visible:outline-none",
-        "disabled:cursor-not-allowed",
-        "file:bg-transparent file:border-none file:text-sm file:font-semibold"
+        "wby-w-full wby-border-sm wby-text-md wby-peer",
+        "focus-visible:wby-outline-none",
+        "disabled:wby-cursor-not-allowed data-[disabled=true]:wby-cursor-not-allowed",
+        "file:wby-bg-transparent file:wby-border-none file:wby-text-sm file:wby-font-semibold"
     ],
     {
         variants: {
             size: {
                 md: [
-                    "rounded-md",
-                    "py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                    "wby-rounded-md",
+                    "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 lg: [
-                    "rounded-md",
-                    "py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                    "wby-rounded-md",
+                    "wby-py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 xl: [
-                    "rounded-lg leading-6",
-                    "py-[calc(theme(padding.md)-theme(borderWidth.sm))] px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
+                    "wby-rounded-lg wby-leading-6",
+                    "wby-py-[calc(theme(padding.md)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
                 ]
             },
             variant: {
                 primary: [
-                    "bg-neutral-base border-neutral-muted text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:border-neutral-strong",
-                    "focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:border-neutral-dimmed disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-base wby-border-neutral-muted wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
+                    "hover:wby-border-neutral-strong",
+                    "focus:wby-border-neutral-black",
+                    "data-[focused=true]:wby-border-neutral-black",
+                    "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-border-neutral-dimmed data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ],
                 secondary: [
-                    "bg-neutral-light border-neutral-subtle text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-neutral-disabled disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
+                    "hover:wby-bg-neutral-dimmed",
+                    "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
+                    "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
+                    "disabled:wby-bg-neutral-disabled disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ],
                 ghost: [
-                    "bg-transparent border-transparent text-neutral-strong placeholder:text-neutral-dimmed",
-                    "hover:bg-neutral-dimmed/95",
-                    "focus:bg-neutral-base focus:border-neutral-black",
-                    "disabled:bg-transparent disabled:text-neutral-disabled disabled:placeholder:text-neutral-disabled"
+                    "wby-bg-transparent wby-border-transparent wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
+                    "hover:wby-bg-neutral-dimmed/95",
+                    "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
+                    "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
+                    "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-transparent data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ]
             },
             iconPosition: {
-                start: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                end: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                start: "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                end: "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
                 both: [
-                    "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
                 ]
             },
             invalid: {
-                true: [
-                    "border-destructive-default",
-                    "hover:border-destructive-default",
-                    "focus:border-destructive-default",
-                    "disabled:border-destructive-default"
-                ]
+                true: ""
             }
         },
         compoundVariants: [
@@ -145,49 +151,54 @@ const inputVariants = cva(
             {
                 size: "lg",
                 iconPosition: "start",
-                class: "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                class: "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
                 size: "lg",
                 iconPosition: "end",
-                class: "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                class: "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
             },
             {
                 size: "lg",
                 iconPosition: "both",
                 class: [
-                    "pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xl)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xl)-theme(borderWidth.sm))]"
                 ]
             },
             {
                 size: "xl",
                 iconPosition: "start",
-                class: "pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                class: "wby-pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
                 size: "xl",
                 iconPosition: "end",
-                class: "pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                class: "wby-pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
             },
             {
                 size: "xl",
                 iconPosition: "both",
                 class: [
-                    "pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]",
-                    "pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
+                    "wby-pl-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]",
+                    "wby-pr-[calc(theme(padding.xxl)+theme(padding.xs)-theme(borderWidth.sm))]"
                 ]
             },
-            // Add specific classNames in case of invalid `ghost` input.
+            // Add specific classNames in case of invalid inputs: note the difference between the ghost and the other variants.
+            {
+                variant: "primary",
+                invalid: true,
+                class: "!wby-border-destructive-default"
+            },
+            {
+                variant: "secondary",
+                invalid: true,
+                class: "!wby-border-destructive-default"
+            },
             {
                 variant: "ghost",
                 invalid: true,
-                class: [
-                    "border-destructive-subtle bg-destructive-subtle",
-                    "hover:border-destructive-subtle",
-                    "focus:border-destructive-subtle",
-                    "disabled:bg-destructive-subtle disabled:border-destructive-subtle"
-                ]
+                class: "!wby-border-destructive-subtle !wby-bg-destructive-subtle"
             }
         ],
         defaultVariants: {
@@ -203,6 +214,7 @@ interface InputPrimitiveProps
     startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
+    inputRef?: React.Ref<HTMLInputElement>;
 }
 
 const getIconPosition = (
@@ -221,39 +233,49 @@ const getIconPosition = (
     return;
 };
 
-const DecoratableInputPrimitive = React.forwardRef<HTMLInputElement, InputPrimitiveProps>(
-    (
-        { className, disabled, invalid, startIcon, maxLength, size, endIcon, variant, ...props },
-        ref
-    ) => {
-        const iconPosition = getIconPosition(startIcon, endIcon);
+const InputPrimitive = ({
+    className,
+    disabled,
+    invalid,
+    startIcon,
+    maxLength,
+    size,
+    endIcon,
+    variant,
+    inputRef,
+    ...props
+}: InputPrimitiveProps) => {
+    const iconPosition = getIconPosition(startIcon, endIcon);
 
-        return (
-            <div className={cn("relative flex items-center w-full", className)}>
-                {startIcon && (
-                    <Icon
-                        disabled={disabled}
-                        icon={startIcon}
-                        inputSize={size}
-                        position={"start"}
-                    />
-                )}
-                <input
-                    className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
-                    ref={ref}
+    return (
+        <div className={cn("wby-relative wby-flex wby-items-center wby-w-full", className)}>
+            {startIcon && (
+                <InputIcon
                     disabled={disabled}
-                    size={maxLength}
-                    {...props}
+                    icon={startIcon}
+                    inputSize={size}
+                    position={"start"}
                 />
-                {endIcon && (
-                    <Icon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
-                )}
-            </div>
-        );
-    }
-);
-DecoratableInputPrimitive.displayName = "InputPrimitive";
+            )}
+            <input
+                ref={inputRef}
+                className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
+                disabled={disabled}
+                size={maxLength}
+                {...props}
+            />
+            {endIcon && (
+                <InputIcon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />
+            )}
+        </div>
+    );
+};
 
-const InputPrimitive = makeDecoratable("InputPrimitive", DecoratableInputPrimitive);
-
-export { InputPrimitive, type InputPrimitiveProps };
+export {
+    InputIcon,
+    InputPrimitive,
+    getIconPosition,
+    inputVariants,
+    type InputIconProps,
+    type InputPrimitiveProps
+};

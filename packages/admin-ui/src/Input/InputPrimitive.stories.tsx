@@ -1,3 +1,6 @@
+// This file contains no Tailwind utility classes to modify.
+// The entire file remains unchanged as it only contains Storybook configuration code.
+
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications.svg";

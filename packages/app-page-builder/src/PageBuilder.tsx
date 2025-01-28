@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { HasPermission } from "@webiny/app-security";
 import { Plugins, AddMenu as Menu, createProviderPlugin } from "@webiny/app-admin";
 import { Global, css } from "@emotion/react";
@@ -16,8 +16,13 @@ import { AddButtonClickHandlers } from "~/elementDecorators/AddButtonClickHandle
 import { InjectElementVariables } from "~/render/variables/InjectElementVariables";
 import { LexicalParagraphRenderer } from "~/render/plugins/elements/paragraph/LexicalParagraph";
 import { LexicalHeadingRenderer } from "~/render/plugins/elements/heading/LexicalHeading";
+import { NullLoaderCache } from "@webiny/app-page-builder-elements/hooks/useLoader/NullLoaderCache";
 import { ConvertIconSettings as EditorConvertIconSettings } from "~/editor/prepareEditorContent/ConvertIconSettings";
 import { ConvertIconSettings as RendererConvertIconSettings } from "~/render/plugins/elementSettings/icon";
+import { AddImageLinkComponent } from "~/elementDecorators/AddImageLinkComponent";
+import { PageTemplatesPreview } from "./dataInjection/preview/PageTemplatesPreview";
+import { PagesPreview } from "~/dataInjection/preview/PagesPreview";
+import { IfDynamicPagesEnabled } from "~/IfDynamicPagesEnabled";
 
 export type { EditorProps };
 export { EditorRenderer };
@@ -26,8 +31,12 @@ export * from "~/admin/views/Pages/hooks";
 
 const PageBuilderProviderPlugin = createProviderPlugin(Component => {
     return function PageBuilderProvider({ children }) {
+        const noLoaderCache = useMemo(() => {
+            return new NullLoaderCache();
+        }, []);
+
         return (
-            <ContextProvider>
+            <ContextProvider loaderCache={noLoaderCache}>
                 <AdminPageBuilderContextProvider>
                     <Component>{children}</Component>
                 </AdminPageBuilderContextProvider>
@@ -143,6 +152,7 @@ export const PageBuilder = () => {
             <LexicalHeadingRenderer />
             <AddButtonLinkComponent />
             <AddButtonClickHandlers />
+            <AddImageLinkComponent />
             <InjectElementVariables />
             {/* Ensure data is in the correct shape when editor is mounting. */}
             {/* This works only within the block/template/page editor. */}
@@ -150,6 +160,12 @@ export const PageBuilder = () => {
             {/* Ensure each element renderer is receiving data in the correct shape.  */}
             {/* This works for page previews, block previews, etc. */}
             <RendererConvertIconSettings />
+            <IfDynamicPagesEnabled>
+                {/* Decorate page template content preview. */}
+                <PageTemplatesPreview />
+                {/* Decorate page content preview. */}
+                <PagesPreview />
+            </IfDynamicPagesEnabled>
         </Fragment>
     );
 };

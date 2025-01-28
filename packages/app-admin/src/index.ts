@@ -21,6 +21,8 @@ export * from "./base/ui/NotFound";
 
 // Base admin app
 export { Admin } from "./base/Admin";
+export * from "./config/AdminConfig";
+
 export type { AdminProps } from "./base/Admin";
 export { useViewComposition } from "./base/providers/ViewCompositionProvider";
 export type { ViewCompositionContext, ViewElement } from "./base/providers/ViewCompositionProvider";
@@ -63,3 +65,11 @@ export { AaclPermission } from "@webiny/app-wcp/types";
 export { useTheme, ThemeProvider } from "@webiny/app-theme";
 
 export * from "@webiny/app/renderApp";
+
+// Exporting chosen utils from `@webiny/app` package.
+export * from "@webiny/app/utils/getApiUrl";
+export * from "@webiny/app/utils/getGqlApiUrl";
+export * from "@webiny/app/utils/getHeadlessCmsGqlApiUrl";
+export * from "@webiny/app/utils/getLocaleCode";
+export * from "@webiny/app/utils/getTenantId";
+export * from "@webiny/app/utils/isLocalhost";

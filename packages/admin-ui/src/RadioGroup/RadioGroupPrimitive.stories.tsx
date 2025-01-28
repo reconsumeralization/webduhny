@@ -194,7 +194,7 @@ export const WithExternalValueControl: Story = {
     render: args => {
         const [value, setValue] = useState(args.value);
         return (
-            <div className={"w-full"}>
+            <div className={"wby-w-full"}>
                 <div>
                     <RadioGroupPrimitive
                         {...args}
@@ -202,10 +202,10 @@ export const WithExternalValueControl: Story = {
                         onValueChange={value => setValue(value)}
                     />
                 </div>
-                <div className={"mt-4 text-center"}>
+                <div className={"wby-mt-4 wby-text-center"}>
                     <Button onClick={() => setValue(args.value)} text={"Reset"} />
                 </div>
-                <div className={"mt-4 text-center"}>
+                <div className={"wby-mt-4 wby-text-center"}>
                     Current selected value: <pre>{value}</pre>
                 </div>
             </div>

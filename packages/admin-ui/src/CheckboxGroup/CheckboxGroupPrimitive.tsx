@@ -25,7 +25,7 @@ const DecoratableCheckboxGroupPrimitiveRenderer = ({
     changeChecked
 }: CheckboxGroupPrimitiveRendererProps) => {
     return (
-        <div className={cn("grid gap-sm-extra")}>
+        <div className={cn("wby-grid wby-gap-sm-extra")}>
             {items.map(item => (
                 <CheckboxPrimitiveRenderer
                     key={item.id}

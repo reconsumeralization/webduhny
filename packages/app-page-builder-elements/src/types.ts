@@ -6,6 +6,7 @@ import React, { HTMLAttributes } from "react";
 import { type CSSObject } from "@emotion/react";
 import { StylesObject, ThemeBreakpoints, Theme } from "@webiny/theme/types";
 import { ElementInputs, ElementInputValues } from "~/inputs/ElementInput";
+import { ILoaderCache } from "~/hooks/useLoader/ILoaderCache";
 
 export interface Page {
     id: string;
@@ -34,6 +35,7 @@ export interface PageElementsProviderProps {
     beforeRenderer?: React.ComponentType | null;
     afterRenderer?: React.ComponentType | null;
     children?: React.ReactNode;
+    loaderCache: ILoaderCache;
 }
 
 export type AttributesObject = React.ComponentProps<any>;
@@ -132,7 +134,7 @@ export interface PageProviderProps {
 export type Renderer<
     T = Record<string, any>,
     TElementData = Record<string, any>
-> = React.FunctionComponent<RendererProps<TElementData> & T>;
+> = React.FunctionComponent<RendererProps<TElementData> & T> & { inputs?: ElementInputs };
 
 // TODO: maybe call this `Renderer` but rename the base one to `BaseRenderer` ?
 export type DecoratableRenderer = ReturnType<typeof createRenderer>;

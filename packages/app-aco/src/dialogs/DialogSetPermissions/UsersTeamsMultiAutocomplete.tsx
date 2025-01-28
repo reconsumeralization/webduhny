@@ -20,6 +20,7 @@ export const UsersTeamsMultiAutocomplete = (props: UsersTeamsMultiAutocompletePr
                 unique={true}
                 onChange={props.onChange}
                 value={props.value || []}
+                displayResetAction={false}
             />
         </>
     );

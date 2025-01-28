@@ -15,8 +15,8 @@ const DecoratableSliderPrimitiveRoot = React.forwardRef<
         ref={ref}
         className={cn(
             [
-                "relative flex w-full touch-none select-none items-center cursor-pointer",
-                "data-[disabled]:cursor-not-allowed"
+                "wby-relative wby-flex wby-w-full wby-touch-none wby-select-none wby-items-center wby-cursor-pointer",
+                "data-[disabled]:wby-cursor-not-allowed"
             ],
             className
         )}
@@ -32,16 +32,16 @@ const SliderPrimitiveRoot = makeDecoratable("SliderPrimitiveRoot", DecoratableSl
 const DecoratableSliderPrimitiveTrack = () => (
     <SliderPrimitives.Track
         className={cn(
-            "relative h-xxs w-full grow overflow-hidden rounded-full",
-            "bg-neutral-strong",
-            "data-[disabled]:bg-neutral-muted"
+            "wby-relative wby-h-xxs wby-w-full wby-grow wby-overflow-hidden wby-rounded-full",
+            "wby-bg-neutral-strong",
+            "data-[disabled]:wby-bg-neutral-muted"
         )}
     >
         <SliderPrimitives.Range
             className={cn([
-                "absolute h-full",
-                "bg-primary-default",
-                "data-[disabled]:bg-primary-disabled"
+                "wby-absolute wby-h-full",
+                "wby-bg-primary-default",
+                "data-[disabled]:wby-bg-primary-disabled"
             ])}
         />
     </SliderPrimitives.Track>
@@ -55,12 +55,15 @@ const SliderPrimitiveTrack = makeDecoratable(
  * Slider Tooltip
  */
 const sliderTooltipVariants = cva(
-    ["px-xs-plus py-xxs rounded-sm absolute left-1/2 -translate-x-1/2", "bg-neutral-muted"],
+    [
+        "wby-px-xs-plus wby-py-xxs wby-rounded-sm wby-absolute wby-left-1/2 -wby-translate-x-1/2",
+        "wby-bg-neutral-muted"
+    ],
     {
         variants: {
             side: {
-                top: "bottom-8",
-                bottom: "top-8"
+                top: "wby-bottom-8",
+                bottom: "wby-top-8"
             }
         },
         defaultVariants: {
@@ -107,11 +110,11 @@ const DecoratableSliderPrimitiveThumb = ({
 }: SliderPrimitiveThumbProps) => (
     <SliderPrimitives.Thumb
         className={cn(
-            "inline-block w-md h-md mt-xs-plus rounded-xxl border-md transition-colors outline-none",
-            "bg-primary-default border-white",
-            "hover:bg-primary-strong",
-            "active:bg-primary-default",
-            "data-[disabled]:pointer-events-none data-[disabled]:bg-primary-disabled"
+            "wby-inline-block wby-w-md wby-h-md wby-mt-xs-plus wby-rounded-xxl wby-border-md wby-transition-colors wby-outline-none",
+            "wby-bg-primary-default wby-border-white",
+            "hover:wby-bg-primary-strong",
+            "active:wby-bg-primary-default",
+            "data-[disabled]:wby-pointer-events-none data-[disabled]:wby-bg-primary-disabled"
         )}
     >
         <SliderPrimitiveTooltip
@@ -143,7 +146,7 @@ const DecoratableSliderPrimitiveRenderer = ({
     ...sliderProps
 }: SliderPrimitiveVm) => {
     return (
-        <div className={"flex h-md w-full"}>
+        <div className={"wby-flex wby-h-md wby-w-full"}>
             <SliderPrimitiveRoot {...sliderProps}>
                 <SliderPrimitiveTrack />
                 <SliderPrimitiveThumb

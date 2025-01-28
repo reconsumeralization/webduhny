@@ -13,17 +13,21 @@ import { Extension } from "./extensions/Extension";
 import glob from "fast-glob";
 import { CliContext } from "@webiny/cli/types";
 import { Ora } from "ora";
+import { ExtensionJson, ExtensionMessage } from "~/types";
 
 const EXTENSIONS_ROOT_FOLDER = "extensions";
-
 const S3_BUCKET_NAME = "webiny-examples";
 const S3_BUCKET_REGION = "us-east-1";
+const FOLDER_NAME_IS_VERSION_REGEX = /^\d+\.\d+\.x$/;
 
 const getVersionFromVersionFolders = async (
     versionFoldersList: string[],
     currentWebinyVersion: string
 ) => {
-    const availableVersions = versionFoldersList.map(v => v.replace(".x", ".0")).sort();
+    const availableVersions = versionFoldersList
+        .filter(v => v.match(FOLDER_NAME_IS_VERSION_REGEX))
+        .map(v => v.replace(".x", ".0"))
+        .sort();
 
     let versionToUse = "";
 
@@ -84,6 +88,7 @@ export const downloadAndLinkExtension = async ({
         await setTimeout(1000);
 
         let extensionsFolderToCopyPath = path.join(downloadFolderPath, "extensions");
+        let extensionJsonPath = path.join(downloadFolderPath, "extension.json");
 
         // If we have `extensions` folder in the root of the downloaded extension.
         // it means the example extension is not versioned, and we can just copy it.
@@ -103,7 +108,13 @@ export const downloadAndLinkExtension = async ({
             );
 
             extensionsFolderToCopyPath = path.join(downloadFolderPath, versionToUse, "extensions");
+            extensionJsonPath = path.join(downloadFolderPath, versionToUse, "extension.json");
         }
+
+        const extensionJsonExists = fs.existsSync(extensionJsonPath);
+        const extensionJson: ExtensionJson = extensionJsonExists
+            ? JSON.parse(fs.readFileSync(extensionJsonPath, "utf-8"))
+            : {};
 
         await fsAsync.cp(extensionsFolderToCopyPath, EXTENSIONS_ROOT_FOLDER, {
             recursive: true
@@ -134,6 +145,8 @@ export const downloadAndLinkExtension = async ({
         await linkAllExtensions();
         await runYarnInstall();
 
+        const nextStepsToDisplay: ExtensionMessage[] = [];
+
         if (downloadedExtensions.length === 1) {
             const [downloadedExtension] = downloadedExtensions;
             ora.succeed(
@@ -142,18 +155,61 @@ export const downloadAndLinkExtension = async ({
                 )}.`
             );
 
-            const nextSteps = downloadedExtension.getNextSteps();
-
-            console.log();
-            console.log(chalk.bold("Next Steps"));
-            nextSteps.forEach(message => {
-                console.log(`‣ ${message}`);
-            });
+            nextStepsToDisplay.push(...downloadedExtension.getNextSteps());
         } else {
             const paths = downloadedExtensions.map(ext => ext.getLocation());
             ora.succeed("Multiple extensions downloaded successfully in:");
             paths.forEach(p => {
                 console.log(`  ‣ ${context.success.hl(p)}`);
+            });
+        }
+
+        // Next Steps section.
+        const nextStepsFromExtensionJson = extensionJson.nextSteps;
+        if (nextStepsFromExtensionJson) {
+            const { clearExisting, messages } = nextStepsFromExtensionJson;
+            if (clearExisting) {
+                nextStepsToDisplay.length = 0;
+            }
+
+            if (Array.isArray(messages)) {
+                nextStepsToDisplay.push(...messages);
+            }
+        }
+
+        if (nextStepsToDisplay.length) {
+            console.log();
+            console.log(chalk.bold("Next Steps"));
+            nextStepsToDisplay.forEach(({ text, variables = [] }) => {
+                console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
+            });
+        }
+
+        // Additional Notes section.
+        const additionalNotesToDisplay: ExtensionMessage[] = [
+            {
+                text: `if you already have the %s command running, you'll need to restart it`,
+                variables: ["webiny watch"]
+            }
+        ];
+
+        const additionalNotesFromExtensionJson = extensionJson.additionalNotes;
+        if (additionalNotesFromExtensionJson) {
+            const { clearExisting, messages } = additionalNotesFromExtensionJson;
+            if (clearExisting) {
+                additionalNotesToDisplay.length = 0;
+            }
+
+            if (Array.isArray(messages)) {
+                additionalNotesToDisplay.push(...messages);
+            }
+        }
+
+        if (additionalNotesToDisplay.length) {
+            console.log();
+            console.log(chalk.bold("Additional Notes"));
+            additionalNotesToDisplay.forEach(({ text, variables = [] }) => {
+                console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
             });
         }
     } catch (e) {

@@ -10,7 +10,7 @@ interface Props {
     textProp?: string;
 }
 
-export const getOptionValue = (option: Option | string, props: Props): string => {
+export const getOptionValue = (option: any, props: Props): string => {
     if (option) {
         return props.useSimpleValues
             ? (option as string)

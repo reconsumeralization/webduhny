@@ -9,10 +9,10 @@ import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 /**
  * Label Required
  */
-const labelRequiredVariants = cva("text-destructive-primary", {
+const labelRequiredVariants = cva("wby-text-destructive-primary", {
     variants: {
         disabled: {
-            true: "text-destructive-muted"
+            true: "wby-text-destructive-muted"
         }
     }
 });
@@ -27,10 +27,10 @@ const LabelRequired = makeDecoratable("LabelRequired", DecoratableLabelRequired)
 /**
  * Label Description
  */
-const labelDescriptionVariants = cva("font-normal text-neutral-strong", {
+const labelDescriptionVariants = cva("wby-font-normal wby-text-neutral-strong", {
     variants: {
         disabled: {
-            true: "text-neutral-disabled"
+            true: "wby-text-neutral-disabled"
         }
     }
 });
@@ -54,7 +54,14 @@ interface LabelHintProps {
 const DecoratableLabelHint = ({ content }: LabelHintProps) => (
     <Tooltip
         content={content}
-        trigger={<Icon icon={<InfoIcon />} size="sm" label={"More information"} color={"neutral-strong"} />}
+        trigger={
+            <Icon
+                icon={<InfoIcon />}
+                size="xs"
+                label={"More information"}
+                color={"neutral-light"}
+            />
+        }
     />
 );
 const LabelHint = makeDecoratable("LabelHint", DecoratableLabelHint);
@@ -62,14 +69,14 @@ const LabelHint = makeDecoratable("LabelHint", DecoratableLabelHint);
 /**
  * Label Value
  */
-const labelValueVariants = cva("text-neutral-strong", {
+const labelValueVariants = cva("wby-text-neutral-strong", {
     variants: {
         weight: {
-            strong: "font-semibold",
-            light: "font-regular"
+            strong: "wby-font-semibold",
+            light: "wby-font-regular"
         },
         disabled: {
-            true: "text-neutral-disabled"
+            true: "wby-text-neutral-disabled"
         }
     },
     defaultVariants: {
@@ -88,18 +95,18 @@ const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
 
 const labelVariants = cva(
     [
-        "inline-flex items-center justify-between w-full text-sm leading-none",
-        "text-neutral-primary",
-        "peer-disabled:text-neutral-disabled peer-disabled:cursor-not-allowed"
+        "wby-inline-flex wby-items-center wby-justify-between wby-w-full wby-text-sm",
+        "wby-text-neutral-primary",
+        "peer-disabled:wby-text-neutral-disabled peer-disabled:wby-cursor-not-allowed"
     ],
     {
         variants: {
             weight: {
-                strong: "font-semibold",
-                light: "font-regular"
+                strong: "wby-font-semibold",
+                light: "wby-font-regular"
             },
             disabled: {
-                true: "text-neutral-disabled cursor-not-allowed"
+                true: "wby-text-neutral-disabled wby-cursor-not-allowed"
             }
         },
         defaultVariants: {
@@ -131,12 +138,12 @@ const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>,
         return (
             <LabelPrimitive.Root
                 ref={ref}
-                className={cn(labelVariants({ weight }), className)}
+                className={cn(labelVariants({ weight, disabled }), className)}
                 htmlFor={id}
                 {...props}
             >
                 <span>
-                    <span className={"flex items-center gap-xxs"}>
+                    <span className={"wby-flex wby-items-center wby-gap-xxs"}>
                         {text}
                         {description && (
                             <LabelDescription content={description} disabled={disabled} />

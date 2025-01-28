@@ -1,3 +1,4 @@
+// No Tailwind utility classes found in this file - no changes needed
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "~/Input";

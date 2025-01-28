@@ -22,6 +22,7 @@ const {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    prefix: "wby-",
     darkMode: ["class"],
     content: [webinyPackagesGlob, webinyAdminUiPackageGlob, adminAppSourceGlob],
     theme: {

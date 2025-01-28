@@ -85,7 +85,6 @@ const Horizontal = styled.div`
 
 const Grow = styled.div`
     flex: 1;
-    overflow: scroll;
     padding: 24px;
 `;
 

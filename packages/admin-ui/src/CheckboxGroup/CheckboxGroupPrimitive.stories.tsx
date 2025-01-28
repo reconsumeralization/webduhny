@@ -113,7 +113,7 @@ export const WithExternalValueControl: Story = {
     render: args => {
         const [values, setValues] = useState(args.values);
         return (
-            <div className={"w-full"}>
+            <div className={"wby-w-full"}>
                 <div>
                     <CheckboxGroupPrimitive
                         {...args}
@@ -121,10 +121,10 @@ export const WithExternalValueControl: Story = {
                         onCheckedChange={values => setValues(values)}
                     />
                 </div>
-                <div className={"mt-4 text-center"}>
+                <div className={"wby-mt-4 wby-text-center"}>
                     <Button text={"Reset"} onClick={() => setValues([])} />
                 </div>
-                <div className={"mt-4 text-center"}>
+                <div className={"wby-mt-4 wby-text-center"}>
                     Current selected value: <pre>{values.join()}</pre>
                 </div>
             </div>

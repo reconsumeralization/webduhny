@@ -1,27 +1,24 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import omit from "lodash/omit";
 import { ButtonProps as AdminUiButtonProps } from "@webiny/admin-ui";
+import { ButtonProps } from "~/Button/Button";
 
-interface UseButtonPropsParams {
-    children?: React.ReactNode;
-    label?: string;
-    small?: boolean;
-}
-
-export const useMappedButtonProps = (params: UseButtonPropsParams) => {
+export const useMappedButtonProps = (props: ButtonProps) => {
     return useMemo(() => {
         const mappedButtonProps: Pick<AdminUiButtonProps, "size" | "text"> = {};
-        if (params.small === true) {
+
+        if (props.small === true) {
             mappedButtonProps.size = "sm";
         }
 
-        if (params.children) {
-            mappedButtonProps.text = params.children;
+        if (props.children) {
+            mappedButtonProps.text = props.children;
         }
 
-        if (params.label) {
-            mappedButtonProps.text = params.label;
-        }
-
-        return mappedButtonProps;
-    }, [params.small, params.children, params.label]);
+        // Return all remaining props omitting unused ones.
+        return {
+            ...omit(props, ["flat", "ripple", "small"]),
+            ...mappedButtonProps
+        };
+    }, [props]);
 };

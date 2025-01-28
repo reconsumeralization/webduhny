@@ -6,6 +6,9 @@
       "path": "../react-composition"
     },
     {
+      "path": "../react-router"
+    },
+    {
       "path": "../utils"
     }
   ],
@@ -18,6 +21,8 @@
       "~tests/*": ["./__tests__/*"],
       "@webiny/react-composition/*": ["../react-composition/src/*"],
       "@webiny/react-composition": ["../react-composition/src"],
+      "@webiny/react-router/*": ["../react-router/src/*"],
+      "@webiny/react-router": ["../react-router/src"],
       "@webiny/utils/*": ["../utils/src/*"],
       "@webiny/utils": ["../utils/src"]
     },

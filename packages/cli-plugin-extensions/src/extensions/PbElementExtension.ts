@@ -1,10 +1,11 @@
 import { AbstractExtension } from "./AbstractExtension";
 import path from "path";
 import { EXTENSIONS_ROOT_FOLDER } from "~/utils/constants";
-import chalk from "chalk";
 import { JsxFragment, Node, Project } from "ts-morph";
 import { formatCode } from "@webiny/cli-plugin-scaffold/utils";
 import { updateDependencies, updateWorkspaces } from "~/utils";
+import Case from "case";
+import { ExtensionMessage } from "~/types";
 
 export class PbElementExtension extends AbstractExtension {
     async link() {
@@ -24,7 +25,7 @@ export class PbElementExtension extends AbstractExtension {
         await updateWorkspaces(this.params.location);
     }
 
-    getNextSteps(): string[] {
+    getNextSteps(): ExtensionMessage[] {
         let { location: extensionsFolderPath } = this.params;
         if (!extensionsFolderPath) {
             extensionsFolderPath = `${EXTENSIONS_ROOT_FOLDER}/${this.params.name}`;
@@ -35,23 +36,23 @@ export class PbElementExtension extends AbstractExtension {
         const indexTsxFilePath = `${extensionsFolderPath}/src/index.tsx`;
 
         return [
-            [
-                `run the following commands to start local development sessions:`,
-                `  ∙ ${chalk.green(watchCommandAdmin)}`,
-                `  ∙ ${chalk.green(watchCommandWebsite)}`
-            ].join("\n"),
-
-            `open ${chalk.green(indexTsxFilePath)} and start coding`
+            {
+                text: [
+                    `run the following commands to start local development:`,
+                    `  ∙ %s`,
+                    `  ∙ %s`
+                ].join("\n"),
+                variables: [watchCommandAdmin, watchCommandWebsite]
+            },
+            { text: `open %s and start coding`, variables: [indexTsxFilePath] }
         ];
     }
 
     private async addPluginToApp(app: "admin" | "website") {
-        const { name: extensionName, packageName } = this.params;
-
         const extensionsFilePath = path.join("apps", app, "src", "Extensions.tsx");
 
-        const ucFirstExtName = extensionName.charAt(0).toUpperCase() + extensionName.slice(1);
-        const componentName = ucFirstExtName + "Extension";
+        const { packageName } = this.params;
+        const componentName = Case.pascal(packageName) + "Extension";
 
         const importName = "{ Extension as " + componentName + " }";
         const importPath = packageName + "/src/" + app;

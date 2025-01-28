@@ -56,7 +56,7 @@ export const Ghost: Story = {
 export const GhostNegative: Story = {
     decorators: [
         Story => (
-            <div className="bg-[#25292e] p-[300px] rounded-[5px]">
+            <div className="wby-bg-[#25292e] wby-p-[300px] wby-rounded-[5px]">
                 <Story />
             </div>
         )
@@ -110,19 +110,10 @@ export const WithIconPositionEnd: Story = {
     }
 };
 
-export const OnlyIcon: Story = {
+export const WithAsChild: Story = {
     args: {
         ...Primary.args,
-        text: null,
-        icon: <PencilIcon />,
-        iconPosition: "end"
-    }
-};
-
-export const OnlyIconLarge: Story = {
-    name: "Only Icon (Large)",
-    args: {
-        ...OnlyIcon.args,
-        iconSize: "lg"
+        asChild: true,
+        text: <span>Button</span>
     }
 };

@@ -24,7 +24,7 @@ const DecoratableCheckboxGroup = ({
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
-        <div className={"w-full"}>
+        <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
             <CheckboxGroupPrimitive {...props} />
