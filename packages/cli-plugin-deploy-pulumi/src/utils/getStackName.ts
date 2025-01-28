@@ -6,7 +6,7 @@ import { VARIANT_SEPARATOR } from "./constants";
  */
 export interface IGetStackNameParams {
     env: string;
-    variant?: string;
+    variant: string | undefined;
 }
 
 export const getStackName = ({ env, variant }: IGetStackNameParams) => {

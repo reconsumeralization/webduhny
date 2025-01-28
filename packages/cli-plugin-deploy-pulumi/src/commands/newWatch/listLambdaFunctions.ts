@@ -1,15 +1,21 @@
-import { getStackExport } from "../../utils";
+import { getStackExport } from "~/utils";
 import path from "path";
 import minimatch from "minimatch";
 
 export interface IListLambdaFunctionsParams {
     folder: string;
     env: string;
+    variant: string | undefined;
     function?: string | string[];
 }
 
-export const listLambdaFunctions = ({ folder, env, function: fn }: IListLambdaFunctionsParams) => {
-    const stackExport = getStackExport({ folder, env });
+export const listLambdaFunctions = ({
+    folder,
+    env,
+    variant,
+    function: fn
+}: IListLambdaFunctionsParams) => {
+    const stackExport = getStackExport({ folder, env, variant });
     if (!stackExport) {
         // If no stack export is found, return an empty array. This is a valid scenario.
         // For example, watching the Admin app locally, but not deploying it.

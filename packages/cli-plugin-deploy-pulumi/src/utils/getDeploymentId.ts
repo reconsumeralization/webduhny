@@ -1,8 +1,8 @@
 import { getStackOutput } from "./getStackOutput";
 
 export interface IGetDeploymentId {
-    env?: string;
-    variant?: string;
+    env: string | undefined;
+    variant: string | undefined;
 }
 
 export const getDeploymentId = (params: IGetDeploymentId) => {

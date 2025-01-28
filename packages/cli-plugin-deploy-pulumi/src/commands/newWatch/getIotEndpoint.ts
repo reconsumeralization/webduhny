@@ -3,7 +3,7 @@ import { getStackOutput } from "../../utils";
 
 export interface IGetIotEndpointParams {
     env: string;
-    variant?: string;
+    variant: string | undefined;
 }
 
 export const getIotEndpoint = (params: IGetIotEndpointParams): Promise<string> => {
