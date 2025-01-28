@@ -1,7 +1,7 @@
 import * as React from "react";
 import { OverlayLoader } from "@webiny/admin-ui";
 
-interface CircularProgressProps {
+interface CircularProgressProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * @deprecated Use `text` instead.
      */
@@ -25,7 +25,7 @@ interface CircularProgressProps {
 
 // We needed this default export for backwards compatibility.
 const CircularProgress = (props: CircularProgressProps) => {
-    return <OverlayLoader text={props.label} />;
+    return <OverlayLoader text={props.label} style={props.style} className={props.className} />;
 };
 
 CircularProgress.displayName = "CircularProgress";

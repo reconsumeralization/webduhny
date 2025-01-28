@@ -43,7 +43,8 @@ const loaderActiveVariant = cva("wby-opacity-100", {
 });
 
 interface LoaderProps
-    extends VariantProps<typeof loaderVariants>,
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof loaderVariants>,
         VariantProps<typeof loaderBaseVariant> {
     max?: number;
     value?: number;
@@ -57,30 +58,33 @@ const DecoratableLoader = ({
     max = 100,
     min = 0,
     value = 66,
+    indeterminate = true,
     className,
     size,
     variant,
     text,
-    indeterminate = true
+    ...props
 }: LoaderProps) => {
     const circumference = 2 * Math.PI * 45;
     const percentPx = circumference / 100;
     const currentPercent = Math.round(((value - min) / (max - min)) * 100);
 
     const [rotation, setRotation] = useState(0);
-
     useEffect(() => {
+        let interval: ReturnType<typeof setInterval>;
         if (indeterminate) {
-            setInterval(() => {
+            // Rotate the loader by 10 degrees every 30ms when indeterminate
+            interval = setInterval(() => {
                 setRotation(prev => (prev + 10) % 360);
             }, 30);
         } else {
             setRotation(0);
         }
+        return () => clearInterval(interval);
     }, [indeterminate]);
 
     return (
-        <div className={"wby-text-center wby-flex wby-flex-col wby-items-center"}>
+        <div {...props} className={"wby-text-center wby-flex wby-flex-col wby-items-center"}>
             <div className={cn(loaderVariants({ size }), className)}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
