@@ -2,8 +2,6 @@ import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
 import { requireConfig } from "~/utils";
 
-require("@webiny/cli/utils/importModule");
-
 let processStdout = "";
 let processStderr = "";
 

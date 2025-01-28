@@ -2,8 +2,6 @@ import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
 import { requireConfig } from "~/utils";
 
-require("@webiny/cli/utils/importModule");
-
 // We need this because tools have internal console.log calls. So,
 // let's intercept those and make sure messages are just forwarded
 // to the main thread.
