@@ -15,11 +15,7 @@ export interface IGetPulumiParams {
 }
 
 export const getPulumi = async ({ projectApplication, pulumi, install }: IGetPulumiParams) => {
-    /**
-     * TODO figure out why ora throws an error on construct.
-     */
-    // @ts-expect-error
-    const spinner = new ora();
+    const spinner = ora();
 
     let cwd;
 

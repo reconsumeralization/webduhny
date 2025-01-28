@@ -34,12 +34,11 @@ export const destroyCommand = createPulumiCommand({
         }
 
         if (!stackExists) {
-            const variantNameMessage = variant ? `, %s variant` : "";
+            const variantNameMessage = variant ? `, ${variant} variant` : "";
             context.error(
                 `Project application %s (%s environment${variantNameMessage}) does not exist.`,
                 folder,
-                env,
-                variant
+                env
             );
             return;
         }

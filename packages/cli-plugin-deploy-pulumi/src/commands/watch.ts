@@ -214,12 +214,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                 args: {
                     secretsProvider: PULUMI_SECRETS_PROVIDER,
                     color: "always",
-                    /**
-                     * TODO @adrian
-                     *
-                     * "path" expects a string or undefined. "pathArg" is an array
-                     */
-                    // @ts-expect-error
                     path: pathArg,
                     debug: !!inputs.debug
                 },
