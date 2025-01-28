@@ -1,7 +1,6 @@
-const getStackOutput = require("@webiny/cli-plugin-deploy-pulumi/utils/getStackOutput");
+const { getStackOutput, splitStackName } = require("@webiny/cli-plugin-deploy-pulumi/utils");
 const path = require("path");
 const { blue } = require("chalk");
-const { splitStackName } = require("@webiny/cli-plugin-deploy-pulumi/utils/getStackName");
 
 const getInfo = async params => {
     if (typeof params !== "object" || !params.env) {

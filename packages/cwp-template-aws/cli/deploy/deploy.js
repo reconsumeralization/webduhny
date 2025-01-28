@@ -5,7 +5,7 @@ const {
 } = require("@webiny/cli-plugin-deploy-pulumi/utils");
 const { sendEvent } = require("@webiny/cli/utils");
 const { bold } = require("chalk");
-const deployCommand = require("@webiny/cli-plugin-deploy-pulumi/commands/deploy");
+const { deployCommand } = require("@webiny/cli-plugin-deploy-pulumi/commands/deploy");
 const { getInfo } = require("../info");
 const sleep = require("../utils/sleep");
 const open = require("open");
