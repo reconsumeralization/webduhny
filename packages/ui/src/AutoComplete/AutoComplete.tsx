@@ -39,7 +39,6 @@ export const AutoComplete = ({
     renderItem,
     noResultFound,
     useSimpleValues,
-    loading,
     onInput,
     ...props
 }: AutoCompleteProps) => {
