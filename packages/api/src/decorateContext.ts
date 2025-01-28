@@ -6,14 +6,14 @@ export const decorateContext = <T extends Record<string, any>>(
     decoratee: T,
     decorators: Decorators<T>
 ) => {
-    return Object.keys(decorators).reduce((decoratee, key) => {
-        const decoratedMethod = decoratee[key];
+    return Object.keys(decorators).reduce((acc, key) => {
+        const decoratedMethod = acc[key];
 
         return {
-            ...decoratee,
-            [key]: (...args: any[]) => {
+            ...acc,
+            [key]: function (...args: any[]) {
                 // @ts-expect-error
-                return decorators[key](decoratedMethod)(...args);
+                return decorators[key](decoratedMethod.bind(decoratee))(...args);
             }
         };
     }, decoratee);

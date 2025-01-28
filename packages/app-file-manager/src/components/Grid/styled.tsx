@@ -18,8 +18,8 @@ const COMPONENT_HEIGHT = 200;
 
 export const FileBody = styled("div")`
     transition: 200ms ease-in opacity;
-    width: ${COMPONENT_WIDTH};
-    height: ${COMPONENT_HEIGHT};
+    width: ${COMPONENT_WIDTH}px;
+    height: ${COMPONENT_HEIGHT}px;
     overflow: hidden;
 `;
 
@@ -193,7 +193,7 @@ export const FileWrapper = styled("div")`
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: ${COMPONENT_WIDTH};
+    max-width: ${COMPONENT_WIDTH}px;
     border: 1px solid var(--mdc-theme-on-background);
     border-radius: 2px;
     overflow: hidden;
