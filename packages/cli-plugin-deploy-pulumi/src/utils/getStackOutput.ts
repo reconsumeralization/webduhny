@@ -92,6 +92,7 @@ export interface IStackOutput {
     elasticsearchDynamodbTableName: string | undefined;
     appStorage: string;
     websiteRouterOriginRequestFunction?: string;
+    // TODO @adrian
     // TODO @bruno maybe add key: string | string[] | undefined ?
 }
 
