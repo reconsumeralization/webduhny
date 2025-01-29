@@ -22,8 +22,8 @@ const textareaVariants = cva(
                 ],
                 ghost: [
                     "wby-bg-transparent wby-border-transparent wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
-                    "hover:wby-bg-neutral-dimmed/95",
-                    "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
+                    "hover:wby-bg-neutral-dark/5",
+                    "focus:wby-bg-neutral-dark/5",
                     "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled"
                 ]
             },
