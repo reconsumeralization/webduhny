@@ -1,5 +1,5 @@
 import { Context } from "~/types";
-import { createPulumiCommand, runHook } from "../utils";
+import { createPulumiCommand, runHook } from "~/utils";
 import { PackagesBuilder } from "./buildPackages/PackagesBuilder";
 
 export interface IBuildParams {

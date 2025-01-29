@@ -2,7 +2,7 @@ import { Worker } from "worker_threads";
 import path from "path";
 import chalk from "chalk";
 import { BasePackagesWatcher } from "./BasePackagesWatcher";
-import { getRandomColorForString } from "../../../utils";
+import { getRandomColorForString } from "~/utils";
 import { Context } from "~/types";
 
 export class MultiplePackagesWatcher extends BasePackagesWatcher {

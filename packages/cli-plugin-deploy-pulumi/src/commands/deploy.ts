@@ -1,5 +1,5 @@
-import { createPulumiCommand, notify, runHook } from "../utils";
-import { BeforeDeployPlugin } from "../plugins/BeforeDeployPlugin";
+import { createPulumiCommand, notify, runHook } from "~/utils";
+import { BeforeDeployPlugin } from "~/plugins";
 import { PackagesBuilder } from "./buildPackages/PackagesBuilder";
 import { pulumiLoginSelectStack } from "./deploy/pulumiLoginSelectStack";
 import { executeDeploy } from "./deploy/executeDeploy";

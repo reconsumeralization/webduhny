@@ -3,7 +3,7 @@ import { Worker } from "worker_threads";
 import Listr from "listr";
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
 import { gray } from "chalk";
-import { measureDuration } from "../../utils";
+import { measureDuration } from "~/utils";
 import { IProjectApplicationPackage } from "@webiny/cli/types";
 
 export class MultiplePackagesBuilder extends BasePackagesBuilder {

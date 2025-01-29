@@ -4,7 +4,7 @@ import path from "path";
 import { getProject, getProjectApplication } from "@webiny/cli/utils";
 import get from "lodash/get";
 import merge from "lodash/merge";
-import { getDeploymentId, loadEnvVariables, runHook } from "../utils";
+import { getDeploymentId, loadEnvVariables, runHook } from "~/utils";
 import { getIotEndpoint } from "./newWatch/getIotEndpoint";
 import { listLambdaFunctions } from "./newWatch/listLambdaFunctions";
 import { listPackages } from "./newWatch/listPackages";

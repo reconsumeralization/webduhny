@@ -1,6 +1,6 @@
 import { Context } from "~/types";
 import { LambdaClient } from "@webiny/aws-sdk/client-lambda";
-import { getStackOutput } from "../utils";
+import { getStackOutput } from "~/utils";
 import {
     CliMigrationRunReporter,
     InteractiveCliStatusReporter,

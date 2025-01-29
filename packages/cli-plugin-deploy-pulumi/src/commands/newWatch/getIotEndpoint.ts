@@ -1,5 +1,5 @@
 import { DescribeEndpointCommand, IoTClient } from "@webiny/aws-sdk/client-iot";
-import { getStackOutput } from "../../utils";
+import { getStackOutput } from "~/utils";
 
 export interface IGetIotEndpointParams {
     env: string;

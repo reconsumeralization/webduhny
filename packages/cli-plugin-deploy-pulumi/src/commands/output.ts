@@ -1,5 +1,4 @@
-import { createPulumiCommand } from "../utils";
-import { getStackName } from "../utils/getStackName";
+import { createPulumiCommand, getStackName } from "~/utils";
 
 export const outputCommand = createPulumiCommand({
     name: "output",

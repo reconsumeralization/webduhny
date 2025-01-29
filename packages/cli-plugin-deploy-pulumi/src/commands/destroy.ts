@@ -1,4 +1,4 @@
-import { createPulumiCommand, getStackName, processHooks } from "../utils";
+import { createPulumiCommand, getStackName, processHooks } from "~/utils";
 
 export const destroyCommand = createPulumiCommand({
     name: "destroy",

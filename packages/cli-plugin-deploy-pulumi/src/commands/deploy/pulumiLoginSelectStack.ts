@@ -1,6 +1,5 @@
 import { IUserCommandInput, ProjectApplication, IPulumi } from "~/types";
-import { login } from "../../utils/login";
-import { getStackName } from "../../utils/getStackName";
+import { login, getStackName } from "~/utils";
 
 export interface IPulumiLoginSelectStackParams {
     inputs: Pick<IUserCommandInput, "env" | "variant">;
