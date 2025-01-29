@@ -6,7 +6,7 @@ import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
 import { rootVariants } from "./Root";
 
-interface CloseProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close> {
+interface CloseProps extends ToastPrimitives.ToastCloseProps {
     variant?: VariantProps<typeof rootVariants>["variant"];
 }
 
