@@ -11,11 +11,24 @@ interface ToastProps extends Omit<ToastRootProps, "title" | "content" | "childre
     description?: React.ReactElement<typeof Description>;
     icon?: React.ReactElement<typeof BaseIcon>;
     actions?: React.ReactElement<typeof Actions>;
+    dismissible?: boolean;
 }
 
-const DecoratableToast = ({ title, description, icon, actions, ...props }: ToastProps) => {
+const DecoratableToast = ({
+    title,
+    description,
+    icon,
+    actions,
+    duration = 6000,
+    dismissible = true,
+    ...props
+}: ToastProps) => {
     return (
-        <Root hasDescription={!!description || !!actions} {...props}>
+        <Root
+            hasDescription={!!description || !!actions}
+            duration={dismissible ? duration : 999999}
+            {...props}
+        >
             <Icon icon={icon} />
             <div className="wby-w-64">
                 {title}

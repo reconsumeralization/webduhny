@@ -137,3 +137,17 @@ export const WithCustomIcon: Story = {
         icon: <Icon icon={<SettingsIcon />} label={"Settings"} />
     }
 };
+
+export const WithCustomDuration: Story = {
+    args: {
+        ...Default.args,
+        duration: 10000
+    }
+};
+
+export const NotDismissible: Story = {
+    args: {
+        ...Default.args,
+        dismissible: false
+    }
+};
