@@ -1,12 +1,13 @@
 import React from "react";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";
 import { usePagesPermissions } from "~/hooks/permissions";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 import { ChangePageStatus } from "./ChangePageStatus";
 
 export const SecureChangePageStatus = () => {
     const { page } = usePage();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
     const { hasPermissions, canPublish, canUnpublish } = usePagesPermissions();
 
     if (!hasPermissions()) {
@@ -14,7 +15,7 @@ export const SecureChangePageStatus = () => {
     }
 
     const { folderId } = page.location;
-    if (!flp.canManageContent(folderId)) {
+    if (!canManageContent(folderId)) {
         return null;
     }
 

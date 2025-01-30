@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import { i18n } from "@webiny/app/i18n";
-import { useCreateDialog, useFolders } from "@webiny/app-aco";
+import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import CategoriesDialog from "~/admin/views/Categories/CategoriesDialog";
@@ -46,15 +46,18 @@ export const Main = ({ folderId: initialFolderId }: Props) => {
 
     // We check permissions on two layers - security and folder level permissions.
     const { canCreate } = usePagesPermissions();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageStructure } =
+        useGetFolderLevelPermission("canManageStructure");
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
 
     const canCreateFolder = useMemo(() => {
-        return flp.canManageStructure(folderId);
-    }, [flp, folderId]);
+        return canManageStructure(folderId);
+    }, [canManageStructure, folderId]);
 
     const canCreateContent = useMemo(() => {
-        return canCreate() && flp.canManageContent(folderId);
-    }, [flp, folderId]);
+        return canCreate() && canManageContent(folderId);
+    }, [canManageContent, folderId]);
 
     const { innerHeight: windowHeight } = window;
     const [tableHeight, setTableHeight] = useState(0);

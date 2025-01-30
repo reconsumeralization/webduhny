@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash/debounce";
-import { useCreateDialog, useFolders } from "@webiny/app-aco";
+import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { Empty } from "~/admin/components/ContentEntries/Empty";
 import { Filters } from "~/admin/components/ContentEntries/Filters";
@@ -30,15 +30,18 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
 
     // We check permissions on two layers - security and folder level permissions.
     const { canCreate, contentModel } = useContentEntry();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
+    const { getFolderLevelPermission: canManageStructure } =
+        useGetFolderLevelPermission("canManageStructure");
 
     const canCreateFolder = useMemo(() => {
-        return flp.canManageStructure(folderId);
-    }, [flp, folderId]);
+        return canManageStructure(folderId);
+    }, [canManageStructure, folderId]);
 
     const canCreateContent = useMemo(() => {
-        return canCreate && flp.canManageContent(folderId);
-    }, [flp, folderId]);
+        return canCreate && canManageContent(folderId);
+    }, [canManageContent, folderId]);
 
     const createEntry = useCallback(() => {
         const folder = folderId ? `&folderId=${encodeURIComponent(folderId)}` : "";

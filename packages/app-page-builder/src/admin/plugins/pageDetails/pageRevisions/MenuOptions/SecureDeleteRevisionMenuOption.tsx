@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { usePagesPermissions } from "~/hooks/permissions";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 
 import {
     DeleteRevisionMenuOption,
@@ -10,14 +10,14 @@ import {
 export const SecureDeleteRevisionMenuOption = (props: DeleteRevisionMenuOptionProps) => {
     const { page } = props;
     const { canDelete: pagesCanDelete } = usePagesPermissions();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
 
     const hasAccess = useMemo(() => {
         return (
-            pagesCanDelete(page?.createdBy?.id) &&
-            flp.canManageContent(page.wbyAco_location?.folderId)
+            pagesCanDelete(page?.createdBy?.id) && canManageContent(page.wbyAco_location?.folderId)
         );
-    }, [page]);
+    }, [page, canManageContent]);
 
     if (!hasAccess) {
         return null;

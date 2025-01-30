@@ -8,7 +8,7 @@ import { initializeState, State } from "./state";
 import { FolderItem, ListMeta, ListSearchRecordsSort } from "@webiny/app-aco/types";
 import { UploadOptions } from "@webiny/app/types";
 import { sortTableItems } from "@webiny/app-aco/sorting";
-import { useFolders, useNavigateFolder } from "@webiny/app-aco";
+import { useListFolders, useNavigateFolder } from "@webiny/app-aco";
 import { ListFilesQueryVariables } from "~/modules/FileManagerApiProvider/graphql";
 import { useListFiles } from "./useListFiles";
 import { useTags } from "./useTags";
@@ -106,7 +106,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     const shiftKeyPressed = useShiftKey();
     const modifiers = { scope: props.scope, own: props.own, accept: props.accept };
     const fileManager = useFileManagerApi();
-    const { folders: originalFolders, loading: foldersLoading } = useFolders();
+    const { folders: originalFolders, loading: foldersLoading } = useListFolders();
     const { currentFolderId = ROOT_FOLDER, navigateToFolder } = useNavigateFolder();
     const tags = useTags(modifiers);
     const [state, setState] = useStateIfMounted(initializeState());
