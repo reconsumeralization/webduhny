@@ -319,13 +319,19 @@ export const commands: CliCommandPlugin[] = [
                         type: "string",
                         required: false
                     });
+                    yargs.option("confirm-destroy-variant", {
+                        describe:
+                            "Confirm environment variant to destroy. Must be passed when destroying the whole project.",
+                        type: "string",
+                        required: false
+                    });
                     yargs
                         .option("confirm-destroy-env", {
                             describe: `Confirm environment name to destroy. Must be passed when destroying the whole project.`,
                             type: "string"
                         })
                         .check(args => {
-                            const { folder, confirmDestroyEnv } = args;
+                            const { folder, confirmDestroyEnv, confirmDestroyVariant } = args;
 
                             // If the folder is not defined, we are destroying the whole project.
                             // In that case, we must confirm the environment name to destroy.
@@ -336,13 +342,31 @@ export const commands: CliCommandPlugin[] = [
                                             `--confirm-destroy-env=${args.env}`
                                         )} to the command.`
                                     );
-                                }
-
-                                if (confirmDestroyEnv !== args.env) {
+                                } else if (confirmDestroyEnv !== args.env) {
                                     throw new Error(
                                         `The ${red(
                                             `--confirm-destroy-env`
                                         )} option value must match the ${red("env")} option value.`
+                                    );
+                                }
+                                /**
+                                 * When we have a variant, a user must also send the `confirm-destroy-variant` option.
+                                 */
+                                if (!args.variant) {
+                                    return;
+                                } else if (!confirmDestroyVariant) {
+                                    throw new Error(
+                                        `Please confirm complete project destruction by appending ${red(
+                                            `--confirm-destroy-variant=${args.variant}`
+                                        )} to the command.`
+                                    );
+                                } else if (confirmDestroyVariant !== args.variant) {
+                                    throw new Error(
+                                        `The ${red(
+                                            `--confirm-destroy-variant`
+                                        )} option value must match the ${red(
+                                            "variant"
+                                        )} option value.`
                                     );
                                 }
                             }
