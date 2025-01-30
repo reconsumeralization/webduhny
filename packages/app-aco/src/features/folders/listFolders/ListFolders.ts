@@ -5,7 +5,7 @@ import { ListFoldersRepository } from "./ListFoldersRepository";
 import { ListFoldersUseCaseWithLoading } from "./ListFoldersUseCaseWithLoading";
 import { ListFoldersUseCase } from "./ListFoldersUseCase";
 import { folderCacheFactory, ListCache } from "../cache";
-import { Folder } from "src/features/folders";
+import { Folder } from "../Folder";
 
 interface IListFoldersInstance {
     useCase: IListFoldersUseCase;
