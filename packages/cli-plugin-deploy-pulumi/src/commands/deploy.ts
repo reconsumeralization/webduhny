@@ -13,7 +13,8 @@ export interface IDeployParams {
     deploy: boolean;
     preview: boolean;
     env: string;
-    variant: string;
+    variant: string | undefined;
+    region: string | undefined;
     folder: string;
     cwd: string;
 }

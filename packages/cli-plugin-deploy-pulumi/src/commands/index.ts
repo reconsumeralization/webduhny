@@ -1,5 +1,6 @@
 import { red } from "chalk";
 import { CliCommandPlugin } from "@webiny/cli/types";
+import { IUserCommandInput } from "~/types";
 
 export const commands: CliCommandPlugin[] = [
     {
@@ -28,6 +29,11 @@ export const commands: CliCommandPlugin[] = [
                     });
                     yargs.option("variant", {
                         describe: `Variant`,
+                        type: "string",
+                        required: false
+                    });
+                    yargs.option("region", {
+                        describe: `Region to deploy the infrastructure to`,
                         type: "string",
                         required: false
                     });
@@ -68,7 +74,8 @@ export const commands: CliCommandPlugin[] = [
                             type: "boolean"
                         })
                         .check(args => {
-                            const { env, allowLocalStateFiles } = args as Record<string, string>;
+                            const { env, allowLocalStateFiles } =
+                                args as unknown as IUserCommandInput;
 
                             // If the folder is not defined, we are destroying the whole project.
                             // In that case, we must confirm the environment name to destroy.

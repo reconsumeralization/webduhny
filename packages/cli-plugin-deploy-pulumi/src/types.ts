@@ -11,7 +11,9 @@ export type IPulumi = Pulumi;
 export interface IUserCommandInput {
     env: string;
     folder: string;
+    region: string | undefined;
     variant: string | undefined;
+    allowLocalStateFiles?: boolean;
     debug?: boolean;
     cwd?: string;
     telemetry?: boolean;

@@ -6,7 +6,8 @@ export interface IBuildParams {
     _: string[];
     folder: string;
     env: string;
-    variant: string;
+    variant: string | undefined;
+    region: string | undefined;
     cwd: string;
 }
 
