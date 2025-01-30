@@ -9,11 +9,6 @@ const types = ["log", "error", "warn"] as const;
 for (let i = 0; i < types.length; i++) {
     const type = types[i];
     console[type] = (...message: (string | Error)[]) => {
-        /**
-         * TODO @adrian
-         *
-         * parentPort is possibly null. do we check or force TS?
-         */
         parentPort!.postMessage(
             JSON.stringify({
                 type,

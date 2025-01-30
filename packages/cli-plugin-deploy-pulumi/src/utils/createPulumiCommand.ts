@@ -1,7 +1,6 @@
 import path from "path";
 // @ts-expect-error
-import { sendEvent } from "@webiny/cli/utils";
-import { getProject, getProjectApplication } from "@webiny/cli/utils";
+import { getProject, getProjectApplication, sendEvent } from "@webiny/cli/utils";
 import {
     createProjectApplicationWorkspace,
     ICreateProjectApplicationWorkspaceCallable
@@ -110,14 +109,6 @@ export const createPulumiCommand = ({
                 await createProjectApplicationWorkspace({
                     projectApplication,
                     inputs: params
-                    /**
-                     * TODO @adrian
-                     *
-                     * These vars are not used in the function, should we remove them?
-                     */
-                    // context,
-                    // env: params.env,
-                    // variant: params.variant
                 });
             }
 
@@ -153,13 +144,6 @@ export const createPulumiCommand = ({
                 projectApplication: {
                     id: projectApplication?.id || "unknown"
                 },
-                /**
-                 * TODO @adrian
-                 *
-                 * command is a function, this does not work.
-                 */
-                // @ts-expect-error
-                commandName: command,
                 commandParams: params
             });
 

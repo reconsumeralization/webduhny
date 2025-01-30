@@ -5,11 +5,6 @@ import { parentPort, workerData } from "worker_threads";
     try {
         const { handler } = require(handlerParams.path);
         const result = await handler(...handlerParams.args);
-        /**
-         * TODO @adrian
-         *
-         * Parent port is possibly null.
-         */
         parentPort!.postMessage(JSON.stringify({ success: true, result, error: null }));
     } catch (error) {
         const { message, code, data, stack } = error;

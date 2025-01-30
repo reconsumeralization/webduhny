@@ -59,15 +59,8 @@ export const executeDeploy = async ({ inputs, context, pulumi }: IExecuteDeployP
         });
 
         if (showDeploymentLogs) {
-            /**
-             * TODO @adrian
-             *
-             * stdout is possibly undefined. do we force or check?
-             */
-            // @ts-expect-error
-            subprocess.stdout.pipe(process.stdout);
-            // @ts-expect-error
-            subprocess.stderr.pipe(process.stderr);
+            subprocess.stdout!.pipe(process.stdout);
+            subprocess.stderr!.pipe(process.stderr);
             await subprocess;
         } else {
             spinner.start();

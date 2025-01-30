@@ -56,10 +56,10 @@ export class NoDeploymentsMultiplePackagesWatcher extends BasePackagesWatcher {
                         );
                         /**
                          * TODO @adrian
-                         * This never worked...?
+                         *
+                         * Check if we want to log here.
                          */
-                        // @ts-expect-error
-                        log(e);
+                        console.error(e);
 
                         resolve({
                             package: current,

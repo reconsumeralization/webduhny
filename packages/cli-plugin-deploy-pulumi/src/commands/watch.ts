@@ -55,16 +55,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
         // If exists - read default inputs from "webiny.application.ts" file.
         inputs = merge({}, get(projectApplication, "config.cli.watch"), inputs);
 
-        // We don't do anything here. We assume the workspace has already been created
-        // upon running the `webiny deploy` command. We rely on that.
-        // TODO: maybe we can improve this in the future, depending on the feedback.
-        // await createProjectApplicationWorkspace({
-        //     projectApplication,
-        //     env: inputs.env,
-        //     context,
-        //     inputs
-        // });
-
         // Check if there are any plugins that need to be registered.
         if (projectApplication.config.plugins) {
             context.plugins.register(projectApplication.config.plugins);
@@ -226,22 +216,17 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     }
                 }
             });
-            /**
-             * TODO @adrian
-             *
-             * Possibly undefined stdout. Do we need to check?
-             */
             watchCloudInfrastructure.stdout!.on("data", data => {
                 const lines: string[] = data.toString().split("\n");
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
                     try {
-                        /**
-                         * TODO @adrian
-                         *
-                         * Match is possibly null. do we need to check?
-                         */
                         const [, , name, message] = line
+                            /**
+                             * TODO @adrian
+                             *
+                             * Check this out.
+                             */
                             // added ! at the end of next line
                             .match(/(.*)\[(.*)\] (.*)/)!
                             .map(item => item.trim());
@@ -266,11 +251,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     }
                 }
             });
-            /**
-             * TODO @adrian
-             *
-             * possibly undefined stderr. Do we need to check?
-             */
+
             watchCloudInfrastructure.stderr!.on("data", data => {
                 output.log({
                     type: "deploy",

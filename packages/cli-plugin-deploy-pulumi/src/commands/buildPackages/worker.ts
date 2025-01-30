@@ -9,7 +9,7 @@ const originalStdoutWrite = process.stdout.write.bind(process.stdout);
 /**
  * TODO @adrian
  *
- * TS is complaining
+ * Check this out.
  */
 // @ts-expect-error
 process.stdout.write = (chunk, encoding, callback) => {
@@ -24,7 +24,7 @@ const originalStderrWrite = process.stderr.write.bind(process.stderr);
 /**
  * TODO @adrian
  *
- * TS is complaining
+ * Check this out.
  */
 // @ts-expect-error
 process.stderr.write = (chunk, encoding, callback) => {
@@ -53,11 +53,6 @@ if (!hasBuildCommand) {
 config.commands
     .build(options)
     .then(() => {
-        /**
-         * TODO @adrian
-         *
-         * parentPort is possibly null. do we check or force TS?
-         */
         parentPort!.postMessage(
             JSON.stringify({ type: "success", stdout: processStdout, stderr: processStderr })
         );

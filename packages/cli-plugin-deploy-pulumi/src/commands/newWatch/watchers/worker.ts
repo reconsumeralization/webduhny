@@ -19,12 +19,7 @@ const filterOutPunycodeWarnings = (message: string | unknown) => {
 for (let i = 0; i < types.length; i++) {
     const type = types[i];
     console[type] = (...message: string[] | Error[]) => {
-        /**
-         * TODO @adrian
-         * parentPort is possibly null, do we want to check?
-         */
-        // @ts-expect-error
-        parentPort.postMessage(
+        parentPort!.postMessage(
             JSON.stringify({
                 type,
                 message: message

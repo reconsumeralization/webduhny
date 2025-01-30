@@ -82,7 +82,8 @@ export const uploadFolderToS3 = async ({
         /**
          * TODO @adrian
          *
-         * pattern should be a string
+         * pattern should be a string.
+         * Left it here for now.
          */
         // @ts-expect-error
         cacheControl = [{ pattern: /.*/, value: cacheControl as string }];
@@ -126,17 +127,23 @@ export const uploadFolderToS3 = async ({
                                 await onFileUploadSkip({ paths: { full: path, relative: key } });
                             }
                         } else {
+                            /**
+                             * TODO @adrian
+                             *
+                             * Check the cache control here.
+                             */
+                            let cmdCacheControl: string | undefined;
+                            if (cacheControl.length) {
+                                cmdCacheControl = cacheControl.find(x =>
+                                    // @ts-expect-error
+                                    x?.pattern?.test(key)
+                                )?.value;
+                            }
                             const cmd = new PutObjectCommand({
                                 Bucket: bucket,
                                 Key: key,
                                 ACL: acl,
-                                /**
-                                 * TODO @adrian
-                                 *
-                                 * TS fails because x.pattern is a string by type.
-                                 */
-                                // @ts-expect-error
-                                CacheControl: cacheControl.find(x => x.pattern.test(key)).value,
+                                CacheControl: cmdCacheControl,
                                 ContentType: mime.getType(path) || undefined,
                                 Body: fs.readFileSync(path),
                                 Metadata: {

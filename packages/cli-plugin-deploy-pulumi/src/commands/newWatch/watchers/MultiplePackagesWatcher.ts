@@ -56,10 +56,10 @@ export class MultiplePackagesWatcher extends BasePackagesWatcher {
                         );
                         /**
                          * TODO @adrian
-                         * This never worked as log expect a string on first argument
+                         *
+                         * Check if we want to log the error here.
                          */
-                        // @ts-expect-error
-                        log(e);
+                        console.error(e);
 
                         resolve({
                             package: current,

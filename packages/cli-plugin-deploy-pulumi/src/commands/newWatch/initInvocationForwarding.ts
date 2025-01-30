@@ -17,13 +17,12 @@ const jsonStringifyAndCompress = (input: Record<string, any>): Promise<Buffer> =
 const decompressAndJsonParse = async (input: string) => {
     const inputBuffer = Buffer.from(input);
     const jsonStringResult = await decompress(inputBuffer);
-    /**
-     * TODO @adrian
-     *
-     * jsonStringResult is a buffer. TS complains.
-     */
-    // @ts-expect-error
-    return JSON.parse(jsonStringResult);
+
+    const value = jsonStringResult?.toString
+        ? jsonStringResult.toString("utf-8")
+        : (jsonStringResult as unknown as string);
+
+    return JSON.parse(value);
 };
 
 export interface IInitInvocationForwardingParamsLambdaFunction {
@@ -62,6 +61,9 @@ export const initInvocationForwarding = async ({
         const invokedLambdaFunction = lambdaFunctions.find(
             lambdaFunction => lambdaFunction.name === payload.data.functionName
         );
+        if (!invokedLambdaFunction) {
+            throw new Error(`Lambda function "${payload.data.functionName}" not found.`);
+        }
 
         try {
             const result = await new Promise<Record<string, any>>(async (resolve, reject) => {
@@ -69,11 +71,6 @@ export const initInvocationForwarding = async ({
                     env: { ...payload.data.env, WEBINY_WATCH_LOCAL_INVOCATION: "1" },
                     workerData: {
                         handler: {
-                            /**
-                             * TODO @adrian
-                             * Do we expect lambda to exist?
-                             */
-                            // @ts-expect-error
                             path: invokedLambdaFunction.path,
                             args: await decompressAndJsonParse(payload.data.compressedArgs)
                         }

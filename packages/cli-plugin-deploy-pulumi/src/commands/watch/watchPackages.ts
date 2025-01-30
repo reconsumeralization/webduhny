@@ -89,10 +89,11 @@ export const watchPackages = async ({ inputs, output, context }: IWatchPackagesP
                     );
                     /**
                      * TODO @adrian
-                     * This never worked...?
+                     *
+                     *
+                     * Check this error log.
                      */
-                    // @ts-expect-error
-                    log(e);
+                    console.error(e);
 
                     resolve({
                         package: current,

@@ -68,9 +68,6 @@ export const commands: CliCommandPlugin[] = [
                             type: "boolean"
                         })
                         .check(args => {
-                            /**
-                             * TODO figure out how to pass generic to args.
-                             */
                             const { env, allowLocalStateFiles } = args as Record<string, string>;
 
                             // If the folder is not defined, we are destroying the whole project.

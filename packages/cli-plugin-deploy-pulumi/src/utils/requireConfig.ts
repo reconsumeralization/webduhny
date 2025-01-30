@@ -22,16 +22,13 @@ export const requireConfig = <T extends IConfigResult = IConfigResult>(
     input: string,
     params?: IRequireConfigParams
 ): T => {
-    let resolved = require(input);
+    const required = require(input);
     /**
      * There is a possibility that the config is a default export.
      */
-    if (resolved.default) {
-        resolved = resolved.default;
-    }
+    const resolved = required.default || required;
     if (typeof resolved === "function") {
         return resolved(params);
-    } else {
-        return resolved;
     }
+    return resolved;
 };

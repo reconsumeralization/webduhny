@@ -26,11 +26,6 @@ export const executePreview = async ({ inputs, context, pulumi }: IExecutePrevie
             }
         }
     });
-    /**
-     * TODO @adrian
-     *
-     * stdout is possibly undefined. do we force or check?
-     */
     subprocess.stdout!.pipe(process.stdout);
     subprocess.stderr!.pipe(process.stderr);
 

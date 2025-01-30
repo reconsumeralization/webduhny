@@ -27,20 +27,16 @@ const decompressAndJsonParse = async (input: any) => {
             }
         });
     });
-    /**
-     * TODO @adrian
-     *
-     * jsonStringResult is buffer. TS is complaining about JSON.parse.
-     */
-    // @ts-expect-error
-    return JSON.parse(jsonStringResult);
+    const value = jsonStringResult?.toString
+        ? jsonStringResult.toString("utf-8")
+        : (jsonStringResult as unknown as string);
+
+    return JSON.parse(value);
 };
 
 export default async (...args: any[]) => {
     /**
-     * TODO @adrian
-     *
-     * Why do we import local mqtt?
+     * We MUST import local mqtt, do not change!
      */
     // @ts-expect-error
     const client = await mqtt.connectAsync(webinyWatchArgs.iotEndpoint);
@@ -63,9 +59,6 @@ export default async (...args: any[]) => {
     await client.publish(webinyWatchArgs.iotEndpointTopic, JSON.stringify(fnInvocationPayload));
 
     return new Promise((resolve, reject) => {
-        /**
-         * TODO fix when figure out mqtt
-         */
         // @ts-expect-error
         client.on("message", async (_, message) => {
             const payload = JSON.parse(message.toString());

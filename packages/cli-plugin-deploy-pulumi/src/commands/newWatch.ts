@@ -12,6 +12,7 @@ import { PackagesWatcher } from "./newWatch/watchers/PackagesWatcher";
 import { initInvocationForwarding } from "./newWatch/initInvocationForwarding";
 import { replaceLambdaFunctions } from "./newWatch/replaceLambdaFunctions";
 import exitHook from "exit-hook";
+import type inspectorType from "inspector";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -47,16 +48,6 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         // If exists - read default inputs from "webiny.application.ts" file.
         inputs = merge({}, get(projectApplication, "config.cli.watch"), inputs);
 
-        // We don't do anything here. We assume the workspace has already been created
-        // upon running the `webiny deploy` command. We rely on that.
-        // TODO: maybe we can improve this in the future, depending on the feedback.
-        // await createProjectApplicationWorkspace({
-        //     projectApplication,
-        //     env: inputs.env,
-        //     context,
-        //     inputs
-        // });
-
         /**
          * We can safely assume that the project application is defined here.
          *
@@ -72,14 +63,6 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
 
     if (projectApplicationSpecified && !inputs.env) {
         throw new Error(`Please specify environment, for example "dev".`);
-    }
-    /**
-     * TODO @adrian
-     *
-     * I added this check because the rest of the code expects the projectApplication to be defined.
-     */
-    if (!projectApplication) {
-        throw new Error(`Project application not found.`);
     }
 
     if (WATCH_DISABLED_ENVIRONMENTS.includes(inputs.env)) {
@@ -109,7 +92,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     const packages = await listPackages({ inputs });
     const packagesWatcher = new PackagesWatcher({ packages, context, inputs });
 
-    if (!projectApplicationSpecified) {
+    if (!projectApplicationSpecified || !projectApplication) {
         await packagesWatcher.watch();
         return;
     }
@@ -190,19 +173,15 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         lambdaFunctions,
         increaseTimeout
     });
-    /**
-     * TODO @adrian
-     *
-     * Maybe we can import in the top and then handle the rest here?
-     */
-    let inspector: any;
+
+    let inspector: typeof inspectorType | undefined = undefined;
     if (inputs.inspect) {
         inspector = require("inspector");
-        inspector.open(9229, "127.0.0.1");
+        inspector!.open(9229, "127.0.0.1");
         console.log();
 
         exitHook(() => {
-            inspector.close();
+            inspector!.close();
         });
     }
 
@@ -211,14 +190,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         iotEndpoint,
         iotEndpointTopic,
         lambdaFunctions,
-        sessionId,
-        /**
-         * TODO @adrian
-         *
-         * This does not exist in initInvocationForwarding params
-         */
-        // @ts-expect-error
-        inspector
+        sessionId
     });
 
     await packagesWatcher.watch();
