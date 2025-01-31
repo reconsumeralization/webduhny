@@ -43,6 +43,7 @@ export interface CMSPermissionsProps {
     value: CmsSecurityPermission[];
     onChange: (value: CmsSecurityPermission[]) => void;
 }
+
 export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
     const { getPermission } = useSecurity();
 
@@ -177,7 +178,7 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
         [value]
     );
 
-    const formData = useMemo(() => {
+    const initialFormData = useMemo(() => {
         // This function only runs once on Form mount
         if (!Array.isArray(value)) {
             return {
@@ -262,10 +263,10 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
     }, []);
 
     return (
-        <Form<CmsSecurityPermission> data={formData} onChange={onFormChange}>
+        <Form<CmsSecurityPermission> data={initialFormData} onChange={onFormChange}>
             {({ data, Bind, setValue }) => {
                 const endpoints = data.endpoints || [];
-                const graphQLEndpointAccess =
+                const hasGqlApiAccess =
                     endpoints.includes("read") ||
                     endpoints.includes("manage") ||
                     endpoints.includes("preview");
@@ -328,42 +329,43 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
                                         </Bind>
                                     </Cell>
                                 </Grid>
-                                {graphQLEndpointAccess && (
-                                    <ContentModelGroupPermission
-                                        data={data}
-                                        Bind={Bind}
-                                        disabled={cannotUseAAcl}
-                                        entity={"contentModelGroup"}
-                                        title={"Content Model Groups"}
-                                        locales={locales}
-                                    />
-                                )}
-
-                                {graphQLEndpointAccess &&
-                                    canRead(value, "cms.contentModelGroup") && (
-                                        <ContentModelPermission
-                                            locales={locales}
+                                {hasGqlApiAccess && (
+                                    <>
+                                        <ContentModelGroupPermission
                                             data={data}
-                                            setValue={setValue}
                                             Bind={Bind}
                                             disabled={cannotUseAAcl}
-                                            entity={"contentModel"}
-                                            title={"Content Models"}
-                                            selectedContentModelGroups={getSelectedContentModelGroups(
-                                                data
-                                            )}
+                                            entity={"contentModelGroup"}
+                                            title={"Content Model Groups"}
+                                            locales={locales}
                                         />
-                                    )}
 
-                                {graphQLEndpointAccess && canRead(value, "cms.contentModel") && (
-                                    <ContentEntryPermission
-                                        data={data}
-                                        Bind={Bind}
-                                        disabled={cannotUseAAcl}
-                                        setValue={setValue}
-                                        entity={"contentEntry"}
-                                        title={"Content Entries"}
-                                    />
+                                        {canRead(value, "cms.contentModelGroup") && (
+                                            <ContentModelPermission
+                                                locales={locales}
+                                                data={data}
+                                                setValue={setValue}
+                                                Bind={Bind}
+                                                disabled={cannotUseAAcl}
+                                                entity={"contentModel"}
+                                                title={"Content Models"}
+                                                selectedContentModelGroups={getSelectedContentModelGroups(
+                                                    data
+                                                )}
+                                            />
+                                        )}
+
+                                        {canRead(value, "cms.contentModel") && (
+                                            <ContentEntryPermission
+                                                data={data}
+                                                Bind={Bind}
+                                                disabled={cannotUseAAcl}
+                                                setValue={setValue}
+                                                entity={"contentEntry"}
+                                                title={"Content Entries"}
+                                            />
+                                        )}
+                                    </>
                                 )}
                             </>
                         )}
