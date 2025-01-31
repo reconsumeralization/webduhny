@@ -265,12 +265,6 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
     return (
         <Form<CmsSecurityPermission> data={initialFormData} onChange={onFormChange}>
             {({ data, Bind, setValue }) => {
-                const endpoints = data.endpoints || [];
-                const hasGqlApiAccess =
-                    endpoints.includes("read") ||
-                    endpoints.includes("manage") ||
-                    endpoints.includes("preview");
-
                 return (
                     <Fragment>
                         <Grid className={gridNoPaddingClass}>
@@ -329,44 +323,35 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
                                         </Bind>
                                     </Cell>
                                 </Grid>
-                                {hasGqlApiAccess && (
-                                    <>
-                                        <ContentModelGroupPermission
-                                            data={data}
-                                            Bind={Bind}
-                                            disabled={cannotUseAAcl}
-                                            entity={"contentModelGroup"}
-                                            title={"Content Model Groups"}
-                                            locales={locales}
-                                        />
 
-                                        {canRead(value, "cms.contentModelGroup") && (
-                                            <ContentModelPermission
-                                                locales={locales}
-                                                data={data}
-                                                setValue={setValue}
-                                                Bind={Bind}
-                                                disabled={cannotUseAAcl}
-                                                entity={"contentModel"}
-                                                title={"Content Models"}
-                                                selectedContentModelGroups={getSelectedContentModelGroups(
-                                                    data
-                                                )}
-                                            />
-                                        )}
+                                <ContentModelGroupPermission
+                                    data={data}
+                                    Bind={Bind}
+                                    disabled={cannotUseAAcl}
+                                    entity={"contentModelGroup"}
+                                    title={"Content Model Groups"}
+                                    locales={locales}
+                                />
 
-                                        {canRead(value, "cms.contentModel") && (
-                                            <ContentEntryPermission
-                                                data={data}
-                                                Bind={Bind}
-                                                disabled={cannotUseAAcl}
-                                                setValue={setValue}
-                                                entity={"contentEntry"}
-                                                title={"Content Entries"}
-                                            />
-                                        )}
-                                    </>
-                                )}
+                                <ContentModelPermission
+                                    locales={locales}
+                                    data={data}
+                                    setValue={setValue}
+                                    Bind={Bind}
+                                    disabled={cannotUseAAcl}
+                                    entity={"contentModel"}
+                                    title={"Content Models"}
+                                    selectedContentModelGroups={getSelectedContentModelGroups(data)}
+                                />
+
+                                <ContentEntryPermission
+                                    data={data}
+                                    Bind={Bind}
+                                    disabled={cannotUseAAcl}
+                                    setValue={setValue}
+                                    entity={"contentEntry"}
+                                    title={"Content Entries"}
+                                />
                             </>
                         )}
                     </Fragment>
