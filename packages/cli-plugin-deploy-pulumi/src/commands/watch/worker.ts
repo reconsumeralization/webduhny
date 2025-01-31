@@ -1,6 +1,6 @@
 import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
-import { requireConfig } from "~/utils";
+import { requireConfigWithExecute } from "~/utils";
 
 // We need this because tools have internal console.log calls. So,
 // let's intercept those and make sure messages are just forwarded
@@ -27,7 +27,7 @@ for (let i = 0; i < types.length; i++) {
     try {
         const { options, package: pckg } = workerData;
 
-        const config = requireConfig(pckg.config, {
+        const config = requireConfigWithExecute(pckg.config, {
             options: {
                 ...options,
                 cwd: pckg.root

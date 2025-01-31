@@ -1,5 +1,5 @@
 import { BasePackagesWatcher } from "./../BasePackagesWatcher";
-import { requireConfig } from "~/utils";
+import { requireConfigWithExecute } from "~/utils";
 
 export class NoDeploymentsSinglePackageWatcher extends BasePackagesWatcher {
     public override async watch(): Promise<void> {
@@ -7,17 +7,19 @@ export class NoDeploymentsSinglePackageWatcher extends BasePackagesWatcher {
         const context = this.context;
         const inputs = this.inputs;
 
-        const { env, debug } = inputs;
+        const { env, variant, region, debug } = inputs;
 
         const options = {
             env,
+            variant,
+            region,
             debug,
             cwd: pkg.paths.root,
 
             // Not much sense in turning off logs when a single package is being built.
             logs: true
         };
-        const config = requireConfig(pkg.paths.config, {
+        const config = requireConfigWithExecute(pkg.paths.config, {
             options,
             context
         });

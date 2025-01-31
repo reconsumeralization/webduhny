@@ -102,8 +102,12 @@ export const createPulumiCommand = ({
 
             const cwd = path.join(process.cwd(), params.folder);
 
+            console.log({
+                getProjectApplicationCwd: cwd
+            });
+
             // Get project application metadata.
-            projectApplication = getProjectApplication({ cwd }) as ProjectApplication;
+            projectApplication = getProjectApplication({ cwd });
 
             if (createProjectApplicationWorkspaceParam !== false) {
                 await createProjectApplicationWorkspace({

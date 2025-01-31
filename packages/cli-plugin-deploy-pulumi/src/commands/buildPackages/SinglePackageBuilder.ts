@@ -1,28 +1,6 @@
 import { BasePackagesBuilder } from "./BasePackagesBuilder";
 import { gray } from "chalk";
-import { Context } from "~/types";
-
-interface IOptions {
-    env: string;
-    debug?: boolean;
-    cwd: string;
-    logs: boolean;
-}
-
-interface ILoadedConfigResultParams {
-    options: IOptions;
-    context: Context;
-}
-
-interface IConfigResult {
-    commands: {
-        build: (options: IOptions) => Promise<void>;
-    };
-}
-
-interface ILoadedConfigResult extends IConfigResult {
-    (params: ILoadedConfigResultParams): IConfigResult;
-}
+import { IRequireConfigOptions, requireConfigWithExecute } from "~/utils";
 
 export class SinglePackageBuilder extends BasePackagesBuilder {
     public override async build() {
@@ -30,27 +8,26 @@ export class SinglePackageBuilder extends BasePackagesBuilder {
         const context = this.context;
         const inputs = this.inputs;
 
-        const { env, debug } = inputs;
+        const { env, debug, variant, region } = inputs;
 
         const pkgName = pkg.name;
         const pkgRelativePath = gray(`(${pkg.paths.relative})`);
         context.info(`Building %s package...`, `${pkgName} ${pkgRelativePath}`);
 
-        const options: IOptions = {
+        const options: IRequireConfigOptions = {
             env,
+            variant,
+            region,
             debug,
             cwd: pkg.paths.root,
             // Not much sense in turning off logs when a single package is being built.
             logs: true
         };
 
-        const loadedConfig = this.loadConfig(pkg.paths.config);
-        let config: IConfigResult;
-        if (typeof loadedConfig === "function") {
-            config = loadedConfig({ options, context });
-        } else {
-            config = loadedConfig;
-        }
+        const config = requireConfigWithExecute(pkg.paths.config, {
+            options,
+            context
+        });
 
         const hasBuildCommand = config.commands && typeof config.commands.build === "function";
         if (!hasBuildCommand) {
@@ -58,10 +35,5 @@ export class SinglePackageBuilder extends BasePackagesBuilder {
         }
 
         await config.commands.build(options);
-    }
-
-    private loadConfig(target: string): ILoadedConfigResult {
-        const module = require(target);
-        return module.default ? module.default : module;
     }
 }

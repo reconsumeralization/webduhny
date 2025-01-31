@@ -1,6 +1,6 @@
 import { parentPort, workerData } from "worker_threads";
 import { cli } from "@webiny/cli";
-import { requireConfig } from "~/utils";
+import { requireConfigWithExecute } from "~/utils";
 
 let processStdout = "";
 let processStderr = "";
@@ -37,7 +37,7 @@ process.stderr.write = (chunk, encoding, callback) => {
 
 const { options, package: pckg } = workerData;
 
-const config = requireConfig(pckg.config, {
+const config = requireConfigWithExecute(pckg.config, {
     options: {
         ...options,
         cwd: pckg.root
