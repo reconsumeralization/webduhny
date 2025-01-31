@@ -70,30 +70,34 @@ export const configureAdminCognitoFederation = (
     );
 
     const providers: Array<{
-        type: string;
-        name: string;
+        config: aws.cognito.IdentityProviderArgs;
         resource: PulumiAppResource<typeof aws.cognito.IdentityProvider>;
     }> = [];
 
     for (const idp of config.identityProviders) {
-        // For built-in identity providers, we use the type as the name. Only for OIDC,
-        // we allow the user to provide a custom name and we only use the type as a fallback.
-        let name = idp.type as string;
-        if (idp.type === "oidc") {
-            name = idp.name || idp.type;
-        }
+        const config = getIdpConfig(idp.type, userPool.output.id, idp);
 
         providers.push({
-            type: idp.type,
-            name,
+            config,
             resource: app.addResource(aws.cognito.IdentityProvider, {
-                name,
-                config: getIdpConfig(idp.type, userPool.output.id, idp)
+                name: config.providerName.toString(),
+                config
             })
         });
     }
 
-    appClient.config.supportedIdentityProviders(["COGNITO", ...providers.map(p => p.name)]);
+    appClient.config.supportedIdentityProviders([
+        "COGNITO",
+        ...providers.map(p => {
+            // For built-in identity providers, we use the type as the name. Only for OIDC,
+            // we allow the user to provide a custom name, and we only use the type as a fallback.
+            if (p.config.providerType === "OIDC") {
+                return p.config.providerName;
+            }
+            return p.config.providerType;
+        })
+    ]);
+
     appClient.config.allowedOauthScopes(["profile", "email", "openid"]);
     appClient.config.allowedOauthFlows(["implicit", "code"]);
     appClient.config.allowedOauthFlowsUserPoolClient(true);
