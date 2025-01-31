@@ -5,7 +5,6 @@ import { RadioGroup } from "./RadioGroup";
 const meta: Meta<typeof RadioGroup> = {
     title: "Components/Form/RadioGroup",
     component: RadioGroup,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

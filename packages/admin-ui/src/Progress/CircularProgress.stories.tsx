@@ -2,9 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { CircularProgress } from "./CircularProgress";
 
 const meta: Meta<typeof CircularProgress> = {
-    title: "Components/CircularProgress",
+    title: "Components/Circular Progress",
     component: CircularProgress,
-    tags: ["autodocs"],
     argTypes: {
         text: { control: "text" }
     }
