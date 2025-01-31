@@ -38,7 +38,7 @@ const createPluginCallable: CreatePluginCallable = (command, appName) => {
             `the deployment checks by appending the ${ctx.error.hl(
                 NO_DEPLOYMENT_CHECKS_FLAG_NAME
             )} flag.`,
-            `Learn more: https://webiny.link/missing-stack-output`
+            `Learn more: https://webiny.link/deploy-api-first`
         ];
 
         throw new GracefulError(message.join(" "));
