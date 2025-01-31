@@ -1,7 +1,7 @@
 import { createAdminPulumiApp, CreateAdminPulumiAppParams } from "@webiny/pulumi-aws";
 import { uploadAppToS3 } from "./react/plugins";
-import { ensureApiDeployedBeforeBuild, ensureApiDeployedBeforeWatch } from "./admin/plugins";
 import { PluginCollection } from "@webiny/plugins/types";
+import { createEnsureApiDeployedPlugins } from "~/utils/ensureApiDeployed";
 
 export interface CreateAdminAppParams extends CreateAdminPulumiAppParams {
     plugins?: PluginCollection;
@@ -10,8 +10,7 @@ export interface CreateAdminAppParams extends CreateAdminPulumiAppParams {
 export function createAdminApp(projectAppParams: CreateAdminAppParams = {}) {
     const builtInPlugins = [
         uploadAppToS3({ folder: "apps/admin" }),
-        ensureApiDeployedBeforeBuild,
-        ensureApiDeployedBeforeWatch
+        ...createEnsureApiDeployedPlugins("admin")
     ];
 
     const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
