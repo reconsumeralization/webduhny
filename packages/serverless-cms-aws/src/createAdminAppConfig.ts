@@ -1,9 +1,6 @@
 import { createReactAppConfig, ReactAppConfigModifier } from "~/createReactAppConfig";
 import { ApiOutput } from "@webiny/pulumi-aws";
 
-// @ts-expect-error Rewrite CLI into TypeScript.
-import { log, sleepSync } from "@webiny/cli/utils";
-
 export const createAdminAppConfig = (modifier?: ReactAppConfigModifier) => {
     return createReactAppConfig(baseParams => {
         const { config, options } = baseParams;
@@ -18,14 +15,6 @@ export const createAdminAppConfig = (modifier?: ReactAppConfigModifier) => {
 
         config.pulumiOutputToEnv<ApiOutput>("apps/api", ({ output, env }) => {
             if (!output) {
-                log.warning(
-                    `Could not assign required environment variables. %s project application's stack output could not be retrieved. Learn more: https://webiny.link/missing-stack-output`,
-                    "API"
-                );
-
-                // We want to wait a bit because Webpack output just quickly hides the warning message.
-                sleepSync(5000);
-
                 return env;
             }
 
