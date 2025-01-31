@@ -69,21 +69,31 @@ export const configureAdminCognitoFederation = (
         pulumi.interpolate`${userPoolDomain.output.domain}.auth.${region}.amazoncognito.com`
     );
 
-    const providers = [];
+    const providers: Array<{
+        type: string;
+        name: string;
+        resource: PulumiAppResource<typeof aws.cognito.IdentityProvider>;
+    }> = [];
+
     for (const idp of config.identityProviders) {
-        providers.push(
-            app.addResource(aws.cognito.IdentityProvider, {
-                name: idp.name || idp.type,
+        // For built-in identity providers, we use the type as the name. Only for OIDC,
+        // we allow the user to provide a custom name and we only use the type as a fallback.
+        let name: string = idp.type;
+        if (idp.type === "oidc") {
+            name = idp.name || idp.type;
+        }
+
+        providers.push({
+            type: idp.type,
+            name,
+            resource: app.addResource(aws.cognito.IdentityProvider, {
+                name,
                 config: getIdpConfig(idp.type, userPool.output.id, idp)
             })
-        );
+        });
     }
 
-    appClient.config.supportedIdentityProviders([
-        "COGNITO",
-        ...providers.map(p => p.output.providerName)
-    ]);
-
+    appClient.config.supportedIdentityProviders(["COGNITO", ...providers.map(p => p.name)]);
     appClient.config.allowedOauthScopes(["profile", "email", "openid"]);
     appClient.config.allowedOauthFlows(["implicit", "code"]);
     appClient.config.allowedOauthFlowsUserPoolClient(true);
