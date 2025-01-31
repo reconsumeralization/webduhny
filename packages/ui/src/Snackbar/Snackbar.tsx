@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Snackbar as RmwcSnackbar, SnackbarAction, SnackbarProps } from "@rmwc/snackbar";
 
 type Props = SnackbarProps;
@@ -23,7 +24,10 @@ class Snackbar extends React.Component<Props> {
     }
 
     public override render(): React.ReactElement {
-        return <RmwcSnackbar {...this.props} />;
+        return ReactDOM.createPortal(
+            <RmwcSnackbar {...this.props} />,
+            this.container as HTMLElement
+        );
     }
 }
 
