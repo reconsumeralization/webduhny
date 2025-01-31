@@ -78,7 +78,7 @@ export const configureAdminCognitoFederation = (
     for (const idp of config.identityProviders) {
         // For built-in identity providers, we use the type as the name. Only for OIDC,
         // we allow the user to provide a custom name and we only use the type as a fallback.
-        let name: string = idp.type;
+        let name = idp.type as string;
         if (idp.type === "oidc") {
             name = idp.name || idp.type;
         }
