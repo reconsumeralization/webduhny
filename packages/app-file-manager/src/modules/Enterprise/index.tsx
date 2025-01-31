@@ -2,6 +2,7 @@ import React from "react";
 import { FileManagerViewConfig } from "~/index";
 import { THREAT_SCAN } from "~/modules/Enterprise/constants";
 import { ThreatScanInProgress } from "./components/ThreatScanInProgress";
+import { HandleWebsocketMessages } from "./HandleWebsocketMessages";
 
 const { Grid } = FileManagerViewConfig.Browser;
 
@@ -19,6 +20,9 @@ export const EnterpriseModule = () => {
     return (
         <>
             <DisableFileWhileThreatScanInProgress />
+            <FileManagerViewConfig>
+                <HandleWebsocketMessages />
+            </FileManagerViewConfig>
         </>
     );
 };

@@ -4,6 +4,7 @@ import {
     CreateApiPulumiAppParams as BaseCreateApiPulumiAppParams
 } from "~/apps/api/createApiPulumiApp";
 import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
+import { handleGuardDutyEvents } from "~/enterprise/api/handleGuardDutyEvents";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
 
@@ -26,17 +27,20 @@ export function createApiPulumiApp(projectAppParams: CreateApiPulumiAppParams = 
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
             return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
         },
-        pulumi(...args) {
-            const [{ getParam }] = args;
+        pulumi(app) {
+            const { getParam } = app;
             const vpc = getParam(projectAppParams.vpc);
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
 
+            // TODO: check WCP license.
+            handleGuardDutyEvents(app);
+
             // Not using advanced VPC params? Then immediately exit.
             if (!usingAdvancedVpcParams) {
-                return projectAppParams.pulumi?.(...args);
+                return projectAppParams.pulumi?.(app);
             }
 
-            const [{ onResource, addResource }] = args;
+            const { onResource, addResource } = app;
             const { useExistingVpc } = vpc;
 
             // 1. We first deal with "existing VPC" setup.
@@ -69,7 +73,7 @@ export function createApiPulumiApp(projectAppParams: CreateApiPulumiAppParams = 
                 });
             }
 
-            return projectAppParams.pulumi?.(...args);
+            return projectAppParams.pulumi?.(app);
         }
     });
 }
