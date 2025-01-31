@@ -63,7 +63,15 @@ const textareaVariants = cva(
 interface TextareaPrimitiveProps
     extends React.ComponentProps<"textarea">,
         VariantProps<typeof textareaVariants> {
+    /**
+     * Reference to the textarea element.
+     */
     textareaRef?: React.Ref<HTMLTextAreaElement>;
+
+    /**
+     * If true, it will pass the native `event` to the `onChange` callback
+     */
+    forwardEventOnChange?: boolean;
 }
 
 const TextareaPrimitive = ({
@@ -72,12 +80,27 @@ const TextareaPrimitive = ({
     invalid,
     size,
     textareaRef,
+    forwardEventOnChange,
+    onChange: originalOnChange,
     ...props
 }: TextareaPrimitiveProps) => {
+    const onChange = React.useCallback(
+        (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
+            if (!originalOnChange) {
+                return;
+            }
+
+            // @ts-expect-error
+            originalOnChange(forwardEventOnChange ? event : event.target.value);
+        },
+        [forwardEventOnChange, originalOnChange]
+    );
+
     return (
         <textarea
             ref={textareaRef}
             className={cn(textareaVariants({ variant, invalid, size }), className)}
+            onChange={onChange}
             {...props}
         />
     );

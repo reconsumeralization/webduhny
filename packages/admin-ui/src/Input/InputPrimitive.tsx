@@ -211,10 +211,30 @@ const inputVariants = cva(
 interface InputPrimitiveProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
         VariantProps<typeof inputVariants> {
+    /**
+     * Icon to be displayed at the start of the input field.
+     */
     startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+
+    /**
+     * Icon to be displayed at the end of the input field.
+     */
     endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+
+    /**
+     * Maximum length of the input field.
+     */
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
+
+    /**
+     * Reference to the input element.
+     */
     inputRef?: React.Ref<HTMLInputElement>;
+
+    /**
+     * If true, it will pass the native `event` to the `onChange` callback
+     */
+    forwardEventOnChange?: boolean;
 }
 
 const getIconPosition = (
@@ -243,9 +263,23 @@ const InputPrimitive = ({
     endIcon,
     variant,
     inputRef,
+    forwardEventOnChange,
+    onChange: originalOnChange,
     ...props
 }: InputPrimitiveProps) => {
     const iconPosition = getIconPosition(startIcon, endIcon);
+
+    const onChange = React.useCallback(
+        (event: React.SyntheticEvent<HTMLInputElement>) => {
+            if (!originalOnChange) {
+                return;
+            }
+
+            // @ts-expect-error
+            originalOnChange(forwardEventOnChange ? event : event.target.value);
+        },
+        [forwardEventOnChange, originalOnChange]
+    );
 
     return (
         <div className={cn("wby-relative wby-flex wby-items-center wby-w-full", className)}>
@@ -262,6 +296,7 @@ const InputPrimitive = ({
                 className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
                 disabled={disabled}
                 size={maxLength}
+                onChange={onChange}
                 {...props}
             />
             {endIcon && (

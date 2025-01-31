@@ -128,19 +128,6 @@ const rmwcProps = [
  * Please use the `Input` component from the `@webiny/admin-ui` package instead.
  */
 export const Input = (props: InputProps) => {
-    const onChange = useCallback(
-        (e: React.SyntheticEvent<any>) => {
-            const { onChange, rawOnChange } = props;
-            if (!onChange) {
-                return;
-            }
-
-            // @ts-expect-error
-            onChange(rawOnChange ? e : e.target.value);
-        },
-        [props.onChange, props.rawOnChange]
-    );
-
     const onBlur = useCallback(
         async (e: React.SyntheticEvent<any>) => {
             const { validate, onBlur } = props;
@@ -164,6 +151,8 @@ export const Input = (props: InputProps) => {
         validation,
         icon,
         trailingIcon,
+        onChange,
+        rawOnChange,
         onEnter,
         required,
         inputRef,
@@ -225,6 +214,7 @@ export const Input = (props: InputProps) => {
                 note={description}
                 required={required}
                 rows={rows}
+                forwardEventOnChange={rawOnChange}
                 textareaRef={inputRef as React.Ref<HTMLTextAreaElement> | undefined}
             />
         );
@@ -247,6 +237,7 @@ export const Input = (props: InputProps) => {
             validation={validation}
             note={description}
             required={required}
+            forwardEventOnChange={rawOnChange}
             inputRef={inputRef as React.Ref<HTMLInputElement> | undefined}
         />
     );

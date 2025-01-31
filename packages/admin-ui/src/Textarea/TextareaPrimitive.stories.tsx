@@ -106,3 +106,10 @@ export const GhostVariantInvalid: Story = {
         invalid: true
     }
 };
+
+export const WithForwardEventOnChange: Story = {
+    args: {
+        ...Default.args,
+        forwardEventOnChange: true
+    }
+};
