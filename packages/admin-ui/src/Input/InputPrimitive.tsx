@@ -114,24 +114,24 @@ const inputVariants = cva(
                     "hover:wby-border-neutral-strong",
                     "focus:wby-border-neutral-black",
                     "data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-border-neutral-dimmed data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
+                    "disabled:wby-bg-neutral-disabled disabled:!wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-border-neutral-dimmed data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
                 ],
                 secondary: [
                     "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
                     "hover:wby-bg-neutral-dimmed",
                     "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
                     "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-neutral-disabled disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
+                    "disabled:wby-bg-neutral-disabled disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
                 ],
                 ghost: [
                     "wby-bg-transparent wby-border-transparent wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
                     "hover:wby-bg-neutral-dimmed/95",
                     "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
                     "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-transparent data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
+                    "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-transparent data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
                 ]
             },
             iconPosition: {
