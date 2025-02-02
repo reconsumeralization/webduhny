@@ -56,7 +56,7 @@ export interface EntryModifier {
 }
 
 export interface ReactAppEnv {
-    [key: string]: string | number | boolean | undefined | string[];
+    [key: string]: string | number | boolean | undefined | string[] | number[];
 }
 
 export interface ReactAppEnvMap {
