@@ -35,4 +35,4 @@ const DecoratableIconPicker = ({
 };
 const IconPicker = makeDecoratable("IconPicker", DecoratableIconPicker);
 
-export { IconPicker };
+export { IconPicker, type IconPickerProps };

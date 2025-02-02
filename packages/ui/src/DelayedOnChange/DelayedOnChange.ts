@@ -1,8 +1,8 @@
 import {
-    ApplyValueCb,
+    type ApplyValueCb,
     DelayedOnChange,
-    DelayedOnChangeProps,
-    OnChangeCallable
+    type DelayedOnChangeProps,
+    type OnChangeCallable
 } from "@webiny/admin-ui/DelayedOnChange";
 
 export {

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Grid, GridCellProps } from "react-virtualized";
 import { Text } from "~/Text";
 import { cn } from "~/utils";
-import { IconFormattedFontAwesome, IconFormatter } from "../domains";
+import { IconFormattedFontAwesome, IconFormatter } from "../../domains";
 import { IconPickerIcon } from "./IconPickerIcon";
 
 const COLUMN_COUNT = 5;

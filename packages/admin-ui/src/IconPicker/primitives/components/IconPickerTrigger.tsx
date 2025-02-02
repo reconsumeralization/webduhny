@@ -4,7 +4,7 @@ import { Icon as IconComponent } from "~/Icon";
 import { inputVariants } from "~/Input";
 import type { VariantProps } from "~/utils";
 import { IconPickerIcon } from "./IconPickerIcon";
-import { Icon, IconFormatter } from "../domains";
+import { Icon, IconFormatter } from "../../domains";
 
 interface IconPickerTriggerProps {
     value?: string;
@@ -17,13 +17,11 @@ const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
         return IconFormatter.formatFontAwesome(icon);
     }, [value]);
 
-    const iconSize = useMemo(() => (size === "lg" || size === "xl" ? "lg" : "md"), [size]);
-
     return (
         <div className={"wby-flex wby-items-center wby-gap-xs"}>
             <div>
                 <IconComponent
-                    size={iconSize}
+                    size={size === "xl" ? "lg" : "md"}
                     icon={<IconPickerIcon prefix={icon.prefix} name={icon.name} />}
                     label={`Selected icon`}
                 />

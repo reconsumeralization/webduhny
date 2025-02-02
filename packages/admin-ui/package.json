@@ -55,7 +55,7 @@
     "@storybook/theming": "7.6.20",
     "@svgr/webpack": "^6.1.1",
     "@types/react": "18.2.79",
-    "@types/react-virtualized": "^9",
+    "@types/react-virtualized": "^9.22.0",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "chalk": "^4.1.2",

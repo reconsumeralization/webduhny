@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { IconPickerPrimitive } from "./IconPickerPrimitive";
+import { IconDto } from "~/IconPicker";
 import { IconName, library } from "@fortawesome/fontawesome-svg-core";
 import { IconPrefix } from "@fortawesome/fontawesome-common-types";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { IconDto } from "~/IconPicker/primitives/domains";
 
 const meta: Meta<typeof IconPickerPrimitive> = {
     title: "Components/Form Primitives/IconPicker",

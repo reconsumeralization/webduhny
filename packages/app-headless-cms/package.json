@@ -27,6 +27,7 @@
     "@material-design-icons/svg": "^0.14.13",
     "@svgr/webpack": "^6.1.1",
     "@types/react": "18.2.79",
+    "@webiny/admin-ui": "0.0.0",
     "@webiny/app": "0.0.0",
     "@webiny/app-aco": "0.0.0",
     "@webiny/app-admin": "0.0.0",
@@ -74,7 +75,6 @@
     "react-dom": "18.2.0",
     "react-helmet": "^6.1.0",
     "react-hotkeyz": "^1.0.4",
-    "react-virtualized": "^9.22.5",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {

@@ -20,7 +20,7 @@ export class Icon {
         if (typeof value === "string" && value.includes("/")) {
             const values = value.split("/");
             return new Icon({
-                prefix: values[1],
+                prefix: values[0],
                 name: values[1]
             });
         } else {
