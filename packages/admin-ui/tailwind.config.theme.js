@@ -345,6 +345,6 @@ module.exports = {
         }
     },
     animation: {
-        skeletonPulse: "skeletonPulse 2s ease-in-out infinite"
+        skeletonPulse: "skeletonPulse 1400ms ease-in-out infinite"
     }
 };
