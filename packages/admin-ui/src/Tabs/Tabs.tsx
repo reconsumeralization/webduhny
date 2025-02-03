@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { makeDecoratable, withStaticProps } from "~/utils";
+import { makeDecoratable, type VariantProps, withStaticProps } from "~/utils";
 import {
     Content,
     ITabsContext,
@@ -9,19 +9,24 @@ import {
     TabItem,
     TabProps,
     TabsContext,
-    Trigger
+    Trigger,
+    tabListVariants
 } from "./components";
 
 const Root = TabsPrimitive.Root;
 
 interface TabsProps extends Omit<TabsPrimitive.TabsProps, "children"> {
     tabs: React.ReactElement<TabProps>[];
-    size?: "sm" | "md" | "lg" | "xl";
+    size?: VariantProps<typeof tabListVariants>["size"];
+    gutter?: VariantProps<typeof tabListVariants>["gutter"];
+    separator?: VariantProps<typeof tabListVariants>["separator"];
 }
 
 const DecoratableTabs = ({
     defaultValue: initialValue,
-    size = "md",
+    size,
+    gutter,
+    separator,
     tabs: tabComponents,
     ...props
 }: TabsProps) => {
@@ -39,27 +44,35 @@ const DecoratableTabs = ({
     const triggers = useMemo(
         () => (
             // We need to generate a key like this to trigger a proper component re-render when child tabs change.
-            <List key={tabs.map(tab => tab.id).join(";")}>
+            <List
+                key={tabs.map(tab => tab.id).join(";")}
+                size={size}
+                gutter={gutter}
+                separator={separator}
+            >
                 {tabs.map(tab => (
                     <Trigger
-                        key={tab.id}
-                        value={tab.value}
-                        text={tab.trigger}
-                        icon={tab.icon}
-                        disabled={tab.disabled}
-                        visible={tab.visible}
-                        size={size}
                         data-testid={tab["data-testid"]}
+                        disabled={tab.disabled}
+                        icon={tab.icon}
+                        key={tab.id}
+                        size={size}
+                        text={tab.trigger}
+                        value={tab.value}
+                        visible={tab.visible}
                     />
                 ))}
             </List>
         ),
-        [tabs, size]
+        [tabs, size, gutter]
     );
 
     const contents = useMemo(
-        () => tabs.map(tab => <Content key={tab.id} value={tab.value} content={tab.content} />),
-        [tabs]
+        () =>
+            tabs.map(tab => (
+                <Content key={tab.id} value={tab.value} content={tab.content} gutter={gutter} />
+            )),
+        [tabs, gutter]
     );
 
     const context: ITabsContext = useMemo(
