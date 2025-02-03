@@ -33,10 +33,8 @@ const destroy = ({ stack, env, variant, inputs }) => {
 module.exports = async (inputs, context) => {
     const { env, variant = "" } = inputs;
 
-    // Ensure Pulumi is installed.
-    const pulumi = await getPulumi({ install: false });
-
-    pulumi.install();
+    // This will ensure that the user has Pulumi CLI installed.
+    await getPulumi();
 
     const hasCore = fs.existsSync(path.join(context.project.root, "apps", "core"));
 
