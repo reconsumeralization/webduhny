@@ -9,7 +9,7 @@ export interface TitleProps {
 export const Title = ({ title }: TitleProps) => {
     return (
         <Name use={"headline6"} tag={"h1"}>
-            {title || <Skeleton theme={"dark"} />}
+            {title || <Skeleton size={"lg"} />}
         </Name>
     );
 };

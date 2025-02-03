@@ -337,5 +337,14 @@ module.exports = {
             primary: "hsl(var(--text-success-primary))",
             subtle: "hsl(var(--text-success-subtle))"
         }
+    },
+    keyframes: {
+        skeletonPulse: {
+            "0%, 100%": { backgroundColor: "hsl(var(--bg-neutral-dimmed))" },
+            "50%": { backgroundColor: "hsl(var(--bg-neutral-muted))" }
+        }
+    },
+    animation: {
+        skeletonPulse: "skeletonPulse 1400ms ease-in-out infinite"
     }
 };

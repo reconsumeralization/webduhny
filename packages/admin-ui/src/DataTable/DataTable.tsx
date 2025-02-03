@@ -245,7 +245,7 @@ const defineColumns = <T,>(
             if (loading) {
                 return {
                     ...column,
-                    cell: () => <Skeleton className={"wby-w-full wby-h-md"} />
+                    cell: () => <Skeleton type={"text"} size={"md"} />
                 };
             }
 
