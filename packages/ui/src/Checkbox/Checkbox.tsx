@@ -50,7 +50,7 @@ class Checkbox extends React.Component<Props> {
                 onClick={() => typeof onClick === "function" && onClick(Boolean(value))}
                 label={label}
                 data-testid={this.props["data-testid"]}
-                note={description}
+                description={description}
                 validation={validation}
             />
         );

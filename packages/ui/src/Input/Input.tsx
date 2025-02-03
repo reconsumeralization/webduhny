@@ -222,7 +222,7 @@ export const Input = (props: InputProps) => {
                 className={classNames("webiny-ui-input")}
                 data-testid={props["data-testid"]}
                 validation={validation}
-                note={description}
+                description={description}
                 required={required}
                 rows={rows}
                 textareaRef={inputRef as React.Ref<HTMLTextAreaElement> | undefined}
@@ -245,7 +245,7 @@ export const Input = (props: InputProps) => {
             className={classNames("webiny-ui-input")}
             data-testid={props["data-testid"]}
             validation={validation}
-            note={description}
+            description={description}
             required={required}
             inputRef={inputRef as React.Ref<HTMLInputElement> | undefined}
         />
