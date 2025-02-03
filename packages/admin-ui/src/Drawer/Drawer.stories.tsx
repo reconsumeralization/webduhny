@@ -9,7 +9,6 @@ import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outli
 const meta: Meta<typeof Drawer> = {
     title: "Components/Drawer",
     component: Drawer,
-    tags: ["autodocs"],
     argTypes: {}
 };
 

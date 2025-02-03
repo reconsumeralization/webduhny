@@ -7,7 +7,6 @@ import { Tabs } from "./Tabs";
 const meta: Meta<typeof Tabs> = {
     title: "Components/Tabs",
     component: Tabs,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     }

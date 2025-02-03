@@ -1,0 +1,58 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+The Button component is a key UI element that enables users to trigger actions or events, such as submitting forms, navigating pages, or interacting with system functionality. Its purpose is to provide a clear, intuitive way for users to interact with an system. Buttons are relevant in virtually all interfaces, ensuring user engagement by offering a simple, recognizable mechanism for executing commands. They are essential for usability, guiding user behavior and driving application workflows.
+
+<Canvas of={ButtonStories.Primary} />
+
+## Usage
+
+```
+import { Button } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### Construction
+<img src="/images/storybook/button/contruction.png" alt="Construction"/>
+
+### Options
+<img src="/images/storybook/button/options.png" alt="Options"/>
+
+### Type
+<img src="/images/storybook/button/type.png" alt="Type"/>
+
+### Size
+Regular buttons come in four different sizes: small, medium, large, and xl. The medium size is the default and most frequently used option. Use the other sizes sparingly; they should be used to create a hierarchy of importance within the page.
+
+<img src="/images/storybook/button/size.png" alt="Size"/>
+
+Icon-only button come in six different sizes to accommodate for various component needs.
+
+<img src="/images/storybook/button/size-icon-only.png" alt="Size - Icon Only"/>
+
+
+### States
+<img src="/images/storybook/button/states.png" alt="States"/>
+
+## Usage
+
+### Icon Usage
+An icon should only be used in a button when it's benefitial and when it has a meaningful association with the label.
+
+<img src="/images/storybook/button/icon-usage.png" alt="Icon Usage"/>
+
+### Use primary buttons sparingly
+Use primary buttons as the desired action for users. Competing primary buttons may leave the user unsure of next steps in their user journey. As a rule of thumb limit primary buttons to 1 in contained UIs and 3 in full page UIs.
+
+<img src="/images/storybook/button/primary-button-usage.png" alt="Primary Button Usage"/>
+
+### Button Group
+When used in groups, buttons should support only maximum of two type variants, with an exception of third variant being ghost extension button (eg. ellipsis). Avoid using random type and icon options within the button groups. Avoid using different sizes within the same group.
+
+<img src="/images/storybook/button/button-group.png" alt="Button Group"/>
