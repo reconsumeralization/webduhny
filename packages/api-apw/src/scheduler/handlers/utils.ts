@@ -122,8 +122,20 @@ export interface ApwSettings {
     eventTargetId: string;
 }
 
+const getVariant = (): string => {
+    /**
+     * Variant can only be default for now.
+     */
+    return "default";
+    // const value = process.env.WEBINY_ENV_VARIANT;
+    // if (!value || value === "undefined" || typeof value !== "string") {
+    //     return "";
+    // }
+    // return String(value);
+};
+
 export const getApwSettings = async (): Promise<ApwSettings> => {
-    const variant = process.env.STAGED_ROLLOUTS_VARIANT;
+    const variant = getVariant();
 
     const params = {
         TableName: process.env.DB_TABLE as string,
