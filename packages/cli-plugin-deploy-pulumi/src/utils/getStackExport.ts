@@ -44,10 +44,12 @@ const getOutputJson = ({
     }
 
     try {
-        const command = ["webiny", "pulumi", folder, "--env", env, "--", "stack", "export"];
+        const command = ["webiny", "pulumi", folder, "--env", env];
         if (variant) {
             command.push("--variant", variant);
         }
+
+        command.push("--", "stack", "export");
 
         const { stdout } = execa.sync("yarn", command.filter(Boolean), {
             cwd: cwd || project.root
