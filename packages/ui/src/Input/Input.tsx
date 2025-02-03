@@ -141,20 +141,6 @@ export const Input = (props: InputProps) => {
         [props.onChange, props.rawOnChange]
     );
 
-    const onBlur = useCallback(
-        async (e: React.SyntheticEvent<any>) => {
-            const { validate, onBlur } = props;
-            if (validate) {
-                // Since we are accessing event in an async operation, we need to persist it.
-                // See https://reactjs.org/docs/events.html#event-pooling.
-                e.persist();
-                await validate();
-            }
-            onBlur && onBlur(e);
-        },
-        [props.validate, props.onBlur]
-    );
-
     const {
         autoFocus,
         value,
@@ -216,7 +202,6 @@ export const Input = (props: InputProps) => {
                 autoFocus={autoFocus}
                 value={inputValue}
                 onChange={onChange}
-                onBlur={onBlur}
                 placeholder={placeholder}
                 size={size}
                 className={classNames("webiny-ui-input")}
@@ -237,7 +222,6 @@ export const Input = (props: InputProps) => {
             autoFocus={autoFocus}
             value={inputValue}
             onChange={onChange}
-            onBlur={onBlur}
             startIcon={getValidIcon(icon)}
             endIcon={getValidIcon(trailingIcon)}
             placeholder={placeholder}

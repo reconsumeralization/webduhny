@@ -1,4 +1,3 @@
-// No Tailwind classes to modify in this file - it contains only story configurations
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Textarea } from "~/Textarea";
@@ -66,6 +65,18 @@ export const Disabled: Story = {
         ...Default.args,
         label: "Any field label",
         disabled: true
+    }
+};
+
+export const WithValidateFunction: Story = {
+    render: args => {
+        const [validation, setValidation] = useState<any>({ isValid: true, message: undefined });
+
+        const validate = async () => {
+            setValidation({ isValid: false, message: "Any custom error message." });
+        };
+
+        return <Textarea {...args} validate={validate} validation={validation} />;
     }
 };
 

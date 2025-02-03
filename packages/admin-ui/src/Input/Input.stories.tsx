@@ -1,4 +1,3 @@
-// No Tailwind utility classes found in this file - no changes needed
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "~/Input";
@@ -89,6 +88,18 @@ export const Disabled: Story = {
     args: {
         label: "Any field label",
         disabled: true
+    }
+};
+
+export const WithValidateFunction: Story = {
+    render: args => {
+        const [validation, setValidation] = useState<any>({ isValid: true, message: undefined });
+
+        const validate = async () => {
+            setValidation({ isValid: false, message: "Any custom error message." });
+        };
+
+        return <Input {...args} validate={validate} validation={validation} />;
     }
 };
 
