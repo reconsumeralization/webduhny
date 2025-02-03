@@ -6,7 +6,6 @@ import { Input } from "~/Input";
 const meta: Meta<typeof Input> = {
     title: "Components/Form/Input",
     component: Input,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         type: {

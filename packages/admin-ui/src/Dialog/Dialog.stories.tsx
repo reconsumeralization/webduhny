@@ -13,7 +13,6 @@ import { Tabs } from "~/Tabs";
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
     component: Dialog,
-    tags: ["autodocs"],
     argTypes: {}
 };
 

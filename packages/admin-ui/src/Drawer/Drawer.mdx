@@ -1,0 +1,36 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as DrawerStories from './Drawer.stories';
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+A Drawer is a UI component  used to display additional or expanded content options without leaving the current view. The drawer should slide in from left or right side of the screen, overlaying the main content.
+
+<Canvas of={DrawerStories.Default} />
+
+## Usage
+
+```
+import { Drawer } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### Construction
+<img src="/images/storybook/drawer/anatomy.png" alt="Anatomy"/>
+
+### Header
+
+Header needs to support multiple formation options that can be independently enabled or disabled.
+
+<img src="/images/storybook/drawer/header.png" alt="Header"/>
+
+## Usage
+
+### Positioning
+
+Drawers should slide in from either the left or right side, depending on the context. The drawer should overlay the content, and clicking outside of it should close it. There also needs to be an option to use an overlay behind the drawer.
+
+<img src="/images/storybook/drawer/positioning.png" alt="Positioning"/>

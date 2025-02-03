@@ -1,0 +1,62 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as GridStories from './Grid.stories';
+
+<Meta of={GridStories} />
+
+# Grid
+
+Grid structures layouts with clarity and consistency, organizing content, maintaining alignment, and ensuring a seamless experience across screen sizes. Settings include column configuration, gutter spacing, and responsive behavior.
+
+<Canvas of={GridStories.Default} />
+
+## Usage
+
+```
+import { Grid } from '@webiny/admin-ui';
+```
+
+## Horizontal Grids
+The grids within the Webiny Design System behave as fixed and fluid elements relevant to the elements on the page.
+
+### Grid types
+Webiny Design System use two types of grids: fluid and fixed. Both grid types use breakpoints to determine whether the layout needs to change between viewport sizes.
+
+### Fluid
+The fluid grid stretches across an area to fill all available space within the screen, part of the screen or within the specific element if needed.
+
+<img src="/images/storybook/grid/fluid.png" alt="Fluid"/>
+
+<img src="/images/storybook/grid/fluid-dashboard.png" alt="Fluid Dashboard"/>
+
+
+### Fixed
+The fixed grid applies the ideal maximum width to page or page element.
+
+<img src="/images/storybook/grid/fixed.png" alt="Fixed"/>
+
+<img src="/images/storybook/grid/fixed-dashboard.png" alt="Fixed Dashboard"/>
+
+## Grid Gutter Sizes
+We considered using two main sizes for grid application, to be used dependent on the content type.
+
+### Comfortable (Default)
+<img src="/images/storybook/grid/grid-gutter-size-comfortable.png" alt="Comfortable (Default)"/>
+
+### Spacious
+<img src="/images/storybook/grid/grid-gutter-size-spacious.png" alt="Spacious"/>
+
+## Breakpoints
+A breakpoint marks the point where a website’s layout adapts to provide the best user experience. In responsive design, the range of each breakpoint defines the ideal number of columns for a given viewport size, along with the suggested widths for margins and gutters.
+
+<img src="/images/storybook/grid/breakpoints.png" alt="Breakpoints"/>
+
+## Column Spans
+Content should be distributed across a minimum of 3 columns, with the option to extend up to 12 columns. To achieve a range of layouts, vary the number of columns used, allowing for flexible design across different breakpoints.
+
+<img src="/images/storybook/grid/column-spans.png" alt="Column Spans"/>
+
+## Column Offsets
+Content isn't required to span the full 12 columns. It can cover a smaller number of columns, creating a layout where the content is centered within a 12-column grid.
+
+<img src="/images/storybook/grid/column-offsets.png" alt="Column Offsets"/>
