@@ -1,7 +1,6 @@
 import path from "path";
 import { Worker } from "worker_threads";
 import { compress, decompress } from "@webiny/utils/compression/gzip";
-import exitHook from "exit-hook";
 import mqtt from "mqtt";
 
 const WEBINY_WATCH_FN_INVOCATION_EVENT = "webiny.watch.functionInvocation";
@@ -76,6 +75,10 @@ export const initInvocationForwarding = async ({
                         }
                     }
                 });
+
+                const { default: exitHook } = await import(
+                    /* webpackChunkName: "exit-hook" */ "exit-hook"
+                );
 
                 const unsubscribeExitHook = exitHook(async () => {
                     await worker.terminate();

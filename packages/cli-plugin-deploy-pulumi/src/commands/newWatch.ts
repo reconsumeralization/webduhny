@@ -11,7 +11,6 @@ import { listPackages } from "./newWatch/listPackages";
 import { PackagesWatcher } from "./newWatch/watchers/PackagesWatcher";
 import { initInvocationForwarding } from "./newWatch/initInvocationForwarding";
 import { replaceLambdaFunctions } from "./newWatch/replaceLambdaFunctions";
-import exitHook from "exit-hook";
 import type inspectorType from "inspector";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
@@ -138,6 +137,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     );
 
     console.log();
+    const { default: exitHook } = await import(/* webpackChunkName: "exit-hook" */ "exit-hook");
 
     exitHook(() => {
         console.log();
