@@ -76,10 +76,11 @@ export const MultiAutoComplete = ({
     allowFreeInput,
     unique = true,
     renderMultipleSelection,
+    onInput,
     ...props
 }: MultiAutoCompleteProps) => {
-    const options = useMemo(() => {
-        return props.options.map(option => {
+    const getOption = useCallback(
+        (option: any) => {
             if (useSimpleValues) {
                 return {
                     label: option,
@@ -94,10 +95,21 @@ export const MultiAutoComplete = ({
                 disabled: option.disabled,
                 item: option
             };
+        },
+        [textProp, valueProp, useSimpleValues]
+    );
+
+    const options = useMemo(() => {
+        return props.options.map(option => {
+            return getOption(option);
         });
-    }, [props.options, textProp, valueProp, useSimpleValues]);
+    }, [props.options]);
 
     const values = useMemo(() => {
+        if (!value) {
+            return [];
+        }
+
         return value
             .map((val: SelectionItem | string) => {
                 if (typeof val === "string") {
@@ -111,7 +123,18 @@ export const MultiAutoComplete = ({
 
     const onValuesChange = useCallback(
         (values: any) => {
-            const selectedOptions = options.filter(option => values.includes(option.value));
+            const selectedOptions = [];
+
+            for (const value of values) {
+                const option = options.find(option => option.value === value);
+
+                if (option) {
+                    selectedOptions.push(option);
+                } else {
+                    selectedOptions.push(getOption(value));
+                }
+            }
+
             const selectedItems = selectedOptions.map(option => option.item);
 
             onChange?.(selectedItems);
@@ -137,7 +160,8 @@ export const MultiAutoComplete = ({
                 selectedOptionRenderer={selectedOptionRenderer}
                 emptyMessage={noResultFound}
                 onValuesChange={onValuesChange}
-                isLoading={loading}
+                onValueSearch={onInput}
+                loading={loading}
                 allowFreeInput={allowFreeInput}
                 uniqueValues={unique}
             />

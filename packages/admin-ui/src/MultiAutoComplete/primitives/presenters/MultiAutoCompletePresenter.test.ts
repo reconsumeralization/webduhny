@@ -96,7 +96,7 @@ describe("MultiAutoCompletePresenter", () => {
                     item: null
                 }
             ]);
-            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.empty).toEqual(false);
         }
 
         // with `options` as formatted options
@@ -178,7 +178,7 @@ describe("MultiAutoCompletePresenter", () => {
                     }
                 }
             ]);
-            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.empty).toEqual(false);
         }
 
         // with `options` and `value`
@@ -206,7 +206,7 @@ describe("MultiAutoCompletePresenter", () => {
                     item: null
                 }
             ]);
-            expect(presenter.vm.optionsListVm.isEmpty).toEqual(false);
+            expect(presenter.vm.optionsListVm.empty).toEqual(false);
         }
 
         {
@@ -215,8 +215,8 @@ describe("MultiAutoCompletePresenter", () => {
             expect(presenter.vm.optionsListVm.options).toEqual([]);
             expect(presenter.vm.optionsListVm.emptyMessage).toEqual("No results.");
             expect(presenter.vm.optionsListVm.loadingMessage).toEqual("Loading...");
-            expect(presenter.vm.optionsListVm.isOpen).toEqual(false);
-            expect(presenter.vm.optionsListVm.isEmpty).toEqual(true);
+            expect(presenter.vm.optionsListVm.open).toEqual(false);
+            expect(presenter.vm.optionsListVm.empty).toEqual(true);
         }
     });
 
@@ -582,12 +582,12 @@ describe("MultiAutoCompletePresenter", () => {
         // let's open it
         presenter.init({ onValuesChange, onOpenChange });
         presenter.setListOpenState(true);
-        expect(presenter.vm.optionsListVm.isOpen).toBe(true);
+        expect(presenter.vm.optionsListVm.open).toBe(true);
         expect(onOpenChange).toHaveBeenCalledWith(true);
 
         // let's close it
         presenter.setListOpenState(false);
-        expect(presenter.vm.optionsListVm.isOpen).toBe(false);
+        expect(presenter.vm.optionsListVm.open).toBe(false);
         expect(onOpenChange).toHaveBeenCalledWith(false);
     });
 
@@ -596,7 +596,7 @@ describe("MultiAutoCompletePresenter", () => {
         presenter.init({ onValuesChange });
         presenter.searchOption("New Option 1");
         presenter.createOption("New Option 1");
-        expect(presenter.vm.selectedOptionsVm.isEmpty).toEqual(true);
+        expect(presenter.vm.selectedOptionsVm.empty).toEqual(true);
         expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
     });
 

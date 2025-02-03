@@ -17,14 +17,9 @@ const LoaderWrapper = styled("div")`
     gap: 24px;
 `;
 
-const Graphic = styled("div")`
-    width: 36px;
-    height: 36px;
-`;
-
 const Data = styled("div")`
     flex: 1;
-    height: 36px;
+    height: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -40,11 +35,6 @@ const Actions = styled("div")`
     display: flex;
     justify-content: end;
     gap: 8px;
-
-    .actions-skeleton {
-        width: 24px;
-        height: 24px;
-    }
 `;
 
 const Loader = (): ReactElement => {
@@ -55,18 +45,15 @@ const Loader = (): ReactElement => {
             {lines.map(line => (
                 <li key={"list-" + line}>
                     <LoaderWrapper>
-                        <Graphic>
-                            <Skeleton />
-                        </Graphic>
+                        <Skeleton type={"thumbnail"} size={"xxl"} />
                         <Data>
-                            <Skeleton className={"h-md"} />
-                            <Skeleton className={"h-md"} />
+                            <Skeleton type={"text"} size={"md"} />
+                            <Skeleton type={"text"} size={"md"} />
                         </Data>
                         <ActionsContainer>
-                            {" "}
                             <Actions>
-                                <Skeleton className={"actions-skeleton"} />
-                                <Skeleton className={"actions-skeleton"} />
+                                <Skeleton type={"thumbnail"} size={"lg"} />
+                                <Skeleton type={"thumbnail"} size={"lg"} />
                             </Actions>
                         </ActionsContainer>
                     </LoaderWrapper>

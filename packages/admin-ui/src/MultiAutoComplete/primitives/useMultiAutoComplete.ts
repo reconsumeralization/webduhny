@@ -15,26 +15,30 @@ import { MultiAutoCompleteTemporaryOptionPresenter } from "~/MultiAutoComplete/p
 export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => {
     const params: MultiAutoCompletePresenterParams = useMemo(
         () => ({
+            displayResetAction: props.displayResetAction,
             emptyMessage: props.emptyMessage,
             loadingMessage: props.loadingMessage,
-            options: props.options,
-            placeholder: props.placeholder,
-            values: props.values,
+            initialMessage: props.initialMessage,
+            onOpenChange: props.onOpenChange,
+            onValueSearch: props.onValueSearch,
             onValuesChange: props.onValuesChange,
             onValuesReset: props.onValuesReset,
-            onOpenChange: props.onOpenChange,
-            displayResetAction: props.displayResetAction
+            options: props.options,
+            placeholder: props.placeholder,
+            values: props.values
         }),
         [
+            props.displayResetAction,
             props.emptyMessage,
             props.loadingMessage,
-            props.options,
-            props.placeholder,
-            props.values,
+            props.initialMessage,
+            props.onOpenChange,
+            props.onValueSearch,
             props.onValuesChange,
             props.onValuesReset,
-            props.onOpenChange,
-            props.displayResetAction
+            props.options,
+            props.placeholder,
+            props.values
         ]
     );
 
@@ -62,12 +66,12 @@ export const useMultiAutoComplete = (props: MultiAutoCompletePrimitiveProps) => 
 
         if (props?.allowFreeInput) {
             const temporaryOptionsPresenter = new MultiAutoCompleteTemporaryOptionPresenter();
-            const withPresenter = new MultiAutoCompletePresenterWithFreeInput(
+            const withFreeInputPresenter = new MultiAutoCompletePresenterWithFreeInput(
                 temporaryOptionsPresenter,
                 presenter
             );
-            withPresenter.init(params);
-            return withPresenter;
+            withFreeInputPresenter.init(params);
+            return withFreeInputPresenter;
         } else {
             presenter.init(params);
             return presenter;

@@ -39,7 +39,6 @@ export const AutoComplete = ({
     renderItem,
     noResultFound,
     useSimpleValues,
-    loading,
     onInput,
     ...props
 }: AutoCompleteProps) => {
@@ -100,7 +99,6 @@ export const AutoComplete = ({
             size={inputSize}
             optionRenderer={renderItem}
             emptyMessage={noResultFound}
-            isLoading={loading}
         />
     );
 };

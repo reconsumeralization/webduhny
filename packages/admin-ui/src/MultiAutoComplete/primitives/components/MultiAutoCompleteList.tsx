@@ -4,8 +4,8 @@ import { Command } from "~/Command";
 
 interface MultiAutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
     emptyMessage?: React.ReactNode;
-    isEmpty?: boolean;
-    isLoading?: boolean;
+    empty?: boolean;
+    loading?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionCreate?: (value: string) => void;
     onOptionSelect: (value: string) => void;
@@ -16,8 +16,8 @@ interface MultiAutoCompleteListProps extends React.ComponentPropsWithoutRef<type
 
 export const MultiAutoCompleteList = ({
     emptyMessage,
-    isEmpty,
-    isLoading,
+    empty,
+    loading,
     loadingMessage,
     onOptionCreate,
     onOptionSelect,
@@ -28,7 +28,7 @@ export const MultiAutoCompleteList = ({
 }: MultiAutoCompleteListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
-            if (isEmpty) {
+            if (empty && !temporaryOption) {
                 return null;
             }
 
@@ -81,17 +81,13 @@ export const MultiAutoCompleteList = ({
 
             return renderedItems;
         },
-        [onOptionSelect, temporaryOption, onOptionCreate, isEmpty, optionRenderer]
+        [onOptionSelect, temporaryOption, onOptionCreate, empty, optionRenderer]
     );
 
     return (
         <Command.List {...props}>
-            {isLoading ? (
-                <Command.Loading>{loadingMessage}</Command.Loading>
-            ) : (
-                renderOptions(options)
-            )}
-            {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
+            {loading ? <Command.Loading>{loadingMessage}</Command.Loading> : renderOptions(options)}
+            {!loading && <Command.Empty>{emptyMessage}</Command.Empty>}
         </Command.List>
     );
 };

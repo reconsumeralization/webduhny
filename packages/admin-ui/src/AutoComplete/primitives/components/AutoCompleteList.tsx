@@ -5,8 +5,8 @@ import { Command } from "~/Command";
 interface AutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Command.List> {
     options: CommandOptionFormatted[];
     emptyMessage?: React.ReactNode;
-    isEmpty?: boolean;
-    isLoading?: boolean;
+    empty?: boolean;
+    loading?: boolean;
     loadingMessage?: React.ReactNode;
     onOptionSelect: (value: string) => void;
     optionRenderer?: (item: any, index: number) => React.ReactNode;
@@ -14,8 +14,8 @@ interface AutoCompleteListProps extends React.ComponentPropsWithoutRef<typeof Co
 
 export const AutoCompleteList = ({
     emptyMessage,
-    isEmpty,
-    isLoading,
+    empty,
+    loading,
     loadingMessage,
     onOptionSelect,
     optionRenderer,
@@ -24,7 +24,7 @@ export const AutoCompleteList = ({
 }: AutoCompleteListProps) => {
     const renderOptions = React.useCallback(
         (items: CommandOptionFormatted[]) => {
-            if (isEmpty) {
+            if (empty) {
                 return null;
             }
 
@@ -57,17 +57,13 @@ export const AutoCompleteList = ({
                 return acc;
             }, elements);
         },
-        [onOptionSelect, optionRenderer, isEmpty]
+        [onOptionSelect, optionRenderer, empty]
     );
 
     return (
         <Command.List {...props}>
-            {isLoading ? (
-                <Command.Loading>{loadingMessage}</Command.Loading>
-            ) : (
-                renderOptions(options)
-            )}
-            {!isLoading && <Command.Empty>{emptyMessage}</Command.Empty>}
+            {loading ? <Command.Loading>{loadingMessage}</Command.Loading> : renderOptions(options)}
+            {!loading && <Command.Empty>{emptyMessage}</Command.Empty>}
         </Command.List>
     );
 };

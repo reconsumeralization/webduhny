@@ -29,6 +29,10 @@ export class MultiAutoCompleteListOptionsPresenterWithUniqueValues
         this.decoretee.setListOpenState(open);
     };
 
+    setLoadedOptions = (loaded: boolean) => {
+        this.decoretee.setLoadedOptions(loaded);
+    };
+
     setSelectedOption = (value: string) => {
         this.decoretee.setSelectedOption(value);
     };

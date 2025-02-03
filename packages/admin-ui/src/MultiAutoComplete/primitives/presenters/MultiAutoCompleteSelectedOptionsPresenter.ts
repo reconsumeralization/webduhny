@@ -4,22 +4,22 @@ import { CommandOptionFormatter } from "~/Command/domain/CommandOptionFormatter"
 import { CommandOption } from "~/Command/domain/CommandOption";
 import { ListCache } from "../domains";
 
-interface IMultiAutoCompleteSelectedOptionsParams {
+interface MultiAutoCompleteSelectedOptionsParams {
     options?: CommandOption[];
 }
 
-export interface IMultiAutoCompleteSelectedOptionsPresenter {
+interface IMultiAutoCompleteSelectedOptionsPresenter {
     vm: {
         options: CommandOptionFormatted[];
-        isEmpty: boolean;
+        empty: boolean;
     };
-    init: (params: IMultiAutoCompleteSelectedOptionsParams) => void;
+    init: (params: MultiAutoCompleteSelectedOptionsParams) => void;
     addOption: (option: CommandOption) => void;
     removeOption: (value: string) => void;
     resetOptions: () => void;
 }
 
-export class MultiAutoCompleteSelectedOptionPresenter
+class MultiAutoCompleteSelectedOptionPresenter
     implements IMultiAutoCompleteSelectedOptionsPresenter
 {
     private options = new ListCache<CommandOption>();
@@ -28,15 +28,20 @@ export class MultiAutoCompleteSelectedOptionPresenter
         makeAutoObservable(this);
     }
 
-    init(params: IMultiAutoCompleteSelectedOptionsParams) {
-        this.options.clear();
-        params.options && this.options.addItems(params.options);
+    init(params: MultiAutoCompleteSelectedOptionsParams) {
+        if (params.options) {
+            for (const option of params.options) {
+                if (!this.options.getItem(o => o.value === option.value)) {
+                    this.options.addItems([option]);
+                }
+            }
+        }
     }
 
     get vm() {
         return {
             options: this.options.getItems().map(option => CommandOptionFormatter.format(option)),
-            isEmpty: !this.options.hasItems()
+            empty: !this.options.hasItems()
         };
     }
 
@@ -52,3 +57,9 @@ export class MultiAutoCompleteSelectedOptionPresenter
         this.options.clear();
     };
 }
+
+export {
+    MultiAutoCompleteSelectedOptionPresenter,
+    type IMultiAutoCompleteSelectedOptionsPresenter,
+    type MultiAutoCompleteSelectedOptionsParams
+};
