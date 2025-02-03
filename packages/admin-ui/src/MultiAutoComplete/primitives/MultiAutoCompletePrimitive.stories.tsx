@@ -87,6 +87,13 @@ export const WithStartIcon: Story = {
     }
 };
 
+export const WithLoading: Story = {
+    args: {
+        ...Default.args,
+        loading: true
+    }
+};
+
 export const WithoutResetAction: Story = {
     args: {
         ...Default.args,
@@ -175,6 +182,14 @@ export const WithCustomEmptyMessage: Story = {
     args: {
         ...Default.args,
         emptyMessage: "Custom empty message"
+    }
+};
+
+export const WithCustomInitialMessage: Story = {
+    args: {
+        ...Default.args,
+        initialMessage: "Custom initial message.",
+        options: []
     }
 };
 

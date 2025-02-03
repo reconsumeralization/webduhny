@@ -8,18 +8,20 @@ export interface IMultiAutoCompleteListOptionsPresenterParams {
     options?: CommandOption[];
     emptyMessage?: any;
     loadingMessage?: any;
+    initialMessage?: any;
 }
 
 export interface IMultiAutoCompleteListOptionsPresenter {
     vm: {
         options: CommandOptionFormatted[];
-        emptyMessage: string;
-        loadingMessage: string;
-        isOpen: boolean;
-        isEmpty: boolean;
+        emptyMessage: any;
+        loadingMessage: any;
+        open: boolean;
+        empty: boolean;
     };
     init: (params: IMultiAutoCompleteListOptionsPresenterParams) => void;
     setListOpenState: (open: boolean) => void;
+    setLoadedOptions: (loaded: boolean) => void;
     addOption: (option: CommandOption) => void;
     setSelectedOption: (value: string) => void;
     removeSelectedOption: (value: string) => void;
@@ -29,9 +31,11 @@ export interface IMultiAutoCompleteListOptionsPresenter {
 export class MultiAutoCompleteListOptionsPresenter
     implements IMultiAutoCompleteListOptionsPresenter
 {
-    private isOpen = false;
+    private open = false;
+    private loadedOptions = false;
     private emptyMessage = "No results.";
     private loadingMessage = "Loading...";
+    private initialMessage = "Start typing to find an option.";
     private options = new ListCache<CommandOption>();
 
     constructor() {
@@ -43,20 +47,25 @@ export class MultiAutoCompleteListOptionsPresenter
         params.options && this.options.addItems(params.options);
         this.emptyMessage = params.emptyMessage || this.emptyMessage;
         this.loadingMessage = params.loadingMessage || this.loadingMessage;
+        this.initialMessage = params.initialMessage || this.initialMessage;
     }
 
     get vm() {
         return {
             options: this.options.getItems().map(option => CommandOptionFormatter.format(option)),
-            emptyMessage: this.emptyMessage,
+            emptyMessage: this.loadedOptions ? this.emptyMessage : this.initialMessage,
             loadingMessage: this.loadingMessage,
-            isOpen: this.isOpen,
-            isEmpty: !this.options.hasItems()
+            open: this.open,
+            empty: !this.options.hasItems()
         };
     }
 
     setListOpenState = (open: boolean) => {
-        this.isOpen = open;
+        this.open = open;
+    };
+
+    setLoadedOptions = (loaded: boolean) => {
+        this.loadedOptions = loaded;
     };
 
     setSelectedOption = (value: string) => {

@@ -10,6 +10,7 @@ import { AutoCompleteOption } from "../domains";
 interface AutoCompletePresenterParams {
     emptyMessage?: any;
     loadingMessage?: any;
+    initialMessage?: any;
     onOpenChange?: (open: boolean) => void;
     onValueChange: (value: string) => void;
     onValueReset?: () => void;
@@ -53,7 +54,8 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
         this.optionsListPresenter.init({
             options: listOptions,
             emptyMessage: params.emptyMessage,
-            loadingMessage: params.loadingMessage
+            loadingMessage: params.loadingMessage,
+            initialMessage: params.initialMessage
         });
     }
 
@@ -80,6 +82,7 @@ class AutoCompletePresenter implements IAutoCompletePresenterParams {
 
     public searchOption = (value: string) => {
         this.inputPresenter.setValue(value);
+        this.optionsListPresenter.setLoadedOptions(true);
         this.params?.onValueSearch?.(value);
     };
 

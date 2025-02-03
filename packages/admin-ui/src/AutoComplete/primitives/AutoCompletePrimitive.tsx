@@ -12,13 +12,18 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      */
     label?: string;
     /**
+     * Message to display when there are no options loaded or selected.
+     * Use it to invite the user to interact with the autocomplete by typing a value.
+     */
+    initialMessage?: React.ReactNode;
+    /**
      * Message to display when there are no options.
      */
     emptyMessage?: React.ReactNode;
     /**
      * Indicates if the autocomplete is loading options.
      */
-    isLoading?: boolean;
+    loading?: boolean;
     /**
      * Message to display while loading options.
      */
@@ -96,7 +101,7 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     }, [setListOpenState]);
 
     return (
-        <Popover open={vm.optionsListVm.isOpen} onOpenChange={() => setListOpenState(true)}>
+        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
                 <Popover.Trigger asChild>
                     <span>
@@ -111,10 +116,12 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                             startIcon={props.startIcon}
                             endIcon={
                                 <AutoCompleteInputIcons
+                                    inputSize={props.size}
                                     displayResetAction={vm.inputVm.displayResetAction}
-                                    isDisabled={props.disabled}
+                                    disabled={props.disabled}
+                                    loading={props.loading}
                                     onResetValue={resetSelectedOption}
-                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
+                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.open)}
                                 />
                             }
                             onBlur={handleOnBlur}
@@ -129,8 +136,8 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                     <AutoCompleteList
                         options={vm.optionsListVm.options}
                         onOptionSelect={handleSelectOption}
-                        isEmpty={vm.optionsListVm.isEmpty}
-                        isLoading={props.isLoading}
+                        empty={vm.optionsListVm.empty}
+                        loading={props.loading}
                         loadingMessage={vm.optionsListVm.loadingMessage}
                         emptyMessage={vm.optionsListVm.emptyMessage}
                         optionRenderer={props.optionRenderer}

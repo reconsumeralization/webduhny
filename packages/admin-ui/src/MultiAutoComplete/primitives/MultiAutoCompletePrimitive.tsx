@@ -27,9 +27,14 @@ type MultiAutoCompletePrimitiveProps = Omit<
      */
     emptyMessage?: React.ReactNode;
     /**
+     * Message to display when there are no options loaded or selected.
+     * Use it to invite the user to interact with the autocomplete by typing a value.
+     */
+    initialMessage?: React.ReactNode;
+    /**
      * Indicates if the autocomplete is loading options.
      */
-    isLoading?: boolean;
+    loading?: boolean;
     /**
      * Message to display while loading options.
      */
@@ -46,6 +51,10 @@ type MultiAutoCompletePrimitiveProps = Omit<
      * Callback triggered to reset the values.
      */
     onValuesReset?: () => void;
+    /**
+     * Callback triggered when a value has been searched by the user.
+     */
+    onValueSearch?: (value: string) => void;
     /**
      * Custom renderer for the options.
      */
@@ -89,7 +98,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 return;
             }
 
-            if (!vm.optionsListVm.isOpen) {
+            if (!vm.optionsListVm.open) {
                 setListOpenState(true);
             }
 
@@ -97,7 +106,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 setListOpenState(false);
             }
         },
-        [props.disabled, setListOpenState, setSelectedOption, vm.optionsListVm.isOpen]
+        [props.disabled, setListOpenState, setSelectedOption, vm.optionsListVm.open]
     );
 
     const handleSelectOption = React.useCallback(
@@ -117,7 +126,7 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Popover open={vm.optionsListVm.isOpen} onOpenChange={() => setListOpenState(true)}>
+        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
                 <Popover.Trigger asChild>
                     <span>
@@ -137,13 +146,14 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                             startIcon={props.startIcon}
                             endIcon={
                                 <MultiAutoCompleteInputIcons
+                                    inputSize={props.size}
                                     displayResetAction={
-                                        !vm.selectedOptionsVm.isEmpty &&
-                                        vm.inputVm.displayResetAction
+                                        !vm.selectedOptionsVm.empty && vm.inputVm.displayResetAction
                                     }
-                                    isDisabled={props.disabled}
+                                    disabled={props.disabled}
+                                    loading={props.loading}
                                     onResetValue={resetSelectedOptions}
-                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.isOpen)}
+                                    onOpenChange={() => setListOpenState(!vm.optionsListVm.open)}
                                 />
                             }
                         />
@@ -155,8 +165,8 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                 >
                     <MultiAutoCompleteList
                         emptyMessage={vm.optionsListVm.emptyMessage}
-                        isEmpty={vm.optionsListVm.isEmpty}
-                        isLoading={props.isLoading}
+                        empty={vm.optionsListVm.empty}
+                        loading={props.loading}
                         loadingMessage={vm.optionsListVm.loadingMessage}
                         onOptionCreate={handleCreateOption}
                         onOptionSelect={handleSelectOption}
