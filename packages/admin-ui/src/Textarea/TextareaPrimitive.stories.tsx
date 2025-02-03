@@ -7,6 +7,8 @@ const meta: Meta<typeof TextareaPrimitive> = {
     tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
+        onEnter: { action: "onEnter" },
+        onKeyDown: { action: "onKeyDown" },
         rows: {
             control: {
                 type: "number"

@@ -215,6 +215,7 @@ interface InputPrimitiveProps
     endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
     inputRef?: React.Ref<HTMLInputElement>;
+    onEnter?: () => any;
 }
 
 const getIconPosition = (
@@ -236,16 +237,31 @@ const getIconPosition = (
 const InputPrimitive = ({
     className,
     disabled,
-    invalid,
-    startIcon,
-    maxLength,
-    size,
     endIcon,
-    variant,
     inputRef,
+    invalid,
+    maxLength,
+    onEnter,
+    onKeyDown: originalOnKeyDown,
+    size,
+    startIcon,
+    variant,
     ...props
 }: InputPrimitiveProps) => {
     const iconPosition = getIconPosition(startIcon, endIcon);
+
+    const onKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (typeof onEnter === "function" && e.key === "Enter") {
+                onEnter();
+            }
+
+            if (typeof originalOnKeyDown === "function") {
+                return originalOnKeyDown(e);
+            }
+        },
+        [originalOnKeyDown, onEnter]
+    );
 
     return (
         <div className={cn("wby-relative wby-flex wby-items-center wby-w-full", className)}>
@@ -262,6 +278,7 @@ const InputPrimitive = ({
                 className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
                 disabled={disabled}
                 size={maxLength}
+                onKeyDown={onKeyDown}
                 {...props}
             />
             {endIcon && (

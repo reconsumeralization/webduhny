@@ -64,20 +64,37 @@ interface TextareaPrimitiveProps
     extends React.ComponentProps<"textarea">,
         VariantProps<typeof textareaVariants> {
     textareaRef?: React.Ref<HTMLTextAreaElement>;
+    onEnter?: () => any;
 }
 
 const TextareaPrimitive = ({
     className,
     variant,
     invalid,
+    onEnter,
+    onKeyDown: originalOnKeyDown,
     size,
     textareaRef,
     ...props
 }: TextareaPrimitiveProps) => {
+    const onKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (typeof onEnter === "function" && e.key === "Enter") {
+                onEnter();
+            }
+
+            if (typeof originalOnKeyDown === "function") {
+                return originalOnKeyDown(e);
+            }
+        },
+        [originalOnKeyDown, onEnter]
+    );
+
     return (
         <textarea
             ref={textareaRef}
             className={cn(textareaVariants({ variant, invalid, size }), className)}
+            onKeyDown={onKeyDown}
             {...props}
         />
     );

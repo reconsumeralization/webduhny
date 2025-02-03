@@ -100,9 +100,6 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         children?: React.ReactNode;
     };
 
-export type InputOnKeyDownProps = React.SyntheticEvent<any> & {
-    key?: string;
-};
 /**
  * Use Input component to store short string values, like first name, last name, e-mail etc.
  * Additionally, with rows prop, it can also be turned into a text area, to store longer strings.
@@ -116,6 +113,7 @@ const rmwcProps = [
     "readOnly",
     "placeholder",
     "onKeyDown",
+    "onEnter",
     "onKeyPress",
     "onKeyUp",
     "onFocus",
@@ -150,7 +148,6 @@ export const Input = (props: InputProps) => {
         validation,
         icon,
         trailingIcon,
-        onEnter,
         required,
         inputRef,
         ...rest
@@ -160,19 +157,6 @@ export const Input = (props: InputProps) => {
     if (value === null || typeof value === "undefined") {
         inputValue = "";
     }
-
-    const inputOnKeyDown = useCallback(
-        (e: InputOnKeyDownProps) => {
-            if (typeof onEnter === "function" && e.key === "Enter") {
-                onEnter();
-            }
-
-            if (typeof rest.onKeyDown === "function") {
-                return rest.onKeyDown(e);
-            }
-        },
-        [rest.onKeyDown, onEnter]
-    );
 
     const size = useMemo(() => {
         if (props.size === "medium") {
@@ -198,7 +182,6 @@ export const Input = (props: InputProps) => {
         return (
             <AdminTextarea
                 {...pick(rest, rmwcProps)}
-                onKeyDown={inputOnKeyDown}
                 autoFocus={autoFocus}
                 value={inputValue}
                 onChange={onChange}
@@ -218,7 +201,6 @@ export const Input = (props: InputProps) => {
     return (
         <AdminInput
             {...pick(rest, rmwcProps)}
-            onKeyDown={inputOnKeyDown}
             autoFocus={autoFocus}
             value={inputValue}
             onChange={onChange}
