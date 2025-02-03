@@ -5,7 +5,6 @@ import { AutoComplete } from "./AutoComplete";
 const meta: Meta<typeof AutoComplete> = {
     title: "Components/Form/AutoComplete",
     component: AutoComplete,
-    tags: ["autodocs"],
     argTypes: {
         onValueChange: { action: "onValueChange" },
         onOpenChange: { action: "onOpenChange" }

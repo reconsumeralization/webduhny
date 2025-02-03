@@ -8,7 +8,6 @@ import { Icon } from "~/Icon";
 const meta: Meta<typeof Card> = {
     title: "Components/Card",
     component: Card,
-    tags: ["autodocs"],
     decorators: [
         Story => (
             <div className="wby-bg-[#f4f4f4] wby-h-[500px] wby-w-[700px] wby-rounded-[5px] wby-px-[50px] wby-content-center">

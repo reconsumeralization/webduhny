@@ -4,7 +4,8 @@ import "../src/theme.scss";
 
 const preview: Preview = {
     parameters: {
-        layout: "centered"
+        layout: "centered",
+        docs: { toc: { headingSelector: "h2, h3, h4" } }
     }
 };
 

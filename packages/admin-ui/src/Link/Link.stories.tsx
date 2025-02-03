@@ -7,7 +7,6 @@ import { Text } from "~/Text";
 const meta: Meta<typeof Link> = {
     title: "Components/Link",
     component: Link,
-    tags: ["autodocs"],
     decorators: [
         (Story: React.ComponentType) => (
             <BrowserRouter>
