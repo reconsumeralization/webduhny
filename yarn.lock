@@ -5648,13 +5648,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:6.7.2, @fortawesome/fontawesome-common-types@npm:^6.7.2":
-  version: 6.7.2
-  resolution: "@fortawesome/fontawesome-common-types@npm:6.7.2"
-  checksum: 10/3c2e938afe6f5939bd63181faaec7b062902d9ed970c75d6becb1fd8e5ca0ed937e7d1513bd7ae545da407d0682039e50730cdb3136b58656128838ea2c58ac0
-  languageName: node
-  linkType: hard
-
 "@fortawesome/fontawesome-common-types@npm:^0.3.0":
   version: 0.3.0
   resolution: "@fortawesome/fontawesome-common-types@npm:0.3.0"
@@ -5668,15 +5661,6 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": "npm:^0.3.0"
   checksum: 10/06b3e05fa19700286e99c0da904d837b28aa00de61379a1fffb9b219566dae7b61df71959877c179cd57b4008dc1bf45294a9d87782cc5c1f15a1022cc930931
-  languageName: node
-  linkType: hard
-
-"@fortawesome/fontawesome-svg-core@npm:^6.7.2":
-  version: 6.7.2
-  resolution: "@fortawesome/fontawesome-svg-core@npm:6.7.2"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.7.2"
-  checksum: 10/a3767631329aaa8c1bfafc9470718628533ceb42365774cd0c121477e0f3125f3cce4c2447058deee2874829ce11aa7a3fe183b0000bad81cf5ed0449c8470ef
   languageName: node
   linkType: hard
 
@@ -5707,15 +5691,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:^6.7.2":
-  version: 6.7.2
-  resolution: "@fortawesome/free-solid-svg-icons@npm:6.7.2"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.7.2"
-  checksum: 10/efcd90cd5d333995ff4012a9d77a8b23523e246fa418524edf08bb6af8b14db2ee0b08ee5f7460a86474d352af06e1a2581cc827ee3706e9c0e92e178b50e27f
-  languageName: node
-  linkType: hard
-
 "@fortawesome/react-fontawesome@npm:^0.1.17":
   version: 0.1.19
   resolution: "@fortawesome/react-fontawesome@npm:0.1.19"
@@ -5725,18 +5700,6 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6
     react: ">=16.x"
   checksum: 10/2c9f1ef816db7b6a1a0c74ae74dd2a1c5ad09d3937479fea8d5f24e92b9ca487ddca566e1f17b3bba0ca0b53c969af2d65a1ae120d087364a51a1151c359c635
-  languageName: node
-  linkType: hard
-
-"@fortawesome/react-fontawesome@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@fortawesome/react-fontawesome@npm:0.2.2"
-  dependencies:
-    prop-types: "npm:^15.8.1"
-  peerDependencies:
-    "@fortawesome/fontawesome-svg-core": ~1 || ~6
-    react: ">=16.3"
-  checksum: 10/05537fd7c34d43e0d8823df0195cb6fd935ff78e296e2d362e668bcf75f13d71c70c7fd6d596dff4e37b5f27e0ae43b98cb4732e0d91570f30b8a5581bbe2704
   languageName: node
   linkType: hard
 
@@ -14987,10 +14950,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/admin-ui@workspace:packages/admin-ui"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:^6.7.2"
-    "@fortawesome/fontawesome-svg-core": "npm:^6.7.2"
-    "@fortawesome/free-solid-svg-icons": "npm:^6.7.2"
-    "@fortawesome/react-fontawesome": "npm:^0.2.2"
+    "@fortawesome/fontawesome-common-types": "npm:^0.3.0"
+    "@fortawesome/fontawesome-svg-core": "npm:^1.3.0"
+    "@fortawesome/free-solid-svg-icons": "npm:^6.0.0"
+    "@fortawesome/react-fontawesome": "npm:^0.1.17"
     "@material-design-icons/svg": "npm:^0.14.13"
     "@radix-ui/react-accessible-icon": "npm:^1.1.0"
     "@radix-ui/react-avatar": "npm:^1.1.0"
@@ -15035,7 +14998,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     react: "npm:18.2.0"
     react-ace: "npm:^13.0.0"
-    react-virtualized: "npm:^9.22.6"
+    react-virtualized: "npm:^9.22.5"
     rimraf: "npm:^6.0.1"
     sass: "npm:1.44.0"
     storybook: "npm:7.6.20"
@@ -38830,23 +38793,6 @@ __metadata:
     react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
     react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
   checksum: 10/90baad7426478d9f2bcaee27a16f4f9529fcbd7eeb12c2f3496458ed9702d9056d7728e80a66422341683c8b3707c6aae80f9d583c0617603449e355d099147d
-  languageName: node
-  linkType: hard
-
-"react-virtualized@npm:^9.22.6":
-  version: 9.22.6
-  resolution: "react-virtualized@npm:9.22.6"
-  dependencies:
-    "@babel/runtime": "npm:^7.7.2"
-    clsx: "npm:^1.0.4"
-    dom-helpers: "npm:^5.1.3"
-    loose-envify: "npm:^1.4.0"
-    prop-types: "npm:^15.7.2"
-    react-lifecycles-compat: "npm:^3.0.4"
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/57c24aa6226e628d970dd57b5d20693aec1ebc456c33667833779d26b82addbcbf03b65d874ad25154fb65a070a6a52d3dbdc699932442f1862246ee5d7e328c
   languageName: node
   linkType: hard
 

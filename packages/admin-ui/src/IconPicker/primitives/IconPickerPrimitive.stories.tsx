@@ -35,6 +35,7 @@ interface Icons {
 
 const getIcons = () => {
     const icons: IconDto[] = [];
+    // @ts-expect-error
     library.add(fas);
     const definitions = (library as unknown as Icons).definitions;
     // @ts-expect-error
