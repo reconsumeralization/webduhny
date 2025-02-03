@@ -9,12 +9,12 @@ import fs from "fs";
 import { ProjectApplication } from "@webiny/cli/types";
 
 export interface IGetPulumiParams {
-    projectApplication: Pick<ProjectApplication, "paths">;
+    projectApplication?: Pick<ProjectApplication, "paths">;
     pulumi?: unknown;
     install?: boolean;
 }
 
-export const getPulumi = async ({ projectApplication, pulumi, install }: IGetPulumiParams) => {
+export const getPulumi = async ({ projectApplication, pulumi, install }: IGetPulumiParams = {}) => {
     const spinner = ora();
 
     let cwd;
