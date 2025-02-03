@@ -1,0 +1,46 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as CardStories from './Card.stories';
+
+<Meta of={CardStories} />
+
+# Cards
+
+A Card component in design systems is a versatile UI element used to encapsulate content and actions about a single subject. It serves as a modular container that can include images, text, links, buttons, and other interactive elements. Cards are designed to present information in a concise and organized manner, making it easier for users to scan and interact with multiple pieces of content.
+
+<Canvas of={CardStories.Default} />
+
+## Usage
+
+```
+import { Card } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### Construction
+Depending on the content type and card usage, there are several elevation options available.
+
+<img src="/images/storybook/card/construction.png" alt="Construction"/>
+
+### Elevation
+
+<img src="/images/storybook/card/elevation.png" alt="Elevation"/>
+
+### Radius
+Depending on the content type and card usage, there are three basic paddings options to consider. Border radius can vary from 4px - 12px
+
+<img src="/images/storybook/card/radius.png" alt="Radius"/>
+
+### Padding
+
+<img src="/images/storybook/card/padding.png" alt="Padding"/>
+
+## Usage
+
+### Stacked
+
+<img src="/images/storybook/card/stacked.png" alt="Stacked"/>
+
+
+

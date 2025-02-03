@@ -1,0 +1,41 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as RadioGroupStories from './RadioGroup.stories';
+
+<Meta of={RadioGroupStories} />
+
+# Radio Group
+
+Radio buttons allow users to select only one option from a set of mutually exclusive choices. A radio group is a collection of radio buttons that are related to each other, ensuring that only one option can be selected at a time.
+
+<Canvas of={RadioGroupStories.Default} />
+
+## Usage
+
+```
+import { RadioGroup } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### General
+Radio input enable users to select a single item from a list of offered choices. A radio input group organizes related radio input options together for better clarity and functionality.
+
+<img src="/images/storybook/radio-group/anatomy.png" alt="Anatomy"/>
+
+### Radio input options
+Radio inputs can exist in two different states: Selected and Not Selected. When a radio input is used for bulk selection, all other options must be excluded since the very purpose of a radio input is to provide only one selectable option.
+<img src="/images/storybook/radio-group/options.png" alt="Radio input options"/>
+
+### States
+<img src="/images/storybook/radio-group/states.png" alt="States"/>
+
+## Usage
+
+### Text overflow
+When the radio item text content is too long for the horizontal space available, the content should wrap to form another line aligning the text and checkbox on top.
+
+<img src="/images/storybook/radio-group/text-overflow.png" alt="Text overflow"/>
+
+
+

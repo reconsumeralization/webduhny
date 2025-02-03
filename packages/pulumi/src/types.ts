@@ -1,9 +1,9 @@
 import * as pulumi from "@pulumi/pulumi";
 import { PulumiAppModuleDefinition } from "./PulumiAppModule";
 import {
-    PulumiAppResourceConstructor,
+    CreatePulumiAppResourceParams,
     PulumiAppResource,
-    CreatePulumiAppResourceParams
+    PulumiAppResourceConstructor
 } from "./PulumiAppResource";
 import { PulumiAppRemoteResource } from "~/PulumiAppRemoteResource";
 
@@ -19,7 +19,16 @@ export type PulumiProgram<TApp = PulumiApp, TResources = Record<string, any>> = 
 ) => TResources | Promise<TResources>;
 
 export type CreateConfig = Record<string, any>;
-export type RunConfig = Record<string, any>;
+export type RunConfig = {
+    env: string;
+    variant: string | undefined;
+    [key: string]:
+        | string
+        | number
+        | undefined
+        | boolean
+        | Record<string, string | number | boolean | undefined>;
+};
 
 export interface CreatePulumiAppParams<TResources extends Record<string, unknown>> {
     name: string;

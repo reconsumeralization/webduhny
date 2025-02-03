@@ -6,8 +6,7 @@ import { StyledColumn } from "./stories/StyledColumn";
 
 const meta: Meta<typeof Grid> = {
     title: "Components/Grid",
-    component: Grid,
-    tags: ["autodocs"]
+    component: Grid
 };
 
 export default meta;

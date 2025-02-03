@@ -1,0 +1,28 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as DialogStories from './Dialog.stories';
+
+<Meta of={DialogStories} />
+
+# Dialog
+
+A Dialog is used to display content or actions in a focused, overlay window that requires user interaction before returning to the main interface. Modals are valuable for drawing attention to important information, capturing user input, and streamlining workflows without navigating away from the current page.
+
+<Canvas of={DialogStories.Default} />
+
+## Usage
+
+```
+import { Dialog } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### Dialog Construction
+<img src="/images/storybook/dialog/anatomy.png" alt="Anatomy"/>
+
+### Overlay and Positioning
+<img src="/images/storybook/dialog/overlay-and-positioning.png" alt="Dialog Overlay and Positioning"/>
+
+## Usage
+<img src="/images/storybook/dialog/usage.png" alt="Usage"/>
