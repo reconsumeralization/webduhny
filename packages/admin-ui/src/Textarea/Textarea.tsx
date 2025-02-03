@@ -27,7 +27,7 @@ const DecoratableTextarea = ({
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <TextareaPrimitive {...props} disabled={disabled} />
+            <TextareaPrimitive {...props} disabled={disabled} invalid={invalid} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>

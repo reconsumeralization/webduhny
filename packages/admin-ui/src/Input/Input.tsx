@@ -27,7 +27,7 @@ const DecoratableInput = ({
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <InputPrimitive {...props} disabled={disabled} />
+            <InputPrimitive {...props} disabled={disabled} invalid={invalid} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>
