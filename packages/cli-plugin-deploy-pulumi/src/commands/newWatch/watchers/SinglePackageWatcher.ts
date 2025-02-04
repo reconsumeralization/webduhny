@@ -14,7 +14,7 @@ export class SinglePackageWatcher extends BasePackagesWatcher {
             variant,
             debug,
             region,
-            cwd: pkg.paths.root,
+            cwd: pkg.paths.root
         };
 
         const config = requireConfigWithExecute(pkg.paths.config, {
