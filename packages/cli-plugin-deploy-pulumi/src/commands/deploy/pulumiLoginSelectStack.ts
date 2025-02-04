@@ -1,8 +1,9 @@
-import { IUserCommandInput, ProjectApplication, IPulumi } from "~/types";
-import { login, getStackName } from "~/utils";
+import { IPulumi, IUserCommandInput, ProjectApplication } from "~/types";
+import { getStackName, login } from "~/utils";
+import { createEnvConfiguration, withPulumiConfigPassphrase } from "~/utils/env";
 
 export interface IPulumiLoginSelectStackParams {
-    inputs: Pick<IUserCommandInput, "env" | "variant">;
+    inputs: Pick<IUserCommandInput, "env" | "variant" | "region" | "folder">;
     projectApplication: Pick<ProjectApplication, "paths" | "project">;
     pulumi: Pick<IPulumi, "run">;
 }
@@ -17,7 +18,6 @@ export const pulumiLoginSelectStack = async ({
     await login(projectApplication);
 
     const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
-    const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
     const stackName = getStackName({
         env,
@@ -31,9 +31,9 @@ export const pulumiLoginSelectStack = async ({
             secretsProvider: PULUMI_SECRETS_PROVIDER
         },
         execa: {
-            env: {
-                PULUMI_CONFIG_PASSPHRASE
-            }
+            env: createEnvConfiguration({
+                configurations: [withPulumiConfigPassphrase()]
+            })
         }
     });
 };

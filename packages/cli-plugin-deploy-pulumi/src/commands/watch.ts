@@ -19,6 +19,16 @@ import {
     login,
     runHook
 } from "~/utils";
+import {
+    createEnvConfiguration,
+    IWithLogsForwardUrlParams,
+    withEnv,
+    withEnvVariant,
+    withLogsForwardUrl,
+    withProjectName,
+    withPulumiConfigPassphrase,
+    withRegion
+} from "~/utils/env";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -110,7 +120,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
 
     // 1.1. Check if the project application and Pulumi stack exist.
     const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
-    const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
 
     if (inputs.deploy && projectApplication) {
         const { env, variant } = inputs;
@@ -132,9 +141,9 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     secretsProvider: PULUMI_SECRETS_PROVIDER
                 },
                 execa: {
-                    env: {
-                        PULUMI_CONFIG_PASSPHRASE
-                    }
+                    env: createEnvConfiguration({
+                        configurations: [withPulumiConfigPassphrase()]
+                    })
                 }
             });
         } catch (e) {
@@ -152,7 +161,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
         output.initialize(inputs);
     }
 
-    const logging = {
+    const logging: IWithLogsForwardUrlParams = {
         url: null
     };
 
@@ -208,12 +217,15 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                     debug: !!inputs.debug
                 },
                 execa: {
-                    env: {
-                        WEBINY_ENV: inputs.env,
-                        WEBINY_ENV_VARIANT: inputs.variant || "",
-                        WEBINY_PROJECT_NAME: context.project.name,
-                        WEBINY_LOGS_FORWARD_URL: logging.url || undefined
-                    }
+                    env: createEnvConfiguration({
+                        configurations: [
+                            withRegion(inputs),
+                            withEnv(inputs),
+                            withEnvVariant(inputs),
+                            withProjectName(context),
+                            withLogsForwardUrl({ url: logging.url })
+                        ]
+                    })
                 }
             });
             watchCloudInfrastructure.stdout!.on("data", data => {

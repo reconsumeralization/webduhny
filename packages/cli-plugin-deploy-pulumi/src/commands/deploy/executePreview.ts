@@ -1,4 +1,12 @@
 import { Context, IPulumi, IUserCommandInput } from "~/types";
+import {
+    createEnvConfiguration,
+    withEnv,
+    withEnvVariant,
+    withProjectName,
+    withPulumiConfigPassphrase,
+    withRegion
+} from "~/utils/env";
 
 export interface IExecutePreviewParams {
     inputs: IUserCommandInput;
@@ -7,8 +15,6 @@ export interface IExecutePreviewParams {
 }
 
 export const executePreview = async ({ inputs, context, pulumi }: IExecutePreviewParams) => {
-    const PULUMI_CONFIG_PASSPHRASE = process.env.PULUMI_CONFIG_PASSPHRASE;
-
     const subprocess = pulumi.run({
         command: "preview",
         args: {
@@ -18,12 +24,15 @@ export const executePreview = async ({ inputs, context, pulumi }: IExecutePrevie
             // secretsProvider: PULUMI_SECRETS_PROVIDER
         },
         execa: {
-            env: {
-                WEBINY_ENV: inputs.env,
-                WEBINY_ENV_VARIANT: inputs.variant || "",
-                WEBINY_PROJECT_NAME: context.project.name,
-                PULUMI_CONFIG_PASSPHRASE
-            }
+            env: createEnvConfiguration({
+                configurations: [
+                    withRegion(inputs),
+                    withEnv(inputs),
+                    withEnvVariant(inputs),
+                    withProjectName(context),
+                    withPulumiConfigPassphrase()
+                ]
+            })
         }
     });
     subprocess.stdout!.pipe(process.stdout);
