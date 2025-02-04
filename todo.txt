@@ -1,0 +1,8 @@
+MH
+- packages/project-utils/packages/createSwcConfigForNode.js
+
+WH
+- jest babel config
+- replace ts-jest with swc/jest, any gains?
+- remove babel (not yet)
+- enabled ts checks? (not yet)

@@ -5,8 +5,7 @@ export interface IRequireConfigOptions {
     variant: string | undefined;
     region: string | undefined;
     debug?: boolean;
-    cwd: string;
-    logs: boolean;
+    cwd: string
 }
 
 export interface IRequireConfigResult {

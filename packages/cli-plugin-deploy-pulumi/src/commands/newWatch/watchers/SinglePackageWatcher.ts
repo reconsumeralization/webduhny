@@ -15,9 +15,6 @@ export class SinglePackageWatcher extends BasePackagesWatcher {
             debug,
             region,
             cwd: pkg.paths.root,
-
-            // Not much sense in turning off logs when a single package is being built.
-            logs: true
         };
 
         const config = requireConfigWithExecute(pkg.paths.config, {
