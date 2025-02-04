@@ -3,7 +3,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn, cva, type VariantProps } from "~/utils";
 import { Icon } from "~/Icon";
 
-const triggerVariants = cva(
+const tabTriggerVariants = cva(
     [
         "wby-group wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-outline-none wby-transition-all",
         "wby-text-neutral-strong hover:text-neutral-primary",
@@ -24,12 +24,12 @@ const triggerVariants = cva(
             }
         },
         defaultVariants: {
-            size: "md"
+            size: "sm"
         }
     }
 );
 
-const innerTriggerVariants = cva(
+const innerTabTriggerVariants = cva(
     [
         "wby-inline-flex wby-items-center wby-justify-start wby-gap-xs",
         "group-hover:wby-bg-neutral-dimmed",
@@ -45,21 +45,24 @@ const innerTriggerVariants = cva(
             }
         },
         defaultVariants: {
-            size: "md"
+            size: "sm"
         }
     }
 );
 
 type TriggerProps = Omit<TabsPrimitive.TabsTriggerProps, "children"> &
-    VariantProps<typeof triggerVariants> & {
+    VariantProps<typeof tabTriggerVariants> & {
         text: React.ReactNode;
         icon?: React.ReactElement;
         "data-testid"?: string;
     };
 
 const Trigger = ({ className, size, icon, text, visible, ...props }: TriggerProps) => (
-    <TabsPrimitive.Trigger className={cn(triggerVariants({ size, visible }), className)} {...props}>
-        <div className={cn(innerTriggerVariants({ size }))}>
+    <TabsPrimitive.Trigger
+        className={cn(tabTriggerVariants({ size, visible }), className)}
+        {...props}
+    >
+        <div className={cn(innerTabTriggerVariants({ size }))}>
             {icon && <Icon icon={icon} size={"sm"} label={String(text)} color={"neutral-light"} />}
             {text}
         </div>

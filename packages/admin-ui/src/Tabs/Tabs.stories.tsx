@@ -38,31 +38,80 @@ export const Default: Story = {
     }
 };
 
-export const Small: Story = {
+export const SizeSmall: Story = {
     args: {
         ...Default.args,
         size: "sm"
     }
 };
 
-export const Medium: Story = {
+export const SizeMedium: Story = {
     args: {
         ...Default.args,
         size: "md"
     }
 };
 
-export const Large: Story = {
+export const SizeLarge: Story = {
     args: {
         ...Default.args,
         size: "lg"
     }
 };
 
-export const ExtraLarge: Story = {
+export const SizeExtraLarge: Story = {
     args: {
         ...Default.args,
         size: "xl"
+    }
+};
+
+export const GutterExtraSmall: Story = {
+    args: {
+        ...Default.args,
+        gutter: "xs"
+    }
+};
+
+export const GutterSmall: Story = {
+    args: {
+        ...Default.args,
+        gutter: "sm"
+    }
+};
+
+export const GutterMedium: Story = {
+    args: {
+        ...Default.args,
+        gutter: "md"
+    }
+};
+
+export const GutterLarge: Story = {
+    args: {
+        ...Default.args,
+        gutter: "lg"
+    }
+};
+
+export const GutterExtraLarge: Story = {
+    args: {
+        ...Default.args,
+        gutter: "xl"
+    }
+};
+
+export const GutterDoubleExtraLarge: Story = {
+    args: {
+        ...Default.args,
+        gutter: "xxl"
+    }
+};
+
+export const WithSeparator: Story = {
+    args: {
+        ...Default.args,
+        separator: true
     }
 };
 

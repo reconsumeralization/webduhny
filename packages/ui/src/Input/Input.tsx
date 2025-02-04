@@ -100,9 +100,6 @@ export type InputProps<TValue = any> = FormComponentProps<TValue> &
         children?: React.ReactNode;
     };
 
-export type InputOnKeyDownProps = React.SyntheticEvent<any> & {
-    key?: string;
-};
 /**
  * Use Input component to store short string values, like first name, last name, e-mail etc.
  * Additionally, with rows prop, it can also be turned into a text area, to store longer strings.
@@ -116,6 +113,7 @@ const rmwcProps = [
     "readOnly",
     "placeholder",
     "onKeyDown",
+    "onEnter",
     "onKeyPress",
     "onKeyUp",
     "onFocus",
@@ -128,20 +126,6 @@ const rmwcProps = [
  * Please use the `Input` component from the `@webiny/admin-ui` package instead.
  */
 export const Input = (props: InputProps) => {
-    const onBlur = useCallback(
-        async (e: React.SyntheticEvent<any>) => {
-            const { validate, onBlur } = props;
-            if (validate) {
-                // Since we are accessing event in an async operation, we need to persist it.
-                // See https://reactjs.org/docs/events.html#event-pooling.
-                e.persist();
-                await validate();
-            }
-            onBlur && onBlur(e);
-        },
-        [props.validate, props.onBlur]
-    );
-
     const {
         autoFocus,
         value,
@@ -153,7 +137,6 @@ export const Input = (props: InputProps) => {
         trailingIcon,
         onChange,
         rawOnChange,
-        onEnter,
         required,
         inputRef,
         ...rest
@@ -163,19 +146,6 @@ export const Input = (props: InputProps) => {
     if (value === null || typeof value === "undefined") {
         inputValue = "";
     }
-
-    const inputOnKeyDown = useCallback(
-        (e: InputOnKeyDownProps) => {
-            if (typeof onEnter === "function" && e.key === "Enter") {
-                onEnter();
-            }
-
-            if (typeof rest.onKeyDown === "function") {
-                return rest.onKeyDown(e);
-            }
-        },
-        [rest.onKeyDown, onEnter]
-    );
 
     const size = useMemo(() => {
         if (props.size === "medium") {
@@ -201,17 +171,15 @@ export const Input = (props: InputProps) => {
         return (
             <AdminTextarea
                 {...pick(rest, rmwcProps)}
-                onKeyDown={inputOnKeyDown}
                 autoFocus={autoFocus}
                 value={inputValue}
                 onChange={onChange}
-                onBlur={onBlur}
                 placeholder={placeholder}
                 size={size}
                 className={classNames("webiny-ui-input")}
                 data-testid={props["data-testid"]}
                 validation={validation}
-                note={description}
+                description={description}
                 required={required}
                 rows={rows}
                 forwardEventOnChange={rawOnChange}
@@ -223,11 +191,9 @@ export const Input = (props: InputProps) => {
     return (
         <AdminInput
             {...pick(rest, rmwcProps)}
-            onKeyDown={inputOnKeyDown}
             autoFocus={autoFocus}
             value={inputValue}
             onChange={onChange}
-            onBlur={onBlur}
             startIcon={getValidIcon(icon)}
             endIcon={getValidIcon(trailingIcon)}
             placeholder={placeholder}
@@ -235,7 +201,7 @@ export const Input = (props: InputProps) => {
             className={classNames("webiny-ui-input")}
             data-testid={props["data-testid"]}
             validation={validation}
-            note={description}
+            description={description}
             required={required}
             forwardEventOnChange={rawOnChange}
             inputRef={inputRef as React.Ref<HTMLInputElement> | undefined}

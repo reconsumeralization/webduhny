@@ -39,7 +39,7 @@ const IconBase = React.forwardRef<HTMLOrSVGElement, IconProps>((props, ref) => {
         <AccessibleIcon.Root label={label}>
             {React.cloneElement(icon, {
                 ...rest,
-                className: cn(iconVariants({ color, size, className })),
+                className: cn(iconVariants({ color, size }), className),
                 ref
             })}
         </AccessibleIcon.Root>

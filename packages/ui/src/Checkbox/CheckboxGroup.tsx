@@ -1,6 +1,10 @@
 import React from "react";
 import { FormComponentProps } from "~/types";
-import { FormComponentErrorMessage, FormComponentLabel, FormComponentNote } from "@webiny/admin-ui";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel
+} from "@webiny/admin-ui";
 
 export interface ChildrenRenderProp {
     onChange: (id: string | number) => () => void;
@@ -30,6 +34,7 @@ class CheckboxGroup extends React.Component<Props> {
         return (
             <div className={"w-full"}>
                 <FormComponentLabel text={label} />
+                <FormComponentDescription text={description} />
                 {this.props.children({
                     onChange: value => {
                         return () => {
@@ -55,7 +60,6 @@ class CheckboxGroup extends React.Component<Props> {
                     invalid={Boolean(validationIsValid === false)}
                     text={validationMessage}
                 />
-                <FormComponentNote text={description} />
             </div>
         );
     }

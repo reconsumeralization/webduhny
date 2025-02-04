@@ -113,24 +113,24 @@ const inputVariants = cva(
                     "hover:wby-border-neutral-strong",
                     "focus:wby-border-neutral-black",
                     "data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-neutral-disabled disabled:!wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-border-neutral-dimmed data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
+                    "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-border-neutral-dimmed data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ],
                 secondary: [
                     "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
                     "hover:wby-bg-neutral-dimmed",
                     "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
                     "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-neutral-disabled disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
+                    "disabled:wby-bg-neutral-disabled disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-neutral-disabled data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ],
                 ghost: [
                     "wby-bg-transparent wby-border-transparent wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
-                    "hover:wby-bg-neutral-dimmed/95",
-                    "focus:wby-bg-neutral-base focus:wby-border-neutral-black",
-                    "data-[focused=true]:wby-bg-neutral-base data-[focused=true]:wby-border-neutral-black",
-                    "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled",
-                    "data-[disabled=true]:wby-bg-transparent data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled data-[disabled=true]:wby-fill-neutral-disabled"
+                    "hover:wby-bg-neutral-dark/5",
+                    "focus:wby-bg-neutral-dark/5",
+                    "data-[focused=true]:wby-bg-neutral-dark/5",
+                    "disabled:wby-bg-transparent disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled",
+                    "data-[disabled=true]:wby-bg-transparent data-[disabled=true]:wby-text-neutral-disabled data-[disabled=true]:placeholder:wby-text-neutral-disabled"
                 ]
             },
             iconPosition: {
@@ -234,6 +234,8 @@ interface InputPrimitiveProps
      * If true, it will pass the native `event` to the `onChange` callback
      */
     forwardEventOnChange?: boolean;
+
+    onEnter?: () => any;
 }
 
 const getIconPosition = (
@@ -255,15 +257,17 @@ const getIconPosition = (
 const InputPrimitive = ({
     className,
     disabled,
-    invalid,
-    startIcon,
-    maxLength,
-    size,
     endIcon,
-    variant,
-    inputRef,
     forwardEventOnChange,
+    inputRef,
+    invalid,
+    maxLength,
     onChange: originalOnChange,
+    onEnter,
+    onKeyDown: originalOnKeyDown,
+    size,
+    startIcon,
+    variant,
     ...props
 }: InputPrimitiveProps) => {
     const iconPosition = getIconPosition(startIcon, endIcon);
@@ -278,6 +282,19 @@ const InputPrimitive = ({
             originalOnChange(forwardEventOnChange ? event : event.target.value);
         },
         [forwardEventOnChange, originalOnChange]
+    );
+
+    const onKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (typeof onEnter === "function" && e.key === "Enter") {
+                onEnter();
+            }
+
+            if (typeof originalOnKeyDown === "function") {
+                return originalOnKeyDown(e);
+            }
+        },
+        [originalOnKeyDown, onEnter]
     );
 
     return (
@@ -296,6 +313,7 @@ const InputPrimitive = ({
                 disabled={disabled}
                 size={maxLength}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
                 {...props}
             />
             {endIcon && (

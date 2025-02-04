@@ -27,7 +27,12 @@ const DecoratableMultiAutoComplete = ({
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <MultiAutoCompletePrimitive {...props} disabled={disabled} label={label} />
+            <MultiAutoCompletePrimitive
+                {...props}
+                label={label}
+                disabled={disabled}
+                invalid={invalid}
+            />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>

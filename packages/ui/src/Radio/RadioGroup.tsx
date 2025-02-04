@@ -2,9 +2,9 @@ import React from "react";
 import { FormComponentProps } from "~/types";
 import {
     DeprecatedRadioGroup as DeprecatedAdminRadioGroup,
+    FormComponentDescription,
     FormComponentErrorMessage,
-    FormComponentLabel,
-    FormComponentNote
+    FormComponentLabel
 } from "@webiny/admin-ui";
 
 interface RadioGroupRenderParams {
@@ -36,6 +36,7 @@ class RadioGroup extends React.Component<Props> {
         return (
             <div className={"w-full"}>
                 <FormComponentLabel text={label} />
+                <FormComponentDescription text={description} />
                 <DeprecatedAdminRadioGroup value={value} onValueChange={onChange}>
                     {this.props.children({
                         onChange: value => () => this.props.onChange && this.props.onChange(value),
@@ -46,7 +47,6 @@ class RadioGroup extends React.Component<Props> {
                     text={validationMessage}
                     invalid={validationIsValid === false}
                 />
-                <FormComponentNote text={description} />
             </div>
         );
     }

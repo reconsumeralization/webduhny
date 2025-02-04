@@ -48,18 +48,21 @@ const triggerVariants = cva(
                     "wby-bg-neutral-base wby-border-neutral-muted wby-text-neutral-strong placeholder:wby-text-neutral-dimmed wby-fill-neutral-xstrong",
                     "hover:wby-border-neutral-strong",
                     "focus:wby-border-neutral-black",
+                    "data-[state=open]:wby-border-neutral-black",
                     "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled"
                 ],
                 secondary: [
                     "wby-bg-neutral-light wby-border-neutral-subtle wby-text-neutral-strong placeholder:wby-text-neutral-muted wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-dimmed",
                     "focus:wby-border-neutral-black focus:wby-bg-neutral-base",
+                    "data-[state=open]:wby-border-neutral-black data-[state=open]:wby-bg-neutral-base",
                     "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled"
                 ],
                 ghost: [
                     "wby-bg-neutral-base wby-border-transparent wby-text-neutral-strong placeholder:wby-text-neutral-dimmed",
-                    "hover:wby-bg-neutral-light",
-                    "focus:wby-bg-neutral-light",
+                    "hover:wby-bg-neutral-dark/5",
+                    "focus:wby-bg-neutral-dark/5",
+                    "data-[state=open]:wby-bg-neutral-dark/5",
                     "disabled:wby-bg-neutral-disabled disabled:wby-border-neutral-dimmed disabled:wby-text-neutral-disabled disabled:placeholder:wby-text-neutral-disabled disabled:wby-fill-neutral-disabled"
                 ]
             },

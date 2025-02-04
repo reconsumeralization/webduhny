@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { makeDecoratable } from "~/utils";
 import { TextareaPrimitive, TextareaPrimitiveProps } from "./TextareaPrimitive";
 import {
@@ -18,16 +18,31 @@ const DecoratableTextarea = ({
     required,
     disabled,
     validation,
+    validate,
+    onBlur: originalOnBlur,
     ...props
 }: TextareaGroupProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
+    const onBlur = useCallback(
+        async (e: React.FocusEvent<HTMLTextAreaElement>) => {
+            if (validate) {
+                // Since we are accessing event in an async operation, we need to persist it.
+                // See https://reactjs.org/docs/events.html#event-pooling.
+                e.persist();
+                await validate();
+            }
+            originalOnBlur && originalOnBlur(e);
+        },
+        [validate, originalOnBlur]
+    );
+
     return (
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <TextareaPrimitive {...props} disabled={disabled} />
+            <TextareaPrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>

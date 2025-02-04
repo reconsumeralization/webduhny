@@ -6,7 +6,6 @@ import { Input, InputProps } from "~/Input";
 import { Chips, Chip } from "~/Chips";
 import { FormComponentProps } from "~/types";
 import { ReactComponent as BaselineCloseIcon } from "./icons/baseline-close-24px.svg";
-import { FormElementMessage } from "~/FormElementMessage";
 
 interface TagsProps extends FormComponentProps {
     /**
@@ -85,15 +84,7 @@ const tagsStyle = css({
 export const Tags = (props: TagsProps) => {
     const [inputValue, setInputValue] = useState("");
 
-    const {
-        validation,
-        value,
-        disabled,
-        onChange,
-        description,
-        protectedTags = [],
-        ...otherInputProps
-    } = props;
+    const { value, disabled, onChange, protectedTags = [], ...otherInputProps } = props;
 
     const isProtected = useCallback(
         (tag: string) => protectedTags.some(pattern => minimatch(tag, pattern)),
@@ -134,20 +125,10 @@ export const Tags = (props: TagsProps) => {
         }
     };
 
-    const { isValid: validationIsValid, message: validationMessage } = validation || {};
-
     return (
         <div className={tagsStyle}>
             <div>
                 <Input {...inputProps} />
-
-                {validationIsValid === false && (
-                    <FormElementMessage error>{validationMessage}</FormElementMessage>
-                )}
-                {validationIsValid !== false && description && (
-                    <FormElementMessage>{description}</FormElementMessage>
-                )}
-
                 {Array.isArray(value) && value.length ? (
                     <Chips disabled={disabled}>
                         {value.map((item, index) => {

@@ -125,8 +125,8 @@ export const PrimaryVariantInvalid: Story = {
 
 export const SecondaryVariant: Story = {
     args: {
-        variant: "secondary",
-        placeholder: "Custom placeholder"
+        ...Default.args,
+        variant: "secondary"
     }
 };
 
@@ -146,8 +146,8 @@ export const SecondaryVariantInvalid: Story = {
 
 export const GhostVariant: Story = {
     args: {
-        variant: "ghost",
-        placeholder: "Custom placeholder"
+        ...Default.args,
+        variant: "ghost"
     }
 };
 
