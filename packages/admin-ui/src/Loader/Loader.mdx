@@ -1,0 +1,45 @@
+import { Canvas, Meta, Story } from '@storybook/blocks';
+
+import * as LoaderStories from './Loader.stories';
+
+<Meta of={LoaderStories} />
+
+# Loader
+
+The Loader Loader visually represents ongoing processes, such as loading or background tasks, by displaying continuous or determinate progress. It provides users with clear feedback, ensuring a smooth and informed experience while maintaining design consistency.
+
+<Canvas of={LoaderStories.Default}/>
+
+## Usage
+
+```
+import { Loader } from '@webiny/admin-ui';
+```
+
+## Anatomy
+
+### Construction
+<img src="/images/storybook/loader/construction.png" alt="Construction"/>
+
+### Style
+<img src="/images/storybook/loader/style.png" alt="Style"/>
+
+### Type
+
+A **determinate** circular loader visually represents progress with a circular arc that fills proportionally based on the completed percentage, providing users with a clear indication of task completion.
+
+An **indeterminate loader** does not display exact progress but continuously animates, signaling that a process is ongoing without a known completion time.
+
+<img src="/images/storybook/loader/type.png" alt="Type"/>
+
+### Size
+<img src="/images/storybook/loader/size.png" alt="Size"/>
+
+### Background Overlay
+<img src="/images/storybook/loader/background-overlay.png" alt="Background Overlay"/>
+
+## Usage
+
+<img src="/images/storybook/loader/usage-1.png" alt="Usage"/>
+
+<img src="/images/storybook/loader/usage-2.png" alt="Usage"/>

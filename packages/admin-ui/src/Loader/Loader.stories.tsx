@@ -3,9 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Loader } from "./Loader";
 
 const meta: Meta<typeof Loader> = {
-    title: "Components/Loader",
+    title: "Components/Loader/Loader",
     component: Loader,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     }
