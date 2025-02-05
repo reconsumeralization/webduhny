@@ -235,7 +235,10 @@ interface InputPrimitiveProps
      */
     forwardEventOnChange?: boolean;
 
-    onEnter?: () => any;
+    /**
+     * Callback function to be called when the Enter key is pressed.
+     */
+    onEnter?: () => void;
 }
 
 const getIconPosition = (

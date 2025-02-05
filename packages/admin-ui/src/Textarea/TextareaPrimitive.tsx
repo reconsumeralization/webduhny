@@ -72,7 +72,11 @@ interface TextareaPrimitiveProps
      * If true, it will pass the native `event` to the `onChange` callback
      */
     forwardEventOnChange?: boolean;
-    onEnter?: () => any;
+
+    /**
+     * Callback function to be called when the Enter key is pressed.
+     */
+    onEnter?: () => void;
 }
 
 const TextareaPrimitive = ({
