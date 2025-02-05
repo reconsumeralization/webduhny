@@ -8,7 +8,7 @@ const tabListVariants = cva("wby-w-full wby-inline-flex wby-items-center wby-jus
             sm: "wby-gap-sm",
             md: "wby-gap-sm",
             lg: "wby-gap-sm-extra",
-            xl: "wby-gap-sm-extra"
+            xl: "wby-gap-md"
         },
         gutter: {
             xs: "wby-px-xs",
