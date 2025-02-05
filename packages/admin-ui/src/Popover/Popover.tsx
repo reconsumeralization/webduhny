@@ -8,15 +8,17 @@ const PopoverContent = ({
     className,
     align = "center",
     sideOffset = 6,
+    collisionPadding = 8,
     ...props
 }: PopoverContentProps) => (
     <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
             align={align}
             sideOffset={sideOffset}
+            collisionPadding={collisionPadding}
             className={cn(
                 [
-                    "wby-z-50 wby-rounded-sm wby-overflow-hidden wby-border-sm wby-border-neutral-muted wby-shadow-lg wby-outline-none",
+                    "wby-z-50 wby-bg-neutral-base wby-rounded-sm wby-overflow-hidden wby-border-sm wby-border-neutral-muted wby-shadow-lg wby-outline-none",
                     "data-[state=open]:wby-animate-in data-[state=closed]:wby-animate-out data-[state=closed]:wby-fade-out-0 data-[state=open]:wby-fade-in-0 data-[state=closed]:wby-zoom-out-95 data-[state=open]:wby-zoom-in-95",
                     "data-[side=bottom]:wby-slide-in-from-top-2 data-[side=left]:wby-slide-in-from-right-2 data-[side=right]:wby-slide-in-from-left-2 data-[side=top]:wby-slide-in-from-bottom-2"
                 ],

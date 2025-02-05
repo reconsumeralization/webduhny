@@ -1,10 +1,7 @@
 import React from "react";
 import { useApolloClient } from "@apollo/react-hooks";
 import { observer } from "mobx-react-lite";
-import styled from "@emotion/styled";
-
-import { ButtonSecondary } from "@webiny/ui/Button";
-
+import { Button } from "@webiny/admin-ui";
 import { FileManager, FileManagerFileItem } from "~/base/ui/FileManager";
 import { IconPickerTab } from "../IconPickerTab";
 import { useIcon } from "..";
@@ -12,12 +9,6 @@ import { useIconPicker } from "../IconPickerPresenterProvider";
 import { IconPickerConfig } from "../config";
 import { ListCustomIconsQueryResponse, LIST_CUSTOM_ICONS } from "./graphql";
 import { Icon } from "../types";
-
-const AddButton = styled(ButtonSecondary)`
-    &.mdc-button {
-        height: 40px;
-    }
-`;
 
 /**
  * NOTE: Avoid using `@emotion/styled` in icon renderer components across all plugins.
@@ -58,13 +49,13 @@ const IconFilePicker = ({ onUpload, onChange }: IconFilePickerProps) => {
             accept={["image/svg+xml"]}
         >
             {({ showFileManager }) => (
-                <AddButton
+                <Button
+                    variant={"primary"}
+                    text={"Browse"}
                     onClick={() => {
                         showFileManager();
                     }}
-                >
-                    Browse
-                </AddButton>
+                />
             )}
         </FileManager>
     );
@@ -111,6 +102,7 @@ const CustomIconTab = observer(() => {
 
     return (
         <IconPickerTab
+            value={"custom"}
             label={"Custom"}
             onChange={onIconSelect}
             actions={<IconFilePicker onChange={onIconFileSelect} onUpload={onIconFileUpload} />}
