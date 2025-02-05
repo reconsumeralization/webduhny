@@ -151,8 +151,7 @@ export const IconPickerTab = ({
                             {({ value, onChange }) => (
                                 <Input
                                     value={value}
-                                    // @ts-expect-error
-                                    onChange={onChange}
+                                    onChange={value => onChange(value as unknown as string)}
                                     placeholder={"Search icons..."}
                                     variant={"secondary"}
                                     size={"md"}
