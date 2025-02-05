@@ -24,7 +24,6 @@ export class Icon {
                 name: values[1]
             });
         } else {
-            console.warn("Error while instantiating icon from string value:", value);
             return new Icon({
                 prefix: "fas",
                 name: "star"
