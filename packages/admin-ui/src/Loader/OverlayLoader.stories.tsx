@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { OverlayLoader } from "./OverlayLoader";
 
 const meta: Meta<typeof OverlayLoader> = {
-    title: "Components/OverlayLoader",
+    title: "Components/Loader/Overlay Loader",
     component: OverlayLoader,
     tags: ["autodocs"],
     parameters: {
