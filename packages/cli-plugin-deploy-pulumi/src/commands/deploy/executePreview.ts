@@ -15,6 +15,16 @@ export interface IExecutePreviewParams {
 }
 
 export const executePreview = async ({ inputs, context, pulumi }: IExecutePreviewParams) => {
+    const config = createEnvConfiguration({
+        configurations: [
+            withRegion(inputs),
+            withEnv(inputs),
+            withEnvVariant(inputs),
+            withProjectName(context),
+            withPulumiConfigPassphrase()
+        ]
+    });
+
     const subprocess = pulumi.run({
         command: "preview",
         args: {
@@ -24,15 +34,7 @@ export const executePreview = async ({ inputs, context, pulumi }: IExecutePrevie
             // secretsProvider: PULUMI_SECRETS_PROVIDER
         },
         execa: {
-            env: createEnvConfiguration({
-                configurations: [
-                    withRegion(inputs),
-                    withEnv(inputs),
-                    withEnvVariant(inputs),
-                    withProjectName(context),
-                    withPulumiConfigPassphrase()
-                ]
-            })
+            env: config
         }
     });
     subprocess.stdout!.pipe(process.stdout);

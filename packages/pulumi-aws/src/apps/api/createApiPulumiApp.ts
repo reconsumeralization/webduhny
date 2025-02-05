@@ -22,6 +22,11 @@ import {
     withServiceManifest
 } from "~/utils";
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
+import { getEnvVariableWebinyVariant } from "~/env/variant";
+import { getEnvVariableWebinyEnv } from "~/env/env";
+import { getEnvVariableWebinyProjectName } from "~/env/projectName";
+import { getEnvVariableAwsRegion } from "~/env/awsRegion";
+import { getEnvVariableLogsForwardUrl } from "~/env/logsForwardUrl";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
 
@@ -137,7 +142,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
 
             // Enables logs forwarding.
             // https://www.webiny.com/docs/how-to-guides/use-watch-command#enabling-logs-forwarding
-            const WEBINY_LOGS_FORWARD_URL = String(process.env.WEBINY_LOGS_FORWARD_URL);
+            const WEBINY_LOGS_FORWARD_URL = getEnvVariableLogsForwardUrl();
 
             // Register core output as a module available to all the other modules
             const core = app.addModule(CoreOutput);
@@ -148,7 +153,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
 
             const pageBuilder = app.addModule(ApiPageBuilder, {
                 env: {
-                    COGNITO_REGION: String(process.env.AWS_REGION),
+                    COGNITO_REGION: getEnvVariableAwsRegion(),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
                     DB_TABLE_LOG: core.logDynamodbTableName,
@@ -169,7 +174,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                 primaryDynamodbTableArn: core.primaryDynamodbTableArn,
 
                 env: {
-                    COGNITO_REGION: String(process.env.AWS_REGION),
+                    COGNITO_REGION: getEnvVariableAwsRegion(),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
                     DB_TABLE_LOG: core.logDynamodbTableName,
@@ -180,7 +185,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
 
             const graphql = app.addModule(ApiGraphql, {
                 env: {
-                    COGNITO_REGION: String(process.env.AWS_REGION),
+                    COGNITO_REGION: getEnvVariableAwsRegion(),
                     COGNITO_USER_POOL_ID: core.cognitoUserPoolId,
                     DB_TABLE: core.primaryDynamodbTableName,
                     DB_TABLE_LOG: core.logDynamodbTableName,
@@ -303,9 +308,9 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
             });
 
             tagResources({
-                WbyProjectName: String(process.env["WEBINY_PROJECT_NAME"]),
-                WbyEnvironment: String(process.env["WEBINY_ENV"]),
-                WbyEnvironmentVariant: String(process.env["WEBINY_ENV_VARIANT"])
+                WbyProjectName: getEnvVariableWebinyProjectName(),
+                WbyEnvironment: getEnvVariableWebinyEnv(),
+                WbyEnvironmentVariant: getEnvVariableWebinyVariant()
             });
 
             return {

@@ -40,7 +40,7 @@ export const executeDeploy = async ({ inputs, context, pulumi }: IExecuteDeployP
     // We always show deployment logs when doing previews.
     const showDeploymentLogs = isCI || inputs.deploymentLogs;
 
-    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
+    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
 
     const getDeploymentDuration = measureDuration();
 

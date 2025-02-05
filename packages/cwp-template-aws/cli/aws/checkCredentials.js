@@ -4,11 +4,13 @@ const { green } = require("chalk");
 module.exports = {
     type: "hook-before-deploy",
     name: "hook-before-deploy-aws-credentials",
-    async hook(_, context) {
+    async hook({ inputs }, context) {
         process.env.AWS_SDK_LOAD_CONFIG = "true";
 
         // Check if AWS credentials are configured
-        const sts = new STS();
+        const sts = new STS({
+            region: inputs.region || process.env.AWS_REGION
+        });
 
         try {
             await sts.getCallerIdentity({});

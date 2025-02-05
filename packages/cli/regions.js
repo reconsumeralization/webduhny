@@ -7,6 +7,10 @@ const regions = [
     { value: "eu-central-1", name: "eu-central-1 (EU, Frankfurt)" },
     { value: "eu-west-1", name: "eu-west-1 (EU, Ireland)" },
     { value: "eu-west-2", name: "eu-west-2 (EU, London)" },
+    /**
+     * This was commented out because cognito was not available in this region in 2021.
+     * TODO - uncomment and test it out
+     */
     /*{ value: "eu-south-1", name: "eu-south-1 (EU, Milan)" },*/
     { value: "eu-west-3", name: "eu-west-3 (EU, Paris)" },
     { value: "eu-north-1", name: "eu-north-1 (EU, Stockholm)" },

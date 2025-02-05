@@ -71,12 +71,20 @@ export const execute = (params: ExecuteParams): Promise<any> => {
     });
     const cookies = getPayloadProperty(payload, "cookies", {});
 
+    // console.log({
+    //     executing: true,
+    //     payload,
+    //     query,
+    //     headers,
+    //     cookies
+    // });
     return new Promise(resolve => {
         app.inject(
             {
                 method: "POST",
                 url,
                 payload: payload || {},
+                body: payload || {},
                 query,
                 headers,
                 cookies

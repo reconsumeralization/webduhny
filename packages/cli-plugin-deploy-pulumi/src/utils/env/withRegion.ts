@@ -1,6 +1,5 @@
 import { createConfiguration } from "./configuration";
-
-const MIN_CHARS = 5;
+import { regions } from "@webiny/cli/regions";
 
 export interface IWithRegionParams {
     region: string | undefined;
@@ -8,9 +7,13 @@ export interface IWithRegionParams {
 
 export const withRegion = (params: IWithRegionParams) => {
     return createConfiguration(() => {
-        const region = (params.region || "").trim();
-        if (!region || region.length < MIN_CHARS) {
+        const { region } = params;
+        if (!region) {
             return;
+        }
+        const exists = regions.some(item => item.value === region);
+        if (!exists) {
+            throw new Error(`Webiny does not support region "${region}".`);
         }
         return {
             AWS_REGION: region

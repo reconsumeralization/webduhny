@@ -25,7 +25,7 @@ export const pulumiRunCommand = createPulumiCommand({
 
             let stackExists = true;
             try {
-                const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
+                const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
 
                 await pulumi.run({
                     command: ["stack", "select", stackName],

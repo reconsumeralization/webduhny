@@ -119,7 +119,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
     }
 
     // 1.1. Check if the project application and Pulumi stack exist.
-    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER as string;
+    const PULUMI_SECRETS_PROVIDER = process.env.PULUMI_SECRETS_PROVIDER;
 
     if (inputs.deploy && projectApplication) {
         const { env, variant } = inputs;
@@ -223,7 +223,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                             withEnv(inputs),
                             withEnvVariant(inputs),
                             withProjectName(context),
-                            withLogsForwardUrl({ url: logging.url })
+                            withLogsForwardUrl(logging)
                         ]
                     })
                 }
