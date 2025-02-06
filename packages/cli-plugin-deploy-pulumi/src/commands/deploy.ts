@@ -17,6 +17,7 @@ export interface IDeployParams {
     region: string | undefined;
     folder: string;
     cwd: string;
+    telemetry?: boolean;
 }
 
 export const deployCommand = (params: IDeployParams, context: CliContext) => {

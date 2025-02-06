@@ -7,7 +7,7 @@ export interface IWithEnvVariantParams {
 export const withEnvVariant = (params: IWithEnvVariantParams) => {
     return createConfiguration(() => {
         const variant = (params.variant || "").trim();
-        if (!variant || variant.length < 3) {
+        if (!variant) {
             return;
         }
         return {

@@ -12251,7 +12251,6 @@ __metadata:
     "@webiny/handler-client": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
     "@webiny/handler-graphql": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/pubsub": "npm:0.0.0"
@@ -15270,6 +15269,7 @@ __metadata:
     "@webiny/aws-sdk": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/cli-plugin-deploy-pulumi": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
     chalk: "npm:^4.1.2"
     ci-info: "npm:^4.1.0"
     dotenv: "npm:^8.2.0"
@@ -15282,6 +15282,9 @@ __metadata:
     lodash: "npm:^4.17.21"
     open: "npm:^8.4.2"
     ora: "npm:4.1.1"
+    rimraf: "npm:^6.0.1"
+    type-fest: "npm:4.14.0"
+    typescript: "npm:5.3.3"
     write-json-file: "npm:^4.3.0"
   languageName: unknown
   linkType: soft
@@ -15490,18 +15493,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/handler-logs@npm:0.0.0, @webiny/handler-logs@workspace:packages/handler-logs":
+"@webiny/handler-logs@workspace:packages/handler-logs":
   version: 0.0.0-use.local
   resolution: "@webiny/handler-logs@workspace:packages/handler-logs"
-  dependencies:
-    "@types/node-fetch": "npm:^2.6.1"
-    "@webiny/cli": "npm:0.0.0"
-    "@webiny/handler": "npm:0.0.0"
-    "@webiny/handler-aws": "npm:0.0.0"
-    "@webiny/project-utils": "npm:0.0.0"
-    node-fetch: "npm:2.6.7"
-    rimraf: "npm:^6.0.1"
-    typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
 
@@ -16032,7 +16026,6 @@ __metadata:
     "@webiny/global-config": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/migrations": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
@@ -17038,7 +17031,6 @@ __metadata:
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
     "@webiny/handler-graphql": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     graphql-request: "npm:^3.7.0"
@@ -17080,7 +17072,6 @@ __metadata:
     "@webiny/db-dynamodb": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
   languageName: unknown
   linkType: soft
@@ -17112,7 +17103,6 @@ __metadata:
     "@webiny/db-dynamodb": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
   languageName: unknown
   linkType: soft
@@ -17139,7 +17129,6 @@ __metadata:
     "@webiny/db-dynamodb": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
   languageName: unknown
   linkType: soft
@@ -17173,7 +17162,6 @@ __metadata:
     "@webiny/db-dynamodb": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-db": "npm:0.0.0"
-    "@webiny/handler-logs": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
   languageName: unknown
   linkType: soft

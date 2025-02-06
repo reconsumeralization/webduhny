@@ -21,10 +21,8 @@ import {
 } from "~/utils";
 import {
     createEnvConfiguration,
-    IWithLogsForwardUrlParams,
     withEnv,
     withEnvVariant,
-    withLogsForwardUrl,
     withProjectName,
     withPulumiConfigPassphrase,
     withRegion
@@ -161,10 +159,6 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
         output.initialize(inputs);
     }
 
-    const logging: IWithLogsForwardUrlParams = {
-        url: null
-    };
-
     // Add deploy logs.
     if (inputs.deploy && projectApplication) {
         try {
@@ -222,8 +216,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
                             withRegion(inputs),
                             withEnv(inputs),
                             withEnvVariant(inputs),
-                            withProjectName(context),
-                            withLogsForwardUrl(logging)
+                            withProjectName(context)
                         ]
                     })
                 }
