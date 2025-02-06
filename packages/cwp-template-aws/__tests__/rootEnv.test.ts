@@ -26,7 +26,8 @@ describe("root .env file generation test", () => {
             projectRoot: PROJECT_ROOT,
             templateOptions: {
                 region: "eu-central-1"
-            }
+            },
+            overrideDirname: path.resolve(__dirname, "..")
         });
     });
 

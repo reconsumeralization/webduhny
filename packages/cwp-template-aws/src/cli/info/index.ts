@@ -2,6 +2,7 @@ import { getPulumi, getStackOutput, splitStackName } from "@webiny/cli-plugin-de
 import path from "path";
 import { blue } from "chalk";
 import type { CliCommandPlugin } from "@webiny/cli/types";
+import glob from "fast-glob";
 
 interface IGetInfoParams {
     env: string;
@@ -128,9 +129,6 @@ export const infoCommand: CliCommandPlugin = {
                 await getPulumi();
 
                 if (!args.env) {
-                    // Get all existing environments
-                    const glob = require("fast-glob");
-
                     // We just get stack files for deployed Core application. That's enough
                     // to determine into which environments the user has deployed their project.
                     const pulumiAdminStackFilesPaths = glob.sync(

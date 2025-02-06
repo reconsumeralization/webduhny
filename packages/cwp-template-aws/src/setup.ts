@@ -33,10 +33,22 @@ export interface ISetupParams {
         region?: string;
         storageOperations?: string;
     };
+    /**
+     * @internal
+     *
+     * Used for testing.
+     */
+    overrideDirname?: string;
 }
 
 export const setup = async (params: ISetupParams) => {
-    const { isGitAvailable, projectRoot, projectName, templateOptions = {} } = params;
+    const {
+        isGitAvailable,
+        projectRoot,
+        projectName,
+        templateOptions = {},
+        overrideDirname
+    } = params;
     const { region = getDefaultRegion(), storageOperations = "ddb" } = templateOptions;
     /**
      * We need to check for the existence of the common and storageOperations folders to continue.
@@ -46,8 +58,11 @@ export const setup = async (params: ISetupParams) => {
         process.exit(1);
     }
 
-    const commonTemplate = path.join(__dirname, `template/common`);
-    const storageOperationsTemplate = path.join(__dirname, `template/${storageOperations}`);
+    const commonTemplate = path.join(overrideDirname || __dirname, `template/common`);
+    const storageOperationsTemplate = path.join(
+        overrideDirname || __dirname,
+        `template/${storageOperations}`
+    );
     if (!fs.existsSync(commonTemplate)) {
         console.log(`Missing common template folder "${commonTemplate}".`);
         process.exit(1);
@@ -85,8 +100,10 @@ export const setup = async (params: ISetupParams) => {
     await writeJsonFile(packageJsonPath, packageJson);
 
     await fs.removeSync(dependenciesJsonPath);
-
-    const { name, version } = require("./package.json");
+    /**
+     * Had to change from ./package.json to full path, because package.json does not exist in the src folder during development / testing.
+     */
+    const { name, version } = require("@webiny/cwp-template-aws/package.json");
 
     if (!IS_TEST && isGitAvailable) {
         // Commit .gitignore.
