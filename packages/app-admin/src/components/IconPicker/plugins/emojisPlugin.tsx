@@ -12,14 +12,12 @@ const SKIN_TONES = ["", "\u{1f3fb}", "\u{1f3fc}", "\u{1f3fd}", "\u{1f3fe}", "\u{
 
 const SkinToneSelectWrapper = (props: React.HTMLAttributes<HTMLDivElement>) => {
     return (
-        <div>
-            <div
-                className={cn(
-                    "wby-size-xl wby-rounded-sm wby-pointer wby-border-solid wby-border-sm wby-border-neutral-muted wby-flex wby-justify-center wby-items-center wby-text-center"
-                )}
-            >
-                {props.children}
-            </div>
+        <div
+            className={cn(
+                "wby-size-xl wby-rounded-sm wby-pointer wby-border-solid wby-border-sm wby-border-neutral-muted wby-flex wby-justify-center wby-items-center wby-text-center"
+            )}
+        >
+            {props.children}
         </div>
     );
 };
@@ -80,7 +78,7 @@ const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectPr
 
     return (
         <Popover open={open} onOpenChange={open => setOpen(open)}>
-            <Popover.Trigger>
+            <Popover.Trigger className={"wby-outline-none"}>
                 <SkinToneSelectWrapper>
                     <IconProvider icon={icon} size={24}>
                         <Emoji />

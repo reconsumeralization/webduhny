@@ -173,6 +173,7 @@ export const IconPickerTab = ({
                             </div>
                         ) : (
                             <List
+                                className={"wby-outline-none"}
                                 rowRenderer={({ key, ...props }) => (
                                     <RowRenderer
                                         key={key}
