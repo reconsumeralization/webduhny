@@ -1,14 +1,25 @@
 import React, { useMemo } from "react";
 import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
 import { Icon as IconComponent } from "~/Icon";
-import { inputVariants } from "~/Input";
-import type { VariantProps } from "~/utils";
+import { cn, cva, VariantProps } from "~/utils";
 import { IconPickerIcon } from "./IconPickerIcon";
 import { Icon, IconFormatter } from "../../domains";
 
-interface IconPickerTriggerProps {
+const iconPickerTriggerVariants = cva("wby-flex wby-items-center", {
+    variants: {
+        size: {
+            md: "wby-gap-xs",
+            lg: "wby-gap-xs",
+            xl: "wby-gap-sm"
+        }
+    },
+    defaultVariants: {
+        size: "md"
+    }
+});
+
+interface IconPickerTriggerProps extends VariantProps<typeof iconPickerTriggerVariants> {
     value?: string;
-    size?: VariantProps<typeof inputVariants>["size"];
 }
 
 const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
@@ -18,7 +29,7 @@ const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
     }, [value]);
 
     return (
-        <div className={"wby-flex wby-items-center wby-gap-xs"}>
+        <div className={cn(iconPickerTriggerVariants({ size }))}>
             <div>
                 <IconComponent
                     size={size === "xl" ? "lg" : "md"}

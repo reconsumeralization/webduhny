@@ -9,9 +9,9 @@ import { useIconPicker } from "./useIconPicker";
 const iconPickerVariants = cva("wby-cursor-pointer wby-text-neutral-strong", {
     variants: {
         size: {
-            md: "wby-w-[64px]",
-            lg: "wby-w-[64px]",
-            xl: "wby-w-[76px]"
+            md: "wby-w-16",
+            lg: "wby-w-16",
+            xl: "wby-w-20"
         },
         disabled: {
             true: "wby-pointer-events-none"
