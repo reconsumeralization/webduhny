@@ -21,11 +21,11 @@ const IconPickerContent = ({
     removable
 }: IconPickerContentProps) => {
     return (
-        <div className={"wby-bg-neutral-base wby-relative"}>
+        <div className={"wby-relative"}>
             {loading && <OverlayLoader size={"sm"} />}
             <Tabs
-                size={"md"}
-                spacing={"md"}
+                size={"sm"}
+                spacing={"sm"}
                 defaultValue={activeTab}
                 separator={true}
                 tabs={iconTypes.map(iconType => (
@@ -37,11 +37,11 @@ const IconPickerContent = ({
             {removable && (
                 <div
                     className={
-                        "wby-flex wby-flex-col wby-px-md wby-py-sm wby-border-solid wby-border-t-sm wby-border-neutral-muted"
+                        "wby-flex wby-flex-col wby-px-sm wby-py-sm wby-border-solid wby-border-t-sm wby-border-neutral-muted"
                     }
                 >
                     <Button
-                        size={"lg"}
+                        size={"md"}
                         variant={"secondary"}
                         text={"Remove"}
                         icon={<Icon icon={<DeleteIcon />} label={"Remove"} />}

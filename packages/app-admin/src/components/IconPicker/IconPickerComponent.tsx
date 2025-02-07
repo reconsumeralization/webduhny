@@ -72,7 +72,7 @@ export const IconPickerComponent = observer(
                         <IconPickerTrigger icon={selectedIcon} />
                     </Popover.Trigger>
                     <Popover.Content
-                        style={{ width: size === ICON_PICKER_SIZE.SMALL ? "264px" : "344px" }}
+                        style={{ width: size === ICON_PICKER_SIZE.SMALL ? "248px" : "328px" }}
                     >
                         <IconPickerContent
                             loading={isLoading}
