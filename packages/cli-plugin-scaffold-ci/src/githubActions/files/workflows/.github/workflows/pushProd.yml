@@ -60,10 +60,6 @@ jobs:
       - name: ESLint
         run: yarn eslint
 
-      # 3. Build custom packages located within the "packages" folder (if any).
-      - name: Build packages
-        run: yarn webiny workspaces run build --folder packages
-
       # 4. Run unit tests.
       - name: Run unit tests
         run: yarn test:unit
