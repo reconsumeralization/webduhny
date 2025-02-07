@@ -36,10 +36,10 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                     style={style}
                     className={cn([
                         "wby-flex wby-flex-col wby-justify-center wby-items-center wby-gap-sm",
+                        "wby-text-neutral-strong",
                         "hover:wby-bg-neutral-dimmed hover:wby-text-neutral-strong",
                         "wby-px-sm wby-box-border wby-rounded-xs wby-cursor-pointer wby-overflow-hidden",
-                        "wby-transition-all wby-duration-500 wby-ease-out",
-                        "wby-text-neutral-muted"
+                        "wby-transition-colors wby-duration-400 wby-ease-out"
                     ])}
                     onClick={() => {
                         if (props.onIconSelect) {
@@ -56,7 +56,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                         as={"div"}
                         size={"sm"}
                         text={item.name}
-                        className={"wby-w-full wby-truncate wby-text-center"}
+                        className={"wby-w-full wby-truncate wby-text-center wby-text-neutral-muted"}
                     />
                 </div>
             );
