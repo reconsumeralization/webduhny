@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta, Controls } from '@storybook/blocks';
 
 import * as ButtonStories from './Button.stories';
 
@@ -8,13 +8,125 @@ import * as ButtonStories from './Button.stories';
 
 The Button component is a key UI element that enables users to trigger actions or events, such as submitting forms, navigating pages, or interacting with system functionality. Its purpose is to provide a clear, intuitive way for users to interact with an system. Buttons are relevant in virtually all interfaces, ensuring user engagement by offering a simple, recognizable mechanism for executing commands. They are essential for usability, guiding user behavior and driving application workflows.
 
-<Canvas of={ButtonStories.Primary} />
-
 ## Usage
 
-```
+```jsx
 import { Button } from '@webiny/admin-ui';
 ```
+
+```jsx
+<Button variant="primary">Button</Button>
+```
+## Props
+
+<Canvas of={ButtonStories.Documentation}
+    source={ { code:
+        ` // Code for a Primary, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="primary" size="md">Button</Button>
+
+         ` } }
+    additionalActions={[
+        {
+            title: 'Open in GitHub',
+            onClick: () => {
+                window.open(
+                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Button/Button.tsx',
+                    '_blank'
+                );
+            },
+        }
+    ]}
+/>
+
+<Controls of={ButtonStories.Documentation} exclude={"onClick"} />
+
+## Examples
+
+### Primary
+
+<Canvas of={ButtonStories.Primary}
+        source={ { code:
+        `// Code for a Primary, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="primary" size="md">Button</Button>
+
+        ` } }
+/>
+
+
+### Secondary
+
+<Canvas of={ButtonStories.Secondary}
+        source={ { code:
+        `// Code for a Secondary, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="secondary" size="md">Button</Button>
+
+` } }
+/>
+
+### Tertiary
+
+<Canvas of={ButtonStories.Tertiary}
+        source={ { code:
+        `// Code for a Tertiary, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="tertiary" size="md">Button</Button>
+
+` } }
+/>
+
+### Ghost
+
+<Canvas of={ButtonStories.Ghost}
+        source={ { code:
+        `// Code for a Ghost, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="ghost" size="md">Button</Button>
+
+` } }
+/>
+
+### Ghost Negative
+
+<Canvas of={ButtonStories.GhostNegative}
+        source={ { code:
+                `// Code for a Ghost Negative, Medium sized button
+        \n import { Button } from '@webiny/admin-ui';
+        \n <Button variant="ghost-negative" size="md">Button</Button>
+
+` } }
+/>
+
+### With Icon
+
+<Canvas of={ButtonStories.WithIcon} story={ {inline: false}}
+        source={ { code:
+                `// Code for a With Icon, Medium sized button
+
+import { Button } from '@webiny/admin-ui';
+import { ReactComponent as PencilIcon } from "@material-design-icons/svg/filled/edit.svg";
+\n<Button variant="primary" size="md" icon={<PencilIcon />} iconPosition="start">Button</Button>
+` } }
+/>
+
+
+### As Child
+The Button component can be used as a wrapper for other elements, allowing flexible composition. This is particularly useful when integrating custom text elements, or any other components inside a button.
+
+<Canvas of={ButtonStories.WithAsChild} story={ {inline: false}}
+        source={ { code:
+                `// Code for a As Child button
+
+\n import { Button } from '@webiny/admin-ui';
+\n import { ReactComponent as PencilIcon } from "@material-design-icons/svg/filled/edit.svg";
+<Button variant="primary" size="md" asChild=true>
+    <span>Button</span>
+</Button>
+
+` } }
+/>
 
 ## Anatomy
 

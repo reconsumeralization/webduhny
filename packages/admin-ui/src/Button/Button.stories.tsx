@@ -7,16 +7,45 @@ import { Button } from "./Button";
 const meta: Meta<typeof Button> = {
     title: "Components/Button",
     component: Button,
-    // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-    // More on argTypes: https://storybook.js.org/docs/api/argtypes
     argTypes: {
         variant: {
+            description: "Type",
             control: "select",
-            options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"]
+            options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"],
+            defaultValue: "primary"
         },
-        size: { control: "select", options: ["sm", "md", "lg", "xl"] },
-        disabled: { control: "boolean" },
-        text: { control: "text" },
+        size: {
+            description: "Size",
+            control: "select",
+            options: ["sm", "md", "lg", "xl"],
+            defaultValue: "md"
+        },
+        text: {
+            description: "Label",
+            control: "text",
+            defaultValue: "Button"
+        },
+        disabled: {
+            description: "State",
+            control: "boolean",
+            defaultValue: false
+        },
+        icon: {
+            description:
+                "Please refer to the '[With Icon](#with-icon)' button example below for details.",
+            control: "none"
+        },
+        iconPosition: {
+            description: "Icon Position",
+            control: "select",
+            options: ["start", "end"],
+            defaultValue: "start"
+        },
+        asChild: {
+            description:
+                "Please refer to the '[As Child](#as-child)' button example below for details.",
+            control: "none"
+        },
         // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onClick argument.
         onClick: { action: "onClick" }
     }
@@ -55,8 +84,8 @@ export const Ghost: Story = {
 
 export const GhostNegative: Story = {
     decorators: [
-        Story => (
-            <div className="wby-bg-[#25292e] wby-p-[300px] wby-rounded-[5px]">
+        (Story: any) => (
+            <div className="wby-bg-[#25292e] wby-p-[50px] wby-rounded-[5px]">
                 <Story />
             </div>
         )
@@ -115,5 +144,23 @@ export const WithAsChild: Story = {
         ...Primary.args,
         asChild: true,
         text: <span>Button</span>
+    }
+};
+
+/* The Documentation story is created for the Docs page.
+ * The description column for the `iconPosition` and `icon` props displays
+ * an extra dash (-), and the formatting breaks unless defined in the story.
+ * Hence, this Documentation story was created.
+ */
+
+export const Documentation: Story = {
+    args: {
+        variant: "primary",
+        text: "Button",
+        size: "md",
+        disabled: false,
+        icon: "",
+        iconPosition: "start",
+        asChild: ""
     }
 };
