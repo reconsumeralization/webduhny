@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import { IconPicker } from "~/IconPicker";
 
 const meta: Meta<typeof IconPicker> = {
@@ -17,6 +19,9 @@ const meta: Meta<typeof IconPicker> = {
         return <IconPicker {...args} value={value} onChange={setValue} />;
     }
 };
+
+// @ts-expect-error
+library.add(fas);
 
 export default meta;
 type Story = StoryObj<typeof IconPicker>;

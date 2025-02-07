@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import { IconPickerPrimitive } from "./IconPickerPrimitive";
 
 const meta: Meta<typeof IconPickerPrimitive> = {
@@ -24,6 +26,9 @@ const meta: Meta<typeof IconPickerPrimitive> = {
         layout: "padded"
     }
 };
+
+// @ts-expect-error
+library.add(fas);
 
 export default meta;
 type Story = StoryObj<typeof IconPickerPrimitive>;
