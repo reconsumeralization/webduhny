@@ -161,6 +161,6 @@ export const Documentation: Story = {
         disabled: false,
         icon: "",
         iconPosition: "start",
-        asChild: ""
+        asChild: false
     }
 };
