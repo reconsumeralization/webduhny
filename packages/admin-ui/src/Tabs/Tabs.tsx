@@ -18,14 +18,14 @@ const Root = TabsPrimitive.Root;
 interface TabsProps extends Omit<TabsPrimitive.TabsProps, "children"> {
     tabs: React.ReactElement<TabProps>[];
     size?: VariantProps<typeof tabListVariants>["size"];
-    gutter?: VariantProps<typeof tabListVariants>["gutter"];
+    spacing?: VariantProps<typeof tabListVariants>["spacing"];
     separator?: VariantProps<typeof tabListVariants>["separator"];
 }
 
 const DecoratableTabs = ({
     defaultValue: initialValue,
     size,
-    gutter,
+    spacing,
     separator,
     tabs: tabComponents,
     ...props
@@ -47,7 +47,7 @@ const DecoratableTabs = ({
             <List
                 key={tabs.map(tab => tab.id).join(";")}
                 size={size}
-                gutter={gutter}
+                spacing={spacing}
                 separator={separator}
             >
                 {tabs.map(tab => (
@@ -64,15 +64,15 @@ const DecoratableTabs = ({
                 ))}
             </List>
         ),
-        [tabs, size, gutter]
+        [tabs, size, spacing]
     );
 
     const contents = useMemo(
         () =>
             tabs.map(tab => (
-                <Content key={tab.id} value={tab.value} content={tab.content} gutter={gutter} />
+                <Content key={tab.id} value={tab.value} content={tab.content} spacing={spacing} />
             )),
-        [tabs, gutter]
+        [tabs, spacing]
     );
 
     const context: ITabsContext = useMemo(

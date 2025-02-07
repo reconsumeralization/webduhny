@@ -25,7 +25,7 @@ const IconPickerContent = ({
             {loading && <OverlayLoader size={"sm"} />}
             <Tabs
                 size={"md"}
-                gutter={"md"}
+                spacing={"md"}
                 defaultValue={activeTab}
                 separator={true}
                 tabs={iconTypes.map(iconType => (

@@ -13,7 +13,7 @@ const tabContentVariants = cva(
     ],
     {
         variants: {
-            gutter: {
+            spacing: {
                 xs: "wby-p-xs",
                 sm: "wby-p-sm",
                 md: "wby-p-md",
@@ -30,9 +30,9 @@ type ContentProps = Omit<TabsPrimitive.TabsContentProps, "children" | "content">
         content: React.ReactNode;
     };
 
-const Content = ({ className, content, gutter, ...props }: ContentProps) => (
+const Content = ({ className, content, spacing, ...props }: ContentProps) => (
     <TabsPrimitive.Content
-        className={cn(tabContentVariants({ gutter }), className)}
+        className={cn(tabContentVariants({ spacing }), className)}
         forceMount={true}
         {...props}
     >
