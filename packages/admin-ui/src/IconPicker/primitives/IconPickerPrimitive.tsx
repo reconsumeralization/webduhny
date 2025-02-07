@@ -3,7 +3,7 @@ import { inputVariants } from "~/Input";
 import { Popover } from "~/Popover";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerGrid, IconPickerInput, IconPickerTrigger } from "./components";
-import { IconDto } from "../domains";
+import { IconPickerIconDto } from "../domains";
 import { useIconPicker } from "./useIconPicker";
 
 const iconPickerVariants = cva("wby-cursor-pointer wby-text-neutral-strong", {
@@ -27,7 +27,7 @@ interface IconPickerPrimitiveProps
         VariantProps<typeof inputVariants> {
     value?: string;
     onChange?: (value: string) => void;
-    icons: IconDto[];
+    icons: IconPickerIconDto[];
     disabled?: boolean;
 }
 

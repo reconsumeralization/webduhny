@@ -1,6 +1,6 @@
-import { IconDto } from "./IconDto";
+import { IconPickerIconDto } from "./IconPickerIconDto";
 
-export class Icon {
+export class IconPickerIcon {
     private readonly _prefix: string;
     private readonly _name: string;
 
@@ -9,8 +9,8 @@ export class Icon {
         this._name = data.name;
     }
 
-    static create(data: IconDto) {
-        return new Icon({
+    static create(data: IconPickerIconDto) {
+        return new IconPickerIcon({
             prefix: data.prefix,
             name: data.name
         });
@@ -19,12 +19,12 @@ export class Icon {
     static createFromString(value?: string) {
         if (typeof value === "string" && value.includes("/")) {
             const values = value.split("/");
-            return new Icon({
+            return new IconPickerIcon({
                 prefix: values[0],
                 name: values[1]
             });
         } else {
-            return new Icon({
+            return new IconPickerIcon({
                 prefix: "fas",
                 name: "star"
             });

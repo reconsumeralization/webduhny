@@ -1,4 +1,4 @@
-export interface IconDto {
+export interface IconPickerIconDto {
     prefix: string;
     name: string;
 }

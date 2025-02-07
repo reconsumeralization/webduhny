@@ -1,15 +1,21 @@
 import { makeAutoObservable } from "mobx";
-import { Icon, IconDto, IconFormattedFontAwesome, IconFormatter, ListCache } from "../../domains";
+import {
+    IconPickerIcon,
+    IconPickerIconDto,
+    IconPickerFontAwesome,
+    IconFormatter,
+    ListCache
+} from "../../domains";
 
 interface IconPickerParams {
-    icons: IconDto[];
+    icons: IconPickerIconDto[];
     onChange?: (value: string) => void;
 }
 
 interface IIconPickerPresenter {
     vm: {
         open: boolean;
-        icons: IconFormattedFontAwesome[];
+        icons: IconPickerFontAwesome[];
         iconsLength: number;
         searchQuery: string;
     };
@@ -21,7 +27,7 @@ interface IIconPickerPresenter {
 
 class IconPickerPresenter implements IIconPickerPresenter {
     private open = false;
-    private icons = new ListCache<Icon>();
+    private icons = new ListCache<IconPickerIcon>();
     private searchQuery = "";
     private params?: IconPickerParams = undefined;
 
@@ -32,7 +38,7 @@ class IconPickerPresenter implements IIconPickerPresenter {
     public init = (params: IconPickerParams) => {
         this.params = params;
         this.icons.clear();
-        this.icons.addItems(params.icons.map(icon => Icon.create(icon)));
+        this.icons.addItems(params.icons.map(icon => IconPickerIcon.create(icon)));
     };
 
     get vm() {

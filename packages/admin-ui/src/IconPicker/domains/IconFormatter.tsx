@@ -1,16 +1,16 @@
-import { Icon } from "./Icon";
+import { IconPickerIcon } from "./IconPickerIcon";
 import { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
-import { IconFormattedFontAwesome } from "./IconFormattedFontAwesome";
+import { IconPickerFontAwesome } from "./IconPickerFontAwesome";
 
 export class IconFormatter {
-    static formatFontAwesome(icon: Icon): IconFormattedFontAwesome {
+    static formatFontAwesome(icon: IconPickerIcon): IconPickerFontAwesome {
         return {
             prefix: icon.prefix as IconPrefix,
             name: icon.name as IconName
         };
     }
 
-    static formatStringValue(icon: Icon | IconFormattedFontAwesome) {
+    static formatStringValue(icon: IconPickerIcon | IconPickerFontAwesome) {
         return `${icon.prefix}/${icon.name}`;
     }
 }

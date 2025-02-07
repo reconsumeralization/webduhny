@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Grid, GridCellProps } from "react-virtualized";
 import { Text } from "~/Text";
 import { cn } from "~/utils";
-import { IconFormattedFontAwesome, IconFormatter } from "../../domains";
+import { IconPickerFontAwesome, IconFormatter } from "../../domains";
 import { IconPickerIcon } from "./IconPickerIcon";
 
 const COLUMN_COUNT = 5;
@@ -12,7 +12,7 @@ const COLUMN_WIDTH = 80;
 const ROW_HEIGHT = 80;
 
 interface IconPickerGridProps {
-    icons: IconFormattedFontAwesome[];
+    icons: IconPickerFontAwesome[];
     iconsLength: number;
     onIconSelect: (value: string) => void;
 }

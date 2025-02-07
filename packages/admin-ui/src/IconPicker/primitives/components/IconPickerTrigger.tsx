@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
 import { Icon as IconComponent } from "~/Icon";
 import { cn, cva, VariantProps } from "~/utils";
-import { IconPickerIcon } from "./IconPickerIcon";
-import { Icon, IconFormatter } from "../../domains";
+import { IconPickerIcon as IconPickerIconComponent } from "./IconPickerIcon";
+import { IconPickerIcon, IconFormatter } from "../../domains";
 
 const iconPickerTriggerVariants = cva("wby-flex wby-items-center", {
     variants: {
@@ -24,7 +24,7 @@ interface IconPickerTriggerProps extends VariantProps<typeof iconPickerTriggerVa
 
 const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
     const icon = useMemo(() => {
-        const icon = Icon.createFromString(value);
+        const icon = IconPickerIcon.createFromString(value);
         return IconFormatter.formatFontAwesome(icon);
     }, [value]);
 
@@ -33,7 +33,7 @@ const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
             <div>
                 <IconComponent
                     size={size === "xl" ? "lg" : "md"}
-                    icon={<IconPickerIcon prefix={icon.prefix} name={icon.name} />}
+                    icon={<IconPickerIconComponent prefix={icon.prefix} name={icon.name} />}
                     label={`Selected icon`}
                 />
             </div>

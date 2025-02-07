@@ -14,7 +14,7 @@ import { Theme } from "@webiny/app-theme/types";
 import { Renderer } from "@webiny/app-page-builder-elements/types";
 import { FolderTableItem, RecordTableItem, SearchRecordItem } from "@webiny/app-aco/table.types";
 import type { SourceType } from "dnd-core";
-import { IconDto } from "@webiny/admin-ui";
+import { IconPickerIconDto } from "@webiny/admin-ui";
 
 export type DragObjectWithType = {
     type: SourceType;
@@ -624,7 +624,7 @@ export interface PbEditorPageQueryFieldsPlugin extends Plugin {
 
 export type PbIconsPlugin = Plugin & {
     type: "pb-icons";
-    getIcons(): IconDto[];
+    getIcons(): IconPickerIconDto[];
 };
 
 export type PbEditorToolbarTopPlugin = Plugin & {
