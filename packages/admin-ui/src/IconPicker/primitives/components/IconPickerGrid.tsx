@@ -38,7 +38,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                         "wby-flex wby-flex-col wby-justify-center wby-items-center wby-gap-sm",
                         "wby-text-neutral-strong",
                         "hover:wby-bg-neutral-dimmed hover:wby-text-neutral-strong",
-                        "wby-px-sm wby-box-border wby-rounded-xs wby-cursor-pointer wby-overflow-hidden",
+                        "wby-px-xs-plus wby-box-border wby-rounded-xs wby-cursor-pointer wby-overflow-hidden",
                         "wby-transition-colors wby-duration-400 wby-ease-out"
                     ])}
                     onClick={() => {
@@ -64,7 +64,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
     }, [props.icons]);
 
     return (
-        <div className={"wby-bg-neutral-base"}>
+        <div>
             {props.iconsLength === 0 ? (
                 <div className={`wby-px-sm-extra wby-py-md wby-text-neutral-strong`}>
                     <Text text={"No results found."} />

@@ -60,7 +60,7 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
                     <IconPickerTrigger value={props.value} size={props.size} />
                 </div>
             </Popover.Trigger>
-            <Popover.Content align={"start"} className={`wby-min-w-96 wby-bg-white`}>
+            <Popover.Content align={"start"} className={"wby-min-w-96"}>
                 <IconPickerInput value={vm.searchQuery} onChange={searchIcon} inputRef={inputRef} />
                 <IconPickerGrid
                     icons={vm.icons}

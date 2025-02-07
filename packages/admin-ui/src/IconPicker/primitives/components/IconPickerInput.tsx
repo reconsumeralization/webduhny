@@ -25,7 +25,7 @@ const IconPickerInput = (props: IconPickerInputProps) => {
     return (
         <DelayedOnChange value={props.value} onChange={onInputChange}>
             {({ value, onChange }) => (
-                <div className={cn("wby-p-sm-plus wby-pb-0")}>
+                <div className={cn("wby-p-xs-plus wby-pb-0")}>
                     <Input
                         inputRef={props.inputRef}
                         value={value}
