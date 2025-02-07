@@ -71,7 +71,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                 </div>
             ) : (
                 <Grid
-                    className={"wby-px-sm-extra wby-py-xs-plus"}
+                    className={"wby-px-sm-extra wby-py-xs-plus wby-outline-none"}
                     cellRenderer={renderCell()}
                     columnCount={COLUMN_COUNT}
                     columnWidth={COLUMN_WIDTH}
