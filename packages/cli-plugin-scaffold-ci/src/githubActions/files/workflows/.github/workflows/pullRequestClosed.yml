@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      # 1. Install and cache dependencies.
+      # Install and cache dependencies.
       - uses: actions/cache@v2
         id: yarn-cache
         with:
@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
 
-      # 2. Destroy short-lived environment.
+      # Destroy short-lived environment.
       - name: Destroy Website project application
         run: yarn webiny destroy apps/website --env pr${{ github.event.pull_request.number }}
 
