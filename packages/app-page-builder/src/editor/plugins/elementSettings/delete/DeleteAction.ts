@@ -16,7 +16,7 @@ const DeleteAction = ({ children }: DeleteActionPropsType) => {
         if (canDeleteElement(element)) {
             deleteElement(element);
         }
-    }, [element?.id]);
+    }, [element?.id, canDeleteElement, deleteElement]);
 
     return React.cloneElement(children, { onClick });
 };

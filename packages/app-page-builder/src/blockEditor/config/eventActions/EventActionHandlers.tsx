@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { saveBlockAction, SaveBlockActionEvent } from "./saveBlock";
 import { UpdateDocumentActionEvent } from "~/editor/recoil/actions";
-import { BlockEditorEventActionCallableState } from "~/blockEditor/types";
+import type { BlockEditorEventActionCallableState } from "~/blockEditor/types";
 import { Prompt } from "@webiny/react-router";
 
 export const EventActionHandlers = () => {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useEventActionHandler } from "@webiny/app-page-builder/editor";
+import { getDescendantsOfElement, useEventActionHandler } from "@webiny/app-page-builder/editor";
 import {
     CreateElementActionEvent,
     DeleteElementActionEvent
@@ -12,7 +12,6 @@ import type {
 } from "@webiny/app-page-builder/types";
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
-import { ContentTraverser } from "@webiny/app-page-builder/dataInjection";
 
 const doNothing = {
     actions: []
@@ -96,17 +95,10 @@ export const ElementEventHandlers = () => {
         // @ts-expect-error Event callable types need to be more generic.
         const template = state.template as PbPageTemplate;
 
-        const withDescendants = await state.getElementTree({ element });
+        const withDescendants = await getDescendantsOfElement(state, element);
 
-        const traverser = new ContentTraverser();
-        const deletedElements: string[] = [element.id];
-
-        traverser.traverse(withDescendants, node => {
-            deletedElements.push(node.id);
-        });
-
-        const deleteDataSources = deletedElements.map(id => `element:${id}`);
-        const deleteDataBindings = deletedElements.map(id => `element:${id}.`);
+        const deleteDataSources = withDescendants.map(node => `element:${node.id}`);
+        const deleteDataBindings = withDescendants.map(node => `element:${node.id}.`);
 
         const updatedTemplate: PbPageTemplate = {
             ...template,

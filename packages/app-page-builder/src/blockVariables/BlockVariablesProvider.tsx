@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import type { PbBlockVariable, PbEditorElement } from "~/types";
 import { useDynamicDocument } from "~/dataInjection";
+import { RemoveVariablesOnElementDelete } from "~/blockVariables/RemoveVariablesOnElementDelete";
 
 interface Updater<T> {
     (items: T[]): T[];
@@ -8,9 +9,10 @@ interface Updater<T> {
 
 export interface BlockVariablesContext {
     blockVariables: PbBlockVariable[];
-    updateBlockVariables: (cb: Updater<PbBlockVariable>) => void;
-    removeBlockVariables: (element: PbEditorElement) => void;
-    moveBlockVariable: (variable: PbBlockVariable, moveToIndex: number) => void;
+    updateVariables: (cb: Updater<PbBlockVariable>) => void;
+    removeElementVariables: (element: PbEditorElement) => void;
+    removeVariable: (variable: PbBlockVariable) => void;
+    moveVariable: (variable: PbBlockVariable, moveToIndex: number) => void;
 }
 
 export interface BlockVariablesProviderProps {
@@ -32,14 +34,37 @@ export const BlockVariablesProvider = ({
 }: BlockVariablesProviderProps) => {
     const { updateDataBindings } = useDynamicDocument();
 
-    const updateBlockVariables = (cb: Updater<PbBlockVariable>) => {
+    const updateVariables = (cb: Updater<PbBlockVariable>) => {
         onBlockVariables(cb(blockVariables));
     };
 
-    const removeBlockVariables = (element: PbEditorElement) => {
+    const removeVariable = (variable: PbBlockVariable) => {
+        updateVariables(variables => {
+            return variables.filter(existing => {
+                const match =
+                    existing.blockId === variable.blockId &&
+                    existing.inputName === variable.inputName &&
+                    existing.elementId === variable.elementId;
+
+                return !match;
+            });
+        });
+
+        updateDataBindings(bindings => {
+            return bindings.filter(b => {
+                const match =
+                    b.dataSource === "static" &&
+                    b.bindTo === `element:${variable.elementId}.${variable.inputName}`;
+
+                return !match;
+            });
+        });
+    };
+
+    const removeElementVariables = (element: PbEditorElement) => {
         const toDelete: PbBlockVariable[] = [];
 
-        updateBlockVariables(variables => {
+        updateVariables(variables => {
             return variables.filter(v => {
                 const match = v.elementId === element.id;
 
@@ -63,8 +88,8 @@ export const BlockVariablesProvider = ({
         });
     };
 
-    const moveBlockVariable = (variable: PbBlockVariable, moveToIndex: number) => {
-        updateBlockVariables(variables => {
+    const moveVariable = (variable: PbBlockVariable, moveToIndex: number) => {
+        updateVariables(variables => {
             const localVars = variables.filter(bv => bv.blockId === variable.blockId);
             const realSourceIndex = variables.findIndex(
                 v =>
@@ -99,11 +124,13 @@ export const BlockVariablesProvider = ({
         <BlockVariablesContext.Provider
             value={{
                 blockVariables,
-                updateBlockVariables,
-                moveBlockVariable,
-                removeBlockVariables
+                updateVariables,
+                moveVariable,
+                removeVariable,
+                removeElementVariables
             }}
         >
+            <RemoveVariablesOnElementDelete />
             {children}
         </BlockVariablesContext.Provider>
     );

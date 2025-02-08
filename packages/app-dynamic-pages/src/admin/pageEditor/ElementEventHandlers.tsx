@@ -12,7 +12,7 @@ import type {
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { PageAtomType } from "@webiny/app-page-builder/pageEditor/state";
-import { ContentTraverser } from "@webiny/app-page-builder/dataInjection";
+import { getDescendantsOfElement } from "@webiny/app-page-builder/editor";
 
 const doNothing = {
     actions: []
@@ -96,17 +96,10 @@ export const ElementEventHandlers = () => {
         // @ts-expect-error Event callable types need to be more generic.
         const page = state.page as PageAtomType;
 
-        const withDescendants = await state.getElementTree({ element });
+        const withDescendants = await getDescendantsOfElement(state, element);
 
-        const traverser = new ContentTraverser();
-        const deletedElements: string[] = [element.id];
-
-        traverser.traverse(withDescendants, node => {
-            deletedElements.push(node.id);
-        });
-
-        const deleteDataSources = deletedElements.map(id => `element:${id}`);
-        const deleteDataBindings = deletedElements.map(id => `element:${id}.`);
+        const deleteDataSources = withDescendants.map(node => `element:${node.id}`);
+        const deleteDataBindings = withDescendants.map(node => `element:${node.id}.`);
 
         const updatedPage: PageAtomType = {
             ...page,

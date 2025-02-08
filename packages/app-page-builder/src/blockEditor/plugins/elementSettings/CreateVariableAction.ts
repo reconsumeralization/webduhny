@@ -19,7 +19,7 @@ const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
     const [element] = useActiveElement<PbEditorElement>();
     const { inputs } = useElementRendererInputs(element);
     const { block } = useCurrentBlockElement();
-    const { updateBlockVariables } = useBlockVariables();
+    const { updateVariables } = useBlockVariables();
     const { updateDataBindings } = useDynamicDocument();
 
     const onClick = useCallback((): void => {
@@ -45,7 +45,7 @@ const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
             });
         }
 
-        updateBlockVariables(variables => {
+        updateVariables(variables => {
             const existingVarsIds = variables.map(variableToId);
 
             return [

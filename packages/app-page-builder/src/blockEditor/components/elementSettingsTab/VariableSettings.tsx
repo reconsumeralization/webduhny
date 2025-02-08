@@ -1,15 +1,16 @@
 import React, { useCallback } from "react";
 import styled from "@emotion/styled";
-import capitalize from "lodash/capitalize";
 import { ButtonPrimary } from "@webiny/ui/Button";
 import { ReactComponent as InfoIcon } from "@webiny/app-admin/assets/icons/info.svg";
 import type { PbEditorElement, PbBlockVariable } from "~/types";
-import TextInput from "./TextInput";
+import { TextInput } from "./TextInput";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import { ElementLinkStatusWrapper } from "./ElementNotLinked";
 import { useElementRendererInputs } from "~/blockEditor";
-import { ElementInput } from "@webiny/app-page-builder-elements";
 import { useBlockVariables } from "~/blockVariables/useBlockVariables";
+import { useCurrentBlockElement } from "~/editor";
+import { useToggleVariable } from "~/blockEditor/components/elementSettingsTab/useToggleVariable";
+import { useVariableInputs } from "./useVariableInputs";
 
 const FormWrapper = styled("div")({
     padding: "16px",
@@ -17,40 +18,11 @@ const FormWrapper = styled("div")({
     rowGap: "16px"
 });
 
-type VariableInput = {
-    id: string;
-    input: ElementInput;
-    variable?: PbBlockVariable;
-    label: string;
-    enabled: boolean;
-};
-
 class PbBlockVariableId {
     static create(variable: PbBlockVariable) {
         return `${variable.blockId}/${variable.elementId}/${variable.inputName}`;
     }
 }
-
-const useVariableInputs = (
-    element: PbEditorElement,
-    inputs: ElementInput[],
-    variables: PbBlockVariable[]
-) => {
-    return inputs.reduce<VariableInput[]>((acc, input) => {
-        const variable = variables.find(v => v.inputName === input.getName());
-
-        return [
-            ...acc,
-            {
-                id: `${element.id}/${input.getName()}`,
-                input,
-                variable,
-                label: variable?.label ?? capitalize(input.getName()),
-                enabled: !!variable
-            }
-        ];
-    }, []);
-};
 
 export interface VariableSettingsProps {
     element: PbEditorElement;
@@ -59,12 +31,14 @@ export interface VariableSettingsProps {
 
 const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
     const { inputs } = useElementRendererInputs(element);
-    const { removeBlockVariables, updateBlockVariables } = useBlockVariables();
+    const { block } = useCurrentBlockElement();
+    const { removeElementVariables, updateVariables } = useBlockVariables();
     const variableInputs = useVariableInputs(element, inputs, variables);
+    const toggleVariable = useToggleVariable(block, element);
 
     const updateVariable = useCallback(
         (variable: PbBlockVariable, label: string) => {
-            updateBlockVariables(variables => {
+            updateVariables(variables => {
                 return variables.map(existing => {
                     if (PbBlockVariableId.create(existing) === PbBlockVariableId.create(variable)) {
                         return { ...existing, label };
@@ -73,7 +47,7 @@ const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
                 });
             });
         },
-        [element, updateBlockVariables]
+        [element, updateVariables]
     );
 
     const { showConfirmation } = useConfirmationDialog({
@@ -84,9 +58,9 @@ const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
     const unlinkElement = useCallback(
         () =>
             showConfirmation(() => {
-                removeBlockVariables(element);
+                removeElementVariables(element);
             }),
-        [element]
+        [element, removeElementVariables]
     );
 
     return (
@@ -95,9 +69,11 @@ const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
                 {variableInputs.map(variableInput => (
                     <TextInput
                         key={variableInput.id}
-                        label={`${variableInput.input.getName()} Input Label`}
+                        disabled={!variableInput.enabled}
+                        label={`${variableInput.input.getName()} Variable Label`}
                         value={variableInput.label}
                         onChange={value => updateVariable(variableInput.variable!, value)}
+                        onToggleDisabled={() => toggleVariable(variableInput)}
                     />
                 ))}
             </FormWrapper>

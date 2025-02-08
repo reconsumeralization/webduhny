@@ -1,6 +1,6 @@
 import { PbEditorElement } from "~/types";
 
-type ElementNode = Omit<PbEditorElement, "elements"> & {
+export type ElementNode = Omit<PbEditorElement, "elements"> & {
     elements: ElementNode[];
 };
 
