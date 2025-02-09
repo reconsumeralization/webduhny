@@ -30,11 +30,13 @@
     "ncp": "2.0.0",
     "open": "^8.4.2",
     "pirates": "^4.0.6",
+    "read-json-sync": "2.0.1",
     "semver": "^7.6.3",
     "ts-morph": "^11.0.0",
     "typescript": "5.3.3",
     "uniqid": "^5.4.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "yargs-parser": "^21.1.1"
   },
   "license": "MIT",
   "publishConfig": {

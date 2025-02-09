@@ -69,7 +69,7 @@ export const downloadAndLinkExtension = async ({
     context,
     ora
 }: DownloadAndLinkExtensionParams) => {
-    const currentWebinyVersion = context.version;
+    const currentWebinyVersion = context.project.version;
 
     try {
         ora.start(`Downloading extension...`);

@@ -1,6 +1,4 @@
-import { createAdminPulumiApp, CreateAdminPulumiAppParams } from "@webiny/pulumi-aws";
-import { uploadAppToS3 } from "./react/plugins";
-import { ensureApiDeployedBeforeBuild } from "./admin/plugins";
+import type { CreateAdminPulumiAppParams } from "@webiny/pulumi-aws";
 import { PluginCollection } from "@webiny/plugins/types";
 
 export interface CreateAdminAppParams extends CreateAdminPulumiAppParams {
@@ -8,10 +6,6 @@ export interface CreateAdminAppParams extends CreateAdminPulumiAppParams {
 }
 
 export function createAdminApp(projectAppParams: CreateAdminAppParams = {}) {
-    const builtInPlugins = [uploadAppToS3({ folder: "apps/admin" }), ensureApiDeployedBeforeBuild];
-
-    const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
-
     return {
         id: "admin",
         name: "Admin",
@@ -22,7 +16,27 @@ export function createAdminApp(projectAppParams: CreateAdminAppParams = {}) {
                 deploy: false
             }
         },
-        pulumi: createAdminPulumiApp(projectAppParams),
-        plugins: [builtInPlugins, customPlugins]
+        async getPulumi() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { createAdminPulumiApp } = await import("@webiny/pulumi-aws");
+
+            return createAdminPulumiApp(projectAppParams);
+        },
+        async getPlugins() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { uploadAppToS3 } = await import("./react/plugins/index.js");
+
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { ensureApiDeployedBeforeBuild } = await import("./admin/plugins/index.js");
+
+            const builtInPlugins = [
+                uploadAppToS3({ folder: "apps/admin" }),
+                ensureApiDeployedBeforeBuild
+            ];
+
+            const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
+
+            return [builtInPlugins, customPlugins];
+        }
     };
 }

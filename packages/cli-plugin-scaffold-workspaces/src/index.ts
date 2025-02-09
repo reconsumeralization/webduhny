@@ -165,7 +165,7 @@ export default (): CliCommandScaffoldTemplate<Input> => ({
                     for (const packageName of packages) {
                         const isWebinyPackage = packageName.startsWith("@webiny/");
                         if (isWebinyPackage) {
-                            packageJson.dependencies[packageName] = context.version;
+                            packageJson.dependencies[packageName] = context.project.version;
                             continue;
                         }
 

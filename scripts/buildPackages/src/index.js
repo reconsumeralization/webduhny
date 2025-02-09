@@ -1,12 +1,4 @@
-#!/usr/bin/env node
-process.env.NODE_PATH = process.cwd();
-const tsNode = require("ts-node");
-
-tsNode.register({
-    dir: process.cwd()
-});
-
-const { buildPackages } = require("./buildPackages");
+import { buildPackages } from "./buildPackages";
 
 (async () => {
     await buildPackages();

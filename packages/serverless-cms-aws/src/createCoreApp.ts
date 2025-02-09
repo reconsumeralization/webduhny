@@ -1,6 +1,5 @@
-import { createCorePulumiApp, CreateCorePulumiAppParams } from "@webiny/pulumi-aws";
-import { PluginCollection } from "@webiny/plugins/types";
-import { generateDdbToEsHandler, checkEsServiceRole, checkOsServiceRole } from "./core/plugins";
+import type { CreateCorePulumiAppParams } from "@webiny/pulumi-aws";
+import type { PluginCollection } from "@webiny/plugins/types";
 
 export { CoreOutput, configureAdminCognitoFederation } from "@webiny/pulumi-aws";
 
@@ -9,18 +8,6 @@ export interface CreateCoreAppParams extends CreateCorePulumiAppParams {
 }
 
 export function createCoreApp(projectAppParams: CreateCoreAppParams = {}) {
-    const builtInPlugins = [];
-    if (projectAppParams.elasticSearch || projectAppParams.openSearch) {
-        builtInPlugins.push(generateDdbToEsHandler);
-        if (projectAppParams.elasticSearch) {
-            builtInPlugins.push(checkEsServiceRole);
-        } else {
-            builtInPlugins.push(checkOsServiceRole);
-        }
-    }
-
-    const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
-
     return {
         id: "core",
         name: "Core",
@@ -34,7 +21,31 @@ export function createCoreApp(projectAppParams: CreateCoreAppParams = {}) {
                 function: "none"
             }
         },
-        pulumi: createCorePulumiApp(projectAppParams),
-        plugins: [builtInPlugins, customPlugins]
+        async getPulumi() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { createCorePulumiApp } = await import("@webiny/pulumi-aws");
+
+            return createCorePulumiApp(projectAppParams);
+        },
+        async getPlugins() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { generateDdbToEsHandler, checkEsServiceRole, checkOsServiceRole } = await import(
+                "./core/plugins/index.js"
+            );
+
+            const builtInPlugins = [];
+            if (projectAppParams.elasticSearch || projectAppParams.openSearch) {
+                builtInPlugins.push(generateDdbToEsHandler);
+                if (projectAppParams.elasticSearch) {
+                    builtInPlugins.push(checkEsServiceRole);
+                } else {
+                    builtInPlugins.push(checkOsServiceRole);
+                }
+            }
+
+            const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
+
+            return [builtInPlugins, customPlugins];
+        }
     };
 }

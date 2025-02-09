@@ -6,15 +6,5 @@
     "noUnusedLocals": false,
     "emitDeclarationOnly": false,
     "composite": false
-  },
-  "ts-node": {
-    "files": false,
-    "typeCheck": false,
-    "transpileOnly": true,
-    "compilerOptions": {
-      "skipLibCheck": true,
-      "target": "es2016",
-      "module": "commonjs"
-    }
   }
 }

@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@types/folder-hash": "^4.0.4",
-    "@types/yargs": "^17.0.8",
-    "ts-node": "^10.9.2"
+    "@types/yargs": "^17.0.8"
   }
 }

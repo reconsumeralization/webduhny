@@ -55,8 +55,8 @@ const sassLoader = {
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function (webpackEnv, { paths, options }) {
-    const projectApplication = getProjectApplication({ cwd: options.cwd });
+module.exports = async function (webpackEnv, { paths, options }) {
+    const projectApplication = await getProjectApplication({ cwd: options.cwd });
 
     const isEnvDevelopment = webpackEnv === "development";
     const isEnvProduction = webpackEnv === "production";

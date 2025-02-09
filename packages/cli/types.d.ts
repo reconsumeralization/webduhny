@@ -42,8 +42,12 @@ interface Project {
      * Root path of the project.
      */
     root: string;
-}
 
+    /**
+     * Project version.
+     */
+    version: string;
+}
 
 export interface IProjectApplicationPackage {
     name: string;
@@ -64,7 +68,7 @@ export interface IProjectApplicationConfigCli {
 export interface IProjectApplicationConfig {
     appAliases?: Record<string, string>;
     cli?: IProjectApplicationConfigCli;
-    [key: string]: unknown
+    [key: string]: unknown;
 }
 
 export interface ProjectApplication {
@@ -108,7 +112,7 @@ export interface ProjectApplication {
     /**
      * A list of all the packages in the project application.
      */
-    get packages(): IProjectApplicationPackage[];
+    getPackages(): Promise<IProjectApplicationPackage[]>;
 }
 
 /**
@@ -132,15 +136,11 @@ export interface CliContext {
     /**
      * Load environment variables from a given file.
      */
-    loadEnv(filePath: string, options?: {debug?: boolean}): Promise<void>;
+    loadEnv(filePath: string, options?: { debug?: boolean }): Promise<void>;
     /**
      * All the environment variables.
      */
     loadedEnvFiles: Record<string, any>;
-    /**
-     * Version of the Webiny CLI.
-     */
-    version: string;
     /**
      * Project information.
      */
@@ -220,7 +220,7 @@ export interface CliCommandErrorPluginHandleParams {
 }
 
 export interface CliCommandErrorPluginHandle {
-    (params: CliCommandErrorPluginHandleParams):void;
+    (params: CliCommandErrorPluginHandleParams): void;
 }
 
 export interface CliCommandErrorPlugin extends Plugin {

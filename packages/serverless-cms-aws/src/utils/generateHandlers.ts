@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { cli } from "@webiny/cli";
+import { getCli } from "@webiny/cli";
 import { getHandlerPath } from "./getHandlerPath";
 
 export type HandlerType = "common" | "ddb" | "ddb-es";
@@ -10,6 +10,8 @@ export const generateHandlers = (type: HandlerType, app: App, paths: string[][])
     return {
         type: "hook-before-build",
         async hook({ projectApplication }: Record<string, any>) {
+            const cli = getCli();
+
             for (let i = 0; i < paths.length; i++) {
                 const current = paths[i];
 

@@ -31,7 +31,7 @@ export const deployCommand = (params: IDeployParams, context: CliContext) => {
 
             const hookArgs = { context, env, variant, inputs, projectApplication };
 
-            context.info("Webiny version: %s", context.version);
+            context.info("Webiny version: %s", context.project.version);
             console.log();
 
             // Just so the version stays on the screen for a second, before the process continues.
@@ -47,7 +47,7 @@ export const deployCommand = (params: IDeployParams, context: CliContext) => {
                 console.log();
 
                 const builder = new PackagesBuilder({
-                    packages: projectApplication.packages,
+                    packages: await projectApplication.getPackages(),
                     inputs,
                     context
                 });

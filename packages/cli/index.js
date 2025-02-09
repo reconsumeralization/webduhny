@@ -1,5 +1,8 @@
-const context = require("./context");
+const { getContext, createContext } = require("./context");
 const regions = require("./regions");
 
-module.exports.cli = context;
-module.exports.regions = regions;
+const initializeProject = async () => {
+    return await createContext();
+};
+
+module.exports = { initializeProject, getCli: getContext, regions };

@@ -1,48 +1,21 @@
-const findUp = require("find-up");
-const { dirname } = require("path");
-const { importModule } = require("./importModule");
+const { Project } = require("./Project");
 
-const projectConfigs = ["webiny.project.js", "webiny.project.ts"];
+let project;
 
-function getRoot({ cwd } = {}) {
-    let root = findUp.sync(projectConfigs, { cwd });
-    if (root) {
-        return dirname(root).replace(/\\/g, "/");
-    }
+async function initializeProject() {
+    project = await Project.load();
 
-    // For backwards compatibility
-    root = findUp.sync("webiny.root.js", { cwd });
-    if (root) {
-        return dirname(root).replace(/\\/g, "/");
-    }
-
-    throw new Error("Couldn't detect Webiny project.");
+    return project;
 }
 
-function getConfig({ cwd } = {}) {
-    let path = findUp.sync(projectConfigs, { cwd });
-    if (path) {
-        return importModule(path);
+module.exports = () => {
+    if (!project) {
+        throw Error(
+            `Project has not been initialized! Make sure you call "initializeProject" from "@webiny/cli"!`
+        );
     }
 
-    path = findUp.sync("webiny.root.js", { cwd });
-    if (path) {
-        return require(path);
-    }
-
-    throw new Error("Couldn't detect Webiny project.");
-}
-
-module.exports = args => {
-    const root = getRoot(args);
-    return {
-        get name() {
-            // Check "projectName" for backwards compatibility.
-            return process.env.WEBINY_PROJECT_NAME || this.config.projectName || this.config.name;
-        },
-        root,
-        get config() {
-            return getConfig(args);
-        }
-    };
+    return project;
 };
+
+module.exports.initializeProject = initializeProject;

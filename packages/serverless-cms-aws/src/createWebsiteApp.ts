@@ -1,30 +1,11 @@
-import { createWebsitePulumiApp, CreateWebsitePulumiAppParams } from "@webiny/pulumi-aws";
-import { PluginCollection } from "@webiny/plugins/types";
-import {
-    generateCommonHandlers,
-    lambdaEdgeWarning,
-    renderWebsite,
-    telemetryNoLongerNewUser,
-    ensureApiDeployedBeforeBuild
-} from "./website/plugins";
-import { uploadAppToS3 } from "./react/plugins";
+import type { CreateWebsitePulumiAppParams } from "@webiny/pulumi-aws";
+import type { PluginCollection } from "@webiny/plugins/types";
 
 export interface CreateWebsiteAppParams extends CreateWebsitePulumiAppParams {
     plugins?: PluginCollection;
 }
 
 export function createWebsiteApp(projectAppParams: CreateWebsiteAppParams = {}) {
-    const builtInPlugins = [
-        uploadAppToS3({ folder: "apps/website" }),
-        generateCommonHandlers,
-        lambdaEdgeWarning,
-        renderWebsite,
-        telemetryNoLongerNewUser,
-        ensureApiDeployedBeforeBuild
-    ];
-
-    const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
-
     return {
         id: "website",
         name: "Website",
@@ -41,7 +22,37 @@ export function createWebsiteApp(projectAppParams: CreateWebsiteAppParams = {}) 
                 deploy: false
             }
         },
-        pulumi: createWebsitePulumiApp(projectAppParams),
-        plugins: [builtInPlugins, customPlugins]
+        async getPulumi() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { createWebsitePulumiApp } = await import("@webiny/pulumi-aws");
+
+            return createWebsitePulumiApp(projectAppParams);
+        },
+        async getPlugins() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { uploadAppToS3 } = await import("./react/plugins/index.js");
+
+            const {
+                generateCommonHandlers,
+                lambdaEdgeWarning,
+                renderWebsite,
+                telemetryNoLongerNewUser,
+                ensureApiDeployedBeforeBuild
+                // eslint-disable-next-line import/dynamic-import-chunkname
+            } = await import("./website/plugins/index.js");
+
+            const builtInPlugins = [
+                uploadAppToS3({ folder: "apps/website" }),
+                generateCommonHandlers,
+                lambdaEdgeWarning,
+                renderWebsite,
+                telemetryNoLongerNewUser,
+                ensureApiDeployedBeforeBuild
+            ];
+
+            const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
+
+            return [builtInPlugins, customPlugins];
+        }
     };
 }

@@ -1,5 +1,5 @@
 import { parentPort, workerData } from "worker_threads";
-import { cli } from "@webiny/cli";
+import { getCli, initializeProject } from "@webiny/cli";
 import { requireConfigWithExecute } from "~/utils";
 
 // We need this because tools have internal console.log calls. So,
@@ -24,6 +24,10 @@ for (let i = 0; i < types.length; i++) {
 }
 
 (async () => {
+    await initializeProject();
+
+    const cli = getCli();
+
     try {
         const { options, package: pckg } = workerData;
 

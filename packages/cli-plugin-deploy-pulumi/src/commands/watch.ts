@@ -56,7 +56,7 @@ export const watchCommand = async (inputs: IUserCommandInput, context: Context) 
         }
 
         // Get project application metadata. Will throw an error if invalid folder specified.
-        projectApplication = getProjectApplication({
+        projectApplication = await getProjectApplication({
             cwd: path.join(process.cwd(), inputs.folder)
         });
 

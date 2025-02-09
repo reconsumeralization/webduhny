@@ -48,7 +48,7 @@ export const executeMigrationsCommand = async (
         });
 
         const result = await runner.runMigration({
-            version: process.env.WEBINY_VERSION || context.version,
+            version: process.env.WEBINY_VERSION || context.project.version,
             pattern: params.pattern,
             force: params.force
         });

@@ -29,7 +29,7 @@ export const buildCommand = (params: IBuildParams, context: Context) => {
             console.log();
 
             const builder = new PackagesBuilder({
-                packages: projectApplication.packages,
+                packages: await projectApplication.getPackages(),
                 inputs,
                 context
             });

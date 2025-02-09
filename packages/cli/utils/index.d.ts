@@ -10,7 +10,7 @@ export interface IGetProjectApplicationParams {
     cwd: string;
 }
 
-export declare function getProjectApplication(params: IGetProjectApplicationParams): ProjectApplication;
+export declare function getProjectApplication(params: IGetProjectApplicationParams): Promise<ProjectApplication>;
 
 
 export declare function sendEvent(event: string, properties?: Record<string, any>): Promise<void>;

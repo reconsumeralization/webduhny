@@ -88,7 +88,7 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
             for (const packageName of packages) {
                 const isWebinyPackage = packageName.startsWith("@webiny/");
                 if (isWebinyPackage) {
-                    packageJsonUpdates[packageName] = context.version;
+                    packageJsonUpdates[packageName] = context.project.version;
                     continue;
                 }
 
@@ -138,7 +138,7 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
         // this because the `package.json` file that the selected template creates might also have
         // Webiny packages that need to be updated. For example, this is the case with the `pbElement`
         // extension (see: `packages/cli-plugin-extensions/templates/pbElement/package.json`).
-        await setWebinyPackageVersions(extension, context.version);
+        await setWebinyPackageVersions(extension, context.project.version);
 
         await extension.link();
 

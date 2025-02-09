@@ -1,21 +1,19 @@
 const fs = require("fs");
 const path = require("path");
-const { importModule, getProject, PluginsContainer, log, localStorage, noop } = require("./utils");
-
-const project = getProject();
-
-if (!project) {
-    console.log(
-        `🚨 Couldn't locate "webiny.project.js"! Webiny CLI relies on that file to find the root of a Webiny project.`
-    );
-    process.exit(1);
-}
+const dotenv = require("dotenv");
+const {
+    initializeProject,
+    importModule,
+    PluginsContainer,
+    log,
+    localStorage,
+    noop
+} = require("./utils/index.js");
 
 class Context {
-    constructor() {
-        this.loadedEnvFiles = {};
+    loadedEnvFiles = {};
 
-        this.version = require("./package.json").version;
+    constructor(project, localStorage) {
         this.project = project;
 
         // Check if `projectName` was injected properly.
@@ -35,9 +33,7 @@ class Context {
         }
 
         this.plugins = new PluginsContainer();
-
-        this.localStorage = localStorage();
-
+        this.localStorage = localStorage;
         this.onExitCallbacks = [];
 
         let onExitProcessed = false;
@@ -71,14 +67,17 @@ class Context {
                 plugins = await plugins();
             }
 
-            this.plugins.register(
-                ...plugins.map(plugin => {
+            const resolvedPlugins = await Promise.all(
+                plugins.map(async plugin => {
                     if (typeof plugin === "string") {
                         let loadedPlugin;
                         try {
-                            loadedPlugin = require(path.join(this.project.root, plugin)); // Try loading the package from the project's root
+                            // Try loading the package from the project's root
+                            // TODO: when migrating to ESM, simply convert this to `await import`.
+                            loadedPlugin = require(path.join(this.project.root, plugin));
                         } catch {
                             // If it fails, perhaps the user still has the package installed somewhere locally...
+                            // TODO: when migrating to ESM, simply convert this to `await import`.
                             loadedPlugin = require(plugin);
                         }
                         return loadedPlugin;
@@ -86,6 +85,8 @@ class Context {
                     return plugin;
                 })
             );
+
+            this.plugins.register(resolvedPlugins);
         }
     }
 
@@ -121,7 +122,7 @@ class Context {
         }
 
         try {
-            require("dotenv").config({ path: filePath });
+            dotenv.config({ path: filePath });
             debug && this.success(`Loaded environment variables from ${filePath}.`);
             this.loadedEnvFiles[filePath] = true;
         } catch (err) {
@@ -134,4 +135,32 @@ class Context {
     }
 }
 
-module.exports = new Context();
+let context;
+
+module.exports.getContext = () => {
+    if (!context) {
+        throw Error(
+            `CLI has not been initialized! Make sure you call "initializeProject" from "@webiny/cli"!`
+        );
+    }
+
+    return context;
+};
+
+module.exports.createContext = async () => {
+    if (!context) {
+        const project = await initializeProject();
+        const localStorageDep = localStorage();
+
+        if (!project) {
+            console.log(
+                `🚨 Couldn't locate "webiny.project.ts"! Webiny CLI relies on that file to find the root of a Webiny project.`
+            );
+            process.exit(1);
+        }
+
+        context = new Context(project, localStorageDep);
+    }
+
+    return context;
+};

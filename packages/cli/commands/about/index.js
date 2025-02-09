@@ -20,7 +20,7 @@ const getData = async context => {
             sectionName: "Webiny Project",
             data: {
                 Name: context.project.name,
-                Version: context.version,
+                Version: context.project.version,
                 "Database Setup": getDatabaseSetupLabel(),
                 "Debug Enabled": process.env.DEBUG === "true" ? "Yes" : "No",
                 "Feature Flags": process.env.WEBINY_FEATURE_FLAGS || "N/A"

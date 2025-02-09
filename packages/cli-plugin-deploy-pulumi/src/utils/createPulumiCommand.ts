@@ -102,7 +102,7 @@ export const createPulumiCommand = ({
             const cwd = path.join(process.cwd(), params.folder);
 
             // Get project application metadata.
-            projectApplication = getProjectApplication({ cwd });
+            projectApplication = await getProjectApplication({ cwd });
 
             if (createProjectApplicationWorkspaceParam !== false) {
                 await createProjectApplicationWorkspace({
@@ -113,8 +113,11 @@ export const createPulumiCommand = ({
 
             // Check if there are any plugins that need to be registered. This needs to happen
             // always, no matter the value of `createProjectApplicationWorkspaceParam` parameter.
-            if (projectApplication.config.plugins) {
-                context.plugins.register(projectApplication.config.plugins);
+
+            // @ts-expect-error Update types of pulumi app `config`.
+            const projectApplicationPlugins = await projectApplication.config.getPlugins();
+            if (projectApplicationPlugins) {
+                context.plugins.register(projectApplicationPlugins);
             }
 
             // Load env vars specified via .env files located in project application folder.

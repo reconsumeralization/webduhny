@@ -1,13 +1,5 @@
-import { createApiPulumiApp, CreateApiPulumiAppParams } from "@webiny/pulumi-aws";
-import { PluginCollection } from "@webiny/plugins/types";
-import {
-    ensureCoreDeployed,
-    executeDataMigrations,
-    generateCommonHandlers,
-    generateDdbEsHandlers,
-    generateDdbHandlers,
-    injectWcpTelemetryClientCode
-} from "./api/plugins";
+import type { CreateApiPulumiAppParams } from "@webiny/pulumi-aws";
+import type { PluginCollection } from "@webiny/plugins/types";
 
 export { ApiOutput } from "@webiny/pulumi-aws";
 
@@ -16,21 +8,6 @@ export interface CreateApiAppParams extends CreateApiPulumiAppParams {
 }
 
 export function createApiApp(projectAppParams: CreateApiAppParams = {}) {
-    const builtInPlugins = [
-        ensureCoreDeployed,
-        injectWcpTelemetryClientCode,
-        generateCommonHandlers,
-        executeDataMigrations
-    ];
-
-    if (projectAppParams.elasticSearch || projectAppParams.openSearch) {
-        builtInPlugins.push(generateDdbEsHandlers);
-    } else {
-        builtInPlugins.push(generateDdbHandlers);
-    }
-
-    const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
-
     return {
         id: "api",
         name: "API",
@@ -48,7 +25,39 @@ export function createApiApp(projectAppParams: CreateApiAppParams = {}) {
                 function: "graphql"
             }
         },
-        pulumi: createApiPulumiApp(projectAppParams),
-        plugins: [builtInPlugins, customPlugins]
+        async getPulumi() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { createApiPulumiApp } = await import("@webiny/pulumi-aws");
+
+            return createApiPulumiApp(projectAppParams);
+        },
+        async getPlugins() {
+            const {
+                ensureCoreDeployed,
+                executeDataMigrations,
+                generateCommonHandlers,
+                generateDdbEsHandlers,
+                generateDdbHandlers,
+                injectWcpTelemetryClientCode
+                // eslint-disable-next-line import/dynamic-import-chunkname
+            } = await import("./api/plugins/index.js");
+
+            const builtInPlugins = [
+                ensureCoreDeployed,
+                injectWcpTelemetryClientCode,
+                generateCommonHandlers,
+                executeDataMigrations
+            ];
+
+            if (projectAppParams.elasticSearch || projectAppParams.openSearch) {
+                builtInPlugins.push(generateDdbEsHandlers);
+            } else {
+                builtInPlugins.push(generateDdbHandlers);
+            }
+
+            const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
+
+            return [builtInPlugins, customPlugins];
+        }
     };
 }

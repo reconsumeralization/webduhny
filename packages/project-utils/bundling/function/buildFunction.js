@@ -6,7 +6,7 @@ module.exports = async options => {
 
     let projectApplication;
     try {
-        projectApplication = getProjectApplication({ cwd });
+        projectApplication = await getProjectApplication({ cwd });
     } catch {
         // No need to do anything.
     }

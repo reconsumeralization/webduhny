@@ -1,15 +1,11 @@
-import { createReactPulumiApp, CreateReactPulumiAppParams } from "@webiny/pulumi-aws";
-import { uploadAppToS3 } from "./react/plugins";
-import { PluginCollection } from "@webiny/plugins/types";
+import type { CreateReactPulumiAppParams } from "@webiny/pulumi-aws";
+import type { PluginCollection } from "@webiny/plugins/types";
 
 export interface CreateReactAppParams extends CreateReactPulumiAppParams {
     plugins?: PluginCollection;
 }
 
 export function createReactApp(projectAppParams: CreateReactAppParams) {
-    const builtInPlugins = [uploadAppToS3({ folder: projectAppParams.folder })];
-    const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
-
     return {
         id: projectAppParams.name,
         name: projectAppParams.name,
@@ -19,7 +15,20 @@ export function createReactApp(projectAppParams: CreateReactAppParams) {
                 deploy: false
             }
         },
-        pulumi: createReactPulumiApp(projectAppParams),
-        plugins: [builtInPlugins, customPlugins]
+        async getPulumi() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { createReactPulumiApp } = await import("@webiny/pulumi-aws");
+
+            return createReactPulumiApp(projectAppParams);
+        },
+        async getPlugins() {
+            // eslint-disable-next-line import/dynamic-import-chunkname
+            const { uploadAppToS3 } = await import("./react/plugins/index.js");
+
+            const builtInPlugins = [uploadAppToS3({ folder: projectAppParams.folder })];
+            const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
+
+            return [builtInPlugins, customPlugins];
+        }
     };
 }

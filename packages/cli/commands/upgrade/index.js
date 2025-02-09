@@ -56,7 +56,9 @@ module.exports = [
                         }
                     }
 
-                    const defaultUpgradeTargetVersion = semver.coerce(context.version).version;
+                    const defaultUpgradeTargetVersion = semver.coerce(
+                        context.project.version
+                    ).version;
 
                     const command = [
                         "https://github.com/webiny/webiny-upgrades",

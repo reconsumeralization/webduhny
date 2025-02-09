@@ -55,7 +55,7 @@ module.exports = async options => {
     await checkBrowsers(paths.appPath, isInteractive);
 
     // Generate configuration
-    let config = configFactory("production", { paths, options });
+    let config = await configFactory("production", { paths, options });
 
     if (typeof overrides.webpack === "function") {
         config = overrides.webpack(config);
