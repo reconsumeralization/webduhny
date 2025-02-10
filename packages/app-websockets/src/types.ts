@@ -1,6 +1,8 @@
 import {
     IGenericData,
     IWebsocketsAction,
+    IWebsocketsManagerCloseEvent,
+    IWebsocketsManagerErrorEvent,
     IWebsocketsManagerMessageEvent,
     IWebsocketsSubscription
 } from "~/domain/types";
@@ -25,10 +27,24 @@ export interface ISocketsContextOnMessageCallable {
     ): IWebsocketsSubscription<IWebsocketsManagerMessageEvent<T>>;
 }
 
+export interface ISocketsContextOnErrorCallable {
+    (
+        cb: (data: IWebsocketsManagerErrorEvent) => void
+    ): IWebsocketsSubscription<IWebsocketsManagerErrorEvent>;
+}
+
+export interface ISocketsContextOnCloseCallable {
+    (
+        cb: (data: IWebsocketsManagerCloseEvent) => void
+    ): IWebsocketsSubscription<IWebsocketsManagerCloseEvent>;
+}
+
 export interface IWebsocketsContext {
     send: IWebsocketsContextSendCallable;
     createAction: IWebsocketsContextCreateActionCallable;
     onMessage: ISocketsContextOnMessageCallable;
+    onError: ISocketsContextOnErrorCallable;
+    onClose: ISocketsContextOnCloseCallable;
 }
 
 export interface IncomingGenericData extends IGenericData {
