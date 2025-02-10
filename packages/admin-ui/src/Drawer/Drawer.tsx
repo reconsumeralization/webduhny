@@ -12,7 +12,7 @@ import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
-export interface DrawerProps
+interface DrawerProps
     extends React.ComponentPropsWithoutRef<typeof DrawerRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DrawerContent>, "title"> {
     trigger?: React.ReactNode;
@@ -107,4 +107,4 @@ const Drawer = withStaticProps(DecoratableDrawer, {
     Icon
 });
 
-export { Drawer };
+export { Drawer, type DrawerProps };

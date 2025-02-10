@@ -30,13 +30,14 @@ interface IconProps
     extends Omit<React.HTMLAttributes<HTMLOrSVGElement>, "color">,
         VariantProps<typeof iconVariants> {
     label: string;
-    icon: React.ReactElement;
+    icon: React.ReactNode;
 }
 
 const IconBase = React.forwardRef<HTMLOrSVGElement, IconProps>((props, ref) => {
     const { label, icon, color, size, className, ...rest } = props;
     return (
         <AccessibleIcon.Root label={label}>
+            {/* @ts-expect-error */}
             {React.cloneElement(icon, {
                 ...rest,
                 className: cn(iconVariants({ color, size }), className),

@@ -1,7 +1,7 @@
 import React from "react";
 import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
 
-const skeletonVariants = cva("wby-animate-skeletonPulse wby-rounded-sm", {
+const skeletonVariants = cva("wby-animate-skeleton-pulse wby-rounded-sm", {
     variants: {
         type: {
             text: "wby-w-full",

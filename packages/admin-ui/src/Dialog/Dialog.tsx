@@ -12,7 +12,7 @@ import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
 
-export interface DialogProps
+interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
         Omit<React.ComponentPropsWithoutRef<typeof DialogContent>, "title"> {
     trigger?: React.ReactNode;
@@ -104,4 +104,4 @@ const Dialog = withStaticProps(DecoratableDialog, {
     Icon
 });
 
-export { Dialog };
+export { Dialog, type DialogProps };

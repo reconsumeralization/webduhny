@@ -38,10 +38,6 @@ export const RowContainer = styled.div<{ isDragging?: boolean }>`
     opacity: ${props => (props.isDragging ? 0.3 : 1)};
 `;
 
-export const Wrapper = styled.div`
-    margin-left: 40px;
-`;
-
 export const Row = styled.div({
     display: "flex",
     flexDirection: "row",

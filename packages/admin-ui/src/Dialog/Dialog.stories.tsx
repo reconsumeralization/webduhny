@@ -1,7 +1,3 @@
-// This file contains no Tailwind utility classes to modify.
-// It only contains story configurations and component usage examples.
-// The original code can remain unchanged.
-
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
