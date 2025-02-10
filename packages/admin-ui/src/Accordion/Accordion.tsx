@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
-import { makeDecoratable, withStaticProps } from "~/utils";
+import { makeDecoratable, withStaticProps, cva, type VariantProps, cn } from "~/utils";
 import { AccordionRoot } from "./components/AccordionRoot";
 import { AccordionItem, type AccordionItemProps } from "./components/AccordionItem";
-import { cva, type VariantProps } from "class-variance-authority";
 
-const accordionVariants = cva("wby-group w-full", {
+const accordionVariants = cva("wby-group wby-w-full", {
     variants: {
         variant: {
             container: "wby-accordion-variant-container wby-gap-xs wby-flex wby-flex-col",
@@ -46,7 +45,7 @@ const AccordionBase = ({
     return (
         <AccordionRoot
             {...rootProps}
-            className={accordionVariants({ variant, background, className })}
+            className={cn(accordionVariants({ variant, background }), className)}
         >
             {children}
         </AccordionRoot>

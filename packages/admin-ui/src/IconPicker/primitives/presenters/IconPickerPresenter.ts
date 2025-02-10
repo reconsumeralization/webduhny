@@ -3,7 +3,7 @@ import {
     IconPickerIcon,
     IconPickerIconDto,
     IconPickerFontAwesome,
-    IconFormatter,
+    IconPickerIconFormatter,
     ListCache
 } from "../../domains";
 
@@ -45,7 +45,7 @@ class IconPickerPresenter implements IIconPickerPresenter {
         return {
             open: this.open,
             searchQuery: this.searchQuery,
-            icons: this.getIcons().map(icon => IconFormatter.formatFontAwesome(icon)),
+            icons: this.getIcons().map(icon => IconPickerIconFormatter.formatFontAwesome(icon)),
             iconsLength: this.getIcons().length || 0
         };
     }

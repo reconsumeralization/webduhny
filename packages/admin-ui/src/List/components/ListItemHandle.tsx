@@ -3,13 +3,13 @@ import { ReactComponent as DragHandleIcon } from "@material-design-icons/svg/fil
 import { makeDecoratable } from "~/utils";
 import { Icon, IconProps as IconProps } from "~/Icon";
 
-interface AccordionItemHandleProps extends Omit<IconProps, "icon" | "label"> {
+interface ListItemHandleProps extends Omit<IconProps, "icon" | "label"> {
     icon?: React.ReactElement;
     label?: string;
 }
 
-const AccordionItemHandleBase = ({ onClick, ...props }: AccordionItemHandleProps) => {
-    // We need to stop the event propagation to prevent the accordion from opening/closing when the handle is clicked.
+const DecoratableListItemHandle = ({ onClick, ...props }: ListItemHandleProps) => {
+    // We need to stop the event propagation to prevent the List from opening/closing when the handle is clicked.
     const onClickCallback = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
@@ -34,6 +34,6 @@ const AccordionItemHandleBase = ({ onClick, ...props }: AccordionItemHandleProps
     );
 };
 
-const AccordionItemHandle = makeDecoratable("AccordionItemHandle", AccordionItemHandleBase);
+const ListItemHandle = makeDecoratable("ListItemHandle", DecoratableListItemHandle);
 
-export { AccordionItemHandle, type AccordionItemHandleProps };
+export { ListItemHandle, type ListItemHandleProps };

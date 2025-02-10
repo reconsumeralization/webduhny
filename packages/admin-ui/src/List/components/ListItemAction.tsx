@@ -1,11 +1,11 @@
 import * as React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
 import { IconButton, IconButtonProps as IconButtonProps } from "~/Button";
-import { AccordionItemSeparator } from "./AccordionItemSeparator";
+import { ListItemSeparator } from "./ListItemSeparator";
 
-type AccordionItemActionProps = IconButtonProps;
+type ListItemActionProps = IconButtonProps;
 
-const AccordionItemActionBase = ({ onClick, ...props }: AccordionItemActionProps) => {
+const DecoratableListItemAction = ({ onClick, ...props }: ListItemActionProps) => {
     // We need to stop the event propagation to prevent the accordion from opening/closing when the action is clicked.
     const onClickCallback = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,13 +21,11 @@ const AccordionItemActionBase = ({ onClick, ...props }: AccordionItemActionProps
     return <IconButton variant={"ghost"} size={"sm"} {...props} onClick={onClickCallback} />;
 };
 
-const DecoratableAccordionItemAction = makeDecoratable(
-    "AccordionItemAction",
-    AccordionItemActionBase
+const ListItemAction = withStaticProps(
+    makeDecoratable("ListItemAction", DecoratableListItemAction),
+    {
+        Separator: ListItemSeparator
+    }
 );
 
-const AccordionItemAction = withStaticProps(DecoratableAccordionItemAction, {
-    Separator: AccordionItemSeparator
-});
-
-export { AccordionItemAction, type AccordionItemActionProps };
+export { ListItemAction, type ListItemActionProps };
