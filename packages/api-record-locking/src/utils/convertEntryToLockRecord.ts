@@ -1,8 +1,8 @@
-import { CmsEntry, IRecordLockingIdentity } from "~/types";
-import {
+import type {
+    CmsEntry,
+    IRecordLockingIdentity,
     IRecordLockingLockRecord,
     IRecordLockingLockRecordAction,
-    IRecordLockingLockRecordActionType,
     IRecordLockingLockRecordApprovedAction,
     IRecordLockingLockRecordDeniedAction,
     IRecordLockingLockRecordEntryType,
@@ -10,6 +10,7 @@ import {
     IRecordLockingLockRecordRequestedAction,
     IRecordLockingLockRecordValues
 } from "~/types";
+import { IRecordLockingLockRecordActionType } from "~/types";
 import { removeLockRecordDatabasePrefix } from "~/utils/lockRecordDatabaseId";
 import { calculateExpiresOn } from "~/utils/calculateExpiresOn";
 

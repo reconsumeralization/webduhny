@@ -22,7 +22,7 @@ export type IRecordLockingModelManager = CmsModelManager<IRecordLockingLockRecor
 
 export type IRecordLockingMeta = CmsEntryMeta;
 
-export interface IHasFullAccessCallable {
+export interface IHasRecordLockingAccessCallable {
     (): Promise<boolean>;
 }
 

@@ -3,7 +3,7 @@ import {
     Context,
     IGetIdentity,
     IGetWebsocketsContextCallable,
-    IHasFullAccessCallable,
+    IHasRecordLockingAccessCallable,
     IRecordLocking,
     IRecordLockingLockRecordValues,
     IRecordLockingModelManager,
@@ -63,7 +63,7 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
         };
     };
 
-    const hasFullAccess: IHasFullAccessCallable = async () => {
+    const hasRecordLockingAccess: IHasRecordLockingAccessCallable = async () => {
         return await context.security.hasFullAccess();
     };
 
@@ -114,7 +114,7 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
     } = createUseCases({
         getIdentity,
         getManager,
-        hasFullAccess,
+        hasRecordLockingAccess,
         getWebsockets
     });
 

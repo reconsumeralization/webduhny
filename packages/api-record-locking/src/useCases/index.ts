@@ -1,7 +1,7 @@
 import {
     IGetIdentity,
     IGetWebsocketsContextCallable,
-    IHasFullAccessCallable,
+    IHasRecordLockingAccessCallable,
     IRecordLockingModelManager
 } from "~/types";
 import { GetLockRecordUseCase } from "./GetLockRecord/GetLockRecordUseCase";
@@ -29,7 +29,7 @@ import { IUnlockEntryRequestUseCase } from "~/abstractions/IUnlockEntryRequestUs
 export interface ICreateUseCasesParams {
     getIdentity: IGetIdentity;
     getManager(): Promise<IRecordLockingModelManager>;
-    hasFullAccess: IHasFullAccessCallable;
+    hasRecordLockingAccess: IHasRecordLockingAccessCallable;
     getWebsockets: IGetWebsocketsContextCallable;
 }
 
@@ -97,7 +97,7 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
         kickOutCurrentUserUseCase,
         getManager: params.getManager,
         getIdentity: params.getIdentity,
-        hasFullAccess: params.hasFullAccess
+        hasRecordLockingAccess: params.hasRecordLockingAccess
     });
 
     const unlockEntryRequestUseCase = new UnlockEntryRequestUseCase({
