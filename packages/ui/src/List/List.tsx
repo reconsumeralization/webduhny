@@ -1,21 +1,26 @@
 import React from "react";
 import {
     List as RmwcList,
-    ListProps as RmwcListProps,
     ListItem as RmwcListItem,
-    ListItemProps as RmwcListItemProps,
     ListItemText as RmwcListItemText,
-    ListItemTextProps as RmwcListItemTextProps,
     ListItemPrimaryText as RmwcListItemPrimaryText,
     ListItemSecondaryText as RmwcListItemSecondaryText,
-    SimpleListItem as RmwcSimpleListItem,
-    SimpleListItemProps as RmwcSimpleListItemProps
+    SimpleListItem as RmwcSimpleListItem
 } from "@rmwc/list";
 import { Typography } from "~/Typography";
 import classNames from "classnames";
 import { SelectBoxWrapper, webinyList } from "./styled";
 
-export type ListItemProps = RmwcListItemProps & {
+/** A ListItem component. */
+export type ListItemProps = {
+    /** A modifier for a selected state. */
+    selected?: boolean;
+    /** A modifier for an active state. */
+    activated?: boolean;
+    /** A modifier for a disabled state. */
+    disabled?: boolean;
+
+    /** Custom */
     children: React.ReactNode;
     className?: string;
     style?: React.CSSProperties;
@@ -32,13 +37,49 @@ export const ListItem = (props: ListItemProps) => {
     return <RmwcListItem {...props} />;
 };
 
-export type ListProps = RmwcListProps & {
-    children?: any;
+/** A List Component */
+export type ListProps = {
+    /** Reduces the padding on List items. */
+    dense?: boolean;
+    /** Gives more space for dual lined list items. */
+    twoLine?: boolean;
+    /** Makes the list start detail circular for avatars. */
+    avatarList?: boolean;
+    /** Makes the list non interactive. In addition, you'll have to set `ripple={false}` on the individual ListItems. */
+    nonInteractive?: boolean;
+    /** A callback for when a list item is interacted with. evt.detail = number */
+    onAction?: (evt: CustomEvent<{ index: number }> & React.SyntheticEvent<EventTarget>) => void;
+    /** An internal api used for cross component communication */
+    apiRef?: (api: ListApi | null) => void;
+    /** Advanced: A reference to the MDCFoundation. */
+    foundationRef?: any;
+    /** Sets the list to allow the up arrow on the first element to focus the
+     * last element of the list and vice versa. Defaults to true */
+    wrapFocus?: boolean;
+    /** Sets the lists vertical orientation. Defaults to true */
+    vertical?: boolean;
+    /** Sets the selectedIndex for singleSelection, radiogroup, or checkboxlist variants. Only supply number[] to checkboxlists */
+    selectedIndex?: number[] | number;
 
+    /** Custom */
+    children?: React.ReactNode;
     className?: string;
-
     style?: React.CSSProperties;
+    onClick?: (e: React.MouseEvent) => void;
 };
+
+export interface ListApi {
+    listElements: () => HTMLLIElement[];
+    focusRoot: () => void;
+    getClasses: () => string;
+    addClassToElementIndex: (index: number, className: string) => void;
+    removeClassFromElementAtIndex: (index: number, className: string) => void;
+    setAttributeForElementIndex: (index: number, attr: string, value: any) => void;
+    getListItemCount: () => number;
+    focusItemAtIndex: (index: number) => void;
+    selectedIndex: number | number[];
+    setSelectedIndex: (index: number) => void;
+}
 
 /**
  * Use List component to display data and offer additional actions if needed.
@@ -53,7 +94,8 @@ export class List extends React.Component<ListProps> {
     }
 }
 
-export type ListItemTextProps = RmwcListItemTextProps & {
+/** Text Wrapper for the ListItem */
+export type ListItemTextProps = {
     children: React.ReactNode;
     className?: string;
     onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -220,6 +262,25 @@ export const ListSelectBox = (props: ListSelectBoxProps) => {
     );
 };
 
-export const SimpleListItem = (props: RmwcSimpleListItemProps & { onClick?: any }) => {
+/** A simple list item template. */
+export interface SimpleListItemProps extends ListItemProps {
+    /** Text for the ListItem. */
+    text?: React.ReactNode;
+    /** Secondary Text for the ListItem. */
+    secondaryText?: React.ReactNode;
+    /** A graphic icon for the ListItem. */
+    graphic?: any;
+    /** A meta icon for the ListItem */
+    metaIcon?: any;
+    /** Meta content for the ListItem instead of an icon. */
+    meta?: React.ReactNode;
+    /** Children to render */
+    children: React.ReactNode;
+
+    /** Custom */
+    onClick?: any;
+}
+
+export const SimpleListItem = (props: SimpleListItemProps) => {
     return <RmwcSimpleListItem {...props} />;
 };
