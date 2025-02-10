@@ -1,12 +1,8 @@
 import { useContentEntriesList, useContentEntry } from "@webiny/app-headless-cms";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useRecordLocking } from "~/hooks";
 import { IIsRecordLockedParams, IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
-import {
-    IncomingGenericData,
-    IWebsocketsSubscription,
-    useWebsockets
-} from "@webiny/app-websockets";
+import { IncomingGenericData, useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
 import styled from "@emotion/styled";
@@ -46,8 +42,6 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
 
     const { navigateTo } = useContentEntriesList();
 
-    const subscription = useRef<IWebsocketsSubscription<any>>();
-
     const websockets = useWebsockets();
 
     const { showDialog } = useDialogs();
@@ -55,12 +49,10 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
     useEffect(() => {
         if (!entry.id) {
             return;
-        } else if (subscription.current) {
-            subscription.current.off();
         }
         const { id: entryId } = parseIdentifier(entry.id);
 
-        subscription.current = websockets.onMessage<IKickOutWebsocketsMessage>(
+        let onMessageSub = websockets.onMessage<IKickOutWebsocketsMessage>(
             `recordLocking.entry.kickOut.${entryId}`,
             async incoming => {
                 const { user } = incoming.data;
@@ -81,11 +73,24 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
             }
         );
 
+        let onCloseSub = websockets.onClose(() => {
+            const record: IIsRecordLockedParams = {
+                id: entryId,
+                $lockingType: model.modelId
+            };
+            removeEntryLock(record);
+        });
+
         return () => {
-            if (!subscription.current) {
-                return;
-            }
-            subscription.current.off();
+            onMessageSub.off();
+            onCloseSub.off();
+            /**
+             * Lets null subscriptions, just in case it...
+             */
+            // @ts-expect-error
+            onMessageSub = null;
+            // @ts-expect-error
+            onCloseSub = null;
         };
     }, [entry.id, navigateTo, model.modelId]);
 
