@@ -11,6 +11,17 @@ import { Typography } from "~/Typography";
 import classNames from "classnames";
 import { SelectBoxWrapper, webinyList } from "./styled";
 
+/**
+ * Ripples
+ */
+export declare type RipplePropT =
+    | boolean
+    | {
+          accent?: boolean;
+          surface?: boolean;
+          unbounded?: boolean;
+      };
+
 /** A ListItem component. */
 export type ListItemProps = {
     /** A modifier for a selected state. */
@@ -19,6 +30,8 @@ export type ListItemProps = {
     activated?: boolean;
     /** A modifier for a disabled state. */
     disabled?: boolean;
+    /** Adds a ripple effect to the component */
+    ripple?: RipplePropT;
 
     /** Custom */
     children: React.ReactNode;
