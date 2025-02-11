@@ -1,8 +1,7 @@
-import type { IStack } from "~/utils/stacks";
 import { getApplicationsStacksOutput } from "~/utils/stacks";
-import type { IStackOutput } from "~/utils";
 import { GracefulError } from "~/utils";
 import type { Context } from "~/types";
+import { createDeployedSystemFactory, IDeployedSystem } from "./DeployedSystem";
 
 export interface IGetStacksParams {
     env: string;
@@ -12,8 +11,8 @@ export interface IGetStacksParams {
 }
 
 export interface IGetStacksResult {
-    primary: IStack<IStackOutput>[];
-    secondary: IStack<IStackOutput>[];
+    primary: IDeployedSystem;
+    secondary: IDeployedSystem;
 }
 
 interface IValidateVariantNamesParams {
@@ -37,7 +36,7 @@ const validateVariantNames = (params: IValidateVariantNamesParams): void => {
     }
 };
 
-export const getStacks = async (params: IGetStacksParams): Promise<IGetStacksResult> => {
+export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGetStacksResult> => {
     const { env, context } = params;
     validateVariantNames(params);
 
@@ -47,6 +46,7 @@ export const getStacks = async (params: IGetStacksParams): Promise<IGetStacksRes
     const stacks = await getApplicationsStacksOutput({
         cwd: context.project.root,
         env,
+        variants: [params.primary, params.secondary],
         context,
         applications
     });
@@ -61,8 +61,16 @@ export const getStacks = async (params: IGetStacksParams): Promise<IGetStacksRes
         throw new GracefulError(`Secondary variant "${params.secondary}" not found.`);
     }
 
+    const createDeployedSystem = createDeployedSystemFactory({
+        applications
+    });
+
     return {
-        primary: primaryStacks,
-        secondary: secondaryStacks
+        primary: createDeployedSystem({
+            stacks: primaryStacks
+        }),
+        secondary: createDeployedSystem({
+            stacks: secondaryStacks
+        })
     };
 };

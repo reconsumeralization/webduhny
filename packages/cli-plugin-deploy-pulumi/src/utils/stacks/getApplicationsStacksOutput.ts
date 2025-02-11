@@ -6,6 +6,7 @@ import type { Context } from "~/types";
 export interface IGetStacksOutputParams {
     applications: string[];
     env: string;
+    variants: string[] | undefined;
     cwd?: string;
     context: Context;
 }
@@ -14,6 +15,7 @@ export const getApplicationsStacksOutput = async (
     params: IGetStacksOutputParams
 ): Promise<IStack<IStackOutput>[]> => {
     const { context } = params;
+
     const initialStacks = getApplicationsStacks(params);
 
     const promises: Promise<void>[] = [];

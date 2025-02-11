@@ -1,7 +1,5 @@
 import type { Context } from "~/types";
-import { GracefulError } from "~/utils/GracefulError";
-import { getApplicationsStacksOutput } from "~/utils/stacks";
-import { getStacks } from "./getStacks";
+import { getDeployedSystems } from "./getDeployedSystems";
 
 export interface IExecuteSetPrimaryVariantCommandParams {
     env: string;
@@ -13,7 +11,7 @@ export interface IExecuteSetPrimaryVariantCommandParams {
 export const executeSetPrimaryVariantCommand = async (
     params: IExecuteSetPrimaryVariantCommandParams
 ): Promise<void> => {
-    const { primary, secondary } = await getStacks({
+    const { primary, secondary } = await getDeployedSystems({
         ...params
     });
 };

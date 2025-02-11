@@ -9,6 +9,7 @@ import { createStack } from "./Stack";
 export interface IGetStacksParams {
     applications: string[];
     env: string;
+    variants: string[] | undefined;
     cwd?: string;
 }
 
@@ -21,7 +22,7 @@ export interface IApplicationStacks {
 
 export const getApplicationsStacks = (params: IGetStacksParams): IApplicationStacks[] => {
     const project = getProject();
-    const { applications, env, cwd } = params;
+    const { applications, env, cwd, variants } = params;
 
     return applications.map(folder => {
         const app = folder.split("/").pop();
@@ -48,10 +49,14 @@ export const getApplicationsStacks = (params: IGetStacksParams): IApplicationSta
                     return null;
                 }
                 const { env, variant } = splitStackName(part);
+                if (variants && variant !== undefined && !variants.includes(variant)) {
+                    return null;
+                }
 
                 return createStack({
                     env,
-                    variant
+                    variant,
+                    app
                 });
             })
             .filter((item): item is IStack => !!item);

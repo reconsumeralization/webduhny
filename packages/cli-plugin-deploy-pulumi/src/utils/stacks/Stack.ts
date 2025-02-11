@@ -1,6 +1,7 @@
 import type { IStackOutput } from "~/utils";
 
 export interface IStack<T extends IStackOutput | undefined = undefined> {
+    app: string;
     env: string;
     variant: string | undefined;
     output: T;
@@ -8,17 +9,20 @@ export interface IStack<T extends IStackOutput | undefined = undefined> {
 }
 
 export interface IStackParams<T extends IStackOutput | undefined = undefined> {
+    app: string;
     env: string;
     variant: string | undefined;
     output?: T;
 }
 
 export class Stack<T extends IStackOutput | undefined = undefined> implements IStack<T> {
+    public readonly app: string;
     public readonly env: string;
     public readonly variant: string | undefined;
     public readonly output: T;
 
     public constructor(params: IStackParams<T>) {
+        this.app = params.app;
         this.env = params.env;
         this.variant = params.variant;
         if (!params.output) {
@@ -33,6 +37,7 @@ export class Stack<T extends IStackOutput | undefined = undefined> implements IS
          * We can safely cast as we know that the output is defined.
          */
         return new Stack<O>({
+            app: this.app,
             env: this.env,
             variant: this.variant,
             output: structuredClone(output)
