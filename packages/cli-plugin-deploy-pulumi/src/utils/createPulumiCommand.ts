@@ -1,16 +1,13 @@
 import path from "path";
 import { getProject, getProjectApplication, sendEvent } from "@webiny/cli/utils";
-import {
-    createProjectApplicationWorkspace,
-    ICreateProjectApplicationWorkspaceCallable
-} from "./createProjectApplicationWorkspace";
+import type { ICreateProjectApplicationWorkspaceCallable } from "./createProjectApplicationWorkspace";
+import { createProjectApplicationWorkspace } from "./createProjectApplicationWorkspace";
 import { login } from "./login";
 import { loadEnvVariables } from "./loadEnvVariables";
 import { getPulumi } from "./getPulumi";
 import { measureDuration } from "./measureDuration";
 import { GracefulPulumiError } from "./GracefulPulumiError";
-import { ProjectApplication } from "@webiny/cli/types";
-import { Context, IPulumi, IUserCommandInput } from "~/types";
+import type { Context, IPulumi, IUserCommandInput, ProjectApplication } from "~/types";
 
 export interface ICreatePulumiCommandParamsCommandParams {
     inputs: IUserCommandInput;

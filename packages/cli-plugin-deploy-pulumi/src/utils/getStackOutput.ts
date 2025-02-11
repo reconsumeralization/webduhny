@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { getProject } from "@webiny/cli/utils";
 import { mapStackOutput } from "./mapStackOutput";
 import execa from "execa";
+import { getStacksOutput } from "~/utils/stacks/getStacksOutput";
 
 const cache: Record<string, any> = {};
 
@@ -12,6 +14,15 @@ export interface IGetOutputJsonParams {
 }
 
 const getOutputJson = ({ folder, env, cwd, variant }: IGetOutputJsonParams) => {
+    const stacks = getStacksOutput({
+        folder,
+        env,
+        cwd
+    });
+    console.log({
+        stacks: JSON.stringify(stacks)
+    });
+    process.exit();
     const project = getProject();
 
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
