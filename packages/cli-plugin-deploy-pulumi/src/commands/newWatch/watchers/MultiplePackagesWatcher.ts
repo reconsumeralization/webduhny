@@ -3,9 +3,8 @@ import chalk from "chalk";
 import { BasePackagesWatcher } from "./BasePackagesWatcher";
 import { getRandomColorForString } from "~/utils";
 import { Context } from "~/types";
-
-const { fork } = require("child_process");
-const { deserializeError } = require("serialize-error");
+import { fork } from "child_process";
+import { deserializeError } from "serialize-error";
 
 const WORKER_PATH = path.resolve(__dirname, "worker.js");
 
