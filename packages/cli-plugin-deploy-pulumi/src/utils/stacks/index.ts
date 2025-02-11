@@ -1,3 +1,3 @@
 export * from "./Stack";
-export * from "./getStacks";
-export * from "./getStacksOutput";
+export * from "./getApplicationsStacks";
+export * from "./getApplicationsStacksOutput";
