@@ -22,68 +22,68 @@ import { List, ListItem, ListProps } from "..";
 import { DataListModalOverlayProvider } from "./DataListModalOverlay";
 import { PaginationProp, SortersProp } from "./types";
 
-const ListContainer = styled("div")({
-    position: "relative",
-    height: "100%",
-    ".mdc-deprecated-list": {
-        paddingBottom: 0,
-        paddingTop: 0
-    },
-    ".mdc-deprecated-list-item": {
-        borderBottom: "1px solid var(--mdc-theme-on-background)",
-        padding: "10px 20px 10px 20px",
-        height: "auto",
-        minHeight: 40,
-        ".mdc-deprecated-list-item__text, .mdc-deprecated-list-item__secondary-text, .webiny-list-text-overline":
-            {
-                display: "block"
-            },
-        ".mdc-deprecated-list-item__graphic": {
-            marginRight: 20
-        },
-        ".mdc-deprecated-list-item__text": {
-            width: "100%",
-            margin: "-20px 0",
-            padding: "20px 0"
-        },
-        ".mdc-deprecated-list-item__meta": {
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "column",
-            position: "relative",
-            padding: "5px 0",
-            boxSizing: "border-box",
-            height: "100%",
-            whiteSpace: "nowrap",
-            marginTop: -10,
-            marginBottom: -10,
-            ".webiny-list-actions": {
-                display: "none"
-            },
-            ".webiny-list-top-caption, .webiny-list-bottom-caption": {
-                //position: 'absolute',
-                width: "100%",
-                textAlign: "right"
-            },
-            ".webiny-list-top-caption": {
-                marginBottom: 20
-            }
-        },
-        "&:hover": {
-            ".mdc-deprecated-list-item__meta": {
-                ".webiny-list-top-caption, .webiny-list-bottom-caption": {
-                    display: "none"
-                },
-                ".webiny-list-actions": {
-                    display: "flex",
-                    height: "100%",
-                    alignItems: "center"
-                }
-            }
-        }
-    }
-});
+// const ListContainer = styled("div")({
+//     position: "relative",
+//     height: "100%",
+//     ".mdc-deprecated-list": {
+//         paddingBottom: 0,
+//         paddingTop: 0
+//     },
+//     ".mdc-deprecated-list-item": {
+//         borderBottom: "1px solid var(--mdc-theme-on-background)",
+//         padding: "10px 20px 10px 20px",
+//         height: "auto",
+//         minHeight: 40,
+//         ".mdc-deprecated-list-item__text, .mdc-deprecated-list-item__secondary-text, .webiny-list-text-overline":
+//             {
+//                 display: "block"
+//             },
+//         ".mdc-deprecated-list-item__graphic": {
+//             marginRight: 20
+//         },
+//         ".mdc-deprecated-list-item__text": {
+//             width: "100%",
+//             margin: "-20px 0",
+//             padding: "20px 0"
+//         },
+//         ".mdc-deprecated-list-item__meta": {
+//             alignItems: "center",
+//             display: "flex",
+//             justifyContent: "space-between",
+//             flexDirection: "column",
+//             position: "relative",
+//             padding: "5px 0",
+//             boxSizing: "border-box",
+//             height: "100%",
+//             whiteSpace: "nowrap",
+//             marginTop: -10,
+//             marginBottom: -10,
+//             ".webiny-list-actions": {
+//                 display: "none"
+//             },
+//             ".webiny-list-top-caption, .webiny-list-bottom-caption": {
+//                 //position: 'absolute',
+//                 width: "100%",
+//                 textAlign: "right"
+//             },
+//             ".webiny-list-top-caption": {
+//                 marginBottom: 20
+//             }
+//         },
+//         "&:hover": {
+//             ".mdc-deprecated-list-item__meta": {
+//                 ".webiny-list-top-caption, .webiny-list-bottom-caption": {
+//                     display: "none"
+//                 },
+//                 ".webiny-list-actions": {
+//                     display: "flex",
+//                     height: "100%",
+//                     alignItems: "center"
+//                 }
+//             }
+//         }
+//     }
+// });
 
 const ListHeader = styled.div`
     border-bottom: 1px solid var(--mdc-theme-on-background);
@@ -402,7 +402,7 @@ export const DataList = (propsInput: DataListProps) => {
 
     return (
         <DataListModalOverlayProvider>
-            <ListContainer className={"webiny-data-list"} data-testid={"ui.list.data-list"}>
+            <div data-testid={"ui.list.data-list"}>
                 {(props.title || props.actions) && (
                     <ListHeader>
                         <Typography use="headline5">{props.title}</Typography>
@@ -430,7 +430,7 @@ export const DataList = (propsInput: DataListProps) => {
                     {render}
                     {props.modalOverlay}
                 </div>
-            </ListContainer>
+            </div>
         </DataListModalOverlayProvider>
     );
 };

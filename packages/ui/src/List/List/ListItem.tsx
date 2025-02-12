@@ -1,5 +1,5 @@
-import React from "react";
-import { List as AdminList } from "@webiny/admin-ui";
+import React, { createContext, useMemo, useState } from "react";
+import { List as AdminList, ListItemProps as AdminListItemProps } from "@webiny/admin-ui";
 
 /**
  * Ripples
@@ -30,22 +30,77 @@ export type ListItemProps = {
     onClick?: (e: React.MouseEvent) => void;
 };
 
+interface DeprecatedListItemContext {
+    addTitle(value: React.ReactNode): void;
+    addDescription(value?: React.ReactNode): void;
+    addIcon(value: React.ReactNode): void;
+    addActions(value?: React.ReactNode): void;
+}
+
+const initializeListItemState = (): AdminListItemProps => {
+    return {
+        title: null,
+        description: null,
+        actions: null,
+        icon: null
+    };
+};
+
+export const DeprecatedListItemContext = createContext<DeprecatedListItemContext | undefined>(
+    undefined
+);
+
 /**
- * ListItem components are placed as direct children to List component.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `List.Item` component from the `@webiny/admin-ui` package instead.
  */
 export const ListItem = (props: ListItemProps) => {
+    const [item, setItem] = useState<AdminListItemProps>(initializeListItemState());
+
+    const context: DeprecatedListItemContext = useMemo(
+        () => ({
+            addTitle(value: React.ReactNode) {
+                setItem(state => ({
+                    ...state,
+                    title: value
+                }));
+            },
+            addDescription(value: React.ReactNode) {
+                setItem(state => ({
+                    ...state,
+                    description: value
+                }));
+            },
+            addIcon(value: React.ReactNode) {
+                setItem(state => ({
+                    ...state,
+                    icon: value
+                }));
+            },
+            addActions(value?: React.ReactNode) {
+                setItem(state => ({
+                    ...state,
+                    actions: value
+                }));
+            }
+        }),
+        [setItem, props]
+    );
+
     return (
         <AdminList.Item
             disabled={props.disabled}
             onClick={props.onClick}
             className={props.className}
             style={props.style}
-            title={props.children}
+            title={item.title}
+            description={item.description}
+            actions={item.actions}
+            icon={item.icon}
         >
-            {props.children}
+            <DeprecatedListItemContext.Provider value={context}>
+                {props.children}
+            </DeprecatedListItemContext.Provider>
         </AdminList.Item>
     );
 };

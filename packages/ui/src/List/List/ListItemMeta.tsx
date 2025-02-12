@@ -1,13 +1,10 @@
 import React from "react";
-import { Typography } from "~/Typography";
 
 export type ListItemMetaProps = { children: React.ReactNode; className?: string };
 
 /**
- * Can be used to show an icon or any other custom element. Rendered on the right side.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListItemMeta = (props: ListItemMetaProps) => {
     return <span {...props}>{props.children}</span>;
@@ -18,17 +15,11 @@ export type ListTopCaptionProps = {
 };
 
 /**
- * Can be used to show a top caption inside ListItemMeta component.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
-export const ListTopCaption = (props: ListTopCaptionProps) => {
-    return (
-        <span {...props} className={"webiny-list-top-caption"}>
-            <Typography use="overline">{props.children}</Typography>
-        </span>
-    );
+export const ListTopCaption = ({}: ListTopCaptionProps) => {
+    return null;
 };
 
 export type ListBottomCaptionProps = {
@@ -36,15 +27,9 @@ export type ListBottomCaptionProps = {
 };
 
 /**
- * Can be used to show a bottom caption inside ListItemMeta component.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
-export const ListBottomCaption = (props: ListBottomCaptionProps) => {
-    return (
-        <span {...props} className={"webiny-list-bottom-caption"}>
-            <Typography use="overline">{props.children}</Typography>
-        </span>
-    );
+export const ListBottomCaption = ({}: ListBottomCaptionProps) => {
+    return null;
 };

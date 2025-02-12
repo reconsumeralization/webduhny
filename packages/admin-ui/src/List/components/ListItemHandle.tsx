@@ -8,19 +8,7 @@ interface ListItemHandleProps extends Omit<IconProps, "icon" | "label"> {
     label?: string;
 }
 
-const DecoratableListItemHandle = ({ onClick, ...props }: ListItemHandleProps) => {
-    // We need to stop the event propagation to prevent the List from opening/closing when the handle is clicked.
-    const onClickCallback = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
-            e.stopPropagation();
-
-            if (onClick) {
-                onClick(e);
-            }
-        },
-        [onClick]
-    );
-
+const DecoratableListItemHandle = (props: ListItemHandleProps) => {
     return (
         <Icon
             size={"md"}
@@ -29,7 +17,6 @@ const DecoratableListItemHandle = ({ onClick, ...props }: ListItemHandleProps) =
             icon={<DragHandleIcon />}
             label={"Drag handle"}
             {...props}
-            onClick={onClickCallback}
         />
     );
 };

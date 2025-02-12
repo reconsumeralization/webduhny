@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { DeprecatedListItemContext } from "~/List";
 
 export type ListItemGraphicProps = { children: React.ReactNode; className?: string };
 
 /**
- * Can be used to show an icon or any other custom element. Rendered on the left side.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListItemGraphic = (props: ListItemGraphicProps) => {
-    return <div {...props}>{props.children}</div>;
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        listItemContext!.addIcon(props.children);
+    }, [props]);
+
+    return null;
 };
 
 export type ListSelectBoxProps = {
@@ -21,5 +26,11 @@ export type ListSelectBoxProps = {
  * @param {*} props
  */
 export const ListSelectBox = (props: ListSelectBoxProps) => {
-    return <ListItemGraphic>{props.children}</ListItemGraphic>;
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        listItemContext!.addIcon(props.children);
+    }, [props]);
+
+    return null;
 };

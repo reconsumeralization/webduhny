@@ -1,10 +1,5 @@
-import React from "react";
-import {
-    ListItemText as RmwcListItemText,
-    ListItemPrimaryText as RmwcListItemPrimaryText,
-    ListItemSecondaryText as RmwcListItemSecondaryText
-} from "@rmwc/list";
-import { Typography } from "~/Typography";
+import React, { useContext, useEffect } from "react";
+import { DeprecatedListItemContext } from "~/List";
 
 /** Text Wrapper for the ListItem */
 export type ListItemTextProps = {
@@ -14,13 +9,11 @@ export type ListItemTextProps = {
 };
 
 /**
- * Used to show regular text in list items.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListItemText = (props: ListItemTextProps) => {
-    return <RmwcListItemText {...props}>{props.children}</RmwcListItemText>;
+    return props.children;
 };
 
 export type ListItemTextPrimaryProps = {
@@ -30,8 +23,18 @@ export type ListItemTextPrimaryProps = {
     children: React.ReactNode;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
+ */
 export const ListItemTextPrimary = (props: ListItemTextPrimaryProps) => {
-    return <RmwcListItemPrimaryText>{props.children}</RmwcListItemPrimaryText>;
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        listItemContext!.addTitle(props.children);
+    }, [props]);
+
+    return null;
 };
 
 export type ListItemTextSecondaryProps = {
@@ -42,13 +45,17 @@ export type ListItemTextSecondaryProps = {
 };
 
 /**
- * Used to show secondary text in list items.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListItemTextSecondary = (props: ListItemTextSecondaryProps) => {
-    return <RmwcListItemSecondaryText>{props.children}</RmwcListItemSecondaryText>;
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        listItemContext!.addDescription(props.children);
+    }, [props]);
+
+    return null;
 };
 
 export type ListTextOverlineProps = {
@@ -56,15 +63,15 @@ export type ListTextOverlineProps = {
 };
 
 /**
- * Can be used to show an overline text inside ListItem component.
- * @param props
- * @returns {*}
- * @constructor
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListTextOverline = (props: ListTextOverlineProps) => {
-    return (
-        <span {...props} className={"webiny-list-text-overline"}>
-            <Typography use="overline">{props.children}</Typography>
-        </span>
-    );
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        listItemContext!.addDescription(props.children);
+    }, [props]);
+
+    return null;
 };

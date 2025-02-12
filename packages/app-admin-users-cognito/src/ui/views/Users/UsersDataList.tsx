@@ -15,7 +15,8 @@ import {
     ListActions,
     ListItemGraphic,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
@@ -176,6 +177,10 @@ const UsersDataList = () => {
                             key={item.id}
                             selected={item.id === id}
                             style={{ height: "auto" }}
+                            onClick={() => {
+                                console.log("item", item);
+                                history.push(`/admin-users?id=${item.id}`);
+                            }}
                         >
                             <ListItemGraphic>
                                 <Avatar
@@ -187,10 +192,10 @@ const UsersDataList = () => {
                                     alt={t`User's avatar.`}
                                 />
                             </ListItemGraphic>
-                            <ListItemText
-                                onClick={() => history.push(`/admin-users?id=${item.id}`)}
-                            >
-                                {item.firstName} {item.lastName}
+                            <ListItemText>
+                                <ListItemTextPrimary>
+                                    {item.firstName} {item.lastName}
+                                </ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.email}</ListItemTextSecondary>
                             </ListItemText>
 

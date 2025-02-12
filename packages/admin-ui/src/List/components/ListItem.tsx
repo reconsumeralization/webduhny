@@ -16,16 +16,19 @@ interface ListItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "titl
 
 const DecoratableListItem = ({
     actions,
+    children,
     className,
     description,
     disabled = false,
     handle,
     icon,
+    onClick,
     title,
-    children
+    ...props
 }: ListItemProps) => {
     return (
         <div
+            {...props}
             {...(disabled && { "aria-disabled": true })}
             tabIndex={0}
             className={cn(
@@ -48,20 +51,24 @@ const DecoratableListItem = ({
                     "wby-w-full wby-flex wby-justify-between wby-items-center wby-px-md wby-py-sm-extra"
                 }
             >
-                {icon && <div className={"wby-mr-md"}>{icon}</div>}
-                <div className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}>
-                    <Text
-                        size={"md"}
-                        text={title}
-                        as={"div"}
-                        className={"wby-font-semibold wby-text-neutral-primary"}
-                    />
-                    <Text
-                        size={"sm"}
-                        text={description}
-                        as={"div"}
-                        className={"wby-text-neutral-strong"}
-                    />
+                <div className={"wby-w-full wby-flex wby-items-center"} onClick={onClick}>
+                    {icon && <div className={"wby-mr-md"}>{icon}</div>}
+                    <div
+                        className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}
+                    >
+                        <Text
+                            size={"md"}
+                            text={title}
+                            as={"div"}
+                            className={"wby-font-semibold wby-text-neutral-primary"}
+                        />
+                        <Text
+                            size={"sm"}
+                            text={description}
+                            as={"div"}
+                            className={"wby-text-neutral-strong"}
+                        />
+                    </div>
                 </div>
                 {actions && <div className={"wby-flex wby-gap-xs-plus"}>{actions}</div>}
             </div>
