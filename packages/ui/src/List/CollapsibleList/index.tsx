@@ -20,7 +20,7 @@ export interface CollapsibleListProps {
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
- * Please use the `Accordion` component from the `@webiny/admin-ui` package instead.
+ * Please use the `List` component from the `@webiny/admin-ui` package instead.
  */
 export const CollapsibleList = (props: CollapsibleListProps) => {
     console.warn(
