@@ -39,6 +39,7 @@ export default {
                                 return null;
                             }
                         }
+                        return null;
                     })
                     .filter(Boolean);
             } catch (e) {
@@ -56,7 +57,8 @@ export default {
 
     featureFlags: {
         experimentalAdminOmniSearch: true,
+        experimentalDynamicPages: false,
         newWatchCommand: true,
-        experimentalDynamicPages: false
+        rspack: true
     }
 };
