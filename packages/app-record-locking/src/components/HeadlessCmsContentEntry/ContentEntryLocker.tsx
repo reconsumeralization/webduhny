@@ -52,16 +52,21 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
         }
         const { id: entryId } = parseIdentifier(entry.id);
 
+        const removeEntryLockCb = async () => {
+            const record: IIsRecordLockedParams = {
+                id: entryId,
+                $lockingType: model.modelId
+            };
+            removeEntryLock(record);
+            await unlockEntry(record);
+        };
+
         let onMessageSub = websockets.onMessage<IKickOutWebsocketsMessage>(
             `recordLocking.entry.kickOut.${entryId}`,
             async incoming => {
                 const { user } = incoming.data;
-                const record: IIsRecordLockedParams = {
-                    id: entryId,
-                    $lockingType: model.modelId
-                };
-                removeEntryLock(record);
                 onDisablePrompt(true);
+                await removeEntryLockCb();
                 showDialog({
                     title: "Entry was forcefully unlocked!",
                     content: <ForceUnlocked user={user} />,
@@ -73,24 +78,13 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
             }
         );
 
-        let onCloseSub = websockets.onClose(() => {
-            const record: IIsRecordLockedParams = {
-                id: entryId,
-                $lockingType: model.modelId
-            };
-            removeEntryLock(record);
-        });
-
         return () => {
             onMessageSub.off();
-            onCloseSub.off();
             /**
              * Lets null subscriptions, just in case it...
              */
             // @ts-expect-error
             onMessageSub = null;
-            // @ts-expect-error
-            onCloseSub = null;
         };
     }, [entry.id, navigateTo, model.modelId]);
 
@@ -111,7 +105,8 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
                 if (result) {
                     return;
                 }
-                unlockEntry(record);
+                removeEntryLock(record);
+                await unlockEntry(record);
             })();
         };
     }, [entry.id]);

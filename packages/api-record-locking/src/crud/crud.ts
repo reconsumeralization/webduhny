@@ -15,7 +15,8 @@ import {
     OnEntryBeforeUnlockTopicParams,
     OnEntryLockErrorTopicParams,
     OnEntryUnlockErrorTopicParams,
-    OnEntryUnlockRequestErrorTopicParams
+    OnEntryUnlockRequestErrorTopicParams,
+    RecordLockingSecurityPermission
 } from "~/types";
 import { RECORD_LOCKING_MODEL_ID } from "./model";
 import { IGetLockRecordUseCaseExecute } from "~/abstractions/IGetLockRecordUseCase";
@@ -64,7 +65,14 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
     };
 
     const hasRecordLockingAccess: IHasRecordLockingAccessCallable = async () => {
-        return await context.security.hasFullAccess();
+        const hasFulLAccess = await context.security.hasFullAccess();
+        if (hasFulLAccess) {
+            return true;
+        }
+        const permission = await context.security.getPermission<RecordLockingSecurityPermission>(
+            "recordLocking"
+        );
+        return permission?.canForceUnlock === "yes";
     };
 
     const onEntryBeforeLock = createTopic<OnEntryBeforeLockTopicParams>(

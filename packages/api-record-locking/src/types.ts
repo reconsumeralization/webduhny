@@ -13,6 +13,7 @@ import {
     Context as IWebsocketsContext,
     IWebsocketsContextObject
 } from "@webiny/api-websockets/types";
+import { SecurityPermission } from "@webiny/api-security/types";
 
 export { CmsError, CmsEntry };
 
@@ -234,4 +235,8 @@ export interface IRecordLocking {
 
 export interface Context extends CmsContext, IWebsocketsContext {
     recordLocking: IRecordLocking;
+}
+
+export interface RecordLockingSecurityPermission extends SecurityPermission {
+    canForceUnlock?: string;
 }
