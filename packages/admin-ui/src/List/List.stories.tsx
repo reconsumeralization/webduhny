@@ -1,12 +1,12 @@
 import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { List, type ListItemProps as BaseListItemProps } from "./List";
-
 import { ReactComponent as ChartIcon } from "@material-design-icons/svg/outlined/insert_chart.svg";
-import { ReactComponent as ArrowUp } from "@material-design-icons/svg/outlined/arrow_upward.svg";
-import { ReactComponent as ArrowDown } from "@material-design-icons/svg/outlined/arrow_downward.svg";
+import { ReactComponent as MoreIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
+import { ReactComponent as OpenIcon } from "@material-design-icons/svg/outlined/visibility.svg";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
 import { ReactComponent as TrashIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import type { Meta, StoryObj } from "@storybook/react";
+import { List, type ListItemProps as BaseListItemProps } from "./List";
+import { Avatar } from "~/Avatar";
 
 const meta: Meta<typeof List> = {
     title: "Components/List",
@@ -132,6 +132,40 @@ export const WithIcon: Story = {
     }
 };
 
+export const WithAvatar: Story = {
+    args: {
+        ...Default.args,
+        children: (
+            <>
+                <ListItem
+                    index={1}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=1" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                />
+                <ListItem
+                    index={2}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=2" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                />
+            </>
+        )
+    }
+};
+
 export const WithHandle: Story = {
     args: {
         ...Default.args,
@@ -152,20 +186,7 @@ export const WithHandle: Story = {
     }
 };
 
-export const WithDisabledItem: Story = {
-    args: {
-        ...Default.args,
-        children: (
-            <>
-                <ListItem index={1} disabled={true} />
-                <ListItem index={2} />
-                <ListItem index={3} />
-            </>
-        )
-    }
-};
-
-export const WithActionsIcon: Story = {
+export const WithActions: Story = {
     ...Default,
     args: {
         children: (
@@ -176,11 +197,11 @@ export const WithActionsIcon: Story = {
                     icon={<List.Item.Icon icon={<ChartIcon />} label={"Chart"} />}
                     actions={
                         <>
-                            <List.Item.Action icon={<ArrowUp />} />
-                            <List.Item.Action icon={<ArrowDown />} />
-                            <List.Item.Action.Separator />
                             <List.Item.Action icon={<EditIcon />} />
                             <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
                         </>
                     }
                 />
@@ -190,11 +211,11 @@ export const WithActionsIcon: Story = {
                     icon={<List.Item.Icon icon={<ChartIcon />} label={"Chart"} />}
                     actions={
                         <>
-                            <List.Item.Action icon={<ArrowUp />} />
-                            <List.Item.Action icon={<ArrowDown />} />
-                            <List.Item.Action.Separator />
                             <List.Item.Action icon={<EditIcon />} />
                             <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
                         </>
                     }
                 />
@@ -203,21 +224,55 @@ export const WithActionsIcon: Story = {
     }
 };
 
-export const WithHandleIcon: Story = {
+export const WithDisabled: Story = {
     args: {
-        ...Default.args,
+        ...WithAvatar.args,
         children: (
             <>
                 <ListItem
+                    disabled={true}
                     index={1}
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    icon={<List.Item.Icon icon={<ChartIcon />} label={"Chart"} />}
                     handle={<List.Item.Handle />}
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=1" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                    actions={
+                        <>
+                            <List.Item.Action icon={<EditIcon />} />
+                            <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
+                        </>
+                    }
                 />
                 <ListItem
                     index={2}
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                     handle={<List.Item.Handle />}
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=2" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                    actions={
+                        <>
+                            <List.Item.Action icon={<EditIcon />} />
+                            <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
+                        </>
+                    }
                 />
             </>
         )

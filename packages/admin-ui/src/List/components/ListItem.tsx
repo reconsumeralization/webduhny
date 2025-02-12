@@ -1,51 +1,46 @@
 import * as React from "react";
-import { cn, cva, makeDecoratable, type VariantProps, withStaticProps } from "~/utils";
+import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Text } from "~/Text";
 import { ListItemAction } from "./ListItemAction";
 import { ListItemHandle } from "./ListItemHandle";
 import { ListItemIcon } from "./ListItemIcon";
 
-const listItemVariants = cva(
-    [
-        "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
-        "group-[.wby-list-background-base]:wby-bg-neutral-base",
-        "group-[.wby-list-background-light]:wby-bg-neutral-light",
-        "group-[.wby-list-variant-container]:wby-rounded-sm",
-        "group-[.wby-list-variant-underline]:wby-border-b-sm group-[.wby-list-variant-underline]:wby-border-b-neutral-dimmed",
-        "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
-        "focus-visible:wby-outline-none focus-visible:wby-border-none focus-visible:wby-ring-sm focus-visible:wby-ring-primary-dimmed",
-        "hover:wby-bg-neutral-dimmed"
-    ],
-    {
-        variants: {
-            disabled: {
-                true: ""
-            }
-        }
-    }
-);
-
-interface ListItemProps
-    extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
-        VariantProps<typeof listItemVariants> {
+interface ListItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     title: React.ReactNode;
     actions?: React.ReactNode;
     description?: React.ReactNode;
     handle?: React.ReactNode;
     icon?: React.ReactNode;
+    disabled?: boolean;
 }
 
 const DecoratableListItem = ({
     actions,
     className,
     description,
-    disabled,
+    disabled = false,
     handle,
     icon,
     title
 }: ListItemProps) => {
     return (
-        <div className={cn(listItemVariants({ disabled }), className)}>
+        <div
+            {...(disabled && { "aria-disabled": true })}
+            tabIndex={0}
+            className={cn(
+                [
+                    "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
+                    "group-[.wby-list-background-base]:wby-bg-neutral-base",
+                    "group-[.wby-list-background-light]:wby-bg-neutral-light",
+                    "group-[.wby-list-variant-container]:wby-rounded-sm",
+                    "group-[.wby-list-variant-underline]:wby-border-b-sm group-[.wby-list-variant-underline]:wby-border-b-neutral-dimmed",
+                    "hover:!wby-bg-neutral-dimmed",
+                    "focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-inset focus-visible:wby-ring-primary-dimmed",
+                    "aria-disabled:wby-pointer-events-none aria-disabled:wby-opacity-50"
+                ],
+                className
+            )}
+        >
             {handle}
             <div
                 className={
