@@ -74,7 +74,7 @@ export const File = makeDecoratable(
     "File",
     ({ file, fileBody, selected, onSelect, children }: FileProps) => {
         return (
-            <FileWrapper data-testid={"fm-list-wrapper-file"}>
+            <FileWrapper data-testid={"fm-list-wrapper-file"} data-file-id={file.id}>
                 <FileBody>
                     {fileBody ?? (
                         <DefaultFileBody selected={selected} onSelect={onSelect}>
