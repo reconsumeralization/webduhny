@@ -30,6 +30,11 @@ export const createPrimaryVariantCommands = (params: IPrimaryVariantCommand): vo
                 type: "string",
                 required: true
             });
+            yargs.option("confirm", {
+                describe: "Confirm deployment",
+                type: "boolean",
+                required: false
+            });
             yargs
                 .option("primary", {
                     describe: `Primary variant`,
@@ -57,6 +62,7 @@ export const createPrimaryVariantCommands = (params: IPrimaryVariantCommand): vo
         },
         async argv => {
             return executeSetPrimaryVariantCommand({
+                confirm: argv.confirm === "true" || argv.confirm === true,
                 env: argv.env as string,
                 primary: (argv.primary || undefined) as string | undefined,
                 secondary: (argv.secondary || undefined) as string | undefined,

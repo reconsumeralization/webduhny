@@ -41,7 +41,7 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     const { env, context } = params;
     validateVariantNames(params);
 
-    const message = "Fetching primary and secondary stacks...";
+    const message = `Fetching primary and secondary stacks in "${env}" environment...`;
 
     const spinner = ora(message);
     spinner.start();
@@ -59,13 +59,17 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     const primaryStacks = stacks.filter(stack => stack.variant === params.primary);
     if (primaryStacks.length !== requiredStacks) {
         spinner.fail(`${message} failed.`);
-        throw new GracefulError(`Primary variant "${params.primary}" not found.`);
+        throw new GracefulError(
+            `Primary variant${params.primary ? ` "${params.primary}"` : ""} not found.`
+        );
     }
 
     const secondaryStacks = stacks.filter(stack => stack.variant === params.secondary);
     if (secondaryStacks.length !== requiredStacks) {
         spinner.fail(`${message} failed.`);
-        throw new GracefulError(`Secondary variant "${params.secondary}" not found.`);
+        throw new GracefulError(
+            `Secondary variant${params.secondary ? ` "${params.secondary}"` : ""} not found.`
+        );
     }
 
     spinner.succeed(`${message} done.`);
