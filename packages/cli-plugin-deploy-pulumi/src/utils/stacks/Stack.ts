@@ -1,15 +1,17 @@
 import type { IStackOutput } from "~/utils";
 
 export interface IStack<T extends IStackOutput | undefined = undefined> {
-    app: string;
-    env: string;
-    variant: string | undefined;
+    readonly app: string;
+    readonly folder: string;
+    readonly env: string;
+    readonly variant: string | undefined;
     output: T;
     withOutput<O extends IStackOutput>(output: O): Required<IStack<O>>;
 }
 
 export interface IStackParams<T extends IStackOutput | undefined = undefined> {
     app: string;
+    folder: string;
     env: string;
     variant: string | undefined;
     output?: T;
@@ -17,12 +19,14 @@ export interface IStackParams<T extends IStackOutput | undefined = undefined> {
 
 export class Stack<T extends IStackOutput | undefined = undefined> implements IStack<T> {
     public readonly app: string;
+    public readonly folder: string;
     public readonly env: string;
     public readonly variant: string | undefined;
     public readonly output: T;
 
     public constructor(params: IStackParams<T>) {
         this.app = params.app;
+        this.folder = params.folder;
         this.env = params.env;
         this.variant = params.variant;
         if (!params.output) {
@@ -38,6 +42,7 @@ export class Stack<T extends IStackOutput | undefined = undefined> implements IS
          */
         return new Stack<O>({
             app: this.app,
+            folder: this.folder,
             env: this.env,
             variant: this.variant,
             output: structuredClone(output)

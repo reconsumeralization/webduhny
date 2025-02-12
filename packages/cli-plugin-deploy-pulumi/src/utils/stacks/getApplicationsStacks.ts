@@ -9,7 +9,7 @@ import { createStack } from "./Stack";
 export interface IGetStacksParams {
     applications: string[];
     env: string;
-    variants: string[] | undefined;
+    variants: (string | undefined)[] | undefined;
     cwd?: string;
 }
 
@@ -34,7 +34,7 @@ export const getApplicationsStacks = (params: IGetStacksParams): IApplicationSta
 
         if (!fs.existsSync(target)) {
             throw new GracefulError(
-                `Stacks folder "${target}" does not exist. Did you deploy the "${app}" application?`
+                `Stacks folder "${target}" does not exist. Did you deploy the "${folder}" application?`
             );
         }
 
@@ -49,14 +49,21 @@ export const getApplicationsStacks = (params: IGetStacksParams): IApplicationSta
                     return null;
                 }
                 const { env, variant } = splitStackName(part);
-                if (variants && variant !== undefined && !variants.includes(variant)) {
+
+                if (variants && variant && !variants.includes(variant)) {
+                    console.log({
+                        env,
+                        variants,
+                        variant
+                    });
                     return null;
                 }
 
                 return createStack({
                     env,
                     variant,
-                    app
+                    app,
+                    folder
                 });
             })
             .filter((item): item is IStack => !!item);

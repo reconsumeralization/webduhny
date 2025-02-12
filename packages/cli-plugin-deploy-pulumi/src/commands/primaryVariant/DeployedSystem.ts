@@ -54,7 +54,7 @@ export const createDeployedSystemFactory: ICreateDeployedSystemFactory = ({ appl
         const { env, variant } = params.stacks[0];
 
         for (const app of applications) {
-            const exists = params.stacks.some(stack => stack.app === app);
+            const exists = params.stacks.some(stack => stack.folder === app);
             if (!exists) {
                 throw new GracefulError(
                     `Stack for application "${app}" is missing in system env "${env}", variant "${

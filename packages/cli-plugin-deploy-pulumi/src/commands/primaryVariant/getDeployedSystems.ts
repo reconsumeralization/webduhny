@@ -2,11 +2,12 @@ import { getApplicationsStacksOutput } from "~/utils/stacks";
 import { GracefulError } from "~/utils";
 import type { Context } from "~/types";
 import { createDeployedSystemFactory, IDeployedSystem } from "./DeployedSystem";
+import ora from "ora";
 
 export interface IGetStacksParams {
     env: string;
-    primary: string;
-    secondary: string;
+    primary: string | undefined;
+    secondary: string | undefined;
     context: Context;
 }
 
@@ -16,8 +17,8 @@ export interface IGetStacksResult {
 }
 
 interface IValidateVariantNamesParams {
-    primary: string;
-    secondary: string;
+    primary: string | undefined;
+    secondary: string | undefined;
 }
 
 const validateVariantNames = (params: IValidateVariantNamesParams): void => {
@@ -40,6 +41,10 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     const { env, context } = params;
     validateVariantNames(params);
 
+    const message = "Fetching primary and secondary stacks...";
+
+    const spinner = ora(message);
+    spinner.start();
     const applications = Object.values(context.project.config.appAliases);
     const requiredStacks = applications.length;
 
@@ -53,13 +58,17 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
 
     const primaryStacks = stacks.filter(stack => stack.variant === params.primary);
     if (primaryStacks.length !== requiredStacks) {
+        spinner.fail(`${message} failed.`);
         throw new GracefulError(`Primary variant "${params.primary}" not found.`);
     }
 
     const secondaryStacks = stacks.filter(stack => stack.variant === params.secondary);
     if (secondaryStacks.length !== requiredStacks) {
+        spinner.fail(`${message} failed.`);
         throw new GracefulError(`Secondary variant "${params.secondary}" not found.`);
     }
+
+    spinner.succeed(`${message} done.`);
 
     const createDeployedSystem = createDeployedSystemFactory({
         applications

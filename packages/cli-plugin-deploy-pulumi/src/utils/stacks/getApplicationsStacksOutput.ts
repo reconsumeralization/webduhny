@@ -6,7 +6,7 @@ import type { Context } from "~/types";
 export interface IGetStacksOutputParams {
     applications: string[];
     env: string;
-    variants: string[] | undefined;
+    variants: (string | undefined)[] | undefined;
     cwd?: string;
     context: Context;
 }
