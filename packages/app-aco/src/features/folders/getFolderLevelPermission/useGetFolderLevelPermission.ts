@@ -6,18 +6,18 @@ import { useFoldersType } from "~/hooks";
 
 export const useGetFolderLevelPermission = (permissionName: FolderPermissionName) => {
     const type = useFoldersType();
-    const { canUseFolderLevelPermissions } = useWcp();
+    const wcp = useWcp();
 
     const getFolderLevelPermission = useCallback(
         (id: string) => {
             const instance = GetFolderLevelPermission.getInstance(
                 type,
                 permissionName,
-                canUseFolderLevelPermissions()
+                wcp.canUseFolderLevelPermissions()
             );
             return instance.execute({ id });
         },
-        [type, canUseFolderLevelPermissions]
+        [type, wcp]
     );
 
     return {
