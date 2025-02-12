@@ -1,4 +1,5 @@
 module.exports = () => [
+    require("./build")(),
     require("./open"),
     require("./deploy")(),
     require("./destroy")(),

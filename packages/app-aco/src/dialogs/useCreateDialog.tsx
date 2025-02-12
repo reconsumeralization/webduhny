@@ -10,7 +10,7 @@ import { validation } from "@webiny/validation";
 import { FolderTree } from "~/components";
 import { useDialogs } from "@webiny/app-admin";
 import { DialogFoldersContainer } from "~/dialogs/styled";
-import { useFolders } from "~/hooks";
+import { useCreateFolder } from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { FolderItem } from "~/types";
 
@@ -81,7 +81,7 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
 
 export const useCreateDialog = (): UseCreateDialogResponse => {
     const dialogs = useDialogs();
-    const { createFolder } = useFolders();
+    const { createFolder } = useCreateFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (data: FolderItem) => {
