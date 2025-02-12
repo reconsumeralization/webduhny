@@ -40,6 +40,12 @@ export const createTestWcpLicense = (): DecryptedWcpProjectLicense => {
                     options: {
                         maxCount: 100
                     }
+                },
+                [PROJECT_PACKAGE_FEATURE_NAME.FILE_MANAGER]: {
+                    enabled: false,
+                    options: {
+                        threatDetection: false
+                    }
                 }
             }
         }

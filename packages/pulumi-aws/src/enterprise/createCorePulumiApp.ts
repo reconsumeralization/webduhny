@@ -7,6 +7,7 @@ import {
 import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
 import { getAwsRegion } from "~/apps/awsUtils";
 import { configureS3BucketMalwareProtection } from "~/enterprise/core/configureS3BucketMalwareProtection";
+import { License } from "@webiny/wcp";
 
 export type CorePulumiApp = ReturnType<typeof createCorePulumiApp>;
 
@@ -31,14 +32,17 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
             return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
         },
-        pulumi(...args) {
+        async pulumi(...args) {
             const [app] = args;
             const { getParam } = app;
             const vpc = getParam(projectAppParams.vpc);
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
 
-            // TODO: check WCP license.
-            configureS3BucketMalwareProtection(app);
+            const license = await License.fromEnvironment();
+
+            if (license.canUseFileManagerThreatDetection()) {
+                configureS3BucketMalwareProtection(app);
+            }
 
             // Not using advanced VPC params? Then immediately exit.
             if (!usingAdvancedVpcParams) {

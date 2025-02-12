@@ -6,13 +6,9 @@ import { UIViewComponent } from "@webiny/app-admin/ui/UIView";
 import { useWcp } from "@webiny/app-admin";
 
 export const UsersView = () => {
-    const { getProject } = useWcp();
+    const wcp = useWcp();
 
-    const project = getProject();
-    let teams = false;
-    if (project) {
-        teams = project.package.features.advancedAccessControlLayer.options.teams;
-    }
+    const teams = wcp.canUseTeams();
 
     return (
         <SplitView>

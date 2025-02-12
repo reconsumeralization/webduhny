@@ -23,9 +23,9 @@ const RecordLockingHoc = (Component: React.ComponentType<RecordLockingProviderPr
 };
 
 export const RecordLocking = () => {
-    const { canUseRecordLocking } = useWcp();
+    const wcp = useWcp();
 
-    if (!canUseRecordLocking()) {
+    if (!wcp.canUseRecordLocking()) {
         return null;
     }
 

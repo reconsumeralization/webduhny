@@ -17,8 +17,9 @@ export const createFileManagerContext = ({
         const fmContext = new FileManagerContextSetup(context);
         context.fileManager = await fmContext.setupContext(storageOperations);
 
-        // Threat Scanning
-        context.fileManager = applyThreatScanning(context.fileManager);
+        if (context.wcp.canUseFileManagerThreatDetection()) {
+            context.fileManager = applyThreatScanning(context.fileManager);
+        }
     });
 
     plugin.name = "file-manager.createContext";

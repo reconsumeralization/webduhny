@@ -33,6 +33,7 @@ export const Version = () => {
 
     const wcpBadge = useMemo(() => {
         const wcpProject = wcp.getProject();
+
         if (!wcpProject) {
             return null;
         }
@@ -48,7 +49,7 @@ export const Version = () => {
                 <WcpBadge>WCP</WcpBadge>
             </Tooltip>
         );
-    }, []);
+    }, [wcp]);
 
     return (
         <ListItem ripple={false} className={subFooter}>

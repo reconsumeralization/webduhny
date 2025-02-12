@@ -1,9 +1,10 @@
 import * as aws from "@pulumi/aws";
+import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
+import { License } from "@webiny/wcp";
 import {
     createApiPulumiApp as baseCreateApiPulumiApp,
     CreateApiPulumiAppParams as BaseCreateApiPulumiAppParams
 } from "~/apps/api/createApiPulumiApp";
-import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
 import { handleGuardDutyEvents } from "~/enterprise/api/handleGuardDutyEvents";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
@@ -27,13 +28,16 @@ export function createApiPulumiApp(projectAppParams: CreateApiPulumiAppParams = 
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
             return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
         },
-        pulumi(app) {
+        async pulumi(app) {
+            const license = await License.fromEnvironment();
+
             const { getParam } = app;
             const vpc = getParam(projectAppParams.vpc);
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
 
-            // TODO: check WCP license.
-            handleGuardDutyEvents(app);
+            if (license.canUseFileManagerThreatDetection()) {
+                handleGuardDutyEvents(app);
+            }
 
             // Not using advanced VPC params? Then immediately exit.
             if (!usingAdvancedVpcParams) {

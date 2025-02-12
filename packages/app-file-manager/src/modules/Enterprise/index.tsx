@@ -1,3 +1,4 @@
+import { useWcp } from "@webiny/app-admin";
 import React from "react";
 import { FileManagerViewConfig } from "~/index";
 import { THREAT_SCAN } from "~/modules/Enterprise/constants";
@@ -15,8 +16,13 @@ const DisableFileWhileThreatScanInProgress = Grid.Item.createDecorator(Original 
     };
 });
 
-// TODO: check WCP license
 export const EnterpriseModule = () => {
+    const wcp = useWcp();
+
+    if (!wcp.canUseFileManagerThreatDetection()) {
+        return null;
+    }
+
     return (
         <>
             <DisableFileWhileThreatScanInProgress />

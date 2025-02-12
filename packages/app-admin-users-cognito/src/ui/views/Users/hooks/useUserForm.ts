@@ -19,12 +19,8 @@ export function useUserForm() {
     const { location, history } = useRouter();
     const { showSnackbar } = useSnackbar();
 
-    const { getProject } = useWcp();
-    const project = getProject();
-    let teams = false;
-    if (project) {
-        teams = project.package.features.advancedAccessControlLayer.options.teams;
-    }
+    const wcp = useWcp();
+    const teams = wcp.canUseTeams();
 
     const query = new URLSearchParams(location.search);
     const id = query.get("id");

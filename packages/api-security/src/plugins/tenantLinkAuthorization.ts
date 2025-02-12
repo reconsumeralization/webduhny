@@ -53,11 +53,7 @@ export const createTenantLinkAuthorizer = (config: Config) => (context: Context)
         allGroups.push(...groups);
     }
 
-    let teamsEnabled = false;
-    if (context.wcp.canUseFeature("advancedAccessControlLayer")) {
-        const license = context.wcp.getProjectLicense();
-        teamsEnabled = license!.package.features.advancedAccessControlLayer.options.teams;
-    }
+    const teamsEnabled = context.wcp.canUseTeams();
 
     if (teamsEnabled) {
         // Pick all groups and teams groups and get permissions from them.

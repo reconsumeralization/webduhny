@@ -58,7 +58,7 @@ export const FoldersProvider = ({ children, ...props }: Props) => {
     const [folders, setFolders] = useStateIfMounted<FolderItem[] | null>(null);
     const [loading, setLoading] = useStateIfMounted<Loading<LoadingActions>>(defaultLoading);
     const foldersApi = useFoldersApi();
-    const { canUseFolderLevelPermissions } = useWcp();
+    const wcp = useWcp();
 
     const app = appContext ? appContext.app : undefined;
 
@@ -76,7 +76,7 @@ export const FoldersProvider = ({ children, ...props }: Props) => {
     const folderLevelPermissions: FoldersContextFolderLevelPermissions = useMemo(() => {
         const createCanManage =
             (callback: (folder: FolderItem) => boolean) => (folderId: string) => {
-                if (!canUseFolderLevelPermissions() || folderId === ROOT_FOLDER) {
+                if (!wcp.canUseFolderLevelPermissions() || folderId === ROOT_FOLDER) {
                     return true;
                 }
 
