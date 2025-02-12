@@ -20,7 +20,8 @@ describe(`Custom permissions test (no WCP access but we're dealing with an old p
 
         // This is now an old project and AACL should work as usual.
         const context = await handle();
-        expect(await context.security.listPermissions()).toEqual([
+        const permissions = await context.security.listPermissions();
+        expect(permissions).toEqual([
             ...customPermissions,
 
             // `legacy: true` means we're dealing with an old, non-WCP, Webiny project.
