@@ -21,7 +21,8 @@ const DecoratableListItem = ({
     disabled = false,
     handle,
     icon,
-    title
+    title,
+    children
 }: ListItemProps) => {
     return (
         <div
@@ -35,7 +36,7 @@ const DecoratableListItem = ({
                     "group-[.wby-list-variant-container]:wby-rounded-sm",
                     "group-[.wby-list-variant-underline]:wby-border-b-sm group-[.wby-list-variant-underline]:wby-border-b-neutral-dimmed",
                     "hover:!wby-bg-neutral-dimmed",
-                    "focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-inset focus-visible:wby-ring-primary-dimmed",
+                    "focus-visible:wby-outline-none focus-visible:wby-ring-sm focus-visible:wby-ring-inset focus-visible:wby-ring-primary-dimmed",
                     "aria-disabled:wby-pointer-events-none aria-disabled:wby-opacity-50"
                 ],
                 className
@@ -64,6 +65,7 @@ const DecoratableListItem = ({
                 </div>
                 {actions && <div className={"wby-flex wby-gap-xs-plus"}>{actions}</div>}
             </div>
+            {children}
         </div>
     );
 };
