@@ -74,8 +74,8 @@ export const RecordLockingPermissions = ({ value, onChange }: RecordLockingPermi
                             <Cell span={6}>
                                 <Bind name={"canForceUnlock"}>
                                     <Select label={t`Advanced Record Locking`}>
-                                        <option value={""}>{t`No`}</option>
-                                        <option value={"yes"}>{t`Yes`}</option>
+                                        <option value={""}>{t`No Access`}</option>
+                                        <option value={"yes"}>{t`Full Access`}</option>
                                     </Select>
                                 </Bind>
                             </Cell>
