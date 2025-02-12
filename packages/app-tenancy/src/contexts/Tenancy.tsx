@@ -59,7 +59,7 @@ const goToDashboard = () => {
 
 export const TenancyProvider = (props: TenancyProviderProps) => {
     const [currentTenant, setTenant] = useState(getInitialTenant);
-    const { canUseFeature } = useWcp();
+    const wcp = useWcp();
 
     const changeTenant = useCallback(
         (tenant: string): void => {
@@ -86,7 +86,7 @@ export const TenancyProvider = (props: TenancyProviderProps) => {
         () => ({
             tenant: currentTenant,
             setTenant: changeTenant,
-            isMultiTenant: canUseFeature("multiTenancy")
+            isMultiTenant: wcp.canUseFeature("multiTenancy")
         }),
         [currentTenant]
     );

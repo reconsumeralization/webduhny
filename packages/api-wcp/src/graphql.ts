@@ -19,6 +19,7 @@ export const createWcpGraphQL = () => {
                 advancedAccessControlLayer: WcpProjectPackageFeaturesFeature
                 auditLogs: WcpProjectPackageFeaturesFeature
                 recordLocking: WcpProjectPackageFeaturesFeature
+                fileManager: WcpProjectPackageFeaturesFeature
             }
 
             type WcpProjectPackage {
@@ -66,22 +67,7 @@ export const createWcpGraphQL = () => {
             WcpQuery: {
                 getProject: (_, __, context) => {
                     try {
-                        const projectEnvironment = context.wcp.getProjectEnvironment();
-                        if (!projectEnvironment) {
-                            return new Response(null);
-                        }
-
-                        // We only return the project if we've managed to retrieve its license.
-                        const projectLicense = context.wcp.getProjectLicense();
-                        if (!projectLicense) {
-                            return new Response(null);
-                        }
-
-                        return new Response({
-                            orgId: projectLicense.orgId,
-                            projectId: projectLicense.projectId,
-                            package: projectLicense.package
-                        });
+                        return new Response(context.wcp.getProject());
                     } catch (e) {
                         return new ErrorResponse({
                             code: "COULD_NOT_GET_PROJECT",

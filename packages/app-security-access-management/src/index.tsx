@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { plugins } from "@webiny/plugins";
-import { AddMenu, AddRoute, Layout, Plugins, useWcp } from "@webiny/app-admin";
+import { AddMenu, AddRoute, Layout, Plugins, Wcp } from "@webiny/app-admin";
 import { HasPermission } from "@webiny/app-security";
 import { Permission } from "~/plugins/constants";
 import { Groups } from "~/ui/views/Groups";
@@ -9,42 +9,34 @@ import { ApiKeys } from "~/ui/views/ApiKeys";
 import accessManagementPlugins from "./plugins";
 
 /**
- * TODO @ts-refactor
- * Find out why is there empty default export
+ * Backwards Compatibility.
+ * A while back, these plugins were imported from user projects.
  */
 export default () => [];
 
 export const AccessManagementExtension = () => {
     plugins.register(accessManagementPlugins());
 
-    const { getProject } = useWcp();
-
-    const project = getProject();
-    let teams = false;
-    if (project) {
-        teams = project.package.features.advancedAccessControlLayer.options.teams;
-    }
-
     return (
         <Plugins>
             <HasPermission name={Permission.Groups}>
-                <AddRoute exact path={"/access-management/roles"}>
+                <AddRoute path={"/access-management/roles"}>
                     <Layout title={"Access Management - Roles"}>
                         <Groups />
                     </Layout>
                 </AddRoute>
             </HasPermission>{" "}
-            {teams && (
+            <Wcp.CanUseTeams>
                 <HasPermission name={Permission.Teams}>
-                    <AddRoute exact path={"/access-management/teams"}>
+                    <AddRoute path={"/access-management/teams"}>
                         <Layout title={"Access Management - Teams"}>
                             <Teams />
                         </Layout>
                     </AddRoute>
                 </HasPermission>
-            )}
+            </Wcp.CanUseTeams>
             <HasPermission name={Permission.ApiKeys}>
-                <AddRoute exact path={"/access-management/api-keys"}>
+                <AddRoute path={"/access-management/api-keys"}>
                     <Layout title={"Access Management - API Keys"}>
                         <ApiKeys />
                     </Layout>
@@ -60,7 +52,7 @@ export const AccessManagementExtension = () => {
                                 path={"/access-management/roles"}
                             />
                         </HasPermission>
-                        {teams && (
+                        <Wcp.CanUseTeams>
                             <HasPermission name={Permission.Teams}>
                                 <AddMenu
                                     name={"settings.accessManagement.teams"}
@@ -68,8 +60,7 @@ export const AccessManagementExtension = () => {
                                     path={"/access-management/teams"}
                                 />
                             </HasPermission>
-                        )}
-
+                        </Wcp.CanUseTeams>
                         <HasPermission name={Permission.ApiKeys}>
                             <AddMenu
                                 name={"settings.accessManagement.apiKeys"}

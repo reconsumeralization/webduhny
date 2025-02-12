@@ -14,7 +14,7 @@ A set of frontend Webiny Control Panel (WCP)-related utilities.
 - [Examples](#examples)
 - [Reference](#reference)
   - [Components](#components)
-    - [`WcpProvider`](#WcpProvider)
+    - [`WcpLicenseProvider`](#WcpProvider)
   - [Hooks](#hooks)
     - [`useWcp`](#useWcp)
 
@@ -32,23 +32,23 @@ yarn add @webiny/app-wcp
 
 ## Overview
 
-The `@webiny/app-wcp` package contains essential Webiny Control Panel (WCP)-related utilities, that can be used within a React app. These include the [`WcpProvider`](#WcpProvider) provider component and the [`useWcp`](#useWcp) hook, which can be used to retrieve the current WCP project information and inspect whether a specific feature is available.
+The `@webiny/app-wcp` package contains essential Webiny Control Panel (WCP)-related utilities, that can be used within a React app. These include the [`WcpLicenseProvider`](#WcpProvider) provider component and the [`useWcp`](#useWcp) hook, which can be used to retrieve the current WCP project information and inspect whether a specific feature is available.
 
 > ℹ️ **INFO**
 >
-> Internally, the [`WcpProvider`](#WcpProvider) provider retrieves WCP project information from the Webiny's default GraphQL API. Because of this, note that this project relies on [`@webiny/api-wcp`](./../api-wcp) when it comes to retrieving project information (via GraphQL).
+> Internally, the [`WcpLicenseProvider`](#WcpProvider) provider retrieves WCP project information from the Webiny's default GraphQL API. Because of this, note that this project relies on [`@webiny/api-wcp`](./../api-wcp) when it comes to retrieving project information (via GraphQL).
 
 ## Examples
 
 | Example                           | Description                                                     |
 | --------------------------------- | --------------------------------------------------------------- |
-| [Setup](./docs/examples/setup.md) | Shows how to set up the [`WcpProvider`](#WcpProvider) provider React component. |
+| [Setup](./docs/examples/setup.md) | Shows how to set up the [`WcpLicenseProvider`](#WcpProvider) provider React component. |
 
 ## Reference
 
 ### Components
 
-#### `WcpProvider`
+#### `WcpLicenseProvider`
 
 <details>
 <summary>Type Declaration</summary>
@@ -61,17 +61,17 @@ export declare const Wcp: React.ComponentType;
 </p>
 </details>
 
-The [`WcpProvider`](#WcpProvider) is a provider component, which retrieves the WCP project information. The component also makes it possible to use the [`useWcp`](#useWcp) hook, which can be used to get the current WCP project information or inspect whether a specific WCP feature is allowed to be used within the React app.
+The [`WcpLicenseProvider`](#WcpProvider) is a provider component, which retrieves the WCP project information. The component also makes it possible to use the [`useWcp`](#useWcp) hook, which can be used to get the current WCP project information or inspect whether a specific WCP feature is allowed to be used within the React app.
 
 ```tsx
 import React from "react";
-import { WcpProvider } from "@webiny/app-wcp";
+import { WcpLicenseProvider } from "@webiny/app-wcp";
 
 const App = () => {
   return (
-    <WcpProvider>
+    <WcpLicenseProvider>
       <MyApp />
-    </WcpProvider>
+    </WcpLicenseProvider>
   );
 };
 
@@ -105,9 +105,9 @@ import React from "react";
 import { useWcp } from "@webiny/app-wcp";
 
 export const MyComponent = () => {
-  const { canUseFeature } = useWcp();
+  const wcp = useWcp();
 
-  if (canUseFeature("advancedPublishingWorkflow")) {
+  if (wcp.canUseFeature("advancedPublishingWorkflow")) {
     return <span>We can use Advanced Publishing Workflow (APW).</span>;
   }
 

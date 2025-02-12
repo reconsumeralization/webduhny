@@ -181,7 +181,7 @@ const FileManagerView = () => {
                 return;
             }
 
-            showSnackbar(t`File upload complete.`);
+            showSnackbar(t`File upload complete.`, { timeout: 3000 });
 
             view.onUploadCompletion(uploaded);
         });

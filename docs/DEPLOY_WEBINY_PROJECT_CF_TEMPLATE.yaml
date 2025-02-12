@@ -516,6 +516,26 @@ Resources:
                   - logs:Unmask
                   - logs:GetLogEvents
 
+              # Malware Protection Plan (File Manager Threat Detection)
+              - Effect: Allow
+                Resource: "arn:aws:guardduty:*:*:malware-protection-plan/*"
+                Action:
+                  - guardduty:CreateMalwareProtectionPlan
+                  - guardduty:GetMalwareProtectionPlan
+                  - guardduty:DeleteMalwareProtectionPlan
+                  - guardduty:UpdateMalwareProtectionPlan
+
+              # IoT
+              - Effect: Allow
+                Resource: "arn:aws:iot:*:*:authorizer/*"
+                Action:
+                  - iot:CreateAuthorizer
+                  - iot:DescribeAuthorizer
+                  - iot:DescribeDefaultAuthorizer
+                  - iot:UpdateAuthorizer
+                  - iot:DeleteAuthorizer
+                  - iot:ListTagsForResource
+
   UserToDeployWebinyProjectGroup1:
     Type: AWS::IAM::UserToGroupAddition
     Properties:

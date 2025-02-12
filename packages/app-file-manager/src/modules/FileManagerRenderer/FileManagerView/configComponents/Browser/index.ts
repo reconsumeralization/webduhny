@@ -10,6 +10,7 @@ import { Action } from "./Grid/Action";
 import { Thumbnail } from "./Grid/Thumbnail";
 import { GridConfig } from "./Grid";
 import { ActionButton } from "~/components/Grid/ActionButton";
+import { File } from "~/components/Grid/File";
 
 export interface BrowserConfig {
     bulkActions: BulkActionConfig[];
@@ -25,10 +26,10 @@ export interface BrowserConfig {
 
 export const Browser = {
     Grid: {
-        Item: {
+        Item: Object.assign(File, {
             Thumbnail,
             Action: Object.assign(Action, { IconButton: ActionButton })
-        }
+        })
     },
     BulkAction,
     BulkEditField,

@@ -1,3 +1,24 @@
+import { WCP_FEATURE_LABEL } from "~/index";
+
+export interface WcpProject {
+    orgId: string;
+    projectId: string;
+}
+
+export interface ILicense {
+    // TODO: identify all places where raw license data is being used and refactor.
+    getRawLicense: () => DecryptedWcpProjectLicense | null;
+    getProject(): WcpProject | null;
+    canUseFeature: (featureId: keyof typeof WCP_FEATURE_LABEL) => boolean;
+    canUseAacl: () => boolean;
+    canUseTeams: () => boolean;
+    canUseAuditLogs: () => boolean;
+    canUsePrivateFiles: () => boolean;
+    canUseFileManagerThreatDetection: () => boolean;
+    canUseFolderLevelPermissions: () => boolean;
+    canUseRecordLocking: () => boolean;
+}
+
 export declare type WcpProjectEnvironment = {
     id: string;
     apiKey: string;
@@ -18,7 +39,8 @@ export enum PROJECT_PACKAGE_FEATURE_NAME {
     AACL = "advancedAccessControlLayer",
     AL = "auditLogs",
     AUDIT_LOGS = "auditLogs",
-    RECORD_LOCKING = "recordLocking"
+    RECORD_LOCKING = "recordLocking",
+    FILE_MANAGER = "fileManager"
 }
 
 export enum MT_OPTIONS_MAX_COUNT_TYPE {
@@ -59,6 +81,10 @@ export interface ProjectPackageFeatures {
     };
     [PROJECT_PACKAGE_FEATURE_NAME.AL]: {
         enabled: boolean;
+    };
+    [PROJECT_PACKAGE_FEATURE_NAME.FILE_MANAGER]: {
+        enabled: boolean;
+        options: { threatDetection: boolean };
     };
 }
 

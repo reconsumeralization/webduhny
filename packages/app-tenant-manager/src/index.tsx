@@ -28,8 +28,8 @@ const TenantManagerExtension = () => {
 
     mounted++;
 
-    const { canUseFeature } = useWcp();
-    if (!canUseFeature("multiTenancy")) {
+    const wcp = useWcp();
+    if (!wcp.canUseFeature("multiTenancy")) {
         return null;
     }
 

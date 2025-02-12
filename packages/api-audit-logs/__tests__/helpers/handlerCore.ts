@@ -27,6 +27,7 @@ import { ImportExportTaskStorageOperations } from "@webiny/api-page-builder-impo
 import { AdminUsersStorageOperations } from "@webiny/api-admin-users/types";
 import createAdminUsersApp from "@webiny/api-admin-users";
 import { createMailerContext } from "@webiny/api-mailer";
+import { NullLicense } from "@webiny/wcp";
 import { createAcoAuditLogsContext } from "~/app";
 
 export interface CreateHandlerCoreParams {
@@ -65,6 +66,11 @@ export const createHandlerCore = (params?: CreateHandlerCoreParams) => {
 
     const enableContextPlugin = createContextPlugin<AuditLogsContext>(async context => {
         context.wcp = {
+            getProject: () => null,
+            getRawLicense: () => null,
+            canUseRecordLocking: () => true,
+            canUseAuditLogs: () => true,
+            canUseFileManagerThreatDetection: () => false,
             ensureCanUseFeature: () => void 0,
             canUseFolderLevelPermissions: () => true,
             canUseAacl: () => true,
@@ -75,7 +81,7 @@ export const createHandlerCore = (params?: CreateHandlerCoreParams) => {
             decrementTenants: async () => void 0,
             incrementTenants: async () => void 0,
             getProjectEnvironment: () => null,
-            getProjectLicense: () => null,
+            getProjectLicense: () => new NullLicense(),
             canUseFeature: () => true
         };
     });
