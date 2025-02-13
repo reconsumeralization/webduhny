@@ -46,7 +46,6 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     const spinner = ora(message);
     spinner.start();
     const applications = Object.values(context.project.config.appAliases);
-    const requiredStacks = applications.length;
 
     const stacks = await getApplicationsStacksOutput({
         cwd: context.project.root,
@@ -57,16 +56,24 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     });
 
     const primaryStacks = stacks.filter(stack => stack.variant === params.primary);
-    if (primaryStacks.length !== requiredStacks) {
-        spinner.fail(`${message} failed.`);
+    if (primaryStacks.length === 0) {
+        spinner.fail(
+            `${message} failed. Could not find primary variant${
+                params.primary ? ` "${params.primary}"` : ""
+            }.`
+        );
         throw new GracefulError(
             `Primary variant${params.primary ? ` "${params.primary}"` : ""} not found.`
         );
     }
 
     const secondaryStacks = stacks.filter(stack => stack.variant === params.secondary);
-    if (secondaryStacks.length !== requiredStacks) {
-        spinner.fail(`${message} failed.`);
+    if (secondaryStacks.length === 0) {
+        spinner.fail(
+            `${message} failed. Could not find secondary variant${
+                params.secondary ? ` "${params.secondary}"` : ""
+            }.`
+        );
         throw new GracefulError(
             `Secondary variant${params.secondary ? ` "${params.secondary}"` : ""} not found.`
         );
@@ -78,12 +85,17 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
         applications
     });
 
-    return {
-        primary: createDeployedSystem({
-            stacks: primaryStacks
-        }),
-        secondary: createDeployedSystem({
-            stacks: secondaryStacks
-        })
-    };
+    try {
+        return {
+            primary: createDeployedSystem({
+                stacks: primaryStacks
+            }),
+            secondary: createDeployedSystem({
+                stacks: secondaryStacks
+            })
+        };
+    } catch (ex) {
+        spinner.fail(ex.message);
+        throw ex;
+    }
 };
