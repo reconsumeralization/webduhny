@@ -208,7 +208,7 @@ const inputVariants = cva(
 );
 
 interface InputPrimitiveProps
-    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "onChange">,
         VariantProps<typeof inputVariants> {
     /**
      * Icon to be displayed at the start of the input field.
@@ -239,6 +239,11 @@ interface InputPrimitiveProps
      * Callback function to be called when the Enter key is pressed.
      */
     onEnter?: () => void;
+
+    /**
+     * Callback function to be called when the value changes.
+     */
+    onChange: (value: string) => void;
 }
 
 const getIconPosition = (

@@ -70,7 +70,9 @@ const DecoratableListItem = ({
                         />
                     </div>
                 </div>
-                {actions && <div className={"wby-flex wby-gap-xs-plus"}>{actions}</div>}
+                {actions && (
+                    <div className={"wby-flex wby-items-center wby-gap-xs-plus"}>{actions}</div>
+                )}
             </div>
             {children}
         </div>

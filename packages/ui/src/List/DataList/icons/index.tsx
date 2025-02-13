@@ -7,6 +7,10 @@ import { ReactComponent as Filter } from "@material-design-icons/svg/outlined/fi
 import { ReactComponent as NavigateBefore } from "@material-design-icons/svg/outlined/chevron_left.svg";
 import { ReactComponent as NavigateAfter } from "@material-design-icons/svg/outlined/chevron_right.svg";
 import { ReactComponent as Tune } from "@material-design-icons/svg/outlined/tune.svg";
+import { ReactComponent as Download } from "@material-design-icons/svg/outlined/file_download.svg";
+import { ReactComponent as Upload } from "@material-design-icons/svg/outlined/file_upload.svg";
+import { ReactComponent as ListView } from "@material-design-icons/svg/outlined/list.svg";
+import { ReactComponent as Clone } from "@material-design-icons/svg/outlined/library_add.svg";
 
 import { IconButton, IconButtonProps, List } from "@webiny/admin-ui";
 
@@ -102,6 +106,50 @@ export const OptionsIcon = (props: IconButtonProps) => {
     return (
         <IconButton
             icon={<List.Item.Icon icon={<Tune />} label={"Options"} />}
+            variant={"ghost"}
+            size={"sm"}
+            {...props}
+        />
+    );
+};
+
+export const DownloadIcon = (props: IconButtonProps) => {
+    return (
+        <IconButton
+            icon={<List.Item.Icon icon={<Download />} label={"Download"} />}
+            variant={"ghost"}
+            size={"sm"}
+            {...props}
+        />
+    );
+};
+
+export const UploadIcon = (props: IconButtonProps) => {
+    return (
+        <IconButton
+            icon={<List.Item.Icon icon={<Upload />} label={"Upload"} />}
+            variant={"ghost"}
+            size={"sm"}
+            {...props}
+        />
+    );
+};
+
+export const ListIcon = (props: IconButtonProps) => {
+    return (
+        <IconButton
+            icon={<List.Item.Icon icon={<ListView />} label={"List"} />}
+            variant={"ghost"}
+            size={"sm"}
+            {...props}
+        />
+    );
+};
+
+export const CloneIcon = (props: IconButtonProps) => {
+    return (
+        <IconButton
+            icon={<List.Item.Icon icon={<Clone />} label={"Clone"} />}
             variant={"ghost"}
             size={"sm"}
             {...props}

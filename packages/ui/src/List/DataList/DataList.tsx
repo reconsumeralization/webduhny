@@ -1,15 +1,7 @@
 import React, { useMemo } from "react";
-import styled from "@emotion/styled";
-import classNames from "classnames";
-import Loader from "./Loader";
-import NoData from "./NoData";
-import { Typography } from "~/Typography";
-import { css } from "emotion";
+import { Heading, Checkbox, DropdownMenu, List, ListProps, cn } from "@webiny/admin-ui";
 import noop from "lodash/noop";
 import isEmpty from "lodash/isEmpty";
-import { Checkbox } from "../../Checkbox";
-import { Menu, MenuItem } from "~/Menu";
-
 import {
     FilterIcon,
     NextPageIcon,
@@ -18,111 +10,10 @@ import {
     RefreshIcon,
     SortIcon
 } from "./icons";
-import { List, ListItem, ListProps } from "..";
 import { DataListModalOverlayProvider } from "./DataListModalOverlay";
+import Loader from "./Loader";
+import NoData from "./NoData";
 import { PaginationProp, SortersProp } from "./types";
-
-// const ListContainer = styled("div")({
-//     position: "relative",
-//     height: "100%",
-//     ".mdc-deprecated-list": {
-//         paddingBottom: 0,
-//         paddingTop: 0
-//     },
-//     ".mdc-deprecated-list-item": {
-//         borderBottom: "1px solid var(--mdc-theme-on-background)",
-//         padding: "10px 20px 10px 20px",
-//         height: "auto",
-//         minHeight: 40,
-//         ".mdc-deprecated-list-item__text, .mdc-deprecated-list-item__secondary-text, .webiny-list-text-overline":
-//             {
-//                 display: "block"
-//             },
-//         ".mdc-deprecated-list-item__graphic": {
-//             marginRight: 20
-//         },
-//         ".mdc-deprecated-list-item__text": {
-//             width: "100%",
-//             margin: "-20px 0",
-//             padding: "20px 0"
-//         },
-//         ".mdc-deprecated-list-item__meta": {
-//             alignItems: "center",
-//             display: "flex",
-//             justifyContent: "space-between",
-//             flexDirection: "column",
-//             position: "relative",
-//             padding: "5px 0",
-//             boxSizing: "border-box",
-//             height: "100%",
-//             whiteSpace: "nowrap",
-//             marginTop: -10,
-//             marginBottom: -10,
-//             ".webiny-list-actions": {
-//                 display: "none"
-//             },
-//             ".webiny-list-top-caption, .webiny-list-bottom-caption": {
-//                 //position: 'absolute',
-//                 width: "100%",
-//                 textAlign: "right"
-//             },
-//             ".webiny-list-top-caption": {
-//                 marginBottom: 20
-//             }
-//         },
-//         "&:hover": {
-//             ".mdc-deprecated-list-item__meta": {
-//                 ".webiny-list-top-caption, .webiny-list-bottom-caption": {
-//                     display: "none"
-//                 },
-//                 ".webiny-list-actions": {
-//                     display: "flex",
-//                     height: "100%",
-//                     alignItems: "center"
-//                 }
-//             }
-//         }
-//     }
-// });
-
-const ListHeader = styled.div`
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-    color: var(--mdc-theme-text-primary-on-background);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-    max-height: 85px;
-    min-height: 85px;
-`;
-
-const ListSubHeader = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-`;
-
-const ListHeaderItem = styled("div")({
-    display: "inline-block",
-    verticalAlign: "middle",
-    "&.disabled": {
-        opacity: 0.5,
-        pointerEvents: "none"
-    }
-});
-
-const scrollList = css({
-    overflow: "auto",
-    height: "calc(100vh - 235px)"
-});
-
-const dataListContent = css({
-    position: "relative",
-    height: "100%",
-    overflow: "auto"
-});
 
 // This was copied from "./types" so that it can be outputted in docs.
 interface DataListProps {
@@ -214,15 +105,13 @@ const MultiSelectAll = (props: DataListProps) => {
     return (
         <React.Fragment>
             {typeof multiSelectAll === "function" && (
-                <ListHeaderItem>
-                    <Checkbox
-                        indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
-                        value={isAllMultiSelected(data)}
-                        onClick={() => {
-                            multiSelectAll(!isAllMultiSelected(data), data);
-                        }}
-                    />
-                </ListHeaderItem>
+                <Checkbox
+                    indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
+                    checked={isAllMultiSelected(data)}
+                    onCheckedChange={() => {
+                        multiSelectAll(!isAllMultiSelected(data), data);
+                    }}
+                />
             )}
         </React.Fragment>
     );
@@ -234,7 +123,7 @@ const MultiSelectActions = (props: DataListProps) => {
         return null;
     }
 
-    return <ListHeaderItem>{multiSelectActions}</ListHeaderItem>;
+    return multiSelectActions;
 };
 
 const RefreshButton = (props: DataListProps) => {
@@ -243,11 +132,7 @@ const RefreshButton = (props: DataListProps) => {
         return null;
     }
 
-    return (
-        <ListHeaderItem>
-            <RefreshIcon onClick={() => refresh()} />
-        </ListHeaderItem>
-    );
+    return <RefreshIcon onClick={() => refresh()} size={"lg"} />;
 };
 
 const Sorters = (props: DataListProps) => {
@@ -257,22 +142,19 @@ const Sorters = (props: DataListProps) => {
     }
 
     return (
-        <ListHeaderItem>
-            <Menu handle={<SortIcon />}>
-                {sorters.map(sorter => (
-                    <MenuItem
-                        key={sorter.label}
-                        onClick={() => {
-                            if (sorters && props.setSorters) {
-                                props.setSorters(sorter.value);
-                            }
-                        }}
-                    >
-                        {sorter.label}
-                    </MenuItem>
-                ))}
-            </Menu>
-        </ListHeaderItem>
+        <DropdownMenu trigger={<SortIcon size={"lg"} />}>
+            {sorters.map(sorter => (
+                <DropdownMenu.Item
+                    key={sorter.label}
+                    onClick={() => {
+                        if (sorters && props.setSorters) {
+                            props.setSorters(sorter.value);
+                        }
+                    }}
+                    content={sorter.label}
+                />
+            ))}
+        </DropdownMenu>
     );
 };
 
@@ -282,11 +164,7 @@ const Filters = (props: DataListProps) => {
         return null;
     }
 
-    return (
-        <ListHeaderItem>
-            <Menu handle={<FilterIcon />}>{filters}</Menu>
-        </ListHeaderItem>
-    );
+    return <DropdownMenu trigger={<FilterIcon size={"lg"} />}>{filters}</DropdownMenu>;
 };
 
 const Pagination = (props: DataListProps) => {
@@ -296,57 +174,43 @@ const Pagination = (props: DataListProps) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             {pagination.setNextPage && (
-                <React.Fragment>
-                    <ListHeaderItem
-                        className={classNames({
-                            disabled: !pagination.hasPreviousPage
-                        })}
-                    >
-                        <PreviousPageIcon
-                            onClick={() => {
-                                if (pagination.setPreviousPage && pagination.hasPreviousPage) {
-                                    pagination.setPreviousPage();
-                                }
-                            }}
-                        />
-                    </ListHeaderItem>
-
-                    <ListHeaderItem
-                        className={classNames({
-                            disabled: !pagination.hasNextPage
-                        })}
-                    >
-                        <NextPageIcon
-                            onClick={() => {
-                                if (pagination.setNextPage && pagination.hasNextPage) {
-                                    pagination.setNextPage();
-                                }
-                            }}
-                        />
-                    </ListHeaderItem>
-                </React.Fragment>
+                <>
+                    <PreviousPageIcon
+                        onClick={() => {
+                            if (pagination.setPreviousPage && pagination.hasPreviousPage) {
+                                pagination.setPreviousPage();
+                            }
+                        }}
+                        size={"lg"}
+                    />
+                    <NextPageIcon
+                        onClick={() => {
+                            if (pagination.setNextPage && pagination.hasNextPage) {
+                                pagination.setNextPage();
+                            }
+                        }}
+                        size={"lg"}
+                    />
+                </>
             )}
 
             {Array.isArray(pagination.perPageOptions) && pagination.setPerPage && (
-                <ListHeaderItem>
-                    <Menu handle={<OptionsIcon />}>
-                        {pagination.setPerPage &&
-                            pagination.perPageOptions.map(perPage => (
-                                <MenuItem
-                                    key={perPage}
-                                    onClick={() =>
-                                        pagination.setPerPage && pagination.setPerPage(perPage)
-                                    }
-                                >
-                                    {perPage}
-                                </MenuItem>
-                            ))}
-                    </Menu>
-                </ListHeaderItem>
+                <DropdownMenu trigger={<OptionsIcon size={"lg"} />}>
+                    {pagination.setPerPage &&
+                        pagination.perPageOptions.map(perPage => (
+                            <DropdownMenu.Item
+                                key={perPage}
+                                onClick={() =>
+                                    pagination.setPerPage && pagination.setPerPage(perPage)
+                                }
+                                content={perPage}
+                            />
+                        ))}
+                </DropdownMenu>
             )}
-        </React.Fragment>
+        </>
     );
 };
 
@@ -403,29 +267,55 @@ export const DataList = (propsInput: DataListProps) => {
     return (
         <DataListModalOverlayProvider>
             <div data-testid={"ui.list.data-list"}>
-                {(props.title || props.actions) && (
-                    <ListHeader>
-                        <Typography use="headline5">{props.title}</Typography>
-                        {props.actions}
-                    </ListHeader>
-                )}
+                <div className={"wby-pt-md-extra wby-pb-md wby-px-md wby-border"}>
+                    {(props.title || props.actions) && (
+                        <div
+                            className={
+                                "wby-flex wby-justify-between wby-items-center wby-mb-md-plus"
+                            }
+                        >
+                            <Heading
+                                className={"wby-text-accent-primary"}
+                                level={4}
+                                text={props.title}
+                            />
+                            <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
+                                {props.actions}
+                            </div>
+                        </div>
+                    )}
 
-                {Object.keys(showOptions).length > 0 && (
-                    <ListSubHeader>
-                        {props.search ? React.cloneElement(props.search, props) : null}
-                        <MultiSelectAll {...props} />
-                        {showOptions.refresh && <RefreshButton {...props} />}
-                        {showOptions.pagination && <Pagination {...props} />}
-                        {showOptions.sorters && <Sorters {...props} />}
-                        {showOptions.filters && <Filters {...props} />}
-                        {props.modalOverlayAction ? (
-                            <ListHeaderItem>{props.modalOverlayAction}</ListHeaderItem>
-                        ) : null}
-                        <MultiSelectActions {...props} />
-                    </ListSubHeader>
-                )}
+                    {Object.keys(showOptions).length > 0 && (
+                        <div
+                            className={
+                                "wby-flex wby-items-center wby-justify-space-between wby-gap-sm-extra"
+                            }
+                        >
+                            <div className={"wby-flex-1"}>
+                                {props.search ? React.cloneElement(props.search, props) : null}
+                            </div>
+                            <div
+                                className={
+                                    "wby-flex wby-items-center wby-justify-space-between wby-gap-xs"
+                                }
+                            >
+                                <MultiSelectAll {...props} />
+                                {showOptions.refresh && <RefreshButton {...props} />}
+                                {showOptions.pagination && <Pagination {...props} />}
+                                {showOptions.sorters && <Sorters {...props} />}
+                                {showOptions.filters && <Filters {...props} />}
+                                {props.modalOverlayAction ? props.modalOverlayAction : null}
+                                <MultiSelectActions {...props} />
+                            </div>
+                        </div>
+                    )}
+                </div>
 
-                <div className={classNames(dataListContent, "webiny-data-list__content")}>
+                <div
+                    className={
+                        "wby-relative wby-h-full wby-overflow-auto wby-border-t-sm wby-border-t-neutral-dimmed webiny-data-list__content"
+                    }
+                >
                     {props.subHeader}
                     {render}
                     {props.modalOverlay}
@@ -436,12 +326,15 @@ export const DataList = (propsInput: DataListProps) => {
 };
 
 export interface ScrollListProps extends ListProps {
-    children: React.ReactElement<typeof ListItem>[];
+    children: React.ReactElement<typeof List.Item>[];
 }
 
 export const ScrollList = (props: ScrollListProps) => {
     return (
-        <List {...props} className={classNames(props.className, scrollList)}>
+        <List
+            {...props}
+            className={cn("wby-overflow-auto wby-h-[calc(100vh-235px)]", props.className)}
+        >
             {props.children}
         </List>
     );

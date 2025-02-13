@@ -44,7 +44,22 @@ const twMerge = extendTailwindMerge({
                 "ring-success-strong",
                 "ring-success-subtle"
             ],
-            "ring-w": ["ring-sm", "ring-md", "ring-lg"]
+            "ring-w": ["ring-sm", "ring-md", "ring-lg"],
+            "font-size": [
+                "text-h1",
+                "text-h2",
+                "text-h3",
+                "text-h4",
+                "text-h5",
+                "text-h6",
+                "text-sm",
+                "text-md",
+                "text-lg",
+                "text-xl",
+                "text-xxl",
+                "text-3xl",
+                "text-4xl"
+            ]
         }
     },
     extend: {
