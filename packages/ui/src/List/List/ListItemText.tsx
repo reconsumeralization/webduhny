@@ -13,6 +13,12 @@ export type ListItemTextProps = {
  * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListItemText = (props: ListItemTextProps) => {
+    const listItemContext = useContext(DeprecatedListItemContext);
+
+    useEffect(() => {
+        props.onClick && listItemContext!.addOnClickCallback(props.onClick);
+    }, [props]);
+
     return props.children;
 };
 

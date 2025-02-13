@@ -35,14 +35,16 @@ interface DeprecatedListItemContext {
     addDescription(value?: React.ReactNode): void;
     addIcon(value: React.ReactNode): void;
     addActions(value?: React.ReactNode): void;
+    addOnClickCallback(callback: React.MouseEventHandler<HTMLDivElement>): void;
 }
 
 const initializeListItemState = (): AdminListItemProps => {
     return {
-        title: null,
-        description: null,
-        actions: null,
-        icon: null
+        title: undefined,
+        description: undefined,
+        actions: undefined,
+        icon: undefined,
+        onClick: undefined
     };
 };
 
@@ -82,6 +84,12 @@ export const ListItem = (props: ListItemProps) => {
                     ...state,
                     actions: value
                 }));
+            },
+            addOnClickCallback(callback: React.MouseEventHandler<HTMLDivElement>) {
+                setItem(state => ({
+                    ...state,
+                    onClick: callback
+                }));
             }
         }),
         [setItem, props]
@@ -90,7 +98,7 @@ export const ListItem = (props: ListItemProps) => {
     return (
         <AdminList.Item
             disabled={props.disabled}
-            onClick={props.onClick}
+            onClick={item.onClick ?? props.onClick}
             className={props.className}
             style={props.style}
             title={item.title}

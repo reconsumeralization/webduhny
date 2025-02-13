@@ -22,8 +22,8 @@ export type ListSelectBoxProps = {
 };
 
 /**
- * Used to hold the Checkbox element for multi-select options.
- * @param {*} props
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `ListItem` component props from the `@webiny/admin-ui` package instead.
  */
 export const ListSelectBox = (props: ListSelectBoxProps) => {
     const listItemContext = useContext(DeprecatedListItemContext);
