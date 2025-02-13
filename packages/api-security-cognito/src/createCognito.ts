@@ -59,12 +59,11 @@ export const createCognito = <
         new ContextPlugin<TContext>(context => {
             context.security.addAuthenticator(async token => {
                 const tokenObj = await cognitoAuthenticator<TToken>(token);
-
                 if (!tokenObj) {
                     return null;
                 }
 
-                const defaultIdentity = {
+                let identity = {
                     id: tokenObj["custom:id"] || tokenObj.sub,
                     type: config.identityType,
                     displayName: `${tokenObj.given_name} ${tokenObj.family_name}`,
@@ -73,11 +72,22 @@ export const createCognito = <
                     lastName: tokenObj.family_name
                 } as unknown as TIdentity;
 
-                const federatedIdentity = Boolean(tokenObj.identities);
-                if (!federatedIdentity) {
-                    return defaultIdentity;
+                if (getIdentity) {
+                    identity = getIdentity({
+                        identity,
+                        identityType: config.identityType,
+                        token: tokenObj,
+                        context
+                    });
                 }
 
+                const federatedIdentity = Boolean(tokenObj.identities);
+                if (!federatedIdentity) {
+                    return identity;
+                }
+
+                // With federated identities, teams and roles are loaded
+                // from identity objects and not from tenant links.
                 const authorizer = createGroupsTeamsAuthorizerHandler(config, context);
                 context.security.addAuthorizer(authorizer);
 
@@ -87,16 +97,7 @@ export const createCognito = <
                 // instance, which WCP can then utilize in order to track active users.
                 createExternalIdpAdminUserHooks(context);
 
-                if (getIdentity) {
-                    return getIdentity({
-                        identity: defaultIdentity,
-                        identityType: config.identityType,
-                        token: tokenObj,
-                        context
-                    });
-                }
-
-                return defaultIdentity;
+                return identity;
             });
 
             if (getPermissions) {
