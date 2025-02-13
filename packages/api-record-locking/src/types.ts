@@ -40,28 +40,28 @@ export interface IRecordLockingLockRecordValues {
     type: IRecordLockingLockRecordEntryType;
     actions?: IRecordLockingLockRecordAction[];
 }
-export enum IRecordLockingLockRecordActionType {
+export enum RecordLockingLockRecordActionType {
     requested = "requested",
     approved = "approved",
     denied = "denied"
 }
 
 export interface IRecordLockingLockRecordRequestedAction {
-    type: IRecordLockingLockRecordActionType.requested;
+    type: RecordLockingLockRecordActionType.requested;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
 }
 
 export interface IRecordLockingLockRecordApprovedAction {
-    type: IRecordLockingLockRecordActionType.approved;
+    type: RecordLockingLockRecordActionType.approved;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
 }
 
 export interface IRecordLockingLockRecordDeniedAction {
-    type: IRecordLockingLockRecordActionType.denied;
+    type: RecordLockingLockRecordActionType.denied;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
@@ -199,6 +199,10 @@ export interface OnEntryUnlockRequestErrorTopicParams {
 }
 
 export interface IRecordLocking {
+    /**
+     * In milliseconds.
+     */
+    getTimeout: () => number;
     onEntryBeforeLock: Topic<OnEntryBeforeLockTopicParams>;
     onEntryAfterLock: Topic<OnEntryAfterLockTopicParams>;
     onEntryLockError: Topic<OnEntryLockErrorTopicParams>;

@@ -30,12 +30,18 @@ import { IListAllLockRecordsUseCaseExecute } from "~/abstractions/IListAllLockRe
 import { IListLockRecordsUseCaseExecute } from "~/abstractions/IListLockRecordsUseCase";
 import { IUpdateEntryLockUseCaseExecute } from "~/abstractions/IUpdateEntryLockUseCase";
 import { IGetLockedEntryLockRecordUseCaseExecute } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
+import { getTimeout as baseGetTimeout } from "~/utils/getTimeout";
 
 interface Params {
     context: Pick<Context, "plugins" | "cms" | "benchmark" | "security" | "websockets">;
+    timeout?: number;
 }
 
-export const createRecordLockingCrud = async ({ context }: Params): Promise<IRecordLocking> => {
+export const createRecordLockingCrud = async (params: Params): Promise<IRecordLocking> => {
+    const { context } = params;
+    const getTimeout = (): number => {
+        return baseGetTimeout(params.timeout);
+    };
     const getModel = async () => {
         const model = await context.cms.getModel(RECORD_LOCKING_MODEL_ID);
         if (model) {
@@ -123,7 +129,8 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
         getIdentity,
         getManager,
         hasRecordLockingAccess,
-        getWebsockets
+        getWebsockets,
+        getTimeout
     });
 
     const listAllLockRecords: IListAllLockRecordsUseCaseExecute = async params => {
@@ -250,6 +257,7 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
         lockEntry,
         updateEntryLock,
         unlockEntry,
-        unlockEntryRequest
+        unlockEntryRequest,
+        getTimeout
     };
 };

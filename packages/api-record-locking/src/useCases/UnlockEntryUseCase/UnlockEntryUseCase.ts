@@ -1,19 +1,19 @@
 import WebinyError from "@webiny/error";
-import {
+import type {
     IUnlockEntryUseCase,
     IUnlockEntryUseCaseExecuteParams
 } from "~/abstractions/IUnlockEntryUseCase";
-import {
+import type {
     IGetIdentity,
     IHasRecordLockingAccessCallable,
     IRecordLockingLockRecord,
     IRecordLockingModelManager
 } from "~/types";
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
-import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
+import type { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
 import { validateSameIdentity } from "~/utils/validateSameIdentity";
 import { NotAuthorizedError } from "@webiny/api-security";
-import { IKickOutCurrentUserUseCase } from "~/abstractions/IKickOutCurrentUserUseCase";
+import type { IKickOutCurrentUserUseCase } from "~/abstractions/IKickOutCurrentUserUseCase";
 import { NotFoundError } from "@webiny/handler-graphql";
 
 export interface IUnlockEntryUseCaseParams {

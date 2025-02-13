@@ -1,8 +1,13 @@
-import { useContentEntriesList, useContentEntry } from "@webiny/app-headless-cms";
 import React, { useEffect } from "react";
+import { useContentEntriesList, useContentEntry } from "@webiny/app-headless-cms";
 import { useRecordLocking } from "~/hooks";
-import { IIsRecordLockedParams, IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
-import { IncomingGenericData, useWebsockets } from "@webiny/app-websockets";
+import type {
+    IIsRecordLockedParams,
+    IRecordLockingIdentity,
+    IRecordLockingLockRecord
+} from "~/types";
+import type { IncomingGenericData } from "@webiny/app-websockets";
+import { useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
 import styled from "@emotion/styled";
@@ -39,11 +44,8 @@ export const ContentEntryLocker = ({ onDisablePrompt, children }: IContentEntryL
     const { entry, contentModel: model } = useContentEntry();
     const { updateEntryLock, unlockEntry, fetchLockedEntryLockRecord, removeEntryLock } =
         useRecordLocking();
-
     const { navigateTo } = useContentEntriesList();
-
     const websockets = useWebsockets();
-
     const { showDialog } = useDialogs();
 
     useEffect(() => {
