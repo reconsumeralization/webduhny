@@ -20,12 +20,10 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import { LIST_TEAMS, DELETE_TEAM, ListTeamsResponse } from "./graphql";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { deserializeSorters } from "../utils";
 import { Team } from "~/types";
 
@@ -145,12 +143,12 @@ export const TeamsDataList = () => {
         <DataList
             title={t`Teams`}
             actions={
-                <ButtonSecondary
+                <ButtonPrimary
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/teams?new=true")}
                 >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Team`}
-                </ButtonSecondary>
+                    {t`New Team`}
+                </ButtonPrimary>
             }
             data={teamList}
             loading={listLoading || deleteLoading}
@@ -159,10 +157,7 @@ export const TeamsDataList = () => {
             }
             modalOverlay={teamsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: Team[] }) => (

@@ -11,6 +11,7 @@ import { ReactComponent as Download } from "@material-design-icons/svg/outlined/
 import { ReactComponent as Upload } from "@material-design-icons/svg/outlined/file_upload.svg";
 import { ReactComponent as ListView } from "@material-design-icons/svg/outlined/list.svg";
 import { ReactComponent as Clone } from "@material-design-icons/svg/outlined/library_add.svg";
+import { ReactComponent as Login } from "@material-design-icons/svg/outlined/login.svg";
 
 import { IconButton, IconButtonProps, List } from "@webiny/admin-ui";
 
@@ -150,6 +151,17 @@ export const CloneIcon = (props: IconButtonProps) => {
     return (
         <IconButton
             icon={<List.Item.Icon icon={<Clone />} label={"Clone"} />}
+            variant={"ghost"}
+            size={"sm"}
+            {...props}
+        />
+    );
+};
+
+export const LoginIcon = (props: IconButtonProps) => {
+    return (
+        <IconButton
+            icon={<List.Item.Icon icon={<Login />} label={"Login"} />}
             variant={"ghost"}
             size={"sm"}
             {...props}

@@ -14,12 +14,10 @@ import {
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { useLocalesList } from "./hooks/useLocalesList";
 import { I18NLocaleItem } from "~/types";
 
@@ -75,9 +73,9 @@ const LocalesDataList = () => {
         <DataList
             loading={loading}
             actions={
-                <ButtonSecondary data-testid="new-record-button" onClick={createLocale}>
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Locale`}
-                </ButtonSecondary>
+                <ButtonPrimary data-testid="new-record-button" onClick={createLocale}>
+                    {t`New Locale`}
+                </ButtonPrimary>
             }
             data={locales}
             title={t`Locales`}
@@ -89,7 +87,7 @@ const LocalesDataList = () => {
                 />
             }
             modalOverlay={localesDataListModalOverlay}
-            modalOverlayAction={<DataListModalOverlayAction icon={<FilterIcon />} />}
+            modalOverlayAction={<DataListModalOverlayAction />}
         >
             {({ data }: { data: I18NLocaleItem[] }) => (
                 <ScrollList data-testid="default-data-list">

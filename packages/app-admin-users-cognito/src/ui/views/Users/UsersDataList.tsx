@@ -18,7 +18,7 @@ import {
     DataListModalOverlay,
     ListItemTextPrimary
 } from "@webiny/ui/List";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { Avatar } from "@webiny/ui/Avatar";
 import { Cell, Grid } from "@webiny/ui/Grid";
@@ -27,8 +27,6 @@ import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { DELETE_USER, LIST_USERS } from "./graphql";
 import { deserializeSorters } from "../utils";
 import { UserItem } from "~/UserItem";
@@ -150,12 +148,12 @@ const UsersDataList = () => {
         <DataList
             title={t`Admin Users`}
             actions={
-                <ButtonSecondary
+                <ButtonPrimary
                     data-testid="new-record-button"
                     onClick={() => history.push("/admin-users?new=true")}
                 >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New User`}
-                </ButtonSecondary>
+                    {t`New User`}
+                </ButtonPrimary>
             }
             data={userList}
             loading={loading}
@@ -164,10 +162,7 @@ const UsersDataList = () => {
             }
             modalOverlay={usersDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: UserItem[] }) => (

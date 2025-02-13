@@ -14,8 +14,7 @@ import {
     ListItemMeta,
     ListItemText,
     ListItemTextPrimary,
-    ListItemTextSecondary,
-    FilterIcon
+    ListItemTextSecondary
 } from "@webiny/ui/List";
 import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
@@ -204,10 +203,7 @@ const ContentModelGroupsDataList = ({ canCreate }: ContentModelGroupsDataListPro
             }
             modalOverlay={contentModelGroupsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
             refresh={onRefreshClick}
         >

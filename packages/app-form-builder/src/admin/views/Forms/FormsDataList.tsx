@@ -24,8 +24,7 @@ import {
     ListItemText,
     ListItemTextPrimary,
     ListItemTextSecondary,
-    ListSelectBox,
-    FilterIcon
+    ListSelectBox
 } from "@webiny/ui/List";
 import { i18n } from "@webiny/app/i18n";
 import { removeFormFromListCache, updateLatestRevisionInListCache } from "../cache";
@@ -265,7 +264,7 @@ const FormsDataList = (props: FormsDataListProps) => {
                 <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search forms`} />
             }
             modalOverlay={formsDataListModalOverlay}
-            modalOverlayAction={<DataListModalOverlayAction icon={<FilterIcon />} />}
+            modalOverlayAction={<DataListModalOverlayAction />}
         >
             {({ data }: { data: FbFormModel[] | null }) => (
                 <List data-testid="default-data-list">

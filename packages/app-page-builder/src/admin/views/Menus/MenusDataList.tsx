@@ -21,9 +21,7 @@ import {
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
@@ -158,12 +156,12 @@ const PageBuilderMenusDataList = ({ canCreate }: PageBuilderMenusDataListProps) 
             title={t`Menus`}
             actions={
                 canCreate ? (
-                    <ButtonSecondary
+                    <ButtonPrimary
                         data-testid="data-list-new-record-button"
                         onClick={() => history.push("/page-builder/menus?new=true")}
                     >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Menu`}
-                    </ButtonSecondary>
+                        {t`New Menu`}
+                    </ButtonPrimary>
                 ) : null
             }
             search={
@@ -171,10 +169,7 @@ const PageBuilderMenusDataList = ({ canCreate }: PageBuilderMenusDataListProps) 
             }
             modalOverlay={menusDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: MenuDataListResponse) => (

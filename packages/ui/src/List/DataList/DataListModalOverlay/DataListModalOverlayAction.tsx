@@ -1,19 +1,13 @@
 import React, { useContext } from "react";
 import { DataListModalOverlayContext } from "./DataListModalOverlayContext";
+import { FilterIcon } from "~/List";
 
 export interface DataListModalOverlayActionProps {
-    icon: React.ReactElement;
     "data-testid"?: string;
 }
 
-export const DataListModalOverlayAction = ({ icon, ...rest }: DataListModalOverlayActionProps) => {
+export const DataListModalOverlayAction = (props: DataListModalOverlayActionProps) => {
     const { isOpen, setIsOpen } = useContext(DataListModalOverlayContext);
 
-    return icon
-        ? React.cloneElement(icon, {
-              "data-testid": rest["data-testid"],
-              onClick: () => setIsOpen(!isOpen),
-              size: "lg"
-          })
-        : null;
+    return <FilterIcon {...props} size={"lg"} onClick={() => setIsOpen(!isOpen)} />;
 };

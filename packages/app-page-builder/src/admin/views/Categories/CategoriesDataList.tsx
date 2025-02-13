@@ -23,10 +23,8 @@ import {
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { PbCategory } from "~/types";
 import { useCategoriesPermissions } from "~/hooks/permissions";
 
@@ -158,12 +156,12 @@ const PageBuilderCategoriesDataList = ({ canCreate }: PageBuilderCategoriesDataL
             data={categoryList}
             actions={
                 canCreate ? (
-                    <ButtonSecondary
+                    <ButtonPrimary
                         data-testid="data-list-new-record-button"
                         onClick={() => history.push("/page-builder/categories?new=true")}
                     >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Category`}
-                    </ButtonSecondary>
+                        {t`New Category`}
+                    </ButtonPrimary>
                 ) : null
             }
             search={
@@ -175,10 +173,7 @@ const PageBuilderCategoriesDataList = ({ canCreate }: PageBuilderCategoriesDataL
             }
             modalOverlay={categoriesDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: PbCategory[] }) => (

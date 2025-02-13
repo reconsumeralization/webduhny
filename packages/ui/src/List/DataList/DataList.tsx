@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Heading, Checkbox, DropdownMenu, List, ListProps, cn } from "@webiny/admin-ui";
+import { Heading, DropdownMenu, List, cn, CheckboxPrimitive } from "@webiny/admin-ui";
 import noop from "lodash/noop";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -13,6 +13,7 @@ import {
 import { DataListModalOverlayProvider } from "./DataListModalOverlay";
 import Loader from "./Loader";
 import NoData from "./NoData";
+import { ListProps, ListItemProps } from "../List";
 import { PaginationProp, SortersProp } from "./types";
 
 // This was copied from "./types" so that it can be outputted in docs.
@@ -103,17 +104,19 @@ const MultiSelectAll = (props: DataListProps) => {
         props as Required<DataListProps>;
 
     return (
-        <React.Fragment>
+        <>
             {typeof multiSelectAll === "function" && (
-                <Checkbox
-                    indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
-                    checked={isAllMultiSelected(data)}
-                    onCheckedChange={() => {
-                        multiSelectAll(!isAllMultiSelected(data), data);
-                    }}
-                />
+                <div className={"wby-size-10 wby-flex wby-items-center wby-justify-center"}>
+                    <CheckboxPrimitive
+                        indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
+                        checked={isAllMultiSelected(data)}
+                        onCheckedChange={() => {
+                            multiSelectAll(!isAllMultiSelected(data), data);
+                        }}
+                    />
+                </div>
             )}
-        </React.Fragment>
+        </>
     );
 };
 
@@ -326,7 +329,7 @@ export const DataList = (propsInput: DataListProps) => {
 };
 
 export interface ScrollListProps extends ListProps {
-    children: React.ReactElement<typeof List.Item>[];
+    children: React.ReactElement<ListItemProps>[];
 }
 
 export const ScrollList = (props: ScrollListProps) => {
