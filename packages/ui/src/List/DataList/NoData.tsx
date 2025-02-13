@@ -1,17 +1,10 @@
 import React from "react";
-import { Typography } from "../../Typography";
-import styled from "@emotion/styled";
-
-const NoDataWrapper = styled("div")({
-    textAlign: "center",
-    padding: 100,
-    color: "var(--mdc-theme-on-surface)"
-});
+import { Text } from "@webiny/admin-ui";
 
 const NoData = () => (
-    <NoDataWrapper>
-        <Typography use="overline">No records found.</Typography>
-    </NoDataWrapper>
+    <div className={"wby-text-center wby-p-24"}>
+        <Text text={"No records found."} />
+    </div>
 );
 
 export default NoData;
