@@ -1,17 +1,17 @@
 import React, { ReactElement } from "react";
-import { Skeleton } from "@webiny/admin-ui";
+import { Skeleton, cn } from "@webiny/admin-ui";
 
 const Loader = (): ReactElement => {
     const lines = Array.from(Array(5).keys());
 
     return (
-        <ul
-            className={"wby-list-none wby-py-lg wby-px-md-extra"}
-            data-testid={"default-data-list.loading"}
-        >
+        <ul className={"wby-list-none wby-p-lg"} data-testid={"default-data-list.loading"}>
             {lines.map(line => (
-                <li key={"list-" + line}>
-                    <div className="wby-mb-md wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-lg">
+                <li
+                    key={"list-" + line}
+                    className={cn(["wby-group", line === lines.length - 1 ? "wby-last-item" : ""])}
+                >
+                    <div className="wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-lg wby-mb-md group-[.wby-last-item]:wby-mb-none">
                         <Skeleton type={"thumbnail"} size={"xxl"} />
                         <div
                             className={
