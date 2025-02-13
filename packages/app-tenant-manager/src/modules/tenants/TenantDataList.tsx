@@ -9,7 +9,8 @@ import {
     ListActions,
     ListItemTextSecondary,
     DataListModalOverlay,
-    DataListModalOverlayAction
+    DataListModalOverlayAction,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
@@ -102,7 +103,7 @@ const TenantDataList = () => {
                     {data.map(item => (
                         <ListItem key={item.id} selected={item.id === currentTenantId}>
                             <ListItemText onClick={() => editTenant(item.id)}>
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 

@@ -17,7 +17,8 @@ import {
     ListItemText,
     ListItemMeta,
     ListActions,
-    ListItemTextSecondary
+    ListItemTextSecondary,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
@@ -194,7 +195,7 @@ const PageBuilderBlockCategoriesDataList = ({
                                 <Icon category={item} />
                             </ListItemGraphic>
                             <ListItemText>
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.description || t`No description provided.`}
                                 </ListItemTextSecondary>

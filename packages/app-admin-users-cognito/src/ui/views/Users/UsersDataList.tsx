@@ -177,10 +177,6 @@ const UsersDataList = () => {
                             key={item.id}
                             selected={item.id === id}
                             style={{ height: "auto" }}
-                            onClick={() => {
-                                console.log("item", item);
-                                history.push(`/admin-users?id=${item.id}`);
-                            }}
                         >
                             <ListItemGraphic>
                                 <Avatar
@@ -192,7 +188,9 @@ const UsersDataList = () => {
                                     alt={t`User's avatar.`}
                                 />
                             </ListItemGraphic>
-                            <ListItemText>
+                            <ListItemText
+                                onClick={() => history.push(`/admin-users?id=${item.id}`)}
+                            >
                                 <ListItemTextPrimary>
                                     {item.firstName} {item.lastName}
                                 </ListItemTextPrimary>

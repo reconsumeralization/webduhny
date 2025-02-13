@@ -9,7 +9,9 @@ import {
     ListItemTextSecondary,
     ListItemMeta,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary,
+    ListActions
 } from "@webiny/ui/List";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { useRouter } from "@webiny/react-router";
@@ -172,30 +174,32 @@ export const TeamsDataList = () => {
                                     history.push(`/access-management/teams?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 
                             <ListItemMeta>
-                                {item.system || item.plugin ? (
-                                    <Tooltip
-                                        placement={"bottom"}
-                                        content={
-                                            <span>
-                                                {item.system
-                                                    ? t`Cannot delete system teams.`
-                                                    : t`Cannot delete teams created via extensions.`}
-                                            </span>
-                                        }
-                                    >
-                                        <DeleteIcon disabled />
-                                    </Tooltip>
-                                ) : (
-                                    <DeleteIcon
-                                        onClick={() => deleteItem(item)}
-                                        data-testid={"default-data-list.delete"}
-                                    />
-                                )}
+                                <ListActions>
+                                    {item.system || item.plugin ? (
+                                        <Tooltip
+                                            placement={"bottom"}
+                                            content={
+                                                <span>
+                                                    {item.system
+                                                        ? t`Cannot delete system teams.`
+                                                        : t`Cannot delete teams created via extensions.`}
+                                                </span>
+                                            }
+                                        >
+                                            <DeleteIcon disabled />
+                                        </Tooltip>
+                                    ) : (
+                                        <DeleteIcon
+                                            onClick={() => deleteItem(item)}
+                                            data-testid={"default-data-list.delete"}
+                                        />
+                                    )}
+                                </ListActions>
                             </ListItemMeta>
                         </ListItem>
                     ))}

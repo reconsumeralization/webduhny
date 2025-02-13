@@ -13,9 +13,9 @@ import {
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary,
     ListSelectBox,
-    ListTextOverline,
     ScrollList
 } from "@webiny/ui/List";
 import { Checkbox } from "@webiny/ui/Checkbox";
@@ -232,16 +232,18 @@ const PageTemplatesDataList = ({
                                             )
                                         }
                                     >
-                                        {template.title}
-                                        <ListTextOverline>{template.description}</ListTextOverline>
-                                        {template.createdBy && (
-                                            <ListItemTextSecondary>
-                                                {`Created by:
+                                        <ListItemTextPrimary>{template.title}</ListItemTextPrimary>
+                                        <ListItemTextSecondary>
+                                            <div>{template.description}</div>
+                                            {template.createdBy && (
+                                                <div>
+                                                    {`Created by:
                                                 ${template.createdBy.displayName || "N/A"}. `}
-                                                {`Last modified: `}
-                                                <TimeAgo datetime={template.savedOn} />.
-                                            </ListItemTextSecondary>
-                                        )}
+                                                    {`Last modified: `}
+                                                    <TimeAgo datetime={template.savedOn} />.
+                                                </div>
+                                            )}
+                                        </ListItemTextSecondary>
                                     </ListItemText>
                                     <ListItemMeta>
                                         <ListActions>

@@ -22,9 +22,6 @@ const blockWrapper = css({
         height: `calc(100vh - ${TOP}px)`
     }
 });
-const rightAlign = css({
-    alignItems: "flex-end !important"
-});
 
 const InlineLoaderWrapper = styled.div`
     position: absolute;
@@ -63,7 +60,8 @@ interface FormSubmissionsListProps {
     };
 }
 
-const { DataList, ListItem, ListItemMeta, ListItemText, ListTextOverline } = ListComponents;
+const { DataList, ListItem, ListItemText, ListItemTextPrimary, ListItemTextSecondary } =
+    ListComponents;
 
 export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
     const {
@@ -120,22 +118,25 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
                                             <ListItemText
                                                 onClick={() => selectFormSubmission(submission)}
                                             >
-                                                <FullName submission={submission} />
-                                                <ListTextOverline>
-                                                    Visitor IP:{" "}
-                                                    {(submission.meta && submission.meta.ip) ||
-                                                        "N/A"}
-                                                </ListTextOverline>
+                                                <ListItemTextPrimary>
+                                                    <FullName submission={submission} />
+                                                </ListItemTextPrimary>
+                                                <ListItemTextSecondary>
+                                                    <div>
+                                                        Visitor IP:{" "}
+                                                        {(submission.meta && submission.meta.ip) ||
+                                                            "N/A"}
+                                                    </div>
+                                                    <div>
+                                                        {t`Submitted: {time}.`({
+                                                            time: <TimeAgo datetime={submittedOn} />
+                                                        })}
+                                                    </div>
+                                                    <div>
+                                                        <FormVersion submission={submission} />
+                                                    </div>
+                                                </ListItemTextSecondary>
                                             </ListItemText>
-                                            <ListItemMeta className={rightAlign}>
-                                                <Typography use={"body2"}>
-                                                    {t`Submitted: {time}.`({
-                                                        time: <TimeAgo datetime={submittedOn} />
-                                                    })}
-                                                    <br />
-                                                    <FormVersion submission={submission} />
-                                                </Typography>
-                                            </ListItemMeta>
                                         </ListItem>
                                     );
                                 })}

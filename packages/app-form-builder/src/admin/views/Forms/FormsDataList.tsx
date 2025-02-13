@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import orderBy from "lodash/orderBy";
 import upperFirst from "lodash/upperFirst";
 import { useRouter } from "@webiny/react-router";
-import { Typography } from "@webiny/ui/Typography";
 import { ConfirmationDialog } from "@webiny/ui/ConfirmationDialog";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
 import {
@@ -25,6 +24,7 @@ import {
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary,
     ListSelectBox
 } from "@webiny/ui/List";
@@ -305,21 +305,23 @@ const FormsDataList = (props: FormsDataListProps) => {
                                         history.push({ search: query.toString() });
                                     }}
                                 >
-                                    {form.name}
+                                    <ListItemTextPrimary>{form.name}</ListItemTextPrimary>
                                     {form.createdBy && (
                                         <ListItemTextSecondary>
-                                            {<>{t`Created by: {user}.`({ user: name })} </>}
+                                            <div data-testid="fb.form.status">
+                                                {upperFirst(form.status)} (v{form.version})
+                                            </div>
+                                            <div>
+                                                {<>{t`Created by: {user}.`({ user: name })} </>}
 
-                                            {t`Last modified: {time}.`({
-                                                time: <TimeAgo datetime={form.savedOn} />
-                                            })}
+                                                {t`Last modified: {time}.`({
+                                                    time: <TimeAgo datetime={form.savedOn} />
+                                                })}
+                                            </div>
                                         </ListItemTextSecondary>
                                     )}
                                 </ListItemText>
                                 <ListItemMeta className={rightAlign}>
-                                    <Typography use={"body2"} data-testid="fb.form.status">
-                                        {upperFirst(form.status)} (v{form.version})
-                                    </Typography>
                                     <ListActions>
                                         {canUpdate(form) && (
                                             <EditIcon

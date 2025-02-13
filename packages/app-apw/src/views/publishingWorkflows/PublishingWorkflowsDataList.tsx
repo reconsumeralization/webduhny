@@ -9,7 +9,8 @@ import {
     ListItemText,
     ListItemMeta,
     ListActions,
-    ListItemTextSecondary
+    ListItemTextSecondary,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 import { Typography } from "@webiny/ui/Typography";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
@@ -142,7 +143,7 @@ const PublishingWorkflowsDataList = () => {
                                         <ListItemText
                                             onClick={() => editPublishingWorkflow(item.id)}
                                         >
-                                            {item.title}
+                                            <ListItemTextPrimary>{item.title}</ListItemTextPrimary>
                                             <ListItemTextSecondary>
                                                 {t`Scope: `}
                                                 {item.scope && item.scope.type}

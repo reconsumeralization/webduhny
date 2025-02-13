@@ -6,8 +6,8 @@ import { TimeAgo } from "@webiny/ui/TimeAgo";
 import { css } from "emotion";
 import { useRouter } from "@webiny/react-router";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
-import { ReactComponent as ViewListIcon } from "../../icons/view_list.svg";
-import { ReactComponent as CloneIcon } from "../../icons/clone.svg";
+import { ReactComponent as ViewListIcon } from "@material-design-icons/svg/outlined/list.svg";
+import { ReactComponent as CloneIcon } from "@material-design-icons/svg/outlined/library_add.svg";
 import { useModels } from "../../hooks";
 import * as UIL from "@webiny/ui/List";
 import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
@@ -239,11 +239,15 @@ const ContentModelsDataList = ({
                                     key={contentModel.modelId}
                                     className={listItemMinHeight}
                                 >
-                                    <Icon>
-                                        <DisplayIcon model={contentModel} />
-                                    </Icon>
                                     <UIL.ListItemText>
-                                        {contentModel.name}
+                                        <UIL.ListItemGraphic>
+                                            <Icon>
+                                                <DisplayIcon model={contentModel} />
+                                            </Icon>
+                                        </UIL.ListItemGraphic>
+                                        <UIL.ListItemTextPrimary>
+                                            {contentModel.name}
+                                        </UIL.ListItemTextPrimary>
                                         <UIL.ListItemTextSecondary>
                                             {t`Last modified: {time}.`({
                                                 time: contentModel.savedOn ? (

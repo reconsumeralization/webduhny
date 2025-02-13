@@ -9,7 +9,8 @@ import {
     ListActions,
     ListItemTextSecondary,
     DataListModalOverlay,
-    DataListModalOverlayAction
+    DataListModalOverlayAction,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
@@ -95,7 +96,7 @@ const LocalesDataList = () => {
                     {data.map(item => (
                         <ListItem key={item.code} selected={item.code === currentLocaleCode}>
                             <ListItemText onClick={() => editLocale(item)}>
-                                {item.code}
+                                <ListItemTextPrimary>{item.code}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.default && t`Default locale`}
                                 </ListItemTextSecondary>

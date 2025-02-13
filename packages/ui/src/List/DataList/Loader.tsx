@@ -1,65 +1,36 @@
 import React, { ReactElement } from "react";
-import styled from "@emotion/styled";
-
-import { Skeleton } from "~/Skeleton";
-
-const LoaderUl = styled("ul")`
-    list-style: none;
-    padding: 24px 20px;
-`;
-
-const LoaderWrapper = styled("div")`
-    margin-bottom: 16px;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: start;
-    gap: 24px;
-`;
-
-const Data = styled("div")`
-    flex: 1;
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-`;
-
-const ActionsContainer = styled("div")`
-    justify-self: end;
-`;
-
-const Actions = styled("div")`
-    text-align: right;
-    height: 24px;
-    display: flex;
-    justify-content: end;
-    gap: 8px;
-`;
+import { Skeleton } from "@webiny/admin-ui";
 
 const Loader = (): ReactElement => {
     const lines = Array.from(Array(5).keys());
 
     return (
-        <LoaderUl data-testid={"default-data-list.loading"}>
+        <ul
+            className={"wby-list-none wby-py-lg wby-px-md-extra"}
+            data-testid={"default-data-list.loading"}
+        >
             {lines.map(line => (
                 <li key={"list-" + line}>
-                    <LoaderWrapper>
+                    <div className="wby-mb-md wby-flex wby-w-full wby-items-center wby-justify-start wby-gap-lg">
                         <Skeleton type={"thumbnail"} size={"xxl"} />
-                        <Data>
+                        <div
+                            className={
+                                "wby-flex-1 wby-h-10 wby-flex wby-flex-col wby-justify-between"
+                            }
+                        >
                             <Skeleton type={"text"} size={"md"} />
                             <Skeleton type={"text"} size={"md"} />
-                        </Data>
-                        <ActionsContainer>
-                            <Actions>
+                        </div>
+                        <div className={"wby-justify-self-end"}>
+                            <div className={"wby-text-right wby-flex wby-justify-end wby-gap-sm"}>
                                 <Skeleton type={"thumbnail"} size={"lg"} />
                                 <Skeleton type={"thumbnail"} size={"lg"} />
-                            </Actions>
-                        </ActionsContainer>
-                    </LoaderWrapper>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             ))}
-        </LoaderUl>
+        </ul>
     );
 };
 

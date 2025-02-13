@@ -241,7 +241,7 @@ const BlocksByCategoriesDataList = ({
                                         <Icon category={item} />
                                     </ListItemGraphic>
                                     <ListItemText>
-                                        {item.name}
+                                        <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                         <ListItemTextSecondary>{`${numberOfBlocks} ${
                                             numberOfBlocks === 1 ? "block" : "blocks"
                                         } in the category`}</ListItemTextSecondary>

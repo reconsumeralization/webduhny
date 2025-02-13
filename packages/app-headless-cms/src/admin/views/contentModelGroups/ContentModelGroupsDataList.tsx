@@ -13,6 +13,7 @@ import {
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary
 } from "@webiny/ui/List";
 import { useRouter } from "@webiny/react-router";
@@ -220,7 +221,7 @@ const ContentModelGroupsDataList = ({ canCreate }: ContentModelGroupsDataListPro
                                     history.push(`/cms/content-model-groups?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.contentModels.length
                                         ? t`{contentModels|count:1:content model:default:content models}`(

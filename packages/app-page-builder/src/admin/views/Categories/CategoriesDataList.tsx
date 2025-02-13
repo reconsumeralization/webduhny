@@ -16,7 +16,8 @@ import {
     ListItemText,
     ListItemMeta,
     ListActions,
-    ListItemTextSecondary
+    ListItemTextSecondary,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
@@ -189,7 +190,7 @@ const PageBuilderCategoriesDataList = ({ canCreate }: PageBuilderCategoriesDataL
                                     history.push(`/page-builder/categories?slug=${item.slug}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.url}</ListItemTextSecondary>
                             </ListItemText>
 

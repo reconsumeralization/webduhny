@@ -16,7 +16,8 @@ import {
     ListItemText,
     ListItemMeta,
     ListActions,
-    ListItemTextSecondary
+    ListItemTextSecondary,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
@@ -185,7 +186,7 @@ const PageBuilderMenusDataList = ({ canCreate }: PageBuilderMenusDataListProps) 
                                     history.push(`/page-builder/menus?slug=${item.slug}`)
                                 }
                             >
-                                {item.title}
+                                <ListItemTextPrimary>{item.title}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.description || t`No description provided.`}
                                 </ListItemTextSecondary>
