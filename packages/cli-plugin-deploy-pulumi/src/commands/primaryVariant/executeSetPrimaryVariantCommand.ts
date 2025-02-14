@@ -1,9 +1,10 @@
-import type { Context } from "~/types";
+import type { Context, NonEmptyArray } from "~/types";
 import { getDeployedSystems } from "./getDeployedSystems";
 import { createSystemConnection } from "./SystemConnection";
 import type { IExecuteSetPrimaryVariantCommandParams } from "./types";
 
-const callingCommand = 1;
+const folders: NonEmptyArray<string> = ["apps/core", "apps/api"];
+
 export const executeSetPrimaryVariantCommand = async (
     inputs: IExecuteSetPrimaryVariantCommandParams,
     context: Context
@@ -13,24 +14,32 @@ export const executeSetPrimaryVariantCommand = async (
         context,
         env: inputs.env,
         primary: inputs.primary,
-        secondary: inputs.secondary
+        secondary: inputs.secondary,
+        folders
     });
-    if (!confirm) {
-        context.error(
-            `Primary variant${
-                inputs.primary ? ` "${inputs.primary}"` : ""
-            } is not confirmed. Please add "--confirm" argument to your command to actually deploy changes.`
-        );
-        return;
-    }
-
+    /**
+     * Let's say we have a connection between primary and secondary systems.
+     */
     const connection = createSystemConnection({
         context,
         primary,
         secondary
     });
-
+    /**
+     * We would need to build that connection.
+     */
     await connection.build();
+    /**
+     * And then we can actually deploy it, if confirmed.
+     */
+    if (!confirm) {
+        context.error(
+            `Setting primary variant${
+                inputs.primary ? ` "${inputs.primary}"` : ""
+            } is not confirmed. Please add "--confirm" argument to your command to actually deploy changes.`
+        );
+        return;
+    }
 
     console.log(
         JSON.stringify({

@@ -1,5 +1,6 @@
-import { IDeployedSystem } from "./DeployedSystem";
-import { Context } from "~/types";
+import ora from "ora";
+import type { IDeployedSystem } from "./DeployedSystem";
+import type { Context } from "~/types";
 
 export interface ISystemConnection {
     readonly context: Context;
@@ -27,8 +28,16 @@ export class SystemConnection implements ISystemConnection {
     }
 
     public async build(): Promise<void> {
+        const spinner = ora();
+
+        const message = "Building connection system...";
+        spinner.start(message);
         // Build the connection between primary and secondary systems.
-        return Promise.resolve();
+        await new Promise<void>(resolve => {
+            setTimeout(resolve, 1000);
+        });
+
+        spinner.succeed(`${message} done.`);
     }
 }
 

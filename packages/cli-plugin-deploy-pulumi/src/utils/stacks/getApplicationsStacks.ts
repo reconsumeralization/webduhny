@@ -5,11 +5,12 @@ import { getProject } from "@webiny/cli/utils";
 import { GracefulError, splitStackName } from "~/utils";
 import type { IStack } from "./Stack";
 import { createStack } from "./Stack";
+import type { NonEmptyArray } from "@webiny/cli/types";
 
 export interface IGetStacksParams {
     folders: string[];
     env: string;
-    variants: (string | undefined)[] | undefined;
+    variants: NonEmptyArray<string | undefined> | undefined;
     cwd?: string;
 }
 

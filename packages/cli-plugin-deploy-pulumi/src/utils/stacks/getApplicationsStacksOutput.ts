@@ -1,26 +1,27 @@
-import { getStackOutput, IStackOutput } from "~/utils";
+import type { IStackOutput } from "~/utils";
+import { getStackOutput } from "~/utils";
 import { getApplicationsStacks } from "./getApplicationsStacks";
 import type { IStack } from "./Stack";
-import type { Context } from "~/types";
+import type { Context, NonEmptyArray } from "~/types";
 
 export interface IGetStacksOutputParams {
-    folders: string[];
+    folders: NonEmptyArray<string>;
     env: string;
-    variants: (string | undefined)[] | undefined;
+    variants: NonEmptyArray<string | undefined> | undefined;
     cwd?: string;
     context: Context;
 }
 
 export const getApplicationsStacksOutput = async (
     params: IGetStacksOutputParams
-): Promise<IStack<IStackOutput>[]> => {
+): Promise<Required<IStack<IStackOutput>>[]> => {
     const { context } = params;
 
     const initialStacks = getApplicationsStacks(params);
 
     const promises: Promise<void>[] = [];
 
-    const stacks: IStack<IStackOutput>[] = [];
+    const stacks: Required<IStack<IStackOutput>>[] = [];
 
     for (const appStack of initialStacks) {
         for (const stack of appStack.stacks) {
@@ -33,9 +34,6 @@ export const getApplicationsStacksOutput = async (
                             variant: stack.variant,
                             cwd: params.cwd
                         });
-                        /**
-                         *
-                         */
                         stacks.push(stack.withOutput<IStackOutput>(output));
                         resolve();
                     } catch (ex) {

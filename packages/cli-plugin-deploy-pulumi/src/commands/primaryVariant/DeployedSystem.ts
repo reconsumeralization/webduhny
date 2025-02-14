@@ -1,17 +1,18 @@
-import { GracefulError, IStackOutput } from "~/utils";
-import { IStack } from "~/utils/stacks/Stack";
+import type { IStackOutput } from "~/utils";
+import { GracefulError } from "~/utils";
+import type { IStack } from "~/utils/stacks/Stack";
 
 export interface IDeployedSystem {
     readonly env: string;
     readonly variant: string | undefined;
     readonly stacks: IStack<IStackOutput>[];
-    getStack<T extends IStackOutput = IStackOutput>(app: string): IStack<T>;
+    getStack<T extends IStackOutput = IStackOutput>(app: string): Required<IStack<T>>;
 }
 
 export interface IDeployedSystemParams {
     env: string;
     variant: string | undefined;
-    stacks: IStack<IStackOutput>[];
+    stacks: Required<IStack<IStackOutput>>[];
 }
 
 export class DeployedSystem implements IDeployedSystem {
@@ -25,12 +26,12 @@ export class DeployedSystem implements IDeployedSystem {
         this.stacks = params.stacks;
     }
 
-    public getStack<T extends IStackOutput = IStackOutput>(app: string): IStack<T> {
+    public getStack<T extends IStackOutput = IStackOutput>(app: string): Required<IStack<T>> {
         const stack = this.stacks.find(stack => stack.app === app);
         if (!stack) {
             throw new GracefulError(`Stack for application "${app}" not found.`);
         }
-        return stack as IStack<T>;
+        return stack as Required<IStack<T>>;
     }
 }
 

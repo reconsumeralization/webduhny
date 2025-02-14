@@ -1,6 +1,6 @@
 import { getApplicationsStacksOutput } from "~/utils/stacks";
 import { GracefulError } from "~/utils";
-import type { Context } from "~/types";
+import type { Context, NonEmptyArray } from "~/types";
 import { createDeployedSystemFactory, IDeployedSystem } from "./DeployedSystem";
 import ora from "ora";
 
@@ -9,6 +9,7 @@ export interface IGetStacksParams {
     primary: string | undefined;
     secondary: string | undefined;
     context: Context;
+    folders: NonEmptyArray<string>;
 }
 
 export interface IGetStacksResult {
@@ -38,14 +39,13 @@ const validateVariantNames = (params: IValidateVariantNamesParams): void => {
 };
 
 export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGetStacksResult> => {
-    const { env, context } = params;
+    const { env, context, folders } = params;
     validateVariantNames(params);
 
     const message = `Fetching primary and secondary stacks in "${env}" environment...`;
-
     const spinner = ora(message);
+
     spinner.start();
-    const folders = ["apps/core", "apps/api"];
 
     const stacks = await getApplicationsStacksOutput({
         cwd: context.project.root,

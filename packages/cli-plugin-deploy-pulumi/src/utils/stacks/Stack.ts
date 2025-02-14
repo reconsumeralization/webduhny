@@ -5,7 +5,7 @@ export interface IStack<T extends IStackOutput | undefined = undefined> {
     readonly folder: string;
     readonly env: string;
     readonly variant: string | undefined;
-    output: T;
+    output?: T;
     withOutput<O extends IStackOutput>(output: O): Required<IStack<O>>;
 }
 
@@ -22,7 +22,7 @@ export class Stack<T extends IStackOutput | undefined = undefined> implements IS
     public readonly folder: string;
     public readonly env: string;
     public readonly variant: string | undefined;
-    public readonly output: T;
+    public readonly output?: T;
 
     public constructor(params: IStackParams<T>) {
         this.app = params.app;
@@ -30,7 +30,6 @@ export class Stack<T extends IStackOutput | undefined = undefined> implements IS
         this.env = params.env;
         this.variant = params.variant;
         if (!params.output) {
-            this.output = undefined as T;
             return;
         }
         this.output = structuredClone(params.output);
