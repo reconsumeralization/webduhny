@@ -52,14 +52,5 @@ jobs:
         run: yarn --immutable
 
       # Destroy short-lived environment.
-      - name: Destroy Website project application
-        run: yarn webiny destroy apps/website --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy Admin Area project application
-        run: yarn webiny destroy apps/admin --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy API project application
-        run: yarn webiny destroy apps/api --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy Core project application
-        run: yarn webiny destroy apps/core --env pr${{ github.event.pull_request.number }}
+      - name: Destroy
+        run: yarn webiny destroy --env pr${{ github.event.pull_request.number }} --confirm-destroy-env pr${{ github.event.pull_request.number }}
