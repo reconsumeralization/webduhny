@@ -169,7 +169,22 @@ export const folderSchema = new GraphQLSchemaPlugin<AcoContext>({
             listFoldersCompressed: async (_, args: any, context) => {
                 return resolve(async () => {
                     const [entries] = await context.aco.folder.list(args);
-                    return compress(entries);
+
+                    const folders = entries.map(folder => ({
+                        ...folder,
+                        hasNonInheritedPermissions:
+                            context.aco.folderLevelPermissions.permissionsIncludeNonInheritedPermissions(
+                                folder.permissions
+                            ),
+                        canManageStructure:
+                            context.aco.folderLevelPermissions.canManageFolderStructure(folder),
+                        canManagePermissions:
+                            context.aco.folderLevelPermissions.canManageFolderPermissions(folder),
+                        canManageContent:
+                            context.aco.folderLevelPermissions.canManageFolderContent(folder)
+                    }));
+
+                    return compress(folders);
                 });
             },
             listFolderLevelPermissionsTargets: async (_, args: any, context) => {
