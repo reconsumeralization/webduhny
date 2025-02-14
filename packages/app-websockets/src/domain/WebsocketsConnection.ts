@@ -154,6 +154,17 @@ export class WebsocketsConnection implements IWebsocketsConnection {
         });
         connectionCache.ws.addEventListener("error", event => {
             console.info(`Error in the Websocket connection.`, event);
+            /**
+             * Let's close it if possible.
+             * It will reopen automatically.
+             */
+            if (connectionCache.ws?.close) {
+                try {
+                    connectionCache.ws.close();
+                } catch (ex) {
+                    console.error(ex);
+                }
+            }
             return this.subscriptionManager.triggerOnError(event);
         });
 
