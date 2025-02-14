@@ -2,7 +2,7 @@ import { red } from "chalk";
 import { CliCommandPlugin } from "@webiny/cli/types";
 import { IUserCommandInput } from "~/types";
 import { regions } from "@webiny/cli/regions";
-import { createPrimaryVariantCommands } from "~/commands/createPrimaryVariantCommands";
+import { attachPrimaryVariantCommands } from "~/commands/attachPrimaryVariantCommands";
 import { validateVariantName } from "~/utils";
 
 const validateRegion = (args: Pick<IUserCommandInput, "region">): boolean => {
@@ -574,7 +574,7 @@ export const commands: CliCommandPlugin[] = [
                 }
             );
 
-            createPrimaryVariantCommands({ yargs, context });
+            attachPrimaryVariantCommands({ yargs, context });
         }
     }
 ];

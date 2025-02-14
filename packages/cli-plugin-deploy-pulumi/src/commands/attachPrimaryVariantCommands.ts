@@ -1,29 +1,26 @@
 import type yargs from "yargs";
-import type { Context, IUserCommandInput } from "~/types";
+import type { Context } from "~/types";
 import { executeSetPrimaryVariantCommand } from "./primaryVariant/executeSetPrimaryVariantCommand";
 import { validateVariantName } from "~/utils";
+import { IExecuteSetPrimaryVariantCommandParams } from "./primaryVariant/types";
 
 export interface IPrimaryVariantCommand {
     yargs: typeof yargs;
     context: Context;
 }
 
-const validateVariant = (args: Pick<IUserCommandInput, "variant">): boolean => {
-    validateVariantName(args);
-    return true;
-};
 /**
  * Command to set a primary variant does not require a region because it is already contained inside the stack output.
  */
-export const createPrimaryVariantCommands = (params: IPrimaryVariantCommand): void => {
+export const attachPrimaryVariantCommands = (params: IPrimaryVariantCommand): void => {
     const { yargs, context } = params;
 
     yargs.command(
         "set-primary-variant",
         `Set a deployed system as primary variant.`,
         () => {
-            yargs.example("$0 set-primary-variant --env dev --variant=blue", "");
-            yargs.example("$0 set-primary-variant --env dev --variant=green", "");
+            yargs.example("$0 set-primary-variant --env=dev --primary=blue --secondary=green", "");
+            yargs.example("$0 set-primary-variant --env=dev --primary=green --secondary=green", "");
 
             yargs.option("env", {
                 describe: `Environment`,
@@ -61,13 +58,10 @@ export const createPrimaryVariantCommands = (params: IPrimaryVariantCommand): vo
                 });
         },
         async argv => {
-            return executeSetPrimaryVariantCommand({
-                confirm: argv.confirm === "true" || argv.confirm === true,
-                env: argv.env as string,
-                primary: (argv.primary || undefined) as string | undefined,
-                secondary: (argv.secondary || undefined) as string | undefined,
+            return executeSetPrimaryVariantCommand(
+                argv as unknown as IExecuteSetPrimaryVariantCommandParams,
                 context
-            });
+            );
         }
     );
 };
