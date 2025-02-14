@@ -13746,6 +13746,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     mobx: "npm:^6.9.0"
     mobx-react-lite: "npm:^3.4.3"
+    pako: "npm:^2.1.0"
     react: "npm:18.2.0"
     react-dnd: "npm:^16.0.1"
     react-dom: "npm:18.2.0"

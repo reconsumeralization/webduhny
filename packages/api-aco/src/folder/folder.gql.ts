@@ -3,6 +3,7 @@ import { GraphQLSchemaPlugin } from "@webiny/handler-graphql/plugins/GraphQLSche
 
 import { ensureAuthentication } from "~/utils/ensureAuthentication";
 import { resolve } from "~/utils/resolve";
+import { compress } from "~/utils/compress";
 
 import { AcoContext, Folder } from "~/types";
 
@@ -12,6 +13,11 @@ export const folderSchema = new GraphQLSchemaPlugin<AcoContext>({
             target: String!
             level: String!
             inheritedFrom: ID
+        }
+
+        type CompressedResponse {
+            compression: String
+            value: String
         }
 
         input FolderPermissionInput {
@@ -80,6 +86,11 @@ export const folderSchema = new GraphQLSchemaPlugin<AcoContext>({
             meta: AcoMeta
         }
 
+        type FoldersListCompressedResponse {
+            data: CompressedResponse
+            error: AcoError
+        }
+
         type FolderLevelPermissionsTarget {
             id: ID!
             type: String!
@@ -106,6 +117,12 @@ export const folderSchema = new GraphQLSchemaPlugin<AcoContext>({
                 after: String
                 sort: AcoSort
             ): FoldersListResponse
+            listFoldersCompressed(
+                where: FoldersListWhereInput!
+                limit: Int
+                after: String
+                sort: AcoSort
+            ): FoldersListCompressedResponse
 
             listFolderLevelPermissionsTargets: FolderLevelPermissionsTargetsListResponse
         }
@@ -148,6 +165,12 @@ export const folderSchema = new GraphQLSchemaPlugin<AcoContext>({
                 } catch (e) {
                     return new ErrorResponse(e);
                 }
+            },
+            listFoldersCompressed: async (_, args: any, context) => {
+                return resolve(async () => {
+                    const [entries] = await context.aco.folder.list(args);
+                    return compress(entries);
+                });
             },
             listFolderLevelPermissionsTargets: async (_, args: any, context) => {
                 try {

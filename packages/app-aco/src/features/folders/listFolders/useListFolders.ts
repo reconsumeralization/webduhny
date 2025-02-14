@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { ListFoldersGqlGateway } from "./ListFoldersGqlGateway";
+import { ListFoldersCompressedGqlGateway } from "./ListFoldersCompressedGqlGateway";
 import { ListFolders } from "./ListFolders";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType } from "~/hooks";
@@ -10,7 +10,7 @@ import { FolderItem } from "~/types";
 export const useListFolders = () => {
     const client = useApolloClient();
     const type = useFoldersType();
-    const gateway = new ListFoldersGqlGateway(client);
+    const gateway = new ListFoldersCompressedGqlGateway(client);
 
     const [vm, setVm] = useState<{
         folders: FolderItem[];
