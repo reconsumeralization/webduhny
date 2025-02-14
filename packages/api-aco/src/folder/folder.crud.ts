@@ -140,9 +140,7 @@ export const createFolderCrudMethods = ({
             // invalidating the permissions list cache for the folder type. We cannot rely on the cache
             // to check if the user has access, because the cache is no longer up to date.
             folderLevelPermissions.invalidateFoldersPermissionsListCache(folder.type);
-            folderLevelPermissions.updateFoldersCache(folder.type, cachedFolders => {
-                return [...cachedFolders, folder];
-            });
+            folderLevelPermissions.addFolderToCache(folder.type, folder);
 
             // With caches updated and invalidated, we can now assign correct permissions to the folder.
             await folderLevelPermissions.assignFolderPermissions(folder);
@@ -203,13 +201,11 @@ export const createFolderCrudMethods = ({
             // internal cache with new folder data. Then, we're invalidating the permissions list
             // cache for the folder type. We cannot rely on the cache to check if the user still
             // has access, because the cache might no longer be up-to-date.
-            folderLevelPermissions.updateFoldersCache(original.type, cachedFolders => {
-                return cachedFolders.map(currentFolder => {
-                    if (currentFolder.id !== id) {
-                        return currentFolder;
-                    }
-                    return { ...currentFolder, ...data };
-                });
+            folderLevelPermissions.updateFoldersCache(original.type, cachedFolder => {
+                if (cachedFolder.id !== id) {
+                    return cachedFolder;
+                }
+                return { ...cachedFolder, ...data };
             });
             folderLevelPermissions.invalidateFoldersPermissionsListCache(original.type);
 

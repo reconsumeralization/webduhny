@@ -1,0 +1,33 @@
+import { folderCacheFactory } from "~/utils/FoldersCacheFactory";
+import { Folder, ListFoldersParams } from "~/folder/folder.types";
+import { ListMeta } from "~/types";
+
+export interface ListFoldersRepositoryParams {
+    gateway: (params: ListFoldersParams) => Promise<[Folder[], ListMeta]>;
+}
+
+export class ListFoldersRepository {
+    private readonly gateway: (params: ListFoldersParams) => Promise<[Folder[], ListMeta]>;
+
+    constructor(params: ListFoldersRepositoryParams) {
+        this.gateway = params.gateway;
+    }
+
+    public execute = async (folderType: string): Promise<void> => {
+        let hasMoreItems: ListMeta["hasMoreItems"] = true;
+        let cursor: ListMeta["cursor"] = null;
+
+        while (hasMoreItems) {
+            const response: [Folder[], ListMeta] = await this.gateway({
+                where: { type: folderType },
+                after: cursor
+            });
+
+            const [folders, meta] = response;
+
+            folderCacheFactory.getCache(folderType).addItems(folders);
+            hasMoreItems = meta.hasMoreItems;
+            cursor = meta.cursor;
+        }
+    };
+}
