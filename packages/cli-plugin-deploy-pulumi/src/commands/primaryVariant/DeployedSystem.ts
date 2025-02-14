@@ -35,7 +35,7 @@ export class DeployedSystem implements IDeployedSystem {
 }
 
 export interface ICreateDeployedSystemFactoryParams {
-    applications: string[];
+    folders: string[];
 }
 
 export interface ICreateDeployedSystem {
@@ -46,18 +46,18 @@ export interface ICreateDeployedSystemFactory {
     (params: ICreateDeployedSystemFactoryParams): ICreateDeployedSystem;
 }
 
-export const createDeployedSystemFactory: ICreateDeployedSystemFactory = ({ applications }) => {
+export const createDeployedSystemFactory: ICreateDeployedSystemFactory = ({ folders }) => {
     return params => {
         if (!params.stacks.length) {
             throw new GracefulError(`No stacks found for the system.`);
         }
         const { env, variant } = params.stacks[0];
 
-        for (const app of applications) {
-            const exists = params.stacks.some(stack => stack.folder === app);
+        for (const folder of folders) {
+            const exists = params.stacks.some(stack => stack.folder === folder);
             if (!exists) {
                 throw new GracefulError(
-                    `Stack for application "${app}" is missing in system env "${env}", variant "${
+                    `Stack for application "${folder}" is missing in system env "${env}", variant "${
                         variant || ""
                     }".`
                 );

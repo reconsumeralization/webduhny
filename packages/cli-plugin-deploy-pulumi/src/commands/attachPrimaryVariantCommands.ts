@@ -2,12 +2,15 @@ import type yargs from "yargs";
 import type { Context } from "~/types";
 import { executeSetPrimaryVariantCommand } from "./primaryVariant/executeSetPrimaryVariantCommand";
 import { validateVariantName } from "~/utils";
-import { IExecuteSetPrimaryVariantCommandParams } from "./primaryVariant/types";
 
 export interface IPrimaryVariantCommand {
     yargs: typeof yargs;
     context: Context;
 }
+
+const getStringOrUndefined = (value: unknown): string | undefined => {
+    return typeof value === "string" && !!value ? value : undefined;
+};
 
 /**
  * Command to set a primary variant does not require a region because it is already contained inside the stack output.
@@ -59,7 +62,12 @@ export const attachPrimaryVariantCommands = (params: IPrimaryVariantCommand): vo
         },
         async argv => {
             return executeSetPrimaryVariantCommand(
-                argv as unknown as IExecuteSetPrimaryVariantCommandParams,
+                {
+                    primary: getStringOrUndefined(argv.primary),
+                    secondary: getStringOrUndefined(argv.secondary),
+                    env: argv.env as string,
+                    confirm: argv.confirm === true || argv.confirm === "true"
+                },
                 context
             );
         }

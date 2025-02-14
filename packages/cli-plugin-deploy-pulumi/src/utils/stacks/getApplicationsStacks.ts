@@ -7,7 +7,7 @@ import type { IStack } from "./Stack";
 import { createStack } from "./Stack";
 
 export interface IGetStacksParams {
-    applications: string[];
+    folders: string[];
     env: string;
     variants: (string | undefined)[] | undefined;
     cwd?: string;
@@ -22,9 +22,9 @@ export interface IApplicationStacks {
 
 export const getApplicationsStacks = (params: IGetStacksParams): IApplicationStacks[] => {
     const project = getProject();
-    const { applications, env, cwd, variants } = params;
+    const { folders, env, cwd, variants } = params;
 
-    return applications.map(folder => {
+    return folders.map(folder => {
         const app = folder.split("/").pop();
         if (!app) {
             throw new GracefulError(`Cannot determine application name from folder: ${folder}`);

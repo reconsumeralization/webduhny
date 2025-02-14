@@ -4,7 +4,7 @@ import type { IStack } from "./Stack";
 import type { Context } from "~/types";
 
 export interface IGetStacksOutputParams {
-    applications: string[];
+    folders: string[];
     env: string;
     variants: (string | undefined)[] | undefined;
     cwd?: string;

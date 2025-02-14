@@ -1,6 +1,5 @@
-import type { IUserCommandInput } from "~/types";
-
-export interface IExecuteSetPrimaryVariantCommandParams extends IUserCommandInput {
+export interface IExecuteSetPrimaryVariantCommandParams {
+    env: string;
     confirm: boolean;
     primary: string | undefined;
     secondary: string | undefined;

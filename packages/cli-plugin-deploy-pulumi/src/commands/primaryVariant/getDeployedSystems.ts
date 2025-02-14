@@ -45,14 +45,14 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
 
     const spinner = ora(message);
     spinner.start();
-    const applications = Object.values(context.project.config.appAliases);
+    const folders = ["apps/core", "apps/api"];
 
     const stacks = await getApplicationsStacksOutput({
         cwd: context.project.root,
         env,
         variants: [params.primary, params.secondary],
         context,
-        applications
+        folders
     });
 
     const primaryStacks = stacks.filter(stack => stack.variant === params.primary);
@@ -82,7 +82,7 @@ export const getDeployedSystems = async (params: IGetStacksParams): Promise<IGet
     spinner.succeed(`${message} done.`);
 
     const createDeployedSystem = createDeployedSystemFactory({
-        applications
+        folders
     });
 
     try {
