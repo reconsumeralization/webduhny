@@ -99,11 +99,10 @@ export class FolderLevelPermissions {
     async listAllFolders(folderType: string): Promise<Folder[]> {
         const cache = folderCacheFactory.getCache(folderType);
 
-        if (cache.hasItems()) {
-            return cache.getItems();
+        if (!cache.hasItems()) {
+            await this.foldersLoader.execute(folderType);
         }
 
-        await this.foldersLoader.execute(folderType);
         return cache.getItems();
     }
 
@@ -134,7 +133,6 @@ export class FolderLevelPermissions {
             if (folderType in this.foldersPermissionsLists) {
                 delete this.foldersPermissionsLists[folderType];
             }
-            folderCacheFactory.getCache(folderType).clear();
         } else {
             folderCacheFactory.deleteCache();
         }
