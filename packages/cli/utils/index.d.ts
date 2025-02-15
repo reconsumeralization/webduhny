@@ -1,4 +1,4 @@
-import {Project, ProjectApplication} from "../types";
+import { Project, ProjectApplication } from "../types";
 
 export interface IGetProjectParams {
     cwd: string;
@@ -10,7 +10,10 @@ export interface IGetProjectApplicationParams {
     cwd: string;
 }
 
-export declare function getProjectApplication(params: IGetProjectApplicationParams): ProjectApplication;
-
+export declare function getProjectApplication(
+    params: IGetProjectApplicationParams
+): ProjectApplication;
 
 export declare function sendEvent(event: string, properties?: Record<string, any>): Promise<void>;
+
+export declare function sleepSync(ms?: number): void;
