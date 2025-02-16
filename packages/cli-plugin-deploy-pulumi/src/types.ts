@@ -20,6 +20,7 @@ export interface IUserCommandInput {
     telemetry?: boolean;
     logs?: boolean;
     json?: boolean;
+    file?: string;
     build?: boolean;
     deploy?: boolean;
     package?: string;
