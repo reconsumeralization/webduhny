@@ -4,8 +4,13 @@ import {
     GetFunctionConfigurationCommand,
     LambdaClient,
     UpdateFunctionCodeCommand,
-    UpdateFunctionConfigurationCommand
+    UpdateFunctionConfigurationCommand,
+    UpdateFunctionConfigurationCommandInput
 } from "@webiny/aws-sdk/client-lambda";
+import { getStackExport, importStack } from "~/utils";
+import { listLambdaFunctions } from "~/commands/newWatch/listLambdaFunctions";
+import path from "path";
+import { getProject } from "@webiny/cli/utils";
 
 const WATCH_MODE_NOTE_IN_DESCRIPTION = " (watch mode 💡)";
 const DEFAULT_INCREASE_TIMEOUT = 120;
@@ -15,23 +20,37 @@ export interface IReplaceLambdaFunctionsParamsLambdaFunction {
 }
 
 export interface IReplaceLambdaFunctionsParams {
+    folder: string;
+    env: string;
+    variant?: string;
+
     iotEndpoint: string;
     iotEndpointTopic: string;
     sessionId: number;
-    lambdaFunctions: IReplaceLambdaFunctionsParamsLambdaFunction[];
+    functionsList: ReturnType<typeof listLambdaFunctions>;
     increaseTimeout?: number;
 }
 
-export const replaceLambdaFunctions = async ({
+export const replaceLambdaFunctions = ({
+    folder,
+    env,
+    variant,
     iotEndpoint,
     iotEndpointTopic,
     sessionId,
-    lambdaFunctions,
+    functionsList,
     increaseTimeout
 }: IReplaceLambdaFunctionsParams) => {
+    const stackExport = getStackExport({ folder, env, variant });
+    if (!stackExport) {
+        // If no stack export is found, return an empty array. This is a valid scenario.
+        // For example, watching the Admin app locally, but not deploying it.
+        return [];
+    }
+
     const lambdaClient = new LambdaClient();
 
-    return lambdaFunctions.map(async fn => {
+    const replacementsPromises = functionsList.map(async fn => {
         const getFnConfigCmd = new GetFunctionConfigurationCommand({ FunctionName: fn.name });
         const lambdaFnConfiguration = await lambdaClient.send(getFnConfigCmd);
 
@@ -49,7 +68,7 @@ export const replaceLambdaFunctions = async ({
 
         const Timeout = increaseTimeout || DEFAULT_INCREASE_TIMEOUT;
 
-        const updateFnConfigCmd = new UpdateFunctionConfigurationCommand({
+        const updatedFunctionConfig: UpdateFunctionConfigurationCommandInput = {
             FunctionName: fn.name,
             Timeout,
             Description,
@@ -65,8 +84,57 @@ export const replaceLambdaFunctions = async ({
                     })
                 }
             }
+        };
+
+        await pRetry(() =>
+            lambdaClient.send(new UpdateFunctionConfigurationCommand(updatedFunctionConfig))
+        );
+
+        // context.debug("%s function(s) replaced.", lambdaFunctions.length);
+        // context.debug("Modifying Pulumi stack export.");
+
+        const stackExportClone = structuredClone(stackExport);
+
+        for (const resource of stackExportClone.deployment.resources) {
+            if (resource.type !== "aws:lambda/function:Function") {
+                continue;
+            }
+
+            const isModifiedFunction = functionsList.some(fn => fn.name === resource.outputs.name);
+            if (!isModifiedFunction) {
+                continue;
+            }
+
+            // @ts-expect-error todo
+            resource.outputs.description = updatedFunctionConfig.Description;
+            // @ts-expect-error todo
+            resource.outputs.timeout = updatedFunctionConfig.Timeout;
+            // @ts-expect-error todo
+            resource.outputs.environment = updatedFunctionConfig.Environment;
+        }
+
+        const project = getProject();
+
+        const ts = new Date().getTime();
+        const temporaryStackExportPath = path.join(
+            project.root,
+            ".webiny",
+            "watch-command-temporary-stack-exports",
+            `${ts}.json`
+        );
+
+        fs.mkdirSync(path.dirname(temporaryStackExportPath), { recursive: true });
+        fs.writeFileSync(temporaryStackExportPath, JSON.stringify(stackExportClone, null, 2));
+
+        importStack({
+            folder,
+            env,
+            variant,
+            file: temporaryStackExportPath
         });
 
-        await pRetry(() => lambdaClient.send(updateFnConfigCmd));
+        // context.debug("Pulumi stack export modified.");
     });
+
+    return Promise.all(replacementsPromises);
 };

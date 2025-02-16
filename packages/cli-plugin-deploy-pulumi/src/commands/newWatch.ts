@@ -4,6 +4,7 @@ import path from "path";
 import { getProject, getProjectApplication } from "@webiny/cli/utils";
 import get from "lodash/get";
 import merge from "lodash/merge";
+import type inspectorType from "inspector";
 import { getDeploymentId, loadEnvVariables, runHook } from "~/utils";
 import { getIotEndpoint } from "./newWatch/getIotEndpoint";
 import { listLambdaFunctions } from "./newWatch/listLambdaFunctions";
@@ -11,7 +12,6 @@ import { listPackages } from "./newWatch/listPackages";
 import { PackagesWatcher } from "./newWatch/watchers/PackagesWatcher";
 import { initInvocationForwarding } from "./newWatch/initInvocationForwarding";
 import { replaceLambdaFunctions } from "./newWatch/replaceLambdaFunctions";
-import type inspectorType from "inspector";
 
 // Do not allow watching "prod" and "production" environments. On the Pulumi CLI side, the command
 // is still in preview mode, so it's definitely not wise to use it on production environments.
@@ -103,7 +103,12 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         );
     }
 
-    let lambdaFunctions = listLambdaFunctions(inputs);
+    let lambdaFunctions = listLambdaFunctions({
+        env: inputs.env,
+        folder: inputs.folder,
+        variant: inputs.variant,
+        whitelist: inputs.function
+    });
 
     // Let's filter out the authorizer function, as it's not needed for the watch command.
     if (projectApplication.id === "core") {
@@ -166,11 +171,18 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     const increaseTimeout = inputs.increaseTimeout;
 
     // Ignore promise, we don't need to wait for this to finish.
+
+    context.debug("replacing %s function(s).", lambdaFunctions.length);
+
     replaceLambdaFunctions({
+        env: inputs.env,
+        folder: inputs.folder,
+        variant: inputs.variant,
+
         iotEndpoint,
         iotEndpointTopic,
         sessionId,
-        lambdaFunctions,
+        functionsList: lambdaFunctions,
         increaseTimeout
     });
 
