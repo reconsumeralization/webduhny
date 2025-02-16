@@ -27,6 +27,7 @@ export interface IUserCommandInput {
     preview?: boolean;
     inspect?: boolean;
     depth?: number;
+    function?: string | string[];
     allowProduction?: boolean;
     increaseTimeout?: number;
     deploymentLogs?: boolean;
