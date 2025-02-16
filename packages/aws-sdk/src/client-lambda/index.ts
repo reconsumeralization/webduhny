@@ -3,5 +3,6 @@ export {
     InvokeCommand,
     GetFunctionConfigurationCommand,
     UpdateFunctionConfigurationCommand,
-    UpdateFunctionCodeCommand
+    UpdateFunctionCodeCommand,
+    type UpdateFunctionConfigurationCommandInput
 } from "@aws-sdk/client-lambda";
