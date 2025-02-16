@@ -29,7 +29,8 @@ export interface IStackExportResponse {
 }
 
 const cache: Record<string, any> = {};
-const getOutputJson = ({
+
+const runPulumiStackExport = ({
     folder,
     env,
     variant,
@@ -77,5 +78,5 @@ export const getStackExport = (
         throw new Error(`Please specify environment, for example "dev".`);
     }
 
-    return getOutputJson(args);
+    return runPulumiStackExport(args);
 };
