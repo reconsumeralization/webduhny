@@ -5,15 +5,15 @@ import minimatch from "minimatch";
 export interface IListLambdaFunctionsParams {
     folder: string;
     env: string;
-    variant: string | undefined;
-    function?: string | string[];
+    variant?: string;
+    whitelist?: string | string[];
 }
 
 export const listLambdaFunctions = ({
     folder,
     env,
     variant,
-    function: fn
+    whitelist
 }: IListLambdaFunctionsParams) => {
     const stackExport = getStackExport({ folder, env, variant });
     if (!stackExport) {
@@ -38,11 +38,11 @@ export const listLambdaFunctions = ({
             };
         });
 
-    if (!fn) {
+    if (!whitelist) {
         return functionsList;
     }
 
-    const functionNamesToMatch = Array.isArray(fn) ? fn : [fn];
+    const functionNamesToMatch = Array.isArray(whitelist) ? whitelist : [whitelist];
 
     // `functionNamesToWatch` is an array of glob patterns, which denote which functions to watch.
     return functionsList.filter(fn => {
