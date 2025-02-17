@@ -243,7 +243,7 @@ interface InputPrimitiveProps
     /**
      * Callback function to be called when the value changes.
      */
-    onChange: (value: string) => void;
+    onChange?: (value: string) => void;
 }
 
 const getIconPosition = (

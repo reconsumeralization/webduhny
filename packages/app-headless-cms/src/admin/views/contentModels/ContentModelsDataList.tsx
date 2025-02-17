@@ -10,7 +10,6 @@ import {
     DeleteIcon,
     DownloadIcon,
     EditIcon,
-    FilterIcon,
     ListIcon
 } from "@webiny/ui/List/DataList/icons";
 import { ReactComponent as DownloadFileIcon } from "@material-design-icons/svg/outlined/file_download.svg";
@@ -216,10 +215,7 @@ const ContentModelsDataList = ({
                 }
                 modalOverlay={contentModelsDataListModalOverlay}
                 modalOverlayAction={
-                    <UIL.DataListModalOverlayAction
-                        icon={<FilterIcon />}
-                        data-testid={"default-data-list.filter"}
-                    />
+                    <UIL.DataListModalOverlayAction data-testid={"default-data-list.filter"} />
                 }
                 refresh={onRefreshClick}
             >

@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Heading, DropdownMenu, List, cn, CheckboxPrimitive } from "@webiny/admin-ui";
+import React, { useMemo, useState } from "react";
+import { Heading, DropdownMenu, List, cn, CheckboxPrimitive, Popover } from "@webiny/admin-ui";
 import noop from "lodash/noop";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -217,6 +217,30 @@ const Pagination = (props: DataListProps) => {
     );
 };
 
+interface ActionsProps {
+    trigger: React.ReactElement;
+    content: React.ReactElement;
+}
+
+const Actions = (props: ActionsProps) => {
+    const [open, setOpen] = useState<boolean>(false);
+
+    if (!props.content || !props.trigger) {
+        return null;
+    }
+
+    return (
+        <Popover open={open} onOpenChange={open => setOpen(open)}>
+            <Popover.Trigger asChild>
+                <span>{props.trigger}</span>
+            </Popover.Trigger>
+            <Popover.Content onOpenAutoFocus={e => e.preventDefault()} align={"end"}>
+                <div className={"wby-bg-neutral-base wby-p-md"}>{props.content}</div>
+            </Popover.Content>
+        </Popover>
+    );
+};
+
 const defaultDataListProps = {
     children: null,
     title: null,
@@ -307,7 +331,12 @@ export const DataList = (propsInput: DataListProps) => {
                                 {showOptions.pagination && <Pagination {...props} />}
                                 {showOptions.sorters && <Sorters {...props} />}
                                 {showOptions.filters && <Filters {...props} />}
-                                {props.modalOverlayAction ? props.modalOverlayAction : null}
+                                {props.modalOverlayAction && props.modalOverlay && (
+                                    <Actions
+                                        trigger={props.modalOverlayAction}
+                                        content={props.modalOverlay}
+                                    />
+                                )}
                                 <MultiSelectActions {...props} />
                             </div>
                         </div>
@@ -321,7 +350,6 @@ export const DataList = (propsInput: DataListProps) => {
                 >
                     {props.subHeader}
                     {render}
-                    {props.modalOverlay}
                 </div>
             </div>
         </DataListModalOverlayProvider>
