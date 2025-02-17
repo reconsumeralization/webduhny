@@ -19,10 +19,10 @@ export declare function sendEvent(event: string, properties?: Record<string, any
 export declare function sleepSync(ms?: number): void;
 
 export declare const log: {
-    log: (...args: any[]) => void;
-    info: (...args: any[]) => void;
-    success: (...args: any[]) => void;
-    debug: (...args: any[]) => void;
-    warning: (...args: any[]) => void;
-    error: (...args: any[]) => void;
+    log: ((...args: any[]) => void) & { hl: (message: string) => string };
+    info: ((...args: any[]) => void) & { hl: (message: string) => string };
+    success: ((...args: any[]) => void) & { hl: (message: string) => string };
+    debug: ((...args: any[]) => void) & { hl: (message: string) => string };
+    warning: ((...args: any[]) => void) & { hl: (message: string) => string };
+    error: ((...args: any[]) => void) & { hl: (message: string) => string };
 };

@@ -4,8 +4,8 @@ import { getProject } from "@webiny/cli/utils";
 
 export type IStackExportResponseDeploymentResource = {
     type: string;
-    inputs: Record<string,any>
-    outputs: Record<string,any>
+    inputs: Record<string, any>;
+    outputs: Record<string, any>;
 };
 
 export interface IStackExportResponseDeployment {
@@ -49,7 +49,7 @@ const runPulumiStackExport = ({
             return null;
         }
         cache[cacheKey] = parsed;
-        return structuredClone(cache[cacheKey])
+        return structuredClone(cache[cacheKey]);
     } catch (e) {
         return null;
     }
