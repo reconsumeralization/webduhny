@@ -2,23 +2,11 @@ import { IUserCommandInput } from "~/types";
 import execa from "execa";
 import { getProject } from "@webiny/cli/utils";
 
-interface ILambdaFunctionResourceOutputsCodeAsset {
-    path: string;
-}
-
-interface ILambdaFunctionResource {
-    type: "aws:lambda/function:Function";
-    outputs: {
-        name: string;
-        code: {
-            assets: {
-                [key: string]: ILambdaFunctionResourceOutputsCodeAsset;
-            };
-        };
-    };
-}
-
-export type IStackExportResponseDeploymentResource = ILambdaFunctionResource;
+export type IStackExportResponseDeploymentResource = {
+    type: string;
+    inputs: Record<string,any>
+    outputs: Record<string,any>
+};
 
 export interface IStackExportResponseDeployment {
     resources: IStackExportResponseDeploymentResource[];
