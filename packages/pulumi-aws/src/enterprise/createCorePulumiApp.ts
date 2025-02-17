@@ -29,8 +29,19 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
         // If using existing VPC, we ensure `vpc` param is set to `false`.
         vpc: ({ getParam }) => {
             const vpc = getParam(projectAppParams.vpc);
-            const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
-            return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
+            if (!vpc) {
+                // This could be `false` or `undefined`. If `undefined`, down the line,
+                // this means "deploy into VPC if dealing with a production environment".
+                return vpc;
+            }
+
+            // If using an existing VPC, we ensure Webiny does not deploy its own VPC.
+            const usingAdvancedVpcParams = typeof vpc !== "boolean";
+            if (usingAdvancedVpcParams && vpc.useExistingVpc) {
+                return false;
+            }
+
+            return true;
         },
         async pulumi(...args) {
             const [app] = args;
