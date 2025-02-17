@@ -13,7 +13,7 @@ export class ListFoldersRepository {
         this.gateway = params.gateway;
     }
 
-    public execute = async (folderType: string): Promise<void> => {
+    public async execute(folderType: string): Promise<void> {
         let hasMoreItems: ListMeta["hasMoreItems"] = true;
         let cursor: ListMeta["cursor"] = null;
 
@@ -29,5 +29,5 @@ export class ListFoldersRepository {
             hasMoreItems = meta.hasMoreItems;
             cursor = meta.cursor;
         }
-    };
+    }
 }
