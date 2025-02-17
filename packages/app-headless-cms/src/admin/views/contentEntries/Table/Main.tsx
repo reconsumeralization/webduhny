@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
@@ -35,13 +35,19 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
 
-    const canCreateFolder = useMemo(() => {
-        return canManageStructure(folderId);
-    }, [canManageStructure, folderId]);
+    const canCreateFolder = useCallback(
+        (folderId: string) => {
+            return canManageStructure(folderId);
+        },
+        [canManageStructure]
+    );
 
-    const canCreateContent = useMemo(() => {
-        return canCreate && canManageContent(folderId);
-    }, [canManageContent, folderId]);
+    const canCreateContent = useCallback(
+        (folderId: string) => {
+            return canCreate && canManageContent(folderId);
+        },
+        [canManageContent, canCreate]
+    );
 
     const createEntry = useCallback(() => {
         const folder = folderId ? `&folderId=${encodeURIComponent(folderId)}` : "";
@@ -81,8 +87,8 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
             <MainContainer>
                 <Header
                     title={!list.isListLoading ? list.listTitle : undefined}
-                    canCreateFolder={canCreateFolder}
-                    canCreateContent={canCreateContent}
+                    canCreateFolder={canCreateFolder(folderId)}
+                    canCreateContent={canCreateContent(folderId)}
                     onCreateEntry={createEntry}
                     onCreateFolder={onCreateFolder}
                     searchValue={list.search}
@@ -97,8 +103,8 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
                     !list.isListLoading ? (
                         <Empty
                             isSearch={list.isSearch}
-                            canCreateFolder={canCreateFolder}
-                            canCreateContent={canCreateContent}
+                            canCreateFolder={canCreateFolder(folderId)}
+                            canCreateContent={canCreateContent(folderId)}
                             onCreateEntry={createEntry}
                             onCreateFolder={onCreateFolder}
                         />

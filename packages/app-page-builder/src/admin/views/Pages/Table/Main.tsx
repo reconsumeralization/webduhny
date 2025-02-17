@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import { i18n } from "@webiny/app/i18n";
 import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
@@ -51,13 +51,19 @@ export const Main = ({ folderId: initialFolderId }: Props) => {
     const { getFolderLevelPermission: canManageContent } =
         useGetFolderLevelPermission("canManageContent");
 
-    const canCreateFolder = useMemo(() => {
-        return canManageStructure(folderId);
-    }, [canManageStructure, folderId]);
+    const canCreateFolder = useCallback(
+        (folderId: string) => {
+            return canManageStructure(folderId);
+        },
+        [canManageStructure]
+    );
 
-    const canCreateContent = useMemo(() => {
-        return canCreate() && canManageContent(folderId);
-    }, [canManageContent, folderId]);
+    const canCreateContent = useCallback(
+        (folderId: string) => {
+            return canCreate() && canManageContent(folderId);
+        },
+        [canManageContent, canCreate]
+    );
 
     const { innerHeight: windowHeight } = window;
     const [tableHeight, setTableHeight] = useState(0);
@@ -100,8 +106,8 @@ export const Main = ({ folderId: initialFolderId }: Props) => {
             <MainContainer>
                 <Header
                     title={!list.isListLoading ? list.listTitle : undefined}
-                    canCreateFolder={canCreateFolder}
-                    canCreateContent={canCreateContent}
+                    canCreateFolder={canCreateFolder(folderId)}
+                    canCreateContent={canCreateContent(folderId)}
                     onCreatePage={openTemplatesDialog}
                     onImportPage={openCategoriesDialog}
                     onCreateFolder={onCreateFolder}
@@ -116,8 +122,8 @@ export const Main = ({ folderId: initialFolderId }: Props) => {
                     !list.isListLoading ? (
                         <Empty
                             isSearch={list.isSearch}
-                            canCreateFolder={canCreateFolder}
-                            canCreateContent={canCreateContent}
+                            canCreateFolder={canCreateFolder(folderId)}
+                            canCreateContent={canCreateContent(folderId)}
                             onCreatePage={openTemplatesDialog}
                             onCreateFolder={onCreateFolder}
                         />
