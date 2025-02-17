@@ -132,7 +132,7 @@ export const replaceLambdaFunctions = async ({
             file: temporaryStackExportPath
         });
 
-        context.debug("Pulumi stack export modified.");
+        context.debug("Pulumi state updated for %s AWS Lambda function.", fn.name);
     });
 
     return Promise.all(replacementsPromises).then(res => {
