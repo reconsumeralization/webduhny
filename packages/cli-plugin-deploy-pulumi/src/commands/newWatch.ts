@@ -171,10 +171,8 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     const increaseTimeout = inputs.increaseTimeout;
 
     // Ignore promise, we don't need to wait for this to finish.
-
-    context.debug("replacing %s function(s).", lambdaFunctions.length);
-
     replaceLambdaFunctions({
+        context,
         env: inputs.env,
         folder: inputs.folder,
         variant: inputs.variant,

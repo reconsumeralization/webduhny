@@ -7,31 +7,28 @@ import {
     UpdateFunctionConfigurationCommand,
     UpdateFunctionConfigurationCommandInput
 } from "@webiny/aws-sdk/client-lambda";
-import { getStackExport, importStack } from "~/utils";
-import { listLambdaFunctions } from "~/commands/newWatch/listLambdaFunctions";
 import path from "path";
+import { getStackExport, importStack } from "~/utils";
+import { type listLambdaFunctions } from "./listLambdaFunctions";
 import { getProject } from "@webiny/cli/utils";
+import { Context } from "~/types";
 
 const WATCH_MODE_NOTE_IN_DESCRIPTION = " (watch mode 💡)";
 const DEFAULT_INCREASE_TIMEOUT = 120;
-
-export interface IReplaceLambdaFunctionsParamsLambdaFunction {
-    name: string;
-}
 
 export interface IReplaceLambdaFunctionsParams {
     folder: string;
     env: string;
     variant?: string;
-
     iotEndpoint: string;
     iotEndpointTopic: string;
     sessionId: number;
     functionsList: ReturnType<typeof listLambdaFunctions>;
     increaseTimeout?: number;
+    context: Context;
 }
 
-export const replaceLambdaFunctions = ({
+export const replaceLambdaFunctions = async ({
     folder,
     env,
     variant,
@@ -39,15 +36,18 @@ export const replaceLambdaFunctions = ({
     iotEndpointTopic,
     sessionId,
     functionsList,
-    increaseTimeout
+    increaseTimeout,
+    context
 }: IReplaceLambdaFunctionsParams) => {
     const stackExport = getStackExport({ folder, env, variant });
     if (!stackExport) {
         // If no stack export is found, return an empty array. This is a valid scenario.
         // For example, watching the Admin app locally, but not deploying it.
+        context.debug("No AWS Lambda functions to replace.", functionsList.length);
         return [];
     }
 
+    context.debug("replacing %s AWS Lambda function(s).", functionsList.length);
     const lambdaClient = new LambdaClient();
 
     const replacementsPromises = functionsList.map(async fn => {
@@ -90,9 +90,6 @@ export const replaceLambdaFunctions = ({
             lambdaClient.send(new UpdateFunctionConfigurationCommand(updatedFunctionConfig))
         );
 
-        // context.debug("%s function(s) replaced.", lambdaFunctions.length);
-        // context.debug("Modifying Pulumi stack export.");
-
         const stackExportClone = structuredClone(stackExport);
 
         for (const resource of stackExportClone.deployment.resources) {
@@ -105,11 +102,13 @@ export const replaceLambdaFunctions = ({
                 continue;
             }
 
-            // @ts-expect-error todo
+            context.debug(
+                "Modifying Pulumi state for %s AWS Lambda function.",
+                resource.outputs.name
+            );
+
             resource.outputs.description = updatedFunctionConfig.Description;
-            // @ts-expect-error todo
             resource.outputs.timeout = updatedFunctionConfig.Timeout;
-            // @ts-expect-error todo
             resource.outputs.environment = updatedFunctionConfig.Environment;
         }
 
@@ -133,8 +132,11 @@ export const replaceLambdaFunctions = ({
             file: temporaryStackExportPath
         });
 
-        // context.debug("Pulumi stack export modified.");
+        context.debug("Pulumi stack export modified.");
     });
 
-    return Promise.all(replacementsPromises);
+    return Promise.all(replacementsPromises).then(res => {
+        context.debug("%s AWS Lambda function(s) replaced.", functionsList.length);
+        return res;
+    });
 };
