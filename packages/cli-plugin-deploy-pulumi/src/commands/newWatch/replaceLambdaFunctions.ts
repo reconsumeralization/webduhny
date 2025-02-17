@@ -13,7 +13,7 @@ import { type listLambdaFunctions } from "./listLambdaFunctions";
 import { getProject } from "@webiny/cli/utils";
 import { Context } from "~/types";
 
-const WATCH_MODE_NOTE_IN_DESCRIPTION = " (watch mode 💡)";
+const WATCH_MODE_NOTE_IN_DESCRIPTION = " (💡 local development mode, redeploy to remove)";
 const DEFAULT_INCREASE_TIMEOUT = 120;
 
 export interface IReplaceLambdaFunctionsParams {
