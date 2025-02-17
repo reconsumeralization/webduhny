@@ -1,6 +1,6 @@
 import type { Context, NonEmptyArray } from "~/types";
 import { getDeployedSystems } from "./getDeployedSystems";
-import { createSystemConnection } from "./SystemConnection";
+import { createConnectionSystem } from "./ConnectionSystem";
 import type { IExecuteSetPrimaryVariantCommandParams } from "./types";
 
 const folders: NonEmptyArray<string> = ["apps/core", "apps/api"];
@@ -20,7 +20,7 @@ export const executeSetPrimaryVariantCommand = async (
     /**
      * Let's say we have a connection between primary and secondary systems.
      */
-    const connection = createSystemConnection({
+    const connection = createConnectionSystem({
         context,
         primary,
         secondary
@@ -40,6 +40,8 @@ export const executeSetPrimaryVariantCommand = async (
         );
         return;
     }
+
+    await connection.deploy();
 
     console.log(
         JSON.stringify({
