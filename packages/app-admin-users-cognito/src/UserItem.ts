@@ -7,4 +7,5 @@ export interface UserItem {
     firstName: string;
     lastName: string;
     email: string;
+    external?: boolean;
 }

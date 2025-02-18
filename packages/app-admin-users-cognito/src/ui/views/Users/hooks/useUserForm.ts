@@ -5,12 +5,14 @@ import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { CREATE_USER, LIST_USERS, READ_USER, UPDATE_USER } from "~/ui/views/Users/graphql";
 import { useWcp } from "@webiny/app-admin";
+import omit from "lodash/omit";
 
 export type UseUserForm = ReturnType<typeof useUserForm>;
 
 interface SubmitUserCallableParams {
     id?: string;
 }
+
 interface SubmitUserCallable {
     (data: SubmitUserCallableParams): Promise<void>;
 }
@@ -56,7 +58,7 @@ export function useUserForm() {
         async data => {
             const { id, ...rest } = data;
             const [operation, args] = !newUser
-                ? [update, { variables: { id, data: rest } }]
+                ? [update, { variables: { id, data: omit(rest, ["external"]) } }]
                 : [create, { variables: { data } }];
 
             const result = await operation(args);
