@@ -48,7 +48,6 @@ export interface ListApi {
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `List` component from the `@webiny/admin-ui` package instead.
- * TODO: Check the props here above
  */
 export class List extends React.Component<ListProps> {
     public override render() {

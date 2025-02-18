@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@webiny/admin-ui";
+import { Text } from "~/Text";
 
 const NoData = () => (
     <div className={"wby-text-center wby-p-24"}>
@@ -7,4 +7,4 @@ const NoData = () => (
     </div>
 );
 
-export default NoData;
+export { NoData };

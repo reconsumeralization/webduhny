@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
-import { Skeleton, cn } from "@webiny/admin-ui";
+import { Skeleton } from "~/Skeleton";
+import { cn } from "~/utils";
 
 const Loader = (): ReactElement => {
     const lines = Array.from(Array(5).keys());
@@ -34,4 +35,4 @@ const Loader = (): ReactElement => {
     );
 };
 
-export default Loader;
+export { Loader };

@@ -4,13 +4,13 @@ import { css } from "emotion";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataListWithSections,
-    ScrollListWithSections,
     ListItem,
     ListItemText,
     ListItemMeta,
     ListActions,
     ListItemTextSecondary,
-    ListItemTextPrimary
+    ListItemTextPrimary,
+    List
 } from "@webiny/ui/List";
 import { Typography } from "@webiny/ui/Typography";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
@@ -131,10 +131,7 @@ const PublishingWorkflowsDataList = () => {
                                 onClick={createPublishingWorkflow}
                                 app={app}
                             />
-                            <ScrollListWithSections
-                                data-testid={`default-data-list-${app}`}
-                                className={listStyles}
-                            >
+                            <List data-testid={`default-data-list-${app}`} className={listStyles}>
                                 {items.map(item => (
                                     <ListItem
                                         key={item.id}
@@ -169,7 +166,7 @@ const PublishingWorkflowsDataList = () => {
                                         </ListItemMeta>
                                     </ListItem>
                                 ))}
-                            </ScrollListWithSections>
+                            </List>
                         </div>
                     );
                 });
