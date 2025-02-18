@@ -16,7 +16,9 @@ export const createExternalIdpAdminUserHooks = (context: AdminUsersContext) => {
                 displayName,
                 email,
                 groups: [] as string[],
-                teams: [] as string[]
+                teams: [] as string[],
+
+                externalIdp: true
             };
 
             let groupSlugs: string[] = [];
