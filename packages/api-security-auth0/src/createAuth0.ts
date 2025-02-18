@@ -1,7 +1,7 @@
-import { createAuthenticator, AuthenticatorConfig } from "~/createAuthenticator";
 import { createGroupsTeamsAuthorizer, GroupsTeamsAuthorizerConfig } from "@webiny/api-security";
+import { createExternalIdpAdminUserHooksPlugin } from "@webiny/api-admin-users/createExternalIdpAdminUserHooks";
+import { createAuthenticator, AuthenticatorConfig } from "~/createAuthenticator";
 import { createIdentityType } from "~/createIdentityType";
-import { createAdminUsersHooks } from "./createAdminUsersHooks";
 import { extendTenancy } from "./extendTenancy";
 import { Context } from "~/types";
 
@@ -33,6 +33,6 @@ export const createAuth0 = <TContext extends Context = Context>(
             name: graphQLIdentityType
         }),
         extendTenancy(),
-        createAdminUsersHooks()
+        createExternalIdpAdminUserHooksPlugin()
     ];
 };

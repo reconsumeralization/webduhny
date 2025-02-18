@@ -296,7 +296,14 @@ function getDynamoDbToElasticLambdaPolicy(
                             "es:ESHttpDelete",
                             "es:ESHttpPatch",
                             "es:ESHttpPost",
-                            "es:ESHttpPut"
+                            "es:ESHttpPut",
+                            "dynamodb:BatchGetItem",
+                            "dynamodb:BatchWriteItem",
+                            "dynamodb:PutItem",
+                            "dynamodb:GetItem",
+                            "dynamodb:DeleteItem",
+                            "dynamodb:Query",
+                            "dynamodb:UpdateItem"
                         ],
                         Resource: [
                             pulumi.interpolate`${domain.arn}`,

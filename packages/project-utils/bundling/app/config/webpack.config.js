@@ -13,6 +13,7 @@ const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 const getClientEnvironment = require("./env");
+const { getLexicalAliases } = require("./lexicalAliases");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
@@ -225,9 +226,8 @@ module.exports = function (webpackEnv, { paths, options }) {
                 }),
                 // This is a temporary fix, until we sort out the `react-butterfiles` dependency.
                 "react-butterfiles": require.resolve("@webiny/app/react-butterfiles"),
-                // Force `lexical` to use the CJS export.
-                lexical: require.resolve("lexical"),
-                ...(modules.webpackAliases || {})
+                ...(modules.webpackAliases || {}),
+                ...getLexicalAliases()
             },
             fallback: {
                 assert: require.resolve("assert-browserify"),

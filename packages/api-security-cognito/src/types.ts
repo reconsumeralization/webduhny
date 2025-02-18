@@ -1,5 +1,6 @@
 import { SecurityContext } from "@webiny/api-security/types";
 import { TenancyContext } from "@webiny/api-tenancy/types";
 import { I18NContext } from "@webiny/api-i18n/types";
+import { AdminUsersContext } from "@webiny/api-admin-users/types";
 
-export type CoreContext = TenancyContext & SecurityContext & I18NContext;
+export type CoreContext = TenancyContext & SecurityContext & I18NContext & AdminUsersContext;

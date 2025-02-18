@@ -7,9 +7,10 @@ import {
     generateCommonHandlers,
     lambdaEdgeWarning,
     renderWebsite,
-    telemetryNoLongerNewUser,
-    ensureApiDeployedBeforeBuild
+    telemetryNoLongerNewUser
 } from "~/website/plugins";
+import { createEnsureApiDeployedPlugins } from "~/utils/ensureApiDeployed";
+
 import { uploadAppToS3 } from "~/react/plugins";
 
 export interface CreateWebsiteAppParams extends CreateWebsitePulumiAppParams {
@@ -23,7 +24,7 @@ export function createWebsiteApp(projectAppParams: CreateWebsiteAppParams = {}) 
         lambdaEdgeWarning,
         renderWebsite,
         telemetryNoLongerNewUser,
-        ensureApiDeployedBeforeBuild
+        ...createEnsureApiDeployedPlugins("website")
     ];
 
     const customPlugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
