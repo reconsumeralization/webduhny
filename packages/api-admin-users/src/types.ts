@@ -31,7 +31,7 @@ export interface BaseUserAttributes {
     avatar?: Record<string, any>;
 
     // Tells us if the entry has been created based on an identity coming from an external IdP.
-    externalIdp?: boolean;
+    external?: boolean;
 }
 
 export interface CreateUserInput extends Omit<BaseUserAttributes, "id" | "displayName"> {

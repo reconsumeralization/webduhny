@@ -64,7 +64,7 @@ export const syncWithCognito = ({
 
     return new ContextPlugin<AdminUsersContext>(({ adminUsers }) => {
         adminUsers.onUserBeforeCreate.subscribe(async ({ user, inputData }) => {
-            if (inputData.externalIdp) {
+            if (inputData.external) {
                 return;
             }
 
@@ -159,7 +159,7 @@ export const syncWithCognito = ({
         });
 
         adminUsers.onUserBeforeUpdate.subscribe(({ user, updateData }) => {
-            if (user.externalIdp) {
+            if (user.external) {
                 return;
             }
 
@@ -169,7 +169,7 @@ export const syncWithCognito = ({
         });
 
         adminUsers.onUserAfterUpdate.subscribe(async ({ originalUser, updatedUser, inputData }) => {
-            if (originalUser.externalIdp) {
+            if (originalUser.external) {
                 return;
             }
 
@@ -213,7 +213,7 @@ export const syncWithCognito = ({
         });
 
         adminUsers.onUserAfterDelete.subscribe(async ({ user }) => {
-            if (user.externalIdp) {
+            if (user.external) {
                 return;
             }
 

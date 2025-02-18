@@ -15,10 +15,14 @@ export const createExternalIdpAdminUserHooks = (context: AdminUsersContext) => {
             const data = {
                 displayName,
                 email,
+
+                firstName: identity.firstName || "",
+                lastName: identity.lastName || "",
+
                 groups: [] as string[],
                 teams: [] as string[],
 
-                externalIdp: true
+                external: true
             };
 
             let groupSlugs: string[] = [];
@@ -50,6 +54,7 @@ export const createExternalIdpAdminUserHooks = (context: AdminUsersContext) => {
             }
 
             if (user) {
+                console.log("data", identity, data);
                 await adminUsers.updateUser(identity.id, data);
                 return;
             }

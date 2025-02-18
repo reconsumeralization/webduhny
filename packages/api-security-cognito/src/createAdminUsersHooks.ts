@@ -19,7 +19,7 @@ export const createAdminUsersHooks = () => {
 
         // After a new user is created, link him to a tenant via the assigned group.
         adminUsers.onUserAfterCreate.subscribe(async ({ user }) => {
-            if (user.externalIdp) {
+            if (user.external) {
                 return;
             }
 
@@ -74,7 +74,7 @@ export const createAdminUsersHooks = () => {
 
         // On user update, if the group was changed, update the tenant link.
         adminUsers.onUserAfterUpdate.subscribe(async ({ updatedUser, originalUser }) => {
-            if (originalUser.externalIdp) {
+            if (originalUser.external) {
                 return;
             }
 
@@ -150,7 +150,7 @@ export const createAdminUsersHooks = () => {
 
         // On user delete, delete its tenant link.
         adminUsers.onUserAfterDelete.subscribe(async ({ user }) => {
-            if (user.externalIdp) {
+            if (user.external) {
                 return;
             }
 
