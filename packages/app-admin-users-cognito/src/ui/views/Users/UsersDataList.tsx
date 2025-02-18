@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import orderBy from "lodash/orderBy";
 import { i18n } from "@webiny/app/i18n";
 import { useSecurity } from "@webiny/app-security";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { Image } from "@webiny/app/components";
 import {
     DataList,
