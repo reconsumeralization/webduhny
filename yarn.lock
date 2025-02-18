@@ -19836,21 +19836,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cognito-federation-with-a0@workspace:extensions/cognitoFederationWithA0":
-  version: 0.0.0-use.local
-  resolution: "cognito-federation-with-a0@workspace:extensions/cognitoFederationWithA0"
-  dependencies:
-    "@types/react": "npm:18.2.79"
-    "@webiny/api-security": "npm:0.0.0"
-    "@webiny/api-security-cognito": "npm:0.0.0"
-    "@webiny/api-serverless-cms": "npm:0.0.0"
-    "@webiny/app-admin-users-cognito": "npm:0.0.0"
-    "@webiny/serverless-cms-aws": "npm:0.0.0"
-    "@webiny/ui": "npm:0.0.0"
-    react: "npm:18.2.0"
-  languageName: unknown
-  linkType: soft
-
 "collect-v8-coverage@npm:^1.0.0":
   version: 1.0.1
   resolution: "collect-v8-coverage@npm:1.0.1"
