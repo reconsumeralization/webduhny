@@ -36,10 +36,11 @@ const DecoratableRangeSliderValue = ({ value, disabled, className }: RangeSlider
 
 const RangeSliderValue = makeDecoratable("RangeSliderValue", DecoratableRangeSliderValue);
 
-interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
-    label: React.ReactNode;
-    valueConverter?: (value: number) => string;
-}
+type RangeSliderProps = RangeSliderPrimitiveProps &
+    FormComponentProps & {
+        label: React.ReactNode;
+        valueConverter?: (value: number) => string;
+    };
 
 const DecoratableRangeSlider = (props: RangeSliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = props.validation || {};

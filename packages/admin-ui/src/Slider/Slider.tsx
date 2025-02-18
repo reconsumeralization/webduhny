@@ -76,9 +76,10 @@ const SliderRendererWithSideValue = makeDecoratable(
 /**
  * Slider
  */
-interface SliderProps extends FormComponentProps, SliderPrimitiveProps {
-    labelPosition?: "top" | "side";
-}
+type SliderProps = FormComponentProps &
+    SliderPrimitiveProps & {
+        labelPosition?: "top" | "side";
+    };
 
 const DecoratableSlider = ({ description, note, validation, ...props }: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
