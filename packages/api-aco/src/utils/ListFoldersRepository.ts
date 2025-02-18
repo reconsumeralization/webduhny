@@ -13,7 +13,11 @@ export class ListFoldersRepository {
         this.gateway = params.gateway;
     }
 
-    public async execute(folderType: string): Promise<void> {
+    public async execute(folderType: string): Promise<Folder[]> {
+        if (folderCacheFactory.hasCache(folderType)) {
+            return folderCacheFactory.getCache(folderType).getItems();
+        }
+
         let hasMoreItems: ListMeta["hasMoreItems"] = true;
         let cursor: ListMeta["cursor"] = null;
 
@@ -29,5 +33,7 @@ export class ListFoldersRepository {
             hasMoreItems = meta.hasMoreItems;
             cursor = meta.cursor;
         }
+
+        return folderCacheFactory.getCache(folderType).getItems();
     }
 }

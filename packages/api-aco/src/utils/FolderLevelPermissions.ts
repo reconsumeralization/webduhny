@@ -101,12 +101,7 @@ export class FolderLevelPermissions {
     }
 
     async listAllFolders(folderType: string): Promise<Folder[]> {
-        if (folderCacheFactory.hasCache(folderType)) {
-            return folderCacheFactory.getCache(folderType).getItems();
-        }
-
-        await this.foldersLoader.execute(folderType);
-        return folderCacheFactory.getCache(folderType).getItems();
+        return await this.foldersLoader.execute(folderType);
     }
 
     async listAllFoldersWithPermissions(folderType: string) {
