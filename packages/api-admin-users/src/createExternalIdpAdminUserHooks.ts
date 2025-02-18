@@ -54,7 +54,6 @@ export const createExternalIdpAdminUserHooks = (context: AdminUsersContext) => {
             }
 
             if (user) {
-                console.log("data", identity, data);
                 await adminUsers.updateUser(identity.id, data);
                 return;
             }
