@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import orderBy from "lodash/orderBy";
 import { i18n } from "@webiny/app/i18n";
-import { useSecurity } from "@webiny/app-security";
 import { Image } from "@webiny/app/components";
 import {
     DataList,
@@ -59,7 +58,6 @@ interface FilterUsersCallable {
 const UsersDataList = () => {
     const [filter, setFilter] = useState("");
     const [sort, setSort] = useState<string>(SORTERS[0].sorter);
-    const { identity } = useSecurity();
     const { history } = useRouter();
     const { showSnackbar } = useSnackbar();
     const { showConfirmation } = useConfirmationDialog({
