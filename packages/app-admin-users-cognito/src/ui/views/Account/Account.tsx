@@ -45,7 +45,7 @@ const UserAccountForm = () => {
     const onSubmit = async (formData: UserAccountFormData) => {
         setLoading(true);
         const { data: response } = await updateUser({
-            variables: { data: omit(formData, ["id"]) }
+            variables: { data: omit(formData, ["id", "external"]) }
         });
 
         const { error } = response.adminUsers.updateCurrentUser;
