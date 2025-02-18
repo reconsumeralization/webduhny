@@ -9,9 +9,9 @@ interface IfNotExternalUserProps {
     children: React.ReactElement;
 }
 
-const FormWrapper = styled.div({
-    margin: "24px 100px"
-});
+const FormWrapper = styled.div`
+    margin: 24px 100px;
+`;
 
 export const IfNotExternalUser = ({ children }: IfNotExternalUserProps) => {
     const { user } = useUserForm();
