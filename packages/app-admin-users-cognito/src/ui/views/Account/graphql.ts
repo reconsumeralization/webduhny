@@ -7,6 +7,7 @@ const currentUserFields = /* GraphQL */ `
         firstName
         lastName
         avatar
+        external
     }
 `;
 

@@ -58,6 +58,7 @@ export default (): PluginCollection => {
                             <Bind name="password" validators={passwordValidator}>
                                 <Input
                                     autoComplete="off"
+                                    disabled={data.external}
                                     description={data.id && "Type a new password to reset it."}
                                     type="password"
                                     label={"Password"}
