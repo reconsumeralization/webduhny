@@ -74,10 +74,15 @@ export const configureAdminCognitoFederation = (
     for (const idp of config.identityProviders) {
         const config = getIdpConfig(idp.type, userPool.output.id, idp);
 
-        app.addResource(aws.cognito.IdentityProvider, {
-            name: config.providerName.toString(),
-            config
-        });
+        let name = config.providerName.toString();
+
+        // For backwards compatibility, in case a user didn't provide a name, we
+        // want to ensure that the OIDC provider is named "oidc" (and not "OIDC").
+        if (idp.type === "oidc" && !idp.name) {
+            name = "oidc";
+        }
+
+        app.addResource(aws.cognito.IdentityProvider, { name, config });
 
         idpConfigs.push(config);
     }
