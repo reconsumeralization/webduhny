@@ -91,19 +91,22 @@ export class FolderLevelPermissions {
         };
 
         this.isAuthorizationEnabled = params.isAuthorizationEnabled;
+
+        // Delete the cache on constructor to avoid duplicated permissions lists,
+        // especially when calculating permissions based on folder parents.
+        folderCacheFactory.deleteCache();
         this.foldersLoader = new ListFoldersRepository({
             gateway: params.listAllFolders
         });
     }
 
     async listAllFolders(folderType: string): Promise<Folder[]> {
-        const cache = folderCacheFactory.getCache(folderType);
-
-        if (!cache.hasItems()) {
-            await this.foldersLoader.execute(folderType);
+        if (folderCacheFactory.hasCache(folderType)) {
+            return folderCacheFactory.getCache(folderType).getItems();
         }
 
-        return cache.getItems();
+        await this.foldersLoader.execute(folderType);
+        return folderCacheFactory.getCache(folderType).getItems();
     }
 
     async listAllFoldersWithPermissions(folderType: string) {

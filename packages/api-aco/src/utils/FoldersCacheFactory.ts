@@ -4,6 +4,11 @@ import { ListCache } from "~/utils/ListCache";
 export class FoldersCacheFactory {
     private cache: Map<string, ListCache<Folder>> = new Map();
 
+    hasCache(namespace: string) {
+        const cacheKey = this.getCacheKey(namespace);
+        return this.cache.has(cacheKey);
+    }
+
     getCache(namespace: string) {
         const cacheKey = this.getCacheKey(namespace);
 
