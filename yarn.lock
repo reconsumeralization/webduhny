@@ -19175,7 +19175,6 @@ __metadata:
     "@types/react-custom-scrollbars": "npm:^4.0.10"
     "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
-    "@webiny/form": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
