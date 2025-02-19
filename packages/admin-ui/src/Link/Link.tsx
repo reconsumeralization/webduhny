@@ -1,6 +1,5 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/react-composition";
-import { cva, type VariantProps } from "~/utils";
+import { cva, type VariantProps, makeDecoratable } from "~/utils";
 import {
     Link as WebinyReactRouterLink,
     type LinkProps as WebinyReactRouterLinkProps

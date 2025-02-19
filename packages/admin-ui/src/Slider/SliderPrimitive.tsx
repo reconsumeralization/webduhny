@@ -7,7 +7,7 @@ import { useSlider } from "./useSlider";
 /**
  * Slider Root
  */
-const DecoratableSliderPrimitiveRoot = React.forwardRef<
+const SliderPrimitiveRoot = React.forwardRef<
     React.ElementRef<typeof SliderPrimitives.Root>,
     React.ComponentPropsWithoutRef<typeof SliderPrimitives.Root>
 >(({ className, ...props }, ref) => (
@@ -23,13 +23,12 @@ const DecoratableSliderPrimitiveRoot = React.forwardRef<
         {...props}
     />
 ));
-DecoratableSliderPrimitiveRoot.displayName = SliderPrimitives.Root.displayName;
-const SliderPrimitiveRoot = makeDecoratable("SliderPrimitiveRoot", DecoratableSliderPrimitiveRoot);
+SliderPrimitiveRoot.displayName = SliderPrimitives.Root.displayName;
 
 /**
  * Slider Track
  */
-const DecoratableSliderPrimitiveTrack = () => (
+const SliderPrimitiveTrack = () => (
     <SliderPrimitives.Track
         className={cn(
             "wby-relative wby-h-xxs wby-w-full wby-grow wby-overflow-hidden wby-rounded-full",
@@ -45,10 +44,6 @@ const DecoratableSliderPrimitiveTrack = () => (
             ])}
         />
     </SliderPrimitives.Track>
-);
-const SliderPrimitiveTrack = makeDecoratable(
-    "SliderPrimitiveTrack",
-    DecoratableSliderPrimitiveTrack
 );
 
 /**
@@ -78,7 +73,7 @@ type SliderPrimitiveTooltipProps = VariantProps<typeof sliderTooltipVariants> & 
     tooltipSide?: "top" | "bottom";
 };
 
-const DecoratableSliderPrimitiveTooltip = ({
+const SliderPrimitiveTooltip = ({
     textValue,
     showTooltip,
     tooltipSide
@@ -93,17 +88,13 @@ const DecoratableSliderPrimitiveTooltip = ({
         </div>
     );
 };
-const SliderPrimitiveTooltip = makeDecoratable(
-    "SliderPrimitiveTooltip",
-    DecoratableSliderPrimitiveTooltip
-);
 
 /**
  * Slider Thumb
  */
 type SliderPrimitiveThumbProps = SliderPrimitiveTooltipProps;
 
-const DecoratableSliderPrimitiveThumb = ({
+const SliderPrimitiveThumb = ({
     textValue,
     showTooltip,
     tooltipSide
@@ -124,10 +115,6 @@ const DecoratableSliderPrimitiveThumb = ({
         />
     </SliderPrimitives.Thumb>
 );
-const SliderPrimitiveThumb = makeDecoratable(
-    "SliderPrimitiveThumb",
-    DecoratableSliderPrimitiveThumb
-);
 
 /**
  * Slider Renderer
@@ -139,7 +126,7 @@ type SliderPrimitiveRootProps = Omit<SliderPrimitives.SliderProps, "min"> & {
 
 type SliderPrimitiveRendererProps = SliderPrimitiveRootProps & SliderPrimitiveThumbProps;
 
-const DecoratableSliderPrimitiveRenderer = ({
+const SliderPrimitiveRenderer = ({
     tooltipSide,
     textValue,
     showTooltip,
@@ -158,10 +145,6 @@ const DecoratableSliderPrimitiveRenderer = ({
         </div>
     );
 };
-const SliderPrimitiveRenderer = makeDecoratable(
-    "SliderPrimitiveRenderer",
-    DecoratableSliderPrimitiveRenderer
-);
 
 /**
  * Slider

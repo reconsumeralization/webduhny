@@ -1,9 +1,7 @@
 import React from "react";
-import { cn } from "~/utils";
-import { makeDecoratable } from "@webiny/react-composition";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { Heading } from "~/Heading";
 import { Text } from "~/Text";
-import { cva, type VariantProps } from "class-variance-authority";
 
 const cardRootVariants = cva(
     "wby-flex wby-flex-col wby-bg-neutral-base wby-gap-y-md-plus wby-text-sm",
@@ -40,7 +38,7 @@ interface CardRootProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
         VariantProps<typeof cardRootVariants> {}
 
-const CardRootBase = React.forwardRef<HTMLDivElement, CardRootProps>(
+const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
     ({ className, padding, elevation, borderRadius, ...props }, ref) => (
         <div
             ref={ref}
@@ -50,9 +48,7 @@ const CardRootBase = React.forwardRef<HTMLDivElement, CardRootProps>(
     )
 );
 
-CardRootBase.displayName = "CardRoot";
-
-const CardRoot = makeDecoratable("CardRoot", CardRootBase);
+CardRoot.displayName = "CardRoot";
 
 interface CardProps extends CardRootProps, VariantProps<typeof cardRootVariants> {
     title?: React.ReactNode;
@@ -63,7 +59,7 @@ interface CardProps extends CardRootProps, VariantProps<typeof cardRootVariants>
 
 type CardHeaderProps = Pick<CardProps, "title" | "description" | "options">;
 
-const CardHeaderBase = ({ title, description, options }: CardHeaderProps) => {
+const CardHeader = ({ title, description, options }: CardHeaderProps) => {
     if (!title && !description && !options) {
         return null;
     }
@@ -83,13 +79,11 @@ const CardHeaderBase = ({ title, description, options }: CardHeaderProps) => {
     );
 };
 
-CardHeaderBase.displayName = "CardHeader";
-
-const CardHeader = makeDecoratable("CardHeader", CardHeaderBase);
+CardHeader.displayName = "CardHeader";
 
 type CardFooterProps = Pick<CardProps, "actions">;
 
-const CardFooterBase = ({ actions }: CardFooterProps) => {
+const CardFooter = ({ actions }: CardFooterProps) => {
     if (!actions) {
         return null;
     }
@@ -97,9 +91,7 @@ const CardFooterBase = ({ actions }: CardFooterProps) => {
     return <div className={"wby-flex wby-justify-end wby-gap-sm"}>{actions}</div>;
 };
 
-CardFooterBase.displayName = "CardFooter";
-
-const CardFooter = makeDecoratable("CardFooter", CardFooterBase);
+CardFooter.displayName = "CardFooter";
 
 const CardBase = (props: CardProps) => {
     const { title, description, actions, children, options, ...rest } = props;

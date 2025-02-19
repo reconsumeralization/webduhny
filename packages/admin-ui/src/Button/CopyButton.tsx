@@ -1,8 +1,7 @@
-import React from "react";
-import { ReactComponent as CopyToClipboardIcon } from "@material-design-icons/svg/filled/content_copy.svg";
+import React, { useCallback } from "react";
+import { ReactComponent as CopyToClipboardIcon } from "@material-design-icons/svg/outlined/content_copy.svg";
 import { ButtonProps, Button } from "./Button";
-import { useCallback } from "react";
-import { makeDecoratable } from "@webiny/react-composition";
+import { makeDecoratable } from "../utils";
 
 interface CopyButtonProps extends ButtonProps {
     /**

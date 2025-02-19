@@ -2,6 +2,7 @@ import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
 import { Popover } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
+import { makeDecoratable } from "~/utils";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
 import {
     MultiAutoCompleteInput,
@@ -81,7 +82,7 @@ type MultiAutoCompletePrimitiveProps = Omit<
     displayResetAction?: boolean;
 };
 
-const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
+const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     const {
         vm,
         setListOpenState,
@@ -179,5 +180,10 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
         </Popover>
     );
 };
+
+const MultiAutoCompletePrimitive = makeDecoratable(
+    "MultiAutoCompletePrimitive",
+    DecoratableMultiAutoCompletePrimitive
+);
 
 export { MultiAutoCompletePrimitive, type MultiAutoCompletePrimitiveProps };

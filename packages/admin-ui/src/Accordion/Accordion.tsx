@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
-import { makeDecoratable, withStaticProps } from "~/utils";
+import { makeDecoratable, withStaticProps, cva, type VariantProps } from "~/utils";
 import { AccordionRoot } from "./components/AccordionRoot";
 import { AccordionItem, type AccordionItemProps } from "./components/AccordionItem";
-import { cva, type VariantProps } from "class-variance-authority";
 
 const accordionVariants = cva("wby-group w-full", {
     variants: {

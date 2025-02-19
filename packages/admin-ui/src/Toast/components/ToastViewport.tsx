@@ -2,7 +2,7 @@ import React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cn } from "~/utils";
 
-const Viewport = React.forwardRef<
+const ToastViewport = React.forwardRef<
     React.ElementRef<typeof ToastPrimitives.Viewport>,
     React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
 >(({ className, ...props }, ref) => (
@@ -15,6 +15,6 @@ const Viewport = React.forwardRef<
         {...props}
     />
 ));
-Viewport.displayName = ToastPrimitives.Viewport.displayName;
+ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
-export { Viewport };
+export { ToastViewport };

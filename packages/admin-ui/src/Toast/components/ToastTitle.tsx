@@ -1,13 +1,13 @@
 import React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
-import { cn } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 import { Heading } from "~/Heading";
 
-type TitleProps = Omit<ToastPrimitives.ToastTitleProps, "children"> & {
+type ToastTitleProps = Omit<ToastPrimitives.ToastTitleProps, "children"> & {
     text: React.ReactNode;
 };
 
-const Title = ({ text, className, ...props }: TitleProps) => (
+const DecoratableToastTitle = ({ text, className, ...props }: ToastTitleProps) => (
     <ToastPrimitives.Title
         {...props}
         asChild
@@ -20,4 +20,6 @@ const Title = ({ text, className, ...props }: TitleProps) => (
     </ToastPrimitives.Title>
 );
 
-export { Title };
+const ToastTitle = makeDecoratable("ToastTitle", DecoratableToastTitle);
+
+export { ToastTitle, type ToastTitleProps };

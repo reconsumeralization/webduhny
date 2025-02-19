@@ -32,13 +32,12 @@ interface SliderValueProps
     value?: string;
 }
 
-const DecoratableSliderValue = ({ value, disabled, className }: SliderValueProps) => {
+const SliderValue = ({ value, disabled, className }: SliderValueProps) => {
     if (!value) {
         return null;
     }
     return <span className={cn(sliderValueVariants({ disabled }), className)}>{value}</span>;
 };
-const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
 
 /**
  * Slider Renderer with side label
@@ -48,7 +47,7 @@ interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps 
     required?: boolean;
 }
 
-const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
+const SliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
     return (
         <div className={"wby-w-full wby-flex wby-flex-row wby-items-center wby-justify-between"}>
             <div className={"wby-basis-2/12 wby-pr-sm"}>
@@ -68,10 +67,6 @@ const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideVal
         </div>
     );
 };
-const SliderRendererWithSideValue = makeDecoratable(
-    "SliderRendererWithSideValue",
-    DecoratableSliderRendererWithSideValue
-);
 
 /**
  * Slider

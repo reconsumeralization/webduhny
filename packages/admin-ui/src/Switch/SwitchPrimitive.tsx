@@ -40,7 +40,7 @@ type SwitchRendererProps = Omit<SwitchPrimitiveProps, "onCheckedChange"> &
         changeChecked: (checked: boolean) => void;
     };
 
-const DecoratableSwitchRenderer = React.forwardRef<
+const SwitchRenderer = React.forwardRef<
     React.ElementRef<typeof SwitchPrimitives.Root>,
     SwitchRendererProps
 >(({ id, label, changeChecked, className, labelPosition, disabled, required, ...props }, ref) => {
@@ -76,9 +76,7 @@ const DecoratableSwitchRenderer = React.forwardRef<
         </div>
     );
 });
-DecoratableSwitchRenderer.displayName = "SwitchRenderer";
-
-const SwitchRenderer = makeDecoratable("SwitchRenderer", DecoratableSwitchRenderer);
+SwitchRenderer.displayName = "SwitchRenderer";
 
 /**
  * Switch

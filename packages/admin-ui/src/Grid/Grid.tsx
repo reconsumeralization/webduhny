@@ -1,7 +1,5 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/react-composition";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn, withStaticProps } from "~/utils";
+import { cn, cva, withStaticProps, makeDecoratable, type VariantProps } from "~/utils";
 
 const columnVariants = cva("", {
     variants: {

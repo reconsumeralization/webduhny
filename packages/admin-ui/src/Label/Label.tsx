@@ -19,10 +19,9 @@ const labelRequiredVariants = cva("wby-text-destructive-primary", {
 
 type LabelRequiredProps = VariantProps<typeof labelRequiredVariants>;
 
-const DecoratableLabelRequired = ({ disabled }: LabelRequiredProps) => (
+const LabelRequired = ({ disabled }: LabelRequiredProps) => (
     <span className={cn(labelRequiredVariants({ disabled }))}>{"*"}</span>
 );
-const LabelRequired = makeDecoratable("LabelRequired", DecoratableLabelRequired);
 
 /**
  * Label Description
@@ -39,10 +38,9 @@ interface LabelDescriptionProps extends VariantProps<typeof labelDescriptionVari
     content: React.ReactNode;
 }
 
-const DecoratableLabelDescription = ({ content, disabled }: LabelDescriptionProps) => (
+const LabelDescription = ({ content, disabled }: LabelDescriptionProps) => (
     <Text className={cn(labelDescriptionVariants({ disabled }))} text={content} size={"sm"} />
 );
-const LabelDescription = makeDecoratable("LabelDescription", DecoratableLabelDescription);
 
 /**
  * Label Hint
@@ -51,7 +49,7 @@ interface LabelHintProps {
     content: React.ReactNode;
 }
 
-const DecoratableLabelHint = ({ content }: LabelHintProps) => (
+const LabelHint = ({ content }: LabelHintProps) => (
     <Tooltip
         content={content}
         trigger={
@@ -64,7 +62,6 @@ const DecoratableLabelHint = ({ content }: LabelHintProps) => (
         }
     />
 );
-const LabelHint = makeDecoratable("LabelHint", DecoratableLabelHint);
 
 /**
  * Label Value
@@ -88,10 +85,9 @@ interface LabelValueProps extends VariantProps<typeof labelValueVariants> {
     value: React.ReactNode;
 }
 
-const DecoratableLabelValue = ({ value, weight, disabled }: LabelValueProps) => (
+const LabelValue = ({ value, weight, disabled }: LabelValueProps) => (
     <Text text={value} size="sm" className={cn(labelValueVariants({ weight, disabled }))} />
 );
-const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
 
 const labelVariants = cva(
     [

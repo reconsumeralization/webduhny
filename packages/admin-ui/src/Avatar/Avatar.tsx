@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { makeDecoratable } from "@webiny/react-composition";
-import { cva, type VariantProps } from "class-variance-authority";
-import { withStaticProps, cn } from "~/utils";
+import { withStaticProps, cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 
 type AvatarImageProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>;
 

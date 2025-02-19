@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { makeDecoratable } from "@webiny/react-composition";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn, withStaticProps } from "~/utils";
+import { cn, cva, withStaticProps, makeDecoratable, type VariantProps } from "~/utils";
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
@@ -43,7 +41,7 @@ const tooltipContentVariants = cva(
 type TooltipContentProps = TooltipPrimitive.TooltipContentProps &
     VariantProps<typeof tooltipContentVariants>;
 
-const DecoratableTooltipContent = React.forwardRef<
+const TooltipContent = React.forwardRef<
     React.ElementRef<typeof TooltipPrimitive.Content>,
     TooltipContentProps
 >(({ className, variant, hiddenArrow, ...props }, ref) => (
@@ -57,9 +55,7 @@ const DecoratableTooltipContent = React.forwardRef<
     </TooltipPrimitive.Portal>
 ));
 
-DecoratableTooltipContent.displayName = TooltipPrimitive.Content.displayName;
-
-const TooltipContent = makeDecoratable("TooltipArrow", DecoratableTooltipContent);
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 /**
  * Tooltip Arrow
@@ -79,7 +75,7 @@ const tooltipArrowVariants = cva("", {
 type TooltipArrowProps = TooltipPrimitive.TooltipArrowProps &
     VariantProps<typeof tooltipArrowVariants>;
 
-const DecoratableTooltipArrow = ({ variant, className, ...props }: TooltipArrowProps) => (
+const TooltipArrow = ({ variant, className, ...props }: TooltipArrowProps) => (
     <TooltipPrimitive.Arrow
         {...props}
         width={12}
@@ -88,9 +84,7 @@ const DecoratableTooltipArrow = ({ variant, className, ...props }: TooltipArrowP
     />
 );
 
-DecoratableTooltipArrow.displayName = TooltipPrimitive.Arrow.displayName;
-
-const TooltipArrow = makeDecoratable("TooltipArrow", DecoratableTooltipArrow);
+TooltipArrow.displayName = TooltipPrimitive.Arrow.displayName;
 
 /**
  * Tooltip

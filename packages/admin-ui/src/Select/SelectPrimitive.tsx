@@ -116,10 +116,7 @@ interface TriggerProps
     resetButton?: React.ReactElement;
 }
 
-const DecoratableTrigger = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.Trigger>,
-    TriggerProps
->(
+const Trigger = React.forwardRef<React.ElementRef<typeof SelectPrimitives.Trigger>, TriggerProps>(
     (
         {
             className,
@@ -148,14 +145,12 @@ const DecoratableTrigger = React.forwardRef<
         </SelectPrimitives.Trigger>
     )
 );
-DecoratableTrigger.displayName = SelectPrimitives.Trigger.displayName;
-
-const Trigger = makeDecoratable("Trigger", DecoratableTrigger);
+Trigger.displayName = SelectPrimitives.Trigger.displayName;
 
 /**
  * SelectScrollUpButton
  */
-const DecoratableSelectScrollUpButton = React.forwardRef<
+const SelectScrollUpButton = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.ScrollUpButton>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitives.ScrollUpButton>
 >(({ className, ...props }, ref) => (
@@ -170,17 +165,12 @@ const DecoratableSelectScrollUpButton = React.forwardRef<
         <ChevronUp className="wby-h-md wby-w-md" />
     </SelectPrimitives.ScrollUpButton>
 ));
-DecoratableSelectScrollUpButton.displayName = SelectPrimitives.ScrollUpButton.displayName;
-
-const SelectScrollUpButton = makeDecoratable(
-    "SelectScrollUpButton",
-    DecoratableSelectScrollUpButton
-);
+SelectScrollUpButton.displayName = SelectPrimitives.ScrollUpButton.displayName;
 
 /**
  * SelectScrollDownButton
  */
-const DecoratableSelectScrollDownButton = React.forwardRef<
+const SelectScrollDownButton = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.ScrollDownButton>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitives.ScrollDownButton>
 >(({ className, ...props }, ref) => (
@@ -195,12 +185,7 @@ const DecoratableSelectScrollDownButton = React.forwardRef<
         <ChevronDown className="wby-h-md wby-w-md" />
     </SelectPrimitives.ScrollDownButton>
 ));
-DecoratableSelectScrollDownButton.displayName = SelectPrimitives.ScrollDownButton.displayName;
-
-const SelectScrollDownButton = makeDecoratable(
-    "SelectScrollDownButton",
-    DecoratableSelectScrollDownButton
-);
+SelectScrollDownButton.displayName = SelectPrimitives.ScrollDownButton.displayName;
 
 /**
  * SelectContent
@@ -215,7 +200,7 @@ interface SelectContentProps
     extends React.ComponentPropsWithoutRef<typeof SelectPrimitives.Content>,
         VariantProps<typeof selectContentVariants> {}
 
-const DecoratableSelectContent = React.forwardRef<
+const SelectContent = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.Content>,
     SelectContentProps
 >(({ className, children, ...props }, ref) => (
@@ -239,14 +224,12 @@ const DecoratableSelectContent = React.forwardRef<
         </SelectPrimitives.Content>
     </SelectPrimitives.Portal>
 ));
-DecoratableSelectContent.displayName = SelectPrimitives.Content.displayName;
-
-const SelectContent = makeDecoratable("SelectContent", DecoratableSelectContent);
+SelectContent.displayName = SelectPrimitives.Content.displayName;
 
 /**
  * SelectLabel
  */
-const DecoratableSelectLabel = React.forwardRef<
+const SelectLabel = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.Label>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitives.Label>
 >(({ className, ...props }, ref) => (
@@ -261,14 +244,12 @@ const DecoratableSelectLabel = React.forwardRef<
         {...props}
     />
 ));
-DecoratableSelectLabel.displayName = SelectPrimitives.Label.displayName;
-
-const SelectLabel = makeDecoratable("SelectLabel", DecoratableSelectLabel);
+SelectLabel.displayName = SelectPrimitives.Label.displayName;
 
 /**
  * SelectItem
  */
-const DecoratableSelectItem = React.forwardRef<
+const SelectItem = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.Item>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitives.Item>
 >(({ className, children, ...props }, ref) => (
@@ -292,14 +273,12 @@ const DecoratableSelectItem = React.forwardRef<
         </SelectPrimitives.ItemIndicator>
     </SelectPrimitives.Item>
 ));
-DecoratableSelectItem.displayName = SelectPrimitives.Item.displayName;
-
-const SelectItem = makeDecoratable("SelectItem", DecoratableSelectItem);
+SelectItem.displayName = SelectPrimitives.Item.displayName;
 
 /**
  * SelectSeparator
  */
-const DecoratableSelectSeparator = React.forwardRef<
+const SelectSeparator = React.forwardRef<
     React.ElementRef<typeof SelectPrimitives.Separator>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitives.Separator>
 >(({ className, ...props }, ref) => (
@@ -309,9 +288,7 @@ const DecoratableSelectSeparator = React.forwardRef<
         {...props}
     />
 ));
-DecoratableSelectSeparator.displayName = SelectPrimitives.Separator.displayName;
-
-const SelectSeparator = makeDecoratable("SelectSeparator", DecoratableSelectSeparator);
+SelectSeparator.displayName = SelectPrimitives.Separator.displayName;
 
 /**
  * Trigger
@@ -332,7 +309,7 @@ type SelectTriggerProps = SelectPrimitives.SelectValueProps &
         disabled?: boolean;
     };
 
-const DecoratableSelectTrigger = ({
+const SelectTrigger = ({
     hasValue,
     size,
     variant,
@@ -383,8 +360,6 @@ const DecoratableSelectTrigger = ({
     );
 };
 
-const SelectTrigger = makeDecoratable("SelectTrigger", DecoratableSelectTrigger);
-
 /**
  * SelectOptions
  */
@@ -394,7 +369,7 @@ type SelectOptionsVm = {
 
 type SelectOptionsProps = SelectOptionsVm;
 
-const DecoratableSelectOptions = (props: SelectOptionsProps) => {
+const SelectOptions = (props: SelectOptionsProps) => {
     const renderOptions = React.useCallback((items: SelectOptionFormatted[]) => {
         return items.map((item, index) => {
             const elements = [];
@@ -434,8 +409,6 @@ const DecoratableSelectOptions = (props: SelectOptionsProps) => {
     return <SelectContent>{renderOptions(props.options)}</SelectContent>;
 };
 
-const SelectOptions = makeDecoratable("SelectOptions", DecoratableSelectOptions);
-
 /**
  * SelectRenderer
  */
@@ -449,7 +422,7 @@ type SelectRendererProps = {
     onValueReset: () => void;
 };
 
-const DecoratableSelectPrimitiveRenderer = ({
+const SelectPrimitiveRenderer = ({
     selectRootProps,
     selectTriggerProps,
     selectOptionsProps,
@@ -463,11 +436,6 @@ const DecoratableSelectPrimitiveRenderer = ({
         </SelectRoot>
     );
 };
-
-const SelectPrimitiveRenderer = makeDecoratable(
-    "SelectPrimitiveRenderer",
-    DecoratableSelectPrimitiveRenderer
-);
 
 /**
  * Select

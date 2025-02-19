@@ -5,6 +5,7 @@ import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
 import { AutoCompleteOption } from "./domains";
+import { makeDecoratable } from "~/utils";
 
 type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     /**
@@ -62,7 +63,7 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     displayResetAction?: boolean;
 };
 
-const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
+const DecoratableAutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     const {
         vm,
         setListOpenState,
@@ -147,5 +148,10 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
         </Popover>
     );
 };
+
+const AutoCompletePrimitive = makeDecoratable(
+    "AutoCompletePrimitive",
+    DecoratableAutoCompletePrimitive
+);
 
 export { AutoCompletePrimitive, type AutoCompletePrimitiveProps };
