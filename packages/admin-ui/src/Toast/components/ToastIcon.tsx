@@ -15,7 +15,7 @@ type IconProps = {
     icon?: React.ReactElement<typeof BaseIcon>;
 };
 
-const Icon = ({ icon }: IconProps) => {
+const ToastIcon = ({ icon }: IconProps) => {
     return (
         <span>
             {React.isValidElement(icon)
@@ -25,4 +25,4 @@ const Icon = ({ icon }: IconProps) => {
     );
 };
 
-export { Icon, type IconProps };
+export { ToastIcon, type IconProps };

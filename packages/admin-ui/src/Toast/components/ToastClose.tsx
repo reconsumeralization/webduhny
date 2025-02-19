@@ -4,13 +4,13 @@ import * as ToastPrimitives from "@radix-ui/react-toast";
 import { VariantProps } from "~/utils";
 import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
-import { rootVariants } from "./Root";
+import { rootVariants } from "./ToastRoot";
 
 interface CloseProps extends ToastPrimitives.ToastCloseProps {
     variant?: VariantProps<typeof rootVariants>["variant"];
 }
 
-const Close = ({ variant, ...props }: CloseProps) => (
+const ToastClose = ({ variant, ...props }: CloseProps) => (
     <ToastPrimitives.Close {...props} asChild>
         <IconButton
             icon={<Icon label={"Close"} icon={<CloseIcon />} />}
@@ -21,4 +21,4 @@ const Close = ({ variant, ...props }: CloseProps) => (
     </ToastPrimitives.Close>
 );
 
-export { Close };
+export { ToastClose };

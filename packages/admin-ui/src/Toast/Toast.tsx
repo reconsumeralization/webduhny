@@ -3,16 +3,16 @@ import * as ToastPrimitives from "@radix-ui/react-toast";
 import { makeDecoratable, withStaticProps } from "~/utils";
 import { Icon as BaseIcon } from "~/Icon";
 import {
-    Root,
+    ToastRoot,
     ToastViewport,
     ToastTitle,
     ToastActions,
     ToastDescription,
-    Close,
-    Icon
+    ToastClose,
+    ToastIcon
 } from "./components";
 
-type ToastRootProps = React.ComponentPropsWithoutRef<typeof Root>;
+type ToastRootProps = React.ComponentPropsWithoutRef<typeof ToastRoot>;
 
 interface ToastProps extends Omit<ToastRootProps, "title" | "content" | "children"> {
     title: React.ReactElement<typeof ToastTitle>;
@@ -32,19 +32,19 @@ const DecoratableToast = ({
     ...props
 }: ToastProps) => {
     return (
-        <Root
+        <ToastRoot
             hasDescription={!!description || !!actions}
             duration={dismissible ? duration : 999999}
             {...props}
         >
-            <Icon icon={icon} />
+            <ToastIcon icon={icon} />
             <div className="wby-w-64">
                 {title}
                 {description && description}
                 {actions && actions}
             </div>
-            <Close variant={props.variant} />
-        </Root>
+            <ToastClose variant={props.variant} />
+        </ToastRoot>
     );
 };
 

@@ -25,7 +25,7 @@ const rootVariants = cva(
 
 type RootProps = ToastPrimitives.ToastProps & VariantProps<typeof rootVariants>;
 
-const Root = React.forwardRef<React.ElementRef<typeof ToastPrimitives.Root>, RootProps>(
+const ToastRoot = React.forwardRef<React.ElementRef<typeof ToastPrimitives.Root>, RootProps>(
     ({ className, hasDescription, variant, ...props }, ref) => {
         return (
             <ToastPrimitives.Root
@@ -36,6 +36,6 @@ const Root = React.forwardRef<React.ElementRef<typeof ToastPrimitives.Root>, Roo
         );
     }
 );
-Root.displayName = ToastPrimitives.Root.displayName;
+ToastRoot.displayName = ToastPrimitives.Root.displayName;
 
-export { Root, rootVariants };
+export { ToastRoot, rootVariants };
