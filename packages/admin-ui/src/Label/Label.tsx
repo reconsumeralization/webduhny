@@ -122,38 +122,40 @@ interface LabelProps
     disabled?: boolean;
 }
 
-const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
-    (
-        { className, disabled, description, hint, required, value, text, weight, id, ...props },
-        ref
-    ) => {
-        if (!text) {
-            return null;
-        }
-
-        return (
-            <LabelPrimitive.Root
-                ref={ref}
-                className={cn(labelVariants({ weight, disabled }), className)}
-                htmlFor={id}
-                {...props}
-            >
-                <span>
-                    <span className={"wby-flex wby-items-center wby-gap-xxs"}>
-                        {text}
-                        {description && (
-                            <LabelDescription content={description} disabled={disabled} />
-                        )}
-                        {hint && <LabelHint content={hint} />}
-                        {required && <LabelRequired disabled={disabled} />}
-                    </span>
-                </span>
-                {value && <LabelValue value={value} weight={weight} disabled={disabled} />}
-            </LabelPrimitive.Root>
-        );
+const LabelBase = ({
+    className,
+    disabled,
+    description,
+    hint,
+    required,
+    value,
+    text,
+    weight,
+    id,
+    ...props
+}: LabelProps) => {
+    if (!text) {
+        return null;
     }
-);
-LabelBase.displayName = LabelPrimitive.Root.displayName;
+
+    return (
+        <LabelPrimitive.Root
+            className={cn(labelVariants({ weight, disabled }), className)}
+            htmlFor={id}
+            {...props}
+        >
+            <span>
+                <span className={"wby-flex wby-items-center wby-gap-xxs"}>
+                    {text}
+                    {description && <LabelDescription content={description} disabled={disabled} />}
+                    {hint && <LabelHint content={hint} />}
+                    {required && <LabelRequired disabled={disabled} />}
+                </span>
+            </span>
+            {value && <LabelValue value={value} weight={weight} disabled={disabled} />}
+        </LabelPrimitive.Root>
+    );
+};
 
 const Label = makeDecoratable("Label", LabelBase);
 

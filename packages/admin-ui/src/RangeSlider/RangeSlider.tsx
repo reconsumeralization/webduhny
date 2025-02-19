@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 import { RangeSliderPrimitiveProps, RangeSliderPrimitiveRenderer } from "./RangeSliderPrimitive";
 import {
     FormComponentDescription,
@@ -41,10 +41,15 @@ interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps
     valueConverter?: (value: number) => string;
 }
 
-const DecoratableRangeSlider = (props: RangeSliderProps) => {
-    const { isValid: validationIsValid, message: validationMessage } = props.validation || {};
+const DecoratableRangeSlider = ({ description, note, validation, ...props }: RangeSliderProps) => {
+    const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
-    const { vm, changeValues, commitValues } = useRangeSlider(props);
+    const { onValuesChange, onValuesCommit, ...restProps } = props;
+    const { vm, changeValues, commitValues } = useRangeSlider({
+        ...restProps,
+        onValuesChange,
+        onValuesCommit
+    });
 
     return (
         <div className={"wby-w-full"}>
@@ -53,14 +58,14 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
                 required={props.required}
                 disabled={props.disabled}
             />
-            <FormComponentDescription text={props.description} />
+            <FormComponentDescription text={description} />
             <div className={"wby-flex wby-flex-row wby-items-center wby-justify-between"}>
                 <div className={"wby-basis-1/12 wby-pr-xxs"}>
                     <RangeSliderValue value={vm.textValues[0]} disabled={props.disabled} />
                 </div>
                 <div className={"wby-basis-10/12"}>
                     <RangeSliderPrimitiveRenderer
-                        {...props}
+                        {...restProps}
                         {...vm}
                         onValueChange={changeValues}
                         onValueCommit={commitValues}
@@ -71,7 +76,7 @@ const DecoratableRangeSlider = (props: RangeSliderProps) => {
                 </div>
             </div>
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={props.note} />
+            <FormComponentNote text={note} />
         </div>
     );
 };

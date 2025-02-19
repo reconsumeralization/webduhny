@@ -70,14 +70,18 @@ type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedCha
         changeChecked: (checked: boolean) => void;
     };
 
-const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
-    React.ElementRef<typeof CheckboxPrimitives.Root>,
-    CheckboxPrimitiveRendererProps
->(({ label, id, hasLabel, indeterminate, changeChecked, className, ...props }, ref) => {
+const DecoratableCheckboxPrimitiveRenderer = ({
+    label,
+    id,
+    hasLabel,
+    indeterminate,
+    changeChecked,
+    className,
+    ...props
+}: CheckboxPrimitiveRendererProps) => {
     return (
         <div className="wby-flex wby-items-start wby-space-x-sm-extra">
             <CheckboxPrimitives.Root
-                ref={ref}
                 {...props}
                 id={id}
                 className={cn(checkboxVariants({ indeterminate, hasLabel }), className)}
@@ -96,8 +100,7 @@ const DecoratableCheckboxPrimitiveRenderer = React.forwardRef<
             {hasLabel && <Label id={id} text={label} weight={"light"} className={"wby-text-md"} />}
         </div>
     );
-});
-DecoratableCheckboxPrimitiveRenderer.displayName = "CheckboxPrimitiveRenderer";
+};
 const CheckboxPrimitiveRenderer = makeDecoratable(
     "CheckboxPrimitiveRenderer",
     DecoratableCheckboxPrimitiveRenderer
@@ -106,26 +109,15 @@ const CheckboxPrimitiveRenderer = makeDecoratable(
 /**
  * Checkbox
  */
-const DecoratableCheckboxPrimitive = React.forwardRef<
-    React.ElementRef<typeof CheckboxPrimitives.Root>,
-    CheckboxPrimitiveProps
->((props, ref) => {
+const DecoratableCheckboxPrimitive = (props: CheckboxPrimitiveProps) => {
     const { vm, changeChecked } = useCheckbox(props);
 
     if (!vm.item) {
         return null;
     }
 
-    return (
-        <CheckboxPrimitiveRenderer
-            {...props}
-            {...vm.item}
-            changeChecked={changeChecked}
-            ref={ref}
-        />
-    );
-});
-DecoratableCheckboxPrimitive.displayName = CheckboxPrimitives.Root.displayName;
+    return <CheckboxPrimitiveRenderer {...props} {...vm.item} changeChecked={changeChecked} />;
+};
 const CheckboxPrimitive = makeDecoratable("CheckboxPrimitive", DecoratableCheckboxPrimitive);
 
 export {

@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as ArrowDown } from "@material-design-icons/svg/outlined/keyboard_arrow_up.svg";
 import { Icon } from "~/Icon";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const directionVariants = cva("wby-inline", {
     variants: {

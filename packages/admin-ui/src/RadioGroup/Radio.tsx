@@ -11,14 +11,10 @@ interface RadioProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPri
     id: string;
 }
 
-const DecoratableRadio = React.forwardRef<
-    React.ElementRef<typeof RadioGroupPrimitive.Item>,
-    RadioProps
->(({ className, label, id, ...props }, ref) => {
+const DecoratableRadio = ({ className, label, id, ...props }: RadioProps) => {
     return (
         <div className="wby-flex wby-items-start wby-space-x-sm-extra">
             <RadioGroupPrimitive.Item
-                ref={ref}
                 id={id}
                 className={cn(
                     [
@@ -44,8 +40,7 @@ const DecoratableRadio = React.forwardRef<
             <Label id={id} text={label} weight={"light"} className={"wby-text-md"} />
         </div>
     );
-});
-DecoratableRadio.displayName = RadioGroupPrimitive.Item.displayName;
+};
 const Radio = makeDecoratable("Radio", DecoratableRadio);
 
 export { Radio, type RadioProps };

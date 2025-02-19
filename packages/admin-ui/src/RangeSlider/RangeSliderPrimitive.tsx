@@ -78,11 +78,17 @@ interface RangeSliderPrimitiveProps
 }
 
 const DecoratableRangeSliderPrimitive = (props: RangeSliderPrimitiveProps) => {
-    const { vm, changeValues, commitValues } = useRangeSlider(props);
+    const { transformValue, onValuesChange, onValuesCommit, ...restProps } = props; // Rename transformValue to _ to avoid ESLint warning
+    const { vm, changeValues, commitValues } = useRangeSlider({
+        ...restProps,
+        transformValue,
+        onValuesChange,
+        onValuesCommit
+    });
 
     return (
         <RangeSliderPrimitiveRenderer
-            {...props}
+            {...restProps}
             {...vm}
             onValueChange={changeValues}
             onValueCommit={commitValues}

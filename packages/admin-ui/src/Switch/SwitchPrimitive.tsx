@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
-import { cn, cva, makeDecoratable, VariantProps } from "~/utils";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { Label } from "~/Label";
 import { useSwitch } from "./useSwitch";
 import { SwitchItemFormatted } from "./SwitchItemFormatted";
@@ -23,7 +23,7 @@ const switchVariants = cva("wby-inline-flex wby-items-start wby-space-x-sm", {
 });
 
 type SwitchPrimitiveProps = Omit<
-    React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>,
+    SwitchPrimitives.SwitchProps,
     "defaultChecked" | "onCheckedChange"
 > &
     VariantProps<typeof switchVariants> &
@@ -40,12 +40,18 @@ type SwitchRendererProps = Omit<SwitchPrimitiveProps, "onCheckedChange"> &
         changeChecked: (checked: boolean) => void;
     };
 
-const SwitchRenderer = React.forwardRef<
-    React.ElementRef<typeof SwitchPrimitives.Root>,
-    SwitchRendererProps
->(({ id, label, changeChecked, className, labelPosition, disabled, required, ...props }, ref) => {
+const SwitchRenderer = ({
+    id,
+    label,
+    changeChecked,
+    className,
+    labelPosition,
+    disabled,
+    required,
+    ...props
+}: SwitchRendererProps) => {
     return (
-        <div className={cn(switchVariants({ labelPosition, className }))}>
+        <div className={cn(switchVariants({ labelPosition }), className)}>
             <Label
                 id={id}
                 text={label}
@@ -55,7 +61,6 @@ const SwitchRenderer = React.forwardRef<
                 className={"wby-text-md"}
             />
             <SwitchPrimitives.Root
-                ref={ref}
                 {...props}
                 id={id}
                 className={cn([
@@ -75,24 +80,19 @@ const SwitchRenderer = React.forwardRef<
             </SwitchPrimitives.Root>
         </div>
     );
-});
-SwitchRenderer.displayName = "SwitchRenderer";
+};
 
 /**
  * Switch
  */
-const DecoratableSwitchPrimitive = React.forwardRef<
-    React.ElementRef<typeof SwitchPrimitives.Root>,
-    SwitchPrimitiveProps
->((props, ref) => {
+const DecoratableSwitchPrimitive = (props: SwitchPrimitiveProps) => {
     const { vm, changeChecked } = useSwitch(props);
     if (!vm.item) {
         return null;
     }
 
-    return <SwitchRenderer {...props} {...vm.item} changeChecked={changeChecked} ref={ref} />;
-});
-DecoratableSwitchPrimitive.displayName = SwitchPrimitives.Root.displayName;
+    return <SwitchRenderer {...props} {...vm.item} changeChecked={changeChecked} />;
+};
 const SwitchPrimitive = makeDecoratable("SwitchPrimitive", DecoratableSwitchPrimitive);
 
 export { SwitchPrimitive, type SwitchPrimitiveProps, type SwitchPrimitivVm };

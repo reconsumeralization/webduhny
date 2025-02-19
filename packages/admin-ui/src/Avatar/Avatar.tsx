@@ -4,33 +4,23 @@ import { withStaticProps, cn, makeDecoratable, cva, type VariantProps } from "~/
 
 type AvatarImageProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>;
 
-const AvatarImageBase = React.forwardRef<
-    React.ElementRef<typeof AvatarPrimitive.Image>,
-    AvatarImageProps
->(({ className, ...props }, ref) => (
-    <AvatarPrimitive.Image ref={ref} className={cn("wby-aspect-square", className)} {...props} />
-));
-AvatarImageBase.displayName = AvatarPrimitive.Image.displayName;
+const AvatarImageBase = ({ className, ...props }: AvatarImageProps) => (
+    <AvatarPrimitive.Image className={cn("wby-aspect-square", className)} {...props} />
+);
 
 const AvatarImage = makeDecoratable("AvatarImage", AvatarImageBase);
 
 type AvatarFallbackProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>;
 
-const AvatarFallbackBase = React.forwardRef<
-    React.ElementRef<typeof AvatarPrimitive.Fallback>,
-    AvatarFallbackProps
->(({ className, ...props }, ref) => (
+const AvatarFallbackBase = ({ className, ...props }: AvatarFallbackProps) => (
     <AvatarPrimitive.Fallback
-        ref={ref}
         className={cn(
             "wby-flex wby-h-full wby-w-full wby-items-center wby-justify-center wby-rounded-sm",
             className
         )}
         {...props}
     />
-));
-
-AvatarFallbackBase.displayName = AvatarPrimitive.Fallback.displayName;
+);
 
 const AvatarFallback = makeDecoratable("AvatarFallback", AvatarFallbackBase);
 
@@ -64,22 +54,14 @@ const avatarVariants = cva("wby-relative wby-flex wby-shrink-0 wby-overflow-hidd
     }
 });
 
-const AvatarBase = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, AvatarProps>(
-    ({ image, fallback, className, size, variant, ...props }, ref) => {
-        return (
-            <AvatarPrimitive.Root
-                ref={ref}
-                className={avatarVariants({ variant, size, className })}
-                {...props}
-            >
-                {image}
-                {fallback}
-            </AvatarPrimitive.Root>
-        );
-    }
-);
-
-AvatarBase.displayName = AvatarPrimitive.Root.displayName;
+const AvatarBase = ({ image, fallback, className, size, variant, ...props }: AvatarProps) => {
+    return (
+        <AvatarPrimitive.Root className={avatarVariants({ variant, size, className })} {...props}>
+            {image}
+            {fallback}
+        </AvatarPrimitive.Root>
+    );
+};
 
 const DecoratableAvatar = makeDecoratable("Avatar", AvatarBase);
 

@@ -31,21 +31,18 @@ interface IconProps
     icon: React.ReactNode;
 }
 
-const IconBase = React.forwardRef<HTMLOrSVGElement, IconProps>((props, ref) => {
+const IconBase = (props: IconProps) => {
     const { label, icon, color, size, className, ...rest } = props;
     return (
         <AccessibleIcon.Root label={label}>
             {/* @ts-expect-error */}
             {React.cloneElement(icon, {
                 ...rest,
-                className: cn(iconVariants({ color, size }), className),
-                ref
+                className: cn(iconVariants({ color, size }), className)
             })}
         </AccessibleIcon.Root>
     );
-});
-
-IconBase.displayName = "Icon";
+};
 
 const Icon = makeDecoratable("Icon", IconBase);
 

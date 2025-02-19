@@ -38,17 +38,12 @@ interface CardRootProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
         VariantProps<typeof cardRootVariants> {}
 
-const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
-    ({ className, padding, elevation, borderRadius, ...props }, ref) => (
-        <div
-            ref={ref}
-            className={cn(cardRootVariants({ padding, elevation, borderRadius, className }))}
-            {...props}
-        />
-    )
+const CardRoot = ({ className, padding, elevation, borderRadius, ...props }: CardRootProps) => (
+    <div
+        className={cn(cardRootVariants({ padding, elevation, borderRadius, className }))}
+        {...props}
+    />
 );
-
-CardRoot.displayName = "CardRoot";
 
 interface CardProps extends CardRootProps, VariantProps<typeof cardRootVariants> {
     title?: React.ReactNode;

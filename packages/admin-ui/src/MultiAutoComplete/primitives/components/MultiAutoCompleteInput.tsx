@@ -2,7 +2,7 @@ import React from "react";
 import { getIconPosition, InputIcon, InputPrimitiveProps, inputVariants } from "~/Input";
 import { Command, CommandOptionFormatted } from "~/Command";
 import { Tag } from "~/Tag";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const multiAutoCompleteInputVariants = cva("wby-relative placeholder:wby-text-neutral-dimmed", {
     variants: {

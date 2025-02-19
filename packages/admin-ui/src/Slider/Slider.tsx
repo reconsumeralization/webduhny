@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Label } from "~/Label";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 import {
     SliderPrimitiveRenderer,
     SliderPrimitiveProps,
@@ -75,12 +75,19 @@ interface SliderProps extends FormComponentProps, SliderPrimitiveProps {
     labelPosition?: "top" | "side";
 }
 
-const DecoratableSlider = ({ description, note, validation, ...props }: SliderProps) => {
+const DecoratableSlider = ({
+    description,
+    note,
+    validation,
+    labelPosition,
+    ...props
+}: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
+
     const { vm, changeValue, commitValue } = useSlider(props);
 
-    if (props.labelPosition === "side") {
+    if (labelPosition === "side") {
         return (
             <div className={"wby-w-full"}>
                 <FormComponentDescription text={description} />

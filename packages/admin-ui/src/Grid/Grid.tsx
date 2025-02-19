@@ -48,21 +48,13 @@ interface ColumnProps
     children?: React.ReactNode;
 }
 
-const ColumnBase = React.forwardRef<HTMLDivElement, ColumnProps>(
-    ({ span, align, children, className, offset, ...props }, ref) => {
-        return (
-            <div
-                {...props}
-                className={cn(columnVariants({ span, offset, align, className }))}
-                ref={ref}
-            >
-                {children}
-            </div>
-        );
-    }
-);
-
-ColumnBase.displayName = "Column";
+const ColumnBase = ({ span, align, children, className, offset, ...props }: ColumnProps) => {
+    return (
+        <div {...props} className={cn(columnVariants({ span, offset, align, className }))}>
+            {children}
+        </div>
+    );
+};
 
 const Column = makeDecoratable("Column", ColumnBase);
 
@@ -86,21 +78,13 @@ interface GridProps
         | Array<React.ReactElement<ColumnProps, typeof Column>>;
 }
 
-const GridBase = React.forwardRef<HTMLDivElement, GridProps>(
-    ({ gap, children, className, ...props }, ref) => {
-        return (
-            <div
-                {...props}
-                className={cn("wby-grid-cols-12", gridVariants({ gap }), className)}
-                ref={ref}
-            >
-                {children}
-            </div>
-        );
-    }
-);
-
-GridBase.displayName = "Grid";
+const GridBase = ({ gap, children, className, ...props }: GridProps) => {
+    return (
+        <div {...props} className={cn("wby-grid-cols-12", gridVariants({ gap }), className)}>
+            {children}
+        </div>
+    );
+};
 
 const DecoratableGrid = makeDecoratable("Grid", GridBase);
 

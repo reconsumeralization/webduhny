@@ -7,12 +7,8 @@ import { useSlider } from "./useSlider";
 /**
  * Slider Root
  */
-const SliderPrimitiveRoot = React.forwardRef<
-    React.ElementRef<typeof SliderPrimitives.Root>,
-    React.ComponentPropsWithoutRef<typeof SliderPrimitives.Root>
->(({ className, ...props }, ref) => (
+const SliderPrimitiveRoot = ({ className, ...props }: SliderPrimitives.SliderProps) => (
     <SliderPrimitives.Root
-        ref={ref}
         className={cn(
             [
                 "wby-relative wby-flex wby-w-full wby-touch-none wby-select-none wby-items-center wby-cursor-pointer",
@@ -22,8 +18,7 @@ const SliderPrimitiveRoot = React.forwardRef<
         )}
         {...props}
     />
-));
-SliderPrimitiveRoot.displayName = SliderPrimitives.Root.displayName;
+);
 
 /**
  * Slider Track
@@ -165,16 +160,19 @@ interface SliderPrimitiveProps
 type SliderPrimitiveVm = SliderPrimitiveRootProps & SliderPrimitiveThumbProps;
 
 const DecoratableSliderPrimitive = (props: SliderPrimitiveProps) => {
-    const { vm, changeValue, commitValue } = useSlider(props);
+    const { transformValue, ...restProps } = props;
+    const { vm, changeValue, commitValue } = useSlider({ ...restProps, transformValue });
+
     return (
         <SliderPrimitiveRenderer
-            {...props}
+            {...restProps}
             {...vm}
             onValueChange={changeValue}
             onValueCommit={commitValue}
         />
     );
 };
+
 const SliderPrimitive = makeDecoratable("SliderPrimitive", DecoratableSliderPrimitive);
 
 export {

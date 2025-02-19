@@ -109,53 +109,45 @@ const triggerVariants = cva(
 );
 
 interface TriggerProps
-    extends React.ComponentPropsWithoutRef<typeof SelectPrimitives.Trigger>,
+    extends SelectPrimitives.SelectTriggerProps,
         VariantProps<typeof triggerVariants> {
     startIcon?: React.ReactElement;
     endIcon?: React.ReactElement;
     resetButton?: React.ReactElement;
 }
 
-const Trigger = React.forwardRef<React.ElementRef<typeof SelectPrimitives.Trigger>, TriggerProps>(
-    (
-        {
-            className,
-            children,
-            size,
-            variant,
-            startIcon,
-            endIcon = <ChevronDown />,
-            resetButton,
-            disabled,
-            invalid,
-            ...props
-        },
-        ref
-    ) => (
-        <SelectPrimitives.Trigger
-            ref={ref}
-            className={cn(triggerVariants({ variant, size, invalid, className }))}
-            disabled={disabled}
-            {...props}
-        >
-            {startIcon && <SelectIcon icon={startIcon} />}
-            {children}
-            {resetButton}
-            <SelectIcon icon={endIcon} />
-        </SelectPrimitives.Trigger>
-    )
+const Trigger = ({
+    className,
+    children,
+    size,
+    variant,
+    startIcon,
+    endIcon = <ChevronDown />,
+    resetButton,
+    disabled,
+    invalid,
+    ...props
+}: TriggerProps) => (
+    <SelectPrimitives.Trigger
+        className={cn(triggerVariants({ variant, size, invalid, className }))}
+        disabled={disabled}
+        {...props}
+    >
+        {startIcon && <SelectIcon icon={startIcon} />}
+        {children}
+        {resetButton}
+        <SelectIcon icon={endIcon} />
+    </SelectPrimitives.Trigger>
 );
-Trigger.displayName = SelectPrimitives.Trigger.displayName;
 
 /**
  * SelectScrollUpButton
  */
-const SelectScrollUpButton = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.ScrollUpButton>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitives.ScrollUpButton>
->(({ className, ...props }, ref) => (
+const SelectScrollUpButton = ({
+    className,
+    ...props
+}: SelectPrimitives.SelectScrollUpButtonProps) => (
     <SelectPrimitives.ScrollUpButton
-        ref={ref}
         className={cn(
             "wby-flex wby-cursor-default wby-items-center wby-justify-center wby-pb-sm wby-fill-neutral-xstrong",
             className
@@ -164,18 +156,16 @@ const SelectScrollUpButton = React.forwardRef<
     >
         <ChevronUp className="wby-h-md wby-w-md" />
     </SelectPrimitives.ScrollUpButton>
-));
-SelectScrollUpButton.displayName = SelectPrimitives.ScrollUpButton.displayName;
+);
 
 /**
  * SelectScrollDownButton
  */
-const SelectScrollDownButton = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.ScrollDownButton>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitives.ScrollDownButton>
->(({ className, ...props }, ref) => (
+const SelectScrollDownButton = ({
+    className,
+    ...props
+}: SelectPrimitives.SelectScrollDownButtonProps) => (
     <SelectPrimitives.ScrollDownButton
-        ref={ref}
         className={cn(
             "wby-flex wby-cursor-default wby-items-center wby-justify-center wby-pt-sm wby-fill-neutral-xstrong",
             className
@@ -184,8 +174,7 @@ const SelectScrollDownButton = React.forwardRef<
     >
         <ChevronDown className="wby-h-md wby-w-md" />
     </SelectPrimitives.ScrollDownButton>
-));
-SelectScrollDownButton.displayName = SelectPrimitives.ScrollDownButton.displayName;
+);
 
 /**
  * SelectContent
@@ -197,16 +186,12 @@ const selectContentVariants = cva([
 ]);
 
 interface SelectContentProps
-    extends React.ComponentPropsWithoutRef<typeof SelectPrimitives.Content>,
+    extends SelectPrimitives.SelectContentProps,
         VariantProps<typeof selectContentVariants> {}
 
-const SelectContent = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.Content>,
-    SelectContentProps
->(({ className, children, ...props }, ref) => (
+const SelectContent = ({ className, children, ...props }: SelectContentProps) => (
     <SelectPrimitives.Portal>
         <SelectPrimitives.Content
-            ref={ref}
             className={cn(selectContentVariants({ className }))}
             position={"popper"}
             {...props}
@@ -223,18 +208,13 @@ const SelectContent = React.forwardRef<
             <SelectScrollDownButton />
         </SelectPrimitives.Content>
     </SelectPrimitives.Portal>
-));
-SelectContent.displayName = SelectPrimitives.Content.displayName;
+);
 
 /**
  * SelectLabel
  */
-const SelectLabel = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.Label>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitives.Label>
->(({ className, ...props }, ref) => (
+const SelectLabel = ({ className, ...props }: SelectPrimitives.SelectLabelProps) => (
     <SelectPrimitives.Label
-        ref={ref}
         className={cn(
             [
                 "wby-py-sm wby-px-md wby-text-neutral-strong wby-text-sm wby-font-semibold wby-uppercase"
@@ -243,18 +223,13 @@ const SelectLabel = React.forwardRef<
         )}
         {...props}
     />
-));
-SelectLabel.displayName = SelectPrimitives.Label.displayName;
+);
 
 /**
  * SelectItem
  */
-const SelectItem = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.Item>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitives.Item>
->(({ className, children, ...props }, ref) => (
+const SelectItem = ({ className, children, ...props }: SelectPrimitives.SelectItemProps) => (
     <SelectPrimitives.Item
-        ref={ref}
         className={cn(
             [
                 "wby-flex wby-items-center wby-justify-between wby-gap-sm-extra wby-cursor-default wby-select-none wby-rounded-sm wby-p-sm wby-mx-sm wby-text-md wby-outline-none",
@@ -272,23 +247,17 @@ const SelectItem = React.forwardRef<
             <Check className="wby-h-md wby-w-h-md" />
         </SelectPrimitives.ItemIndicator>
     </SelectPrimitives.Item>
-));
-SelectItem.displayName = SelectPrimitives.Item.displayName;
+);
 
 /**
  * SelectSeparator
  */
-const SelectSeparator = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitives.Separator>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitives.Separator>
->(({ className, ...props }, ref) => (
+const SelectSeparator = ({ className, ...props }: SelectPrimitives.SelectSeparatorProps) => (
     <SelectPrimitives.Separator
-        ref={ref}
         className={cn("wby--mx-sm wby-my-sm wby-h-px wby-bg-neutral-strong", className)}
         {...props}
     />
-));
-SelectSeparator.displayName = SelectPrimitives.Separator.displayName;
+);
 
 /**
  * Trigger

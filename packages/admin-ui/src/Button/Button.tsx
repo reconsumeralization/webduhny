@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 const buttonVariants = cva(
     [
@@ -167,18 +167,17 @@ interface ButtonProps
 
 type ContentLayout = "text" | "icon" | "text-icon-start" | "text-icon-end";
 
-const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-    const {
-        className,
-        variant,
-        size,
-        asChild = false,
-        text,
-        icon,
-        iconPosition = "start",
-        disabled,
-        ...rest
-    } = props;
+const ButtonBase = ({
+    className,
+    variant,
+    size,
+    asChild = false,
+    text,
+    icon,
+    iconPosition = "start",
+    disabled,
+    ...rest
+}: ButtonProps) => {
     const Comp = asChild ? Slot : "button";
 
     const contentLayout = useMemo<ContentLayout>(() => {
@@ -203,21 +202,13 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
     );
 
     return (
-        <Comp
-            className={cssClasses}
-            ref={ref}
-            disabled={disabled}
-            aria-disabled={disabled}
-            {...rest}
-        >
+        <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
             {iconPosition !== "end" && icon}
             <Slottable>{text}</Slottable>
             {iconPosition === "end" && icon}
         </Comp>
     );
-});
-
-ButtonBase.displayName = "Button";
+};
 
 const Button = makeDecoratable("Button", ButtonBase);
 
