@@ -59,7 +59,7 @@ const checkErrors = (result?: ApiResponse<BulkOperationsResponseBody>): void => 
             }
             continue;
         }
-        console.error(item.error);
+        console.error("Body item with error", item);
         throw new WebinyError(err, "DYNAMODB_TO_ELASTICSEARCH_ERROR", item);
     }
 };
