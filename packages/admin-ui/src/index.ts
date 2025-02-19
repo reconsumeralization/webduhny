@@ -24,6 +24,7 @@ export * from "./Popover";
 export * from "./Providers";
 export * from "./RadioGroup";
 export * from "./RangeSlider";
+export * from "./RichTextEditor";
 export * from "./Select";
 export * from "./Separator";
 export * from "./Skeleton";

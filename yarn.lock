@@ -4830,6 +4830,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@editorjs/editorjs@npm:^2.30.8":
+  version: 2.30.8
+  resolution: "@editorjs/editorjs@npm:2.30.8"
+  checksum: 10/83fd2d536201071c1daca5202241e1f479ce79fa89b03a3467e08432bba6b779f4d5b3ce32cfb269106dbef088649618689aad8670f7203739d3c54d472c4643
+  languageName: node
+  linkType: hard
+
 "@editorjs/helpers@npm:^0.0.4":
   version: 0.0.4
   resolution: "@editorjs/helpers@npm:0.0.4"
@@ -14972,6 +14979,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/admin-ui@workspace:packages/admin-ui"
   dependencies:
+    "@editorjs/editorjs": "npm:^2.30.8"
     "@fortawesome/fontawesome-svg-core": "npm:^1.3.0"
     "@fortawesome/free-solid-svg-icons": "npm:^6.0.0"
     "@fortawesome/react-fontawesome": "npm:^0.1.17"
