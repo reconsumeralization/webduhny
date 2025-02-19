@@ -1,9 +1,9 @@
-import {
+import type {
     IListLockRecordsUseCase,
     IListLockRecordsUseCaseExecuteParams,
     IListLockRecordsUseCaseExecuteResponse
 } from "~/abstractions/IListLockRecordsUseCase";
-import { IGetIdentity } from "~/types";
+import type { IGetIdentity } from "~/types";
 
 export interface IListLockRecordsUseCaseParams {
     listAllLockRecordsUseCase: IListLockRecordsUseCase;

@@ -3,7 +3,7 @@ import {
     Context,
     IGetIdentity,
     IGetWebsocketsContextCallable,
-    IHasFullAccessCallable,
+    IHasRecordLockingAccessCallable,
     IRecordLocking,
     IRecordLockingLockRecordValues,
     IRecordLockingModelManager,
@@ -15,7 +15,8 @@ import {
     OnEntryBeforeUnlockTopicParams,
     OnEntryLockErrorTopicParams,
     OnEntryUnlockErrorTopicParams,
-    OnEntryUnlockRequestErrorTopicParams
+    OnEntryUnlockRequestErrorTopicParams,
+    RecordLockingSecurityPermission
 } from "~/types";
 import { RECORD_LOCKING_MODEL_ID } from "./model";
 import { IGetLockRecordUseCaseExecute } from "~/abstractions/IGetLockRecordUseCase";
@@ -29,12 +30,18 @@ import { IListAllLockRecordsUseCaseExecute } from "~/abstractions/IListAllLockRe
 import { IListLockRecordsUseCaseExecute } from "~/abstractions/IListLockRecordsUseCase";
 import { IUpdateEntryLockUseCaseExecute } from "~/abstractions/IUpdateEntryLockUseCase";
 import { IGetLockedEntryLockRecordUseCaseExecute } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
+import { getTimeout as baseGetTimeout } from "~/utils/getTimeout";
 
 interface Params {
     context: Pick<Context, "plugins" | "cms" | "benchmark" | "security" | "websockets">;
+    timeout?: number;
 }
 
-export const createRecordLockingCrud = async ({ context }: Params): Promise<IRecordLocking> => {
+export const createRecordLockingCrud = async (params: Params): Promise<IRecordLocking> => {
+    const { context } = params;
+    const getTimeout = (): number => {
+        return baseGetTimeout(params.timeout);
+    };
     const getModel = async () => {
         const model = await context.cms.getModel(RECORD_LOCKING_MODEL_ID);
         if (model) {
@@ -63,8 +70,15 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
         };
     };
 
-    const hasFullAccess: IHasFullAccessCallable = async () => {
-        return await context.security.hasFullAccess();
+    const hasRecordLockingAccess: IHasRecordLockingAccessCallable = async () => {
+        const hasFulLAccess = await context.security.hasFullAccess();
+        if (hasFulLAccess) {
+            return true;
+        }
+        const permission = await context.security.getPermission<RecordLockingSecurityPermission>(
+            "recordLocking"
+        );
+        return permission?.canForceUnlock === "yes";
     };
 
     const onEntryBeforeLock = createTopic<OnEntryBeforeLockTopicParams>(
@@ -114,8 +128,9 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
     } = createUseCases({
         getIdentity,
         getManager,
-        hasFullAccess,
-        getWebsockets
+        hasRecordLockingAccess,
+        getWebsockets,
+        getTimeout
     });
 
     const listAllLockRecords: IListAllLockRecordsUseCaseExecute = async params => {
@@ -242,6 +257,7 @@ export const createRecordLockingCrud = async ({ context }: Params): Promise<IRec
         lockEntry,
         updateEntryLock,
         unlockEntry,
-        unlockEntryRequest
+        unlockEntryRequest,
+        getTimeout
     };
 };
