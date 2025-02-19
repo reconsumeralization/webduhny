@@ -9,7 +9,9 @@ import EditorJS, {
 import { cn, cva, generateId, type VariantProps } from "~/utils";
 
 const richTextEditorVariants = cva(
-    ["wby-border-sm wby-text-md focus-visible:wby-outline-none disabled:wby-cursor-not-allowed"],
+    [
+        "wby-min-h-[80px] wby-w-full wby-border-sm wby-text-md focus-visible:wby-outline-none disabled:wby-cursor-not-allowed"
+    ],
     {
         variants: {
             variant: {
@@ -104,7 +106,6 @@ interface RichTextEditorPrimitiveProps
     onChange?: (data: RichTextEditorValue) => void;
     onReady?: (params: OnReadyParams) => void;
     placeholder?: string;
-    readOnly?: boolean;
     sanitizer?: SanitizerConfig;
     tools?: {
         [toolName: string]: ToolSettings;
@@ -210,4 +211,9 @@ const RichTextEditorPrimitive = ({
     );
 };
 
-export { RichTextEditorPrimitive, type RichTextEditorPrimitiveProps };
+export {
+    RichTextEditorPrimitive,
+    type RichTextEditorPrimitiveProps,
+    type RichTextEditorValue,
+    type OnReadyParams
+};

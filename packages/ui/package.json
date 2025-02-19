@@ -14,7 +14,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@editorjs/editorjs": "2.26.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
     "@rmwc/grid": "^14.2.2",
