@@ -1,7 +1,7 @@
 import { PluginsContainer } from "@webiny/plugins";
 import { PartialDeep } from "type-fest";
 import { createMockIdentity } from "~tests/mocks/identity";
-import {
+import type {
     Context,
     ITaskLogUpdateInput,
     ITaskUpdateData,
@@ -10,31 +10,54 @@ import {
 import { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
 // @ts-expect-error
 import { createMockApiLog } from "@webiny/project-utils/testing/mockApiLog";
+import type { Tenant } from "@webiny/api-tenancy/types";
+import type { Context as LoggerContext } from "@webiny/api-log/types";
 
 export const createContextMock = (
-    params?: PartialDeep<Context & ElasticsearchContext>
-): Context & ElasticsearchContext => {
+    params?: PartialDeep<Context & ElasticsearchContext & LoggerContext>
+): Context & ElasticsearchContext & LoggerContext => {
+    const tenants: Tenant[] = [
+        {
+            id: "root",
+            name: "Root",
+            parent: null
+        } as Tenant
+    ];
+    const locales = [
+        {
+            code: "en-US",
+            default: true
+        }
+    ];
     return {
         logger: createMockApiLog(),
         tenancy: {
             listTenants: async () => {
-                return [
-                    {
-                        id: "root",
-                        name: "Root",
-                        parent: null
-                    }
-                ];
+                return tenants;
+            },
+            withEachTenant: async (input: Tenant[], cb: (t: Tenant) => Promise<any>) => {
+                const results = [];
+                for (const t of input) {
+                    results.push(await cb(t));
+                }
+                return results;
             }
         },
         i18n: {
+            locales: {
+                listLocales: async () => {
+                    return [
+                        locales,
+                        {
+                            totalCount: locales.length,
+                            hasMoreItems: false,
+                            cursor: null
+                        }
+                    ];
+                }
+            },
             getLocales: async () => {
-                return [
-                    {
-                        code: "en-US",
-                        default: true
-                    }
-                ];
+                return locales;
             }
         },
         ...params,
@@ -66,5 +89,5 @@ export const createContextMock = (
             },
             ...params?.tasks
         }
-    } as unknown as Context & ElasticsearchContext;
+    } as unknown as Context & ElasticsearchContext & LoggerContext;
 };

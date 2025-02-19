@@ -2,6 +2,7 @@ import type { Context } from "~/types";
 import type { IndexManager } from "~/settings";
 import { listIndexes } from "./listIndexes";
 import { createIndexFactory } from "~/tasks/createIndexes/createIndex";
+import { listCreateElasticsearchIndexTaskPlugin } from "~/tasks/createIndexes/listCreateElasticsearchIndexTaskPlugin";
 
 export interface IOnBeforeTriggerParams {
     indexManager: IndexManager;
@@ -18,9 +19,12 @@ export class OnBeforeTrigger {
     }
 
     public async run(targets: string[] | undefined): Promise<void> {
+        const plugins = listCreateElasticsearchIndexTaskPlugin<Context>(this.context.plugins);
+
         try {
             const allIndexes = await listIndexes({
-                context: this.context
+                context: this.context,
+                plugins
             });
             const indexes = allIndexes.filter(index => {
                 if (!targets?.length) {

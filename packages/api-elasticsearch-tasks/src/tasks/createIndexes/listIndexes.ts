@@ -1,26 +1,20 @@
-import type { I18NContextObject } from "@webiny/api-i18n/types";
-import { CreateElasticsearchIndexTaskPlugin } from "~/tasks/createIndexes/CreateElasticsearchIndexTaskPlugin";
 import type { CreateElasticsearchIndexTaskPluginIndex } from "~/tasks/createIndexes/CreateElasticsearchIndexTaskPlugin";
+import { CreateElasticsearchIndexTaskPlugin } from "~/tasks/createIndexes/CreateElasticsearchIndexTaskPlugin";
 import type { Context } from "~/types";
 import type { Tenant } from "@webiny/api-tenancy/types";
 
 export interface IListIndexesParams {
     context: Context;
+    plugins: CreateElasticsearchIndexTaskPlugin<Context>[];
 }
 
 export const listIndexes = async (
     params: IListIndexesParams
 ): Promise<CreateElasticsearchIndexTaskPluginIndex[]> => {
-    const { context } = params;
-
-    const plugins = context.plugins.byType<CreateElasticsearchIndexTaskPlugin<Context>>(
-        CreateElasticsearchIndexTaskPlugin.type
-    );
+    const { context, plugins } = params;
     if (plugins.length === 0) {
-        throw new Error("No index plugins found.");
+        return [];
     }
-
-    const i18n: I18NContextObject = context.i18n;
 
     const tenants = await context.tenancy.listTenants();
     const results = await context.tenancy.withEachTenant<
@@ -28,7 +22,7 @@ export const listIndexes = async (
         CreateElasticsearchIndexTaskPluginIndex[]
     >(tenants, async tenant => {
         const indexes: CreateElasticsearchIndexTaskPluginIndex[] = [];
-        const [locales] = await i18n.locales.listLocales();
+        const [locales] = await context.i18n.locales.listLocales();
 
         for (const locale of locales) {
             for (const plugin of plugins) {

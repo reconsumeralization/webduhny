@@ -1,9 +1,11 @@
-import { Manager } from "~/tasks/Manager";
-import { IndexManager } from "~/settings";
+import type { Manager } from "~/tasks/Manager";
+import type { IndexManager } from "~/settings";
 import type { ITaskResponseResult } from "@webiny/tasks";
 import type { IElasticsearchCreateIndexesTaskInput } from "./types";
 import { listIndexes } from "./listIndexes";
 import { createIndexFactory } from "./createIndex";
+import type { Context } from "~/types";
+import { listCreateElasticsearchIndexTaskPlugin } from "./listCreateElasticsearchIndexTaskPlugin";
 
 export class CreateIndexesTaskRunner {
     private readonly manager: Manager<IElasticsearchCreateIndexesTaskInput>;
@@ -22,8 +24,16 @@ export class CreateIndexesTaskRunner {
         matching: string | undefined,
         done: string[]
     ): Promise<ITaskResponseResult> {
+        const plugins = listCreateElasticsearchIndexTaskPlugin<Context>(
+            this.manager.context.plugins
+        );
+        if (plugins.length === 0) {
+            return this.manager.response.done("No index plugins found.");
+        }
+
         const indexes = await listIndexes({
-            context: this.manager.context
+            context: this.manager.context,
+            plugins
         });
 
         if (indexes.length === 0) {
