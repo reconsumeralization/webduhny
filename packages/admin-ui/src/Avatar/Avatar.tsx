@@ -1,28 +1,12 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { withStaticProps, cn, makeDecoratable, cva, type VariantProps } from "~/utils";
-
-type AvatarImageProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>;
-
-const AvatarImageBase = ({ className, ...props }: AvatarImageProps) => (
-    <AvatarPrimitive.Image className={cn("wby-aspect-square", className)} {...props} />
-);
-
-const AvatarImage = makeDecoratable("AvatarImage", AvatarImageBase);
-
-type AvatarFallbackProps = React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>;
-
-const AvatarFallbackBase = ({ className, ...props }: AvatarFallbackProps) => (
-    <AvatarPrimitive.Fallback
-        className={cn(
-            "wby-flex wby-h-full wby-w-full wby-items-center wby-justify-center wby-rounded-sm",
-            className
-        )}
-        {...props}
-    />
-);
-
-const AvatarFallback = makeDecoratable("AvatarFallback", AvatarFallbackBase);
+import {
+    AvatarFallback,
+    AvatarImage,
+    type AvatarFallbackProps,
+    type AvatarImageProps
+} from "./components";
 
 interface AvatarProps
     extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>,
@@ -56,16 +40,17 @@ const avatarVariants = cva("wby-relative wby-flex wby-shrink-0 wby-overflow-hidd
 
 const AvatarBase = ({ image, fallback, className, size, variant, ...props }: AvatarProps) => {
     return (
-        <AvatarPrimitive.Root className={avatarVariants({ variant, size, className })} {...props}>
+        <AvatarPrimitive.Root
+            className={cn(avatarVariants({ variant, size }), className)}
+            {...props}
+        >
             {image}
             {fallback}
         </AvatarPrimitive.Root>
     );
 };
 
-const DecoratableAvatar = makeDecoratable("Avatar", AvatarBase);
-
-const Avatar = withStaticProps(DecoratableAvatar, {
+const Avatar = withStaticProps(makeDecoratable("Avatar", AvatarBase), {
     Fallback: AvatarFallback,
     Image: AvatarImage
 });

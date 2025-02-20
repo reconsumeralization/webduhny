@@ -1,2 +1,2 @@
 export * from "./AutoComplete";
-export * from "./primitives/AutoCompletePrimitive";
+export * from "./primitives";

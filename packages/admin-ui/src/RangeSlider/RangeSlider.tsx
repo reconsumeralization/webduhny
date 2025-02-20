@@ -1,6 +1,11 @@
 import * as React from "react";
-import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
-import { RangeSliderPrimitiveProps, RangeSliderPrimitiveRenderer } from "./RangeSliderPrimitive";
+import { makeDecoratable } from "~/utils";
+import {
+    RangeSliderPrimitiveProps,
+    RangeSliderPrimitiveRenderer,
+    RangeSliderValue,
+    useRangeSlider
+} from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
@@ -8,33 +13,6 @@ import {
     FormComponentNote,
     FormComponentProps
 } from "~/FormComponent";
-import { useRangeSlider } from "~/RangeSlider/useRangeSlider";
-
-/**
- * Range Slider Value
- */
-const rangeSliderValueVariants = cva("wby-font-normal wby-text-sm wby-leading-none", {
-    variants: {
-        disabled: {
-            true: "wby-text-neutral-disabled wby-cursor-not-allowed"
-        }
-    }
-});
-
-interface RangeSliderValueProps
-    extends React.HTMLAttributes<HTMLSpanElement>,
-        VariantProps<typeof rangeSliderValueVariants> {
-    value: string;
-}
-
-const DecoratableRangeSliderValue = ({ value, disabled, className }: RangeSliderValueProps) => {
-    if (!value) {
-        return null;
-    }
-    return <span className={cn(rangeSliderValueVariants({ disabled }), className)}>{value}</span>;
-};
-
-const RangeSliderValue = makeDecoratable("RangeSliderValue", DecoratableRangeSliderValue);
 
 interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
     label: React.ReactNode;

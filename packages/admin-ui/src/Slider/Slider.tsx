@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Label } from "~/Label";
-import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
+import { makeDecoratable } from "~/utils";
 import {
     SliderPrimitiveRenderer,
     SliderPrimitiveProps,
-    SliderPrimitiveRendererProps
-} from "~/Slider";
+    SliderPrimitiveRendererProps,
+    useSlider,
+    SliderValue
+} from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
@@ -13,31 +15,6 @@ import {
     FormComponentNote,
     FormComponentProps
 } from "~/FormComponent";
-import { useSlider } from "~/Slider/useSlider";
-
-/**
- * Slider Value
- */
-const sliderValueVariants = cva("wby-font-normal wby-text-sm wby-leading-none", {
-    variants: {
-        disabled: {
-            true: "wby-text-neutral-disabled wby-cursor-not-allowed"
-        }
-    }
-});
-
-interface SliderValueProps
-    extends React.HTMLAttributes<HTMLSpanElement>,
-        VariantProps<typeof sliderValueVariants> {
-    value?: string;
-}
-
-const SliderValue = ({ value, disabled, className }: SliderValueProps) => {
-    if (!value) {
-        return null;
-    }
-    return <span className={cn(sliderValueVariants({ disabled }), className)}>{value}</span>;
-};
 
 /**
  * Slider Renderer with side label

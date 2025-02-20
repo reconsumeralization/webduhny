@@ -50,7 +50,7 @@ interface ColumnProps
 
 const ColumnBase = ({ span, align, children, className, offset, ...props }: ColumnProps) => {
     return (
-        <div {...props} className={cn(columnVariants({ span, offset, align, className }))}>
+        <div {...props} className={cn(columnVariants({ span, offset, align }), className)}>
             {children}
         </div>
     );

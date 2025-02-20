@@ -1,5 +1,5 @@
 import React from "react";
-import { cva, type VariantProps, makeDecoratable } from "~/utils";
+import { cva, type VariantProps, makeDecoratable, cn } from "~/utils";
 import {
     Link as WebinyReactRouterLink,
     type LinkProps as WebinyReactRouterLinkProps
@@ -52,14 +52,12 @@ const LinkBase = ({ size, variant, underline, className, children, ...rest }: Li
     return (
         <WebinyReactRouterLink
             {...rest}
-            className={linkVariants({ size, variant, underline, className })}
+            className={cn(linkVariants({ size, variant, underline }), className)}
         >
             {children}
         </WebinyReactRouterLink>
     );
 };
-
-LinkBase.displayName = "Link";
 
 const Link = makeDecoratable("link", LinkBase);
 

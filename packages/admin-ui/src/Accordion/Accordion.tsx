@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { makeDecoratable, withStaticProps, cva, type VariantProps } from "~/utils";
+import { makeDecoratable, withStaticProps, cva, type VariantProps, cn } from "~/utils";
 import { AccordionRoot } from "./components/AccordionRoot";
 import { AccordionItem, type AccordionItemProps } from "./components/AccordionItem";
 
@@ -45,7 +45,7 @@ const AccordionBase = ({
     return (
         <AccordionRoot
             {...rootProps}
-            className={accordionVariants({ variant, background, className })}
+            className={cn(accordionVariants({ variant, background }), className)}
         >
             {children}
         </AccordionRoot>

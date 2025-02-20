@@ -44,7 +44,7 @@ const HeadingBase = ({ level, text, className, as }: HeadingProps) => {
     // Choose the tag: prefer `as`, otherwise use `TAG_MAP[validatedLevel]`
     const Tag = as || TAG_MAP[validatedLevel];
 
-    return <Tag className={cn(headingVariants({ level, className }))}>{text}</Tag>;
+    return <Tag className={cn(headingVariants({ level }), className)}>{text}</Tag>;
 };
 
 const Heading = makeDecoratable("Heading", HeadingBase);
