@@ -155,7 +155,6 @@ const RichTextEditorPrimitive = ({
         const clearWait = waitForDom(elementId.current, () => {
             editorRef.current = new EditorJS({
                 ...nativeProps,
-                style: {},
                 holder: elementId.current,
                 logLevel: "ERROR" as LogLevels.ERROR,
                 data: initialData,

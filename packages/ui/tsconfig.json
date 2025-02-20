@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
-  "references": [
-    { "path": "../admin-ui" },
-    { "path": "../utils" },
-    { "path": "../validation" }
-  ],
+  "references": [{ "path": "../admin-ui" }, { "path": "../utils" }, { "path": "../validation" }],
   "compilerOptions": {
     "rootDirs": ["./src", "./__tests__"],
     "outDir": "./dist",
