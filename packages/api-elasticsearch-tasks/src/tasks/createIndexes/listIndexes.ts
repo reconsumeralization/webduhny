@@ -2,44 +2,57 @@ import type { CreateElasticsearchIndexTaskPluginIndex } from "~/tasks/createInde
 import { CreateElasticsearchIndexTaskPlugin } from "~/tasks/createIndexes/CreateElasticsearchIndexTaskPlugin";
 import type { Context } from "~/types";
 import type { Tenant } from "@webiny/api-tenancy/types";
+import { I18NLocale } from "@webiny/api-i18n/types";
 
 export interface IListIndexesParams {
     context: Context;
     plugins: CreateElasticsearchIndexTaskPlugin<Context>[];
+    tenants?: Tenant[];
+    locales?: I18NLocale[];
 }
 
 export const listIndexes = async (
     params: IListIndexesParams
 ): Promise<CreateElasticsearchIndexTaskPluginIndex[]> => {
-    const { context, plugins } = params;
+    const { context, plugins, tenants: inputTenants, locales: inputLocales } = params;
     if (plugins.length === 0) {
         return [];
     }
 
-    const tenants = await context.tenancy.listTenants();
-    const results = await context.tenancy.withEachTenant<
-        Tenant,
-        CreateElasticsearchIndexTaskPluginIndex[]
-    >(tenants, async tenant => {
-        const indexes: CreateElasticsearchIndexTaskPluginIndex[] = [];
-        const [locales] = await context.i18n.locales.listLocales();
+    const indexes: CreateElasticsearchIndexTaskPluginIndex[] = [];
+    const tenants = inputTenants || (await context.tenancy.listTenants());
+    const initialTenant = context.tenancy.getCurrentTenant();
+    try {
+        for (const tenant of tenants) {
+            context.tenancy.setCurrentTenant(tenant);
 
-        for (const locale of locales) {
-            for (const plugin of plugins) {
-                const results = await plugin.getIndexList({
-                    context,
-                    tenant: tenant.id,
-                    locale: locale.code
+            let locales = inputLocales ? [...inputLocales] : [];
+            if (locales.length === 0) {
+                const [localesResult] = await context.i18n.locales.listLocales({
+                    limit: 10000
                 });
-                for (const result of results) {
-                    if (indexes.some(i => i.index === result.index)) {
-                        continue;
+                locales = localesResult;
+            }
+
+            for (const locale of locales) {
+                for (const plugin of plugins) {
+                    const results = await plugin.getIndexList({
+                        context,
+                        tenant: tenant.id,
+                        locale: locale.code
+                    });
+                    for (const result of results) {
+                        if (indexes.some(i => i.index === result.index)) {
+                            continue;
+                        }
+                        indexes.push(result);
                     }
-                    indexes.push(result);
                 }
             }
         }
-        return indexes;
-    });
-    return results.flat();
+    } finally {
+        context.tenancy.setCurrentTenant(initialTenant);
+    }
+
+    return indexes;
 };

@@ -29,6 +29,7 @@ export const createContextMock = (
             default: true
         }
     ];
+    let currentTenant = tenants[0];
     return {
         logger: createMockApiLog(),
         tenancy: {
@@ -36,11 +37,23 @@ export const createContextMock = (
                 return tenants;
             },
             withEachTenant: async (input: Tenant[], cb: (t: Tenant) => Promise<any>) => {
-                const results = [];
-                for (const t of input) {
-                    results.push(await cb(t));
+                const initialTenant = currentTenant;
+                try {
+                    const results = [];
+                    for (const t of input) {
+                        currentTenant = t;
+                        results.push(await cb(t));
+                    }
+                    return results;
+                } finally {
+                    currentTenant = initialTenant;
                 }
-                return results;
+            },
+            getCurrentTenant() {
+                return currentTenant;
+            },
+            setCurrentTenant(tenant: Tenant) {
+                currentTenant = tenant;
             }
         },
         i18n: {

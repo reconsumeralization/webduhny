@@ -21,10 +21,20 @@ export class OnBeforeTrigger {
     public async run(targets: string[] | undefined): Promise<void> {
         const plugins = listCreateElasticsearchIndexTaskPlugin<Context>(this.context.plugins);
 
+        const tenant = this.context.tenancy.getCurrentTenant();
+        if (!tenant?.id) {
+            throw new Error("Something went wrong, tenant not found when triggering a task.");
+        }
+        const locale = this.context.i18n.getContentLocale();
+        if (!locale) {
+            throw new Error("Something went wrong, locale not found when triggering a task.");
+        }
         try {
             const allIndexes = await listIndexes({
                 context: this.context,
-                plugins
+                plugins,
+                tenants: [tenant],
+                locales: [locale]
             });
             const indexes = allIndexes.filter(index => {
                 if (!targets?.length) {
