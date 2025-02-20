@@ -49,7 +49,9 @@ class EventBridgeService implements ITaskService {
             ]
         });
         try {
-            return await this.client.send(cmd);
+            const result = await this.client.send(cmd);
+
+            return JSON.parse(JSON.stringify(result));
         } catch (ex) {
             throw new WebinyError(
                 ex.message || "Could not trigger task via Event Bridge!",

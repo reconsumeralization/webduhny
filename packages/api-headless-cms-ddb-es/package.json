@@ -45,6 +45,7 @@
     "@types/jsonpack": "^1.1.6",
     "@webiny/api-dynamodb-to-elasticsearch": "0.0.0",
     "@webiny/api-i18n": "0.0.0",
+    "@webiny/api-log": "0.0.0",
     "@webiny/api-security": "0.0.0",
     "@webiny/api-tenancy": "0.0.0",
     "@webiny/api-wcp": "0.0.0",
