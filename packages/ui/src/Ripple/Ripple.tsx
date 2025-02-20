@@ -14,7 +14,7 @@ interface Props {
  * @deprecated This component is deprecated and will be removed in future releases.
  */
 const Ripple = (props: Props) => {
-    // Return only the children
+    console.warn("The `Ripple` component is deprecated and will be removed in future releases.");
     return <>{props.children}</>;
 };
 

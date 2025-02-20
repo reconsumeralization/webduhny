@@ -1,6 +1,10 @@
 import * as React from "react";
-import { Mosaic as UiMosaic } from "@webiny/ui/Mosaic";
 import Lightbox, { Image } from "react-images";
+/**
+ * Package react-columned does not have types.
+ */
+// @ts-expect-error
+import Columned from "react-columned";
 
 const { useReducer } = React;
 
@@ -50,15 +54,23 @@ const useLightbox = () => {
 
 export interface MosaicProps {
     data: Image[];
+
+    // Number of columns, per max screen size, eg. { "320": 1, "480": 2, "800": 3, "1366": 4 }.
+    columns?: {
+        [key: string]: number;
+    };
+
+    // Custom class for the mosaic container.
+    className?: string;
 }
 const MosaicComponent = (props: MosaicProps) => {
-    const { data } = props;
+    const { data, columns = { 320: 1, 480: 2, 800: 3, 1366: 4 }, className } = props;
     const { opened, open, close, next, prev, currentIndex } = useLightbox();
 
     if (Array.isArray(data)) {
         return (
             <>
-                <UiMosaic>
+                <Columned columns={columns} className={className}>
                     {data.map((item, i) => (
                         <img
                             onClick={() => open(i)}
@@ -67,7 +79,7 @@ const MosaicComponent = (props: MosaicProps) => {
                             src={item.src}
                         />
                     ))}
-                </UiMosaic>
+                </Columned>
 
                 <Lightbox
                     images={data}
