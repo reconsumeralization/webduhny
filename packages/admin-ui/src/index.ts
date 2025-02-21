@@ -35,6 +35,7 @@ export * from "./Tabs";
 export * from "./Tag";
 export * from "./Text";
 export * from "./Textarea";
+export * from "./TimeAgo";
 export * from "./Toast";
 export * from "./Tooltip";
 export * from "./utils";

@@ -13931,15 +13931,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-custom-scrollbars@npm:^4.0.13":
-  version: 4.0.13
-  resolution: "@types/react-custom-scrollbars@npm:4.0.13"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/8a92c385108cab2b4155337c66e6321fddec10542d21fc03acd2f714e7d5e9e3a859ba1024939eeb553076e946d5b700f251dff73b9c77995db3d8747f38778f
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:18.2.25":
   version: 18.2.25
   resolution: "@types/react-dom@npm:18.2.25"
@@ -15010,7 +15001,7 @@ __metadata:
     "@svgr/webpack": "npm:^6.1.1"
     "@tanstack/react-table": "npm:^8.20.6"
     "@types/react": "npm:18.2.79"
-    "@types/react-custom-scrollbars": "npm:^4.0.13"
+    "@types/react-custom-scrollbars": "npm:^4.0.10"
     "@types/react-virtualized": "npm:^9.22.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
@@ -15038,6 +15029,7 @@ __metadata:
     tailwind-merge: "npm:^2.4.0"
     tailwindcss: "npm:^3.4.6"
     tailwindcss-animate: "npm:^1.0.7"
+    timeago-react: "npm:^3.0.6"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -19195,7 +19187,6 @@ __metadata:
     react-butterfiles: "npm:^1.3.3"
     react-color: "npm:^2.19.3"
     rimraf: "npm:^6.0.1"
-    timeago-react: "npm:^3.0.6"
     typescript: "npm:5.3.3"
   peerDependencies:
     minimatch: ^5.1.6
