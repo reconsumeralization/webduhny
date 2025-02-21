@@ -23,7 +23,7 @@ export interface IReplaceLambdaFunctionsParams {
     iotEndpoint: string;
     iotEndpointTopic: string;
     sessionId: number;
-    functionsList: ReturnType<typeof listLambdaFunctions>;
+    functionsList: ReturnType<typeof listLambdaFunctions>
     increaseTimeout?: number;
     context: Context;
 }
@@ -43,14 +43,14 @@ export const replaceLambdaFunctions = async ({
     if (!stackExport) {
         // If no stack export is found, return an empty array. This is a valid scenario.
         // For example, watching the Admin app locally, but not deploying it.
-        context.debug("No AWS Lambda functions to replace.", functionsList.length);
+        context.debug("No AWS Lambda functions to replace.");
         return [];
     }
 
-    context.debug("replacing %s AWS Lambda function(s).", functionsList.length);
+    context.debug("replacing %s AWS Lambda function(s).", functionsList.meta.count);
     const lambdaClient = new LambdaClient();
 
-    const replacementsPromises = functionsList.map(async fn => {
+    const replacementsPromises = functionsList.list.map(async fn => {
         const getFnConfigCmd = new GetFunctionConfigurationCommand({ FunctionName: fn.name });
         const lambdaFnConfiguration = await lambdaClient.send(getFnConfigCmd);
 
@@ -95,7 +95,7 @@ export const replaceLambdaFunctions = async ({
                 continue;
             }
 
-            const isModifiedFunction = functionsList.some(fn => fn.name === resource.outputs.name);
+            const isModifiedFunction = functionsList.list.some(fn => fn.name === resource.outputs.name);
             if (!isModifiedFunction) {
                 continue;
             }
@@ -134,7 +134,7 @@ export const replaceLambdaFunctions = async ({
     });
 
     return Promise.all(replacementsPromises).then(res => {
-        context.debug("%s AWS Lambda function(s) replaced.", functionsList.length);
+        context.debug("%s AWS Lambda function(s) replaced.", functionsList.meta.count);
         return res;
     });
 };

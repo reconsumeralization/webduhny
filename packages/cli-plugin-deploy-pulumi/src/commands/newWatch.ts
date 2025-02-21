@@ -103,29 +103,41 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         );
     }
 
-    let lambdaFunctions = listLambdaFunctions({
+    const functionsList = listLambdaFunctions({
         env: inputs.env,
         folder: inputs.folder,
         variant: inputs.variant,
         whitelist: inputs.function
     });
 
-    // Let's filter out the authorizer function, as it's not needed for the watch command.
-    if (projectApplication.id === "core") {
-        lambdaFunctions = lambdaFunctions.filter(fn => {
-            const isAuthorizerFunction = fn.name.includes("watch-command-iot-authorizer");
-            return !isAuthorizerFunction;
-        });
-    }
+    const deployCommand = `yarn webiny deploy ${projectApplication.id} --env ${inputs.env}`;
+    const learnMoreLink = "https://webiny.link/local-aws-lambda-development";
+    const troubleshootingLink = learnMoreLink + "#troubleshooting";
 
-    if (!lambdaFunctions.length) {
-        context.debug("No AWS Lambda functions will be invoked locally.");
+    if (functionsList.meta.count === 0) {
+        // If functions exist, but none are selected for watching, show a warning.
+        if (functionsList.meta.totalCount > 0) {
+            context.info(
+                [
+                    "No AWS Lambda functions will be invoked locally. If this is unexpected, you can try the following:",
+                    " ‣ stop the current development session",
+                    " ‣ redeploy the %s application by running %s command",
+                    " ‣ start a new %s session by rerunning %s command",
+                    "",
+                    "Learn more: %s"
+                ].join("\n"),
+                projectApplication.name,
+                deployCommand,
+                "webiny watch",
+                "webiny watch",
+                troubleshootingLink
+            );
+            console.log();
+        }
+
         await packagesWatcher.watch();
         return;
     }
-
-    const deployCommand = `yarn webiny deploy ${projectApplication.id} --env ${inputs.env}`;
-    const learnMoreLink = "https://webiny.link/local-aws-lambda-development";
 
     context.info(`Local AWS Lambda development session started.`);
     context.warning(
@@ -138,7 +150,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
 
     context.debug(
         "The events for following AWS Lambda functions will be forwarded locally: ",
-        lambdaFunctions.map(fn => fn.name)
+        functionsList.list.map(fn => fn.name)
     );
 
     console.log();
@@ -180,7 +192,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
         iotEndpoint,
         iotEndpointTopic,
         sessionId,
-        functionsList: lambdaFunctions,
+        functionsList,
         increaseTimeout
     });
 
@@ -199,7 +211,7 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     initInvocationForwarding({
         iotEndpoint,
         iotEndpointTopic,
-        lambdaFunctions,
+        functionsList,
         sessionId
     });
 
