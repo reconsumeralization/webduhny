@@ -15020,6 +15020,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     react: "npm:18.2.0"
     react-ace: "npm:^13.0.0"
+    react-color: "npm:^2.19.3"
     react-virtualized: "npm:^9.22.5"
     rimraf: "npm:^6.0.1"
     sass: "npm:1.44.0"

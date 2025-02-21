@@ -35,4 +35,4 @@ const Popover = withStaticProps(PopoverPrimitive.Root, {
     Trigger: PopoverPrimitive.Trigger
 });
 
-export { Popover, type PopoverContent };
+export { Popover, type PopoverContentProps };
