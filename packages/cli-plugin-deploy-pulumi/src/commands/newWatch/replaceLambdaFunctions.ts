@@ -90,9 +90,7 @@ export const replaceLambdaFunctions = async ({
             lambdaClient.send(new UpdateFunctionConfigurationCommand(updatedFunctionConfig))
         );
 
-        const stackExportClone = structuredClone(stackExport);
-
-        for (const resource of stackExportClone.deployment.resources) {
+        for (const resource of stackExport.deployment.resources) {
             if (resource.type !== "aws:lambda/function:Function") {
                 continue;
             }
@@ -123,7 +121,7 @@ export const replaceLambdaFunctions = async ({
         );
 
         fs.mkdirSync(path.dirname(temporaryStackExportPath), { recursive: true });
-        fs.writeFileSync(temporaryStackExportPath, JSON.stringify(stackExportClone, null, 2));
+        fs.writeFileSync(temporaryStackExportPath, JSON.stringify(stackExport, null, 2));
 
         importStack({
             folder,

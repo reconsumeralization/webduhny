@@ -29,7 +29,7 @@ const runPulumiStackExport = ({
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
 
     if (cache[cacheKey]) {
-        return structuredClone([cacheKey]);
+        return structuredClone(cache[cacheKey]);
     }
 
     try {
