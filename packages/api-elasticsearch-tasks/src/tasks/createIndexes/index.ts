@@ -37,6 +37,23 @@ export const createIndexesTaskDefinition = (params?: IElasticsearchTaskConfig) =
             const createIndexesTaskRunner = new CreateIndexesTaskRunner(manager, indexManager);
 
             return createIndexesTaskRunner.execute(input.matching, Array.from(input.done || []));
+        },
+        async onBeforeTrigger({ context }) {
+            // Let's create a new index for the tasks first.
+            const { IndexManager } = await import(
+                /* webpackChunkName: "IndexManager" */ "~/settings"
+            );
+            const indexManager = new IndexManager(context.elasticsearch, {});
+            const { OnBeforeTrigger } = await import(
+                /* webpackChunkName: "OnBeforeTrigger" */
+                "./OnBeforeTrigger"
+            );
+
+            const onBeforeTrigger = new OnBeforeTrigger({
+                indexManager,
+                context
+            });
+            await onBeforeTrigger.run(["webinytask"]);
         }
     });
 };

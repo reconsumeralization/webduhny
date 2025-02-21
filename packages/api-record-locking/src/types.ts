@@ -13,6 +13,7 @@ import {
     Context as IWebsocketsContext,
     IWebsocketsContextObject
 } from "@webiny/api-websockets/types";
+import { SecurityPermission } from "@webiny/api-security/types";
 
 export { CmsError, CmsEntry };
 
@@ -22,7 +23,7 @@ export type IRecordLockingModelManager = CmsModelManager<IRecordLockingLockRecor
 
 export type IRecordLockingMeta = CmsEntryMeta;
 
-export interface IHasFullAccessCallable {
+export interface IHasRecordLockingAccessCallable {
     (): Promise<boolean>;
 }
 
@@ -39,28 +40,28 @@ export interface IRecordLockingLockRecordValues {
     type: IRecordLockingLockRecordEntryType;
     actions?: IRecordLockingLockRecordAction[];
 }
-export enum IRecordLockingLockRecordActionType {
+export enum RecordLockingLockRecordActionType {
     requested = "requested",
     approved = "approved",
     denied = "denied"
 }
 
 export interface IRecordLockingLockRecordRequestedAction {
-    type: IRecordLockingLockRecordActionType.requested;
+    type: RecordLockingLockRecordActionType.requested;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
 }
 
 export interface IRecordLockingLockRecordApprovedAction {
-    type: IRecordLockingLockRecordActionType.approved;
+    type: RecordLockingLockRecordActionType.approved;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
 }
 
 export interface IRecordLockingLockRecordDeniedAction {
-    type: IRecordLockingLockRecordActionType.denied;
+    type: RecordLockingLockRecordActionType.denied;
     message?: string;
     createdOn: Date;
     createdBy: IRecordLockingIdentity;
@@ -198,6 +199,10 @@ export interface OnEntryUnlockRequestErrorTopicParams {
 }
 
 export interface IRecordLocking {
+    /**
+     * In milliseconds.
+     */
+    getTimeout: () => number;
     onEntryBeforeLock: Topic<OnEntryBeforeLockTopicParams>;
     onEntryAfterLock: Topic<OnEntryAfterLockTopicParams>;
     onEntryLockError: Topic<OnEntryLockErrorTopicParams>;
@@ -234,4 +239,8 @@ export interface IRecordLocking {
 
 export interface Context extends CmsContext, IWebsocketsContext {
     recordLocking: IRecordLocking;
+}
+
+export interface RecordLockingSecurityPermission extends SecurityPermission {
+    canForceUnlock?: string;
 }

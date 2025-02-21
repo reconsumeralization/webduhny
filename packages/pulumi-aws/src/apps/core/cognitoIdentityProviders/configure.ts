@@ -74,10 +74,15 @@ export const configureAdminCognitoFederation = (
     for (const idp of config.identityProviders) {
         const config = getIdpConfig(idp.type, userPool.output.id, idp);
 
-        app.addResource(aws.cognito.IdentityProvider, {
-            name: config.providerName.toString(),
-            config
-        });
+        // The idea to lowercase the provider name emerged while working on backwards compatibility issue.
+        // Basically, in cases where a user used the OIDC provider and did not specify a name, instead of
+        // using `OIDC` as the name, we wanted to ensure `oidc` is used. But, what I soon realized is that
+        // by simply lowercasing the name, we can avoid the need to check for the provider type and name.
+        // And although this will now happen for all providers, it's not a problem since Pulumi requires
+        // names to be all lowercase anyway.
+        const name = config.providerName.toString().toLowerCase();
+
+        app.addResource(aws.cognito.IdentityProvider, { name, config });
 
         idpConfigs.push(config);
     }

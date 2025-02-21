@@ -4,6 +4,8 @@ import { RecordLockingProvider as RecordLockingProviderComponent } from "~/compo
 import { HeadlessCmsActionsAcoCell } from "~/components/HeadlessCmsActionsAcoCell";
 import { HeadlessCmsContentEntry } from "~/components/HeadlessCmsContentEntry";
 import { useWcp } from "@webiny/app-wcp";
+import { plugins } from "@webiny/plugins";
+import { recordLockingPermissionRenderer } from "~/components/permissionRenderer";
 
 export * from "~/components/RecordLockingProvider";
 export * from "~/hooks";
@@ -28,6 +30,7 @@ export const RecordLocking = () => {
     if (!wcp.canUseRecordLocking()) {
         return null;
     }
+    plugins.register(recordLockingPermissionRenderer);
 
     return (
         <>

@@ -32,7 +32,8 @@
     { "path": "../handler" },
     { "path": "../handler-aws" },
     { "path": "../plugins" },
-    { "path": "../tasks" }
+    { "path": "../tasks" },
+    { "path": "../wcp" }
   ],
   "compilerOptions": {
     "rootDirs": ["./src", "./__tests__"],
@@ -106,7 +107,9 @@
       "@webiny/plugins/*": ["../plugins/src/*"],
       "@webiny/plugins": ["../plugins/src"],
       "@webiny/tasks/*": ["../tasks/src/*"],
-      "@webiny/tasks": ["../tasks/src"]
+      "@webiny/tasks": ["../tasks/src"],
+      "@webiny/wcp/*": ["../wcp/src/*"],
+      "@webiny/wcp": ["../wcp/src"]
     },
     "baseUrl": "."
   }

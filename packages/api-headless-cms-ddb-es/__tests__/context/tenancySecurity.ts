@@ -24,6 +24,52 @@ export const defaultIdentity: SecurityIdentity = {
     displayName: "John Doe"
 };
 
+const createTenant = (
+    input: Pick<Tenant, "id" | "name" | "parent" | "tags" | "description">
+): Tenant => {
+    return {
+        ...input,
+        parent: input.parent,
+        status: "active",
+        savedOn: new Date().toISOString(),
+        createdOn: new Date().toISOString(),
+        settings: {
+            domains: []
+        }
+    };
+};
+
+export const tenants: Tenant[] = [
+    createTenant({
+        id: "root",
+        name: "Root",
+        parent: "",
+        description: "Root tenant",
+        tags: []
+    }),
+    createTenant({
+        id: "webiny",
+        name: "Webiny",
+        parent: "",
+        description: "Webiny tenant",
+        tags: []
+    }),
+    createTenant({
+        id: "dev",
+        name: "Dev",
+        parent: "",
+        description: "Dev tenant",
+        tags: []
+    }),
+    createTenant({
+        id: "sales",
+        name: "Sales",
+        parent: "",
+        description: "Sales tenant",
+        tags: []
+    })
+];
+
 export const createTenancyAndSecurity = ({
     setupGraphQL,
     permissions,
@@ -38,37 +84,12 @@ export const createTenancyAndSecurity = ({
         createSecurityContext({ storageOperations: securityStorage.storageOperations }),
         setupGraphQL ? createSecurityGraphQL() : null,
         new ContextPlugin<CmsContext>(async context => {
-            await context.tenancy.createTenant({
-                id: "root",
-                name: "Root",
-                parent: "",
-                description: "Root tenant",
-                tags: []
-            });
-
-            await context.tenancy.createTenant({
-                id: "webiny",
-                name: "Webiny",
-                parent: "",
-                description: "Webiny tenant",
-                tags: []
-            });
-
-            await context.tenancy.createTenant({
-                id: "dev",
-                name: "Dev",
-                parent: "",
-                description: "Dev tenant",
-                tags: []
-            });
-
-            await context.tenancy.createTenant({
-                id: "sales",
-                name: "Sales",
-                parent: "",
-                description: "Sales tenant",
-                tags: []
-            });
+            for (const tenant of tenants) {
+                await context.tenancy.createTenant({
+                    ...tenant,
+                    parent: tenant.parent || ""
+                });
+            }
         }),
         new ContextPlugin<CmsContext>(async context => {
             context.tenancy.setCurrentTenant({

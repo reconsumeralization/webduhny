@@ -96,6 +96,7 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
         includeFileMeta = false,
         maxSize,
         imagePreviewProps,
+        disabled,
         round
     } = props;
 
@@ -142,6 +143,7 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
                         value={value}
                         uploadImage={showFileManager}
                         removeImage={() => onChange(null)}
+                        disabled={disabled}
                         round={round}
                     />
                 )}

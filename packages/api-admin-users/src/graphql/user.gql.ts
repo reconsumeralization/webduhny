@@ -37,6 +37,7 @@ export default (params: CreateUserGraphQlPluginsParams) => {
                     lastName: String
                     avatar: JSON
                     gravatar: String
+                    external: Boolean
                     createdOn: DateTime
                 }
 
