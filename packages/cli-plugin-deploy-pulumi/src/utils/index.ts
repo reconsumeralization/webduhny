@@ -2,7 +2,6 @@ export * from "./createProjectApplicationWorkspace";
 export * from "./getPulumi";
 export * from "./getStackOutput";
 export * from "./getStackExport";
-export * from "./importStack";
 export * from "./getStackName";
 export * from "./getDeploymentId";
 export * from "./GracefulError";
