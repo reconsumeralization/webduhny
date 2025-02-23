@@ -4,8 +4,7 @@ import {
     GetFunctionConfigurationCommand,
     LambdaClient,
     UpdateFunctionCodeCommand,
-    UpdateFunctionConfigurationCommand,
-    UpdateFunctionConfigurationCommandInput
+    UpdateFunctionConfigurationCommand
 } from "@webiny/aws-sdk/client-lambda";
 import { getStackExport } from "~/utils";
 import { type listLambdaFunctions } from "./listLambdaFunctions";
@@ -66,26 +65,26 @@ export const replaceLambdaFunctions = async ({
 
         const Timeout = increaseTimeout || DEFAULT_INCREASE_TIMEOUT;
 
-        const updatedFunctionConfig: UpdateFunctionConfigurationCommandInput = {
-            FunctionName: fn.name,
-            Timeout,
-            Description,
-            Environment: {
-                Variables: {
-                    ...lambdaFnConfiguration.Environment?.Variables,
-                    WEBINY_WATCH: JSON.stringify({
-                        enabled: true,
-                        sessionId,
-                        iotEndpoint,
-                        iotEndpointTopic,
-                        functionName: fn.name
-                    })
-                }
-            }
-        };
-
         await pRetry(() =>
-            lambdaClient.send(new UpdateFunctionConfigurationCommand(updatedFunctionConfig))
+            lambdaClient.send(
+                new UpdateFunctionConfigurationCommand({
+                    FunctionName: fn.name,
+                    Timeout,
+                    Description,
+                    Environment: {
+                        Variables: {
+                            ...lambdaFnConfiguration.Environment?.Variables,
+                            WEBINY_WATCH: JSON.stringify({
+                                enabled: true,
+                                sessionId,
+                                iotEndpoint,
+                                iotEndpointTopic,
+                                functionName: fn.name
+                            })
+                        }
+                    }
+                })
+            )
         );
     });
 
