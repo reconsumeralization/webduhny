@@ -7,10 +7,8 @@ import {
     UpdateFunctionConfigurationCommand,
     UpdateFunctionConfigurationCommandInput
 } from "@webiny/aws-sdk/client-lambda";
-import path from "path";
-import { getStackExport, importStack } from "~/utils";
+import { getStackExport } from "~/utils";
 import { type listLambdaFunctions } from "./listLambdaFunctions";
-import { getProject } from "@webiny/cli/utils";
 import { Context } from "~/types";
 
 const WATCH_MODE_NOTE_IN_DESCRIPTION = " (💡 local development mode, redeploy to remove)";
@@ -23,7 +21,7 @@ export interface IReplaceLambdaFunctionsParams {
     iotEndpoint: string;
     iotEndpointTopic: string;
     sessionId: number;
-    functionsList: ReturnType<typeof listLambdaFunctions>
+    functionsList: ReturnType<typeof listLambdaFunctions>;
     increaseTimeout?: number;
     context: Context;
 }
@@ -89,48 +87,6 @@ export const replaceLambdaFunctions = async ({
         await pRetry(() =>
             lambdaClient.send(new UpdateFunctionConfigurationCommand(updatedFunctionConfig))
         );
-
-        for (const resource of stackExport.deployment.resources) {
-            if (resource.type !== "aws:lambda/function:Function") {
-                continue;
-            }
-
-            const isModifiedFunction = functionsList.list.some(fn => fn.name === resource.outputs.name);
-            if (!isModifiedFunction) {
-                continue;
-            }
-
-            context.debug(
-                "Modifying Pulumi state for %s AWS Lambda function.",
-                resource.outputs.name
-            );
-
-            resource.outputs.description = updatedFunctionConfig.Description;
-            resource.outputs.timeout = updatedFunctionConfig.Timeout;
-            resource.outputs.environment = updatedFunctionConfig.Environment;
-        }
-
-        const project = getProject();
-
-        const ts = new Date().getTime();
-        const temporaryStackExportPath = path.join(
-            project.root,
-            ".webiny",
-            "watch-command-temporary-stack-exports",
-            `${ts}.json`
-        );
-
-        fs.mkdirSync(path.dirname(temporaryStackExportPath), { recursive: true });
-        fs.writeFileSync(temporaryStackExportPath, JSON.stringify(stackExport, null, 2));
-
-        importStack({
-            folder,
-            env,
-            variant,
-            file: temporaryStackExportPath
-        });
-
-        context.debug("Pulumi state updated for %s AWS Lambda function.", fn.name);
     });
 
     return Promise.all(replacementsPromises).then(res => {

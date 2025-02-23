@@ -5,7 +5,7 @@ import { getProject, getProjectApplication } from "@webiny/cli/utils";
 import get from "lodash/get";
 import merge from "lodash/merge";
 import type inspectorType from "inspector";
-import { getDeploymentId, loadEnvVariables, runHook } from "~/utils";
+import { getDeploymentId, loadEnvVariables, runHook, setMustRefreshBeforeDeploy } from "~/utils";
 import { getIotEndpoint } from "./newWatch/getIotEndpoint";
 import { listLambdaFunctions } from "./newWatch/listLambdaFunctions";
 import { listPackages } from "./newWatch/listPackages";
@@ -181,6 +181,9 @@ export const newWatch = async (inputs: IUserCommandInput, context: Context) => {
     });
     const sessionId = new Date().getTime();
     const increaseTimeout = inputs.increaseTimeout;
+
+    // We want to ensure a Pulumi refresh is made before the next deploy.
+    setMustRefreshBeforeDeploy(context);
 
     // Ignore promise, we don't need to wait for this to finish.
     replaceLambdaFunctions({
