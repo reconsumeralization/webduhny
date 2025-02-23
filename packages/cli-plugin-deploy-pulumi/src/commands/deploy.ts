@@ -6,7 +6,7 @@ import { executeDeploy } from "./deploy/executeDeploy";
 import { executePreview } from "./deploy/executePreview";
 import { executeRefresh } from "~/commands/deploy/executeRefresh";
 import { setTimeout } from "node:timers/promises";
-import { CliContext } from "@webiny/cli/types";
+import type { CliContext } from "@webiny/cli/types";
 
 export interface IDeployParams {
     _: string[];
