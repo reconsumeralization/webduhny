@@ -16,11 +16,13 @@ import {
 import { FullScreenContentEntryProvider } from "./useFullScreenContentEntry";
 import { ContentEntryEditorConfig } from "~/ContentEntryEditorConfig";
 import { cmsLegacyEntryEditor } from "~/utils/cmsLegacyEntryEditor";
+import { useContentEntryEditorConfig } from "~/admin/config/contentEntries";
 
 const { ContentEntry } = ContentEntryEditorConfig;
 
 const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original => {
     return function ContentEntry() {
+        const { width } = useContentEntryEditorConfig();
         const { loading } = useContentEntry();
         const [isRevisionListOpen, openRevisionList] = useState<boolean>(false);
 
@@ -45,7 +47,7 @@ const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original =>
                     {loading && <CircularProgress style={{ zIndex: 10 }} />}
                     <FullScreenContentEntryContent>
                         <FullScreenContentEntryContentFormWrapper>
-                            <FullScreenContentEntryContentFormInner>
+                            <FullScreenContentEntryContentFormInner width={width}>
                                 <Original />
                             </FullScreenContentEntryContentFormInner>
                         </FullScreenContentEntryContentFormWrapper>

@@ -106,9 +106,10 @@ export const FullScreenContentEntryContentFormWrapper = styled.div`
     justify-content: center;
 `;
 
-export const FullScreenContentEntryContentFormInner = styled.div`
-    flex-shrink: 1;
-    flex-basis: 1020px;
+type FullScreenContentEntryContentFormInnerProps = { width: string };
+
+export const FullScreenContentEntryContentFormInner = styled.div<FullScreenContentEntryContentFormInnerProps>`
+    width: ${props => props.width};
 `;
 
 export const FullScreenContentEntryContentFormInnerCss = css`
