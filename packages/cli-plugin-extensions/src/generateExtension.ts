@@ -6,11 +6,6 @@ import WebinyError from "@webiny/error";
 import fs from "node:fs";
 import fsAsync from "node:fs/promises";
 import { setTimeout } from "node:timers/promises";
-
-/**
- * TODO: rewrite cli into typescript
- */
-// @ts-expect-error
 import { getProject, log } from "@webiny/cli/utils";
 import { ExtensionCommandGenerateParams } from "./types";
 import { runYarnInstall } from "@webiny/cli-plugin-scaffold/utils";
@@ -154,8 +149,8 @@ export const generateExtension = async ({ input, ora, context }: GenerateExtensi
         if (nextSteps.length > 0) {
             console.log();
             console.log(chalk.bold("Next Steps"));
-            nextSteps.forEach(message => {
-                console.log(`‣ ${message}`);
+            nextSteps.forEach(({ text, variables = [] }) => {
+                console.log(`‣ ${text}`, ...variables.map(v => context.success.hl(v)));
             });
         }
 

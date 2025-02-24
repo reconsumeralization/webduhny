@@ -3,10 +3,13 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { getStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils";
 import { LAMBDA_RUNTIME } from "~/constants";
+import { getEnvVariableWebinyVariant } from "~/env/variant";
+import { getEnvVariableWebinyEnv } from "~/env/env";
 
 interface Config {
     apiFolder?: string;
     apiEnv?: string;
+    apiVariant: string;
 }
 
 interface Params {
@@ -29,15 +32,14 @@ function createFunctionArchive({ dynamoDbTable, region }: Params) {
 export class WebsiteTenantRouter extends pulumi.ComponentResource {
     public readonly originRequest: aws.lambda.Function;
 
-    constructor(name: string, config: Config = {}, opts = {}) {
+    constructor(name: string, config?: Config, opts = {}) {
         super("webiny:aws:WebsiteTenantRouter", name, {}, opts);
 
-        const { region, dynamoDbTable } = getStackOutput<{ region: string; dynamoDbTable: string }>(
-            {
-                folder: config.apiFolder || "api",
-                env: config.apiEnv || String(process.env.WEBINY_ENV)
-            }
-        );
+        const { region, dynamoDbTable } = getStackOutput({
+            folder: config?.apiFolder || "api",
+            env: config?.apiEnv || getEnvVariableWebinyEnv(),
+            variant: config?.apiVariant || getEnvVariableWebinyVariant()
+        });
 
         const inlinePolicies = Promise.all([aws.getCallerIdentity({})]).then(([callerIdentity]) => [
             {

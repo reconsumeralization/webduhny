@@ -1,15 +1,18 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import fs from "fs";
-import { createPulumiApp, PulumiAppParamCallback, PulumiAppParam } from "@webiny/pulumi";
+import { createPulumiApp, PulumiAppParam, PulumiAppParamCallback } from "@webiny/pulumi";
 import { createPrivateAppBucket } from "../createAppBucket";
 import { applyCustomDomain, CustomDomainParams } from "../customDomain";
 import { createPrerenderingService } from "./WebsitePrerendering";
-import { CoreOutput, ApiOutput, VpcConfig } from "~/apps";
+import { ApiOutput, CoreOutput, VpcConfig } from "~/apps";
 import { addDomainsUrlsOutputs, tagResources, withCommonLambdaEnvVariables } from "~/utils";
 import { applyTenantRouter } from "~/apps/tenantRouter";
 import { withServiceManifest } from "~/utils/withServiceManifest";
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
+import { getEnvVariableWebinyVariant } from "~/env/variant";
+import { getEnvVariableWebinyEnv } from "~/env/env";
+import { getEnvVariableWebinyProjectName } from "~/env/projectName";
 
 export type WebsitePulumiApp = ReturnType<typeof createWebsitePulumiApp>;
 
@@ -316,8 +319,9 @@ export const createWebsitePulumiApp = (projectAppParams: CreateWebsitePulumiAppP
             });
 
             tagResources({
-                WbyProjectName: String(process.env["WEBINY_PROJECT_NAME"]),
-                WbyEnvironment: String(process.env["WEBINY_ENV"])
+                WbyProjectName: getEnvVariableWebinyProjectName(),
+                WbyEnvironment: getEnvVariableWebinyEnv(),
+                WbyEnvironmentVariant: getEnvVariableWebinyVariant()
             });
 
             return {

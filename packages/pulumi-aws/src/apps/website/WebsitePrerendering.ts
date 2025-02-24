@@ -65,7 +65,7 @@ function createPrerenderingSettingsDbItem(
             rangeKey: params.dbTableRangeKey,
             item: pulumi.interpolate`{
                 "PK": "PS#SETTINGS",
-                "SK": "${app.params.run.variant || "default"}",
+                "SK": "default",
                 "data": {
                     "appUrl": "${params.appUrl}",
                     "deliveryUrl": "${params.deliveryUrl}",
@@ -327,7 +327,9 @@ function createLambdaPolicy(
                             // Add permissions to DynamoDB table
                             const resources = [
                                 `${s.primaryDynamodbTableArn}`,
-                                `${s.primaryDynamodbTableArn}/*`
+                                `${s.primaryDynamodbTableArn}/*`,
+                                `${s.logDynamodbTableArn}`,
+                                `${s.logDynamodbTableArn}/*`
                             ];
 
                             // Attach permissions for elastic search dynamo as well (if ES is enabled).

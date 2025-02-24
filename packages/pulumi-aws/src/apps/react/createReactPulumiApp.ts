@@ -6,6 +6,9 @@ import { createPrivateAppBucket } from "../createAppBucket";
 import { applyCustomDomain, CustomDomainParams } from "../customDomain";
 import { withServiceManifest } from "~/utils/withServiceManifest";
 import { ApiOutput, CoreOutput } from "~/apps";
+import { getEnvVariableWebinyVariant } from "~/env/variant";
+import { getEnvVariableWebinyEnv } from "~/env/env";
+import { getEnvVariableWebinyProjectName } from "~/env/projectName";
 
 export type ReactPulumiApp = ReturnType<typeof createReactPulumiApp>;
 
@@ -149,8 +152,9 @@ export const createReactPulumiApp = (projectAppParams: CreateReactPulumiAppParam
 
             tagResources({
                 WbyAppName: name,
-                WbyProjectName: String(process.env["WEBINY_PROJECT_NAME"]),
-                WbyEnvironment: String(process.env["WEBINY_ENV"])
+                WbyProjectName: getEnvVariableWebinyProjectName(),
+                WbyEnvironment: getEnvVariableWebinyEnv(),
+                WbyEnvironmentVariant: getEnvVariableWebinyVariant()
             });
 
             /**
@@ -166,7 +170,7 @@ export const createReactPulumiApp = (projectAppParams: CreateReactPulumiAppParam
                         .apply(key => key || "SK"),
                     item: pulumi.interpolate`{
                           "PK": {"S": "ADMIN#SETTINGS"},
-                          "SK": {"S": "${app.params.run.variant || "default"}"},
+                          "SK": {"S": "default"},
                           "data": {
                             "M": {
                               "appUrl": {

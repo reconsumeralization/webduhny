@@ -45,6 +45,7 @@ export const ApiGraphql = createAppModule({
         const graphql = app.addResource(aws.lambda.Function, {
             name: "graphql",
             config: {
+                description: "Webiny's GraphQL APIs",
                 runtime: LAMBDA_RUNTIME,
                 handler: "handler.handler",
                 role: role.output.arn,
@@ -81,7 +82,7 @@ export const ApiGraphql = createAppModule({
                     .apply(key => key || "SK"),
                 item: pulumi.interpolate`{
               "PK": {"S": "APW#SETTINGS"},
-              "SK": {"S": "${app.params.run.variant || "default"}"},
+              "SK": {"S": "default"},
               "mainGraphqlFunctionArn": {"S": "${graphql.output.arn}"},
               "eventRuleName": {"S": "${params.apwSchedulerEventRule.name}"},
               "eventTargetId": {"S": "${params.apwSchedulerEventTarget.targetId}"}
@@ -223,6 +224,8 @@ function createGraphqlLambdaPolicy(app: PulumiApp) {
                             Resource: [
                                 `${core.primaryDynamodbTableArn}`,
                                 `${core.primaryDynamodbTableArn}/*`,
+                                `${core.logDynamodbTableArn}`,
+                                `${core.logDynamodbTableArn}/*`,
                                 // Attach permissions for elastic search dynamo as well (if ES is enabled).
                                 ...(core.elasticsearchDynamodbTableArn
                                     ? [
