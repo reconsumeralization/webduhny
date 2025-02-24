@@ -1,7 +1,5 @@
 import React from "react";
-import dotProp from "dot-prop-immutable";
-import styled from "@emotion/styled";
-import { FormComponentErrorMessage, FormComponentNote } from "@webiny/admin-ui";
+import { FormComponentErrorMessage, FormComponentNote } from "~/FormComponent";
 
 interface ChildrenRenderPropRowCallableParams {
     index: number;
@@ -27,7 +25,7 @@ interface ChildrenRenderProp {
     empty: (cb: ChildrenRenderPropEmptyCallable) => React.ReactNode;
 }
 
-interface FieldsetProps {
+interface DynamicFieldsetProps {
     value?: any[];
     description?: string;
     validation?: { isValid: null | boolean; message?: string };
@@ -35,18 +33,8 @@ interface FieldsetProps {
     children: (props: ChildrenRenderProp) => React.ReactNode;
 }
 
-const DynamicFieldsetRow = styled("div")({
-    paddingBottom: 10,
-    "> .mdc-layout-grid": {
-        padding: 0,
-        "> .mdc-layout-grid__inner": {
-            display: "block"
-        }
-    }
-});
-
-class Fieldset extends React.Component<FieldsetProps> {
-    static defaultProps: Partial<FieldsetProps> = {
+class DynamicFieldset extends React.Component<DynamicFieldsetProps> {
+    static defaultProps: Partial<DynamicFieldsetProps> = {
         value: []
     };
 
@@ -67,7 +55,10 @@ class Fieldset extends React.Component<FieldsetProps> {
 
     removeData = (index: number) => {
         const { value, onChange } = this.props;
-        onChange(dotProp.delete(value, index));
+        if (!value) {
+            return;
+        }
+        onChange([...value.slice(0, index), ...value.slice(index + 1)]);
     };
 
     addData = (index = -1) => {
@@ -94,9 +85,7 @@ class Fieldset extends React.Component<FieldsetProps> {
             return null;
         }
         this.rows = value.map((record, index) => {
-            return (
-                <DynamicFieldsetRow key={index}>{cb({ data: record, index })}</DynamicFieldsetRow>
-            );
+            return <div key={index}>{cb({ data: record, index })}</div>;
         });
         return null;
     };
@@ -146,4 +135,4 @@ class Fieldset extends React.Component<FieldsetProps> {
     }
 }
 
-export default Fieldset;
+export { DynamicFieldset, type DynamicFieldsetProps };

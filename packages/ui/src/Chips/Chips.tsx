@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import { cn } from "@webiny/admin-ui";
 import { Chip } from "./Chip";
 
 export interface ChipsProps {
@@ -34,10 +34,7 @@ export const Chips = (props: ChipsProps) => {
     return (
         <div
             {...rest}
-            className={classNames(
-                "mdc-evolution-chip-set wby-flex wby-gap-sm wby-py-sm",
-                className
-            )}
+            className={cn("mdc-evolution-chip-set wby-flex wby-gap-sm wby-py-sm", className)}
         >
             {children}
         </div>

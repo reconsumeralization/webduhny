@@ -26,7 +26,6 @@
     "@webiny/utils": "0.0.0",
     "classnames": "^2.5.1",
     "cropperjs": "^1.4.3",
-    "dot-prop-immutable": "^2.1.1",
     "emotion": "10.0.27",
     "keycode": "^2.2.0",
     "load-script": "^1.0.0",
@@ -38,7 +37,6 @@
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
     "@testing-library/react": "^15.0.7",
-    "@types/nprogress": "^0.2.0",
     "@types/react-color": "^2.17.11",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
