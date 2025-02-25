@@ -27,9 +27,10 @@ export const ContentEntryEditorConfig = Object.assign(BaseContentEntryEditorConf
         DefaultLayout,
         ContentEntryForm: Object.assign(BaseContentEntryForm, {
             useContentEntryForm,
-            Title: ContentEntryFormTitle,
-            Meta: ContentEntryFormMeta,
-            Header: ContentEntryFormHeader
+            Header: Object.assign(ContentEntryFormHeader, {
+                Title: ContentEntryFormTitle,
+                Meta: ContentEntryFormMeta
+            })
         }),
         ContentEntryFormPreview
     }),

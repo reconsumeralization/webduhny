@@ -12,59 +12,44 @@ import {
     TitleWrapper,
     EntryName
 } from "./FullScreenContentEntry.styled";
-import { CmsContentEntryStatusType, CmsModel } from "@webiny/app-headless-cms-common/types";
 
-export interface ContentEntryFormMetaProps {
-    model: CmsModel;
-    status: CmsContentEntryStatusType;
-}
-
-export const ContentEntryFormMeta = makeDecoratable(
-    "ContentEntryFormMeta",
-    ({ model, status }: ContentEntryFormMetaProps) => {
-        return (
-            <EntryMeta>
-                <Typography use="overline">
-                    {`Model: ${model.name} ${status ? `(status: ${status})` : ""}`}
-                </Typography>
-            </EntryMeta>
-        );
-    }
-);
-
-export interface ContentEntryFormTitleProps {
-    title: string;
-    version: number;
-    newEntry: boolean;
-}
-
-export const ContentEntryFormTitle = makeDecoratable(
-    "ContentEntryFormTitle",
-    ({ newEntry, title, version }: ContentEntryFormTitleProps) => {
-        return (
-            <EntryTitle>
-                <EntryName isNewEntry={newEntry}>{title}</EntryName>
-                {version && <EntryVersion>{`(v${version})`}</EntryVersion>}
-            </EntryTitle>
-        );
-    }
-);
-
-export const FullScreenContentEntryHeaderLeft = () => {
+export const ContentEntryFormMeta = makeDecoratable("ContentEntryFormMeta", () => {
     const { entry, contentModel } = useContentEntry();
-    const { navigateToFolder, currentFolderId } = useNavigateFolder();
+    const status = entry.meta?.status ?? null;
+
+    return (
+        <EntryMeta>
+            <Typography use="overline">
+                {`Model: ${contentModel.name} ${status ? `(status: ${status})` : ""}`}
+            </Typography>
+        </EntryMeta>
+    );
+});
+
+export const ContentEntryFormTitle = makeDecoratable("ContentEntryFormTitle", () => {
+    const { entry, contentModel } = useContentEntry();
 
     const title = entry?.meta?.title || `New ${contentModel.name}`;
     const isNewEntry = !entry.meta?.title;
     const version = entry.meta?.version ?? null;
-    const status = entry.meta?.status ?? null;
+
+    return (
+        <EntryTitle>
+            <EntryName isNewEntry={isNewEntry}>{title}</EntryName>
+            {version && <EntryVersion>{`(v${version})`}</EntryVersion>}
+        </EntryTitle>
+    );
+});
+
+export const FullScreenContentEntryHeaderLeft = () => {
+    const { navigateToFolder, currentFolderId } = useNavigateFolder();
 
     return (
         <>
             <IconButton onClick={() => navigateToFolder(currentFolderId)} icon={<BackIcon />} />
             <TitleWrapper>
-                <ContentEntryFormMeta status={status} model={contentModel} />
-                <ContentEntryFormTitle newEntry={isNewEntry} title={title} version={version} />
+                <ContentEntryFormMeta />
+                <ContentEntryFormTitle />
             </TitleWrapper>
         </>
     );
