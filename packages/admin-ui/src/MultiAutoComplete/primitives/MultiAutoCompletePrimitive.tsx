@@ -1,6 +1,6 @@
 import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
-import { Popover } from "~/Popover";
+import { PopoverPrimitive } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
 import { makeDecoratable } from "~/utils";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
@@ -127,9 +127,9 @@ const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitive
     );
 
     return (
-        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
+        <PopoverPrimitive open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
-                <Popover.Trigger asChild>
+                <PopoverPrimitive.Trigger asChild>
                     <span>
                         <MultiAutoCompleteInput
                             value={vm.inputVm.value}
@@ -159,8 +159,8 @@ const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitive
                             }
                         />
                     </span>
-                </Popover.Trigger>
-                <Popover.Content
+                </PopoverPrimitive.Trigger>
+                <PopoverPrimitive.Content
                     style={{ width: "var(--radix-popover-trigger-width)" }}
                     onOpenAutoFocus={e => e.preventDefault()}
                 >
@@ -175,9 +175,9 @@ const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitive
                         options={vm.optionsListVm.options}
                         temporaryOption={vm.temporaryOptionVm.option}
                     />
-                </Popover.Content>
+                </PopoverPrimitive.Content>
             </Command>
-        </Popover>
+        </PopoverPrimitive>
     );
 };
 
