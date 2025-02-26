@@ -15,15 +15,15 @@ export interface VariablesListProps {
     variables: PbBlockVariable[];
 }
 
-const VariablesList = ({ variables }: VariablesListProps) => {
-    const { moveBlockVariable } = useBlockVariables();
+export const VariablesList = ({ variables }: VariablesListProps) => {
+    const { moveVariable } = useBlockVariables();
 
 
     const onMove = useCallback(
         (currentIndex: number, newIndex: number) => {
-            moveBlockVariable(variables[currentIndex], newIndex);
+            moveVariable(variables[currentIndex], newIndex);
         },
-        [variables, moveBlockVariable]
+        [variables, moveVariable]
     );
 
     return (
@@ -42,5 +42,3 @@ const VariablesList = ({ variables }: VariablesListProps) => {
         </>
     );
 };
-
-export default VariablesList;

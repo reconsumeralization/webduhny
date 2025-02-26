@@ -15,9 +15,9 @@ const variableToId = (v: PbBlockVariable) => {
     return `${v.blockId};${v.elementId};${v.inputName}`;
 };
 
-const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
+const LinkElement = ({ children }: CreateVariableActionPropsType) => {
     const [element] = useActiveElement<PbEditorElement>();
-    const { inputs } = useElementRendererInputs(element);
+    const { inputs } = useElementRendererInputs(element?.type);
     const { block } = useCurrentBlockElement();
     const { updateVariables } = useBlockVariables();
     const { updateDataBindings } = useDynamicDocument();
@@ -34,12 +34,13 @@ const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
             newVariables.push({
                 blockId: block.id,
                 elementId: element.id,
+                elementType: element.type,
                 label: input.getName(),
                 inputName: input.getName()
             });
 
             newBindings.push({
-                dataSource: "static",
+                dataSource: "default",
                 bindFrom: input.getDefaultValue(element as Element),
                 bindTo: `element:${element.id}.${input.getName()}`
             });
@@ -62,4 +63,4 @@ const CreateVariableAction = ({ children }: CreateVariableActionPropsType) => {
     return React.cloneElement(children, { onClick });
 };
 
-export default React.memo(CreateVariableAction);
+export default React.memo(LinkElement);

@@ -30,6 +30,7 @@ export const createDynamicDataSchema = () => {
             type BlockVariable {
                 blockId: String!
                 elementId: String!
+                elementType: String!
                 label: String!
                 inputName: String!
             }
@@ -37,6 +38,7 @@ export const createDynamicDataSchema = () => {
             input BlockVariableInput {
                 blockId: String!
                 elementId: String!
+                elementType: String!
                 label: String!
                 inputName: String!
             }

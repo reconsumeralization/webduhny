@@ -29,8 +29,8 @@ export interface VariableSettingsProps {
     variables: PbBlockVariable[];
 }
 
-const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
-    const { inputs } = useElementRendererInputs(element);
+export const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
+    const { inputs } = useElementRendererInputs(element.type);
     const { block } = useCurrentBlockElement();
     const { removeElementVariables, updateVariables } = useBlockVariables();
     const variableInputs = useVariableInputs(element, inputs, variables);
@@ -89,5 +89,3 @@ const VariableSettings = ({ element, variables }: VariableSettingsProps) => {
         </>
     );
 };
-
-export default VariableSettings;

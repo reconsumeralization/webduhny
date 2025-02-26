@@ -33,10 +33,11 @@ import { PbEditorBlockCategoryPlugin, PbEditorBlockPlugin } from "~/types";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { useKeyHandler } from "~/editor/hooks/useKeyHandler";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
-import { createBlockElements } from "~/editor/helpers";
+import { createBlockElements, getNanoid } from "~/editor/helpers";
 import { createBlockReference } from "~/pageEditor/helpers";
 import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
 import { useRootElement } from "~/editor/hooks/useRootElement";
+import { StateInspector } from "@webiny/app-admin/components";
 
 const allBlockCategory: PbEditorBlockCategoryPlugin = {
     type: "pb-editor-block-category",
@@ -137,14 +138,24 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
 
     const addBlockToContent = useCallback(
         (plugin: PbEditorBlockPlugin) => {
+            const newBlockId = getNanoid();
+            const block = pageBlocks.pageBlocks.find(pageBlock => pageBlock.id === plugin.id);
+
+            if(block) {
+                // const blockDataBinding = BlockDataBinding.from(block, newBlockId);
+
+            }
+
+            // "pb-saved-block-" + pageBlock.id
             const blockToAdd = plugin.tags.includes("saved")
-                ? createBlockReference(plugin.name)
-                : createBlockElements(plugin.name);
+                ? createBlockReference(plugin.name!, newBlockId)
+                : createBlockElements(plugin.name!, newBlockId);
 
             const element: any = {
                 ...content,
                 elements: [...content.elements, blockToAdd]
             };
+
             eventActionHandler.trigger(
                 new UpdateElementActionEvent({
                     element,
@@ -155,7 +166,7 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
 
             onClose();
         },
-        [content]
+        [content, pageBlocks]
     );
 
     const refreshBlockPlugins = useCallback(() => {
@@ -259,6 +270,7 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
 
     return (
         <OverlayLayout barMiddle={renderSearchInput()} onExited={onClose}>
+            <StateInspector title={"Blocks"} shortcut={"Cmd+E"} state={allBlocks} />
             <SplitView>
                 <LeftPanel span={3}>
                     <ScrollList className={listStyle}>

@@ -52,9 +52,7 @@ export const BlockVariablesProvider = ({
 
         updateDataBindings(bindings => {
             return bindings.filter(b => {
-                const match =
-                    b.dataSource === "static" &&
-                    b.bindTo === `element:${variable.elementId}.${variable.inputName}`;
+                const match = b.bindTo === `element:${variable.elementId}.${variable.inputName}`;
 
                 return !match;
             });
@@ -79,10 +77,7 @@ export const BlockVariablesProvider = ({
         updateDataBindings(bindings => {
             return bindings.filter(b => {
                 return !toDelete.find(td => {
-                    return (
-                        b.dataSource === "static" &&
-                        b.bindTo === `element:${td.elementId}.${td.inputName}`
-                    );
+                    return b.bindTo === `element:${td.elementId}.${td.inputName}`;
                 });
             });
         });

@@ -922,6 +922,7 @@ export interface PbPageBlock extends DynamicDocument {
 export interface PbBlockVariable {
     blockId: string;
     elementId: string;
+    elementType: string;
     label: string;
     inputName: string;
 }
@@ -945,7 +946,7 @@ export type PbDataBinding =
           bindTo: string;
       }
     | {
-          dataSource: "static";
+          dataSource: "static" | "default";
           bindFrom: any;
           bindTo: string;
       };

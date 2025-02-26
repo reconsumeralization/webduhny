@@ -4,7 +4,7 @@ import { css } from "emotion";
 import { plugins } from "@webiny/plugins";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
 import { Typography } from "@webiny/ui/Typography";
-import { PbBlockVariable, PbEditorPageElementVariableRendererPlugin } from "~/types";
+import {PbBlockVariable, PbEditorElement, PbEditorPageElementVariableRendererPlugin} from "~/types";
 
 const wrapperStyle = css({
     padding: "16px",
@@ -19,8 +19,9 @@ const labelStyle = css({
     }
 });
 
+// TODO: Fetch block variables and render inputs using renderers for each input type.
 export const VariableSettings = () => {
-    const [element] = useActiveElement();
+    const [element] = useActiveElement<PbEditorElement>();
 
     const variableRenderers = useMemo(() => {
         return plugins.byType<PbEditorPageElementVariableRendererPlugin>(
@@ -39,13 +40,10 @@ export const VariableSettings = () => {
         [variableRenderers]
     );
 
-    if (!element) {
-        return null;
-    }
-
     const variables = element.data.variables;
 
     if (!variables) {
+        return <span>BaseVariableSettings!</span>
         return null;
     }
 

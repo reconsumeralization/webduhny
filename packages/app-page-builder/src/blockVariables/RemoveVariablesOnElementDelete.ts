@@ -24,9 +24,9 @@ export const RemoveVariablesOnElementDelete = () => {
                             ...state.block,
                             blockVariables: removeElementVariables(
                                 toDelete,
-                                state.block.blockVariables
+                                state.block?.blockVariables ?? []
                             ),
-                            dataBindings: removeDataBindings(toDelete, state.block.dataBindings)
+                            dataBindings: removeDataBindings(toDelete, state.block?.dataBindings ?? [])
                         }
                     },
                     actions: []

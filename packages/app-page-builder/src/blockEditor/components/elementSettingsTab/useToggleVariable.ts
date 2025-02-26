@@ -25,6 +25,7 @@ export const useToggleVariable = (block: PbEditorElement | null, element: PbEdit
                         {
                             blockId: block.id,
                             elementId: element.id,
+                            elementType: element.type,
                             label: input.getName(),
                             inputName: input.getName()
                         }

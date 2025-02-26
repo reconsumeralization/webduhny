@@ -1,9 +1,9 @@
 import invariant from "invariant";
 import { plugins } from "@webiny/plugins";
-import { getNanoid, prefixElementIdsRecursively } from "~/editor/helpers";
+import { prefixElementIdsRecursively } from "~/editor/helpers";
 import { PbEditorBlockPlugin, PbEditorElement } from "~/types";
 
-export const createBlockReference = (name?: string): PbEditorElement => {
+export const createBlockReference = (name: string, blockId: string): PbEditorElement => {
     const plugin = plugins.byName<PbEditorBlockPlugin>(name);
 
     invariant(plugin, `Missing block plugin "${name}"!`);
@@ -12,7 +12,6 @@ export const createBlockReference = (name?: string): PbEditorElement => {
      */
 
     const blockElement = plugin.create();
-    const blockId = getNanoid();
 
     return {
         ...blockElement,

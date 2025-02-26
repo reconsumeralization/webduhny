@@ -234,7 +234,7 @@ export const removeElementId = (el: PbElement): PbElement => {
     return el;
 };
 
-export const createBlockElements = (name?: string): PbEditorElement => {
+export const createBlockElements = (name: string, blockId: string): PbEditorElement => {
     const plugin = plugins.byName<PbEditorBlockPlugin>(name);
 
     invariant(plugin, `Missing block plugin "${name}"!`);
@@ -243,7 +243,7 @@ export const createBlockElements = (name?: string): PbEditorElement => {
      */
     return {
         // @ts-expect-error
-        id: getNanoid(),
+        id: blockId,
         // @ts-expect-error
         data: {},
         // @ts-expect-error

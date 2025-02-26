@@ -7,6 +7,7 @@ import type { FormAPI, FormOnSubmit, FormValidation, FormInvalidFields } from "@
 import type { CmsContentEntry, CmsModel } from "@webiny/app-headless-cms-common/types";
 import { CompositionScope, useSnackbar } from "@webiny/app-admin";
 import type { CreateEntryResponse, UpdateEntryRevisionResponse } from "~/admin/contexts/Cms";
+import { StateInspector } from "@webiny/app-admin/components";
 
 const promptMessage =
     "There are some unsaved changes! Are you sure you want to navigate away and discard all changes?";
@@ -161,6 +162,11 @@ export const ContentEntryFormProvider = ({
                             </CompositionScope>
                         ) : null}
                         {children}
+                        <StateInspector
+                            title={context.entry.meta?.title || "New Entry"}
+                            shortcut={"Cmd+E"}
+                            state={context.entry}
+                        />
                     </ContentEntryFormContext.Provider>
                 );
             }}

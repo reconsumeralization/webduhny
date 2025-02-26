@@ -7,8 +7,6 @@ export const VariableSettings = () => {
     const blockReference = useBlockReference();
     const [isTemplateMode] = useTemplateMode();
 
-    console.log({ isTemplateMode, blockReference });
-
     if (isTemplateMode || blockReference) {
         return <BaseVariableSettings />;
     }
