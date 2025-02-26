@@ -17,7 +17,7 @@ export class ReactLicense implements ILicense {
     }
 
     canUseAuditLogs(): boolean {
-        return false;
+        return this.license.canUseAuditLogs();
     }
 
     canUseFeature(featureId: keyof typeof WCP_FEATURE_LABEL): boolean {
