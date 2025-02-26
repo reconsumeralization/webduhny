@@ -12,37 +12,37 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 primary: [
-                    "wby-bg-primary wby-text-neutral-light [&>svg]:wby-fill-neutral-base",
+                    "wby-bg-primary wby-text-neutral-light wby-fill-neutral-base",
                     "hover:wby-bg-primary-strong",
                     "active:wby-bg-primary-xstrong",
                     "aria-disabled:wby-bg-primary-disabled",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 secondary: [
-                    "wby-bg-neutral-dimmed wby-text-neutral-strong [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-bg-neutral-dimmed wby-text-neutral-strong wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-muted",
                     "active:wby-bg-neutral-strong",
-                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 tertiary: [
-                    "wby-bg-neutral-base wby-text-neutral-strong wby-border-neutral-muted [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-bg-neutral-base wby-text-neutral-strong wby-border-neutral-muted wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-light",
                     "active:wby-bg-neutral-muted",
-                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-border-neutral-dimmed aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-border-neutral-dimmed aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 ghost: [
-                    "wby-text-neutral-strong [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-text-neutral-strong wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-dimmed",
                     "active:wby-bg-neutral-muted",
-                    "aria-disabled:wby-text-neutral-disabled"
+                    "aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong"
                 ],
                 "ghost-negative": [
-                    "wby-text-neutral-light [&>svg]:wby-fill-neutral-base",
+                    "wby-text-neutral-light wby-fill-neutral-base",
                     "hover:wby-bg-neutral-base/20",
                     "active:wby-bg-neutral-base/30",
-                    "aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-base/50",
                     "focus-visible:!wby-border-neutral-base"
                 ]
             },
