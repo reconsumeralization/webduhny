@@ -97,7 +97,9 @@ export const ListItem = (props: ListItemProps) => {
 
     return (
         <AdminList.Item
+            activated={props.activated}
             disabled={props.disabled}
+            selected={props.selected}
             onClick={item.onClick ?? props.onClick}
             className={props.className}
             style={props.style}

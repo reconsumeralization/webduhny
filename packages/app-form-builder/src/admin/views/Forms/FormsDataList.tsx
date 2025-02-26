@@ -271,7 +271,11 @@ const FormsDataList = (props: FormsDataListProps) => {
                     {(data || []).map(form => {
                         const name = form.createdBy.displayName;
                         return (
-                            <ListItem key={form.id} data-testid="default-data-list-element">
+                            <ListItem
+                                key={form.id}
+                                data-testid="default-data-list-element"
+                                selected={multiSelectProps.isMultiSelected(form)}
+                            >
                                 <ListSelectBox>
                                     <Checkbox
                                         onChange={() => multiSelectProps.multiSelect(form)}

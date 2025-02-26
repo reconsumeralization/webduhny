@@ -278,3 +278,58 @@ export const WithDisabled: Story = {
         )
     }
 };
+
+export const WithActivated: Story = {
+    args: {
+        ...Default.args,
+        children: (
+            <>
+                <ListItem
+                    activated={true}
+                    index={1}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    handle={<List.Item.Handle />}
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=1" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                    actions={
+                        <>
+                            <List.Item.Action icon={<EditIcon />} />
+                            <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
+                        </>
+                    }
+                />
+                <ListItem
+                    index={2}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    handle={<List.Item.Handle />}
+                    icon={
+                        <Avatar
+                            image={
+                                <Avatar.Image src="https://i.pravatar.cc/300?img=2" alt="@webiny" />
+                            }
+                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
+                        />
+                    }
+                    actions={
+                        <>
+                            <List.Item.Action icon={<EditIcon />} />
+                            <List.Item.Action icon={<TrashIcon />} />
+                            <List.Item.Action.Separator />
+                            <List.Item.Action icon={<OpenIcon />} />
+                            <List.Item.Action icon={<MoreIcon />} />
+                        </>
+                    }
+                />
+            </>
+        )
+    }
+};
