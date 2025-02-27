@@ -60,6 +60,13 @@ export interface IGetStackOutputParams {
 }
 
 export interface IStackOutput {
+    /**
+     * There is a possibility for a user to add stuff to the stack output.
+     */
+    [key: string]: string | string[] | undefined | number | number[] | boolean;
+}
+
+export interface IDefaultStackOutput extends IStackOutput {
     deploymentId: string;
     region: string;
     dynamoDbTable: string;
@@ -97,13 +104,9 @@ export interface IStackOutput {
     elasticsearchDynamodbTableName: string | undefined;
     appStorage: string;
     websiteRouterOriginRequestFunction?: string;
-    /**
-     * There is a possibility for a user to add stuff to the stack output.
-     */
-    [key: string]: string | string[] | undefined | number | number[] | boolean;
 }
 
-export const getStackOutput = <T extends IStackOutput = IStackOutput>(
+export const getStackOutput = <T extends IStackOutput = IDefaultStackOutput>(
     folderOrArgs: IGetStackOutputParams | string,
     env?: string,
     map?: Record<string, any>

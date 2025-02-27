@@ -3,10 +3,10 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { createAppModule, PulumiApp, PulumiAppModule } from "@webiny/pulumi";
 import { createLambdaRole, getCommonLambdaEnvVariables } from "../lambdaUtils";
-import { CoreOutput, VpcConfig } from "~/apps";
+import { VpcConfig } from "~/apps";
 import { getAwsAccountId, getAwsRegion } from "../awsUtils";
 import { LAMBDA_RUNTIME } from "~/constants";
-import { SyncSystemDynamo } from "~/apps/syncSystem/SyncSystemDynamo";
+import { SyncSystemDynamo } from "./SyncSystemDynamo";
 
 export interface SyncSystemLambdaParams {
     protect: boolean;
@@ -18,9 +18,18 @@ export type SyncSystemLambda = PulumiAppModule<typeof SyncSystemLambda>;
 export const SyncSystemLambda = createAppModule({
     name: "SyncSystemLambda",
     config(app: PulumiApp, params: SyncSystemLambdaParams) {
-        const dynamoDbTable = app.getModule(SyncSystemDynamo);
-
-        const policy = createSyncSystemLambdaPolicy(app);
+        const policy = createSyncSystemLambdaPolicy({
+            app,
+            // TODO - get bucket ids and dynamodb tables from the FileManager app
+            primary: {
+                fileManagerBucketId: "primaryFileManagerBucketId",
+                dynamoDbTableArn: ""
+            },
+            secondary: {
+                fileManagerBucketId: "secondaryFileManagerBucketId",
+                dynamoDbTableArn: ""
+            }
+        });
         const role = createLambdaRole(app, {
             name: "sync-system-lambda-role",
             policy: policy.output
@@ -48,24 +57,6 @@ export const SyncSystemLambda = createAppModule({
                 vpcConfig: app.getModule(VpcConfig).functionVpcConfig
             }
         });
-        /**
-         * Store some settings in the table.
-         */
-        app.addResource(aws.dynamodb.TableItem, {
-            name: "syncSystemSettings",
-            config: {
-                tableName: dynamoDbTable.output.arn,
-                hashKey: dynamoDbTable.output.hashKey,
-                rangeKey: pulumi.output(dynamoDbTable.output.rangeKey).apply(key => key || "SK"),
-                item: pulumi.interpolate`{
-              ${addTableItems({
-                  PK: "syncSystem#SETTINGS",
-                  SK: "default",
-                  config: params.config
-              })}
-            }`
-            }
-        });
 
         return {
             role,
@@ -77,133 +68,115 @@ export const SyncSystemLambda = createAppModule({
     }
 });
 
-const getTableItemType = (value: unknown) => {
-    if (value === null || value === undefined) {
-        return "S";
-    }
-    switch (typeof value) {
-        case "string":
-            return "S";
-        case "number":
-            return "N";
-        case "object":
-            return "M";
-        default:
-            throw new Error(`Unsupported type: ${typeof value}`);
-    }
-};
+interface ICreateSyncSystemLambdaPolicyParamsType {
+    fileManagerBucketId: string;
+    dynamoDbTableArn: string;
+}
 
-const addTableItems = (items: Record<string, string | number | Record<string, string>>): string => {
-    return Object.keys(items)
-        .reduce<string[]>((output, key) => {
-            const value = items[key];
-            output.push(`"${key}": {"${getTableItemType(value)}": "${value}"}`);
-            return output;
-        }, [])
-        .join(",");
-};
+interface ICreateSyncSystemLambdaPolicyParams {
+    app: PulumiApp;
+    primary: ICreateSyncSystemLambdaPolicyParamsType;
+    secondary: ICreateSyncSystemLambdaPolicyParamsType;
+}
 
-function createSyncSystemLambdaPolicy(app: PulumiApp) {
-    const coreOutput = app.getModule(CoreOutput);
+function createSyncSystemLambdaPolicy(params: ICreateSyncSystemLambdaPolicyParams) {
+    const { app, primary, secondary } = params;
+    const dynamoDbTable = app.getModule(SyncSystemDynamo);
     const awsAccountId = getAwsAccountId(app);
     const awsRegion = getAwsRegion(app);
 
-    return app.addResource(aws.iam.Policy, {
-        name: "ApiGraphqlLambdaPolicy",
-        config: {
-            description: "This policy enables access to Dynamodb, S3, Lambda and Cognito IDP",
-            // Core is pulumi.Output, so we need to run apply() to resolve policy based on it
-            policy: coreOutput.apply(core => {
-                const policy: aws.iam.PolicyDocument = {
-                    Version: "2012-10-17",
-                    Statement: [
-                        {
-                            Sid: "PermissionForDynamodb",
-                            Effect: "Allow",
-                            Action: [
-                                "dynamodb:BatchGetItem",
-                                "dynamodb:BatchWriteItem",
-                                "dynamodb:ConditionCheckItem",
-                                "dynamodb:CreateBackup",
-                                "dynamodb:CreateTable",
-                                "dynamodb:CreateTableReplica",
-                                "dynamodb:DeleteBackup",
-                                "dynamodb:DeleteItem",
-                                "dynamodb:DeleteTable",
-                                "dynamodb:DeleteTableReplica",
-                                "dynamodb:DescribeBackup",
-                                "dynamodb:DescribeContinuousBackups",
-                                "dynamodb:DescribeContributorInsights",
-                                "dynamodb:DescribeExport",
-                                "dynamodb:DescribeKinesisStreamingDestination",
-                                "dynamodb:DescribeLimits",
-                                "dynamodb:DescribeReservedCapacity",
-                                "dynamodb:DescribeReservedCapacityOfferings",
-                                "dynamodb:DescribeStream",
-                                "dynamodb:DescribeTable",
-                                "dynamodb:DescribeTableReplicaAutoScaling",
-                                "dynamodb:DescribeTimeToLive",
-                                "dynamodb:DisableKinesisStreamingDestination",
-                                "dynamodb:EnableKinesisStreamingDestination",
-                                "dynamodb:ExportTableToPointInTime",
-                                "dynamodb:GetItem",
-                                "dynamodb:GetRecords",
-                                "dynamodb:GetShardIterator",
-                                "dynamodb:ListBackups",
-                                "dynamodb:ListContributorInsights",
-                                "dynamodb:ListExports",
-                                "dynamodb:ListStreams",
-                                "dynamodb:ListTables",
-                                "dynamodb:ListTagsOfResource",
-                                "dynamodb:PartiQLDelete",
-                                "dynamodb:PartiQLInsert",
-                                "dynamodb:PartiQLSelect",
-                                "dynamodb:PartiQLUpdate",
-                                "dynamodb:PurchaseReservedCapacityOfferings",
-                                "dynamodb:PutItem",
-                                "dynamodb:Query",
-                                "dynamodb:RestoreTableFromBackup",
-                                "dynamodb:RestoreTableToPointInTime",
-                                "dynamodb:Scan",
-                                "dynamodb:UpdateContinuousBackups",
-                                "dynamodb:UpdateContributorInsights",
-                                "dynamodb:UpdateItem",
-                                "dynamodb:UpdateTable",
-                                "dynamodb:UpdateTableReplicaAutoScaling",
-                                "dynamodb:UpdateTimeToLive"
-                            ],
-                            Resource: [
-                                `${core.primaryDynamodbTableArn}`,
-                                `${core.primaryDynamodbTableArn}/*`
-                            ]
-                        },
-                        {
-                            Sid: "PermissionForS3",
-                            Effect: "Allow",
-                            Action: [
-                                "s3:ListBucket",
-                                "s3:GetObjectAcl",
-                                "s3:DeleteObject",
-                                "s3:PutObjectAcl",
-                                "s3:PutObject",
-                                "s3:GetObject"
-                            ],
-                            Resource: [
-                                pulumi.interpolate`arn:aws:s3:::${core.fileManagerBucketId}`,
-                                pulumi.interpolate`arn:aws:s3:::${core.fileManagerBucketId}/*`
-                            ]
-                        },
-                        {
-                            Sid: "PermissionForLambda",
-                            Effect: "Allow",
-                            Action: ["lambda:InvokeFunction"],
-                            Resource: pulumi.interpolate`arn:aws:lambda:${awsRegion}:${awsAccountId}:function:*`
-                        }
-                    ]
-                };
+    const policy: aws.iam.PolicyDocument = {
+        Version: "2012-10-17",
+        Statement: [
+            {
+                Sid: "PermissionForDynamodb",
+                Effect: "Allow",
+                Action: [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:CreateBackup",
+                    "dynamodb:CreateTable",
+                    "dynamodb:CreateTableReplica",
+                    "dynamodb:DeleteBackup",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DeleteTable",
+                    "dynamodb:DeleteTableReplica",
+                    "dynamodb:DescribeBackup",
+                    "dynamodb:DescribeContinuousBackups",
+                    "dynamodb:DescribeContributorInsights",
+                    "dynamodb:DescribeExport",
+                    "dynamodb:DescribeKinesisStreamingDestination",
+                    "dynamodb:DescribeLimits",
+                    "dynamodb:DescribeReservedCapacity",
+                    "dynamodb:DescribeReservedCapacityOfferings",
+                    "dynamodb:DescribeStream",
+                    "dynamodb:DescribeTable",
+                    "dynamodb:DescribeTableReplicaAutoScaling",
+                    "dynamodb:DescribeTimeToLive",
+                    "dynamodb:DisableKinesisStreamingDestination",
+                    "dynamodb:EnableKinesisStreamingDestination",
+                    "dynamodb:ExportTableToPointInTime",
+                    "dynamodb:GetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:ListBackups",
+                    "dynamodb:ListContributorInsights",
+                    "dynamodb:ListExports",
+                    "dynamodb:ListStreams",
+                    "dynamodb:ListTables",
+                    "dynamodb:ListTagsOfResource",
+                    "dynamodb:PartiQLDelete",
+                    "dynamodb:PartiQLInsert",
+                    "dynamodb:PartiQLSelect",
+                    "dynamodb:PartiQLUpdate",
+                    "dynamodb:PurchaseReservedCapacityOfferings",
+                    "dynamodb:PutItem",
+                    "dynamodb:Query",
+                    "dynamodb:RestoreTableFromBackup",
+                    "dynamodb:RestoreTableToPointInTime",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateContinuousBackups",
+                    "dynamodb:UpdateContributorInsights",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:UpdateTable",
+                    "dynamodb:UpdateTableReplicaAutoScaling",
+                    "dynamodb:UpdateTimeToLive"
+                ],
+                Resource: [`${dynamoDbTable.output.arn}`, `${dynamoDbTable.output.arn}/*`]
+            },
+            {
+                Sid: "PermissionForS3",
+                Effect: "Allow",
+                Action: [
+                    "s3:ListBucket",
+                    "s3:GetObjectAcl",
+                    "s3:DeleteObject",
+                    "s3:PutObjectAcl",
+                    "s3:PutObject",
+                    "s3:GetObject"
+                ],
+                Resource: [
+                    pulumi.interpolate`arn:aws:s3:::${primary.fileManagerBucketId}`,
+                    pulumi.interpolate`arn:aws:s3:::${primary.fileManagerBucketId}/*`,
+                    pulumi.interpolate`arn:aws:s3:::${secondary.fileManagerBucketId}`,
+                    pulumi.interpolate`arn:aws:s3:::${secondary.fileManagerBucketId}/*`
+                ]
+            },
+            {
+                Sid: "PermissionForLambda",
+                Effect: "Allow",
+                Action: ["lambda:InvokeFunction"],
+                Resource: pulumi.interpolate`arn:aws:lambda:${awsRegion}:${awsAccountId}:function:*`
+            }
+        ]
+    };
 
-                return policy;
-            })
+    return app.addResource(aws.iam.Policy, {
+        name: "SyncSystemLambdaPolicy",
+        config: {
+            description: "This policy enables access to Dynamodb, S3 and Lambda.",
+            policy
         }
     });
 }
