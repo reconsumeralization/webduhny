@@ -3,7 +3,7 @@ import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin";
 import { PbPageTemplateWithContent } from "~/types";
 import { createElement } from "~/editor/helpers";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 import { useListPageTemplates } from "~/features";
 import { useSavedElements } from "~/templateEditor/prepareEditor/useSavedElements";
 import { useBlockCategories } from "~/templateEditor/prepareEditor/useBlockCategories";

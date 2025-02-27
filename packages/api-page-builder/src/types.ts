@@ -904,6 +904,7 @@ export interface DataBinding {
 export interface BlockVariable {
     blockId: string;
     elementId: string;
+    elementType: string;
     label: string;
     inputName: string;
 }

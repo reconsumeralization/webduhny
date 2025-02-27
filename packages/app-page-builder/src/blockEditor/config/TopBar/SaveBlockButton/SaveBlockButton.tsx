@@ -8,8 +8,8 @@ import { useBlock } from "~/blockEditor/hooks/useBlock";
 import { SaveBlockActionEvent } from "~/blockEditor/config/eventActions/saveBlock/event";
 import { useDisplayMode } from "~/editor/hooks/useDisplayMode";
 import { DisplayMode } from "~/types";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
-import { UpdatePageBlockInput } from "~/admin/contexts/AdminPageBuilder/PageBlocks/BlockGatewayInterface";
+import { usePageBlocks } from "~/features";
+import type { UpdatePageBlockInput } from "~/features/pageBlock/BlockGatewayInterface";
 
 const SpinnerWrapper = styled.div`
     position: relative;

@@ -20,7 +20,6 @@ import { ElementSettingsGroup } from "./Sidebar/ElementSettings/ElementSettingsG
 import { ElementActionsAdapter } from "./Sidebar/BackwardsCompatibility/ElementActionsAdapter";
 import { PageOptionsDropdown } from "./TopBar/DropdownActions/PageOptionsDropdown";
 import { SetupDynamicDataInEditor } from "~/dataInjection";
-import { DataInspector } from "~/editor/defaultConfig/DataInspector";
 
 const { Ui } = EditorConfig;
 
@@ -49,7 +48,6 @@ export const DefaultEditorConfig = React.memo(() => {
                 <Ui.Content.Element name={"breadcrumbs"} element={<Breadcrumbs />} />
                 <Ui.Content.Element name={"background"} element={<Background />} />
                 <Ui.Content.Element name={"elements"} element={<Elements />} />
-                <Ui.Element name="dataInspector" group={"overlays"} element={<DataInspector />} />
                 <Ui.Toolbar.Element name={"addElement"} group={"top"} element={<AddElement />} />
                 <Ui.Toolbar.Element name={"navigator"} group={"top"} element={<Navigator />} />
                 <Ui.Toolbar.Element

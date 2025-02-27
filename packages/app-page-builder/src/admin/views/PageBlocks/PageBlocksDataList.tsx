@@ -19,7 +19,7 @@ import { PbPageBlock } from "~/types";
 import { CreatableItem } from "./PageBlocks";
 import { PreviewBlock } from "~/admin/components/PreviewBlock";
 import { ResponsiveElementsProvider } from "~/admin/components/ResponsiveElementsProvider";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 import {StateInspector} from "@webiny/app-admin/components";
 
 const t = i18n.ns("app-page-builder/admin/page-blocks/data-list");

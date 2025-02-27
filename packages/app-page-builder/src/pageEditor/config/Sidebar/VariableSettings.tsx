@@ -1,5 +1,5 @@
 import React from "react";
-import { VariableSettings as BaseVariableSettings } from "~/editor/plugins/elementSettings/variable/VariableSettings";
+import { VariableSettings as BaseVariableSettings } from "~/blockVariables";
 import { useTemplateMode } from "~/pageEditor/hooks/useTemplateMode";
 import { useBlockReference } from "~/templateEditor/config/Sidebar/useBlockReference";
 

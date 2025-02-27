@@ -22,6 +22,7 @@ import { EditorConfig } from "~/editor/config";
 import { InjectElementVariables } from "~/render/variables/InjectElementVariables";
 import { SetupDynamicDocument } from "./SetupDynamicDocument";
 import { SetupBlockVariables } from "./SetupBlockVariables";
+import { DataInspector } from "./DataInspector";
 
 const { ElementAction, Ui } = EditorConfig;
 
@@ -33,6 +34,7 @@ export const DefaultPageEditorConfig = React.memo(() => {
                 <SetupBlockVariables />
                 <SetupDynamicDocument />
                 <EventActionHandlers />
+                <Ui.Element name="dataInspector" group={"overlays"} element={<DataInspector />} />
                 <Ui.TopBar.Element name={"buttonBack"} group={"left"} element={<BackButton />} />
                 <Ui.TopBar.Element name={"title"} group={"left"} element={<Title />} />
                 <Ui.TopBar.Action
@@ -81,6 +83,8 @@ export const DefaultPageEditorConfig = React.memo(() => {
                 <TemplateMode />
                 <UnlinkTemplate />
                 <InjectElementVariables />
+                {/****** Experimental Block Inputs Renderer ******/}
+
             </EditorConfig>
         </>
     );

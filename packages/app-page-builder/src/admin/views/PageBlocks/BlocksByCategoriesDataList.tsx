@@ -37,7 +37,7 @@ import { LIST_PAGE_CATEGORIES } from "./graphql";
 import useImportBlock from "~/admin/views/PageBlocks/hooks/useImportBlock";
 import useExportBlockDialog from "~/editor/plugins/defaultBar/components/ExportBlockButton/useExportBlockDialog";
 import useFilteredCategoriesListData from "./hooks/useFilteredCategoriesListData";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 
 const t = i18n.ns("app-page-builder/admin/page-blocks/by-categories-data-list");
 

@@ -24,6 +24,7 @@ export const dynamicData = {
             zod.object({
                 blockId: zod.string(),
                 elementId: zod.string(),
+                elementType: zod.string(),
                 label: zod.string(),
                 inputName: zod.string()
             })

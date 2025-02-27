@@ -15,6 +15,11 @@ const variableToId = (v: PbBlockVariable) => {
     return `${v.blockId};${v.elementId};${v.inputName}`;
 };
 
+const camelCaseToWords = (text: string) => {
+    const result = text.replace(/([A-Z])/g, " $1").toLowerCase();
+    return result.charAt(0).toUpperCase() + result.slice(1);
+};
+
 const LinkElement = ({ children }: CreateVariableActionPropsType) => {
     const [element] = useActiveElement<PbEditorElement>();
     const { inputs } = useElementRendererInputs(element?.type);
@@ -35,7 +40,7 @@ const LinkElement = ({ children }: CreateVariableActionPropsType) => {
                 blockId: block.id,
                 elementId: element.id,
                 elementType: element.type,
-                label: input.getName(),
+                label: camelCaseToWords(input.getName()),
                 inputName: input.getName()
             });
 

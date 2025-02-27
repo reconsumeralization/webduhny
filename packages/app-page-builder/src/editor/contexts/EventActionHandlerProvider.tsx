@@ -438,6 +438,7 @@ export const EventActionHandlerProvider = makeDecoratable(
             initialState: PbState,
             initiator: string[]
         ): Promise<EventActionHandlerActionCallableResponse> => {
+            console.log("Trigger event", ev.getName(), ev.getArgs());
             if (initiator.length >= config.current.maxEventActionsNesting) {
                 throw new Error(
                     `Max (${

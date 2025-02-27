@@ -1,7 +1,6 @@
 import React, { createContext } from "react";
 import type { PbBlockVariable, PbEditorElement } from "~/types";
 import { useDynamicDocument } from "~/dataInjection";
-import { RemoveVariablesOnElementDelete } from "~/blockVariables/RemoveVariablesOnElementDelete";
 
 interface Updater<T> {
     (items: T[]): T[];
@@ -125,7 +124,6 @@ export const BlockVariablesProvider = ({
                 removeElementVariables
             }}
         >
-            <RemoveVariablesOnElementDelete />
             {children}
         </BlockVariablesContext.Provider>
     );

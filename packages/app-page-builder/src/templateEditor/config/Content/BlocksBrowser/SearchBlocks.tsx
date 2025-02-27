@@ -35,9 +35,11 @@ import { useKeyHandler } from "~/editor/hooks/useKeyHandler";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
 import { createBlockElements, getNanoid } from "~/editor/helpers";
 import { createBlockReference } from "~/pageEditor/helpers";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { remapDataBindingToBlock, usePageBlocks } from "~/features";
 import { useRootElement } from "~/editor/hooks/useRootElement";
 import { StateInspector } from "@webiny/app-admin/components";
+import { useDynamicDocument } from "~/dataInjection";
+import { useBlockVariables } from "~/blockVariables/useBlockVariables";
 
 const allBlockCategory: PbEditorBlockCategoryPlugin = {
     type: "pb-editor-block-category",
@@ -76,6 +78,8 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
     const eventActionHandler = useEventActionHandler();
     const { showSnackbar } = useSnackbar();
     const content = useRootElement();
+    const { updateDataBindings } = useDynamicDocument();
+    const { updateVariables } = useBlockVariables();
     const [search, setSearch] = useState<string>("");
     const [allBlocks, setAllBlocks] = useState<PbEditorBlockPlugin[]>(
         sortBlocks(plugins.byType<PbEditorBlockPlugin>("pb-editor-block"))
@@ -141,9 +145,29 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
             const newBlockId = getNanoid();
             const block = pageBlocks.pageBlocks.find(pageBlock => pageBlock.id === plugin.id);
 
-            if(block) {
-                // const blockDataBinding = BlockDataBinding.from(block, newBlockId);
+            if (block) {
+                /****** Data Bindings ******/
+                const dataBindings = block.dataBindings.map(dataBinding => {
+                    return remapDataBindingToBlock(dataBinding, newBlockId);
+                });
 
+                updateDataBindings(bindings => {
+                    return [...bindings, ...dataBindings];
+                });
+
+                /****** Block Variables ******/
+                const blockVariables = block.blockVariables.map(blockVariable => {
+                    const elementId = blockVariable.elementId.split("#").pop();
+                    return {
+                        ...blockVariable,
+                        blockId: newBlockId,
+                        elementId: `${newBlockId}#${elementId}`
+                    };
+                });
+
+                updateVariables(variables => {
+                    return [...variables, ...blockVariables];
+                });
             }
 
             // "pb-saved-block-" + pageBlock.id
@@ -302,9 +326,7 @@ export const SearchBlocks = ({ onClose }: SearchBarProps) => {
                             <SimpleFormHeader
                                 title={categoryPlugin.title}
                                 icon={<IconWrapper>{categoryPlugin.icon}</IconWrapper>}
-                            >
-                                {/*<IconButton icon={<RefreshIcon />} onClick={refetchBlocks} />*/}
-                            </SimpleFormHeader>
+                            />
                             <SimpleFormContent>
                                 <Styled.BlockList>
                                     <BlocksList

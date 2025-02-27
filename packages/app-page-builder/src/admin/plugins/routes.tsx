@@ -90,10 +90,12 @@ const plugins: RoutePlugin[] = [
                 element={
                     <SecureRoute permission={ROLE_PB_PAGES}>
                         <EditorPluginsLoader>
-                            <Helmet title={"Page Builder - Edit page"} />
-                            <CompositionScope name={"pb.pageEditor"}>
-                                <PageEditor />
-                            </CompositionScope>
+                            <RenderPluginsLoader>
+                                <Helmet title={"Page Builder - Edit page"} />
+                                <CompositionScope name={"pb.pageEditor"}>
+                                    <PageEditor />
+                                </CompositionScope>
+                            </RenderPluginsLoader>
                         </EditorPluginsLoader>
                     </SecureRoute>
                 }

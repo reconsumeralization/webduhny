@@ -22,6 +22,7 @@ interface BlockPreviewProps {
 
 export const BlockPreview = (props: BlockPreviewProps) => {
     const { plugin, addBlockToContent, onEdit, onDelete } = props;
+
     const onClickToAddHandler = useCallback(() => {
         addBlockToContent(plugin);
     }, [plugin]);

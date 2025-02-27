@@ -29,6 +29,7 @@ const PAGE_BLOCK_BASE_FIELDS = `
     blockVariables {
         blockId
         elementId
+        elementType
         label
         inputName
     }

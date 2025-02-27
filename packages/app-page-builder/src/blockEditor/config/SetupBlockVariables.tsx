@@ -5,6 +5,7 @@ import { PbBlockVariable } from "~/types";
 import { UpdateDocumentActionEvent } from "~/editor/recoil/actions";
 import { BlockVariablesProvider } from "~/blockVariables/BlockVariablesProvider";
 import { DeveloperUtilities as BlockDeveloperUtilities } from "./DeveloperUtilities";
+import { RemoveVariablesOnElementDelete } from "./RemoveVariablesOnElementDelete";
 
 const { Ui } = BlockEditorConfig;
 
@@ -30,6 +31,7 @@ export const SetupBlockVariables = Ui.Layout.createDecorator(Original => {
                 blockVariables={block.blockVariables}
                 onBlockVariables={onBlockVariables}
             >
+                <RemoveVariablesOnElementDelete />
                 <BlockDeveloperUtilities />
                 <Original />
             </BlockVariablesProvider>

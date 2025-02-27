@@ -2,7 +2,7 @@ import { PbDataBinding } from "~/types";
 
 export class ElementInputBinding {
     private binding: PbDataBinding;
-    private readonly elementId: string;
+    private elementId: string;
     private readonly inputName: string;
 
     private constructor(binding: PbDataBinding) {
@@ -30,5 +30,17 @@ export class ElementInputBinding {
 
     getSource() {
         return this.binding.bindFrom;
+    }
+
+    setElementId(elementId: string) {
+        this.elementId = elementId;
+    }
+
+    toPlainObject(): PbDataBinding {
+        return {
+            dataSource: this.binding.dataSource,
+            bindTo: `element:${this.elementId}.${this.inputName}`,
+            bindFrom: this.binding.bindFrom
+        };
     }
 }

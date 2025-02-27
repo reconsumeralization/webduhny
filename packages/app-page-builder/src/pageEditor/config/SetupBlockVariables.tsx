@@ -1,20 +1,20 @@
 import React from "react";
-import { BlockEditorConfig, useBlock } from "~/blockEditor";
 import { useEventActionHandler } from "~/editor";
 import { PbBlockVariable } from "~/types";
 import { UpdateDocumentActionEvent } from "~/editor/recoil/actions";
 import { BlockVariablesProvider } from "~/blockVariables/BlockVariablesProvider";
-import { DeveloperUtilities } from "./DeveloperUtilities";
+import { PageEditorConfig, usePage } from "~/pageEditor";
+import { RemoveVariablesOnElementDelete } from "./RemoveVariablesOnElementDelete";
 
-const { Ui } = BlockEditorConfig;
+const { Ui } = PageEditorConfig;
 
 export const SetupBlockVariables = Ui.Layout.createDecorator(Original => {
     return function WithBlockVariables() {
         const eventActionHandler = useEventActionHandler();
-        const [block, updateBlock] = useBlock();
+        const [page, updatePage] = usePage();
 
         const onBlockVariables = (blockVariables: PbBlockVariable[]) => {
-            updateBlock(block => ({ ...block, blockVariables }));
+            updatePage(page => ({ ...page, blockVariables }));
 
             setTimeout(() => {
                 eventActionHandler.trigger(
@@ -27,10 +27,10 @@ export const SetupBlockVariables = Ui.Layout.createDecorator(Original => {
 
         return (
             <BlockVariablesProvider
-                blockVariables={block.blockVariables}
+                blockVariables={page.blockVariables || []}
                 onBlockVariables={onBlockVariables}
             >
-                <DeveloperUtilities />
+                <RemoveVariablesOnElementDelete />
                 <Original />
             </BlockVariablesProvider>
         );

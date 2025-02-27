@@ -2,7 +2,7 @@ import lodashDebounce from "lodash/debounce";
 import type { SaveBlockActionArgsType } from "./types";
 import type { BlockEventActionCallable } from "~/blockEditor/types";
 import type { PbElement } from "~/types";
-import type { UpdatePageBlockInput } from "~/admin/contexts/AdminPageBuilder/PageBlocks/BlockGatewayInterface";
+import type { UpdatePageBlockInput } from "~/features/pageBlock/BlockGatewayInterface";
 
 export const findElementByVariableId = (elements: PbElement[], variableId: string): any => {
     for (const element of elements) {

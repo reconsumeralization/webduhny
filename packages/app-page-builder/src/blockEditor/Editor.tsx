@@ -16,7 +16,7 @@ import { BlockWithContent } from "~/blockEditor/state";
 import { createElement } from "~/editor/helpers";
 import { PbEditorElementTree } from "~/types";
 import elementVariablePlugins from "~/blockEditor/plugins/elementVariables";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 import { DefaultBlockEditorConfig } from "~/blockEditor/config/DefaultBlockEditorConfig";
 
 export const BlockEditor = () => {

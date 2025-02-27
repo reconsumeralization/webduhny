@@ -19,6 +19,7 @@ export type ElementInputType =
     | "link"
     | "svgIcon"
     | "color"
+    | "html"
     // We want to allow custom strings as well.
     // eslint-disable-next-line @typescript-eslint/ban-types
     | (string & {});

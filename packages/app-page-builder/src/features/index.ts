@@ -5,4 +5,4 @@ export * from "./pageTemplate/deletePageTemplate/useDeletePageTemplate";
 export * from "./pageTemplate/createPageTemplateFromPage/useCreatePageTemplateFromPage";
 export * from "./pageTemplate/refreshPageTemplates/useRefreshPageTemplates";
 export * from "./dataSource/loadDataSource/useLoadDataSource";
-export * from "../admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+export * from "./pageBlock/index.js";

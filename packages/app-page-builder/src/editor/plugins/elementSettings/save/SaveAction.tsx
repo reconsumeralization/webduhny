@@ -17,7 +17,7 @@ import {
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { removeElementId } from "~/editor/helpers";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 
 interface PbEditorElementWithSource extends PbEditorElement {
     source: string;

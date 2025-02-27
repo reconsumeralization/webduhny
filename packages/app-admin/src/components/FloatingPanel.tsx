@@ -73,6 +73,7 @@ export const FloatingPanel = ({ dragHandle, shortcut, children }: FloatingPanelP
                 >
                     <div
                         style={{
+                            border: "2px solid var(--mdc-theme-primary)",
                             display: isVisible ? "block" : "none",
                             position: "relative",
                             width: size.width + "px",

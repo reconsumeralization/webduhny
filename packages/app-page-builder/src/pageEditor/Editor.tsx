@@ -32,7 +32,7 @@ import { PageWithContent, RevisionsAtomType } from "~/pageEditor/state";
 import { createStateInitializer } from "./createStateInitializer";
 import elementVariableRendererPlugins from "~/editor/plugins/elementVariables";
 import { useNavigatePage } from "~/admin/hooks/useNavigatePage";
-import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import { usePageBlocks } from "~/features";
 import { DefaultEditorConfig } from "~/editor";
 import { DefaultPageEditorConfig } from "~/pageEditor/config/DefaultPageEditorConfig";
 
