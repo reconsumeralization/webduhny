@@ -1,6 +1,5 @@
 import React from "react";
 import { Provider } from "@webiny/app-admin";
-import Snackbar from "./Snackbar";
 import { DialogContainer } from "./Dialog";
 import { Portal } from "@rmwc/base";
 import { featureFlags } from "@webiny/feature-flags";
@@ -20,9 +19,6 @@ const OverlaysHOC = (Component: React.ComponentType<OverlaysProps>) => {
         return (
             <Component>
                 {children}
-                <div style={{ zIndex: 1000, position: "absolute" }}>
-                    <Snackbar />
-                </div>
                 <Portal />
                 <DialogContainer />
                 {featureFlags.experimentalAdminOmniSearch && <OmniSearch />}

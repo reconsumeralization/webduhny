@@ -3,8 +3,9 @@ import { toast as sonnerToast, type ToasterProps as SonnerToasterProps } from "s
 import { ToastActions, ToastDescription, ToastTitle, type ToastRootProps } from "./components";
 import { Toast } from "./Toast";
 import { Icon } from "~/Icon";
+import { generateId } from "~/utils";
 
-type UseToastParams = {
+type ShowToastParams = {
     title: React.ReactElement<typeof ToastTitle> | string;
     description?: React.ReactElement<typeof ToastDescription> | string;
     icon?: React.ReactElement<typeof Icon>;
@@ -12,59 +13,94 @@ type UseToastParams = {
     dismissible?: boolean;
     duration?: number;
     position?: SonnerToasterProps["position"];
-    variant: ToastRootProps["variant"];
+    variant?: ToastRootProps["variant"];
 };
 
-const useToast = (params: UseToastParams) => {
-    const {
-        title: paramsTitle,
-        description: paramsDescription,
-        icon,
-        actions,
-        variant,
-        dismissible,
-        duration = 6000,
-        position = "top-right"
-    } = params;
+const useToast = () => {
+    const getTitle = React.useCallback((title: React.ReactElement<typeof ToastTitle> | string) => {
+        return typeof title === "string" ? <ToastTitle text={title} /> : title;
+    }, []);
 
-    const getTitle = (title: React.ReactElement<typeof ToastTitle> | string) => {
-        if (typeof title === "string") {
-            return <ToastTitle text={title} />;
-        }
-
-        return title;
-    };
-
-    const getDescription = (
-        description: React.ReactElement<typeof ToastDescription> | string | undefined
-    ) => {
-        if (typeof description === "string") {
-            return <ToastDescription text={description} />;
-        }
-
-        return description;
-    };
-
-    return sonnerToast.custom(
-        toast => {
-            return (
-                <Toast
-                    title={getTitle(paramsTitle)}
-                    description={getDescription(paramsDescription)}
-                    icon={icon}
-                    actions={actions}
-                    variant={variant}
-                    onCloseClick={() => sonnerToast.dismiss(toast)}
-                    dismissible={dismissible}
-                />
+    const getDescription = React.useCallback(
+        (description: React.ReactElement<typeof ToastDescription> | string | undefined) => {
+            return typeof description === "string" ? (
+                <ToastDescription text={description} />
+            ) : (
+                description
             );
         },
-        {
-            duration,
-            dismissible,
-            position
+        []
+    );
+
+    const showToast = React.useCallback(
+        (params: ShowToastParams) => {
+            const {
+                title,
+                description,
+                icon,
+                actions,
+                variant,
+                dismissible,
+                duration = 6000,
+                position = "top-right"
+            } = params;
+
+            const id = generateId();
+
+            return sonnerToast.custom(
+                toast => (
+                    <Toast
+                        title={getTitle(title)}
+                        description={getDescription(description)}
+                        icon={icon}
+                        actions={actions}
+                        variant={variant}
+                        onCloseClick={() => sonnerToast.dismiss(toast)}
+                        dismissible={dismissible}
+                    />
+                ),
+                {
+                    id,
+                    duration,
+                    dismissible,
+                    position
+                }
+            );
+        },
+        [getTitle, getDescription, sonnerToast]
+    );
+
+    const hideToast = React.useCallback(
+        (id: number | string) => {
+            return sonnerToast.dismiss(id);
+        },
+        [sonnerToast]
+    );
+
+    const hideAllToasts = React.useCallback(() => {
+        const toastIds = sonnerToast.getToasts().map(toast => toast.id);
+
+        if (toastIds.length === 0) {
+            return;
         }
+
+        // Dismiss each toast with a small delay between them
+        // This helps ensure each dismissal is processed properly
+        toastIds.forEach((id, index) => {
+            setTimeout(() => {
+                sonnerToast.dismiss(id);
+            }, index * 50);
+        });
+    }, [sonnerToast]);
+
+    return React.useMemo(
+        () => ({
+            showToast,
+            hideToast,
+            hideAllToasts
+        }),
+        [showToast, hideToast, hideAllToasts]
     );
 };
 
-export { useToast, type UseToastParams };
+export { useToast, type ShowToastParams };

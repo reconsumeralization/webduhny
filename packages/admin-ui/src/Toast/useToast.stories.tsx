@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast } from "./Toast";
-import { useToast, type UseToastParams } from "./useToast";
+import { useToast, type ShowToastParams } from "./useToast";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
 
-const ToastComponent = (props: UseToastParams) => {
-    return <Button text={"Display Toast"} onClick={() => useToast(props)} />;
+const ToastComponent = (props: ShowToastParams) => {
+    const [lastToast, setLastToast] = useState<string | number>("");
+    const { showToast, hideToast, hideAllToasts } = useToast();
+    return (
+        <>
+            <Button
+                text={"Show Toast"}
+                onClick={() => {
+                    const toast = showToast(props);
+                    setLastToast(toast);
+                }}
+            />
+            <Button text={"Hide latest toast"} onClick={() => hideToast(lastToast)} />
+            <Button text={"Hide all toasts"} onClick={() => hideAllToasts()} />
+        </>
+    );
 };
 
-const meta: Meta<UseToastParams> = {
+const meta: Meta<ShowToastParams> = {
     title: "Hooks/useToast",
     component: ToastComponent,
     tags: ["autodocs"],
@@ -22,7 +36,7 @@ const meta: Meta<UseToastParams> = {
     },
     decorators: [
         Story => (
-            <div className="wby-w-full wby-h-64 wby-flex wby-justify-center wby-items-center">
+            <div className="wby-w-full wby-h-64 wby-flex wby-justify-center wby-items-center wby-gap-sm">
                 <Story />
                 <Toast.Provider />
             </div>
@@ -32,7 +46,7 @@ const meta: Meta<UseToastParams> = {
 
 export default meta;
 
-type Story = StoryObj<UseToastParams>;
+type Story = StoryObj<ShowToastParams>;
 
 export const Default: Story = {
     args: {
