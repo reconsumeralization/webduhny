@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Popover, cn } from "@webiny/admin-ui";
+import { cn, PopoverPrimitive } from "@webiny/admin-ui";
 import { useIcon } from "..";
 import { IconPickerTab } from "../IconPickerTab";
 import { IconProvider } from "../IconRenderer";
@@ -77,15 +77,15 @@ const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectPr
     }
 
     return (
-        <Popover open={open} onOpenChange={open => setOpen(open)}>
-            <Popover.Trigger className={"wby-outline-none"}>
+        <PopoverPrimitive open={open} onOpenChange={open => setOpen(open)}>
+            <PopoverPrimitive.Trigger className={"wby-outline-none"}>
                 <SkinToneSelectWrapper>
                     <IconProvider icon={icon} size={24}>
                         <Emoji />
                     </IconProvider>
                 </SkinToneSelectWrapper>
-            </Popover.Trigger>
-            <Popover.Content>
+            </PopoverPrimitive.Trigger>
+            <PopoverPrimitive.Content>
                 <div className={"wby-bg-neutral-base wby-grid wby-gap-xs wby-p-xs wby-text-center"}>
                     {SKIN_TONES.map((skinTone, index) => (
                         <div
@@ -101,8 +101,8 @@ const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectPr
                         </div>
                     ))}
                 </div>
-            </Popover.Content>
-        </Popover>
+            </PopoverPrimitive.Content>
+        </PopoverPrimitive>
     );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text } from "~/Text";
-import { cn, cva, makeDecoratable, VariantProps } from "~/utils";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 
 const loaderVariants = cva("wby-relative wby-translate", {
     variants: {

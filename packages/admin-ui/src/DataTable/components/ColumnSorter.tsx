@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const columnSorterVariants = cva("wby-flex wby-items-center wby-gap-xxs wby-cursor-auto", {
     variants: {

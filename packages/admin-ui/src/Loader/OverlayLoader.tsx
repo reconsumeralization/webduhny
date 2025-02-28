@@ -2,7 +2,7 @@ import React from "react";
 import { Loader, LoaderProps } from "./Loader";
 import { cn, makeDecoratable } from "~/utils";
 
-interface OverlayLoaderProps extends LoaderProps {}
+type OverlayLoaderProps = LoaderProps;
 
 const DecoratableOverlayLoader = ({ className, size = "lg", ...props }: OverlayLoaderProps) => {
     return (

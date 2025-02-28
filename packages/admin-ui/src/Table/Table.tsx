@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, cva, VariantProps, withStaticProps } from "~/utils";
+import { cn, cva, type VariantProps, withStaticProps } from "~/utils";
 import {
     Body,
     Caption,

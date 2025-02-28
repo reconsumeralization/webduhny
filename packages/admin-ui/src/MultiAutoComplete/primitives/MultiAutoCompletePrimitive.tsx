@@ -1,7 +1,8 @@
 import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
-import { Popover } from "~/Popover";
+import { PopoverPrimitive } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
+import { makeDecoratable } from "~/utils";
 import { useMultiAutoComplete } from "./useMultiAutoComplete";
 import {
     MultiAutoCompleteInput,
@@ -81,7 +82,7 @@ type MultiAutoCompletePrimitiveProps = Omit<
     displayResetAction?: boolean;
 };
 
-const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
+const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     const {
         vm,
         setListOpenState,
@@ -126,9 +127,9 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     );
 
     return (
-        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
+        <PopoverPrimitive open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
-                <Popover.Trigger asChild>
+                <PopoverPrimitive.Trigger asChild>
                     <span>
                         <MultiAutoCompleteInput
                             value={vm.inputVm.value}
@@ -158,8 +159,8 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                             }
                         />
                     </span>
-                </Popover.Trigger>
-                <Popover.Content
+                </PopoverPrimitive.Trigger>
+                <PopoverPrimitive.Content
                     style={{ width: "var(--radix-popover-trigger-width)" }}
                     onOpenAutoFocus={e => e.preventDefault()}
                 >
@@ -174,10 +175,15 @@ const MultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
                         options={vm.optionsListVm.options}
                         temporaryOption={vm.temporaryOptionVm.option}
                     />
-                </Popover.Content>
+                </PopoverPrimitive.Content>
             </Command>
-        </Popover>
+        </PopoverPrimitive>
     );
 };
+
+const MultiAutoCompletePrimitive = makeDecoratable(
+    "MultiAutoCompletePrimitive",
+    DecoratableMultiAutoCompletePrimitive
+);
 
 export { MultiAutoCompletePrimitive, type MultiAutoCompletePrimitiveProps };

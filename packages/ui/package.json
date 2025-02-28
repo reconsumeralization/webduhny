@@ -17,37 +17,27 @@
     "@editorjs/editorjs": "2.26.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
-    "@rmwc/grid": "^14.2.2",
     "@rmwc/list": "^14.2.2",
     "@rmwc/menu": "^14.2.2",
     "@rmwc/top-app-bar": "^14.2.2",
-    "@rmwc/touch-target": "^14.2.2",
-    "@rmwc/typography": "^14.2.2",
     "@svgr/webpack": "^6.1.1",
     "@webiny/admin-ui": "0.0.0",
     "@webiny/form": "0.0.0",
     "@webiny/utils": "0.0.0",
     "classnames": "^2.5.1",
     "cropperjs": "^1.4.3",
-    "dot-prop-immutable": "^2.1.1",
     "emotion": "10.0.27",
     "keycode": "^2.2.0",
     "load-script": "^1.0.0",
     "lodash": "^4.17.21",
     "material-components-web": "^14.0.0",
-    "nuka-carousel": "4.7.1",
     "react-butterfiles": "^1.3.3",
-    "react-color": "^2.19.3",
-    "react-columned": "^1.1.3",
-    "react-custom-scrollbars": "^4.2.1",
-    "timeago-react": "^3.0.6"
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
     "@testing-library/react": "^15.0.7",
-    "@types/nprogress": "^0.2.0",
     "@types/react-color": "^2.17.11",
-    "@types/react-custom-scrollbars": "^4.0.10",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "@webiny/validation": "0.0.0",
@@ -82,8 +72,7 @@
       "dependencies": [
         "@svgr/webpack",
         "material-components-web",
-        "@emotion/react",
-        "@rmwc/touch-target"
+        "@emotion/react"
       ]
     }
   },

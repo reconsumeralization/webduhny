@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, ReactElement } from "react";
 import pick from "lodash/pick";
 import { FormComponentProps } from "~/types";
-import classNames from "classnames";
 import { Input as AdminInput, Textarea as AdminTextarea } from "@webiny/admin-ui";
 
 export interface TextFieldHelperTextProps {
@@ -176,7 +175,7 @@ export const Input = (props: InputProps) => {
                 onChange={onChange}
                 placeholder={placeholder}
                 size={size}
-                className={classNames("webiny-ui-input")}
+                className={"webiny-ui-input"}
                 data-testid={props["data-testid"]}
                 validation={validation}
                 description={description}
@@ -198,7 +197,7 @@ export const Input = (props: InputProps) => {
             endIcon={getValidIcon(trailingIcon)}
             placeholder={placeholder}
             size={size}
-            className={classNames("webiny-ui-input")}
+            className={"webiny-ui-input"}
             data-testid={props["data-testid"]}
             validation={validation}
             description={description}

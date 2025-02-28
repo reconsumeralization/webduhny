@@ -30,7 +30,7 @@ export interface RmwcChipProps {
 }
 
 export interface ChipProps extends Omit<RmwcChipProps, "onRemove" | "trailingIcon"> {
-    onRemove: (
+    onRemove?: (
         ev: React.MouseEvent<HTMLSpanElement> | React.SyntheticEvent<HTMLSpanElement>
     ) => void;
     trailingIcon?: React.ReactNode;
@@ -97,7 +97,7 @@ export const Chip = (props: ChipProps) => {
             ])}
             content={children || label}
             dismissIconElement={createIconElement(trailingIcon)}
-            onDismiss={onRemoveCb}
+            onDismiss={onRemove ? onRemoveCb : undefined}
             onClick={onClick}
         />
     );

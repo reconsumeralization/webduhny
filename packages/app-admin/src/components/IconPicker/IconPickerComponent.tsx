@@ -6,7 +6,7 @@ import {
     FormComponentErrorMessage,
     FormComponentLabel,
     FormComponentProps,
-    Popover
+    PopoverPrimitive
 } from "@webiny/admin-ui";
 import { IconPickerContent, IconPickerTrigger } from "./components";
 import { IconPickerPresenter } from "./IconPickerPresenter";
@@ -67,11 +67,11 @@ export const IconPickerComponent = observer(
             <IconPickerPresenterProvider presenter={presenter}>
                 <FormComponentLabel text={label} required={required} disabled={disabled} />
                 <FormComponentDescription text={description} />
-                <Popover open={isMenuOpened} onOpenChange={handleOnOpenChange}>
-                    <Popover.Trigger>
+                <PopoverPrimitive open={isMenuOpened} onOpenChange={handleOnOpenChange}>
+                    <PopoverPrimitive.Trigger>
                         <IconPickerTrigger icon={selectedIcon} />
-                    </Popover.Trigger>
-                    <Popover.Content
+                    </PopoverPrimitive.Trigger>
+                    <PopoverPrimitive.Content
                         style={{ width: size === ICON_PICKER_SIZE.SMALL ? "248px" : "328px" }}
                     >
                         <IconPickerContent
@@ -81,8 +81,8 @@ export const IconPickerComponent = observer(
                             activeTab={activeTab}
                             removeIcon={removeIcon}
                         />
-                    </Popover.Content>
-                </Popover>
+                    </PopoverPrimitive.Content>
+                </PopoverPrimitive>
                 <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             </IconPickerPresenterProvider>
         );

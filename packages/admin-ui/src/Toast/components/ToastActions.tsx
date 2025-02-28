@@ -1,7 +1,11 @@
 import React from "react";
-import { cn } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 
-const ToastActions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DecoratableToastActions = ({
+    children,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         {...props}
         className={cn(
@@ -12,5 +16,7 @@ const ToastActions = ({ children, className, ...props }: React.HTMLAttributes<HT
         {children}
     </div>
 );
+
+const ToastActions = makeDecoratable("ToastActions", DecoratableToastActions);
 
 export { ToastActions };
