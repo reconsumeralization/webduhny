@@ -82,7 +82,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
                 protect
             });
 
-            const lambda = app.addModule(SyncSystemLambda, {
+            app.addModule(SyncSystemLambda, {
                 protect,
                 config: {
                     // TODO

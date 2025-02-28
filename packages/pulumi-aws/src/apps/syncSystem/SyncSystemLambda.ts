@@ -17,7 +17,8 @@ export type SyncSystemLambda = PulumiAppModule<typeof SyncSystemLambda>;
 
 export const SyncSystemLambda = createAppModule({
     name: "SyncSystemLambda",
-    config(app: PulumiApp, params: SyncSystemLambdaParams) {
+    // eslint-disable-next-line
+    config(app: PulumiApp, _: SyncSystemLambdaParams) {
         const policy = createSyncSystemLambdaPolicy({
             app,
             // TODO - get bucket ids and dynamodb tables from the FileManager app

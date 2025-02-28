@@ -40,7 +40,6 @@ export const ApiGraphql = createAppModule({
             name: "api-lambda-role",
             policy: policy.output
         });
-        policy.config.policy;
 
         const graphql = app.addResource(aws.lambda.Function, {
             name: "graphql",

@@ -7,7 +7,7 @@ export type BlueGreenRouterDynamoDb = PulumiAppModule<typeof BlueGreenRouterDyna
 
 export interface IBlueGreenRouterDynamoDbParams {
     region: aws.Provider;
-    protect?: boolean;
+    protect: boolean;
 }
 
 export const BlueGreenRouterDynamoDb = createAppModule({
@@ -15,7 +15,7 @@ export const BlueGreenRouterDynamoDb = createAppModule({
     config(app: PulumiApp, params: IBlueGreenRouterDynamoDbParams) {
         const indexes = createDynamoDbGSI(["GSI1"]);
         return app.addResource(aws.dynamodb.Table, {
-            name: "sync-table",
+            name: "webiny-blue-green",
             config: {
                 attributes: indexes.withAttributes([
                     {

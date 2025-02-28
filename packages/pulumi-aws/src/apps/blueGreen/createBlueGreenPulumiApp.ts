@@ -2,9 +2,15 @@ import * as aws from "@pulumi/aws";
 import { Region } from "@pulumi/aws";
 import type { PulumiAppParam } from "@webiny/pulumi";
 import { createPulumiApp } from "@webiny/pulumi";
-import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
-import { BlueGreenRouterDynamoDb } from "./BlueGreenRouterDynamoDb";
-import { BlueGreenRouterCloudFront } from "./BlueGreenRouterCloudFront";
+import { DEFAULT_PROD_ENV_NAMES } from "~/constants.js";
+import { BlueGreenRouterDynamoDb } from "./BlueGreenRouterDynamoDb.js";
+import { BlueGreenRouterCloudFront } from "./BlueGreenRouterCloudFront.js";
+import { createCloudFrontDefaultCacheBehaviorPolicies } from "./createCloudFrontDefaultCacheBehaviorPolicies.js";
+import { tagResources } from "~/utils/tagResources.js";
+import { getEnvVariableWebinyProjectName } from "~/env/projectName.js";
+import { getEnvVariableWebinyEnv } from "~/env/env.js";
+import { addDomainsUrlsOutputs } from "~/utils/addDomainsUrlsOutputs.js";
+import { BlueGreenRouterApiGateway } from "~/apps/blueGreen/BlueGreenRouterApiGateway.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 
@@ -75,33 +81,70 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
 
-            const blueGreenRegion = new aws.Provider(Region.USEast1, {
+            const region = new aws.Provider(Region.USEast1, {
                 region: Region.USEast1
             });
+
             /**
-             * We need Cloudfront to sort out domains and routing.
+             * Policies required for default Cache Behavior in CloudFront.
+             * We need to do this outside the module creation because it is async.
              */
-            const cloudFront = app.addModule(BlueGreenRouterCloudFront, {
-                region: blueGreenRegion
-            });
-            /**
-             * We need the DynamoDB table to write the blue and green system information into.
-             */
+            const { forwardEverythingOriginRequestPolicyId, disableCachingCachePolicyId } =
+                await createCloudFrontDefaultCacheBehaviorPolicies();
+
             const dynamoDbTable = app.addModule(BlueGreenRouterDynamoDb, {
                 protect,
-                region: blueGreenRegion
+                region
+            });
+            const apiGateway = app.addModule(BlueGreenRouterApiGateway, {
+                protect,
+                region
+            });
+
+            const { cloudFront, edgeLambda, edgePolicy, edgePolicyAttachment, edgeRole } =
+                app.addModule(BlueGreenRouterCloudFront, {
+                    protect,
+                    region,
+                    cachePolicyId: disableCachingCachePolicyId,
+                    originRequestPolicyId: forwardEverythingOriginRequestPolicyId
+                });
+
+            app.addHandler(() => {
+                addDomainsUrlsOutputs({
+                    app,
+                    cloudfrontDistribution: cloudFront,
+                    map: {
+                        distributionDomain: "cloudfrontApiDomain",
+                        distributionUrl: "cloudfrontApiUrl",
+                        usedDomain: "apiDomain",
+                        usedUrl: "apiUrl"
+                    }
+                });
+            });
+
+            tagResources({
+                WbyProjectName: getEnvVariableWebinyProjectName(),
+                WbyEnvironment: getEnvVariableWebinyEnv()
             });
 
             return {
                 router: {
-                    region: blueGreenRegion,
+                    region,
                     dynamoDbTable,
+                    apiGateway,
                     dynamoDbTableArn: dynamoDbTable.output.arn,
                     dynamoDbTableHashKey: dynamoDbTable.output.hashKey,
                     dynamoDbTableRangeKey: dynamoDbTable.output.rangeKey,
-                    cloudFront,
-                    cloudfrontId: cloudFront.cloudFront.output.id,
-                    cloudfrontArn: cloudFront.cloudFront.output.arn
+                    cloudFront: cloudFront,
+                    cloudfrontId: cloudFront.output.id,
+                    cloudfrontArn: cloudFront.output.arn,
+                    cloudfrontDomainName: cloudFront.output.domainName,
+                    edgeLambda,
+                    edgeLambdaArn: edgeLambda.output.arn,
+                    edgeLambdaQualifiedArn: edgeLambda.output.qualifiedArn,
+                    edgePolicy,
+                    edgeRole,
+                    edgePolicyAttachment
                 }
             };
         }

@@ -96,7 +96,9 @@ export function createPrivateAppBucket(app: PulumiApp, name: string) {
                         },
                         {
                             Effect: "Allow",
-                            Principal: { AWS: api.graphqlLambdaRole },
+                            Principal: {
+                                AWS: api.graphqlLambdaRole
+                            },
                             Action: [
                                 "s3:GetObjectAcl",
                                 "s3:DeleteObject",
