@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 export interface DrawerContentProps

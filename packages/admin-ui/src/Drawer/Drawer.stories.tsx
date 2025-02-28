@@ -106,6 +106,7 @@ export const WithTabs: Story = {
         children: (
             <>
                 <Tabs
+                    spacing={"lg"}
                     tabs={[
                         <Tabs.Tab
                             key="account"

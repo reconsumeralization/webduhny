@@ -10,10 +10,6 @@ const meta: Meta<typeof Textarea> = {
     },
     parameters: {
         layout: "padded"
-    },
-    render: args => {
-        const [value, setValue] = useState(args.value);
-        return <Textarea {...args} value={value} onChange={e => setValue(e.target.value)} />;
     }
 };
 

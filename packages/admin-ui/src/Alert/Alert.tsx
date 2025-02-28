@@ -123,59 +123,58 @@ export interface AlertProps
 
 const AlertContext = React.createContext<Pick<AlertProps, "variant">>({});
 
-const AlertActionBase = React.forwardRef<HTMLButtonElement, ButtonProps>(({ ...props }, ref) => {
+const AlertActionBase = (props: ButtonProps) => {
     const { variant: alertVariant } = React.useContext(AlertContext);
     return (
         <Button
             text={"Button"}
             variant={alertVariant === "strong" ? "secondary" : "tertiary"}
             size={"sm"}
-            ref={ref}
             {...props}
         />
     );
-});
-
-AlertActionBase.displayName = "AlertAction";
+};
 
 const AlertAction = makeDecoratable("AlertAction", AlertActionBase);
 
-const AlertBase = React.forwardRef<HTMLDivElement, AlertProps>(
-    ({ className, type, variant, showCloseButton, onClose, actions, children, ...props }, ref) => {
-        const IconComponent = VARIANT_ICON_MAP[type || "info"];
+const AlertBase = ({
+    className,
+    type,
+    variant,
+    showCloseButton,
+    onClose,
+    actions,
+    children,
+    ...props
+}: AlertProps) => {
+    const IconComponent = VARIANT_ICON_MAP[type || "info"];
 
-        return (
-            <AlertContext.Provider value={{ variant }}>
-                <div
-                    ref={ref}
-                    role="alert"
-                    className={cn(alertVariants({ type, variant }), className)}
-                    {...props}
-                >
-                    <div className={"wby-py-xs"}>
-                        <IconComponent className={alertIconVariants({ type, variant })} />
-                    </div>
-                    <div className={"wby-flex-grow wby-py-xxs"}>{children}</div>
-                    {actions && <div>{actions}</div>}
-                    {showCloseButton && (
-                        <IconButton
-                            onClick={onClose}
-                            icon={<Icon icon={<XIcon />} label="Close" />}
-                            size={"sm"}
-                            variant={closeButtonVariants({ type, variant })}
-                        />
-                    )}
+    return (
+        <AlertContext.Provider value={{ variant }}>
+            <div
+                role="alert"
+                className={cn(alertVariants({ type, variant }), className)}
+                {...props}
+            >
+                <div className={"wby-py-xs"}>
+                    <IconComponent className={alertIconVariants({ type, variant })} />
                 </div>
-            </AlertContext.Provider>
-        );
-    }
-);
+                <div className={"wby-flex-grow wby-py-xxs"}>{children}</div>
+                {actions && <div>{actions}</div>}
+                {showCloseButton && (
+                    <IconButton
+                        onClick={onClose}
+                        icon={<Icon icon={<XIcon />} label="Close" />}
+                        size={"sm"}
+                        variant={closeButtonVariants({ type, variant })}
+                    />
+                )}
+            </div>
+        </AlertContext.Provider>
+    );
+};
 
-AlertBase.displayName = "Alert";
-
-const DecoratableAvatar = makeDecoratable("AlertBase", AlertBase);
-
-const Alert = withStaticProps(DecoratableAvatar, {
+const Alert = withStaticProps(makeDecoratable("AlertBase", AlertBase), {
     Action: AlertAction
 });
 

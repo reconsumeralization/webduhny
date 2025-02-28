@@ -38,10 +38,6 @@ const meta: Meta<typeof Input> = {
     },
     parameters: {
         layout: "padded"
-    },
-    render: args => {
-        const [value, setValue] = useState(args.value);
-        return <Input {...args} value={value} onChange={e => setValue(e.target.value)} />;
     }
 };
 
