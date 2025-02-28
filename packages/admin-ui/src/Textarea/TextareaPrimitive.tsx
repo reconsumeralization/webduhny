@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, cva, type VariantProps } from "~/utils";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 
 const textareaVariants = cva(
     [
@@ -79,7 +79,7 @@ interface TextareaPrimitiveProps
     onEnter?: () => void;
 }
 
-const TextareaPrimitive = ({
+const DecoratableTextareaPrimitive = ({
     className,
     variant,
     invalid,
@@ -126,5 +126,7 @@ const TextareaPrimitive = ({
         />
     );
 };
+
+const TextareaPrimitive = makeDecoratable("TextareaPrimitive", DecoratableTextareaPrimitive);
 
 export { TextareaPrimitive, type TextareaPrimitiveProps };

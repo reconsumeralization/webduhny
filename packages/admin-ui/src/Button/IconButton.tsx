@@ -1,6 +1,6 @@
 import React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 const iconButtonVariants = cva(
     [

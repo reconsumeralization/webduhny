@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Label } from "~/Label";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { makeDecoratable } from "~/utils";
 import {
     SliderPrimitiveRenderer,
     SliderPrimitiveProps,
-    SliderPrimitiveRendererProps
-} from "~/Slider";
+    SliderPrimitiveRendererProps,
+    useSlider,
+    SliderValue
+} from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
@@ -13,32 +15,6 @@ import {
     FormComponentNote,
     FormComponentProps
 } from "~/FormComponent";
-import { useSlider } from "~/Slider/useSlider";
-
-/**
- * Slider Value
- */
-const sliderValueVariants = cva("wby-font-normal wby-text-sm wby-leading-none", {
-    variants: {
-        disabled: {
-            true: "wby-text-neutral-disabled wby-cursor-not-allowed"
-        }
-    }
-});
-
-interface SliderValueProps
-    extends React.HTMLAttributes<HTMLSpanElement>,
-        VariantProps<typeof sliderValueVariants> {
-    value?: string;
-}
-
-const DecoratableSliderValue = ({ value, disabled, className }: SliderValueProps) => {
-    if (!value) {
-        return null;
-    }
-    return <span className={cn(sliderValueVariants({ disabled }), className)}>{value}</span>;
-};
-const SliderValue = makeDecoratable("SliderValue", DecoratableSliderValue);
 
 /**
  * Slider Renderer with side label
@@ -48,7 +24,7 @@ interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps 
     required?: boolean;
 }
 
-const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
+const SliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) => {
     return (
         <div className={"wby-w-full wby-flex wby-flex-row wby-items-center wby-justify-between"}>
             <div className={"wby-basis-2/12 wby-pr-sm"}>
@@ -68,10 +44,6 @@ const DecoratableSliderRendererWithSideValue = (props: SliderRendererWithSideVal
         </div>
     );
 };
-const SliderRendererWithSideValue = makeDecoratable(
-    "SliderRendererWithSideValue",
-    DecoratableSliderRendererWithSideValue
-);
 
 /**
  * Slider
@@ -80,12 +52,19 @@ interface SliderProps extends FormComponentProps, SliderPrimitiveProps {
     labelPosition?: "top" | "side";
 }
 
-const DecoratableSlider = ({ description, note, validation, ...props }: SliderProps) => {
+const DecoratableSlider = ({
+    description,
+    note,
+    validation,
+    labelPosition,
+    ...props
+}: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
+
     const { vm, changeValue, commitValue } = useSlider(props);
 
-    if (props.labelPosition === "side") {
+    if (labelPosition === "side") {
         return (
             <div className={"wby-w-full"}>
                 <FormComponentDescription text={description} />

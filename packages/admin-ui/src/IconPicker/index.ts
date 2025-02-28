@@ -1,2 +1,2 @@
 export * from "./IconPicker";
-export { IconPickerIconDto } from "./domains";
+export type { IconPickerIconDto } from "./domains";

@@ -1,11 +1,9 @@
 import React, { SyntheticEvent, useCallback, useState } from "react";
-import { css } from "emotion";
 import keycode from "keycode";
 import minimatch from "minimatch";
 import { Input, InputProps } from "~/Input";
 import { Chips, Chip } from "~/Chips";
 import { FormComponentProps } from "~/types";
-import { ReactComponent as BaselineCloseIcon } from "./icons/baseline-close-24px.svg";
 
 interface TagsProps extends FormComponentProps {
     /**
@@ -59,28 +57,6 @@ interface TagsProps extends FormComponentProps {
     protectedTags?: string[];
 }
 
-const tagsStyle = css({
-    position: "relative",
-    ".mdc-elevation--z1": {
-        position: "absolute",
-        width: "calc(100% - 2px)",
-        left: 1,
-        top: 56,
-        zIndex: 10,
-        maxHeight: 200,
-        overflowY: "scroll",
-        backgroundColor: "var(--mdc-theme-surface)"
-    },
-    ul: {
-        listStyle: "none",
-        width: "100%",
-        padding: 0,
-        li: {
-            padding: 10
-        }
-    }
-});
-
 export const Tags = (props: TagsProps) => {
     const [inputValue, setInputValue] = useState("");
 
@@ -126,31 +102,32 @@ export const Tags = (props: TagsProps) => {
     };
 
     return (
-        <div className={tagsStyle}>
-            <div>
-                <Input {...inputProps} />
-                {Array.isArray(value) && value.length ? (
-                    <Chips disabled={disabled}>
-                        {value.map((item, index) => {
-                            return (
-                                <Chip
-                                    label={item}
-                                    trailingIcon={isProtected(item) ? null : <BaselineCloseIcon />}
-                                    key={`${item}-${index}`}
-                                    onRemove={() => {
-                                        // On removal, let's update the value and call "onChange" callback.
-                                        if (onChange) {
-                                            const newValue = [...value];
-                                            newValue.splice(index, 1);
-                                            onChange(newValue);
-                                        }
-                                    }}
-                                />
-                            );
-                        })}
-                    </Chips>
-                ) : null}
-            </div>
+        <div>
+            <Input {...inputProps} />
+            {Array.isArray(value) && value.length ? (
+                <Chips disabled={disabled}>
+                    {value.map((item, index) => {
+                        return (
+                            <Chip
+                                label={item}
+                                key={`${item}-${index}`}
+                                onRemove={
+                                    !isProtected(item)
+                                        ? () => {
+                                              // On removal, let's update the value and call "onChange" callback.
+                                              if (onChange) {
+                                                  const newValue = [...value];
+                                                  newValue.splice(index, 1);
+                                                  onChange(newValue);
+                                              }
+                                          }
+                                        : undefined
+                                }
+                            />
+                        );
+                    })}
+                </Chips>
+            ) : null}
         </div>
     );
 };

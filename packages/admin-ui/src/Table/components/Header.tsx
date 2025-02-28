@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const headerVariants = cva("[&_tr]:hover:wby-bg-transparent", {
     variants: {

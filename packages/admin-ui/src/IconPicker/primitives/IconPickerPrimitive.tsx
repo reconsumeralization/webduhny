@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { inputVariants } from "~/Input";
-import { Popover } from "~/Popover";
+import { PopoverPrimitive } from "~/Popover";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerGrid, IconPickerInput, IconPickerTrigger } from "./components";
 import { IconPickerIconDto } from "../domains";
@@ -44,8 +44,8 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
     }, [vm.open]);
 
     return (
-        <Popover open={vm.open} onOpenChange={setListOpenState}>
-            <Popover.Trigger asChild>
+        <PopoverPrimitive open={vm.open} onOpenChange={setListOpenState}>
+            <PopoverPrimitive.Trigger asChild>
                 <div
                     data-disabled={props.disabled}
                     className={cn(
@@ -59,16 +59,16 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
                 >
                     <IconPickerTrigger value={props.value} size={props.size} />
                 </div>
-            </Popover.Trigger>
-            <Popover.Content align={"start"} className={"wby-min-w-96"}>
+            </PopoverPrimitive.Trigger>
+            <PopoverPrimitive.Content align={"start"} className={"wby-min-w-96"}>
                 <IconPickerInput value={vm.searchQuery} onChange={searchIcon} inputRef={inputRef} />
                 <IconPickerGrid
                     icons={vm.icons}
                     iconsLength={vm.iconsLength}
                     onIconSelect={setSelectedIcon}
                 />
-            </Popover.Content>
-        </Popover>
+            </PopoverPrimitive.Content>
+        </PopoverPrimitive>
     );
 };
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Icon as BaseIcon } from "~/Icon";
-import { cn, cva, type VariantProps } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 /**
  * Icon
@@ -257,7 +257,7 @@ const getIconPosition = (
     return;
 };
 
-const InputPrimitive = ({
+const DecoratableInputPrimitive = ({
     className,
     disabled,
     endIcon,
@@ -325,6 +325,8 @@ const InputPrimitive = ({
         </div>
     );
 };
+
+const InputPrimitive = makeDecoratable("InputPrimitive", DecoratableInputPrimitive);
 
 export {
     InputIcon,

@@ -1,2 +1,2 @@
 export * from "./Switch";
-export * from "./SwitchPrimitive";
+export * from "./primitives";

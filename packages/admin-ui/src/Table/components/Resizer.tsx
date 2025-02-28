@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const resizerVariants = cva(
     [

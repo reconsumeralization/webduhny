@@ -40,7 +40,7 @@ export interface AutoCompleteBaseProps extends FormComponentProps {
     /**
      * Default structure of value, an object consisting of "id" and "name" keys. Different keys can be set using "valueProp" and "textProp" props.
      */
-    value?: { id: string; name: string };
+    value?: { id: string; name: string } | string;
 
     /**
      * Key in a single option object that will be used as option's value (by default, "id" key will be used).

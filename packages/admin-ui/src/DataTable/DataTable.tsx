@@ -18,7 +18,7 @@ import { CheckboxPrimitive } from "~/Checkbox";
 import { Skeleton } from "~/Skeleton";
 import { Table } from "~/Table";
 import { ColumnSorter, ColumnsVisibility } from "./components";
-import { cn } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 
 interface DataTableColumn<T> {
     /*
@@ -296,7 +296,7 @@ const MemoTableRow = typedMemo(TableRow);
  */
 const emptyArray = Array(10).fill({});
 
-const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
+const DecoratableDataTable = <T extends Record<string, any> & DataTableDefaultData>({
     bordered,
     canSelectAllRows = true,
     columnVisibility,
@@ -494,6 +494,8 @@ const DataTable = <T extends Record<string, any> & DataTableDefaultData>({
         </div>
     );
 };
+
+const DataTable = makeDecoratable("DataTable", DecoratableDataTable);
 
 export {
     DataTable,
