@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { SwitchPrimitive, SwitchPrimitiveProps } from "~/Switch";
+import { SwitchPrimitive, SwitchPrimitiveProps } from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,

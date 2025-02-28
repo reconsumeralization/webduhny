@@ -1,9 +1,23 @@
 import React from "react";
-import { TypographyProps as RmwcTypographyProps } from "@rmwc/typography";
-
 import { Heading, HeadingLevels, Text } from "@webiny/admin-ui";
 
-interface TypographyProps extends RmwcTypographyProps {
+export declare type TypographyT =
+    | "headline1"
+    | "headline2"
+    | "headline3"
+    | "headline4"
+    | "headline5"
+    | "headline6"
+    | "subtitle1"
+    | "subtitle2"
+    | "body1"
+    | "body2"
+    | "caption"
+    | "button"
+    | "overline";
+
+interface TypographyProps {
+    use: TypographyT;
     children?: React.ReactNode;
     className?: string;
     /**

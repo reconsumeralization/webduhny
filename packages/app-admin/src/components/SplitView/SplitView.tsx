@@ -1,9 +1,9 @@
 import * as React from "react";
 import classSet from "classnames";
 import { CellProps } from "@webiny/ui/Grid";
+import { cn } from "@webiny/admin-ui";
 import { css } from "emotion";
 import styled from "@emotion/styled";
-import { getClasses } from "@webiny/ui/Helpers";
 import {
     Panel,
     PanelProps,
@@ -81,10 +81,7 @@ const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
                 defaultSize={defaultSize}
                 minSize={10}
                 id="leftPanel"
-                {...getClasses(
-                    props,
-                    classSet(leftPanel, className, "webiny-split-view__left-panel")
-                )}
+                className={cn(leftPanel, "webiny-split-view__right-panel", className)}
                 {...props}
             >
                 {children}
@@ -102,7 +99,7 @@ const RightPanel = ({ children, ...props }: SplitViewPanelProps) => {
             defaultSize={defaultSize}
             minSize={30}
             id="rightPanel"
-            {...getClasses(props, "webiny-split-view__right-panel")}
+            className={cn("webiny-split-view__right-panel", props.className)}
             {...props}
         >
             <RightPanelWrapper

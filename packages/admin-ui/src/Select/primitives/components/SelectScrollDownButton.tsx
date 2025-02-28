@@ -1,0 +1,20 @@
+import * as React from "react";
+import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import * as SelectPrimitives from "@radix-ui/react-select";
+import { cn } from "~/utils";
+
+type SelectScrollDownButtonProps = SelectPrimitives.SelectScrollDownButtonProps;
+
+const SelectScrollDownButton = ({ className, ...props }: SelectScrollDownButtonProps) => (
+    <SelectPrimitives.ScrollDownButton
+        className={cn(
+            "wby-flex wby-cursor-default wby-items-center wby-justify-center wby-pt-sm wby-fill-neutral-xstrong",
+            className
+        )}
+        {...props}
+    >
+        <ChevronDown className="wby-h-md wby-w-md" />
+    </SelectPrimitives.ScrollDownButton>
+);
+
+export { SelectScrollDownButton, type SelectScrollDownButtonProps };

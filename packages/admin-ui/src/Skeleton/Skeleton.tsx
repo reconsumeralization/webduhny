@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 const skeletonVariants = cva("wby-animate-skeleton-pulse wby-rounded-sm", {
     variants: {

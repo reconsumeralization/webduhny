@@ -141,26 +141,30 @@ export const WithTabs: Story = {
         ...Default.args,
         bodyPadding: false,
         children: (
-            /* eslint-disable react/jsx-key */
             <>
                 <Tabs
+                    spacing={"lg"}
                     tabs={[
                         <Tabs.Tab
+                            key={"account"}
                             value={"account"}
                             trigger={"Account"}
                             content={"Make changes to your account here."}
                         />,
                         <Tabs.Tab
+                            key={"company"}
                             value={"company"}
                             trigger={"Company"}
                             content={"Make changes to your company info here."}
                         />,
                         <Tabs.Tab
+                            key={"security"}
                             value={"security"}
                             trigger={"Security"}
                             content={"Make changes to your security settings here."}
                         />,
                         <Tabs.Tab
+                            key={"development"}
                             value={"development"}
                             trigger={"Development"}
                             content={"Make changes to your development settings here."}

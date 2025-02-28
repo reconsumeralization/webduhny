@@ -1,38 +1,47 @@
 import * as React from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { cn, withStaticProps } from "~/utils";
+import {
+    PopoverPrimitive,
+    type PopoverPrimitiveProps,
+    type PopoverPrimitiveContentProps
+} from "./primitives";
+import { makeDecoratable } from "~/utils";
 
-type PopoverContentProps = PopoverPrimitive.PopoverContentProps;
+interface PopoverProps extends PopoverPrimitiveProps, Omit<PopoverPrimitiveProps, "children"> {
+    align?: PopoverPrimitiveContentProps["align"];
+    content: React.ReactNode;
+    arrow?: boolean;
+    close?: boolean;
+    side?: PopoverPrimitiveContentProps["side"];
+    trigger: React.ReactNode;
+    variant?: PopoverPrimitiveContentProps["variant"];
+}
 
-const PopoverContent = ({
-    className,
-    align = "center",
-    sideOffset = 6,
-    collisionPadding = 8,
+const DecoratablePopover = ({
+    align,
+    arrow,
+    close,
+    content,
+    side,
+    trigger,
+    variant,
     ...props
-}: PopoverContentProps) => (
-    <PopoverPrimitive.Portal>
+}: PopoverProps) => (
+    <PopoverPrimitive {...props}>
+        <PopoverPrimitive.Trigger asChild>{trigger}</PopoverPrimitive.Trigger>
         <PopoverPrimitive.Content
             align={align}
-            sideOffset={sideOffset}
-            collisionPadding={collisionPadding}
-            className={cn(
-                [
-                    "wby-z-50 wby-bg-neutral-base wby-rounded-sm wby-overflow-hidden wby-border-sm wby-border-neutral-muted wby-shadow-lg wby-outline-none",
-                    "data-[state=open]:wby-animate-in data-[state=closed]:wby-animate-out data-[state=closed]:wby-fade-out-0 data-[state=open]:wby-fade-in-0 data-[state=closed]:wby-zoom-out-95 data-[state=open]:wby-zoom-in-95",
-                    "data-[side=bottom]:wby-slide-in-from-top-2 data-[side=left]:wby-slide-in-from-right-2 data-[side=right]:wby-slide-in-from-left-2 data-[side=top]:wby-slide-in-from-bottom-2"
-                ],
-                className
-            )}
-            {...props}
-        />
-    </PopoverPrimitive.Portal>
+            className={"wby-px-sm-extra wby-py-sm"}
+            arrow={arrow}
+            side={side}
+            variant={variant}
+        >
+            {close && <PopoverPrimitive.Close />}
+            {content}
+            {arrow && <PopoverPrimitive.Arrow variant={variant} />}
+        </PopoverPrimitive.Content>
+    </PopoverPrimitive>
 );
 
-const Popover = withStaticProps(PopoverPrimitive.Root, {
-    Anchor: PopoverPrimitive.Anchor,
-    Content: PopoverContent,
-    Trigger: PopoverPrimitive.Trigger
-});
+const Popover = makeDecoratable("Popover", DecoratablePopover);
 
-export { Popover, type PopoverContent };
+export { Popover, type PopoverProps };

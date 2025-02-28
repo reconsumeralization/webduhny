@@ -1,2 +1,2 @@
 export * from "./Select";
-export * from "./SelectPrimitive";
+export * from "./primitives/SelectPrimitive";

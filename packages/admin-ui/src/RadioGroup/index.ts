@@ -1,3 +1,2 @@
-export * from "./Radio";
+export * from "./primitives";
 export * from "./RadioGroup";
-export * from "./RadioGroupPrimitive";
