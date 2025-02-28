@@ -2,7 +2,7 @@ import React from "react";
 import { SketchPicker } from "react-color";
 import { useColorPicker } from "./useColorPicker";
 import { inputVariants } from "~/Input";
-import { Popover, type PopoverContentProps } from "~/Popover";
+import { PopoverPrimitive, type PopoverPrimitiveContentProps } from "~/Popover";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 
 const colorPickerVariants = cva("wby-cursor-pointer", {
@@ -43,7 +43,7 @@ interface ColorPickerPrimitiveProps
     /**
      * Popover alignment.
      */
-    align?: PopoverContentProps["align"];
+    align?: PopoverPrimitiveContentProps["align"];
 }
 
 const DecoratableColorPickerPrimitive = ({
@@ -59,8 +59,8 @@ const DecoratableColorPickerPrimitive = ({
 
     return (
         <div className={className}>
-            <Popover open={vm.open}>
-                <Popover.Trigger asChild>
+            <PopoverPrimitive open={vm.open}>
+                <PopoverPrimitive.Trigger asChild>
                     <div
                         onClick={() => setOpen(!vm.open)}
                         data-disabled={disabled}
@@ -78,15 +78,15 @@ const DecoratableColorPickerPrimitive = ({
                             style={{ backgroundColor: vm.value }}
                         />
                     </div>
-                </Popover.Trigger>
-                <Popover.Content
+                </PopoverPrimitive.Trigger>
+                <PopoverPrimitive.Content
                     align={align}
                     onEscapeKeyDown={() => setOpen(false)}
                     onInteractOutside={() => setOpen(false)}
                 >
                     <SketchPicker color={vm.value} onChange={setColor} />
-                </Popover.Content>
-            </Popover>
+                </PopoverPrimitive.Content>
+            </PopoverPrimitive>
         </div>
     );
 };
