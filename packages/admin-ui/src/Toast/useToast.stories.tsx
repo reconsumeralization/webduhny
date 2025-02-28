@@ -2,71 +2,41 @@ import React from "react";
 import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast } from "./Toast";
+import { useToast, type UseToastParams } from "./useToast";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
 
-const meta: Meta<typeof Toast> = {
-    title: "Components/Toast",
-    component: Toast,
+const ToastComponent = (props: UseToastParams) => {
+    return <Button text={"Display Toast"} onClick={() => useToast(props)} />;
+};
+
+const meta: Meta<UseToastParams> = {
+    title: "Hooks/useToast",
+    component: ToastComponent,
     tags: ["autodocs"],
     parameters: {
         layout: "fullscreen"
     },
     argTypes: {
-        // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onOpenChange argument.
-        onOpenChange: { action: "onOpenChange" },
         variant: { control: "select", options: ["default", "subtle"] }
     },
     decorators: [
-        (Story, context) => {
-            const { args } = context;
-            const [open, setOpen] = React.useState<boolean>(false);
-            const timerRef = React.useRef(0);
-
-            React.useEffect(() => {
-                return () => clearTimeout(timerRef.current);
-            }, []);
-
-            return (
-                <Toast.Provider>
-                    <div className="wby-w-full wby-h-64 wby-flex wby-justify-center wby-items-center">
-                        <Button
-                            text={"Display Toast"}
-                            onClick={() => {
-                                setOpen(false);
-                                window.clearTimeout(timerRef.current);
-                                timerRef.current = window.setTimeout(() => {
-                                    setOpen(true);
-                                }, 100);
-                            }}
-                        />
-                        <Story
-                            args={{
-                                ...args,
-                                open: open,
-                                onOpenChange: open => {
-                                    setOpen(open);
-                                    if (typeof args.onOpenChange === "function") {
-                                        args.onOpenChange(open);
-                                    }
-                                }
-                            }}
-                        />
-                        <Toast.Viewport />
-                    </div>
-                </Toast.Provider>
-            );
-        }
+        Story => (
+            <div className="wby-w-full wby-h-64 wby-flex wby-justify-center wby-items-center">
+                <Story />
+                <Toast.Provider />
+            </div>
+        )
     ]
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Toast>;
+type Story = StoryObj<UseToastParams>;
 
 export const Default: Story = {
     args: {
-        title: <Toast.Title text={"New entry created"} />
+        title: "New entry created"
     }
 };
 
@@ -77,7 +47,20 @@ export const SubtleVariant: Story = {
     }
 };
 
+export const WithTitleComponent: Story = {
+    args: {
+        title: <Toast.Title text={"New entry created"} />
+    }
+};
+
 export const WithDescription: Story = {
+    args: {
+        ...Default.args,
+        description: 'Entry "Article One" has been successfully created'
+    }
+};
+
+export const WithDescriptionComponent: Story = {
     args: {
         ...Default.args,
         description: (
@@ -138,10 +121,10 @@ export const WithCustomIcon: Story = {
     }
 };
 
-export const WithCustomDuration: Story = {
+export const WithInfiniteDuration: Story = {
     args: {
         ...Default.args,
-        duration: 10000
+        duration: Infinity
     }
 };
 
@@ -149,5 +132,12 @@ export const NotDismissible: Story = {
     args: {
         ...Default.args,
         dismissible: false
+    }
+};
+
+export const withCustomPosition: Story = {
+    args: {
+        ...Default.args,
+        position: "bottom-right"
     }
 };

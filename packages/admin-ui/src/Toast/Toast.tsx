@@ -1,16 +1,24 @@
 import * as React from "react";
-import * as ToastPrimitives from "@radix-ui/react-toast";
+import { Toaster, type ToasterProps } from "sonner";
 import { makeDecoratable, withStaticProps } from "~/utils";
+import { type IconButtonProps } from "~/Button";
 import { Icon as BaseIcon } from "~/Icon";
-import { Root, Viewport, Actions, Title, Description, Close, Icon } from "./components";
-
-type ToastRootProps = React.ComponentPropsWithoutRef<typeof Root>;
+import {
+    ToastActions,
+    ToastClose,
+    ToastDescription,
+    ToastIcon,
+    ToastRoot,
+    ToastTitle,
+    type ToastRootProps
+} from "./components";
 
 interface ToastProps extends Omit<ToastRootProps, "title" | "content" | "children"> {
-    title: React.ReactElement<typeof Title>;
-    description?: React.ReactElement<typeof Description>;
+    title: React.ReactElement<typeof ToastTitle>;
+    description?: React.ReactElement<typeof ToastDescription>;
     icon?: React.ReactElement<typeof BaseIcon>;
-    actions?: React.ReactElement<typeof Actions>;
+    actions?: React.ReactElement<typeof ToastActions>;
+    onCloseClick: () => void;
     dismissible?: boolean;
 }
 
@@ -19,33 +27,39 @@ const DecoratableToast = ({
     description,
     icon,
     actions,
-    duration = 6000,
+    onCloseClick,
     dismissible = true,
     ...props
 }: ToastProps) => {
     return (
-        <Root
-            hasDescription={!!description || !!actions}
-            duration={dismissible ? duration : 999999}
-            {...props}
-        >
-            <Icon icon={icon} />
+        <ToastRoot hasDescription={!!description || !!actions} {...props}>
+            <ToastIcon icon={icon} />
             <div className="wby-w-64">
                 {title}
                 {description && description}
                 {actions && actions}
             </div>
-            <Close variant={props.variant} />
-        </Root>
+            {dismissible && (
+                <ToastClose
+                    onClick={onCloseClick}
+                    variant={
+                        props.variant === "subtle"
+                            ? ("subtle" as IconButtonProps["variant"])
+                            : ("ghost-negative" as IconButtonProps["variant"])
+                    }
+                />
+            )}
+        </ToastRoot>
     );
 };
 
 const Toast = withStaticProps(makeDecoratable("Toast", DecoratableToast), {
-    Title,
-    Description,
-    Actions,
-    Provider: ToastPrimitives.Provider,
-    Viewport
+    Title: ToastTitle,
+    Description: ToastDescription,
+    Actions: ToastActions,
+    Provider: (props: ToasterProps) => (
+        <Toaster expand={true} duration={6000} position={"top-right"} {...props} />
+    )
 });
 
-export { Toast };
+export { Toast, type ToastProps };

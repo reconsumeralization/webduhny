@@ -8,9 +8,9 @@ export interface ProvidersProps {
 
 export const Providers = ({ children }: ProvidersProps) => {
     return (
-        <Toast.Provider>
+        <>
             <Tooltip.Provider>{children}</Tooltip.Provider>
-            <Toast.Viewport />
-        </Toast.Provider>
+            <Toast.Provider />
+        </>
     );
 };

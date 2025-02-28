@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "~/utils";
 
-const Actions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const ToastActions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         {...props}
         className={cn(
@@ -13,4 +13,4 @@ const Actions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDiv
     </div>
 );
 
-export { Actions };
+export { ToastActions };
