@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Popover } from "~/Popover";
+import { PopoverPrimitive } from "~/Popover";
 import { withStaticProps } from "~/utils";
 import { FilterIcon } from "~/DataList";
 
@@ -32,14 +32,14 @@ const BaseDataListModal = (props: DataListModalProps) => {
     }
 
     return (
-        <Popover open={open} onOpenChange={open => setOpen(open)}>
-            <Popover.Trigger asChild>
+        <PopoverPrimitive open={open} onOpenChange={open => setOpen(open)}>
+            <PopoverPrimitive.Trigger asChild>
                 <span>{props.trigger}</span>
-            </Popover.Trigger>
-            <Popover.Content onOpenAutoFocus={e => e.preventDefault()} align={"end"}>
+            </PopoverPrimitive.Trigger>
+            <PopoverPrimitive.Content onOpenAutoFocus={e => e.preventDefault()} align={"end"}>
                 <div className={"wby-bg-neutral-base wby-p-md"}>{props.content}</div>
-            </Popover.Content>
-        </Popover>
+            </PopoverPrimitive.Content>
+        </PopoverPrimitive>
     );
 };
 
