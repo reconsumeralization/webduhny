@@ -10,7 +10,8 @@ import { tagResources } from "~/utils/tagResources.js";
 import { getEnvVariableWebinyProjectName } from "~/env/projectName.js";
 import { getEnvVariableWebinyEnv } from "~/env/env.js";
 import { addDomainsUrlsOutputs } from "~/utils/addDomainsUrlsOutputs.js";
-import { BlueGreenRouterApiGateway } from "~/apps/blueGreen/BlueGreenRouterApiGateway.js";
+import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
+import { BlueGreenRouterLambdaEdge } from "./BlueGreenRouterLambdaEdge.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 
@@ -101,14 +102,22 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 region
             });
 
-            const { cloudFront, edgeLambda, edgePolicy, edgePolicyAttachment, edgeRole } =
-                app.addModule(BlueGreenRouterCloudFront, {
+            const { edgeLambda, edgePolicy, edgePolicyAttachment, edgeRole } = app.addModule(
+                BlueGreenRouterLambdaEdge,
+                {
                     protect,
-                    region,
-                    cachePolicyId: disableCachingCachePolicyId,
-                    originRequestPolicyId: forwardEverythingOriginRequestPolicyId
-                });
+                    region
+                }
+            );
 
+            const { cloudFront } = app.addModule(BlueGreenRouterCloudFront, {
+                protect,
+                region,
+                cachePolicyId: disableCachingCachePolicyId,
+                originRequestPolicyId: forwardEverythingOriginRequestPolicyId
+            });
+
+            // TODO - have different output for Blue / Green
             app.addHandler(() => {
                 addDomainsUrlsOutputs({
                     app,
@@ -131,7 +140,8 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 router: {
                     region,
                     dynamoDbTable,
-                    apiGateway,
+                    apiGateway: apiGateway.apiGateway,
+                    apiGatewayStage: apiGateway.apiStage,
                     dynamoDbTableArn: dynamoDbTable.output.arn,
                     dynamoDbTableHashKey: dynamoDbTable.output.hashKey,
                     dynamoDbTableRangeKey: dynamoDbTable.output.rangeKey,
