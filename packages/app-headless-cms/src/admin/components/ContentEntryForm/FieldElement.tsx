@@ -16,7 +16,7 @@ const RenderField = (props: RenderFieldProps) => {
     const renderPlugins = useRenderPlugins();
     const { Bind, contentModel } = props;
     const { field } = useModelField();
-    const getBind = useBind({ Bind, field });
+    const getBind = useBind({ Bind });
 
     if (typeof field.renderer === "function") {
         return <>{field.renderer({ field, getBind, Label, contentModel })}</>;

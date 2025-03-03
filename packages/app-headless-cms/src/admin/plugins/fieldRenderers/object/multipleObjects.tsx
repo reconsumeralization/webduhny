@@ -9,7 +9,7 @@ import {
 } from "~/types";
 import DynamicSection from "../DynamicSection";
 import { Fields } from "~/admin/components/ContentEntryForm/Fields";
-import { ReactComponent as DeleteIcon } from "~/admin/icons/close.svg";
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
 import { ReactComponent as ArrowUp } from "./arrow_drop_up.svg";
 import { ReactComponent as ArrowDown } from "./arrow_drop_down.svg";
 import Accordion from "~/admin/plugins/fieldRenderers/Accordion";
