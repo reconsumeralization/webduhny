@@ -7,6 +7,7 @@ export interface UpdateFolderParams {
     type: string;
     parentId: string | null;
     permissions: FolderPermission[];
+    extensions?: Record<string, any>;
 }
 
 export interface IUpdateFolderUseCase {

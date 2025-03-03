@@ -5,5 +5,6 @@ export * from "./deleteFolder";
 export * from "./getDescendantFolders";
 export * from "./getFolder";
 export * from "./getFolderLevelPermission";
+export * from "./getFolderModel";
 export * from "./listFolders";
 export * from "./updateFolder";

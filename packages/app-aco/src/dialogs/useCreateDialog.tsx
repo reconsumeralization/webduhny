@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import slugify from "slugify";
 import { useSnackbar } from "@webiny/app-admin";
 import { Bind, GenericFormData, useForm } from "@webiny/form";
@@ -7,12 +7,13 @@ import { Input } from "@webiny/ui/Input";
 import { Typography } from "@webiny/ui/Typography";
 import { validation } from "@webiny/validation";
 
-import { FolderTree } from "~/components";
+import { Extensions, FolderTree } from "~/components";
 import { useDialogs } from "@webiny/app-admin";
 import { DialogFoldersContainer } from "~/dialogs/styled";
-import { useCreateFolder } from "~/features";
+import { useCreateFolder, useFolderModel } from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { FolderItem } from "~/types";
+import { CircularProgress } from "@webiny/ui/Progress";
 
 interface ShowDialogParams {
     currentParentId?: string | null;
@@ -27,8 +28,20 @@ interface FormComponentProps {
 }
 
 const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
+    const folderModel = useFolderModel();
     const [parentId, setParentId] = useState<string | null>(currentParentId);
     const form = useForm();
+
+    const extensionFields = useMemo(() => {
+        const modelFields = folderModel?.fields || [];
+
+        const fields = modelFields.find(field => field.fieldId === "extensions");
+        if (!fields?.settings?.fields) {
+            return [];
+        }
+
+        return fields?.settings?.fields || [];
+    }, [folderModel]);
 
     const generateSlug = () => {
         if (form.data.slug || !form.data.title) {
@@ -47,35 +60,42 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
         );
     };
 
+    if (!folderModel) {
+        return <CircularProgress label={"Preparing Folders..."} />;
+    }
+
     return (
-        <Grid>
-            <Cell span={12}>
-                <Bind name={"title"} validators={validation.create("required")}>
-                    {bind => <Input {...bind} label={"Title"} onBlur={generateSlug} />}
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Bind name={"slug"} validators={validation.create("required,slug")}>
-                    <Input label={"Slug"} />
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Typography use="body1">{"Parent folder"}</Typography>
-                <DialogFoldersContainer>
-                    <Bind name={"parentId"} defaultValue={parentId}>
-                        {({ onChange }) => (
-                            <FolderTree
-                                focusedFolderId={parentId || ROOT_FOLDER}
-                                onFolderClick={folder => {
-                                    setParentId(folder.id);
-                                    onChange(folder.id === ROOT_FOLDER ? null : folder.id);
-                                }}
-                            />
-                        )}
+        <>
+            <Grid>
+                <Cell span={12}>
+                    <Bind name={"title"} validators={validation.create("required")}>
+                        {bind => <Input {...bind} label={"Title"} onBlur={generateSlug} />}
                     </Bind>
-                </DialogFoldersContainer>
-            </Cell>
-        </Grid>
+                </Cell>
+                <Cell span={12}>
+                    <Bind name={"slug"} validators={validation.create("required,slug")}>
+                        <Input label={"Slug"} />
+                    </Bind>
+                </Cell>
+                <Cell span={12}>
+                    <Typography use="body1">{"Parent folder"}</Typography>
+                    <DialogFoldersContainer>
+                        <Bind name={"parentId"} defaultValue={parentId}>
+                            {({ onChange }) => (
+                                <FolderTree
+                                    focusedFolderId={parentId || ROOT_FOLDER}
+                                    onFolderClick={folder => {
+                                        setParentId(folder.id);
+                                        onChange(folder.id === ROOT_FOLDER ? null : folder.id);
+                                    }}
+                                />
+                            )}
+                        </Bind>
+                    </DialogFoldersContainer>
+                </Cell>
+            </Grid>
+            {extensionFields.length > 0 && <Extensions model={folderModel} />}
+        </>
     );
 };
 

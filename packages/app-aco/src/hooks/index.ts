@@ -3,6 +3,7 @@ export * from "./useAcoApp";
 export * from "./useFolder";
 export * from "./useFolders";
 export * from "./useFoldersType";
+export * from "./useGetFolderGraphQLSelection";
 export * from "./useRecords";
 export * from "./useTags";
 export * from "./useNavigateFolder";

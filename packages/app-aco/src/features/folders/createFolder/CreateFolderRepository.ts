@@ -21,7 +21,8 @@ export class CreateFolderRepository implements ICreateFolderRepository {
             slug: folder.slug,
             permissions: folder.permissions,
             type: this.type,
-            parentId: folder.parentId
+            parentId: folder.parentId,
+            extensions: folder.extensions
         };
 
         const result = await this.gateway.execute(dto);
