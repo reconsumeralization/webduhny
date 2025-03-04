@@ -14,18 +14,22 @@ export const BlueGreenRouterApiGateway = createAppModule({
     config(app: PulumiApp, params: IBlueGreenRouterApiGatewayParams) {
         const apiGateway = app.addResource(aws.apigatewayv2.Api, {
             name: "blueGreenRouterApi",
-            config: {
-                protocolType: "HTTP",
-                description: "Blue / Green Router API"
-            },
             opts: {
                 protect: params.protect,
                 provider: params.region
+            },
+            config: {
+                protocolType: "HTTP",
+                description: "Blue / Green Router API"
             }
         });
 
         const apiStage = app.addResource(aws.apigatewayv2.Stage, {
             name: "blue-green-stage",
+            opts: {
+                protect: params.protect,
+                provider: params.region
+            },
             config: {
                 apiId: apiGateway.output.id,
                 autoDeploy: true,
@@ -38,10 +42,6 @@ export const BlueGreenRouterApiGateway = createAppModule({
                     throttlingBurstLimit: 5000,
                     throttlingRateLimit: 10000
                 }
-            },
-            opts: {
-                protect: params.protect,
-                provider: params.region
             }
         });
 

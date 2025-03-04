@@ -8,27 +8,29 @@ export interface IAddTableItemsParams {
     table: BlueGreenRouterDynamoDb;
     partitionKey: string;
     sortKey: string;
-    value: Record<string, string | number | Record<string, string>>;
+    value: Record<string, string | number | Record<string, string | number>>;
+    region: aws.Provider;
 }
 
 export const addTableItems = (params: IAddTableItemsParams): void => {
-    const { app, table, partitionKey, sortKey, value } = params;
-    /**
-     * Store some settings in the table.
-     */
+    const { app, table, partitionKey, sortKey, value, region } = params;
+
+    const item = buildTableItem({
+        PK: partitionKey,
+        SK: sortKey,
+        value: JSON.stringify(value)
+    });
+
     app.addResource(aws.dynamodb.TableItem, {
         name: "blueGreenSystemSettings",
+        opts: {
+            provider: region
+        },
         config: {
             tableName: table.output.arn,
             hashKey: table.output.hashKey,
             rangeKey: pulumi.output(table.output.rangeKey).apply(key => key || "SK"),
-            item: pulumi.interpolate`{
-              ${buildTableItems({
-                  PK: partitionKey,
-                  SK: sortKey,
-                  value: JSON.stringify(value)
-              })}
-            }`
+            item: pulumi.interpolate`${item}`
         }
     });
 };
@@ -49,14 +51,20 @@ const getTableItemType = (value: unknown) => {
     }
 };
 
-const buildTableItems = (
+const buildTableItem = (
     items: Record<string, string | number | Record<string, string>>
 ): string => {
-    return Object.keys(items)
-        .reduce<string[]>((output, key) => {
-            const value = items[key];
-            output.push(`"${key}": {"${getTableItemType(value)}": "${value}"}`);
-            return output;
-        }, [])
-        .join(",");
+    const result = Object.keys(items).reduce<Record<string, any>>((output, key) => {
+        const value = items[key];
+
+        const type = getTableItemType(value);
+
+        output[key] = {
+            [type]: value
+        };
+
+        return output;
+    }, {});
+
+    return JSON.stringify(result);
 };

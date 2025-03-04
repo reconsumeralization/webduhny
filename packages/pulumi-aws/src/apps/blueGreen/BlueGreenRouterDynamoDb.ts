@@ -16,6 +16,10 @@ export const BlueGreenRouterDynamoDb = createAppModule({
         const indexes = createDynamoDbGSI(["GSI1"]);
         return app.addResource(aws.dynamodb.Table, {
             name: "webiny-blue-green",
+            opts: {
+                provider: params.region,
+                protect: params.protect
+            },
             config: {
                 attributes: indexes.withAttributes([
                     {
@@ -31,10 +35,6 @@ export const BlueGreenRouterDynamoDb = createAppModule({
                 hashKey: "PK",
                 rangeKey: "SK",
                 globalSecondaryIndexes: indexes.withGlobalSecondaryIndexes([])
-            },
-            opts: {
-                provider: params.region,
-                protect: params.protect
             }
         });
     }

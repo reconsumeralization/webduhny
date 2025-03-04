@@ -7,6 +7,7 @@ const DB_TABLE_NAME = "{DB_TABLE_NAME}";
 const DB_TABLE_REGION = "{DB_TABLE_REGION}";
 const BLUE_GREEN_PARTITION_KEY = "{BLUE_GREEN_PARTITION_KEY}";
 const BLUE_GREEN_SORT_KEY = "{BLUE_GREEN_SORT_KEY}";
+const BLUE_GREEN_ROUTER_TYPE_HEADER = "{BLUE_GREEN_ROUTER_TYPE_HEADER}";
 
 let client;
 try {
@@ -64,22 +65,40 @@ function removeHttpOrHttps(input) {
     return input.replace("http://", "").replace("https://", "");
 }
 
+function getRouterType(request) {
+    const values = request.origin?.custom?.customHeaders?.[BLUE_GREEN_ROUTER_TYPE_HEADER];
+    if (!values) {
+        throw new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header.`);
+    }
+    let value;
+    if (Array.isArray(values)) {
+        value = values[0]?.value;
+    } else {
+        value = values?.value;
+    }
+    if (!value) {
+        throw new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header value.`);
+    }
+    return value;
+}
+
 /**
  * We need to pass the request to currently active variant.
  */
 async function handleOriginRequest(request) {
     const target = await getActiveSystem();
+    const routerType = getRouterType(request);
     /**
      * What do we do in case there is no active variant system?
      */
-    if (!target.primary?.cloudfrontDomainName) {
+    const cloudFrontDomainNameVariable = `${routerType}CloudfrontDomainName`;
+    const value = target.primary?.[cloudFrontDomainNameVariable];
+    if (!value) {
         throw new Error(
-            `Could not transfer the request to correct system - missing "cloudfrontDomainName".`
+            `Could not transfer the request to correct system - missing "${cloudFrontDomainNameVariable}".`
         );
     }
-
-    const domainName = removeHttpOrHttps(target.primary.cloudfrontDomainName);
-
+    const domainName = removeHttpOrHttps(value);
     const requestOriginCustom = structuredClone(request.origin.custom);
 
     request.origin = {
