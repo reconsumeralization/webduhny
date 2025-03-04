@@ -8,6 +8,7 @@ import { DateTimeWithoutTimezone } from "./DateTimeWithoutTimezone";
 import { DateTimeWithTimezone } from "./DateTimeWithTimezone";
 import { DateOnly } from "./DateOnly";
 import { Time } from "./Time";
+import {MultiValueRendererSettings} from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/date-time");
 
@@ -86,6 +87,9 @@ const plugin: CmsModelFieldRendererPlugin = {
                     }}
                 </DynamicSection>
             );
+        },
+        renderSettings(props) {
+            return <MultiValueRendererSettings {...props} />;
         }
     }
 };

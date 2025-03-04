@@ -16,6 +16,7 @@ import {
 } from "~/admin/plugins/fieldRenderers/richText/utils";
 import { useForm } from "@webiny/form";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
+import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/rich-text");
 
@@ -104,6 +105,9 @@ const plugin: CmsModelFieldRendererPlugin = {
                     )}
                 </DynamicSection>
             );
+        },
+        renderSettings(props) {
+            return <MultiValueRendererSettings {...props} />;
         }
     }
 };
