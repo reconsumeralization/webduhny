@@ -14,7 +14,7 @@ export enum BlueGreenRouterCloudFrontType {
     api = "api",
     admin = "admin",
     website = "website",
-    delivery = "delivery"
+    preview = "preview"
 }
 
 export interface IBlueGreenRouterCloudFrontConfig {

@@ -111,14 +111,16 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 sortKey: BLUE_GREEN_SORT_KEY,
                 value: {
                     primary: {
-                        apiCloudfrontDomainName: "d5afe46rtyru0.cloudfront.net",
-                        adminCloudfrontDomainName: "d5afe46rtyru0admin.cloudfront.net",
-                        websiteCloudfrontDomainName: "d5afe46rtyru0website.cloudfront.net"
+                        apiCloudfrontDomainName: "d23eod0opwn5wj.cloudfront.net",
+                        adminCloudfrontDomainName: "d1tfhjdlnuyb16.cloudfront.net",
+                        websiteCloudfrontDomainName: "d1252xj1fnqf4t.cloudfront.net",
+                        previewCloudfrontDomainName: "d30hx3bilq6uv7.cloudfront.net"
                     },
                     secondary: {
-                        apiCloudfrontDomainName: "d5afe46rtyru0secondary.cloudfront.net",
-                        adminCloudfrontDomainName: "d5afe46rtyru0adminsecondary.cloudfront.net",
-                        websiteCloudfrontDomainName: "d5afe46rtyru0websitesecondary.cloudfront.net"
+                        apiCloudfrontDomainName: "dbef28872wnk6.cloudfront.net",
+                        adminCloudfrontDomainName: "d2nrb5rwmc7p0g.cloudfront.net",
+                        websiteCloudfrontDomainName: "d2f0oj3kdszw7y.cloudfront.net",
+                        previewCloudfrontDomainName: "d3pd007rivyf6j.cloudfront.net"
                     }
                 }
             });
@@ -177,13 +179,13 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                     usedUrl: "websiteUrl"
                 }
             });
-            const { cloudFront: deliveryCloudFront } = addCloudfront({
-                type: BlueGreenRouterCloudFrontType.delivery,
+            const { cloudFront: previewCloudFront } = addCloudfront({
+                type: BlueGreenRouterCloudFrontType.preview,
                 map: {
-                    distributionDomain: "cloudfrontDeliveryDomain",
-                    distributionUrl: "cloudfrontDeliveryUrl",
-                    usedDomain: "deliveryDomain",
-                    usedUrl: "deliveryUrl"
+                    distributionDomain: "cloudfrontPreviewDomain",
+                    distributionUrl: "cloudfrontPreviewUrl",
+                    usedDomain: "previewDomain",
+                    usedUrl: "previewUrl"
                 }
             });
 
@@ -194,41 +196,39 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
             });
 
             return {
-                router: {
-                    region,
-                    // dynamoDbTable,
-                    apiGateway: apiGateway.apiGateway,
-                    apiGatewayStage: apiGateway.apiStage,
-                    // dynamoDbTableArn: dynamoDbTable.output.arn,
-                    // dynamoDbTableHashKey: dynamoDbTable.output.hashKey,
-                    // dynamoDbTableRangeKey: dynamoDbTable.output.rangeKey,
-                    /**
-                     * CloudFront distributions.
-                     */
-                    apiCloudFront,
-                    apiCloudFrontId: apiCloudFront.output.id,
-                    apiCloudFrontArn: apiCloudFront.output.arn,
-                    apiCloudFrontDomainName: apiCloudFront.output.domainName,
-                    adminCloudFront,
-                    adminCloudFrontId: adminCloudFront.output.id,
-                    adminCloudFrontArn: adminCloudFront.output.arn,
-                    adminCloudFrontDomainName: adminCloudFront.output.domainName,
-                    websiteCloudFront,
-                    websiteCloudFrontId: websiteCloudFront.output.id,
-                    websiteCloudFrontArn: websiteCloudFront.output.arn,
-                    websiteCloudFrontDomainName: websiteCloudFront.output.domainName,
-                    deliveryCloudFront,
-                    deliveryCloudFrontId: deliveryCloudFront.output.id,
-                    deliveryCloudFrontArn: deliveryCloudFront.output.arn,
-                    deliveryCloudFrontDomainName: deliveryCloudFront.output.domainName,
-                    //
-                    edgeLambda,
-                    edgeLambdaArn: edgeLambda.output.arn,
-                    edgeLambdaQualifiedArn: edgeLambda.output.qualifiedArn,
-                    edgePolicy,
-                    edgeRole,
-                    edgePolicyAttachment
-                }
+                region,
+                // dynamoDbTable,
+                apiGateway: apiGateway.apiGateway,
+                apiGatewayStage: apiGateway.apiStage,
+                // dynamoDbTableArn: dynamoDbTable.output.arn,
+                // dynamoDbTableHashKey: dynamoDbTable.output.hashKey,
+                // dynamoDbTableRangeKey: dynamoDbTable.output.rangeKey,
+                /**
+                 * CloudFront distributions.
+                 */
+                apiCloudFront,
+                apiCloudFrontId: apiCloudFront.output.id,
+                apiCloudFrontArn: apiCloudFront.output.arn,
+                apiCloudFrontDomainName: apiCloudFront.output.domainName,
+                adminCloudFront,
+                adminCloudFrontId: adminCloudFront.output.id,
+                adminCloudFrontArn: adminCloudFront.output.arn,
+                adminCloudFrontDomainName: adminCloudFront.output.domainName,
+                websiteCloudFront,
+                websiteCloudFrontId: websiteCloudFront.output.id,
+                websiteCloudFrontArn: websiteCloudFront.output.arn,
+                websiteCloudFrontDomainName: websiteCloudFront.output.domainName,
+                previewCloudFront,
+                previewCloudFrontId: previewCloudFront.output.id,
+                previewCloudFrontArn: previewCloudFront.output.arn,
+                previewCloudFrontDomainName: previewCloudFront.output.domainName,
+                //
+                edgeLambda,
+                edgeLambdaArn: edgeLambda.output.arn,
+                edgeLambdaQualifiedArn: edgeLambda.output.qualifiedArn,
+                edgePolicy,
+                edgeRole,
+                edgePolicyAttachment
             };
         }
     });
