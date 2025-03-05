@@ -1,146 +1,116 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocument, GetCommand } = require("@aws-sdk/lib-dynamodb");
+import cf from "cloudfront";
 
-// Since Lambda@Edge doesn't support ENV variables, the easiest way to pass
-// config values to it is to inject them into the source code before deploy.
-const DB_TABLE_NAME = "{DB_TABLE_NAME}";
-const DB_TABLE_REGION = "{DB_TABLE_REGION}";
-const BLUE_GREEN_PARTITION_KEY = "{BLUE_GREEN_PARTITION_KEY}";
-const BLUE_GREEN_SORT_KEY = "{BLUE_GREEN_SORT_KEY}";
+const BLUE_GREEN_ROUTER_STORE_ID = "{BLUE_GREEN_ROUTER_STORE_ID}";
+const BLUE_GREEN_ROUTER_STORE_KEY = "{BLUE_GREEN_ROUTER_STORE_KEY}";
 const BLUE_GREEN_ROUTER_TYPE_HEADER = "{BLUE_GREEN_ROUTER_TYPE_HEADER}";
 
-let client;
-try {
-    client = new DynamoDBClient({
-        region: DB_TABLE_REGION
-    });
-} catch (ex) {
-    console.error("Could not establish connection to DynamoDB.");
-    console.log(ex);
-    throw ex;
-}
+const store = cf.kvs(BLUE_GREEN_ROUTER_STORE_ID);
 
-const documentClient = DynamoDBDocument.from(client, {
-    marshallOptions: {
-        convertEmptyValues: true,
-        removeUndefinedValues: true
-    }
-});
-
-async function getActiveSystem() {
-    const cmd = new GetCommand({
-        TableName: DB_TABLE_NAME,
-        Key: {
-            PK: BLUE_GREEN_PARTITION_KEY,
-            SK: BLUE_GREEN_SORT_KEY
-        }
-    });
-
-    const result = await documentClient.send(cmd);
-    if (!result.Item?.value) {
-        console.error("There is no Blue/Green system information.");
-        return null;
-    }
-    let value;
-    try {
-        value = JSON.parse(result.Item.value);
-    } catch (ex) {
-        console.error("Failed to parse Blue/Green system information.");
-        console.log(ex);
-        throw new Error(`Could not fetch Blue/Green information from the DynamoDB.`);
-    }
-    if (!value?.primary) {
-        throw new Error("Primary Blue/Green variant is not configured.");
-    } else if (!value?.secondary) {
-        throw new Error("Secondary Blue/Green variant is not configured.");
-    }
-
-    return {
-        primary: value.primary,
-        secondary: value.secondary
+function requestWithError(request, error) {
+    console.error(error.message);
+    request.headers["x-debug-log"] = {
+        value: error.message
     };
-}
-
-function removeHttpOrHttps(input) {
-    return input.replace("http://", "").replace("https://", "");
-}
-
-function getRouterType(request) {
-    const values = request.origin?.custom?.customHeaders?.[BLUE_GREEN_ROUTER_TYPE_HEADER];
-    if (!values) {
-        throw new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header.`);
-    }
-    let value;
-    if (Array.isArray(values)) {
-        value = values[0]?.value;
-    } else {
-        value = values?.value;
-    }
-    if (!value) {
-        throw new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header value.`);
-    }
-    return value;
-}
-
-/**
- * We need to pass the request to currently active variant.
- */
-async function handleOriginRequest(request) {
-    const target = await getActiveSystem();
-    const routerType = getRouterType(request);
-    /**
-     * What do we do in case there is no active variant system?
-     */
-    const cloudFrontDomainNameVariable = `${routerType}CloudfrontDomainName`;
-    const value = target.primary?.[cloudFrontDomainNameVariable];
-    if (!value) {
-        throw new Error(
-            `Could not transfer the request to correct system - missing "${cloudFrontDomainNameVariable}".`
-        );
-    }
-    const domainName = removeHttpOrHttps(value);
-    const requestOriginCustom = structuredClone(request.origin.custom);
-
-    request.origin = {
-        custom: {
-            ...requestOriginCustom,
-            port: requestOriginCustom?.port || 443,
-            protocol: requestOriginCustom?.protocol || "https",
-            path: requestOriginCustom?.path || "",
-            sslProtocols: requestOriginCustom?.sslProtocols || ["TLSv1.2"],
-            readTimeout: requestOriginCustom?.readTimeout || 30,
-            keepaliveTimeout: requestOriginCustom?.keepaliveTimeout || 5,
-            customHeaders: requestOriginCustom?.customHeaders || {},
-            domainName
-        }
-    };
-
-    request.headers.host = [
-        {
-            value: domainName
-        }
-    ];
 
     return request;
 }
 
-exports.handler = async event => {
-    const { request, config } = event.Records[0].cf;
+function getRouterType(headers) {
+    const values = headers[BLUE_GREEN_ROUTER_TYPE_HEADER];
+    if (!values) {
+        return {
+            error: new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header.`)
+        };
+    }
+    let value;
+    if (Array.isArray(values)) {
+        value = values[0] ? values[0].value : null;
+    } else {
+        value = values.value;
+    }
+    if (value) {
+        return {
+            value
+        };
+    }
+    return {
+        error: new Error(`Missing the "${BLUE_GREEN_ROUTER_TYPE_HEADER}" header value.`)
+    };
+}
 
-    if (config.eventType === "origin-request") {
-        try {
-            return await handleOriginRequest(request);
-        } catch (ex) {
-            console.error(ex);
-            return {
-                status: 404,
-                statusDescription: ex.message
-            };
-        }
+function handleRequest(request, storedValue) {
+    const routerTypeResult = getRouterType(request.headers || {});
+    if (routerTypeResult.error) {
+        return requestWithError(request, routerTypeResult.error);
+    }
+    const routerType = routerTypeResult.value;
+
+    /**
+     * What do we do in case there is no active variant system?
+     */
+    const cloudFrontDomainNameVariable = `${routerType}CloudfrontDomainName`;
+    const domainName = storedValue.primary
+        ? storedValue.primary[cloudFrontDomainNameVariable]
+        : null;
+    if (!domainName) {
+        return requestWithError(
+            request,
+            new Error(
+                `Could not transfer the request to correct system - missing "${cloudFrontDomainNameVariable}".`
+            )
+        );
     }
 
-    return {
-        status: 404,
-        statusDescription: `Unknown event type: ${config.eventType}`
+    request.headers.host = {
+        value: domainName
     };
+
+    return request;
+}
+
+const x = {
+    event: {
+        version: "1.0",
+        context: {
+            distributionDomainName: "d123.cloudfront.net",
+            distributionId: "E123",
+            eventType: "viewer-request",
+            requestId: "4TyzHTaYWb1GX1qTfsHhEqV6HUDd_BzoBZnwfnvQc_1oF26ClkoUSEQ=="
+        },
+        viewer: { ip: "1.2.3.4" },
+        request: {
+            method: "GET",
+            uri: "/index.html",
+            querystring: {},
+            headers: { "x-webiny-blue-green-router-type": { value: "admin" } },
+            cookies: {}
+        }
+    }
 };
+
+async function handler(event) {
+    console.log({
+        event
+    });
+    const context = event.context;
+    const request = event.request;
+    if (context.eventType !== "viewer-request") {
+        return requestWithError(
+            request,
+            new Error("This function only supports viewer-request events.")
+        );
+    }
+
+    let storedValue;
+
+    try {
+        storedValue = await store.get(BLUE_GREEN_ROUTER_STORE_KEY);
+    } catch (ex) {
+        return requestWithError(request, ex);
+    }
+    if (!storedValue) {
+        return requestWithError(request, new Error("Blue/Green system is not configured."));
+    }
+    const value = JSON.parse(storedValue);
+    return handleRequest(request, value);
+}

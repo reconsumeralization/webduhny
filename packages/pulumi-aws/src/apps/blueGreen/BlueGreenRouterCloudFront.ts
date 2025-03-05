@@ -4,9 +4,10 @@ import { createAppModule } from "@webiny/pulumi";
 import type { GetCachePolicyResult } from "@pulumi/aws/cloudfront/getCachePolicy";
 import type { GetOriginRequestPolicyResult } from "@pulumi/aws/cloudfront/getOriginRequestPolicy";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
-import { BlueGreenRouterLambdaEdge } from "./BlueGreenRouterLambdaEdge.js";
-import { BLUE_GREEN_ROUTER_TYPE_HEADER } from "./constants.js";
+import { BLUE_GREEN_ROUTER_STORE_KEY, BLUE_GREEN_ROUTER_TYPE_HEADER } from "./constants.js";
 import { addDomainsUrlsOutputs } from "~/utils/addDomainsUrlsOutputs.js";
+import { buildRequestFunction } from "./functions/buildRequestFunction.js";
+import { BlueGreenRouterCloudFrontStore } from "~/apps/blueGreen/BlueGreenRouterCloudFrontStore.js";
 
 export type BlueGreenRouterCloudFront = PulumiAppModule<typeof BlueGreenRouterCloudFront>;
 
@@ -38,7 +39,33 @@ export const BlueGreenRouterCloudFront = createAppModule({
     name: "BlueGreenRouterCloudFront",
     config(app, config: IBlueGreenRouterCloudFrontConfig) {
         const api = app.getModule(BlueGreenRouterApiGateway);
-        const { edgeLambda } = app.getModule(BlueGreenRouterLambdaEdge);
+
+        const store = app.getModule(BlueGreenRouterCloudFrontStore);
+        /**
+         * Create a new CloudFront function that will be used to route the incoming requests to the correct CloudFront distribution.
+         */
+        const cloudFrontFunction = app.addResource(aws.cloudfront.Function, {
+            name: "blue-green-router-viewer-request",
+            config: {
+                runtime: "cloudfront-js-2.0",
+                publish: true,
+                code: store.cloudFrontStore.output.arn.apply(arn => {
+                    /**
+                     * Unfortunately this is the only way to get the ID of the store.
+                     * It is a UUID value.
+                     */
+                    const id = arn.split("/").pop() as string;
+                    return buildRequestFunction({
+                        storeId: id,
+                        storeKey: BLUE_GREEN_ROUTER_STORE_KEY,
+                        typeHeader: BLUE_GREEN_ROUTER_TYPE_HEADER
+                    });
+                }),
+                keyValueStoreAssociations: store.cloudFrontStore.output.arn.apply(arn => {
+                    return [arn];
+                })
+            }
+        });
 
         const addCloudfront = (params: IAddCloudFrontParams) => {
             const cloudFront = app.addResource(aws.cloudfront.Distribution, {
@@ -87,8 +114,10 @@ export const BlueGreenRouterCloudFront = createAppModule({
                         originRequestPolicyId: config.originRequestPolicyId.id,
                         lambdaFunctionAssociations: [
                             {
-                                eventType: "origin-request",
-                                lambdaArn: edgeLambda.output.qualifiedArn
+                                eventType: "viewer-request",
+                                lambdaArn: cloudFrontFunction.output.arn.apply(arn => {
+                                    return `${arn}:LATEST`;
+                                })
                             }
                         ]
                     },
@@ -112,12 +141,14 @@ export const BlueGreenRouterCloudFront = createAppModule({
             });
 
             return {
-                cloudFront
+                cloudFront,
+                cloudFrontFunction
             };
         };
 
         return {
-            addCloudfront
+            addCloudfront,
+            cloudFrontFunction
         };
     }
 });

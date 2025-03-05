@@ -12,11 +12,8 @@ import { tagResources } from "~/utils/tagResources.js";
 import { getEnvVariableWebinyProjectName } from "~/env/projectName.js";
 import { getEnvVariableWebinyEnv } from "~/env/env.js";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
-import { BlueGreenRouterLambdaEdge } from "./BlueGreenRouterLambdaEdge.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
-import { BlueGreenRouterDynamoDb } from "./BlueGreenRouterDynamoDb.js";
-import { addTableItems } from "./addTableItems.js";
-import { BLUE_GREEN_PARTITION_KEY, BLUE_GREEN_SORT_KEY } from "./constants.js";
+import { BLUE_GREEN_ROUTER_STORE_KEY } from "~/apps/blueGreen/constants.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 
@@ -98,11 +95,11 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
             const { forwardEverythingOriginRequestPolicyId, disableCachingCachePolicyId } =
                 await createCloudFrontDefaultCacheBehaviorPolicies();
 
-            const dynamoDbTable = app.addModule(BlueGreenRouterDynamoDb, {
+            const { cloudFrontStore } = app.addModule(BlueGreenRouterCloudFrontStore, {
                 protect,
                 region
             });
-
+            /*
             addTableItems({
                 table: dynamoDbTable,
                 region,
@@ -124,24 +121,34 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                     }
                 }
             });
-
-            app.addModule(BlueGreenRouterCloudFrontStore, {
-                protect,
-                region
+           
+            */
+            const keyValueStoreResourceKey = app.addResource(aws.cloudfront.KeyvaluestoreKey, {
+                name: "blue-green-router-store-key",
+                config: {
+                    keyValueStoreArn: cloudFrontStore.output.arn,
+                    key: BLUE_GREEN_ROUTER_STORE_KEY,
+                    value: JSON.stringify({
+                        primary: {
+                            apiCloudfrontDomainName: "d23eod0opwn5wj.cloudfront.net",
+                            adminCloudfrontDomainName: "d1tfhjdlnuyb16.cloudfront.net",
+                            websiteCloudfrontDomainName: "d1252xj1fnqf4t.cloudfront.net",
+                            previewCloudfrontDomainName: "d30hx3bilq6uv7.cloudfront.net"
+                        },
+                        secondary: {
+                            apiCloudfrontDomainName: "dbef28872wnk6.cloudfront.net",
+                            adminCloudfrontDomainName: "d2nrb5rwmc7p0g.cloudfront.net",
+                            websiteCloudfrontDomainName: "d2f0oj3kdszw7y.cloudfront.net",
+                            previewCloudfrontDomainName: "d3pd007rivyf6j.cloudfront.net"
+                        }
+                    })
+                }
             });
 
             const apiGateway = app.addModule(BlueGreenRouterApiGateway, {
                 protect,
                 region
             });
-
-            const { edgeLambda, edgePolicy, edgePolicyAttachment, edgeRole } = app.addModule(
-                BlueGreenRouterLambdaEdge,
-                {
-                    protect,
-                    region
-                }
-            );
 
             const { addCloudfront } = app.addModule(BlueGreenRouterCloudFront, {
                 protect,
@@ -197,12 +204,8 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
 
             return {
                 region,
-                // dynamoDbTable,
                 apiGateway: apiGateway.apiGateway,
                 apiGatewayStage: apiGateway.apiStage,
-                // dynamoDbTableArn: dynamoDbTable.output.arn,
-                // dynamoDbTableHashKey: dynamoDbTable.output.hashKey,
-                // dynamoDbTableRangeKey: dynamoDbTable.output.rangeKey,
                 /**
                  * CloudFront distributions.
                  */
@@ -223,12 +226,8 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 previewCloudFrontArn: previewCloudFront.output.arn,
                 previewCloudFrontDomainName: previewCloudFront.output.domainName,
                 //
-                edgeLambda,
-                edgeLambdaArn: edgeLambda.output.arn,
-                edgeLambdaQualifiedArn: edgeLambda.output.qualifiedArn,
-                edgePolicy,
-                edgeRole,
-                edgePolicyAttachment
+                cloudFrontStore,
+                keyValueStoreResourceKey
             };
         }
     });
