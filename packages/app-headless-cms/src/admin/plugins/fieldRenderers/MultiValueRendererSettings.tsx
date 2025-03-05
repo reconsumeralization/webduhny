@@ -15,7 +15,9 @@ const DEFAULT_SETTINGS: IMultiValueRendererSettings = {
     addValueButtonLabel: "Add Value"
 };
 
-export const getMultiValueRendererSettings = (field: CmsModelField): IMultiValueRendererSettings => {
+export const getMultiValueRendererSettings = (
+    field: CmsModelField
+): IMultiValueRendererSettings => {
     if (typeof field.renderer === "function") {
         return DEFAULT_SETTINGS;
     }

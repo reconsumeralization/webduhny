@@ -11,7 +11,7 @@ import { modelHasLegacyRteField } from "~/admin/plugins/fieldRenderers/richText/
 import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { useForm } from "@webiny/form";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
-import {MultiValueRendererSettings} from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
+import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/rich-text");
 

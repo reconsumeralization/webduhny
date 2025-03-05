@@ -34,7 +34,7 @@ export const ContentEntryEditorConfig = Object.assign(BaseContentEntryEditorConf
     FieldRenderers: {
         Object: {
             MultiValue: {
-                ItemContainer: ObjectField.MultiValueItemContainer,
+                ItemContainer: ObjectField.MultiValueItemContainer
             }
         },
         DynamicZone: {
