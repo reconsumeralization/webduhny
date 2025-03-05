@@ -13,7 +13,7 @@ import { useContentEntryEditorConfig } from "~/admin/config/contentEntries";
 const { ContentEntry } = ContentEntryEditorConfig;
 
 const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original => {
-    return function ContentEntry(props) {
+    return function ContentEntry() {
         const { width } = useContentEntryEditorConfig();
         const { loading } = useContentEntry();
         const [isRevisionListOpen, openRevisionList] = useState<boolean>(false);
@@ -40,7 +40,7 @@ const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original =>
                     <FSE.Content>
                         <FSE.ContentFormWrapper>
                             <FSE.ContentFormInner width={width}>
-                                <Original {...props} />
+                                <Original />
                             </FSE.ContentFormInner>
                         </FSE.ContentFormWrapper>
                     </FSE.Content>
