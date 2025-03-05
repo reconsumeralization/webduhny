@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "emotion";
 import styled from "@emotion/styled";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
@@ -10,6 +10,8 @@ import { useContentEntry } from "./hooks/useContentEntry";
 import { Header } from "~/admin/components/ContentEntryForm/Header";
 import { ContentEntryForm } from "~/admin/components/ContentEntryForm/ContentEntryForm";
 import { usePersistEntry } from "~/admin/hooks/usePersistEntry";
+import { FormValidation } from "@webiny/form";
+import { Cell, Grid } from "@webiny/ui/Grid";
 
 const DetailsContainer = styled("div")({
     height: "calc(100% - 10px)",
@@ -44,9 +46,22 @@ declare global {
     }
 }
 
-export const ContentEntry = makeDecoratable("ContentEntry", () => {
+const VoidComponent = () => null;
+
+export interface ValidationRendererProps {
+    invalidFields: FormValidation;
+}
+
+export interface ContentEntryProps {
+    ValidationRenderer?: React.ComponentType<ValidationRendererProps>;
+}
+
+export const ContentEntry = makeDecoratable("ContentEntry", (props: ContentEntryProps) => {
     const { loading, entry, activeTab, setActiveTab } = useContentEntry();
+    const [invalidFields, setInvalidFields] = useState<FormValidation | undefined>(undefined);
     const { persistEntry } = usePersistEntry({ addItemToListCache: true });
+
+    const ValidationRenderer = props.ValidationRenderer || VoidComponent;
 
     return (
         <DetailsContainer>
@@ -59,11 +74,17 @@ export const ContentEntry = makeDecoratable("ContentEntry", () => {
                     >
                         <RenderBlock>
                             <Elevation z={2} className={elevationStyles}>
+                                {invalidFields ? (
+                                    <ValidationRenderer invalidFields={invalidFields} />
+                                ) : null}
                                 {loading && <CircularProgress />}
                                 <ContentEntryForm
                                     entry={entry}
                                     persistEntry={persistEntry}
                                     header={<Header />}
+                                    onInvalidFields={invalidFields =>
+                                        setInvalidFields(invalidFields)
+                                    }
                                 />
                             </Elevation>
                         </RenderBlock>

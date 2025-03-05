@@ -42,6 +42,7 @@ interface ContentEntryFormProviderProps {
     persistEntry: PersistEntry;
     confirmNavigationIfDirty: boolean;
     onChange?: FormOnSubmit<Partial<CmsContentEntry>>;
+    onInvalidFields?: (invalidFields: FormValidation) => void;
     onAfterCreate?: (entry: CmsContentEntry) => void;
     setSaveEntry?: SetSaveEntry;
     children: React.ReactNode;
@@ -65,6 +66,7 @@ export const ContentEntryFormProvider = ({
     children,
     persistEntry,
     onChange,
+    onInvalidFields,
     onAfterCreate,
     setSaveEntry,
     confirmNavigationIfDirty
@@ -144,6 +146,7 @@ export const ContentEntryFormProvider = ({
             invalidFields={invalidFields}
             onInvalid={invalidFields => {
                 setInvalidFields(formValidationToMap(invalidFields));
+                onInvalidFields && onInvalidFields(invalidFields);
                 showSnackbar("Some fields did not pass the validation. Please check the form.");
             }}
         >

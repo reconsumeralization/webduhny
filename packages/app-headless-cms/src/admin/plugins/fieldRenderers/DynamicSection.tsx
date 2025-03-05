@@ -90,63 +90,67 @@ const DynamicSection = ({
                 const bindFieldValue: string[] = value || [];
 
                 return (
-                    <ParentFieldProvider value={value} path={Bind.parentName}>
-                        {showLabel ? (
-                            <FieldLabel>
-                                <Typography use={"headline5"}>
-                                    {`${field.label} ${
-                                        bindFieldValue.length ? `(${bindFieldValue.length})` : ""
-                                    }`}
-                                </Typography>
-                                {field.helpText && (
-                                    <FormElementMessage>{field.helpText}</FormElementMessage>
-                                )}
-                            </FieldLabel>
-                        ) : null}
-                        <Grid className={classSet(gridClassName, style.gridContainer)}>
-                            {bindFieldValue.map((_, index) => {
-                                const BindField = getBind(index);
-                                return (
-                                    <Cell span={12} key={index}>
-                                        <BindField>
-                                            {bindProps => (
-                                                <ParentValueIndexProvider index={index}>
-                                                    {children({
-                                                        Bind: BindField,
-                                                        field,
-                                                        bind: {
-                                                            index: bindProps,
-                                                            field: bindField
-                                                        },
-                                                        index
-                                                    })}
-                                                </ParentValueIndexProvider>
-                                            )}
-                                        </BindField>
-                                    </Cell>
-                                );
-                            })}
+                    <div data-role={`dynamic-section-container-${Bind.parentName}`}>
+                        <ParentFieldProvider value={value} path={Bind.parentName}>
+                            {showLabel ? (
+                                <FieldLabel>
+                                    <Typography use={"headline5"}>
+                                        {`${field.label} ${
+                                            bindFieldValue.length
+                                                ? `(${bindFieldValue.length})`
+                                                : ""
+                                        }`}
+                                    </Typography>
+                                    {field.helpText && (
+                                        <FormElementMessage>{field.helpText}</FormElementMessage>
+                                    )}
+                                </FieldLabel>
+                            ) : null}
+                            <Grid className={classSet(gridClassName, style.gridContainer)}>
+                                {bindFieldValue.map((_, index) => {
+                                    const BindField = getBind(index);
+                                    return (
+                                        <Cell span={12} key={index}>
+                                            <BindField>
+                                                {bindProps => (
+                                                    <ParentValueIndexProvider index={index}>
+                                                        {children({
+                                                            Bind: BindField,
+                                                            field,
+                                                            bind: {
+                                                                index: bindProps,
+                                                                field: bindField
+                                                            },
+                                                            index
+                                                        })}
+                                                    </ParentValueIndexProvider>
+                                                )}
+                                            </BindField>
+                                        </Cell>
+                                    );
+                                })}
 
-                            {bindField.validation.isValid === false && (
-                                <Cell span={12}>
-                                    <FormElementMessage error>
-                                        {bindField.validation.message}
-                                    </FormElementMessage>
-                                </Cell>
-                            )}
-                            <AddButtonCell span={12} items={bindFieldValue.length}>
-                                <ButtonDefault
-                                    onClick={() => {
-                                        appendValue(emptyValue);
-                                        onAddItem(bindFieldValue.length);
-                                    }}
-                                >
-                                    <ButtonIcon icon={<AddIcon />} />
-                                    {t(addValueButtonLabel)}
-                                </ButtonDefault>
-                            </AddButtonCell>
-                        </Grid>
-                    </ParentFieldProvider>
+                                {bindField.validation.isValid === false && (
+                                    <Cell span={12}>
+                                        <FormElementMessage error>
+                                            {bindField.validation.message}
+                                        </FormElementMessage>
+                                    </Cell>
+                                )}
+                                <AddButtonCell span={12} items={bindFieldValue.length}>
+                                    <ButtonDefault
+                                        onClick={() => {
+                                            appendValue(emptyValue);
+                                            onAddItem(bindFieldValue.length);
+                                        }}
+                                    >
+                                        <ButtonIcon icon={<AddIcon />} />
+                                        {t(addValueButtonLabel)}
+                                    </ButtonDefault>
+                                </AddButtonCell>
+                            </Grid>
+                        </ParentFieldProvider>
+                    </div>
                 );
             }}
         </Bind>

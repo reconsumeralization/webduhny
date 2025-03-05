@@ -87,6 +87,7 @@ export interface FormValidation {
 export interface Validation {
     isValid: boolean | null;
     message?: string;
+    context?: any;
     results?: {
         [key: string]: any;
     };

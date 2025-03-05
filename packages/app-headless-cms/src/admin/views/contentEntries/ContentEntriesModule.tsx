@@ -123,8 +123,8 @@ export const ContentEntriesModule = () => {
                     element={<ShowRevisionList />}
                     remove={cmsLegacyEntryEditor}
                 />
+                <FullScreenContentEntry />
             </ContentEntryEditorConfig>
-            <FullScreenContentEntry />
         </>
     );
 };
