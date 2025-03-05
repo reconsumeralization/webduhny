@@ -11,7 +11,7 @@ import { Header } from "~/admin/components/ContentEntryForm/Header";
 import { ContentEntryForm } from "~/admin/components/ContentEntryForm/ContentEntryForm";
 import { usePersistEntry } from "~/admin/hooks/usePersistEntry";
 import { FormValidation } from "@webiny/form";
-import { Cell, Grid } from "@webiny/ui/Grid";
+import { ValidationIndicators } from "./ValidationIndicators";
 
 const DetailsContainer = styled("div")({
     height: "calc(100% - 10px)",
@@ -27,7 +27,6 @@ const RenderBlock = styled("div")({
     zIndex: 0,
     backgroundColor: "var(--mdc-theme-background)",
     height: "100%",
-    /*overflow: "scroll",*/
     padding: 25
 });
 
@@ -46,22 +45,10 @@ declare global {
     }
 }
 
-const VoidComponent = () => null;
-
-export interface ValidationRendererProps {
-    invalidFields: FormValidation;
-}
-
-export interface ContentEntryProps {
-    ValidationRenderer?: React.ComponentType<ValidationRendererProps>;
-}
-
-export const ContentEntry = makeDecoratable("ContentEntry", (props: ContentEntryProps) => {
+export const ContentEntry = makeDecoratable("ContentEntry", () => {
     const { loading, entry, activeTab, setActiveTab } = useContentEntry();
     const [invalidFields, setInvalidFields] = useState<FormValidation | undefined>(undefined);
     const { persistEntry } = usePersistEntry({ addItemToListCache: true });
-
-    const ValidationRenderer = props.ValidationRenderer || VoidComponent;
 
     return (
         <DetailsContainer>
@@ -75,7 +62,7 @@ export const ContentEntry = makeDecoratable("ContentEntry", (props: ContentEntry
                         <RenderBlock>
                             <Elevation z={2} className={elevationStyles}>
                                 {invalidFields ? (
-                                    <ValidationRenderer invalidFields={invalidFields} />
+                                    <ValidationIndicators invalidFields={invalidFields} />
                                 ) : null}
                                 {loading && <CircularProgress />}
                                 <ContentEntryForm

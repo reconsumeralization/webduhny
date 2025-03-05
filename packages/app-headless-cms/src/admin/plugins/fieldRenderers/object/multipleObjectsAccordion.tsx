@@ -30,11 +30,17 @@ const ObjectsRenderer = (props: CmsModelFieldRendererProps) => {
                 const label = `${field.label} ${values.length ? `(${values.length})` : ""}`;
 
                 return (
-                    <RootAccordion>
-                        <AccordionItem title={label} description={field.helpText} open={open}>
-                            <MultiValueContainer bind={bind} getBind={getBind} showTitle={false} />
-                        </AccordionItem>
-                    </RootAccordion>
+                    <Bind.ValidationScope>
+                        <RootAccordion>
+                            <AccordionItem title={label} description={field.helpText} open={open}>
+                                <MultiValueContainer
+                                    bind={bind}
+                                    getBind={getBind}
+                                    showTitle={false}
+                                />
+                            </AccordionItem>
+                        </RootAccordion>
+                    </Bind.ValidationScope>
                 );
             }}
         </Bind>

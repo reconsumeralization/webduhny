@@ -124,6 +124,7 @@ export const ContentEntriesModule = () => {
                     remove={cmsLegacyEntryEditor}
                 />
                 <FullScreenContentEntry />
+                {/*<ContentEntryEditorConfig.ValidationIndicators className={"invalid-field"} />*/}
             </ContentEntryEditorConfig>
         </>
     );

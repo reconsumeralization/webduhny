@@ -37,28 +37,30 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bindProps => (
-                        <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
-                            <ParentValueIndexProvider index={-1}>
-                                <Grid>
-                                    <Cell span={12}>
-                                        <SimpleFormHeader title={field.label} />
-                                        {field.helpText && (
-                                            <FormElementMessage>
-                                                {field.helpText}
-                                            </FormElementMessage>
-                                        )}
-                                    </Cell>
-                                    <Cell span={12} className={fieldsWrapperStyle}>
-                                        <Fields
-                                            Bind={Bind}
-                                            contentModel={contentModel}
-                                            fields={settings.fields}
-                                            layout={settings.layout}
-                                        />
-                                    </Cell>
-                                </Grid>
-                            </ParentValueIndexProvider>
-                        </ParentFieldProvider>
+                        <Bind.ValidationScope>
+                            <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
+                                <ParentValueIndexProvider index={-1}>
+                                    <Grid>
+                                        <Cell span={12}>
+                                            <SimpleFormHeader title={field.label} />
+                                            {field.helpText && (
+                                                <FormElementMessage>
+                                                    {field.helpText}
+                                                </FormElementMessage>
+                                            )}
+                                        </Cell>
+                                        <Cell span={12} className={fieldsWrapperStyle}>
+                                            <Fields
+                                                Bind={Bind}
+                                                contentModel={contentModel}
+                                                fields={settings.fields}
+                                                layout={settings.layout}
+                                            />
+                                        </Cell>
+                                    </Grid>
+                                </ParentValueIndexProvider>
+                            </ParentFieldProvider>
+                        </Bind.ValidationScope>
                     )}
                 </Bind>
             );

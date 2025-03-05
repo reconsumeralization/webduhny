@@ -228,17 +228,19 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
                                 <ParentValueIndexProvider key={index} index={index}>
                                     <Bind>
                                         {() => (
-                                            <TemplateValueForm
-                                                value={value}
-                                                contentModel={contentModel}
-                                                Bind={Bind}
-                                                isFirst={index === 0}
-                                                isLast={index === values.length - 1}
-                                                onMoveUp={() => bind.moveValueUp(index)}
-                                                onMoveDown={() => bind.moveValueDown(index)}
-                                                onDelete={onDelete}
-                                                onClone={value => cloneValue(value, index)}
-                                            />
+                                            <Bind.ValidationScope>
+                                                <TemplateValueForm
+                                                    value={value}
+                                                    contentModel={contentModel}
+                                                    Bind={Bind}
+                                                    isFirst={index === 0}
+                                                    isLast={index === values.length - 1}
+                                                    onMoveUp={() => bind.moveValueUp(index)}
+                                                    onMoveDown={() => bind.moveValueDown(index)}
+                                                    onDelete={onDelete}
+                                                    onClone={value => cloneValue(value, index)}
+                                                />
+                                            </Bind.ValidationScope>
                                         )}
                                     </Bind>
                                 </ParentValueIndexProvider>
