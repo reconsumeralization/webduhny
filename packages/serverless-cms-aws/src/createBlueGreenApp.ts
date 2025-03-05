@@ -9,27 +9,8 @@ export interface CreateBlueGreenAppParams extends CreateBlueGreenPulumiAppParams
     plugins?: PluginCollection;
 }
 
-const x = {
-    apiDomain: "d30m27lzzzqrlz.cloudfront.net",
-    apiUrl: "https://d30m27lzzzqrlz.cloudfront.net",
-    appDomain: "d2ieyfkbthj4s2.cloudfront.net",
-    appUrl: "https://d2ieyfkbthj4s2.cloudfront.net",
-    cloudfrontApiDomain: "d30m27lzzzqrlz.cloudfront.net",
-    cloudfrontApiUrl: "https://d30m27lzzzqrlz.cloudfront.net",
-    cloudfrontAppDomain: "d2ieyfkbthj4s2.cloudfront.net",
-    cloudfrontAppUrl: "https://d2ieyfkbthj4s2.cloudfront.net",
-    cloudfrontPreviewDomain: "d2nzsayit59r6m.cloudfront.net",
-    cloudfrontPreviewUrl: "https://d2nzsayit59r6m.cloudfront.net",
-    cloudfrontWebsiteDomain: "d32ermkjk6zok.cloudfront.net",
-    cloudfrontWebsiteUrl: "https://d32ermkjk6zok.cloudfront.net",
-    previewDomain: "d2nzsayit59r6m.cloudfront.net",
-    previewUrl: "https://d2nzsayit59r6m.cloudfront.net",
-    websiteDomain: "d32ermkjk6zok.cloudfront.net",
-    websiteUrl: "https://d32ermkjk6zok.cloudfront.net"
-};
-
 const builtInPlugins: Plugin[] = [
-    createAfterDeployPlugin(async ({ env, inputs, variant, projectApplication }) => {
+    createAfterDeployPlugin(async ({ env }) => {
         const bg = getStackOutput({
             folder: "apps/blueGreen",
             env,

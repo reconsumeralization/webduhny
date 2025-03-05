@@ -3,12 +3,12 @@ import { existsSync, readFileSync } from "fs";
 export interface IBuildRequestFunctionParams {
     storeId: string;
     storeKey: string;
-    typeHeader: string;
+    type: string;
 }
 
 export const buildRequestFunction = ({
     storeId,
-    typeHeader,
+    type,
     storeKey
 }: IBuildRequestFunctionParams): string => {
     const target = __dirname + `/request.js`;
@@ -23,5 +23,5 @@ export const buildRequestFunction = ({
     return content
         .replace("{BLUE_GREEN_ROUTER_STORE_ID}", storeId)
         .replace("{BLUE_GREEN_ROUTER_STORE_KEY}", storeKey)
-        .replace("{BLUE_GREEN_ROUTER_TYPE_HEADER}", typeHeader);
+        .replace("{BLUE_GREEN_ROUTER_TYPE}", type);
 };
