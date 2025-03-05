@@ -14734,6 +14734,7 @@ __metadata:
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/react": "npm:11.10.8"
     "@webiny/app": "npm:0.0.0"
+    "@webiny/app-aco": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-admin-rmwc": "npm:0.0.0"
     "@webiny/app-apw": "npm:0.0.0"

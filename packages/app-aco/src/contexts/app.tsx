@@ -9,7 +9,6 @@ import { SearchRecordsProvider as SearchRecordsContextProvider } from "./records
 import { DisplayError } from "./DisplayError";
 import { NavigateFolderWithRouterProvider } from "~/contexts/navigateFolderWithRouter";
 import { AcoListProvider } from "~/contexts/acoList";
-import { FolderModelProvider } from "~/features";
 
 export interface AcoAppProviderContext {
     app: AcoApp;
@@ -245,22 +244,20 @@ export const AcoAppProvider = ({
     }
 
     return (
-        <FolderModelProvider>
-            <AcoAppContext.Provider value={value}>
-                <FoldersContextProvider>
-                    <SearchRecordsContextProvider>
-                        <NavigateFolderWithRouterProvider
-                            folderIdQueryString={folderIdQueryString}
-                            createListLink={createNavigateFolderListLink}
-                            createStorageKey={createNavigateFolderStorageKey}
-                        >
-                            <AcoListProvider own={own} titleFieldId={model.titleFieldId}>
-                                <DialogsProvider>{children}</DialogsProvider>
-                            </AcoListProvider>
-                        </NavigateFolderWithRouterProvider>
-                    </SearchRecordsContextProvider>
-                </FoldersContextProvider>
-            </AcoAppContext.Provider>
-        </FolderModelProvider>
+        <AcoAppContext.Provider value={value}>
+            <FoldersContextProvider>
+                <SearchRecordsContextProvider>
+                    <NavigateFolderWithRouterProvider
+                        folderIdQueryString={folderIdQueryString}
+                        createListLink={createNavigateFolderListLink}
+                        createStorageKey={createNavigateFolderStorageKey}
+                    >
+                        <AcoListProvider own={own} titleFieldId={model.titleFieldId}>
+                            <DialogsProvider>{children}</DialogsProvider>
+                        </AcoListProvider>
+                    </NavigateFolderWithRouterProvider>
+                </SearchRecordsContextProvider>
+            </FoldersContextProvider>
+        </AcoAppContext.Provider>
     );
 };
