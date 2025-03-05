@@ -17,6 +17,7 @@ import {
 import { CmsModel, CmsModelField } from "./model";
 import { CmsIdentity } from "~/types/shared";
 import type { SourceType } from "dnd-core";
+import { IconPickerIconDto } from "@webiny/admin-ui";
 
 export type DragObjectWithType = {
     type: SourceType;
@@ -472,7 +473,7 @@ export interface CmsIcon {
 
 export interface CmsIconsPlugin extends Plugin {
     type: "cms-icons";
-    getIcons(): CmsIcon[];
+    getIcons(): IconPickerIconDto[];
 }
 
 /**

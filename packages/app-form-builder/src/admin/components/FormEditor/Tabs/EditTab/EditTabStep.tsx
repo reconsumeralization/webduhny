@@ -20,14 +20,6 @@ const AddStepBtn = styled.div`
     cursor: pointer;
 `;
 
-const RowContainerWrapper = styled.div`
-    & .css-1uf2zda-RowContainer {
-        &:last-child {
-            margin-bottom: 25px !important;
-        }
-    }
-`;
-
 const StyledRowContainer = styled(RowContainer)<{ isDragging: boolean }>`
     opacity: ${({ isDragging }) => (isDragging ? 0.3 : 1)};
     border: none;
@@ -82,7 +74,7 @@ export const EditTabStep = ({ setIsEditStep, formStep, index }: EditTabStepProps
     return (
         <Draggable beginDrag={beginDragStepProps}>
             {({ drag, isDragging }) => (
-                <RowContainerWrapper>
+                <>
                     <StyledRowContainer isDragging={isDragging}>
                         <EditTabStepRow
                             dragRef={drag}
@@ -101,7 +93,7 @@ export const EditTabStep = ({ setIsEditStep, formStep, index }: EditTabStepProps
                         />
                     </StyledRowContainer>
                     <AddStepButton addStep={addStep} addStepButtonVisible={addStepButtonVisible} />
-                </RowContainerWrapper>
+                </>
             )}
         </Draggable>
     );

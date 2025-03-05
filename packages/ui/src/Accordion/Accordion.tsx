@@ -1,11 +1,9 @@
 import React from "react";
-import { List, ListItem } from "../List";
-import { AccordionItem } from "./AccordionItem";
-import { Elevation } from "../Elevation";
-import { css } from "emotion";
-import classNames from "classnames";
+import { Accordion as AdminUiAccordion } from "@webiny/admin-ui";
+import { ListItem } from "../List";
+import { type AccordionItem } from "./AccordionItem";
 
-export interface AccordionProps {
+interface AccordionProps {
     /**
      * Element displayed when accordion is expanded.
      */
@@ -25,25 +23,12 @@ export interface AccordionProps {
     className?: string;
 }
 
-const listStyle = css`
-    &.mdc-deprecated-list {
-        padding: 0;
-        &.mdc-deprecated-list--two-line .mdc-deprecated-list-item {
-            height: 48px;
-            padding: 8px 20px;
-        }
-    }
-`;
-
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Accordion` component from the `@webiny/admin-ui` package instead.
+ */
 const Accordion = (props: AccordionProps) => {
-    const { children, elevation = 2, className, ...other } = props;
-    return (
-        <Elevation z={elevation} className={classNames("webiny-ui-accordion", className)}>
-            <List twoLine className={listStyle} {...other}>
-                {children}
-            </List>
-        </Elevation>
-    );
+    return <AdminUiAccordion type={"single"}>{props.children}</AdminUiAccordion>;
 };
 
-export { Accordion };
+export { Accordion, type AccordionProps };

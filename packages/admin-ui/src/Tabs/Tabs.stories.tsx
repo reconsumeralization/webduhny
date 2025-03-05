@@ -66,45 +66,45 @@ export const SizeExtraLarge: Story = {
     }
 };
 
-export const GutterExtraSmall: Story = {
+export const SpacingExtraSmall: Story = {
     args: {
         ...Default.args,
-        gutter: "xs"
+        spacing: "xs"
     }
 };
 
-export const GutterSmall: Story = {
+export const SpacingSmall: Story = {
     args: {
         ...Default.args,
-        gutter: "sm"
+        spacing: "sm"
     }
 };
 
-export const GutterMedium: Story = {
+export const SpacingMedium: Story = {
     args: {
         ...Default.args,
-        gutter: "md"
+        spacing: "md"
     }
 };
 
-export const GutterLarge: Story = {
+export const SpacingLarge: Story = {
     args: {
         ...Default.args,
-        gutter: "lg"
+        spacing: "lg"
     }
 };
 
-export const GutterExtraLarge: Story = {
+export const SpacingExtraLarge: Story = {
     args: {
         ...Default.args,
-        gutter: "xl"
+        spacing: "xl"
     }
 };
 
-export const GutterDoubleExtraLarge: Story = {
+export const SpacingDoubleExtraLarge: Story = {
     args: {
         ...Default.args,
-        gutter: "xxl"
+        spacing: "xxl"
     }
 };
 

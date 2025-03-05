@@ -1,97 +1,7 @@
 import * as React from "react";
-import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
 import * as LabelPrimitive from "@radix-ui/react-label";
-import { Icon } from "~/Icon";
-import { Text } from "~/Text";
-import { Tooltip } from "~/Tooltip";
 import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
-
-/**
- * Label Required
- */
-const labelRequiredVariants = cva("wby-text-destructive-primary", {
-    variants: {
-        disabled: {
-            true: "wby-text-destructive-muted"
-        }
-    }
-});
-
-type LabelRequiredProps = VariantProps<typeof labelRequiredVariants>;
-
-const DecoratableLabelRequired = ({ disabled }: LabelRequiredProps) => (
-    <span className={cn(labelRequiredVariants({ disabled }))}>{"*"}</span>
-);
-const LabelRequired = makeDecoratable("LabelRequired", DecoratableLabelRequired);
-
-/**
- * Label Description
- */
-const labelDescriptionVariants = cva("wby-font-normal wby-text-neutral-strong", {
-    variants: {
-        disabled: {
-            true: "wby-text-neutral-disabled"
-        }
-    }
-});
-
-interface LabelDescriptionProps extends VariantProps<typeof labelDescriptionVariants> {
-    content: React.ReactNode;
-}
-
-const DecoratableLabelDescription = ({ content, disabled }: LabelDescriptionProps) => (
-    <Text className={cn(labelDescriptionVariants({ disabled }))} text={content} size={"sm"} />
-);
-const LabelDescription = makeDecoratable("LabelDescription", DecoratableLabelDescription);
-
-/**
- * Label Hint
- */
-interface LabelHintProps {
-    content: React.ReactNode;
-}
-
-const DecoratableLabelHint = ({ content }: LabelHintProps) => (
-    <Tooltip
-        content={content}
-        trigger={
-            <Icon
-                icon={<InfoIcon />}
-                size="xs"
-                label={"More information"}
-                color={"neutral-light"}
-            />
-        }
-    />
-);
-const LabelHint = makeDecoratable("LabelHint", DecoratableLabelHint);
-
-/**
- * Label Value
- */
-const labelValueVariants = cva("wby-text-neutral-strong", {
-    variants: {
-        weight: {
-            strong: "wby-font-semibold",
-            light: "wby-font-regular"
-        },
-        disabled: {
-            true: "wby-text-neutral-disabled"
-        }
-    },
-    defaultVariants: {
-        weight: "strong"
-    }
-});
-
-interface LabelValueProps extends VariantProps<typeof labelValueVariants> {
-    value: React.ReactNode;
-}
-
-const DecoratableLabelValue = ({ value, weight, disabled }: LabelValueProps) => (
-    <Text text={value} size="sm" className={cn(labelValueVariants({ weight, disabled }))} />
-);
-const LabelValue = makeDecoratable("LabelValue", DecoratableLabelValue);
+import { LabelDescription, LabelHint, LabelRequired, LabelValue } from "./components";
 
 const labelVariants = cva(
     [
@@ -126,38 +36,40 @@ interface LabelProps
     disabled?: boolean;
 }
 
-const LabelBase = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
-    (
-        { className, disabled, description, hint, required, value, text, weight, id, ...props },
-        ref
-    ) => {
-        if (!text) {
-            return null;
-        }
-
-        return (
-            <LabelPrimitive.Root
-                ref={ref}
-                className={cn(labelVariants({ weight, disabled }), className)}
-                htmlFor={id}
-                {...props}
-            >
-                <span>
-                    <span className={"wby-flex wby-items-center wby-gap-xxs"}>
-                        {text}
-                        {description && (
-                            <LabelDescription content={description} disabled={disabled} />
-                        )}
-                        {hint && <LabelHint content={hint} />}
-                        {required && <LabelRequired disabled={disabled} />}
-                    </span>
-                </span>
-                {value && <LabelValue value={value} weight={weight} disabled={disabled} />}
-            </LabelPrimitive.Root>
-        );
+const LabelBase = ({
+    className,
+    disabled,
+    description,
+    hint,
+    required,
+    value,
+    text,
+    weight,
+    id,
+    ...props
+}: LabelProps) => {
+    if (!text) {
+        return null;
     }
-);
-LabelBase.displayName = LabelPrimitive.Root.displayName;
+
+    return (
+        <LabelPrimitive.Root
+            className={cn(labelVariants({ weight, disabled }), className)}
+            htmlFor={id}
+            {...props}
+        >
+            <span>
+                <span className={"wby-flex wby-items-center wby-gap-xxs"}>
+                    {text}
+                    {description && <LabelDescription content={description} disabled={disabled} />}
+                    {hint && <LabelHint content={hint} />}
+                    {required && <LabelRequired disabled={disabled} />}
+                </span>
+            </span>
+            {value && <LabelValue value={value} weight={weight} disabled={disabled} />}
+        </LabelPrimitive.Root>
+    );
+};
 
 const Label = makeDecoratable("Label", LabelBase);
 

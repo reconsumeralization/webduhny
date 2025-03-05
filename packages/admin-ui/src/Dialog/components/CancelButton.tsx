@@ -1,4 +1,3 @@
-// No Tailwind classes to modify in this file
 import * as React from "react";
 import { makeDecoratable } from "~/utils";
 import { DialogClose } from "./DialogClose";

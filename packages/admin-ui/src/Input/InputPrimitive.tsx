@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Icon as BaseIcon } from "~/Icon";
-import { cn, cva, type VariantProps } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 /**
  * Icon
@@ -210,11 +210,35 @@ const inputVariants = cva(
 interface InputPrimitiveProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
         VariantProps<typeof inputVariants> {
+    /**
+     * Icon to be displayed at the start of the input field.
+     */
     startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+
+    /**
+     * Icon to be displayed at the end of the input field.
+     */
     endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+
+    /**
+     * Maximum length of the input field.
+     */
     maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
+
+    /**
+     * Reference to the input element.
+     */
     inputRef?: React.Ref<HTMLInputElement>;
-    onEnter?: () => any;
+
+    /**
+     * If true, it will pass the native `event` to the `onChange` callback
+     */
+    forwardEventOnChange?: boolean;
+
+    /**
+     * Callback function to be called when the Enter key is pressed.
+     */
+    onEnter?: () => void;
 }
 
 const getIconPosition = (
@@ -233,13 +257,15 @@ const getIconPosition = (
     return;
 };
 
-const InputPrimitive = ({
+const DecoratableInputPrimitive = ({
     className,
     disabled,
     endIcon,
+    forwardEventOnChange,
     inputRef,
     invalid,
     maxLength,
+    onChange: originalOnChange,
     onEnter,
     onKeyDown: originalOnKeyDown,
     size,
@@ -248,6 +274,18 @@ const InputPrimitive = ({
     ...props
 }: InputPrimitiveProps) => {
     const iconPosition = getIconPosition(startIcon, endIcon);
+
+    const onChange = React.useCallback(
+        (event: React.SyntheticEvent<HTMLInputElement>) => {
+            if (!originalOnChange) {
+                return;
+            }
+
+            // @ts-expect-error
+            originalOnChange(forwardEventOnChange ? event : event.target.value);
+        },
+        [forwardEventOnChange, originalOnChange]
+    );
 
     const onKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -277,6 +315,7 @@ const InputPrimitive = ({
                 className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
                 disabled={disabled}
                 size={maxLength}
+                onChange={onChange}
                 onKeyDown={onKeyDown}
                 {...props}
             />
@@ -286,6 +325,8 @@ const InputPrimitive = ({
         </div>
     );
 };
+
+const InputPrimitive = makeDecoratable("InputPrimitive", DecoratableInputPrimitive);
 
 export {
     InputIcon,

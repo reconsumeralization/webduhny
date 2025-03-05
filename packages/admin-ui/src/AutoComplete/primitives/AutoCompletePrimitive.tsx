@@ -1,10 +1,11 @@
 import React, { KeyboardEvent } from "react";
 import { Command } from "~/Command";
-import { Popover } from "~/Popover";
+import { PopoverPrimitive } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
 import { AutoCompleteOption } from "./domains";
+import { makeDecoratable } from "~/utils";
 
 type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     /**
@@ -62,7 +63,7 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
     displayResetAction?: boolean;
 };
 
-const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
+const DecoratableAutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     const {
         vm,
         setListOpenState,
@@ -101,9 +102,9 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     }, [setListOpenState]);
 
     return (
-        <Popover open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
+        <PopoverPrimitive open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
             <Command label={props.label} onKeyDown={handleKeyDown}>
-                <Popover.Trigger asChild>
+                <PopoverPrimitive.Trigger asChild>
                     <span>
                         <Command.Input
                             value={vm.inputVm.value}
@@ -128,8 +129,8 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                             onFocus={() => setListOpenState(true)}
                         />
                     </span>
-                </Popover.Trigger>
-                <Popover.Content
+                </PopoverPrimitive.Trigger>
+                <PopoverPrimitive.Content
                     style={{ width: "var(--radix-popover-trigger-width)" }}
                     onOpenAutoFocus={e => e.preventDefault()}
                 >
@@ -142,10 +143,15 @@ const AutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
                         emptyMessage={vm.optionsListVm.emptyMessage}
                         optionRenderer={props.optionRenderer}
                     />
-                </Popover.Content>
+                </PopoverPrimitive.Content>
             </Command>
-        </Popover>
+        </PopoverPrimitive>
     );
 };
+
+const AutoCompletePrimitive = makeDecoratable(
+    "AutoCompletePrimitive",
+    DecoratableAutoCompletePrimitive
+);
 
 export { AutoCompletePrimitive, type AutoCompletePrimitiveProps };

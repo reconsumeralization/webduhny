@@ -1,9 +1,30 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import cn from "classnames";
-import { GridCellProps as RmwcGridCellProps, GridProps as RmwcGridProps } from "@rmwc/grid";
-import { CSSProperties } from "react";
-
 import { Grid as AdminUiGrid, ColumnProps as AdminUiColumnProps } from "@webiny/admin-ui";
+
+export interface RmwcGridProps {
+    /** Specifies the grid should have fixed column width. */
+    fixedColumnWidth?: boolean;
+    /** Specifies the alignment of the whole grid. */
+    align?: "left" | "right";
+    /** Children for the Grid */
+    children?: React.ReactNode;
+}
+
+export interface RmwcGridCellProps {
+    /** Default number of columns to span. */
+    span?: number;
+    /** Number of columns to span on a phone. */
+    phone?: number;
+    /** Number of columns to span on a tablet. */
+    tablet?: number;
+    /** Number of columns to span on a desktop. */
+    desktop?: number;
+    /** Specifies the order of the cell. */
+    order?: number;
+    /** Specifies the alignment of cell */
+    align?: "top" | "middle" | "bottom";
+}
 
 export type CellProps = RmwcGridCellProps & {
     // One or more Cell components.

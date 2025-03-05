@@ -54,11 +54,11 @@ module.exports = {
         },
 
         extend: {
+            animation,
+            keyframes,
             margin,
             padding,
-            spacing,
-            keyframes,
-            animation
+            spacing
         }
     },
 

@@ -1,6 +1,8 @@
 import React from "react";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
+import { makeDecoratable } from "~/utils";
+
 // Modes
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-json";
@@ -16,7 +18,7 @@ interface CodeEditorPrimitiveProps extends React.ComponentProps<typeof AceEditor
     disabled?: boolean;
 }
 
-const CodeEditorPrimitive = ({
+const DecoratableCodeEditorPrimitive = ({
     value,
     theme = "github",
     disabled,
@@ -35,5 +37,7 @@ const CodeEditorPrimitive = ({
         />
     );
 };
+
+const CodeEditorPrimitive = makeDecoratable("CodeEditorPrimitive", DecoratableCodeEditorPrimitive);
 
 export { CodeEditorPrimitive, type CodeEditorPrimitiveProps };

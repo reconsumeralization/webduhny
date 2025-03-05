@@ -1,5 +1,5 @@
 import React from "react";
-import cn from "classnames";
+import { cn } from "@webiny/admin-ui";
 
 export type ElevationProps = {
     // Any element that needs to be highlighted.

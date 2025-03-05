@@ -1,7 +1,5 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/react-composition";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "~/utils";
+import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 
 export type HeadingTags = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 export type HeadingLevels = 1 | 2 | 3 | 4 | 5 | 6;
@@ -46,9 +44,9 @@ const HeadingBase = ({ level, text, className, as }: HeadingProps) => {
     // Choose the tag: prefer `as`, otherwise use `TAG_MAP[validatedLevel]`
     const Tag = as || TAG_MAP[validatedLevel];
 
-    return <Tag className={cn(headingVariants({ level, className }))}>{text}</Tag>;
+    return <Tag className={cn(headingVariants({ level }), className)}>{text}</Tag>;
 };
 
-const Heading = makeDecoratable("heading", HeadingBase);
+const Heading = makeDecoratable("Heading", HeadingBase);
 
 export { Heading, type HeadingProps };

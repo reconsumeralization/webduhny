@@ -8,9 +8,9 @@ const tabListVariants = cva("wby-w-full wby-inline-flex wby-items-center wby-jus
             sm: "wby-gap-sm",
             md: "wby-gap-sm",
             lg: "wby-gap-sm-extra",
-            xl: "wby-gap-sm-extra"
+            xl: "wby-gap-md"
         },
-        gutter: {
+        spacing: {
             xs: "wby-px-xs",
             sm: "wby-px-sm",
             md: "wby-px-md",
@@ -29,9 +29,9 @@ const tabListVariants = cva("wby-w-full wby-inline-flex wby-items-center wby-jus
 
 type ListProps = TabsPrimitive.TabsListProps & VariantProps<typeof tabListVariants>;
 
-const List = ({ className, gutter, size, separator, ...props }: ListProps) => (
+const List = ({ className, spacing, size, separator, ...props }: ListProps) => (
     <TabsPrimitive.List
-        className={cn(tabListVariants({ gutter, size, separator }), className)}
+        className={cn(tabListVariants({ spacing, size, separator }), className)}
         {...props}
     />
 );

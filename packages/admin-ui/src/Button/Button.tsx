@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cn, cva, VariantProps, makeDecoratable } from "~/utils";
+import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
 const buttonVariants = cva(
     [
@@ -12,37 +12,37 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 primary: [
-                    "wby-bg-primary wby-text-neutral-light [&>svg]:wby-fill-neutral-base",
+                    "wby-bg-primary wby-text-neutral-light wby-fill-neutral-base",
                     "hover:wby-bg-primary-strong",
                     "active:wby-bg-primary-xstrong",
                     "aria-disabled:wby-bg-primary-disabled",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 secondary: [
-                    "wby-bg-neutral-dimmed wby-text-neutral-strong [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-bg-neutral-dimmed wby-text-neutral-strong wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-muted",
                     "active:wby-bg-neutral-strong",
-                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 tertiary: [
-                    "wby-bg-neutral-base wby-text-neutral-strong wby-border-neutral-muted [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-bg-neutral-base wby-text-neutral-strong wby-border-neutral-muted wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-light",
                     "active:wby-bg-neutral-muted",
-                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-border-neutral-dimmed aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-bg-neutral-disabled aria-disabled:wby-border-neutral-dimmed aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong",
                     "focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed"
                 ],
                 ghost: [
-                    "wby-text-neutral-strong [&>svg]:wby-fill-neutral-xstrong",
+                    "wby-text-neutral-strong wby-fill-neutral-xstrong",
                     "hover:wby-bg-neutral-dimmed",
                     "active:wby-bg-neutral-muted",
-                    "aria-disabled:wby-text-neutral-disabled"
+                    "aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-strong"
                 ],
                 "ghost-negative": [
-                    "wby-text-neutral-light [&>svg]:wby-fill-neutral-base",
+                    "wby-text-neutral-light wby-fill-neutral-base",
                     "hover:wby-bg-neutral-base/20",
                     "active:wby-bg-neutral-base/30",
-                    "aria-disabled:wby-text-neutral-disabled",
+                    "aria-disabled:wby-text-neutral-disabled aria-disabled:wby-fill-neutral-base/50",
                     "focus-visible:!wby-border-neutral-base"
                 ]
             },
@@ -167,18 +167,17 @@ interface ButtonProps
 
 type ContentLayout = "text" | "icon" | "text-icon-start" | "text-icon-end";
 
-const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-    const {
-        className,
-        variant,
-        size,
-        asChild = false,
-        text,
-        icon,
-        iconPosition = "start",
-        disabled,
-        ...rest
-    } = props;
+const ButtonBase = ({
+    className,
+    variant,
+    size,
+    asChild = false,
+    text,
+    icon,
+    iconPosition = "start",
+    disabled,
+    ...rest
+}: ButtonProps) => {
     const Comp = asChild ? Slot : "button";
 
     const contentLayout = useMemo<ContentLayout>(() => {
@@ -203,21 +202,13 @@ const ButtonBase = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref)
     );
 
     return (
-        <Comp
-            className={cssClasses}
-            ref={ref}
-            disabled={disabled}
-            aria-disabled={disabled}
-            {...rest}
-        >
+        <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
             {iconPosition !== "end" && icon}
             <Slottable>{text}</Slottable>
             {iconPosition === "end" && icon}
         </Comp>
     );
-});
-
-ButtonBase.displayName = "Button";
+};
 
 const Button = makeDecoratable("Button", ButtonBase);
 

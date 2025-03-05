@@ -73,6 +73,10 @@ export const AutoComplete = ({
             return undefined;
         }
 
+        if (useSimpleValues && typeof props.value === "string") {
+            return props.value;
+        }
+
         return props.value[valueProp as keyof AutoCompleteProps["value"]] as string;
     }, [props.value, valueProp]);
 

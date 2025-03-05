@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, ReactElement } from "react";
 import pick from "lodash/pick";
 import { FormComponentProps } from "~/types";
-import classNames from "classnames";
 import { Input as AdminInput, Textarea as AdminTextarea } from "@webiny/admin-ui";
 
 export interface TextFieldHelperTextProps {
@@ -126,19 +125,6 @@ const rmwcProps = [
  * Please use the `Input` component from the `@webiny/admin-ui` package instead.
  */
 export const Input = (props: InputProps) => {
-    const onChange = useCallback(
-        (e: React.SyntheticEvent<any>) => {
-            const { onChange, rawOnChange } = props;
-            if (!onChange) {
-                return;
-            }
-
-            // @ts-expect-error
-            onChange(rawOnChange ? e : e.target.value);
-        },
-        [props.onChange, props.rawOnChange]
-    );
-
     const {
         autoFocus,
         value,
@@ -148,6 +134,8 @@ export const Input = (props: InputProps) => {
         validation,
         icon,
         trailingIcon,
+        onChange,
+        rawOnChange,
         required,
         inputRef,
         ...rest
@@ -187,12 +175,13 @@ export const Input = (props: InputProps) => {
                 onChange={onChange}
                 placeholder={placeholder}
                 size={size}
-                className={classNames("webiny-ui-input")}
+                className={"webiny-ui-input"}
                 data-testid={props["data-testid"]}
                 validation={validation}
                 description={description}
                 required={required}
                 rows={rows}
+                forwardEventOnChange={rawOnChange}
                 textareaRef={inputRef as React.Ref<HTMLTextAreaElement> | undefined}
             />
         );
@@ -208,11 +197,12 @@ export const Input = (props: InputProps) => {
             endIcon={getValidIcon(trailingIcon)}
             placeholder={placeholder}
             size={size}
-            className={classNames("webiny-ui-input")}
+            className={"webiny-ui-input"}
             data-testid={props["data-testid"]}
             validation={validation}
             description={description}
             required={required}
+            forwardEventOnChange={rawOnChange}
             inputRef={inputRef as React.Ref<HTMLInputElement> | undefined}
         />
     );

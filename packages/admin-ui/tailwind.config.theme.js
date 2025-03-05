@@ -1,4 +1,9 @@
 module.exports = {
+    animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "skeleton-pulse": "skeleton-pulse 1400ms ease-in-out infinite"
+    },
     backgroundColor: {
         transparent: "transparent",
         white: "white",
@@ -235,6 +240,20 @@ module.exports = {
         regular: "var(--font-weight-regular)",
         semibold: "var(--font-weight-semibold)"
     },
+    keyframes: {
+        "accordion-down": {
+            from: { height: "0" },
+            to: { height: "var(--radix-accordion-content-height)" }
+        },
+        "accordion-up": {
+            from: { height: "var(--radix-accordion-content-height)" },
+            to: { height: "0" }
+        },
+        "skeleton-pulse": {
+            "0%, 100%": { backgroundColor: "hsl(var(--bg-neutral-dimmed))" },
+            "50%": { backgroundColor: "hsl(var(--bg-neutral-muted))" }
+        }
+    },
     margin: {
         lg: "var(--margin-lg)",
         md: "var(--margin-md)",
@@ -337,14 +356,5 @@ module.exports = {
             primary: "hsl(var(--text-success-primary))",
             subtle: "hsl(var(--text-success-subtle))"
         }
-    },
-    keyframes: {
-        skeletonPulse: {
-            "0%, 100%": { backgroundColor: "hsl(var(--bg-neutral-dimmed))" },
-            "50%": { backgroundColor: "hsl(var(--bg-neutral-muted))" }
-        }
-    },
-    animation: {
-        skeletonPulse: "skeletonPulse 1400ms ease-in-out infinite"
     }
 };

@@ -102,8 +102,8 @@ describe("IconPickerPresenter", () => {
         // default `isMenuOpened` should be false
         expect(presenter.vm.isMenuOpened).toBe(false);
 
-        // default `activeTab` should be 0
-        expect(presenter.vm.activeTab).toBe(0);
+        // default `activeTab` should be handled by the component itself
+        expect(presenter.vm.activeTab).toBe(undefined);
 
         // should be able to set `isMenuOpened`
         // should be able to set `activeTab` based on `selectedIcon` type
@@ -113,6 +113,6 @@ describe("IconPickerPresenter", () => {
         expect(presenter.vm.isMenuOpened).toBe(true);
 
         // `vm` should have the expected `activeTab` value
-        expect(presenter.vm.activeTab).toBe(1);
+        expect(presenter.vm.activeTab).toBe("emoji");
     });
 });

@@ -1,226 +1,79 @@
-import React, { CSSProperties, useCallback, useEffect, useState } from "react";
-import { ListItem, ListItemGraphic, ListItemMeta } from "~/List";
-import Transition, { TransitionStatus } from "react-transition-group/Transition";
-import { Icon } from "~/Icon";
-import styled from "@emotion/styled";
-import { css } from "emotion";
-import { Typography } from "~/Typography";
-import { ReactComponent as UpArrow } from "./icons/round-keyboard_arrow_up-24px.svg";
-import { ReactComponent as DownArrow } from "./icons/round-keyboard_arrow_down-24px.svg";
-import classNames from "classnames";
-import {
-    AccordionItemAction,
-    AccordionItemActions,
-    AccordionItemElement
-} from "~/Accordion/AccordionItemActions";
-
-const Content = styled.div`
-    width: 100%;
-    border-right: 1px solid var(--mdc-theme-background);
-    border-bottom: 1px solid var(--mdc-theme-background);
-    border-left: 1px solid var(--mdc-theme-background);
-    box-sizing: border-box;
-    > .mdc-layout-grid {
-        margin: -24px;
-    }
-`;
-
-const listItem = css`
-    cursor: pointer;
-    border-bottom: 1px solid var(--mdc-theme-background);
-    &:last-child {
-        border-bottom: none;
-    }
-    .mdc-deprecated-list-item__graphic {
-        margin-right: 20px;
-    }
-`;
-
-const ListItemTitle = styled.div`
-    font-weight: 600;
-    line-height: 100%;
-`;
-
-const ListItemDescription = styled.div`
-    line-height: 100%;
-`;
-
-const TitleContent = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const openedState = css`
-    background-color: var(--mdc-theme-on-background);
-`;
-
-const nonInteractive = css`
-    background-color: var(--mdc-theme-surface);
-`;
-
-const duration = 150;
-const defaultStyle: CSSProperties = {
-    transition: `all ${duration}ms ease-in-out`,
-    opacity: 0,
-    height: 0,
-    pointerEvents: "auto",
-    overflow: "hidden"
-};
-
-const transitionStyles: Record<string, CSSProperties> = {
-    entering: {
-        opacity: 0,
-        height: 0,
-        padding: "20px",
-        pointerEvents: "auto",
-        overflow: "initial"
-    },
-    entered: {
-        opacity: 1,
-        height: "auto",
-        padding: "20px",
-        pointerEvents: "auto",
-        overflow: "initial"
-    },
-    exiting: {
-        height: "auto",
-        padding: "20px",
-        pointerEvents: "auto",
-        overflow: "initial"
-    }
-};
-
-const Divider = styled.span`
-    width: 1px;
-    margin: 0 15px;
-    height: 100%;
-    background-color: var(--mdc-theme-on-background);
-`;
-
-const Actions = styled(ListItemMeta)`
-    display: flex;
-    height: 40%;
-    align-items: center;
-`;
+import React, { useMemo } from "react";
+import { Accordion as AdminUiAccordion } from "@webiny/admin-ui";
+import { withStaticProps } from "@webiny/admin-ui/utils";
 
 export interface AccordionItemProps {
     /**
-     * Can user toggle the accordion item by clicking it? Defaults to `true`.
+     * Element displayed when accordion is expanded.
      */
-    interactive?: boolean;
-    /**
-     * Actions to show on the right side of the accordion item
-     */
-    actions?: React.ReactElement | null;
-    /**
-     * Left side icon
-     */
-    icon?: React.ReactElement | null;
+    children: React.ReactNode;
 
     /**
-     * Accordion title
+     * @deprecated This prop no longer has any effect.
+     * Elevation number, default set to 2
      */
-    title?: React.ReactNode;
-
-    /**
-     * Optional description
-     */
-    description?: string;
+    elevation?: number;
 
     /**
      * Append a class name
      */
     className?: string;
 
-    /**
-     * Render item opened by default
-     */
+    value?: string;
+
+    title?: React.ReactNode;
+
+    description?: React.ReactNode;
+
     open?: boolean;
+
     /**
-     * For testing purpose
+     * @deprecated This prop no longer has any effect.
      */
-    "data-testid"?: string;
+    interactive?: boolean;
+
+    handle?: React.ReactNode;
+
+    actions?: React.ReactNode;
+
+    icon?: React.ReactNode;
+
     /**
-     * Append a class name to Icon
+     * @deprecated This prop no longer has any effect.
      */
     iconClassName?: string;
-
-    children: React.ReactNode;
 }
 
-const AccordionItemComponent = (props: AccordionItemProps) => {
-    const [open, setState] = useState<boolean>(props.open ? props.open : false);
-    const { interactive = true, actions } = props;
+const AccordionItemBase = (props: AccordionItemProps) => {
+    const value = useMemo(() => {
+        return props.value || new Date().toISOString();
+    }, [props.value]);
 
-    const toggleState = useCallback(() => {
-        setState(!open);
-    }, [open]);
-
-    const onClick = interactive ? toggleState : undefined;
-    const divider = interactive && actions ? <Divider /> : null;
-    const arrowIcon = interactive ? <Icon icon={!open ? <DownArrow /> : <UpArrow />} /> : null;
-
-    useEffect(() => {
-        setState(!!props.open);
-    }, [props.open]);
+    const icon = useMemo(() => {
+        return props.icon ? (
+            <AdminUiAccordion.Item.Icon
+                icon={props.icon}
+                label={typeof props.title === "string" ? props.title : ""}
+            />
+        ) : null;
+    }, [props.icon]);
 
     return (
-        <div className={classNames("webiny-ui-accordion-item", props.className)}>
-            <ListItem
-                disabled={!interactive}
-                className={classNames(
-                    listItem,
-                    { [openedState]: open },
-                    { [nonInteractive]: !interactive },
-                    "webiny-ui-accordion-item__list-item"
-                )}
-                onClick={onClick}
-                data-testid={props["data-testid"]}
-            >
-                {props.icon && (
-                    <ListItemGraphic>
-                        <Icon icon={props.icon} className={props.iconClassName} />
-                    </ListItemGraphic>
-                )}
-
-                <TitleContent className="webiny-ui-accordion-item__title">
-                    <ListItemTitle>{props.title}</ListItemTitle>
-                    {props.description && (
-                        <ListItemDescription>
-                            <Typography use={"body2"}>{props.description}</Typography>
-                        </ListItemDescription>
-                    )}
-                </TitleContent>
-                <Actions>
-                    {props.actions ? props.actions : null}
-                    {divider}
-                    {arrowIcon}
-                </Actions>
-            </ListItem>
-            <Transition in={open} timeout={duration}>
-                {(state: TransitionStatus) => (
-                    <Content
-                        style={{ ...defaultStyle, ...transitionStyles[state] }}
-                        className="webiny-ui-accordion-item__content"
-                    >
-                        {props.children}
-                    </Content>
-                )}
-            </Transition>
-        </div>
+        <AdminUiAccordion.Item {...props} value={value} icon={icon} title={props.title || ""}>
+            {props.children as React.ReactElement}
+        </AdminUiAccordion.Item>
     );
 };
 
-type AccordionItem = React.ComponentType<AccordionItemProps> & {
-    Divider: typeof Divider;
-    Actions: typeof AccordionItemActions;
-    Action: typeof AccordionItemAction;
-    Element: typeof AccordionItemElement;
-};
-
-export const AccordionItem: AccordionItem = Object.assign(AccordionItemComponent, {
-    Divider,
-    Action: AccordionItemAction,
-    Actions: AccordionItemActions,
-    Element: AccordionItemElement
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Accordion.Item` component from the `@webiny/admin-ui` package instead.
+ */
+export const AccordionItem = withStaticProps(AccordionItemBase, {
+    Divider: AdminUiAccordion.Item.Action.Separator,
+    Action: AdminUiAccordion.Item.Action,
+    Handle: AdminUiAccordion.Item.Handle,
+    Icon: AdminUiAccordion.Item.Icon,
+    Actions: (props: any) => <>{props.children}</>,
+    Element: (props: any) => <div data-role={"accordion-element"} {...props} />
 });

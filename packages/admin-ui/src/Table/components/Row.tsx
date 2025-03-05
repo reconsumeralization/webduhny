@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, cva, VariantProps } from "~/utils";
+import { cn, cva, type VariantProps } from "~/utils";
 
 const rowVariants = cva(
     "wby-border-neutral-dimmed wby-border-solid wby-border-b-sm wby-transition-colors hover:wby-bg-neutral-subtle",
