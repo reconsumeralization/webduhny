@@ -158,10 +158,54 @@ export const WithAction: Story = {
     name: "With action",
     args: {
         ...WithCloseButton.args,
-        children: <>An alert that can be closed and also has .</>,
+        children: <>An alert that can be closed and also has action button.</>,
         showCloseButton: true,
         actions: (
             <Alert.Action text={"Button"} onClick={() => alert("Custom action button clicked.")} />
         )
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        type: "info",
+        variant: "subtle",
+        showCloseButton: false,
+        children: (
+            <>
+                This type of notification is suitable for general usage where there’s no need for
+                accent. And <a href={"#"}>this thing here</a> is a short link.
+            </>
+        ),
+        onClose: () => {},
+        actions: undefined
+    },
+    argTypes: {
+        type: {
+            description: "Type",
+            control: "select",
+            options: ["info", "success", "warning", "danger"],
+            defaultValue: "info"
+        },
+        variant: {
+            description: "Variant",
+            control: "select",
+            options: ["subtle", "strong"],
+            defaultValue: "subtle"
+        },
+        showCloseButton: {
+            description:
+                "Show close button, please refer to the 'With Close Button' example below for details.",
+            control: "boolean",
+            defaultValue: false
+        },
+        onClose: {
+            description: "Please refer to the 'With Close Button' example below for details.",
+            control: "none"
+        },
+        actions: {
+            description: "Please refer to the 'With Action' example below for details.",
+            control: "none"
+        }
     }
 };
