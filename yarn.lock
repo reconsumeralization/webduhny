@@ -14565,6 +14565,7 @@ __metadata:
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-aco": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
+    "@webiny/app-headless-cms-common": "npm:0.0.0"
     "@webiny/app-i18n": "npm:0.0.0"
     "@webiny/app-page-builder-elements": "npm:0.0.0"
     "@webiny/app-plugin-admin-welcome-screen": "npm:0.0.0"
