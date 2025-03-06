@@ -153,9 +153,6 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
         working-directory: next
-      - name: Build packages (full)
-        run: yarn build
-        working-directory: next
       - name: Check types for Cypress tests
         run: yarn cy:ts
         working-directory: next
