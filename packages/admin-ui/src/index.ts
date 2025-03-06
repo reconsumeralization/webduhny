@@ -6,6 +6,7 @@ export * from "./Button";
 export * from "./Card";
 export * from "./Checkbox";
 export * from "./CodeEditor";
+export * from "./ColorPicker";
 export * from "./DataTable";
 export * from "./DelayedOnChange";
 export * from "./Dialog";

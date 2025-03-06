@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { cn, DelayedOnChange } from "@webiny/admin-ui";
-import { ColorPicker } from "@webiny/ui/ColorPicker";
+import { DelayedOnChange, ColorPicker } from "@webiny/admin-ui";
 
 import { useIcon } from "..";
 import { IconPickerTab } from "../IconPickerTab";
 import { useIconPicker } from "../IconPickerPresenterProvider";
 import { IconPickerConfig } from "../config";
 import { Icon } from "../types";
-
-const ColorPickerWrapper = (props: React.HTMLAttributes<HTMLDivElement>) => {
-    return (
-        <div
-            className={cn([
-                "wby-size-xl",
-                "[&_[data-role='color-picker-swatch']]:!wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&_[data-role='color-picker-swatch']]:!wby-rounded-sm",
-                "[&_[data-role='color-picker-swatch']>div]:!wby-size-lg"
-            ])}
-        >
-            {props.children}
-        </div>
-    );
-};
 
 /**
  * NOTE: Avoid using `@emotion/styled` in icon renderer components across all plugins.
@@ -62,9 +47,7 @@ const IconColorPicker = ({ color, onChange }: IconColorPickerProps) => {
     return (
         <DelayedOnChange value={color} onChange={onChange}>
             {({ value, onChange }) => (
-                <ColorPickerWrapper>
-                    <ColorPicker align={"right"} value={value} onChange={onChange} />
-                </ColorPickerWrapper>
+                <ColorPicker align={"end"} value={value} onValueChange={onChange} />
             )}
         </DelayedOnChange>
     );
