@@ -24,7 +24,7 @@ const defaultClass = css`
         ${errorBorderMixin}
     }
 
-    // reset the default behavior for fiels that we want to manually control
+    // reset the default behavior for fields that we want to manually control
     .wby-content-entry-invalid-field[data-field-type="text"],
     .wby-content-entry-invalid-field[data-field-type="long-text"],
     .wby-content-entry-invalid-field[data-field-type="dynamicZone"],

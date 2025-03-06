@@ -22,9 +22,11 @@ export const createSimpleSingleRenderer = (): CmsModelFieldRendererPlugin => {
                 const Bind = getBind();
                 return (
                     <Bind>
-                        {bind => {
-                            return <SimpleSingleRenderer bind={bind} field={field} />;
-                        }}
+                        {bind => (
+                            <Bind.ValidationScope>
+                                <SimpleSingleRenderer bind={bind} field={field} />
+                            </Bind.ValidationScope>
+                        )}
                     </Bind>
                 );
             }
