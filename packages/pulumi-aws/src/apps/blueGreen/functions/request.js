@@ -7,6 +7,9 @@ const BLUE_GREEN_ROUTER_DOMAINS = "{BLUE_GREEN_ROUTER_DOMAINS}";
 
 const store = cf.kvs(BLUE_GREEN_ROUTER_STORE_ID);
 
+function removeProtocol(url) {
+    return url.replace(/^https?:\/\//, "");
+}
 function requestWithError(request, error) {
     console.log(`Error: ${error.message}`);
     request.headers["x-webiny-debug-log"] = {
@@ -23,10 +26,11 @@ function getTargetOriginId(params) {
     if (!values) {
         throw new Error("Missing the 'host' header.");
     }
-    const host = Array.isArray(values) ? values[0].value : values.value;
-    if (!host) {
+    const initialHost = Array.isArray(values) ? values[0].value : values.value;
+    if (!initialHost) {
         throw new Error("Missing the 'host' header value.");
     }
+    const host = removeProtocol(initialHost);
 
     const domain = BLUE_GREEN_ROUTER_DOMAINS.find(
         domain => domain.name === active && domain.sourceDomain === host

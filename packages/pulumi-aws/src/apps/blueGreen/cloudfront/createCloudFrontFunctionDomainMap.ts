@@ -1,4 +1,4 @@
-import type { IBlueGreenDomains, IBlueGreenSources } from "../types.js";
+import type { IResolvedDomains } from "../types.js";
 import { createOriginId } from "./createOriginId.js";
 
 export interface ICreateCloudFrontFunctionDomainMapParamsResult {
@@ -11,29 +11,22 @@ export interface ICreateCloudFrontFunctionDomainMapParamsResult {
 }
 
 export interface ICreateCloudFrontFunctionDomainMapParams {
-    domains: IBlueGreenDomains;
-    sources: IBlueGreenSources;
+    domains: IResolvedDomains;
 }
 
 export const createCloudFrontFunctionDomainMap = (
     params: ICreateCloudFrontFunctionDomainMapParams
 ): ICreateCloudFrontFunctionDomainMapParamsResult[] => {
-    const { domains, sources } = params;
+    const { domains } = params;
 
     const results: ICreateCloudFrontFunctionDomainMapParamsResult[] = [];
     for (const domain of domains) {
-        for (const app in sources) {
-            const key = app as keyof typeof sources;
-
-            const sourceDomain = sources[key];
-            if (!sourceDomain) {
-                continue;
-            }
+        for (const source of domain.sources) {
             results.push({
                 name: domain.name,
-                sourceDomain,
+                sourceDomain: source,
                 targetOriginId: createOriginId({
-                    type: key,
+                    type: domain.type,
                     name: domain.name
                 })
             });

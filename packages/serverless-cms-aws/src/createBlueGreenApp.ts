@@ -1,7 +1,10 @@
 import type { CreateBlueGreenPulumiAppParams } from "@webiny/pulumi-aws/apps/blueGreen/createBlueGreenPulumiApp";
 import { createBlueGreenPulumiApp } from "@webiny/pulumi-aws/apps/blueGreen/createBlueGreenPulumiApp";
 import type { Plugin, PluginCollection } from "@webiny/plugins/types";
-import { createAfterDeployPlugin } from "@webiny/cli-plugin-deploy-pulumi/plugins";
+import {
+    createAfterDeployPlugin,
+    createBeforeDeployPlugin
+} from "@webiny/cli-plugin-deploy-pulumi/plugins";
 import { getStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils/index.js";
 import { blue, green } from "chalk";
 
@@ -10,6 +13,14 @@ export interface CreateBlueGreenAppParams extends CreateBlueGreenPulumiAppParams
 }
 
 const builtInPlugins: Plugin[] = [
+    createBeforeDeployPlugin(async ({ env, variant }, context) => {
+        if (!variant?.length) {
+            return;
+        }
+        const message = `Cannot deploy Blue / Green system environment (${env}) with a variant (${variant}).`;
+        context.error(message);
+        throw new Error(message);
+    }),
     createAfterDeployPlugin(async ({ env }) => {
         const bg = getStackOutput({
             folder: "apps/blueGreen",
@@ -19,6 +30,7 @@ const builtInPlugins: Plugin[] = [
              */
             variant: undefined
         });
+        const domains = Array.isArray(bg.domains) ? bg.domains : [];
 
         const output = [
             "",
@@ -26,6 +38,8 @@ const builtInPlugins: Plugin[] = [
             `‣ Environment name: ${blue(env)}`,
             `‣ CloudFront domain: ${bg.distributionDomain}`,
             `‣ CloudFront URL: ${bg.distributionUrl}`,
+            `‣ Attached domains: `,
+            ...domains.map(domain => `  - https://${domain}`),
             ""
         ];
         console.log(output.join("\n"));

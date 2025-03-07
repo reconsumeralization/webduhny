@@ -1,6 +1,6 @@
-import type { IBlueGreenDomains } from "../types.js";
+import type { IDeploymentsDomains } from "../types.js";
 
-export const getDomains = (): IBlueGreenDomains => {
+export const getDomains = (): IDeploymentsDomains => {
     return [
         {
             name: "green",

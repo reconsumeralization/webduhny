@@ -1,5 +1,5 @@
 import type { IGetApplicationStacksResult } from "./getApplicationDomains.js";
-import type { IBlueGreenDomain, IBlueGreenDomains } from "../types.js";
+import type { IDeploymentDomain, IDeploymentsDomains } from "../types.js";
 
 export interface IConvertApplicationDomainsParams {
     input: IGetApplicationStacksResult;
@@ -7,10 +7,10 @@ export interface IConvertApplicationDomainsParams {
 
 export const convertApplicationDomains = (
     params: IConvertApplicationDomainsParams
-): IBlueGreenDomains => {
+): IDeploymentsDomains => {
     const { input } = params;
 
-    const result = Object.keys(input).map<IBlueGreenDomain>(name => {
+    const result = Object.keys(input).map<IDeploymentDomain>(name => {
         const value = input[name];
         return {
             name,
@@ -25,5 +25,5 @@ export const convertApplicationDomains = (
     if (result.length !== 2) {
         throw new Error("Invalid number of domains.");
     }
-    return result as IBlueGreenDomains;
+    return result as IDeploymentsDomains;
 };

@@ -1,4 +1,5 @@
 import * as aws from "@pulumi/aws";
+import * as pulumi from "@pulumi/pulumi";
 import type { PulumiAppModule } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
 import type { GetCachePolicyResult } from "@pulumi/aws/cloudfront/getCachePolicy";
@@ -13,17 +14,15 @@ import {
     BLUE_GREEN_ROUTER_HEADER,
     BLUE_GREEN_ROUTER_STORE_KEY
 } from "./constants.js";
-import type { IBlueGreenDomains, IBlueGreenSources } from "./types.js";
 import { createCloudFrontFunctionDomainMap } from "./cloudfront/createCloudFrontFunctionDomainMap.js";
-import { addDomainsUrlsOutputs } from "~/utils/addDomainsUrlsOutputs.js";
+import type { IResolvedDomains } from "./types.js";
 
 export type BlueGreenRouterCloudFront = PulumiAppModule<typeof BlueGreenRouterCloudFront>;
 
 export interface IBlueGreenRouterCloudFrontConfig {
     region: aws.Provider;
     protect: boolean;
-    domains: IBlueGreenDomains;
-    sources: IBlueGreenSources;
+    domains: IResolvedDomains;
     cachePolicyId: GetCachePolicyResult;
     originRequestPolicyId: GetOriginRequestPolicyResult;
 }
@@ -36,10 +35,7 @@ export const BlueGreenRouterCloudFront = createAppModule({
         const store = app.getModule(BlueGreenRouterCloudFrontStore);
 
         const { origins, orderedCacheBehaviors } = getCloudFrontConfig(config);
-        const domains = createCloudFrontFunctionDomainMap({
-            domains: config.domains,
-            sources: config.sources
-        });
+        const domains = createCloudFrontFunctionDomainMap(config);
 
         /**
          * Create a new CloudFront function that will be used to route the incoming requests to the correct CloudFront distribution.
@@ -125,7 +121,7 @@ export const BlueGreenRouterCloudFront = createAppModule({
                         }
                     ]
                 },
-                orderedCacheBehaviors,
+                orderedCacheBehaviors: [],
                 restrictions: {
                     geoRestriction: {
                         restrictionType: "none"
@@ -135,19 +131,6 @@ export const BlueGreenRouterCloudFront = createAppModule({
                     cloudfrontDefaultCertificate: true
                 }
             }
-        });
-
-        app.addHandler(() => {
-            addDomainsUrlsOutputs({
-                app,
-                cloudfrontDistribution: cloudFront,
-                map: {
-                    distributionDomain: "distributionDomain",
-                    distributionUrl: "distributionUrl",
-                    usedDomain: "usedDomain",
-                    usedUrl: "usedUrl"
-                }
-            });
         });
 
         return {

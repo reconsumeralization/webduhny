@@ -11,11 +11,13 @@ import { getEnvVariableWebinyEnv } from "~/env/env.js";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
 import { BLUE_GREEN_ROUTER_STORE_KEY } from "./constants.js";
-import type { IBlueGreenDeployment, IBlueGreenSources } from "./types.js";
+import type { IAttachDomainsCallable, IBlueGreenDeployment } from "./types.js";
 import { validateDeployments } from "./validation/validateDeployments.js";
 import { getApplicationDomains } from "./domains/getApplicationDomains.js";
-import { validateSources } from "./validation/validateSources.js";
 import { convertApplicationDomains } from "./domains/convertApplicationDomains.js";
+import { resolveDomains } from "./domains/resolveDomains.js";
+import { applyCustomDomain } from "~/apps/customDomain.js";
+import { attachDomainsToOutput } from "~/apps/blueGreen/domains/attachDomainsToOutput.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 
@@ -74,15 +76,14 @@ export interface CreateBlueGreenPulumiAppParams {
      */
     productionEnvironments?: PulumiAppParam<string[]>;
     /**
-     * Source domains for the Blue / Green.
-     * These will be mapped to our deployments CloudFront distributions.
-     */
-    sources: IBlueGreenSources;
-    /**
      * Available deployments for the Blue / Green switch.
      * They will be validated before deploy.
      */
-    deployments: [IBlueGreenDeployment, IBlueGreenDeployment];
+    deployments: () => [IBlueGreenDeployment, IBlueGreenDeployment];
+    /**
+     * Attach domains to the Blue/Green CloudFront.
+     */
+    domains: IAttachDomainsCallable;
 }
 
 export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumiAppParams) {
@@ -94,16 +95,22 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
             const productionEnvironments =
                 app.params.create.productionEnvironments || DEFAULT_PROD_ENV_NAMES;
 
-            const sources = validateSources(projectAppParams.sources);
-            const deployments = validateDeployments(projectAppParams.deployments);
+            const deployments = validateDeployments(projectAppParams.deployments());
 
-            const applicationDomains = await getApplicationDomains({
+            const applicationsDomains = await getApplicationDomains({
                 stacks: deployments
             });
-            const domains = convertApplicationDomains({
-                input: applicationDomains
+
+            const deploymentsDomains = convertApplicationDomains({
+                input: applicationsDomains
             });
 
+            const attachedDomains = projectAppParams.domains();
+
+            const domains = resolveDomains({
+                attachedDomains,
+                deploymentsDomains
+            });
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
 
@@ -139,9 +146,29 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 protect,
                 region,
                 domains,
-                sources,
                 cachePolicyId: disableCachingCachePolicyId,
                 originRequestPolicyId: forwardEverythingOriginRequestPolicyId
+            });
+
+            const domainNames = domains.reduce<string[]>((collection, domain) => {
+                for (const source of domain.sources) {
+                    if (collection.includes(source)) {
+                        continue;
+                    }
+                    collection.push(source);
+                }
+                return collection;
+            }, []);
+
+            applyCustomDomain(cloudfront.cloudFront, {
+                domains: domainNames,
+                sslSupportMethod: attachedDomains.sslSupportMethod,
+                acmCertificateArn: attachedDomains.acmCertificateArn
+            });
+
+            attachDomainsToOutput({
+                app,
+                cloudFront: cloudfront.cloudFront
             });
 
             tagResources({
