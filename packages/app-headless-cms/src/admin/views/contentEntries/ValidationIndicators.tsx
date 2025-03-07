@@ -49,7 +49,8 @@ const defaultClass = css`
     .wby-content-entry-invalid-field[data-field-type="datetime"],
     .wby-content-entry-invalid-field[data-field-type="long-text"] {
         // input renderer
-        &[data-field-multiple-values="false"] label:first-of-type,
+        &[data-field-multiple-values="false"]:not([data-field-renderer="radio-buttons"])
+            label:first-of-type,
         &[data-field-multiple-values="true"] > hcms-parent-field-provider,
         > label {
             ${errorBorderMixin}
@@ -82,6 +83,10 @@ const defaultClass = css`
 
         // select box
         &[data-field-renderer="select-box"] {
+            .mdc-floating-label::before {
+                ${errorTitleMixin}
+            }
+
             .webiny-ui-select {
                 ${errorBorderMixin}
                 padding-left: 0;
