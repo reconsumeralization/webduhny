@@ -3,17 +3,19 @@ import { Region } from "@pulumi/aws";
 import type { PulumiAppParam } from "@webiny/pulumi";
 import { createPulumiApp } from "@webiny/pulumi";
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants.js";
-import {
-    BlueGreenRouterCloudFront,
-    BlueGreenRouterCloudFrontType
-} from "./BlueGreenRouterCloudFront.js";
-import { createCloudFrontDefaultCacheBehaviorPolicies } from "./createCloudFrontDefaultCacheBehaviorPolicies.js";
+import { BlueGreenRouterCloudFront } from "./BlueGreenRouterCloudFront.js";
+import { createCloudFrontDefaultCacheBehaviorPolicies } from "./cloudfront/createCloudFrontDefaultCacheBehaviorPolicies.js";
 import { tagResources } from "~/utils/tagResources.js";
 import { getEnvVariableWebinyProjectName } from "~/env/projectName.js";
 import { getEnvVariableWebinyEnv } from "~/env/env.js";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
-import { BLUE_GREEN_ROUTER_STORE_KEY } from "~/apps/blueGreen/constants.js";
+import { BLUE_GREEN_ROUTER_STORE_KEY } from "./constants.js";
+import type { IBlueGreenDeployment, IBlueGreenSources } from "./types.js";
+import { validateDeployments } from "./validation/validateDeployments.js";
+import { getApplicationDomains } from "./domains/getApplicationDomains.js";
+import { validateSources } from "./validation/validateSources.js";
+import { convertApplicationDomains } from "./domains/convertApplicationDomains.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 
@@ -71,9 +73,19 @@ export interface CreateBlueGreenPulumiAppParams {
      * https://www.webiny.com/docs/architecture/deployment-modes/production
      */
     productionEnvironments?: PulumiAppParam<string[]>;
+    /**
+     * Source domains for the Blue / Green.
+     * These will be mapped to our deployments CloudFront distributions.
+     */
+    sources: IBlueGreenSources;
+    /**
+     * Available deployments for the Blue / Green switch.
+     * They will be validated before deploy.
+     */
+    deployments: [IBlueGreenDeployment, IBlueGreenDeployment];
 }
 
-export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumiAppParams = {}) {
+export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumiAppParams) {
     return createPulumiApp({
         name: "blueGreen",
         path: "apps/blueGreen",
@@ -81,6 +93,17 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
         program: async app => {
             const productionEnvironments =
                 app.params.create.productionEnvironments || DEFAULT_PROD_ENV_NAMES;
+
+            const sources = validateSources(projectAppParams.sources);
+            const deployments = validateDeployments(projectAppParams.deployments);
+
+            const applicationDomains = await getApplicationDomains({
+                stacks: deployments
+            });
+            const domains = convertApplicationDomains({
+                input: applicationDomains
+            });
+
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
 
@@ -94,54 +117,16 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
              */
             const { forwardEverythingOriginRequestPolicyId, disableCachingCachePolicyId } =
                 await createCloudFrontDefaultCacheBehaviorPolicies();
-
-            const { cloudFrontStore } = app.addModule(BlueGreenRouterCloudFrontStore, {
+            const store = app.addModule(BlueGreenRouterCloudFrontStore, {
                 protect,
                 region
             });
-            /*
-            addTableItems({
-                table: dynamoDbTable,
-                region,
-                app,
-                partitionKey: BLUE_GREEN_PARTITION_KEY,
-                sortKey: BLUE_GREEN_SORT_KEY,
-                value: {
-                    primary: {
-                        apiCloudfrontDomainName: "d23eod0opwn5wj.cloudfront.net",
-                        adminCloudfrontDomainName: "d1tfhjdlnuyb16.cloudfront.net",
-                        websiteCloudfrontDomainName: "d1252xj1fnqf4t.cloudfront.net",
-                        previewCloudfrontDomainName: "d30hx3bilq6uv7.cloudfront.net"
-                    },
-                    secondary: {
-                        apiCloudfrontDomainName: "dbef28872wnk6.cloudfront.net",
-                        adminCloudfrontDomainName: "d2nrb5rwmc7p0g.cloudfront.net",
-                        websiteCloudfrontDomainName: "d2f0oj3kdszw7y.cloudfront.net",
-                        previewCloudfrontDomainName: "d3pd007rivyf6j.cloudfront.net"
-                    }
-                }
-            });
-           
-            */
-            const keyValueStoreResourceKey = app.addResource(aws.cloudfront.KeyvaluestoreKey, {
+            app.addResource(aws.cloudfront.KeyvaluestoreKey, {
                 name: "blue-green-router-store-key",
                 config: {
-                    keyValueStoreArn: cloudFrontStore.output.arn,
+                    keyValueStoreArn: store.cloudFrontStore.output.arn,
                     key: BLUE_GREEN_ROUTER_STORE_KEY,
-                    value: JSON.stringify({
-                        primary: {
-                            apiCloudfrontDomainName: "d23eod0opwn5wj.cloudfront.net",
-                            adminCloudfrontDomainName: "d1tfhjdlnuyb16.cloudfront.net",
-                            websiteCloudfrontDomainName: "d1252xj1fnqf4t.cloudfront.net",
-                            previewCloudfrontDomainName: "d30hx3bilq6uv7.cloudfront.net"
-                        },
-                        secondary: {
-                            apiCloudfrontDomainName: "dbef28872wnk6.cloudfront.net",
-                            adminCloudfrontDomainName: "d2nrb5rwmc7p0g.cloudfront.net",
-                            websiteCloudfrontDomainName: "d2f0oj3kdszw7y.cloudfront.net",
-                            previewCloudfrontDomainName: "d3pd007rivyf6j.cloudfront.net"
-                        }
-                    })
+                    value: "blue"
                 }
             });
 
@@ -150,50 +135,13 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 region
             });
 
-            const { addCloudfront } = app.addModule(BlueGreenRouterCloudFront, {
+            const cloudfront = app.addModule(BlueGreenRouterCloudFront, {
                 protect,
                 region,
+                domains,
+                sources,
                 cachePolicyId: disableCachingCachePolicyId,
                 originRequestPolicyId: forwardEverythingOriginRequestPolicyId
-            });
-
-            const { cloudFront: apiCloudFront } = addCloudfront({
-                type: BlueGreenRouterCloudFrontType.api,
-                map: {
-                    distributionDomain: "cloudfrontApiDomain",
-                    distributionUrl: "cloudfrontApiUrl",
-                    usedDomain: "apiDomain",
-                    usedUrl: "apiUrl"
-                }
-            });
-
-            const { cloudFront: adminCloudFront } = addCloudfront({
-                type: BlueGreenRouterCloudFrontType.admin,
-
-                map: {
-                    distributionDomain: "cloudfrontAppDomain",
-                    distributionUrl: "cloudfrontAppUrl",
-                    usedDomain: "appDomain",
-                    usedUrl: "appUrl"
-                }
-            });
-            const { cloudFront: websiteCloudFront } = addCloudfront({
-                type: BlueGreenRouterCloudFrontType.website,
-                map: {
-                    distributionDomain: "cloudfrontWebsiteDomain",
-                    distributionUrl: "cloudfrontWebsiteUrl",
-                    usedDomain: "websiteDomain",
-                    usedUrl: "websiteUrl"
-                }
-            });
-            const { cloudFront: previewCloudFront } = addCloudfront({
-                type: BlueGreenRouterCloudFrontType.preview,
-                map: {
-                    distributionDomain: "cloudfrontPreviewDomain",
-                    distributionUrl: "cloudfrontPreviewUrl",
-                    usedDomain: "previewDomain",
-                    usedUrl: "previewUrl"
-                }
             });
 
             tagResources({
@@ -204,30 +152,9 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
 
             return {
                 region,
-                apiGateway: apiGateway.apiGateway,
-                apiGatewayStage: apiGateway.apiStage,
-                /**
-                 * CloudFront distributions.
-                 */
-                apiCloudFront,
-                apiCloudFrontId: apiCloudFront.output.id,
-                apiCloudFrontArn: apiCloudFront.output.arn,
-                apiCloudFrontDomainName: apiCloudFront.output.domainName,
-                adminCloudFront,
-                adminCloudFrontId: adminCloudFront.output.id,
-                adminCloudFrontArn: adminCloudFront.output.arn,
-                adminCloudFrontDomainName: adminCloudFront.output.domainName,
-                websiteCloudFront,
-                websiteCloudFrontId: websiteCloudFront.output.id,
-                websiteCloudFrontArn: websiteCloudFront.output.arn,
-                websiteCloudFrontDomainName: websiteCloudFront.output.domainName,
-                previewCloudFront,
-                previewCloudFrontId: previewCloudFront.output.id,
-                previewCloudFrontArn: previewCloudFront.output.arn,
-                previewCloudFrontDomainName: previewCloudFront.output.domainName,
-                //
-                cloudFrontStore,
-                keyValueStoreResourceKey
+                cloudfront,
+                apiGateway,
+                store
             };
         }
     });

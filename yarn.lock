@@ -16057,6 +16057,7 @@ __metadata:
     "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/pulumi": "npm:0.0.0"
+    "@webiny/utils": "npm:0.0.0"
     chalk: "npm:^4.1.2"
     form-data: "npm:^4.0.0"
     lodash: "npm:^4.17.21"
@@ -16064,6 +16065,7 @@ __metadata:
     node-fetch: "npm:2.6.7"
     rimraf: "npm:^6.0.1"
     typescript: "npm:5.3.3"
+    zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
 

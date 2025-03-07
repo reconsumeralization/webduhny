@@ -24,23 +24,15 @@ const builtInPlugins: Plugin[] = [
             "",
             green(`Blue / Green Router`),
             `‣ Environment name: ${blue(env)}`,
-            `‣ Main GraphQL API: ${bg.cloudfrontApiUrl + "/graphql"}`,
-            `‣ Headless CMS GraphQL API:`,
-            `   · Manage API: ${bg.cloudfrontApiUrl + "/cms/manage/{LOCALE_CODE}"}`,
-            `   · Read API: ${bg.cloudfrontApiUrl + "/cms/read/{LOCALE_CODE}"}`,
-            `   · Preview API: ${bg.cloudfrontApiUrl + "/cms/preview/{LOCALE_CODE}"}`,
-            `‣ Admin Area:`,
-            `   · Admin URL: ${bg.cloudfrontAppUrl}`,
-            `‣ Public website:`,
-            `   · Website URL: ${bg.cloudfrontWebsiteUrl}`,
-            `   · Website preview URL: ${bg.cloudfrontPreviewUrl}`,
+            `‣ CloudFront domain: ${bg.distributionDomain}`,
+            `‣ CloudFront URL: ${bg.distributionUrl}`,
             ""
         ];
         console.log(output.join("\n"));
     })
 ];
 
-export function createBlueGreenApp(projectAppParams: CreateBlueGreenAppParams = {}) {
+export function createBlueGreenApp(projectAppParams: CreateBlueGreenAppParams) {
     const plugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
 
     return {

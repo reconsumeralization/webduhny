@@ -1,15 +1,26 @@
 import { existsSync, readFileSync } from "fs";
 
+export interface IBuildRequestFunctionParamsDomain {
+    /**
+     * Name of the deployment (eg. green, blue, orange, etc.).
+     */
+    name: string;
+    sourceDomain: string;
+    targetOriginId: string;
+}
+
 export interface IBuildRequestFunctionParams {
     storeId: string;
     storeKey: string;
-    type: string;
+    headerName: string;
+    domains: IBuildRequestFunctionParamsDomain[];
 }
 
 export const buildRequestFunction = ({
     storeId,
-    type,
-    storeKey
+    headerName,
+    storeKey,
+    domains
 }: IBuildRequestFunctionParams): string => {
     const target = __dirname + `/request.js`;
     if (!existsSync(target)) {
@@ -23,5 +34,6 @@ export const buildRequestFunction = ({
     return content
         .replace("{BLUE_GREEN_ROUTER_STORE_ID}", storeId)
         .replace("{BLUE_GREEN_ROUTER_STORE_KEY}", storeKey)
-        .replace("{BLUE_GREEN_ROUTER_TYPE}", type);
+        .replace("{BLUE_GREEN_ROUTER_HEADER}", headerName)
+        .replace(`"{BLUE_GREEN_ROUTER_DOMAINS}"`, JSON.stringify(domains));
 };

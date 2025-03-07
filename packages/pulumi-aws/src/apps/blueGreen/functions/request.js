@@ -2,73 +2,71 @@ const cf = require("cloudfront");
 
 const BLUE_GREEN_ROUTER_STORE_ID = "{BLUE_GREEN_ROUTER_STORE_ID}";
 const BLUE_GREEN_ROUTER_STORE_KEY = "{BLUE_GREEN_ROUTER_STORE_KEY}";
-const BLUE_GREEN_ROUTER_TYPE = "{BLUE_GREEN_ROUTER_TYPE}";
+const BLUE_GREEN_ROUTER_HEADER = "{BLUE_GREEN_ROUTER_HEADER}";
+const BLUE_GREEN_ROUTER_DOMAINS = "{BLUE_GREEN_ROUTER_DOMAINS}";
 
-function requestWithError(request, err) {
-    const error = err instanceof Error ? err : new Error(err);
-    console.log(error);
-    request.headers["x-debug-log"] = {
+const store = cf.kvs(BLUE_GREEN_ROUTER_STORE_ID);
+
+function requestWithError(request, error) {
+    console.log(`Error: ${error.message}`);
+    request.headers["x-webiny-debug-log"] = {
         value: error.message
     };
+
     return request;
 }
 
-function handleRequest(request, storedValue) {
-    const routerType = BLUE_GREEN_ROUTER_TYPE;
-    if (!routerType) {
-        throw new Error("Missing router type.");
+function getTargetOriginId(params) {
+    const headers = params.headers;
+    const active = params.active;
+    const values = headers.host;
+    if (!values) {
+        throw new Error("Missing the 'host' header.");
+    }
+    const host = Array.isArray(values) ? values[0].value : values.value;
+    if (!host) {
+        throw new Error("Missing the 'host' header value.");
     }
 
-    /**
-     * What do we do in case there is no active variant system?
-     */
-    const cloudFrontDomainNameVariable = `${routerType}CloudfrontDomainName`;
-    const domainName = storedValue.primary
-        ? storedValue.primary[cloudFrontDomainNameVariable]
-        : null;
-    if (!domainName) {
-        throw new Error(
-            `Could not transfer the request to correct system - missing "${cloudFrontDomainNameVariable}".`
-        );
+    const domain = BLUE_GREEN_ROUTER_DOMAINS.find(
+        domain => domain.name === active && domain.sourceDomain === host
+    );
+    if (domain) {
+        return domain.targetOriginId;
     }
+    throw new Error(`Could not find a domain mapping for ${host}.`);
+}
 
-    request.origin = {
-        custom: {
-            domainName,
-            port: 443,
-            protocol: "https",
-            path: "",
-            sslProtocols: ["TLSv1.2"]
-        }
+function handleRequest(request, active) {
+    const targetOriginId = getTargetOriginId({
+        headers: request.headers || {},
+        active
+    });
+
+    request.headers[BLUE_GREEN_ROUTER_HEADER.toLowerCase()] = {
+        value: targetOriginId
     };
 
-    console.log(
-        JSON.stringify({
-            outputRequest: request
-        })
-    );
     return request;
 }
-// eslint-disable-next-line
+
 async function handler(event) {
+    console.log({
+        event
+    });
     const context = event.context;
     const request = event.request;
-    console.log(
-        JSON.stringify({
-            inputRequest: request
-        })
-    );
+
     try {
         if (context.eventType !== "viewer-request") {
-            throw new Error("This function only supports viewer-request events.");
+            new Error("This function only supports viewer-request events.");
         }
-        const store = cf.kvs(BLUE_GREEN_ROUTER_STORE_ID);
-        const storedValue = await store.get(BLUE_GREEN_ROUTER_STORE_KEY);
-        if (!storedValue) {
+        const active = await store.get(BLUE_GREEN_ROUTER_STORE_KEY);
+        if (!active) {
             throw new Error("Blue/Green system is not configured.");
         }
-        const value = JSON.parse(storedValue);
-        return handleRequest(request, value);
+
+        return await handleRequest(request, active);
     } catch (ex) {
         return requestWithError(request, ex);
     }

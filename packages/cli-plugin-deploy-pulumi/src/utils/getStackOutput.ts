@@ -104,6 +104,8 @@ export interface IDefaultStackOutput extends IStackOutput {
     elasticsearchDynamodbTableName: string | undefined;
     appStorage: string;
     websiteRouterOriginRequestFunction?: string;
+    appDomain?: string;
+    deliveryDomain?: string;
 }
 
 export const getStackOutput = <T extends IStackOutput = IDefaultStackOutput>(
