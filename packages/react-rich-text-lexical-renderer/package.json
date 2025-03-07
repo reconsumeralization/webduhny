@@ -19,7 +19,6 @@
     "@emotion/react": "11.10.8",
     "@testing-library/react": "^15.0.7",
     "@webiny/app-theme": "0.0.0",
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "@webiny/react-composition": "0.0.0",
     "identity-obj-proxy": "^3.0.0",
@@ -30,7 +29,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   }
 }

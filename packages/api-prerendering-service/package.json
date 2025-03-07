@@ -36,7 +36,6 @@
   "devDependencies": {
     "@types/object-hash": "^2.2.1",
     "@types/puppeteer-core": "7.0.4",
-    "@webiny/cli": "0.0.0",
     "@webiny/handler-aws": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "prettier": "^2.8.8",
@@ -49,8 +48,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "gitHead": "b8aec8a1be3f25c3b428b357fe1e352c7cbff9ae"
 }
