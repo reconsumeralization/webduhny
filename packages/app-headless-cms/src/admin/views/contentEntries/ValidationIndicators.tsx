@@ -3,7 +3,7 @@ import type { FormValidation } from "@webiny/form";
 import { makeDecoratable } from "@webiny/react-composition";
 import { Global, css } from "@emotion/react";
 
-const errorColor = `red`;
+const errorColor = `#fa5723`;
 
 const errorTitleMixin = `
     content: "⚠️";
@@ -15,7 +15,6 @@ const errorBorderMixin = `
     padding-left: 10px;
     border-top-left-radius: 5px; 
     border-bottom-left-radius: 5px;
-    overflow: hidden; 
 `;
 
 const defaultClass = css`
@@ -26,6 +25,8 @@ const defaultClass = css`
 
     // reset the default behavior for fields that we want to manually control
     .wby-content-entry-invalid-field[data-field-type="text"],
+    .wby-content-entry-invalid-field[data-field-type="number"],
+    .wby-content-entry-invalid-field[data-field-type="datetime"],
     .wby-content-entry-invalid-field[data-field-type="long-text"],
     .wby-content-entry-invalid-field[data-field-type="dynamicZone"],
     .wby-content-entry-invalid-field[data-field-type="object"],
@@ -38,9 +39,17 @@ const defaultClass = css`
 
     // short text error
     // long text error
+    // number error
+    // checkbox error
+    // select error
+    // date time error
     .wby-content-entry-invalid-field[data-field-type="text"],
+    .wby-content-entry-invalid-field[data-field-type="ref"][data-field-renderer="ref-input"],
+    .wby-content-entry-invalid-field[data-field-type="number"],
+    .wby-content-entry-invalid-field[data-field-type="datetime"],
     .wby-content-entry-invalid-field[data-field-type="long-text"] {
-        &[data-field-multiple-values="false"] > label,
+        // input renderer
+        &[data-field-multiple-values="false"] label:first-child,
         &[data-field-multiple-values="true"] > hcms-parent-field-provider,
         > label {
             ${errorBorderMixin}
@@ -51,29 +60,55 @@ const defaultClass = css`
             .mdc-floating-label::before {
                 ${errorTitleMixin}
             }
-
-            textarea {
-                padding-left: 0;
-            }
         }
 
         &[data-field-multiple-values="true"] > hcms-parent-field-provider {
             display: block;
         }
-        &[data-field-multiple-values="true"] {
-            h5::before {
+
+        // multiple entries
+        > hcms-parent-field-provider h5::before {
+            ${errorTitleMixin}
+        }
+
+        // radio buttons
+        &[data-field-renderer="radio-buttons"] {
+            > div:first-child::before {
                 ${errorTitleMixin}
+                padding-right: 10px;
             }
+            ${errorBorderMixin}
+        }
+
+        // select box
+        &[data-field-renderer="select-box"] {
+            .webiny-ui-select {
+                ${errorBorderMixin}
+                padding-left: 0;
+                box-sizing: border-box;
+            }
+        }
+
+        // checkboxes
+        &[data-field-renderer="checkboxes"] {
+            > div:first-child::before {
+                ${errorTitleMixin}
+                padding-right: 10px;
+            }
+            ${errorBorderMixin}
         }
     }
 
     // reference field
     .wby-content-entry-invalid-field[data-field-type="ref"][data-field-multiple-values="false"] {
-        h3::before {
+        h3::before,
+        h5::before {
             ${errorTitleMixin}
         }
 
-        ${errorBorderMixin}
+        &:not([data-field-renderer="ref-input"]) {
+            ${errorBorderMixin}
+        }
 
         .wby-content-entry-invalid-field[data-field-type="dynamicZone"] {
             padding-left: 0px;
@@ -102,48 +137,78 @@ const defaultClass = css`
 
     // object field
     .wby-content-entry-invalid-field[data-field-type="object"] {
-        h5::before,
-        ul > div > li::before {
-            ${errorTitleMixin}
+        &[data-field-renderer="object"],
+        &[data-field-renderer="objects"] {
+            h5::before,
+            ul > div > li::before {
+                ${errorTitleMixin}
+            }
+
+            hcms-parent-field-provider {
+                ${errorBorderMixin}
+
+                // object field (multiple values)
+                .wby-content-entry-invalid-field {
+                    border: none;
+                    padding-left: 0;
+                    .accordion-title > span {
+                        font-weight: bold;
+                        color: ${errorColor};
+                        ::before {
+                            ${errorTitleMixin}
+                        }
+                    }
+                }
+            }
         }
 
-        hcms-parent-field-provider {
+        &[data-field-renderer="object-accordion"],
+        &[data-field-renderer="objects-accordion"] {
+            ul > div > li::before {
+                ${errorTitleMixin}
+                display: contents;
+            }
+
             ${errorBorderMixin}
 
-            // object field (multiple values)
-            .wby-content-entry-invalid-field {
-                border: none;
-                padding-left: 0;
-                .accordion-title > span {
-                    font-weight: bold;
-                    color: ${errorColor};
-                    ::before {
-                        ${errorTitleMixin}
+            &[data-field-multiple-values="false"] {
+                padding-left: 0px;
+            }
+
+            &[data-field-multiple-values="true"] {
+                .wby-content-entry-invalid-field {
+                    border: none;
+                    padding-left: 0;
+                    // object field (multiple values)
+                    .accordion-title > span {
+                        font-weight: bold;
+                        color: ${errorColor};
+                        ::before {
+                            ${errorTitleMixin}
+                        }
                     }
                 }
             }
         }
     }
 
-    .wby-content-entry-invalid-field[data-field-type="ref"][data-field-multiple-values="false"],
-    .wby-content-entry-invalid-field[data-field-type="dynamicZone"],
-    .wby-content-entry-invalid-field[data-field-type="object"][data-field-multiple-values="true"] {
-        ${errorBorderMixin}
-
-        .wby-content-entry-invalid-field[data-field-type="dynamicZone"] {
-            padding-left: 0px;
-        }
-    }
-
     // file error
-    .wby-content-entry-invalid-field[data-field-type="file"][data-field-multiple-values="false"]
-        > div
-        > div:first-child {
-        > span::before {
-            ${errorTitleMixin}
+    .wby-content-entry-invalid-field[data-field-type="file"] {
+        &[data-field-multiple-values="false"] > div > div:first-child {
+            > span::before {
+                ${errorTitleMixin}
+            }
+
+            ${errorBorderMixin}
         }
 
-        ${errorBorderMixin}
+        &[data-field-multiple-values="true"] {
+            > div > div > p::before {
+                ${errorTitleMixin}
+            }
+
+            ${errorBorderMixin}
+        }
     }
 
     .wby-content-entry-invalid-field > .webiny-ui-accordion {

@@ -9,6 +9,7 @@ declare global {
                 "data-path": string;
                 "data-field-type": string;
                 "data-field-multiple-values": string;
+                "data-field-renderer": string;
                 style: React.CSSProperties;
                 children: React.ReactNode;
             };
@@ -21,6 +22,7 @@ const validationScopeStyles = { display: "inherit" };
 export const createValidationScope = (path: string) => {
     return function ValidationScope({ children }: { children: React.ReactNode }) {
         const { field } = useModelField();
+        console.log(field);
 
         if (field.multipleValues === undefined) {
             field.multipleValues = false;
@@ -32,6 +34,7 @@ export const createValidationScope = (path: string) => {
                 data-path={path}
                 data-field-type={field.type}
                 data-field-multiple-values={String(field.multipleValues)}
+                data-field-renderer={String(field.renderer.name)}
             >
                 {children}
             </hcms-field-validation-scope>
