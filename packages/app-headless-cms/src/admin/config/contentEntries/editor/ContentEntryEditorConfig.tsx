@@ -3,13 +3,15 @@ import { createConfigurableComponent } from "@webiny/react-properties";
 import { Actions, ActionsConfig } from "./Actions";
 import { FieldElement } from "./FieldElement";
 import { Width } from "./Width";
+import { ValidationIndicatorsConfig } from "~/admin/config/contentEntries/editor/ValidationIndicators";
 
 const base = createConfigurableComponent<ContentEntryEditorConfig>("ContentEntryEditorConfig");
 
 export const ContentEntryEditorConfig = Object.assign(base.Config, {
     Actions,
     FieldElement,
-    Width
+    Width,
+    ValidationIndicators: ValidationIndicatorsConfig
 });
 
 export const ContentEntryEditorWithConfig = base.WithConfig;

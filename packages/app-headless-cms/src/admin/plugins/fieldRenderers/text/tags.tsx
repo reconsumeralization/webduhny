@@ -21,11 +21,18 @@ export const tags: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind defaultValue={[]}>
-                    <Tags
-                        label={field.label}
-                        placeholder={field.placeholderText || "Add values"}
-                        description={field.helpText}
-                    />
+                    {props => {
+                        return (
+                            <Bind.ValidationScope>
+                                <Tags
+                                    label={field.label}
+                                    placeholder={field.placeholderText || "Add values"}
+                                    description={field.helpText}
+                                    {...props}
+                                />
+                            </Bind.ValidationScope>
+                        );
+                    }}
                 </Bind>
             );
         }

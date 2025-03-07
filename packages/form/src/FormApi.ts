@@ -125,6 +125,10 @@ export class FormAPI<T extends GenericFormData = GenericFormData> {
         return this.presenter.validateField(name);
     };
 
+    get invalidFields() {
+        return this.presenter.vm.invalidFields;
+    }
+
     private shouldValidate() {
         const { validateOnFirstSubmit } = this.options;
 

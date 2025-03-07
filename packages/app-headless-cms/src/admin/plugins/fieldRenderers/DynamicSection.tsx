@@ -12,6 +12,7 @@ import { GetBindCallable } from "~/admin/components/ContentEntryForm/useBind";
 import { ParentFieldProvider } from "~/admin/hooks";
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { BindComponent, BindComponentRenderProp, CmsModelField } from "~/types";
+import { getMultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -38,6 +39,8 @@ export interface DynamicSectionProps {
     children: (params: DynamicSectionPropsChildrenParams) => JSX.Element;
     emptyValue?: any;
     gridClassName?: string;
+    onAddItem?: (index: number) => void;
+    addValueButtonLabel?: string;
 }
 
 const FieldLabel = styled.div`
@@ -54,15 +57,25 @@ const AddButtonCell = styled(Cell)<{ items: number }>`
     border-top: ${({ items }) => (items > 0 ? "1px solid var(--mdc-theme-background)" : "none")};
 `;
 
+const defaultAddItem = () => {
+    // No op.
+};
+
 const DynamicSection = ({
     field,
     getBind,
     children,
     showLabel = true,
     emptyValue = "",
-    gridClassName
+    onAddItem = defaultAddItem,
+    gridClassName,
+    ...props
 }: DynamicSectionProps) => {
     const Bind = getBind();
+
+    const settings = getMultiValueRendererSettings(field);
+    const addValueButtonLabel =
+        props.addValueButtonLabel ?? settings.addValueButtonLabel ?? "Add Value";
 
     return (
         /* First we mount the top level field, for example: "items" */
@@ -77,58 +90,69 @@ const DynamicSection = ({
                 const bindFieldValue: string[] = value || [];
 
                 return (
-                    <ParentFieldProvider value={value} path={Bind.parentName}>
-                        {showLabel ? (
-                            <FieldLabel>
-                                <Typography use={"headline5"}>
-                                    {`${field.label} ${
-                                        bindFieldValue.length ? `(${bindFieldValue.length})` : ""
-                                    }`}
-                                </Typography>
-                                {field.helpText && (
-                                    <FormElementMessage>{field.helpText}</FormElementMessage>
-                                )}
-                            </FieldLabel>
-                        ) : null}
-                        <Grid className={classSet(gridClassName, style.gridContainer)}>
-                            {bindFieldValue.map((_, index) => {
-                                const BindField = getBind(index);
-                                return (
-                                    <Cell span={12} key={index}>
-                                        <BindField>
-                                            {bindProps => (
-                                                <ParentValueIndexProvider index={index}>
-                                                    {children({
-                                                        Bind: BindField,
-                                                        field,
-                                                        bind: {
-                                                            index: bindProps,
-                                                            field: bindField
-                                                        },
-                                                        index
-                                                    })}
-                                                </ParentValueIndexProvider>
-                                            )}
-                                        </BindField>
-                                    </Cell>
-                                );
-                            })}
+                    <Bind.ValidationScope>
+                        <ParentFieldProvider value={value} path={Bind.parentName}>
+                            {showLabel ? (
+                                <FieldLabel>
+                                    <Typography use={"headline5"}>
+                                        {`${field.label} ${
+                                            bindFieldValue.length
+                                                ? `(${bindFieldValue.length})`
+                                                : ""
+                                        }`}
+                                    </Typography>
+                                    {field.helpText && (
+                                        <FormElementMessage>{field.helpText}</FormElementMessage>
+                                    )}
+                                </FieldLabel>
+                            ) : null}
+                            <Grid className={classSet(gridClassName, style.gridContainer)}>
+                                {bindFieldValue.map((_, index) => {
+                                    const BindField = getBind(index);
+                                    return (
+                                        <Cell span={12} key={index}>
+                                            <BindField>
+                                                {bindProps => (
+                                                    <BindField.ValidationScope>
+                                                        <ParentValueIndexProvider index={index}>
+                                                            {children({
+                                                                Bind: BindField,
+                                                                field,
+                                                                bind: {
+                                                                    index: bindProps,
+                                                                    field: bindField
+                                                                },
+                                                                index
+                                                            })}
+                                                        </ParentValueIndexProvider>
+                                                    </BindField.ValidationScope>
+                                                )}
+                                            </BindField>
+                                        </Cell>
+                                    );
+                                })}
 
-                            {bindField.validation.isValid === false && (
-                                <Cell span={12}>
-                                    <FormElementMessage error>
-                                        {bindField.validation.message}
-                                    </FormElementMessage>
-                                </Cell>
-                            )}
-                            <AddButtonCell span={12} items={bindFieldValue.length}>
-                                <ButtonDefault onClick={() => appendValue(emptyValue)}>
-                                    <ButtonIcon icon={<AddIcon />} />
-                                    {t`Add value`}
-                                </ButtonDefault>
-                            </AddButtonCell>
-                        </Grid>
-                    </ParentFieldProvider>
+                                {bindField.validation.isValid === false && (
+                                    <Cell span={12}>
+                                        <FormElementMessage error>
+                                            {bindField.validation.message}
+                                        </FormElementMessage>
+                                    </Cell>
+                                )}
+                                <AddButtonCell span={12} items={bindFieldValue.length}>
+                                    <ButtonDefault
+                                        onClick={() => {
+                                            appendValue(emptyValue);
+                                            onAddItem(bindFieldValue.length);
+                                        }}
+                                    >
+                                        <ButtonIcon icon={<AddIcon />} />
+                                        {t(addValueButtonLabel)}
+                                    </ButtonDefault>
+                                </AddButtonCell>
+                            </Grid>
+                        </ParentFieldProvider>
+                    </Bind.ValidationScope>
                 );
             }}
         </Bind>

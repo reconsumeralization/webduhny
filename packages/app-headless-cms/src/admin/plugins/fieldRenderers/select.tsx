@@ -24,13 +24,18 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind defaultValue={defaultOption ? defaultOption.value : undefined}>
-                    <Select
-                        label={field.label}
-                        description={field.helpText}
-                        options={options}
-                        placeholder={field.placeholderText}
-                        data-testid={`fr.input.select.${field.label}`}
-                    />
+                    {bind => (
+                        <Bind.ValidationScope>
+                            <Select
+                                {...bind}
+                                label={field.label}
+                                description={field.helpText}
+                                options={options}
+                                placeholder={field.placeholderText}
+                                data-testid={`fr.input.select.${field.label}`}
+                            />
+                        </Bind.ValidationScope>
+                    )}
                 </Bind>
             );
         }

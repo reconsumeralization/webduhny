@@ -1,10 +1,11 @@
 import React, { Fragment, useCallback, useState } from "react";
 import { useSecurity } from "@webiny/app-security";
+import { makeDecoratable } from "@webiny/app-admin";
 import { ReactComponent as TenantIcon } from "~/assets/business_black_24dp.svg";
 import { SettingsDialog } from "./CurrentTenant/SettingsDialog";
 import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
 
-export const CurrentTenant = () => {
+export const CurrentTenantWidget = makeDecoratable("CurrentTenantWidget", () => {
     const { identity } = useSecurity();
     const [settingsShown, showSettings] = useState(false);
 
@@ -40,4 +41,4 @@ export const CurrentTenant = () => {
     }
 
     return null;
-};
+});
