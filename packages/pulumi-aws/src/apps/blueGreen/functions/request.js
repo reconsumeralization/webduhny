@@ -49,7 +49,7 @@ function handleRequest(request, active) {
 
     return request;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function handler(event) {
     console.log({
         event

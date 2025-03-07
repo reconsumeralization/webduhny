@@ -48,7 +48,8 @@
       ],
       "src": [
         "@aws-sdk/client-dynamodb",
-        "@aws-sdk/lib-dynamodb"
+        "@aws-sdk/lib-dynamodb",
+        "cloudfront"
       ]
     }
   }

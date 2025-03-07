@@ -137,9 +137,6 @@ export const BlueGreenRouterCloudFront = createAppModule({
             }
         });
 
-        const distributionDomain = cloudFront.output.domainName;
-        const distributionUrl = distributionDomain.apply(value => `https://${value}`);
-
         app.addHandler(() => {
             addDomainsUrlsOutputs({
                 app,
