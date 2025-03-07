@@ -49,7 +49,7 @@ const defaultClass = css`
     .wby-content-entry-invalid-field[data-field-type="datetime"],
     .wby-content-entry-invalid-field[data-field-type="long-text"] {
         // input renderer
-        &[data-field-multiple-values="false"] label:first-child,
+        &[data-field-multiple-values="false"] label:first-of-type,
         &[data-field-multiple-values="true"] > hcms-parent-field-provider,
         > label {
             ${errorBorderMixin}
@@ -73,7 +73,7 @@ const defaultClass = css`
 
         // radio buttons
         &[data-field-renderer="radio-buttons"] {
-            > div:first-child::before {
+            > div:first-of-type::before {
                 ${errorTitleMixin}
                 padding-right: 10px;
             }
@@ -91,7 +91,7 @@ const defaultClass = css`
 
         // checkboxes
         &[data-field-renderer="checkboxes"] {
-            > div:first-child::before {
+            > div:first-of-type::before {
                 ${errorTitleMixin}
                 padding-right: 10px;
             }
@@ -194,7 +194,7 @@ const defaultClass = css`
 
     // file error
     .wby-content-entry-invalid-field[data-field-type="file"] {
-        &[data-field-multiple-values="false"] > div > div:first-child {
+        &[data-field-multiple-values="false"] > div > div:first-of-type {
             > span::before {
                 ${errorTitleMixin}
             }

@@ -22,7 +22,6 @@ const validationScopeStyles = { display: "inherit" };
 export const createValidationScope = (path: string) => {
     return function ValidationScope({ children }: { children: React.ReactNode }) {
         const { field } = useModelField();
-        console.log(field);
 
         if (field.multipleValues === undefined) {
             field.multipleValues = false;
