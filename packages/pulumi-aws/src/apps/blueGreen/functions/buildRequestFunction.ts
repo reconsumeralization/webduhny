@@ -7,18 +7,17 @@ export interface IBuildRequestFunctionParamsDomain {
     name: string;
     sourceDomain: string;
     targetOriginId: string;
+    targetDomain: string;
 }
 
 export interface IBuildRequestFunctionParams {
     storeId: string;
     storeKey: string;
-    headerName: string;
     domains: IBuildRequestFunctionParamsDomain[];
 }
 
 export const buildRequestFunction = ({
     storeId,
-    headerName,
     storeKey,
     domains
 }: IBuildRequestFunctionParams): string => {
@@ -34,6 +33,5 @@ export const buildRequestFunction = ({
     return content
         .replace("{BLUE_GREEN_ROUTER_STORE_ID}", storeId)
         .replace("{BLUE_GREEN_ROUTER_STORE_KEY}", storeKey)
-        .replace("{BLUE_GREEN_ROUTER_HEADER}", headerName)
         .replace(`"{BLUE_GREEN_ROUTER_DOMAINS}"`, JSON.stringify(domains));
 };

@@ -27,10 +27,6 @@ export const attachDomainsToOutput = (params: IAttachDomainsToOutputParams) => {
                 domains.push(alias);
             }
 
-            if (domains.length === 0) {
-                domains.push("No domains attached.");
-            }
-
             app.addOutputs({
                 ["domains"]: domains
             });

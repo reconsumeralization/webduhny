@@ -133,7 +133,7 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 config: {
                     keyValueStoreArn: store.cloudFrontStore.output.arn,
                     key: BLUE_GREEN_ROUTER_STORE_KEY,
-                    value: "blue"
+                    value: "green"
                 }
             });
 

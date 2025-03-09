@@ -1,5 +1,4 @@
 export const BLUE_GREEN_ROUTER_STORE_KEY = "blueGreenRouterStore";
-export const BLUE_GREEN_ROUTER_HEADER = "X-Target-Origin";
 export const BLUE_GREEN_ALLOWED_METHODS = [
     "GET",
     "HEAD",

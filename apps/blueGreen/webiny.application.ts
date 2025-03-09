@@ -9,14 +9,9 @@ export default createBlueGreenApp({
             acmCertificateArn: cert,
             sslSupportMethod: "sni-only",
             domains: {
-                api: ["api.bg.webiny.com", "api2.bg.webiny.com"],
+                api: ["api.bg.webiny.com"],
                 admin: ["admin.bg.webiny.com"],
-                website: [
-                    "website.bg.webiny.com",
-                    "wb.bg.webiny.com",
-                    "web.bg.webiny.com",
-                    "www.bg.webiny.com"
-                ],
+                website: ["website.bg.webiny.com"],
                 preview: ["preview.bg.webiny.com"]
             }
         };

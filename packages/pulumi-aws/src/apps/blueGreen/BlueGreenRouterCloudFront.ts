@@ -1,17 +1,14 @@
 import * as aws from "@pulumi/aws";
-import * as pulumi from "@pulumi/pulumi";
 import type { PulumiAppModule } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
 import type { GetCachePolicyResult } from "@pulumi/aws/cloudfront/getCachePolicy";
 import type { GetOriginRequestPolicyResult } from "@pulumi/aws/cloudfront/getOriginRequestPolicy";
-import { getCloudFrontConfig } from "./cloudfront/cloudFrontConfig.js";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
 import { buildRequestFunction } from "./functions/buildRequestFunction.js";
 import {
     BLUE_GREEN_ALLOWED_METHODS,
     BLUE_GREEN_CACHED_METHODS,
-    BLUE_GREEN_ROUTER_HEADER,
     BLUE_GREEN_ROUTER_STORE_KEY
 } from "./constants.js";
 import { createCloudFrontFunctionDomainMap } from "./cloudfront/createCloudFrontFunctionDomainMap.js";
@@ -34,7 +31,6 @@ export const BlueGreenRouterCloudFront = createAppModule({
 
         const store = app.getModule(BlueGreenRouterCloudFrontStore);
 
-        const { origins, orderedCacheBehaviors } = getCloudFrontConfig(config);
         const domains = createCloudFrontFunctionDomainMap(config);
 
         /**
@@ -58,7 +54,6 @@ export const BlueGreenRouterCloudFront = createAppModule({
                     return buildRequestFunction({
                         storeId: id,
                         storeKey: BLUE_GREEN_ROUTER_STORE_KEY,
-                        headerName: BLUE_GREEN_ROUTER_HEADER,
                         domains
                     });
                 }),
@@ -87,33 +82,22 @@ export const BlueGreenRouterCloudFront = createAppModule({
                         domainName: api.apiGateway.output.apiEndpoint.apply(url =>
                             url.replace("https://", "")
                         ),
-                        originId: "blackHoleSystemCloudFront",
+                        originId: "defaultOrigin",
                         customOriginConfig: {
                             originProtocolPolicy: "https-only",
                             httpPort: 80,
                             httpsPort: 443,
                             originSslProtocols: ["TLSv1.2"]
                         }
-                    },
-                    /**
-                     * Dynamic Origins.
-                     */
-                    ...origins
+                    }
                 ],
                 defaultCacheBehavior: {
-                    targetOriginId: `blackHoleSystemCloudFront`,
+                    targetOriginId: `defaultOrigin`,
                     viewerProtocolPolicy: "redirect-to-https",
                     allowedMethods: BLUE_GREEN_ALLOWED_METHODS,
                     cachedMethods: BLUE_GREEN_CACHED_METHODS,
                     cachePolicyId: config.cachePolicyId.id,
                     originRequestPolicyId: config.originRequestPolicyId.id,
-                    // forwardedValues: {
-                    //     queryString: true,
-                    //     cookies: {
-                    //         forward: "all"
-                    //     },
-                    //     headers: [BLUE_GREEN_ROUTER_HEADER]
-                    // },
                     functionAssociations: [
                         {
                             eventType: "viewer-request",
@@ -121,7 +105,6 @@ export const BlueGreenRouterCloudFront = createAppModule({
                         }
                     ]
                 },
-                orderedCacheBehaviors: [],
                 restrictions: {
                     geoRestriction: {
                         restrictionType: "none"

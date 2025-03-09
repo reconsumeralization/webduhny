@@ -8,6 +8,7 @@ export interface ICreateCloudFrontFunctionDomainMapParamsResult {
     name: string;
     sourceDomain: string;
     targetOriginId: string;
+    targetDomain: string;
 }
 
 export interface ICreateCloudFrontFunctionDomainMapParams {
@@ -25,6 +26,7 @@ export const createCloudFrontFunctionDomainMap = (
             results.push({
                 name: domain.name,
                 sourceDomain: source,
+                targetDomain: domain.target,
                 targetOriginId: createOriginId({
                     type: domain.type,
                     name: domain.name

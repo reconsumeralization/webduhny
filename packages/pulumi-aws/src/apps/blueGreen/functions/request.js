@@ -2,7 +2,6 @@ const cf = require("cloudfront");
 
 const BLUE_GREEN_ROUTER_STORE_ID = "{BLUE_GREEN_ROUTER_STORE_ID}";
 const BLUE_GREEN_ROUTER_STORE_KEY = "{BLUE_GREEN_ROUTER_STORE_KEY}";
-const BLUE_GREEN_ROUTER_HEADER = "{BLUE_GREEN_ROUTER_HEADER}";
 const BLUE_GREEN_ROUTER_DOMAINS = "{BLUE_GREEN_ROUTER_DOMAINS}";
 
 const store = cf.kvs(BLUE_GREEN_ROUTER_STORE_ID);
@@ -11,7 +10,11 @@ function removeProtocol(url) {
     return url.replace(/^https?:\/\//, "");
 }
 function requestWithError(request, error) {
-    console.log(`Error: ${error.message}`);
+    console.log(`There is an error: ${error.message}`);
+    const properties = Object.getOwnPropertyNames(error);
+    for (const property in properties) {
+        console.log(`${property}: ${error[property]}`);
+    }
     request.headers["x-webiny-debug-log"] = {
         value: error.message
     };
@@ -19,9 +22,7 @@ function requestWithError(request, error) {
     return request;
 }
 
-function getTargetOriginId(params) {
-    const headers = params.headers;
-    const active = params.active;
+function getTargetDomain(headers, active) {
     const values = headers.host;
     if (!values) {
         throw new Error("Missing the 'host' header.");
@@ -36,28 +37,22 @@ function getTargetOriginId(params) {
         domain => domain.name === active && domain.sourceDomain === host
     );
     if (domain) {
-        return domain.targetOriginId;
+        return domain;
     }
     throw new Error(`Could not find a domain mapping for ${host}.`);
 }
 
 function handleRequest(request, active) {
-    const targetOriginId = getTargetOriginId({
-        headers: request.headers || {},
-        active
-    });
+    const targetDomain = getTargetDomain(request.headers || {}, active);
 
-    request.headers[BLUE_GREEN_ROUTER_HEADER.toLowerCase()] = {
-        value: targetOriginId
-    };
+    cf.updateRequestOrigin({
+        domainName: targetDomain.targetDomain
+    });
 
     return request;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function handler(event) {
-    console.log({
-        event
-    });
     const context = event.context;
     const request = event.request;
 
