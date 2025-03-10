@@ -5,6 +5,9 @@ const cert = "arn:aws:acm:us-east-1:250532744892:certificate/e7b88599-64ad-4df2-
 export default createBlueGreenApp({
     pulumiResourceNamePrefix: "wby-",
     domains() {
+        /**
+         * For testing purposes only.
+         */
         return {
             acmCertificateArn: cert,
             sslSupportMethod: "sni-only",
@@ -17,16 +20,19 @@ export default createBlueGreenApp({
         };
     },
     deployments() {
+        /**
+         * For testing purposes only.
+         */
         return [
             {
                 name: "green",
-                env: "green",
-                variant: undefined
+                env: "dev",
+                variant: "green"
             },
             {
                 name: "blue",
-                env: "blue",
-                variant: undefined
+                env: "dev",
+                variant: "blue"
             }
         ];
     }
