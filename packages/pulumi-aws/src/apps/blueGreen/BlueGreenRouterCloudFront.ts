@@ -5,7 +5,7 @@ import type { GetCachePolicyResult } from "@pulumi/aws/cloudfront/getCachePolicy
 import type { GetOriginRequestPolicyResult } from "@pulumi/aws/cloudfront/getOriginRequestPolicy";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
-import { buildRequestFunction } from "./functions/buildRequestFunction.js";
+import { buildHandlerFunction } from "./functions/buildHandlerFunction.js";
 import {
     BLUE_GREEN_ALLOWED_METHODS,
     BLUE_GREEN_CACHED_METHODS,
@@ -51,7 +51,7 @@ export const BlueGreenRouterCloudFront = createAppModule({
                      * It is a UUID value.
                      */
                     const id = arn.split("/").pop() as string;
-                    return buildRequestFunction({
+                    return buildHandlerFunction({
                         storeId: id,
                         storeKey: BLUE_GREEN_ROUTER_STORE_KEY,
                         domains

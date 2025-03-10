@@ -10,7 +10,6 @@ import { getEnvVariableWebinyProjectName } from "~/env/projectName.js";
 import { getEnvVariableWebinyEnv } from "~/env/env.js";
 import { BlueGreenRouterApiGateway } from "./BlueGreenRouterApiGateway.js";
 import { BlueGreenRouterCloudFrontStore } from "./BlueGreenRouterCloudFrontStore.js";
-import { BLUE_GREEN_ROUTER_STORE_KEY } from "./constants.js";
 import type { IAttachDomainsCallable, IBlueGreenDeployment } from "./types.js";
 import { validateDeployments } from "./validation/validateDeployments.js";
 import { getApplicationDomains } from "./domains/getApplicationDomains.js";
@@ -18,6 +17,7 @@ import { convertApplicationDomains } from "./domains/convertApplicationDomains.j
 import { resolveDomains } from "./domains/resolveDomains.js";
 import { applyCustomDomain } from "~/apps/customDomain.js";
 import { attachDomainsToOutput } from "~/apps/blueGreen/domains/attachDomainsToOutput.js";
+import { BLUE_GREEN_ROUTER_STORE_KEY } from "./constants.js";
 
 export type BlueGreenRouterPulumiApp = ReturnType<typeof createBlueGreenPulumiApp>;
 

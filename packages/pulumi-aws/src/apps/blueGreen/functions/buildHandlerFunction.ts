@@ -16,12 +16,12 @@ export interface IBuildRequestFunctionParams {
     domains: IBuildRequestFunctionParamsDomain[];
 }
 
-export const buildRequestFunction = ({
+export const buildHandlerFunction = ({
     storeId,
     storeKey,
     domains
 }: IBuildRequestFunctionParams): string => {
-    const target = __dirname + `/request.js`;
+    const target = __dirname + `/handler.js`;
     if (!existsSync(target)) {
         throw new Error(`File "${target}" does not exist.`);
     }
