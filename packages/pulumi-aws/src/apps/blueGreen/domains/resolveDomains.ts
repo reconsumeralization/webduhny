@@ -35,6 +35,8 @@ export const resolveDomains = (params: IResolveDomainsParams): IResolvedDomains 
 
             output.push({
                 type,
+                env: domain.env,
+                variant: domain.variant,
                 name: domain.name,
                 sources: value,
                 target

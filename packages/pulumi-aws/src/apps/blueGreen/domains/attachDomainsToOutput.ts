@@ -1,8 +1,10 @@
 import * as aws from "@pulumi/aws";
 import { type PulumiApp, type PulumiAppResource } from "@webiny/pulumi";
+import type { IResolvedDomains } from "~/apps/blueGreen/types.js";
 
 export interface IAttachDomainsToOutputParams {
     app: PulumiApp;
+    domains: IResolvedDomains;
     cloudFront: PulumiAppResource<typeof aws.cloudfront.Distribution>;
 }
 
@@ -16,6 +18,7 @@ export const attachDomainsToOutput = (params: IAttachDomainsToOutputParams) => {
         app.addOutputs({
             ["distributionDomain"]: distributionDomain,
             ["distributionUrl"]: distributionUrl,
+            ["environments"]: params.domains,
             ["domains"]: []
         });
         // We're adjusting the outputs via the `config.aliases` setter.

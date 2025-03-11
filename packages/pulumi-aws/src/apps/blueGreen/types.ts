@@ -1,3 +1,5 @@
+import type { IStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils/index.js";
+
 export type GenericRecord<K extends PropertyKey = PropertyKey, V = any> = Record<K, V>;
 
 export type NonEmptyArray<T> = [T, ...T[]];
@@ -7,6 +9,8 @@ export interface IDeploymentDomain {
      * A name of the deployment (e.g. "green" or "blue").
      */
     name: string;
+    env: string;
+    variant: string | undefined;
     domains: {
         api: string;
         admin: string;
@@ -45,6 +49,11 @@ export type IAttachedDomainKey = keyof IAttachedDomains["domains"];
 
 export interface IResolvedDomain {
     /**
+     * Environment and variant of the deployment.
+     */
+    env: string;
+    variant: string | undefined;
+    /**
      * Name of the deployment (e.g. "green" or "blue").
      */
     name: string;
@@ -63,3 +72,14 @@ export interface IResolvedDomain {
 }
 
 export type IResolvedDomains = IResolvedDomain[];
+
+export interface IBlueGreenStackOutput extends IStackOutput {
+    distributionDomain: string;
+    distributionUrl: string;
+    /**
+     * TODO fix later
+     */
+    // @ts-expect-error
+    environments?: IResolvedDomains;
+    domains?: string[];
+}

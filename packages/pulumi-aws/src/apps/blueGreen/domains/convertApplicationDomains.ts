@@ -14,6 +14,8 @@ export const convertApplicationDomains = (
         const value = input[name];
         return {
             name,
+            env: value.env,
+            variant: value.variant,
             domains: {
                 api: value.api,
                 admin: value.admin,

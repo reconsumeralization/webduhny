@@ -173,6 +173,7 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
 
             attachDomainsToOutput({
                 app,
+                domains,
                 cloudFront: cloudfront.cloudFront
             });
 

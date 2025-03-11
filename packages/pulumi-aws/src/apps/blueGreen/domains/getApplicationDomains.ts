@@ -24,6 +24,8 @@ interface IPromiseResult {
 }
 
 export interface IGetApplicationStacksResultStack {
+    env: string;
+    variant: string | undefined;
     api: string;
     admin: string;
     website: string | undefined;
@@ -70,6 +72,22 @@ const getPreviewDomainName = (results: IPromiseResult[], name: string): string |
     return removeProtocol(preview.stack.appDomain);
 };
 
+const getEnv = (results: IPromiseResult[], name: string): string => {
+    const env = results.find(r => r.name === name);
+    if (!env) {
+        throw new Error(`Missing environment for "${name}" deployment.`);
+    }
+    return env.env;
+};
+
+const getVariant = (results: IPromiseResult[], name: string): string | undefined => {
+    const variant = results.find(r => r.name === name);
+    if (!variant) {
+        throw new Error(`Missing variant for "${name}" deployment.`);
+    }
+    return variant.variant;
+};
+
 export const getApplicationDomains = async (
     params: IGetApplicationStacks
 ): Promise<IGetApplicationStacksResult> => {
@@ -96,11 +114,12 @@ export const getApplicationDomains = async (
         }
     }
     const results = await Promise.all(promises);
-
     const deployments: IGetApplicationStacksResult = {};
     const names = params.stacks.map(s => s.name);
     try {
         for (const name of names) {
+            const env = getEnv(results, name);
+            const variant = getVariant(results, name);
             const api = getApiDomainName(results, name);
             const admin = getAdminDomainName(results, name);
             const website = getWebsiteDomainName(results, name);
@@ -111,6 +130,8 @@ export const getApplicationDomains = async (
                 throw new Error(`Missing preview stack for "${name}" deployment.`);
             }
             deployments[name] = {
+                env,
+                variant,
                 api,
                 admin,
                 website,
