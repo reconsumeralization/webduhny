@@ -13,6 +13,7 @@ export * from "./Dialog";
 export * from "./Drawer";
 export * from "./DropdownMenu";
 export * from "./DynamicFieldset";
+export * from "./File";
 export * from "./FormComponent";
 export * from "./Grid";
 export * from "./Heading";

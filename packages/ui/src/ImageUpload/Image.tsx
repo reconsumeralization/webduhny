@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { ReactComponent as AddImageIcon } from "./icons/round-add_photo_alternate-24px.svg";
 import { ReactComponent as RemoveImageIcon } from "./icons/round-close-24px.svg";
 import { ReactComponent as EditImageIcon } from "./icons/round-edit-24px.svg";
+import { File } from "@webiny/admin-ui";
 import { Typography } from "../Typography";
 import { CircularProgress } from "../Progress";
 import {
@@ -29,7 +30,18 @@ interface ImageProps {
     containerStyle?: React.CSSProperties;
 }
 
-class Image extends React.Component<ImageProps> {
+const Image = ({ uploadImage, removeImage, editImage, ...props }: ImageProps) => {
+    return (
+        <File
+            {...props}
+            onSelectImage={uploadImage}
+            onRemoveImage={removeImage}
+            onEditImage={editImage}
+        />
+    );
+};
+
+class OldImage extends React.Component<ImageProps> {
     static defaultProps = {
         placeholder: "Select an image",
         containerStyle: { height: "100%" }

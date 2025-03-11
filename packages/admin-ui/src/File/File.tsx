@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { InputPrimitive, type InputPrimitiveProps } from "./InputPrimitive";
+import { FilePrimitive, type FilePrimitiveProps } from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
@@ -9,9 +9,9 @@ import {
     type FormComponentProps
 } from "~/FormComponent";
 
-type InputProps = InputPrimitiveProps & FormComponentProps;
+type FileProps = FilePrimitiveProps & FormComponentProps;
 
-const DecoratableInput = ({
+const DecoratableFile = ({
     label,
     description,
     note,
@@ -21,7 +21,7 @@ const DecoratableInput = ({
     validate,
     onBlur: originalOnBlur,
     ...props
-}: InputProps) => {
+}: FileProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
@@ -42,12 +42,13 @@ const DecoratableInput = ({
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <InputPrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
+            <FilePrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>
     );
 };
-const Input = makeDecoratable("Input", DecoratableInput);
 
-export { Input, type InputProps };
+const File = makeDecoratable("File", DecoratableFile);
+
+export { File, type FileProps };
