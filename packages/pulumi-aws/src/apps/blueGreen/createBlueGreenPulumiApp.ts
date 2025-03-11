@@ -128,6 +128,11 @@ export function createBlueGreenPulumiApp(projectAppParams: CreateBlueGreenPulumi
                 protect,
                 region
             });
+            /**
+             * TODO Maybe have switching via deployment instead of changing the key?
+             * Key takes up to few minutes to propagate.
+             * Deployment takes 10 seconds + 30-60 seconds for the CloudFront to propagate.
+             */
             app.addResource(aws.cloudfront.KeyvaluestoreKey, {
                 name: "blue-green-router-store-key",
                 config: {

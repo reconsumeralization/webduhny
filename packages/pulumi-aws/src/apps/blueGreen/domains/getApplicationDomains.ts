@@ -40,7 +40,7 @@ const removeProtocol = (url: string): string => {
 
 const getApiDomainName = (results: IPromiseResult[], name: string): string => {
     const api = results.find(r => r.name === name && r.app === "api");
-    if (!api?.stack.apiDomain) {
+    if (!api?.stack?.apiDomain) {
         throw new Error(`Missing API stack for "${name}" deployment.`);
     }
     return removeProtocol(api.stack.apiDomain);
@@ -48,7 +48,7 @@ const getApiDomainName = (results: IPromiseResult[], name: string): string => {
 
 const getAdminDomainName = (results: IPromiseResult[], name: string): string => {
     const admin = results.find(r => r.name === name && r.app === "admin");
-    if (!admin?.stack.appDomain) {
+    if (!admin?.stack?.appDomain) {
         throw new Error(`Missing Admin stack for "${name}" deployment.`);
     }
     return removeProtocol(admin.stack.appDomain);
@@ -56,7 +56,7 @@ const getAdminDomainName = (results: IPromiseResult[], name: string): string => 
 
 const getWebsiteDomainName = (results: IPromiseResult[], name: string): string | undefined => {
     const website = results.find(r => r.name === name && r.app === "website");
-    if (!website?.stack.deliveryDomain) {
+    if (!website?.stack?.deliveryDomain) {
         return undefined;
     }
     return removeProtocol(website.stack.deliveryDomain);
@@ -64,7 +64,7 @@ const getWebsiteDomainName = (results: IPromiseResult[], name: string): string |
 
 const getPreviewDomainName = (results: IPromiseResult[], name: string): string | undefined => {
     const preview = results.find(r => r.name === name && r.app === "website");
-    if (!preview?.stack.appDomain) {
+    if (!preview?.stack?.appDomain) {
         return undefined;
     }
     return removeProtocol(preview.stack.appDomain);
@@ -99,22 +99,27 @@ export const getApplicationDomains = async (
 
     const deployments: IGetApplicationStacksResult = {};
     const names = params.stacks.map(s => s.name);
-    for (const name of names) {
-        const api = getApiDomainName(results, name);
-        const admin = getAdminDomainName(results, name);
-        const website = getWebsiteDomainName(results, name);
-        const preview = getPreviewDomainName(results, name);
-        if (!website && preview) {
-            throw new Error(`Missing website stack for "${name}" deployment.`);
-        } else if (website && !preview) {
-            throw new Error(`Missing preview stack for "${name}" deployment.`);
+    try {
+        for (const name of names) {
+            const api = getApiDomainName(results, name);
+            const admin = getAdminDomainName(results, name);
+            const website = getWebsiteDomainName(results, name);
+            const preview = getPreviewDomainName(results, name);
+            if (!website && preview) {
+                throw new Error(`Missing website stack for "${name}" deployment.`);
+            } else if (website && !preview) {
+                throw new Error(`Missing preview stack for "${name}" deployment.`);
+            }
+            deployments[name] = {
+                api,
+                admin,
+                website,
+                preview
+            };
         }
-        deployments[name] = {
-            api,
-            admin,
-            website,
-            preview
-        };
+        return deployments;
+    } catch (ex) {
+        console.error(ex.message);
+        throw ex;
     }
-    return deployments;
 };
