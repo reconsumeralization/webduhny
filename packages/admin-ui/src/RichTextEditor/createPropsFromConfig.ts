@@ -1,6 +1,7 @@
 import { RichTextEditorProps } from "./RichTextEditor";
 import { ToolSettings } from "@editorjs/editorjs";
 import { OutputData } from "@editorjs/editorjs/types";
+import { type RichTextEditorPrimitiveProps } from "./RichTextEditorPrimitive";
 
 interface CreatePropsFromConfigResult {
     onReady: (editor: any) => void;
@@ -19,7 +20,7 @@ interface OnReadyParams {
  * TODO: figure out types for editor and return type of the function.
  */
 export const createPropsFromConfig = (
-    config: RichTextEditorProps[]
+    config: RichTextEditorPrimitiveProps[]
 ): CreatePropsFromConfigResult => {
     const configs = (Array.isArray(config) ? config : [config]) as RichTextEditorProps[];
 

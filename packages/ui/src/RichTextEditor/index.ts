@@ -1,3 +1,4 @@
 export * from "./RichTextEditor";
-export type { RichTextEditorProps, OnReadyParams, RichTextEditorValue } from "./RichTextEditor";
-export { createPropsFromConfig } from "./createPropsFromConfig";
+export type { RichTextEditorProps } from "./RichTextEditor";
+export { createPropsFromConfig } from "@webiny/admin-ui";
+export type { OnReadyParams, RichTextEditorValue } from "@webiny/admin-ui";

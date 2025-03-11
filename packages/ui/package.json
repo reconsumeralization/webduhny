@@ -14,7 +14,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@editorjs/editorjs": "2.26.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
     "@rmwc/list": "^14.2.2",
@@ -22,7 +21,6 @@
     "@rmwc/top-app-bar": "^14.2.2",
     "@svgr/webpack": "^6.1.1",
     "@webiny/admin-ui": "0.0.0",
-    "@webiny/form": "0.0.0",
     "@webiny/utils": "0.0.0",
     "classnames": "^2.5.1",
     "cropperjs": "^1.4.3",
