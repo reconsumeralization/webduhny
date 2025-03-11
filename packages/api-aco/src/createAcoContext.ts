@@ -50,7 +50,7 @@ const setupAcoContext = async (
         return tenancy.getCurrentTenant();
     };
 
-    const storageOperations = createAcoStorageOperations({
+    const storageOperations = await createAcoStorageOperations({
         /**
          * TODO: We need to figure out a way to pass "cms" from outside (e.g. apps/api/graphql)
          */

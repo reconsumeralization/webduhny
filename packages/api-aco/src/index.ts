@@ -15,4 +15,4 @@ export const createAco = (params: CreateAcoParams = {}) => {
     return [createAcoContext(params), ...createAcoGraphQL()];
 };
 
-export { createFolderModelModifier } from "./folder/createFolderModelModifier";
+export * from "./folder/createFolderModelModifier";

@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { CompositionScope } from "@webiny/app-admin";
 import { ModelProvider, Fields } from "@webiny/app-headless-cms-common";
 import { Bind, BindPrefix } from "@webiny/form";
 import styled from "@emotion/styled";
-import { FolderModelDto } from "~/features";
+import { useFolderModel, useGetFolderExtensionsFields } from "~/features";
 
 const HideEmptyCells = styled.div`
     .mdc-layout-grid {
@@ -25,33 +25,26 @@ const HideEmptyCells = styled.div`
     }
 `;
 
-interface ExtensionsProps {
-    model: FolderModelDto;
-}
-
-export const Extensions = ({ model }: ExtensionsProps) => {
-    const extensionsField = useMemo(() => {
-        return model.fields.find(f => f.fieldId === "extensions");
-    }, [model]);
-
-    if (!extensionsField) {
-        return null;
-    }
-
-    const fields = extensionsField.settings?.fields || [];
-    const layout = extensionsField.settings?.layout || [];
+export const Extensions = () => {
+    const { getFolderExtensionsFields } = useGetFolderExtensionsFields();
+    const { fields, layout } = getFolderExtensionsFields();
+    const folderModel = useFolderModel();
 
     if (!layout.length) {
         layout.push(...fields.map(field => [field.fieldId]));
     }
 
+    if (!fields.length) {
+        return null;
+    }
+
     return (
         <CompositionScope name={"aco.folderDetails.extensionFields"}>
-            <ModelProvider model={model}>
+            <ModelProvider model={folderModel}>
                 <BindPrefix name={"extensions"}>
                     <HideEmptyCells>
                         <Fields
-                            contentModel={model}
+                            contentModel={folderModel}
                             // @ts-expect-error
                             Bind={Bind}
                             fields={fields}

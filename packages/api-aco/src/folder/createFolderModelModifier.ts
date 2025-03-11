@@ -3,44 +3,62 @@ import { CmsPrivateModelFull, createModelField } from "@webiny/api-headless-cms"
 import { CmsModelField as BaseModelField } from "@webiny/api-headless-cms/types";
 import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 
-type CmsModelField = Omit<BaseModelField, "storageId">;
+export type CmsModelField = Omit<BaseModelField, "storageId"> & { modelIds?: string[] };
 
-class CmsModelFieldsModifier {
-    private fields: BaseModelField[];
+export interface IFolderModelFieldsModifier {
+    setFields: (fields: BaseModelField[]) => void;
+    addField: (field: CmsModelField) => void;
+}
 
-    constructor(fields: BaseModelField[]) {
+export class FolderModelFieldsModifier implements IFolderModelFieldsModifier {
+    private fields: BaseModelField[] = [];
+    private readonly namespace: string;
+
+    constructor(namespace: string) {
+        this.namespace = namespace;
+    }
+
+    setFields(fields: BaseModelField[]) {
         this.fields = fields;
     }
 
     addField(field: CmsModelField) {
+        const { tags, ...rest } = field;
+
         this.fields.push({
-            ...field,
-            storageId: `${field.type}@${field.id}`
+            ...rest,
+            storageId: `${field.type}@${this.namespace}_${field.id}`,
+            tags: (tags ?? []).concat([`$namespace:${this.namespace}`])
         });
     }
 }
 
 interface CmsModelModifierCallableParams {
-    modifier: CmsModelFieldsModifier;
+    modifier: IFolderModelFieldsModifier;
 }
 
-interface CmsModelModifierCallable {
+export interface CmsModelModifierCallable {
     (params: CmsModelModifierCallableParams): Promise<void> | void;
+}
+
+interface FolderCmsModelModifierPluginParams {
+    modifier: IFolderModelFieldsModifier;
+    callback: CmsModelModifierCallable;
 }
 
 export class FolderCmsModelModifierPlugin extends Plugin {
     public static override type = "aco.folder.cms-model-modifier";
-    private readonly modelId: string;
-    private readonly cb: CmsModelModifierCallable;
+    private readonly modifier: IFolderModelFieldsModifier;
+    private readonly callback: CmsModelModifierCallable;
 
-    constructor(modelId: string, cb: CmsModelModifierCallable) {
+    constructor(params: FolderCmsModelModifierPluginParams) {
         super();
-        this.modelId = modelId;
-        this.cb = cb;
+        this.modifier = params.modifier;
+        this.callback = params.callback;
     }
 
     async modifyModel(model: CmsPrivateModelFull): Promise<void> {
-        if (model.modelId !== this.modelId) {
+        if (model.modelId !== FOLDER_MODEL_ID) {
             return;
         }
 
@@ -57,11 +75,17 @@ export class FolderCmsModelModifierPlugin extends Plugin {
             model.fields.push(extensionsField);
         }
 
-        const modifier = new CmsModelFieldsModifier(extensionsField.settings!.fields!);
-        await this.cb({ modifier });
+        this.modifier.setFields(extensionsField.settings!.fields!);
+
+        await this.callback({ modifier: this.modifier });
     }
 }
 
-export const createFolderModelModifier = (cb: CmsModelModifierCallable) => {
-    return new FolderCmsModelModifierPlugin(FOLDER_MODEL_ID, cb);
+export const createFolderModelModifier = (callback: CmsModelModifierCallable) => {
+    const modifier = new FolderModelFieldsModifier("global");
+
+    return new FolderCmsModelModifierPlugin({
+        callback,
+        modifier
+    });
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSnackbar } from "@webiny/app-admin";
 import { Bind, GenericFormData } from "@webiny/form";
 import { validation } from "@webiny/validation";
@@ -10,7 +10,7 @@ import { Extensions, FolderTree } from "~/components";
 import { ROOT_FOLDER } from "~/constants";
 import { useDialogs } from "@webiny/app-admin";
 import { DialogFoldersContainer } from "~/dialogs/styled";
-import { useFolderModel, useUpdateFolder } from "~/features";
+import { useUpdateFolder } from "~/features";
 import { FolderItem } from "~/types";
 
 interface ShowDialogParams {
@@ -26,19 +26,7 @@ interface FormComponentProps {
 }
 
 const FormComponent = ({ folder }: FormComponentProps) => {
-    const folderModel = useFolderModel();
     const [parentId, setParentId] = useState<string | null>(folder.parentId);
-
-    const extensionFields = useMemo(() => {
-        const modelFields = folderModel?.fields || [];
-
-        const fields = modelFields.find(field => field.fieldId === "extensions");
-        if (!fields?.settings?.fields) {
-            return [];
-        }
-
-        return fields?.settings?.fields || [];
-    }, [folderModel]);
 
     return (
         <>
@@ -80,7 +68,7 @@ const FormComponent = ({ folder }: FormComponentProps) => {
                     </DialogFoldersContainer>
                 </Cell>
             </Grid>
-            {extensionFields.length > 0 && <Extensions model={folderModel} />}
+            <Extensions />
         </>
     );
 };
