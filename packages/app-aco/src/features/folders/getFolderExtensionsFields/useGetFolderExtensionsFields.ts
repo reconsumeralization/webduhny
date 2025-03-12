@@ -8,6 +8,10 @@ export const useGetFolderExtensionsFields = () => {
     const model = useFolderModel();
 
     const getFolderExtensionsFields = useCallback(() => {
+        console.log("================================");
+        console.log("model", model);
+        console.log("getFolderExtensionsFields called", type, modelId);
+
         const instance = GetFolderExtensionsFields.getInstance(model, type, modelId);
         return instance.execute();
     }, [type, modelId, model.id]);

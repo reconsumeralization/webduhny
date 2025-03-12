@@ -14,7 +14,7 @@ export class GetFolderExtensionsFieldsUseCaseWithNamespaceAndModelId
     }
 
     execute() {
-        const { fields: extensionsFields, layout } = this.useCase.execute();
+        const { fields: extensionsFields } = this.useCase.execute();
 
         const fields = extensionsFields.filter(field => {
             if (field.tags!.includes("$namespace:global")) {
@@ -29,8 +29,7 @@ export class GetFolderExtensionsFieldsUseCaseWithNamespaceAndModelId
         });
 
         return {
-            fields,
-            layout
+            fields
         };
     }
 }

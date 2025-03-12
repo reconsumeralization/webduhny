@@ -27,12 +27,8 @@ const HideEmptyCells = styled.div`
 
 export const Extensions = () => {
     const { getFolderExtensionsFields } = useGetFolderExtensionsFields();
-    const { fields, layout } = getFolderExtensionsFields();
+    const { fields } = getFolderExtensionsFields();
     const folderModel = useFolderModel();
-
-    if (!layout.length) {
-        layout.push(...fields.map(field => [field.fieldId]));
-    }
 
     if (!fields.length) {
         return null;
@@ -48,7 +44,7 @@ export const Extensions = () => {
                             // @ts-expect-error
                             Bind={Bind}
                             fields={fields}
-                            layout={layout}
+                            layout={fields.map(field => [field.fieldId])}
                         />
                     </HideEmptyCells>
                 </BindPrefix>

@@ -12,11 +12,9 @@ export class GetFolderExtensionsFieldsUseCase implements IGetFolderExtensionsFie
         const extensionsField = this.repository.execute();
 
         const fields = extensionsField?.settings?.fields || [];
-        const layout = extensionsField?.settings?.layout || [];
 
         return {
-            fields: fields.filter(field => field.tags?.length),
-            layout
+            fields: fields.filter(field => field.tags?.length)
         };
     }
 }
