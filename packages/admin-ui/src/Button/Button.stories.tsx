@@ -31,19 +31,17 @@ const meta: Meta<typeof Button> = {
             defaultValue: false
         },
         icon: {
-            description:
-                "Please refer to the '[With Icon](#with-icon)' button example below for details.",
+            description: "Please refer to the 'With Icon' button example below for details.",
             control: "none"
         },
         iconPosition: {
-            description: "Icon Position",
+            description: "Please refer to the 'With Icon' button example below for details.",
             control: "select",
-            options: ["start", "end"],
-            defaultValue: "start"
+            defaultValue: "start",
+            options: ["start", "end"]
         },
         asChild: {
-            description:
-                "Please refer to the '[As Child](#as-child)' button example below for details.",
+            description: "Please refer to the 'As Child' button example below for details.",
             control: "none"
         },
         // Note: after upgrading to Storybook 8.X, use `fn`from `@storybook/test` to spy on the onClick argument.
