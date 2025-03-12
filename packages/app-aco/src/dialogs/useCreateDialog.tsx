@@ -77,7 +77,7 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
                     </DialogFoldersContainer>
                 </Cell>
             </Grid>
-            <Extensions />
+            <Extensions action={"create"} />
         </>
     );
 };
