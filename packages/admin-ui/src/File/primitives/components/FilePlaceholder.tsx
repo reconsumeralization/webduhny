@@ -8,10 +8,41 @@ const filePlaceholderVariants = cva("wby-flex", {
         type: {
             compact: "wby-w-full",
             area: ["wby-justify-center", "wby-px-xl wby-py-md-extra"]
+        },
+        variant: {
+            primary: "",
+            secondary: "",
+            ghost: ""
         }
     },
+    compoundVariants: [
+        {
+            type: "area",
+            variant: "primary",
+            className: [
+                "wby-bg-neutral-subtle",
+                "hover:wby-bg-neutral-light",
+                "data-[disabled=true]:wby-bg-neutral-disabled"
+            ]
+        },
+        {
+            type: "area",
+            variant: "secondary",
+            className: ["wby-bg-neutral-base"]
+        },
+        {
+            type: "area",
+            variant: "secondary",
+            className: [
+                "wby-bg-neutral-subtle",
+                "hover:wby-bg-neutral-light",
+                "data-[disabled=true]:wby-bg-transparent"
+            ]
+        }
+    ],
     defaultVariants: {
-        type: "compact"
+        type: "compact",
+        variant: "primary"
     }
 });
 
@@ -25,6 +56,7 @@ interface FilePlaceholderProps
 const FilePlaceholder = ({
     text = "Select from library",
     type,
+    variant,
     disabled,
     className,
     ...props
@@ -32,7 +64,8 @@ const FilePlaceholder = ({
     return (
         <div
             data-role={"select-image"}
-            className={cn(filePlaceholderVariants({ type }), className)}
+            data-disabled={disabled}
+            className={cn(filePlaceholderVariants({ type, variant }), className)}
             {...props}
         >
             <Button

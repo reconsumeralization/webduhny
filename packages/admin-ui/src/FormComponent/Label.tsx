@@ -1,16 +1,20 @@
 import React, { useMemo } from "react";
-import { makeDecoratable } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 import { Label, LabelProps } from "~/Label";
 
-interface FormComponentLabelProps {
+interface FormComponentLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     text?: React.ReactElement<typeof Label> | React.ReactNode;
     required?: boolean;
     disabled?: boolean;
 }
 
-const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
-    const { text, required, disabled } = props;
-
+const DecoratableFormComponentLabel = ({
+    text,
+    required,
+    disabled,
+    className,
+    ...props
+}: FormComponentLabelProps) => {
     // UseMemo correctly to memoize the rendered label
     const renderLabel = useMemo(() => {
         if (!text) {
@@ -31,7 +35,11 @@ const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
         return null;
     }
 
-    return <div className={"wby-mb-xs"}>{renderLabel}</div>;
+    return (
+        <div {...props} className={cn("wby-mb-xs", className)}>
+            {renderLabel}
+        </div>
+    );
 };
 
 const FormComponentLabel = makeDecoratable("FormComponentLabel", DecoratableFormComponentLabel);

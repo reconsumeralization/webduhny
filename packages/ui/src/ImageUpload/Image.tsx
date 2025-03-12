@@ -23,7 +23,7 @@ interface ImageProps {
     value?: any;
     disabled?: boolean;
     loading?: boolean;
-    placeholder: string;
+    placeholder?: string;
     style?: React.CSSProperties;
     renderImagePreview?: (props: any) => React.ReactElement<any>;
     round?: boolean;

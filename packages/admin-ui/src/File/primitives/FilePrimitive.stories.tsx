@@ -15,7 +15,7 @@ const meta: Meta<typeof FilePrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [selectedImage, setSelectedImage] = useState();
+        const [selectedImage, setSelectedImage] = useState<Record<string, any> | null>(null);
         return (
             <FilePrimitive
                 {...args}
@@ -25,6 +25,7 @@ const meta: Meta<typeof FilePrimitive> = {
                         src: "https://picsum.photos/1000/750"
                     })
                 }
+                onRemoveImage={() => setSelectedImage(null)}
             />
         );
     }
@@ -33,76 +34,148 @@ const meta: Meta<typeof FilePrimitive> = {
 export default meta;
 type Story = StoryObj<typeof FilePrimitive>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        label: "Upload background image"
+    }
+};
 
 export const CompactType: Story = {
     args: {
+        ...Default.args,
         type: "compact"
+    }
+};
+
+export const CompactPrimaryVariant: Story = {
+    args: {
+        ...CompactType.args,
+        variant: "primary"
+    }
+};
+
+export const CompactPrimaryVariantDisabled: Story = {
+    args: {
+        ...CompactPrimaryVariant.args,
+        disabled: true
+    }
+};
+
+export const CompactPrimaryVariantInvalid: Story = {
+    args: {
+        ...CompactPrimaryVariant.args,
+        invalid: true
+    }
+};
+
+export const CompactSecondaryVariant: Story = {
+    args: {
+        ...CompactType.args,
+        variant: "secondary"
+    }
+};
+
+export const CompactSecondaryVariantDisabled: Story = {
+    args: {
+        ...CompactSecondaryVariant.args,
+        disabled: true
+    }
+};
+
+export const CompactSecondaryVariantInvalid: Story = {
+    args: {
+        ...CompactSecondaryVariant.args,
+        invalid: true
+    }
+};
+
+export const CompactGhostVariant: Story = {
+    args: {
+        ...CompactType.args,
+        variant: "ghost"
+    }
+};
+
+export const CompactGhostVariantDisabled: Story = {
+    args: {
+        ...CompactGhostVariant.args,
+        disabled: true
+    }
+};
+
+export const CompactGhostVariantInvalid: Story = {
+    args: {
+        ...CompactGhostVariant.args,
+        invalid: true
     }
 };
 
 export const AreaType: Story = {
     args: {
+        ...Default.args,
         type: "area"
     }
 };
 
-export const PrimaryVariant: Story = {
+export const AreaPrimaryVariant: Story = {
     args: {
+        ...AreaType.args,
         variant: "primary"
     }
 };
 
-export const PrimaryVariantDisabled: Story = {
+export const AreaPrimaryVariantDisabled: Story = {
     args: {
-        ...PrimaryVariant.args,
+        ...AreaPrimaryVariant.args,
         disabled: true
     }
 };
 
-export const PrimaryVariantInvalid: Story = {
+export const AreaPrimaryVariantInvalid: Story = {
     args: {
-        ...PrimaryVariant.args,
+        ...AreaPrimaryVariant.args,
         invalid: true
     }
 };
 
-export const SecondaryVariant: Story = {
+export const AreaSecondaryVariant: Story = {
     args: {
+        ...AreaType.args,
         variant: "secondary"
     }
 };
 
-export const SecondaryVariantDisabled: Story = {
+export const AreaSecondaryVariantDisabled: Story = {
     args: {
-        ...SecondaryVariant.args,
+        ...AreaSecondaryVariant.args,
         disabled: true
     }
 };
 
-export const SecondaryVariantInvalid: Story = {
+export const AreaSecondaryVariantInvalid: Story = {
     args: {
-        ...SecondaryVariant.args,
+        ...AreaSecondaryVariant.args,
         invalid: true
     }
 };
 
-export const GhostVariant: Story = {
+export const AreaGhostVariant: Story = {
     args: {
+        ...AreaType.args,
         variant: "ghost"
     }
 };
 
-export const GhostVariantDisabled: Story = {
+export const AreaGhostVariantDisabled: Story = {
     args: {
-        ...GhostVariant.args,
+        ...AreaGhostVariant.args,
         disabled: true
     }
 };
 
-export const GhostVariantInvalid: Story = {
+export const AreaGhostVariantInvalid: Story = {
     args: {
-        ...GhostVariant.args,
+        ...AreaGhostVariant.args,
         invalid: true
     }
 };
