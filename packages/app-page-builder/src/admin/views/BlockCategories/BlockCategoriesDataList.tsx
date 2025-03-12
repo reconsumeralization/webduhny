@@ -17,16 +17,15 @@ import {
     ListItemText,
     ListItemMeta,
     ListActions,
-    ListItemTextSecondary
+    ListItemTextSecondary,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { PbBlockCategory } from "~/types";
 import { Icon } from "~/admin/utils/createBlockCategoryPlugin";
 import { useBlockCategoriesPermissions } from "~/hooks/permissions";
@@ -157,12 +156,12 @@ const PageBuilderBlockCategoriesDataList = ({
             data={categoryList}
             actions={
                 canCreate ? (
-                    <ButtonSecondary
+                    <ButtonPrimary
                         data-testid="data-list-new-record-button"
                         onClick={() => history.push("/page-builder/block-categories?new=true")}
                     >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Block Category`}
-                    </ButtonSecondary>
+                        {t`New Block Category`}
+                    </ButtonPrimary>
                 ) : null
             }
             search={
@@ -174,10 +173,7 @@ const PageBuilderBlockCategoriesDataList = ({
             }
             modalOverlay={blockCategoriesDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: PbBlockCategory[] }) => (
@@ -194,7 +190,7 @@ const PageBuilderBlockCategoriesDataList = ({
                                 <Icon category={item} />
                             </ListItemGraphic>
                             <ListItemText>
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.description || t`No description provided.`}
                                 </ListItemTextSecondary>

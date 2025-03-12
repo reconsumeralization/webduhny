@@ -9,13 +9,15 @@ import {
     DataList,
     DataListModalOverlay,
     DataListModalOverlayAction,
+    DownloadIcon,
     List,
     ListItem,
     ListItemGraphic,
     ListItemText,
     ListItemTextPrimary,
     ListItemTextSecondary,
-    ScrollList
+    ScrollList,
+    UploadIcon
 } from "@webiny/ui/List";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
@@ -23,12 +25,8 @@ import { Typography } from "@webiny/ui/Typography";
 import { CircularProgress } from "@webiny/ui/Progress";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
-import { ButtonDefault, ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 import { useSnackbar, useStateIfMounted, useStateWithCallback } from "@webiny/app-admin/hooks";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as DownloadFileIcon } from "@webiny/app-admin/assets/icons/file_download.svg";
-import { ReactComponent as UploadFileIcon } from "@webiny/app-admin/assets/icons/file_upload.svg";
 import { Icon } from "~/admin/utils/createBlockCategoryPlugin";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
 
@@ -175,29 +173,29 @@ const BlocksByCategoriesDataList = ({
                 actions={
                     <DataListActionsWrapper>
                         {canCreate ? (
-                            <ButtonSecondary
+                            <ButtonPrimary
                                 onClick={handleNewBlockClick}
                                 data-testid={"pb-blocks-list-new-block-btn"}
                             >
-                                <ButtonIcon icon={<AddIcon />} /> {t`New Block`}
-                            </ButtonSecondary>
+                                {t`New Block`}
+                            </ButtonPrimary>
                         ) : null}
                         <OptionsMenu
                             data-testid="pb-blocks-list-options-menu"
                             items={[
                                 {
                                     label: "Import blocks",
-                                    icon: <UploadFileIcon />,
+                                    icon: <UploadIcon />,
                                     onClick: showImportDialog
                                 },
                                 {
                                     label: "Export all blocks",
-                                    icon: <DownloadFileIcon />,
+                                    icon: <DownloadIcon />,
                                     onClick: () => handleExportClick()
                                 },
                                 {
                                     label: "Export blocks from current category",
-                                    icon: <DownloadFileIcon />,
+                                    icon: <DownloadIcon />,
                                     onClick: () => handleExportClick(selectedBlocksCategory),
                                     disabled: !selectedBlocksCategory
                                 }
@@ -215,10 +213,7 @@ const BlocksByCategoriesDataList = ({
                 showOptions={{ refresh: false }}
                 modalOverlay={blockCategoriesDataListModalOverlay}
                 modalOverlayAction={
-                    <DataListModalOverlayAction
-                        icon={<FilterIcon />}
-                        data-testid={"default-data-list.filter"}
-                    />
+                    <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
                 }
             >
                 {({ data }: { data: PbBlockCategory[] }) => (
@@ -241,7 +236,7 @@ const BlocksByCategoriesDataList = ({
                                         <Icon category={item} />
                                     </ListItemGraphic>
                                     <ListItemText>
-                                        {item.name}
+                                        <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                         <ListItemTextSecondary>{`${numberOfBlocks} ${
                                             numberOfBlocks === 1 ? "block" : "blocks"
                                         } in the category`}</ListItemTextSecondary>

@@ -3,7 +3,7 @@ import { makeDecoratable, withStaticProps, cva, type VariantProps, cn } from "~/
 import { AccordionRoot } from "./components/AccordionRoot";
 import { AccordionItem, type AccordionItemProps } from "./components/AccordionItem";
 
-const accordionVariants = cva("wby-group w-full", {
+const accordionVariants = cva("wby-group wby-w-full", {
     variants: {
         variant: {
             container: "wby-accordion-variant-container wby-gap-xs wby-flex wby-flex-col",

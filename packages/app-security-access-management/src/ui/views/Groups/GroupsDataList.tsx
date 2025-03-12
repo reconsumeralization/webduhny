@@ -10,7 +10,8 @@ import {
     ListItemMeta,
     ListActions,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { useRouter } from "@webiny/react-router";
@@ -19,12 +20,10 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import { LIST_GROUPS, DELETE_GROUP, ListGroupsResponse } from "./graphql";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { deserializeSorters } from "../utils";
 import { Group } from "~/types";
 
@@ -144,12 +143,12 @@ export const GroupsDataList = () => {
         <DataList
             title={t`Roles`}
             actions={
-                <ButtonSecondary
+                <ButtonPrimary
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/roles?new=true")}
                 >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Role`}
-                </ButtonSecondary>
+                    {t`New Role`}
+                </ButtonPrimary>
             }
             data={groupList}
             loading={listLoading || deleteLoading}
@@ -158,10 +157,7 @@ export const GroupsDataList = () => {
             }
             modalOverlay={groupsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: Group[] }) => (
@@ -173,7 +169,7 @@ export const GroupsDataList = () => {
                                     history.push(`/access-management/roles?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 

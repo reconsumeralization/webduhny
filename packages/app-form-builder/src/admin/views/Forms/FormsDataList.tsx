@@ -1,11 +1,8 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { TimeAgo } from "@webiny/ui/TimeAgo";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import orderBy from "lodash/orderBy";
 import upperFirst from "lodash/upperFirst";
 import { useRouter } from "@webiny/react-router";
-import { Typography } from "@webiny/ui/Typography";
 import { ConfirmationDialog } from "@webiny/ui/ConfirmationDialog";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
 import {
@@ -25,21 +22,20 @@ import {
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary,
     ListSelectBox
 } from "@webiny/ui/List";
 import { i18n } from "@webiny/app/i18n";
 import { removeFormFromListCache, updateLatestRevisionInListCache } from "../cache";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
+import { ButtonPrimary } from "@webiny/ui/Button";
+import { ReactComponent as FileUploadIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import { Checkbox } from "@webiny/ui/Checkbox";
 import { useMultiSelect } from "./hooks/useMultiSelect";
 import { usePermission } from "~/hooks/usePermission";
-import { ReactComponent as FileUploadIcon } from "@material-design-icons/svg/round/upload.svg";
 import useImportForm from "./hooks/useImportForm";
 import { ExportFormsButton } from "~/admin/plugins/formsDataList/ExportButton";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
@@ -48,19 +44,6 @@ import { deserializeSorters } from "../utils";
 import { FbFormModel, FbRevisionModel } from "~/types";
 
 const t = i18n.namespace("FormsApp.FormsDataList");
-const rightAlign = css({
-    alignItems: "flex-end !important"
-});
-
-const listItemMinHeight = css({
-    minHeight: "66px !important"
-});
-
-const DataListActionsWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
 
 export type FormsDataListProps = {
     onCreateForm: () => void;
@@ -239,10 +222,10 @@ const FormsDataList = (props: FormsDataListProps) => {
             return null;
         }
         return (
-            <DataListActionsWrapper>
-                <ButtonSecondary data-testid="new-record-button" onClick={props.onCreateForm}>
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Form`}
-                </ButtonSecondary>
+            <>
+                <ButtonPrimary data-testid="new-record-button" onClick={props.onCreateForm}>
+                    {t`New Form`}
+                </ButtonPrimary>
                 <OptionsMenu
                     items={[
                         {
@@ -253,7 +236,7 @@ const FormsDataList = (props: FormsDataListProps) => {
                         }
                     ]}
                 />
-            </DataListActionsWrapper>
+            </>
         );
     }, [canCreate(), showImportDialog]);
 
@@ -281,7 +264,7 @@ const FormsDataList = (props: FormsDataListProps) => {
                 <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search forms`} />
             }
             modalOverlay={formsDataListModalOverlay}
-            modalOverlayAction={<DataListModalOverlayAction icon={<FilterIcon />} />}
+            modalOverlayAction={<DataListModalOverlayAction />}
         >
             {({ data }: { data: FbFormModel[] | null }) => (
                 <List data-testid="default-data-list">
@@ -290,8 +273,8 @@ const FormsDataList = (props: FormsDataListProps) => {
                         return (
                             <ListItem
                                 key={form.id}
-                                className={listItemMinHeight}
                                 data-testid="default-data-list-element"
+                                selected={multiSelectProps.isMultiSelected(form)}
                             >
                                 <ListSelectBox>
                                     <Checkbox
@@ -305,21 +288,23 @@ const FormsDataList = (props: FormsDataListProps) => {
                                         history.push({ search: query.toString() });
                                     }}
                                 >
-                                    {form.name}
+                                    <ListItemTextPrimary>{form.name}</ListItemTextPrimary>
                                     {form.createdBy && (
                                         <ListItemTextSecondary>
-                                            {<>{t`Created by: {user}.`({ user: name })} </>}
+                                            <div data-testid="fb.form.status">
+                                                {upperFirst(form.status)} (v{form.version})
+                                            </div>
+                                            <div>
+                                                {<>{t`Created by: {user}.`({ user: name })} </>}
 
-                                            {t`Last modified: {time}.`({
-                                                time: <TimeAgo datetime={form.savedOn} />
-                                            })}
+                                                {t`Last modified: {time}.`({
+                                                    time: <TimeAgo datetime={form.savedOn} />
+                                                })}
+                                            </div>
                                         </ListItemTextSecondary>
                                     )}
                                 </ListItemText>
-                                <ListItemMeta className={rightAlign}>
-                                    <Typography use={"body2"} data-testid="fb.form.status">
-                                        {upperFirst(form.status)} (v{form.version})
-                                    </Typography>
+                                <ListItemMeta>
                                     <ListActions>
                                         {canUpdate(form) && (
                                             <EditIcon

@@ -6,16 +6,35 @@ import { IconButton } from "./IconButton";
 const meta: Meta<typeof IconButton> = {
     title: "Components/Icon Button",
     component: IconButton,
-    tags: ["autodocs"],
+    tags: ["!autodocs"],
     argTypes: {
         variant: {
+            description: "Type",
             control: "select",
-            options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"]
+            options: ["primary", "secondary", "tertiary", "ghost", "ghost-negative"],
+            defaultValue: "primary"
         },
-        size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl"] },
-        iconSize: { control: "select", options: ["default", "lg"] },
-        disabled: { control: "boolean" },
-        asChild: { control: "boolean" },
+        size: {
+            description: "Size",
+            control: "select",
+            options: ["xxs", "xs", "sm", "md", "lg", "xl"],
+            defaultValue: "md"
+        },
+        iconSize: {
+            description: "Icon Size",
+            control: "select",
+            options: ["default", "lg"],
+            defaultValue: "default"
+        },
+        disabled: {
+            description: "State",
+            control: "boolean",
+            defaultValue: false
+        },
+        icon: {
+            description: "Please refer to the example above for usage information.",
+            control: "none"
+        },
         onClick: { action: "onClick" }
     }
 };
@@ -140,5 +159,15 @@ export const WithAsChild: Story = {
                 <AddIcon />
             </span>
         )
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        variant: "primary",
+        size: "md",
+        disabled: false,
+        icon: <AddIcon />,
+        iconSize: "default"
     }
 };

@@ -1,0 +1,29 @@
+import React from "react";
+import { DropdownMenu } from "~/DropdownMenu";
+import { SortIcon } from "../DataListIcons";
+import { DataListProps } from "../types";
+
+const Sorters = (props: DataListProps) => {
+    const sorters = props.sorters;
+    if (!sorters) {
+        return null;
+    }
+
+    return (
+        <DropdownMenu trigger={<SortIcon size={"lg"} />}>
+            {sorters.map(sorter => (
+                <DropdownMenu.Item
+                    key={sorter.label}
+                    onClick={() => {
+                        if (sorters && props.setSorters) {
+                            props.setSorters(sorter.value);
+                        }
+                    }}
+                    content={sorter.label}
+                />
+            ))}
+        </DropdownMenu>
+    );
+};
+
+export { Sorters };
