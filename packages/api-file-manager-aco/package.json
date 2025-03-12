@@ -1,0 +1,34 @@
+{
+  "name": "@webiny/api-file-manager-aco",
+  "version": "0.0.0",
+  "main": "index.js",
+  "keywords": [
+    "api-file-manager-aco:base"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webiny/webiny-js.git",
+    "directory": "packages/api-file-manager-aco"
+  },
+  "description": "Connect File Manager to ACO",
+  "author": "Webiny Ltd.",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn webiny run build",
+    "watch": "yarn webiny run watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "dependencies": {
+    "@webiny/api-aco": "0.0.0"
+  },
+  "devDependencies": {
+    "@webiny/api-headless-cms": "0.0.0",
+    "@webiny/cli": "0.0.0",
+    "@webiny/project-utils": "0.0.0",
+    "ttypescript": "^1.5.15",
+    "typescript": "4.9.5"
+  }
+}

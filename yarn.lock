@@ -12506,6 +12506,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/api-file-manager-aco@npm:0.0.0, @webiny/api-file-manager-aco@workspace:packages/api-file-manager-aco":
+  version: 0.0.0-use.local
+  resolution: "@webiny/api-file-manager-aco@workspace:packages/api-file-manager-aco"
+  dependencies:
+    "@webiny/api-aco": "npm:0.0.0"
+    "@webiny/api-headless-cms": "npm:0.0.0"
+    "@webiny/cli": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
+    ttypescript: "npm:^1.5.15"
+    typescript: "npm:4.9.5"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/api-file-manager-ddb@npm:0.0.0, @webiny/api-file-manager-ddb@workspace:packages/api-file-manager-ddb":
   version: 0.0.0-use.local
   resolution: "@webiny/api-file-manager-ddb@workspace:packages/api-file-manager-ddb"
@@ -17240,6 +17253,7 @@ __metadata:
     "@webiny/api-audit-logs": "npm:0.0.0"
     "@webiny/api-background-tasks-ddb": "npm:0.0.0"
     "@webiny/api-file-manager": "npm:0.0.0"
+    "@webiny/api-file-manager-aco": "npm:0.0.0"
     "@webiny/api-file-manager-ddb": "npm:0.0.0"
     "@webiny/api-file-manager-s3": "npm:0.0.0"
     "@webiny/api-form-builder": "npm:0.0.0"
