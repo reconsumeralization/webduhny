@@ -4,6 +4,7 @@ export * from "./ModelProvider";
 export * from "./entries.graphql";
 export * from "./getModelTitleFieldId";
 export * from "./createFieldsList";
+export * from "./createValidationScope";
 export * from "./createValidators";
 export * from "./prepareFormData";
 export * from "./constants";
