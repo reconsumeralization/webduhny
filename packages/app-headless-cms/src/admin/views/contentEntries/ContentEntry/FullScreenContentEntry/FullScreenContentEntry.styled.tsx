@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "emotion";
 
-export const FullScreenContentEntryContainer = styled.div`
+export const Container = styled.div`
     background: var(--mdc-theme-background);
     z-index: 4;
     position: fixed;
@@ -24,7 +24,7 @@ export const FullScreenContentEntryContainer = styled.div`
 /**
  * HEADER
  */
-export const FullScreenContentEntryHeader = styled.div`
+export const Header = styled.div`
     background: var(--mdc-theme-surface);
     position: fixed;
     display: flex;
@@ -34,7 +34,7 @@ export const FullScreenContentEntryHeader = styled.div`
     z-index: 4;
 `;
 
-export const FullScreenContentEntryHeaderContent = styled.div`
+export const HeaderContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -95,23 +95,23 @@ export const EntryMeta = styled.div`
 /**
  * FORM
  */
-export const FullScreenContentEntryContent = styled.div`
+export const Content = styled.div`
     overflow-y: scroll;
     height: calc(100vh - 64px);
     margin-top: 64px;
 `;
 
-export const FullScreenContentEntryContentFormWrapper = styled.div`
+export const ContentFormWrapper = styled.div`
     display: flex;
     justify-content: center;
 `;
 
-type FullScreenContentEntryContentFormInnerProps = { width: string };
+type ContentFormInnerProps = { width: string };
 
-export const FullScreenContentEntryContentFormInner = styled.div<FullScreenContentEntryContentFormInnerProps>`
+export const ContentFormInner = styled.div<ContentFormInnerProps>`
     width: ${props => props.width};
 `;
 
-export const FullScreenContentEntryContentFormInnerCss = css`
+export const ContentFormInnerCss = css`
     height: 100% !important;
 `;

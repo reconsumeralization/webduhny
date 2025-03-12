@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "@types/react": "18.2.79",
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
@@ -60,7 +59,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   }
 }

@@ -41,7 +41,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                 <Bind>
                     {bind => {
                         return (
-                            <>
+                            <Bind.ValidationScope>
                                 <Label>{field.label}</Label>
                                 <DelayedOnChange {...bind}>
                                     {({ value, onChange }) => (
@@ -55,7 +55,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     )}
                                 </DelayedOnChange>
                                 <FormElementMessage>{field.helpText}</FormElementMessage>
-                            </>
+                            </Bind.ValidationScope>
                         );
                     }}
                 </Bind>

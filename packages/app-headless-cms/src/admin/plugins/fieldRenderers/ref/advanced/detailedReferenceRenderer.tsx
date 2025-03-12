@@ -24,13 +24,15 @@ export const createAdvancedSingleRenderer = (): CmsModelFieldRendererPlugin => {
                     <Bind>
                         {bind => {
                             return (
-                                <AdvancedSingleReferenceField
-                                    field={field}
-                                    getBind={getBind}
-                                    bind={bind}
-                                    Label={Label}
-                                    contentModel={contentModel}
-                                />
+                                <Bind.ValidationScope>
+                                    <AdvancedSingleReferenceField
+                                        field={field}
+                                        getBind={getBind}
+                                        bind={bind}
+                                        Label={Label}
+                                        contentModel={contentModel}
+                                    />
+                                </Bind.ValidationScope>
                             );
                         }}
                     </Bind>

@@ -60,16 +60,22 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind>
-                    <DelayedOnChange>
-                        <RichTextEditor
-                            key={getKey(field, form.data.id)}
-                            {...rteProps}
-                            label={field.label}
-                            placeholder={field.placeholderText}
-                            description={field.helpText}
-                            data-testid={`fr.input.richtext.${field.label}`}
-                        />
-                    </DelayedOnChange>
+                    {props => {
+                        return (
+                            <Bind.ValidationScope>
+                                <DelayedOnChange {...props}>
+                                    <RichTextEditor
+                                        key={getKey(field, form.data.id)}
+                                        {...rteProps}
+                                        label={field.label}
+                                        placeholder={field.placeholderText}
+                                        description={field.helpText}
+                                        data-testid={`fr.input.richtext.${field.label}`}
+                                    />
+                                </DelayedOnChange>
+                            </Bind.ValidationScope>
+                        );
+                    }}
                 </Bind>
             );
         }

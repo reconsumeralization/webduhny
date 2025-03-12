@@ -15,7 +15,7 @@ const Button: any = styled("a")({
     color: "var(--mdc-theme-primary)",
     " > svg": {
         marginRight: "10px",
-        color: "var(--mdc-theme-primary)"
+        fill: "var(--mdc-theme-primary)"
     },
     "&:hover": {
         textDecoration: "underline"

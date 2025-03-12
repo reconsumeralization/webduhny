@@ -584,6 +584,7 @@ interface BindComponentProps<T = any> extends Omit<BaseBindComponentProps, "chil
 
 export type BindComponent<T = any> = React.ComponentType<BindComponentProps<T>> & {
     parentName: string;
+    ValidationScope: React.ComponentType<{ children: React.ReactNode }>;
 };
 
 /**

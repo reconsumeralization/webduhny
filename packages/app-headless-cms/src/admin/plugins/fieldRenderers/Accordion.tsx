@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useState } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 import { css } from "emotion";
 import styled from "@emotion/styled";
 import classNames from "classnames";
@@ -73,22 +73,24 @@ const classes = {
     })
 };
 
-const AccordionItem = styled.div`
+const AccordionItem = styled.div<{ animate: boolean }>`
     @keyframes show-overflow {
         to {
             overflow: visible;
         }
     }
     overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+    transition: ${({ animate }) =>
+        animate ? "max-height 0.35s cubic-bezier(0, 1, 0, 1)" : "none !important"};
     height: auto;
     max-height: 0;
 
     &.expanded {
         max-height: 9999px;
-        transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
-        animation-name: show-overflow;
+        transition: ${({ animate }) =>
+            animate ? "max-height 0.3s cubic-bezier(1, 0, 1, 0)" : "none !important"};
         animation-fill-mode: forwards;
+        animation-name: show-overflow;
         animation-duration: 20ms;
         animation-delay: 0.3s;
     }
@@ -100,21 +102,39 @@ const AccordionContent = styled.div`
 
 interface AccordionProps {
     title: string;
+    isExpanded: boolean;
+    toggleExpanded: () => void;
     action?: ReactElement | null;
     icon?: ReactElement;
-    defaultValue?: boolean;
     children: React.ReactNode;
 }
 
-const Accordion = ({ title, children, action, icon, defaultValue = false }: AccordionProps) => {
-    const [isOpen, setOpen] = useState(defaultValue);
-    const toggleOpen = useCallback(() => setOpen(!isOpen), [isOpen]);
+const Accordion = ({
+    title,
+    children,
+    action,
+    icon,
+    isExpanded,
+    toggleExpanded
+}: AccordionProps) => {
+    const userInteractionRef = useRef(false);
+
+    useEffect(() => {
+        if (userInteractionRef.current) {
+            userInteractionRef.current = false;
+        }
+    }, [isExpanded]);
 
     return (
         <div className={classes.accordionWrapper}>
             <div
-                className={classNames(classes.accordionHeader, { open: isOpen })}
-                onClick={toggleOpen}
+                className={classNames(classes.accordionHeader, {
+                    open: isExpanded
+                })}
+                onClick={() => {
+                    userInteractionRef.current = true;
+                    toggleExpanded();
+                }}
             >
                 <div className="accordion-header--left">
                     <div className={"accordion-title"}>
@@ -128,7 +148,12 @@ const Accordion = ({ title, children, action, icon, defaultValue = false }: Acco
                     <div className={"icon-container"}>{icon}</div>
                 </div>
             </div>
-            <AccordionItem className={classNames({ expanded: isOpen })}>
+            <AccordionItem
+                animate={userInteractionRef.current === true}
+                className={classNames({
+                    expanded: isExpanded
+                })}
+            >
                 <AccordionContent>{children}</AccordionContent>
             </AccordionItem>
         </div>

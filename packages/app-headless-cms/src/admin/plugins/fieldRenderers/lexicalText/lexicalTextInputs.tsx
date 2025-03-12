@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { i18n } from "@webiny/app/i18n";
 import { CmsModelField, CmsModelFieldRendererPlugin } from "~/types";
-import { ReactComponent as DeleteIcon } from "~/admin/icons/close.svg";
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
 import DynamicSection from "../DynamicSection";
 import { IconButton } from "@webiny/ui/Button";
 import styled from "@emotion/styled";
@@ -11,6 +11,7 @@ import { modelHasLegacyRteField } from "~/admin/plugins/fieldRenderers/richText/
 import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { useForm } from "@webiny/form";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
+import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/rich-text");
 
@@ -77,6 +78,9 @@ const plugin: CmsModelFieldRendererPlugin = {
                     )}
                 </DynamicSection>
             );
+        },
+        renderSettings(props) {
+            return <MultiValueRendererSettings {...props} />;
         }
     }
 };
