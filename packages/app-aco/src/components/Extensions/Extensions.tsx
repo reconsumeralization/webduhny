@@ -43,7 +43,7 @@ export const Extensions = ({ action }: ExtensionsProps) => {
 
             return fields.map(field => ({
                 ...field,
-                tags: (field.tags ?? []).concat([`action:${action}`])
+                tags: (field.tags ?? []).concat([`$action:${action}`])
             }));
         },
         [action]
