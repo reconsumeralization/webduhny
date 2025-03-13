@@ -19,8 +19,8 @@ export interface SidebarMenuItemBaseProps {
     disabled?: boolean;
 }
 
-export type SidebarMenuItemButtonProps = SidebarMenuItemBaseProps & { to?: never };
-export type SidebarMenuItemLinkProps = SidebarMenuItemBaseProps & LinkProps & { to: To };
+type SidebarMenuItemButtonProps = SidebarMenuItemBaseProps & { to?: never };
+type SidebarMenuItemLinkProps = SidebarMenuItemBaseProps & LinkProps & { to: To };
 
 type SidebarMenuItemProps = SidebarMenuItemButtonProps | SidebarMenuItemLinkProps;
 
@@ -41,4 +41,9 @@ const SidebarMenuItem = withStaticProps(DecoratableSidebarMenuItem, {
     Action: SidebarMenuItemAction
 });
 
-export { SidebarMenuItem, type SidebarMenuItemProps };
+export {
+    SidebarMenuItem,
+    type SidebarMenuItemProps,
+    type SidebarMenuItemButtonProps,
+    type SidebarMenuItemLinkProps
+};

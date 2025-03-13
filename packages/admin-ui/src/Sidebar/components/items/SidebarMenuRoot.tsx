@@ -1,7 +1,7 @@
 import React from "react";
 import { SidebarMenuProvider } from "./SidebarMenuProvider";
 
-export interface SidebarMenuProps {
+interface SidebarMenuProps {
     children: React.ReactNode;
 }
 
@@ -15,4 +15,4 @@ const SidebarMenuRoot = (props: SidebarMenuProps) => (
     </SidebarMenuProvider>
 );
 
-export { SidebarMenuRoot };
+export { SidebarMenuRoot, type SidebarMenuProps };

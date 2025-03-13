@@ -5,7 +5,7 @@ import { useSidebar } from "./SidebarProvider";
 import { ReactComponent as OpenSidebarIcon } from "@material-design-icons/svg/outlined/keyboard_double_arrow_right.svg";
 import { ReactComponent as CloseSidebarIcon } from "@material-design-icons/svg/outlined/chrome_reader_mode.svg";
 
-interface SidebarHeaderProps extends Omit<React.ComponentProps<"div">, "title"> {
+interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     icon?: React.ReactNode;
     title?: React.ReactNode;
 }

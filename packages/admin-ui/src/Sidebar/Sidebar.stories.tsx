@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { BrowserRouter, Route, Routes, useLocation } from "@webiny/react-router";
 import { ReactComponent as AuditLogsIcon } from "@material-design-icons/svg/outlined/assignment.svg";
@@ -22,6 +22,10 @@ import { Tag } from "~/Tag";
 const meta: Meta<typeof Sidebar> = {
     title: "Components/Sidebar",
     component: Sidebar,
+
+    parameters: {
+        layout: "fullscreen"
+    },
 
     // We removed this because in the "all stories" view, the menu gets visually
     // broken because of the fixed positioning of the sidebar. This is not a problem
@@ -48,27 +52,15 @@ export const MainMenu: Story = {
 const SidebarComponent = () => {
     const { hash } = useLocation();
 
-    // Sidebar is fixed-positioned, so we had to apply these in order
-    // for it to look good in a Storybook environment.
-    useEffect(() => {
-        const sbRoot = document.getElementById("storybook-root");
-        if (sbRoot) {
-            sbRoot.classList.add("component-sidebar");
-        }
-
-        return () => {
-            if (sbRoot) {
-                sbRoot.classList.remove("component-sidebar");
-            }
-        };
-    }, []);
-
     return (
         <SidebarProvider>
             <Sidebar
                 title={"Webiny"}
                 icon={
-                    <Sidebar.Icon element={<img src={wbyLogo} alt={"Webiny"} />} label={"Webiny"} />
+                    <Sidebar.Icon
+                        element={<img src="/images/wby-logo.png" alt="Webiny" />}
+                        label={"Webiny"}
+                    />
                 }
                 footer={
                     <DropdownMenu
