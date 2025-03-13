@@ -52,46 +52,48 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
             {bind => {
                 const { value, onChange, validation } = bind;
                 return (
-                    <EditFileUsingUrl onSetFile={file => bind.onChange(file.src)}>
-                        {({ editFile }) => (
-                            <div>
-                                <ImageFieldWrapper>
-                                    <Typography use="body2" tag={"span"}>
-                                        {field.label}
-                                    </Typography>
-                                    <InnerImageFieldWrapper>
-                                        <FileManager
-                                            images={imagesOnly}
-                                            render={({ showFileManager }) => {
-                                                const selectFile = () => {
-                                                    showFileManager(file => onChange(file.src));
-                                                };
-                                                return (
-                                                    <File
-                                                        {...bind}
-                                                        url={value}
-                                                        onEdit={() => editFile(value)}
-                                                        onRemove={() => onChange(null)}
-                                                        showFileManager={selectFile}
-                                                        placeholder={field.placeholderText}
-                                                        data-testid={`fr.input.filefield.${field.label}`}
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </InnerImageFieldWrapper>
-                                </ImageFieldWrapper>
-                                {validation.isValid === false && (
-                                    <FormElementMessage error>
-                                        {validation.message || "Invalid value."}
-                                    </FormElementMessage>
-                                )}
-                                {validation.isValid !== false && field.helpText && (
-                                    <FormElementMessage>{field.helpText}</FormElementMessage>
-                                )}
-                            </div>
-                        )}
-                    </EditFileUsingUrl>
+                    <Bind.ValidationContainer>
+                        <EditFileUsingUrl onSetFile={file => bind.onChange(file.src)}>
+                            {({ editFile }) => (
+                                <div>
+                                    <ImageFieldWrapper>
+                                        <Typography use="body2" tag={"span"}>
+                                            {field.label}
+                                        </Typography>
+                                        <InnerImageFieldWrapper>
+                                            <FileManager
+                                                images={imagesOnly}
+                                                render={({ showFileManager }) => {
+                                                    const selectFile = () => {
+                                                        showFileManager(file => onChange(file.src));
+                                                    };
+                                                    return (
+                                                        <File
+                                                            {...bind}
+                                                            url={value}
+                                                            onEdit={() => editFile(value)}
+                                                            onRemove={() => onChange(null)}
+                                                            showFileManager={selectFile}
+                                                            placeholder={field.placeholderText}
+                                                            data-testid={`fr.input.filefield.${field.label}`}
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        </InnerImageFieldWrapper>
+                                    </ImageFieldWrapper>
+                                    {validation.isValid === false && (
+                                        <FormElementMessage error>
+                                            {validation.message || "Invalid value."}
+                                        </FormElementMessage>
+                                    )}
+                                    {validation.isValid !== false && field.helpText && (
+                                        <FormElementMessage>{field.helpText}</FormElementMessage>
+                                    )}
+                                </div>
+                            )}
+                        </EditFileUsingUrl>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

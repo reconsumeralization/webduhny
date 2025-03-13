@@ -1,11 +1,5 @@
-import {
-    DynamicZoneContainer,
-    MultiValueContainer,
-    MultiValueItemContainer,
-    MultiValueItem,
-    TemplateGallery,
-    useTemplate
-} from "~/admin/plugins/fieldRenderers/dynamicZone";
+import * as DzField from "~/admin/plugins/fieldRenderers/dynamicZone";
+import { Components as ObjectField } from "~/admin/plugins/fieldRenderers/object";
 import { ContentEntryForm as BaseContentEntryForm } from "./admin/components/ContentEntryForm/ContentEntryForm";
 import { Header as ContentEntryFormHeader } from "./admin/components/ContentEntryForm/Header";
 import { ContentEntryFormPreview } from "./admin/components/ContentEntryForm/ContentEntryFormPreview";
@@ -38,22 +32,27 @@ export const ContentEntryEditorConfig = Object.assign(BaseContentEntryEditorConf
         useSingletonContentEntry
     }),
     FieldRenderers: {
+        Object: {
+            MultiValue: {
+                ItemContainer: ObjectField.MultiValueItemContainer
+            }
+        },
         DynamicZone: {
             Template: {
-                useTemplate
+                useTemplate: DzField.useTemplate
             },
-            Container: DynamicZoneContainer,
+            Container: DzField.DynamicZoneContainer,
             // SingleValue: {
             //     Container: null,
             //     ItemContainer: null,
             //     Item: null
             // },
             MultiValue: {
-                Container: MultiValueContainer,
-                ItemContainer: MultiValueItemContainer,
-                Item: MultiValueItem
+                Container: DzField.MultiValueContainer,
+                ItemContainer: DzField.MultiValueItemContainer,
+                Item: DzField.MultiValueItem
             },
-            TemplateGallery
+            TemplateGallery: DzField.TemplateGallery
         }
     }
 });

@@ -1,4 +1,4 @@
-import { GenericRecord } from "@webiny/cli/types";
+import type { GenericRecord } from "@webiny/utils";
 import { createEventBridgeEventHandler, createHandler } from "~/index";
 import { LambdaContext } from "~/types";
 

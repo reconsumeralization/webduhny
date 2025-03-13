@@ -28,17 +28,27 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             const fieldSettingsType = field.settings ? field.settings.type : null;
 
+            let Component = DateOnly;
+            switch (fieldSettingsType) {
+                case "dateTimeWithoutTimezone":
+                    Component = DateTimeWithoutTimezone;
+                    break;
+                case "dateTimeWithTimezone":
+                    Component = DateTimeWithTimezone;
+                    break;
+                case "time":
+                    Component = Time;
+                    break;
+            }
+
             return (
                 <Bind>
                     {bind => {
-                        if (fieldSettingsType === "dateTimeWithoutTimezone") {
-                            return <DateTimeWithoutTimezone field={field} bind={bind} />;
-                        } else if (fieldSettingsType === "dateTimeWithTimezone") {
-                            return <DateTimeWithTimezone field={field} bind={bind} />;
-                        } else if (fieldSettingsType === "time") {
-                            return <Time field={field} bind={bind} />;
-                        }
-                        return <DateOnly bind={bind} field={field} />;
+                        return (
+                            <Bind.ValidationContainer>
+                                <Component bind={bind} field={field} />
+                            </Bind.ValidationContainer>
+                        );
                     }}
                 </Bind>
             );

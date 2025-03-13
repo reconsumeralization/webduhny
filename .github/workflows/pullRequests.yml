@@ -242,9 +242,6 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
         working-directory: ${{ github.base_ref }}
-      - name: Build packages (full)
-        run: yarn build
-        working-directory: ${{ github.base_ref }}
       - name: Check types for Cypress tests
         run: yarn cy:ts
         working-directory: ${{ github.base_ref }}

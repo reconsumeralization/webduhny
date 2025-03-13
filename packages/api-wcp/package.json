@@ -18,7 +18,6 @@
     "node-fetch": "2.6.7"
   },
   "devDependencies": {
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "jest-dynalite": "^3.6.1",
     "rimraf": "^6.0.1",
@@ -30,8 +29,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "watch": "yarn webiny run watch",
-    "build": "yarn webiny run build"
+    "watch": "node ../cli/bin.js run watch",
+    "build": "node ../cli/bin.js run build"
   },
   "adio": {
     "ignoreDirs": [

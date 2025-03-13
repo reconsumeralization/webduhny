@@ -4,8 +4,9 @@ import { i18n } from "@webiny/app/i18n";
 import { Input } from "@webiny/ui/Input";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { CmsModelFieldRendererPlugin } from "~/types";
-import { ReactComponent as DeleteIcon } from "~/admin/icons/close.svg";
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
 import DynamicSection from "../DynamicSection";
+import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -47,6 +48,9 @@ const plugin: CmsModelFieldRendererPlugin = {
                     )}
                 </DynamicSection>
             );
+        },
+        renderSettings(props) {
+            return <MultiValueRendererSettings {...props} />;
         }
     }
 };
