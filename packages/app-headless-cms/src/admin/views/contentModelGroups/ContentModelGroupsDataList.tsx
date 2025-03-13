@@ -13,6 +13,7 @@ import {
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary
 } from "@webiny/ui/List";
 import { useRouter } from "@webiny/react-router";
@@ -21,12 +22,10 @@ import { useApolloClient, useQuery } from "../../hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import * as GQL from "./graphql";
 import { CmsGroupWithModels, ListCmsGroupsQueryResponse } from "./graphql";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { deserializeSorters } from "../utils";
 import usePermission from "../../hooks/usePermission";
 import { Tooltip } from "@webiny/ui/Tooltip";
@@ -187,12 +186,12 @@ const ContentModelGroupsDataList = ({ canCreate }: ContentModelGroupsDataListPro
             title={t`Content Model Groups`}
             actions={
                 canCreate ? (
-                    <ButtonSecondary
+                    <ButtonPrimary
                         data-testid="new-record-button"
                         onClick={() => history.push("/cms/content-model-groups?new=true")}
                     >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Group`}
-                    </ButtonSecondary>
+                        {t`New Group`}
+                    </ButtonPrimary>
                 ) : null
             }
             search={
@@ -204,10 +203,7 @@ const ContentModelGroupsDataList = ({ canCreate }: ContentModelGroupsDataListPro
             }
             modalOverlay={contentModelGroupsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
             refresh={onRefreshClick}
         >
@@ -220,7 +216,7 @@ const ContentModelGroupsDataList = ({ canCreate }: ContentModelGroupsDataListPro
                                     history.push(`/cms/content-model-groups?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>
                                     {item.contentModels.length
                                         ? t`{contentModels|count:1:content model:default:content models}`(

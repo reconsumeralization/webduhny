@@ -14,10 +14,11 @@ import {
     FormComponentProps
 } from "~/FormComponent";
 
-interface RangeSliderProps extends RangeSliderPrimitiveProps, FormComponentProps {
-    label: React.ReactNode;
-    valueConverter?: (value: number) => string;
-}
+type RangeSliderProps = RangeSliderPrimitiveProps &
+    FormComponentProps & {
+        label: React.ReactNode;
+        valueConverter?: (value: number) => string;
+    };
 
 const DecoratableRangeSlider = ({ description, note, validation, ...props }: RangeSliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};

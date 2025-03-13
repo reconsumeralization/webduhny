@@ -5,14 +5,13 @@ import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
 import * as ListComponents from "@webiny/ui/List";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { IconButton } from "@webiny/ui/Button";
 import { Typography } from "@webiny/ui/Typography";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import FormSubmissionDialog from "./FormSubmissionDialog";
-import { ReactComponent as ImportExport } from "./icons/round-cloud_download-24px.svg";
 import Block from "../Block";
 import { useSubmissions } from "./useSubmissions";
 import { FbFormSubmissionData } from "~/types";
+import { DownloadIcon } from "@webiny/ui/List";
 
 const t = i18n.namespace("FormsApp.FormsDataList");
 
@@ -21,9 +20,6 @@ const blockWrapper = css({
     "& .webiny-data-list__content": {
         height: `calc(100vh - ${TOP}px)`
     }
-});
-const rightAlign = css({
-    alignItems: "flex-end !important"
 });
 
 const InlineLoaderWrapper = styled.div`
@@ -63,7 +59,8 @@ interface FormSubmissionsListProps {
     };
 }
 
-const { DataList, ListItem, ListItemMeta, ListItemText, ListTextOverline } = ListComponents;
+const { DataList, ListItem, ListItemText, ListItemTextPrimary, ListItemTextSecondary } =
+    ListComponents;
 
 export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
     const {
@@ -92,10 +89,10 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
                     multiSelectAll={undefined}
                     multiSelectActions={
                         <Tooltip content={t`Export all form submissions`} placement={"bottom"}>
-                            <IconButton
-                                icon={<ImportExport />}
+                            <DownloadIcon
                                 onClick={exportSubmissions}
                                 disabled={exportInProgress}
+                                size={"md"}
                             />
                         </Tooltip>
                     }
@@ -120,22 +117,25 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
                                             <ListItemText
                                                 onClick={() => selectFormSubmission(submission)}
                                             >
-                                                <FullName submission={submission} />
-                                                <ListTextOverline>
-                                                    Visitor IP:{" "}
-                                                    {(submission.meta && submission.meta.ip) ||
-                                                        "N/A"}
-                                                </ListTextOverline>
+                                                <ListItemTextPrimary>
+                                                    <FullName submission={submission} />
+                                                </ListItemTextPrimary>
+                                                <ListItemTextSecondary>
+                                                    <div>
+                                                        Visitor IP:{" "}
+                                                        {(submission.meta && submission.meta.ip) ||
+                                                            "N/A"}
+                                                    </div>
+                                                    <div>
+                                                        {t`Submitted: {time}.`({
+                                                            time: <TimeAgo datetime={submittedOn} />
+                                                        })}
+                                                    </div>
+                                                    <div>
+                                                        <FormVersion submission={submission} />
+                                                    </div>
+                                                </ListItemTextSecondary>
                                             </ListItemText>
-                                            <ListItemMeta className={rightAlign}>
-                                                <Typography use={"body2"}>
-                                                    {t`Submitted: {time}.`({
-                                                        time: <TimeAgo datetime={submittedOn} />
-                                                    })}
-                                                    <br />
-                                                    <FormVersion submission={submission} />
-                                                </Typography>
-                                            </ListItemMeta>
                                         </ListItem>
                                     );
                                 })}

@@ -5,32 +5,34 @@ import React, { useCallback, useMemo, useState } from "react";
 import { TimeAgo } from "@webiny/ui/TimeAgo";
 import { css } from "emotion";
 import { useRouter } from "@webiny/react-router";
-import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
-import { ReactComponent as ViewListIcon } from "../../icons/view_list.svg";
-import { ReactComponent as CloneIcon } from "../../icons/clone.svg";
+import {
+    CloneIcon,
+    DeleteIcon,
+    DownloadIcon,
+    EditIcon,
+    ListIcon
+} from "@webiny/ui/List/DataList/icons";
+import { ReactComponent as DownloadFileIcon } from "@material-design-icons/svg/outlined/file_download.svg";
+import { ReactComponent as UploadFileIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
 import { useModels } from "../../hooks";
 import * as UIL from "@webiny/ui/List";
-import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { i18n } from "@webiny/app/i18n";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { deserializeSorters } from "../utils";
 import orderBy from "lodash/orderBy";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import type { CmsEditorContentModel, CmsModel } from "~/types";
 import { usePermission } from "~/admin/hooks/usePermission";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { OptionsMenu } from "./OptionsMenu";
-import { ReactComponent as DownloadFileIcon } from "@webiny/app-admin/assets/icons/file_download.svg";
-import { ReactComponent as UploadFileIcon } from "@webiny/app-admin/assets/icons/file_upload.svg";
 import { useModelExport } from "./exporting/useModelExport";
 import { ModelIsBeingDeleted } from "./fullDelete/ModelIsBeingDeleted";
 import { FullyDeleteModelDialog } from "~/admin/views/contentModels/fullDelete/FullyDeleteModelDialog";
+import { ButtonPrimary } from "@webiny/ui/Button";
 
 const t = i18n.namespace("FormsApp.ContentModelsDataList");
 
@@ -57,12 +59,6 @@ const SORTERS: Sorter[] = [
         sorters: "name_DESC"
     }
 ];
-
-const DataListActionsWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
 
 const rightAlign = css({
     alignItems: "flex-end !important",
@@ -187,11 +183,11 @@ const ContentModelsDataList = ({
                 data={contentModels}
                 title={t`Content Models`}
                 actions={
-                    <DataListActionsWrapper>
+                    <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
                         {canCreate ? (
-                            <ButtonSecondary data-testid="new-record-button" onClick={onCreate}>
-                                <ButtonIcon icon={<AddIcon />} /> {t`New Model`}
-                            </ButtonSecondary>
+                            <ButtonPrimary data-testid="new-record-button" onClick={onCreate}>
+                                {t`New Model`}
+                            </ButtonPrimary>
                         ) : null}
                         <OptionsMenu
                             data-testid="pb-blocks-list-options-menu"
@@ -208,7 +204,7 @@ const ContentModelsDataList = ({
                                 }
                             ]}
                         />
-                    </DataListActionsWrapper>
+                    </div>
                 }
                 search={
                     <SearchUI
@@ -219,10 +215,7 @@ const ContentModelsDataList = ({
                 }
                 modalOverlay={contentModelsDataListModalOverlay}
                 modalOverlayAction={
-                    <UIL.DataListModalOverlayAction
-                        icon={<FilterIcon />}
-                        data-testid={"default-data-list.filter"}
-                    />
+                    <UIL.DataListModalOverlayAction data-testid={"default-data-list.filter"} />
                 }
                 refresh={onRefreshClick}
             >
@@ -239,11 +232,15 @@ const ContentModelsDataList = ({
                                     key={contentModel.modelId}
                                     className={listItemMinHeight}
                                 >
-                                    <Icon>
-                                        <DisplayIcon model={contentModel} />
-                                    </Icon>
                                     <UIL.ListItemText>
-                                        {contentModel.name}
+                                        <UIL.ListItemGraphic>
+                                            <Icon>
+                                                <DisplayIcon model={contentModel} />
+                                            </Icon>
+                                        </UIL.ListItemGraphic>
+                                        <UIL.ListItemTextPrimary>
+                                            {contentModel.name}
+                                        </UIL.ListItemTextPrimary>
                                         <UIL.ListItemTextSecondary>
                                             {t`Last modified: {time}.`({
                                                 time: contentModel.savedOn ? (
@@ -261,12 +258,10 @@ const ContentModelsDataList = ({
                                                     content={t`{message}`({ message })}
                                                     placement={"top"}
                                                 >
-                                                    <IconButton
+                                                    <ListIcon
                                                         data-testid={
                                                             "cms-view-content-model-button"
                                                         }
-                                                        icon={<ViewListIcon />}
-                                                        label={t`View entries`}
                                                         onClick={viewContentEntries(contentModel)}
                                                         disabled={disableViewContent}
                                                     />
@@ -275,12 +270,10 @@ const ContentModelsDataList = ({
                                                     content={t`Export content model`}
                                                     placement={"top"}
                                                 >
-                                                    <IconButton
+                                                    <DownloadIcon
                                                         data-testid={
                                                             "cms-export-content-model-button"
                                                         }
-                                                        icon={<DownloadFileIcon />}
-                                                        label={t`Export content model`}
                                                         onClick={handleModelExport(contentModel)}
                                                     />
                                                 </Tooltip>
@@ -317,12 +310,10 @@ const ContentModelsDataList = ({
                                                             content={"Clone content model"}
                                                             placement={"top"}
                                                         >
-                                                            <IconButton
+                                                            <CloneIcon
                                                                 data-testid={
                                                                     "cms-clone-content-model-button"
                                                                 }
-                                                                icon={<CloneIcon />}
-                                                                label={t`Clone content model`}
                                                                 onClick={() =>
                                                                     onClone(contentModel)
                                                                 }

@@ -4,7 +4,6 @@ import SearchUI from "@webiny/app-admin/components/SearchUI";
 import styled from "@emotion/styled";
 import { DataList, DataListModalOverlayAction, List, ListItem } from "@webiny/ui/List";
 import { i18n } from "@webiny/app/i18n";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { ApwContentReviewListItem } from "~/types";
 import { ContentReviewListItem } from "./components/ContentReviewItem";
 import { useContentReviewsList } from "~/hooks/useContentReviewsList";
@@ -14,12 +13,6 @@ import { Typography } from "@webiny/ui/Typography";
 import { useFetchInterval } from "~/hooks/useFetchInterval";
 
 const t = i18n.ns("app-apw/admin/content-reviews/datalist");
-
-const DataListItem = styled(ListItem)`
-    &.mdc-deprecated-list-item {
-        padding: 0;
-    }
-`;
 
 const SORTERS = [
     {
@@ -110,10 +103,7 @@ export const ContentReviewDataList = () => {
                 />
             }
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"content-review-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"content-review-data-list.filter"} />
             }
         >
             {({ data }) => {
@@ -125,12 +115,9 @@ export const ContentReviewDataList = () => {
                         >
                             <List>
                                 {data.map((item: ApwContentReviewListItem) => (
-                                    <DataListItem
-                                        key={item.id}
-                                        onClick={() => editContentReview(item)}
-                                    >
+                                    <ListItem key={item.id} onClick={() => editContentReview(item)}>
                                         <ContentReviewListItem {...item} />
-                                    </DataListItem>
+                                    </ListItem>
                                 ))}
                             </List>
                         </Scrollbar>

@@ -19161,7 +19161,6 @@ __metadata:
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
-    "@rmwc/list": "npm:^14.2.2"
     "@rmwc/menu": "npm:^14.2.2"
     "@rmwc/top-app-bar": "npm:^14.2.2"
     "@svgr/webpack": "npm:^6.1.1"

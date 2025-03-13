@@ -3,6 +3,7 @@ const { getProject } = require("@webiny/cli/utils");
 const project = getProject();
 const webinyPackagesGlob = `${project.root}/node_modules/@webiny/app*/**/*.js`;
 const webinyAdminUiPackageGlob = `${project.root}/node_modules/@webiny/admin-ui/**/*.js`;
+const webinyUiPackageGlob = `${project.root}/node_modules/@webiny/ui/**/*.js`;
 const adminAppSourceGlob = `${project.root}/apps/admin`;
 const {
     animation,
@@ -26,7 +27,12 @@ const {
 module.exports = {
     prefix: "wby-",
     darkMode: ["class"],
-    content: [webinyPackagesGlob, webinyAdminUiPackageGlob, adminAppSourceGlob],
+    content: [
+        webinyPackagesGlob,
+        webinyAdminUiPackageGlob,
+        webinyUiPackageGlob,
+        adminAppSourceGlob
+    ],
     theme: {
         container: {
             center: true,

@@ -16,7 +16,6 @@
   "dependencies": {
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
-    "@rmwc/list": "^14.2.2",
     "@rmwc/menu": "^14.2.2",
     "@rmwc/top-app-bar": "^14.2.2",
     "@svgr/webpack": "^6.1.1",
