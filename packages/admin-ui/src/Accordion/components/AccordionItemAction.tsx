@@ -2,13 +2,12 @@ import * as React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
 import { IconButton, IconButtonProps as IconButtonProps } from "~/Button";
 import { AccordionItemSeparator } from "./AccordionItemSeparator";
-import { useCallback } from "react";
 
 type AccordionItemActionProps = IconButtonProps;
 
 const AccordionItemActionBase = ({ onClick, ...props }: AccordionItemActionProps) => {
     // We need to stop the event propagation to prevent the accordion from opening/closing when the action is clicked.
-    const onClickCallback = useCallback(
+    const onClickCallback = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
 

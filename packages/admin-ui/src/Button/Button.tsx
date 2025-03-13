@@ -2,9 +2,18 @@ import React, { useMemo } from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
+const buttonWrapperVariants = cva("wby-inline-block", {
+    variants: {
+        disabled: {
+            true: "wby-cursor-not-allowed",
+            false: "wby-cursor-pointer"
+        }
+    }
+});
+
 const buttonVariants = cva(
     [
-        "wby-border-transparent wby-rounded wby-font-sans wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-ring-offset-background wby-cursor-pointer wby-transition-colors",
+        "wby-border-transparent wby-rounded wby-font-sans wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-ring-offset-background wby-transition-colors",
         "aria-disabled:wby-pointer-events-none",
         "focus-visible:wby-outline-none focus-visible:wby-border-accent-default"
     ],
@@ -202,11 +211,13 @@ const ButtonBase = ({
     );
 
     return (
-        <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
-            {iconPosition !== "end" && icon}
-            <Slottable>{text}</Slottable>
-            {iconPosition === "end" && icon}
-        </Comp>
+        <span className={cn(buttonWrapperVariants({ disabled }))}>
+            <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
+                {iconPosition !== "end" && icon}
+                <Slottable>{text}</Slottable>
+                {iconPosition === "end" && icon}
+            </Comp>
+        </span>
     );
 };
 

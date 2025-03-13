@@ -1,6 +1,5 @@
 import React from "react";
-import { useUi } from "@webiny/app/hooks/useUi";
-import { SnackbarAction } from "@webiny/ui/Snackbar";
+import { Toast, useToast } from "@webiny/admin-ui";
 
 interface UseSnackbarResponse {
     showSnackbar: (message: React.ReactNode, options?: Record<string, React.ReactNode>) => void;
@@ -12,34 +11,24 @@ interface UseSnackbarResponse {
 }
 
 export const useSnackbar = (): UseSnackbarResponse => {
-    const ui = useUi();
+    const { showToast, hideAllToasts } = useToast();
 
     return {
         showSnackbar: (message, options = {}) => {
-            ui.setState(ui => {
-                return { ...ui, snackbar: { message, options } };
+            showToast({
+                title: <Toast.Title text={message} />,
+                ...options
             });
         },
         showErrorSnackbar: (message, options = {}) => {
-            ui.setState(ui => {
-                return {
-                    ...ui,
-                    snackbar: {
-                        message,
-                        options: {
-                            timeout: -1,
-                            dismissesOnAction: true,
-                            action: <SnackbarAction label={"OK"} />,
-                            ...options
-                        }
-                    }
-                };
+            showToast({
+                title: <Toast.Title text={message} />,
+                duration: Infinity,
+                ...options
             });
         },
         hideSnackbar: () => {
-            ui.setState(ui => {
-                return { ...ui, snackbar: null };
-            });
+            hideAllToasts();
         }
     };
 };

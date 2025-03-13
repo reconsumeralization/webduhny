@@ -1,7 +1,7 @@
 import React from "react";
 import { Label } from "~/Label";
 
-interface FormComponentProps {
+interface FormComponentProps<TValue = any> {
     /**
      * Label for the form component, which can be a React element of type `Label` or any React node.
      */
@@ -54,6 +54,11 @@ interface FormComponentProps {
      * Returns a promise that resolves with the validation result.
      */
     validate?: () => Promise<boolean | any>;
+
+    /**
+     * A callback that is executed each time a value is changed.
+     */
+    onChange?: (value: TValue) => void;
 }
 
 export { type FormComponentProps };

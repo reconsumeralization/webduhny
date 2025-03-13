@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Grid, GridCellProps } from "react-virtualized";
 import { Text } from "~/Text";
 import { cn } from "~/utils";
-import { IconPickerFontAwesome, IconFormatter } from "../../domains";
+import { IconPickerFontAwesome, IconPickerIconFormatter } from "../../domains";
 import { IconPickerIcon } from "./IconPickerIcon";
 
 const COLUMN_COUNT = 5;
@@ -43,7 +43,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                     ])}
                     onClick={() => {
                         if (props.onIconSelect) {
-                            props.onIconSelect(IconFormatter.formatStringValue(item));
+                            props.onIconSelect(IconPickerIconFormatter.formatStringValue(item));
                         }
                     }}
                 >

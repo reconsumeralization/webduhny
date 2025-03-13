@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from "react";
-import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import orderBy from "lodash/orderBy";
@@ -9,28 +8,26 @@ import {
     DataList,
     DataListModalOverlay,
     DataListModalOverlayAction,
+    DeleteIcon,
+    EditIcon,
     ListActions,
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary,
     ListSelectBox,
-    ListTextOverline,
-    ScrollList
+    ScrollList,
+    UploadIcon
 } from "@webiny/ui/List";
 import { Checkbox } from "@webiny/ui/Checkbox";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/filled/add.svg";
-import { ReactComponent as FilterIcon } from "@material-design-icons/svg/round/filter_alt.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/round/edit.svg";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/round/delete.svg";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { CreatableItem } from "./PageTemplates";
 import { useMultiSelect } from "~/admin/views/Pages/hooks/useMultiSelect";
 import { ExportTemplatesButton } from "~/editor/plugins/defaultBar/components/ExportTemplateButton";
-import { ReactComponent as FileUploadIcon } from "@webiny/app-admin/assets/icons/file_upload.svg";
 import useImportTemplate from "~/admin/views/PageTemplates/hooks/useImportTemplate";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
 
@@ -38,12 +35,6 @@ import { PbPageTemplate } from "~/types";
 import { useListPageTemplates } from "~/features";
 
 const t = i18n.ns("app-page-builder/admin/views/page-templates/page-templates-details");
-
-const DataListActionsWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
 
 interface Sorter {
     label: string;
@@ -146,25 +137,22 @@ const PageTemplatesDataList = ({
             return null;
         }
         return (
-            <DataListActionsWrapper>
-                <ButtonSecondary
-                    data-testid="pb-templates-list-new-template-btn"
-                    onClick={onCreate}
-                >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Template`}
-                </ButtonSecondary>
+            <>
+                <ButtonPrimary data-testid="pb-templates-list-new-template-btn" onClick={onCreate}>
+                    {t`New Template`}
+                </ButtonPrimary>
                 <OptionsMenu
                     data-testid={"pb-templates-list-options-btn"}
                     items={[
                         {
                             label: "Import Templates",
-                            icon: <FileUploadIcon />,
+                            icon: <UploadIcon />,
                             onClick: showImportDialog,
                             "data-testid": "pb-templates-list-options-import-template-btn"
                         }
                     ]}
                 />
-            </DataListActionsWrapper>
+            </>
         );
     }, [canCreate, showImportDialog]);
 
@@ -185,10 +173,7 @@ const PageTemplatesDataList = ({
             actions={listActions}
             modalOverlay={templatesDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
             multiSelectActions={
                 <ExportTemplatesButton
@@ -232,25 +217,26 @@ const PageTemplatesDataList = ({
                                             )
                                         }
                                     >
-                                        {template.title}
-                                        <ListTextOverline>{template.description}</ListTextOverline>
-                                        {template.createdBy && (
-                                            <ListItemTextSecondary>
-                                                {`Created by:
+                                        <ListItemTextPrimary>{template.title}</ListItemTextPrimary>
+                                        <ListItemTextSecondary>
+                                            <div>{template.description}</div>
+                                            {template.createdBy && (
+                                                <div>
+                                                    {`Created by:
                                                 ${template.createdBy.displayName || "N/A"}. `}
-                                                {`Last modified: `}
-                                                <TimeAgo datetime={template.savedOn} />.
-                                            </ListItemTextSecondary>
-                                        )}
+                                                    {`Last modified: `}
+                                                    <TimeAgo datetime={template.savedOn} />.
+                                                </div>
+                                            )}
+                                        </ListItemTextSecondary>
                                     </ListItemText>
                                     <ListItemMeta>
                                         <ListActions>
                                             {canEdit(template) && (
-                                                <IconButton
+                                                <EditIcon
                                                     data-testid={
                                                         "pb-templates-list-edit-template-btn"
                                                     }
-                                                    icon={<EditIcon />}
                                                     onClick={() =>
                                                         history.push(
                                                             `/page-builder/template-editor/${template.id}`
@@ -259,11 +245,10 @@ const PageTemplatesDataList = ({
                                                 />
                                             )}
                                             {canDelete(template) && (
-                                                <IconButton
+                                                <DeleteIcon
                                                     data-testid={
                                                         "pb-templates-list-delete-template-btn"
                                                     }
-                                                    icon={<DeleteIcon />}
                                                     onClick={() => onDelete(template)}
                                                 />
                                             )}

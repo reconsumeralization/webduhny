@@ -1,11 +1,9 @@
 import React from "react";
-import { IconButton } from "@webiny/ui/Button";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { i18n } from "@webiny/app/i18n";
+import { DownloadIcon } from "@webiny/ui/List";
 import useExportFormDialog, { ExportFormsDialogProps } from "./useExportFormDialog";
 import useExportFormRevisionSelectorDialog from "./useExportFormRevisionSelectorDialog";
-// assets
-import { ReactComponent as DownloadIcon } from "@material-design-icons/svg/round/download.svg";
 
 const t = i18n.ns("app-form-builder/admin/plugins/editor/defaultBar/exportFormButton");
 
@@ -31,9 +29,8 @@ export const ExportFormsButton = ({ getMultiSelected, ...restProps }: ExportForm
 
     return (
         <Tooltip content={renderExportFormsTooltip(selected)} placement={"bottom"}>
-            <IconButton
+            <DownloadIcon
                 data-testid={"export-form-button"}
-                icon={<DownloadIcon />}
                 onClick={() => {
                     showExportFormRevisionSelectorDialog({
                         onAccept: () =>
@@ -41,6 +38,7 @@ export const ExportFormsButton = ({ getMultiSelected, ...restProps }: ExportForm
                         selected
                     });
                 }}
+                size={"lg"}
             />
         </Tooltip>
     );

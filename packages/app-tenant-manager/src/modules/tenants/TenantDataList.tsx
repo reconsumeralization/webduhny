@@ -9,16 +9,14 @@ import {
     ListActions,
     ListItemTextSecondary,
     DataListModalOverlay,
-    DataListModalOverlayAction
+    DataListModalOverlayAction,
+    ListItemTextPrimary,
+    LoginIcon
 } from "@webiny/ui/List";
-
-import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
-import { ReactComponent as LoginIcon } from "~/assets/login_black_24dp.svg";
 import { useTenantsList } from "./hooks/useTenantsList";
 import { useTenancy } from "@webiny/app-tenancy";
 import { TenantItem } from "~/types";
@@ -80,9 +78,9 @@ const TenantDataList = () => {
         <DataList
             loading={loading}
             actions={
-                <ButtonSecondary data-testid="new-record-button" onClick={createTenant}>
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Tenant`}
-                </ButtonSecondary>
+                <ButtonPrimary data-testid="new-record-button" onClick={createTenant}>
+                    {t`New Tenant`}
+                </ButtonPrimary>
             }
             data={tenants}
             title={t`Tenants`}
@@ -95,23 +93,20 @@ const TenantDataList = () => {
                 />
             }
             modalOverlay={tenantsDataListModalOverlay}
-            modalOverlayAction={<DataListModalOverlayAction icon={<FilterIcon />} />}
+            modalOverlayAction={<DataListModalOverlayAction />}
         >
             {({ data }: { data: TenantItem[] }) => (
                 <ScrollList data-testid="default-data-list">
                     {data.map(item => (
                         <ListItem key={item.id} selected={item.id === currentTenantId}>
                             <ListItemText onClick={() => editTenant(item.id)}>
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 
                             <ListItemMeta>
                                 <ListActions>
-                                    <IconButton
-                                        icon={<LoginIcon />}
-                                        onClick={() => setTenant(item.id)}
-                                    />
+                                    <LoginIcon onClick={() => setTenant(item.id)} />
                                     {/* <DeleteIcon
                                         onClick={() => deleteTenant(item)}
                                         data-testid={"default-data-list.delete"}

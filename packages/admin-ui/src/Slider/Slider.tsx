@@ -48,9 +48,10 @@ const SliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) =>
 /**
  * Slider
  */
-interface SliderProps extends FormComponentProps, SliderPrimitiveProps {
-    labelPosition?: "top" | "side";
-}
+type SliderProps = FormComponentProps &
+    SliderPrimitiveProps & {
+        labelPosition?: "top" | "side";
+    };
 
 const DecoratableSlider = ({
     description,

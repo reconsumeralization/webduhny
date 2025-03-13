@@ -1,7 +1,6 @@
 import * as React from "react";
-import { useMemo } from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ReactComponent as KeyboardArrowDownIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cn } from "~/utils";
 import { type AccordionItemProps } from "./AccordionItem";
 import { AccordionItemAction } from "./AccordionItemAction";
@@ -16,7 +15,7 @@ const AccordionTrigger = ({ title, description, actions, icon, handle }: Accordi
     // The following three attributes are required for the trigger to act as a button.
     // We can't use the default button element here because the content of the trigger
     // can also contain one or more buttons.
-    const divAsButtonProps = useMemo<React.HTMLAttributes<HTMLDivElement>>(() => {
+    const divAsButtonProps = React.useMemo<React.HTMLAttributes<HTMLDivElement>>(() => {
         return {
             role: "button",
             tabIndex: 0,

@@ -10,9 +10,10 @@ import {
     ListItemMeta,
     ListActions,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
+import { ButtonPrimary } from "@webiny/ui/Button";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
@@ -22,8 +23,6 @@ import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import * as GQL from "./graphql";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { deserializeSorters } from "../utils";
 import { ApiKey } from "~/types";
 
@@ -142,12 +141,12 @@ export const ApiKeysDataList = () => {
         <DataList
             title={t`API Keys`}
             actions={
-                <ButtonSecondary
+                <ButtonPrimary
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/api-keys?new=true")}
                 >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New API Key`}
-                </ButtonSecondary>
+                    {t`New API Key`}
+                </ButtonPrimary>
             }
             data={list}
             loading={listLoading || deleteLoading}
@@ -160,10 +159,7 @@ export const ApiKeysDataList = () => {
             }
             modalOverlay={groupsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: ApiKey[] }) => (
@@ -175,7 +171,7 @@ export const ApiKeysDataList = () => {
                                     history.push(`/access-management/api-keys?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 

@@ -8,4 +8,5 @@ export {
     DataListWithSections,
     ScrollListWithSections
 } from "./DataList";
+export * from "./DataList/icons";
 export { CollapsibleList } from "./CollapsibleList";
