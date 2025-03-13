@@ -1,4 +1,4 @@
-import { AcoConfig } from "@webiny/app-aco";
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { FolderAction, FolderActionConfig } from "./FolderAction";
 import { PageAction, PageActionConfig } from "./PageAction";
@@ -18,7 +18,7 @@ export const Browser = {
     Table,
     Folder: {
         ExtensionField: {
-            createDecorator: AcoConfig.Folder.ExtensionField.createDecorator({
+            createDecorator: createFolderFieldDecoratorFactory({
                 scope: "pb.page",
                 shouldDecorate: shouldDecorateFolderField
             })

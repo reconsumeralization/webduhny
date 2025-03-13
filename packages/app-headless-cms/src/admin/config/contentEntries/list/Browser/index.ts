@@ -1,4 +1,4 @@
-import { AcoConfig } from "@webiny/app-aco";
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { AdvancedSearch, AdvancedSearchConfig } from "./AdvancedSearch";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { EntryAction, EntryActionConfig } from "./EntryAction";
@@ -26,7 +26,7 @@ export const Browser = {
     FiltersToWhere,
     Folder: {
         ExtensionField: {
-            createDecorator: AcoConfig.Folder.ExtensionField.createDecorator({
+            createDecorator: createFolderFieldDecoratorFactory({
                 scope: "cms",
                 shouldDecorate: shouldDecorateFolderField
             })

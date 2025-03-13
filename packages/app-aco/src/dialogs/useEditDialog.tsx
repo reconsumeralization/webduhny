@@ -68,7 +68,7 @@ const FormComponent = ({ folder }: FormComponentProps) => {
                     </DialogFoldersContainer>
                 </Cell>
             </Grid>
-            <Extensions action={"edit"} />
+            <Extensions />
         </>
     );
 };

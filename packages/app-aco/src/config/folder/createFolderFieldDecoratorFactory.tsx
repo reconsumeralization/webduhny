@@ -15,13 +15,13 @@ export interface FieldDecoratorProps {
     modelIds?: string[];
 }
 
-export interface ScopedFolderFieldDecoratorParams {
+export interface FolderFieldDecoratorParams {
     scope?: string;
     shouldDecorate: (decoratorProps: FieldDecoratorProps, componentProps: FieldProps) => boolean;
 }
 
-export const createScopedFolderFieldDecorator =
-    ({ scope = "*", shouldDecorate }: ScopedFolderFieldDecoratorParams) =>
+export const createFolderFieldDecoratorFactory =
+    ({ scope = "*", shouldDecorate }: FolderFieldDecoratorParams) =>
     (decorator: Decorator<GenericComponent<FieldProps>>) => {
         return function FieldDecorator(props: FieldDecoratorProps) {
             const conditionalDecorator = createConditionalDecorator(

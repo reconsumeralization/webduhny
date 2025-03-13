@@ -1,4 +1,4 @@
-import { AcoConfig } from "@webiny/app-aco";
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { Filter, FilterConfig } from "./Filter";
 import { FiltersToWhere, FiltersToWhereConverter } from "./FiltersToWhere";
@@ -40,7 +40,7 @@ export const Browser = {
     FilterByTags,
     Folder: {
         ExtensionField: {
-            createDecorator: AcoConfig.Folder.ExtensionField.createDecorator({
+            createDecorator: createFolderFieldDecoratorFactory({
                 scope: "fm",
                 shouldDecorate: shouldDecorateFolderField
             })
