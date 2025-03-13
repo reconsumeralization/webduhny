@@ -11,35 +11,10 @@ import { createHandler } from "@webiny/handler-aws";
 import { Plugin, PluginCollection } from "@webiny/plugins/types";
 import { createTenancyAndSecurity } from "./tenancySecurity";
 
-import {
-    CREATE_PAGE,
-    DELETE_PAGE,
-    GET_PAGE,
-    LIST_PAGES,
-    PUBLISH_PAGE,
-    UNPUBLISH_PAGE,
-    UPDATE_PAGE
-} from "~tests/graphql/page.gql";
-import { CREATE_CATEGORY } from "~tests/graphql/categories.gql";
+import { CREATE_FOLDER, GET_FOLDER } from "~tests/graphql/folder.gql";
 
-import { GET_RECORD, LIST_RECORDS } from "~tests/graphql/record.gql";
-
-import {
-    CREATE_FOLDER,
-    DELETE_FOLDER,
-    GET_FOLDER,
-    LIST_FOLDERS,
-    UPDATE_FOLDER
-} from "~tests/graphql/folder.gql";
-
-import { createAcoPageBuilderContext } from "~/index";
-import {
-    createPageBuilderContext,
-    createPageBuilderGraphQL
-} from "@webiny/api-page-builder/graphql";
 import { createAco } from "@webiny/api-aco";
 import { getStorageOps } from "@webiny/project-utils/testing/environment";
-import { PageBuilderStorageOperations } from "@webiny/api-page-builder/types";
 import { HeadlessCmsStorageOperations } from "@webiny/api-headless-cms/types";
 import { getIntrospectionQuery } from "graphql";
 import { APIGatewayEvent, LambdaContext } from "@webiny/handler-aws/types";
@@ -76,7 +51,6 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     const { permissions, identity, plugins = [] } = params;
 
     const i18nStorage = getStorageOps<any[]>("i18n");
-    const pageBuilderStorage = getStorageOps<PageBuilderStorageOperations>("pageBuilder");
     const cmsStorage = getStorageOps<HeadlessCmsStorageOperations>("cms");
     const adminUsersStorage = getStorageOps<AdminUsersStorageOperations>("adminUsers");
 
@@ -102,10 +76,7 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
             }),
             createHeadlessCmsContext({ storageOperations: cmsStorage.storageOperations }),
             createHeadlessCmsGraphQL(),
-            createPageBuilderContext({ storageOperations: pageBuilderStorage.storageOperations }),
-            createPageBuilderGraphQL(),
             createAco(),
-            createAcoPageBuilderContext(),
             plugins
         ],
         debug: false
@@ -132,57 +103,9 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
         return [JSON.parse(response.body), response];
     };
 
-    const pageBuilder = {
-        // Pages
-        async createPage(variables = {}) {
-            return invoke({ body: { query: CREATE_PAGE, variables } });
-        }, // Pages
-        async getPage(variables = {}) {
-            return invoke({ body: { query: GET_PAGE, variables } });
-        },
-        async listPages(variables = {}) {
-            return invoke({ body: { query: LIST_PAGES, variables } });
-        },
-        async updatePage(variables = {}) {
-            return invoke({ body: { query: UPDATE_PAGE, variables } });
-        },
-        async publishPage(variables = {}) {
-            return invoke({ body: { query: PUBLISH_PAGE, variables } });
-        },
-        async unpublishPage(variables = {}) {
-            return invoke({ body: { query: UNPUBLISH_PAGE, variables } });
-        },
-        async deletePage(variables = {}) {
-            return invoke({ body: { query: DELETE_PAGE, variables } });
-        },
-
-        // Categories
-        async createCategory(variables: Record<string, any>) {
-            return invoke({ body: { query: CREATE_CATEGORY, variables } });
-        }
-    };
-
-    const search = {
-        async getRecord(variables = {}) {
-            return invoke({ body: { query: GET_RECORD, variables } });
-        },
-        async listRecords(variables = {}) {
-            return invoke({ body: { query: LIST_RECORDS, variables } });
-        }
-    };
-
     const folders = {
         async createFolder(variables = {}, fields: string[] = []) {
             return invoke({ body: { query: CREATE_FOLDER(fields), variables } });
-        },
-        async updateFolder(variables = {}, fields: string[] = []) {
-            return invoke({ body: { query: UPDATE_FOLDER(fields), variables } });
-        },
-        async deleteFolder(variables = {}) {
-            return invoke({ body: { query: DELETE_FOLDER, variables } });
-        },
-        async listFolders(variables = {}, fields: string[] = []) {
-            return invoke({ body: { query: LIST_FOLDERS(fields), variables } });
         },
         async getFolder(variables = {}, fields: string[] = []) {
             return invoke({ body: { query: GET_FOLDER(fields), variables } });
@@ -200,8 +123,6 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
                 }
             });
         },
-        pageBuilder,
-        folders,
-        search
+        folders
     };
 };
