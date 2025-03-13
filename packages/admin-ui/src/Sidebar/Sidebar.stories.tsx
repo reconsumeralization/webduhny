@@ -12,8 +12,6 @@ import { ReactComponent as DocsIcon } from "@material-design-icons/svg/outlined/
 import { ReactComponent as ApiPlaygroundIcon } from "@material-design-icons/svg/outlined/swap_horiz.svg";
 import { ReactComponent as MoreVertIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
 import { ReactComponent as FileManagerIcon } from "@material-design-icons/svg/outlined/insert_drive_file.svg";
-
-import wbyLogo from "./stories/wby-logo.png";
 import { Sidebar } from "./Sidebar";
 import { SidebarProvider } from "~/Sidebar/components/SidebarProvider";
 import { DropdownMenu } from "~/DropdownMenu";
