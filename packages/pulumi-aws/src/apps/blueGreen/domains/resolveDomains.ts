@@ -13,12 +13,17 @@ export interface IResolveDomainsParams {
 export const resolveDomains = (params: IResolveDomainsParams): IResolvedDomains => {
     const { attachedDomains, deploymentsDomains } = params;
 
-    const types = Object.keys(attachedDomains.domains).filter(key => {
-        return !!attachedDomains.domains[key as IAttachedDomainKey];
+    const domains = attachedDomains.domains;
+
+    if (!domains) {
+        return [];
+    }
+    const types = Object.keys(domains).filter(key => {
+        return !!domains[key as IAttachedDomainKey];
     }) as IAttachedDomainKey[];
 
     return types.reduce<IResolvedDomains>((output, type) => {
-        const value = attachedDomains.domains[type];
+        const value = domains[type];
         /**
          * Should not happen because we are filtering out undefined values when creating the `types` array.
          */

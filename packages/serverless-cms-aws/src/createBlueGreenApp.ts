@@ -72,7 +72,7 @@ const builtInPlugins: Plugin[] = [
             `‣ Domains attached: `,
             ...domains.map(domain => `  - https://${domain}`),
             "",
-            `‣ Environments attached: `,
+            `‣ Environments: `,
             ...environments.map(item => {
                 const envVariant = `env: ${item.env}${
                     item.variant ? ` / variant: ${item.variant}` : ""

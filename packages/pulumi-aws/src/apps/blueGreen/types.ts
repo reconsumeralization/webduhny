@@ -30,22 +30,28 @@ export interface IBlueGreenDeployment {
     variant: string | undefined;
 }
 
+export interface IAttachedDomainsTypes {
+    api: NonEmptyArray<string>;
+    admin: NonEmptyArray<string>;
+    website: NonEmptyArray<string> | undefined;
+    preview: NonEmptyArray<string> | undefined;
+}
+
 export interface IAttachedDomains {
     acmCertificateArn: string;
     sslSupportMethod?: string;
-    domains: {
-        api: NonEmptyArray<string>;
-        admin: NonEmptyArray<string>;
-        website: NonEmptyArray<string> | undefined;
-        preview: NonEmptyArray<string> | undefined;
-    };
+    /**
+     * We need to allow system to be deployed without any domains for start.
+     * User can attach domains later.
+     */
+    domains?: IAttachedDomainsTypes;
 }
 
 export interface IAttachDomainsCallable {
     (): IAttachedDomains;
 }
 
-export type IAttachedDomainKey = keyof IAttachedDomains["domains"];
+export type IAttachedDomainKey = keyof IAttachedDomainsTypes;
 
 export interface IResolvedDomain {
     /**
