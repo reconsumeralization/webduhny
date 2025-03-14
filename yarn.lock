@@ -12526,6 +12526,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/api-file-manager-aco@workspace:packages/api-file-manager-aco"
   dependencies:
+    "@webiny/api": "npm:0.0.0"
     "@webiny/api-aco": "npm:0.0.0"
     "@webiny/api-admin-users": "npm:0.0.0"
     "@webiny/api-headless-cms": "npm:0.0.0"
@@ -12533,6 +12534,7 @@ __metadata:
     "@webiny/api-security": "npm:0.0.0"
     "@webiny/api-tenancy": "npm:0.0.0"
     "@webiny/api-wcp": "npm:0.0.0"
+    "@webiny/handler": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"
     "@webiny/handler-graphql": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
