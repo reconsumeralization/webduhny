@@ -24,7 +24,7 @@ export const createAdvancedSingleRenderer = (): CmsModelFieldRendererPlugin => {
                     <Bind>
                         {bind => {
                             return (
-                                <Bind.ValidationScope>
+                                <Bind.ValidationContainer>
                                     <AdvancedSingleReferenceField
                                         field={field}
                                         getBind={getBind}
@@ -32,7 +32,7 @@ export const createAdvancedSingleRenderer = (): CmsModelFieldRendererPlugin => {
                                         Label={Label}
                                         contentModel={contentModel}
                                     />
-                                </Bind.ValidationScope>
+                                </Bind.ValidationContainer>
                             );
                         }}
                     </Bind>

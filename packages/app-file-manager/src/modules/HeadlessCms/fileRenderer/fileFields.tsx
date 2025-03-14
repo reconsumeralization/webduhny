@@ -80,7 +80,7 @@ const FieldRenderer = ({ getBind, Label, field }: CmsModelFieldRendererProps) =>
                 ).filter(Boolean);
 
                 return (
-                    <Bind.ValidationScope>
+                    <Bind.ValidationContainer>
                         <EditFileUsingUrl onSetFile={onSetFile(bind)}>
                             {({ editFile }) => (
                                 <FileUploadWrapper className={imageWrapperStyles}>
@@ -171,7 +171,7 @@ const FieldRenderer = ({ getBind, Label, field }: CmsModelFieldRendererProps) =>
                                 </FileUploadWrapper>
                             )}
                         </EditFileUsingUrl>
-                    </Bind.ValidationScope>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

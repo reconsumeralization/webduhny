@@ -23,9 +23,9 @@ export const createSimpleSingleRenderer = (): CmsModelFieldRendererPlugin => {
                 return (
                     <Bind>
                         {bind => (
-                            <Bind.ValidationScope>
+                            <Bind.ValidationContainer>
                                 <SimpleSingleRenderer bind={bind} field={field} />
-                            </Bind.ValidationScope>
+                            </Bind.ValidationContainer>
                         )}
                     </Bind>
                 );

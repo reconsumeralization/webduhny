@@ -4,7 +4,7 @@ import { useForm } from "@webiny/form";
 import { createValidators } from "~/utils/createValidators";
 import { BindComponent, CmsModelField } from "~/types";
 import { useModelField } from "~/admin/components/ModelFieldProvider";
-import { createValidationScope } from "~/admin/components/ContentEntryForm/createValidationScope";
+import { createValidationContainer } from "~/admin/components/ContentEntryForm/createValidationContainer";
 
 interface UseBindProps {
     Bind: BindComponent;
@@ -151,7 +151,8 @@ export function useBind({ Bind }: UseBindProps) {
         // We need to keep track of current field name, to support nested fields.
         memoizedBindComponents.current[componentId].parentName = name;
         memoizedBindComponents.current[componentId].displayName = `Bind<${name}>`;
-        memoizedBindComponents.current[componentId].ValidationScope = createValidationScope(name);
+        memoizedBindComponents.current[componentId].ValidationContainer =
+            createValidationContainer(name);
 
         return memoizedBindComponents.current[componentId];
     };

@@ -86,7 +86,7 @@ const DynamicZoneContent = ({ field, getBind, contentModel }: CmsModelFieldRende
         <Bind>
             {bind => {
                 return (
-                    <Bind.ValidationScope>
+                    <Bind.ValidationContainer>
                         <DynamicZoneContainer
                             field={field}
                             bind={bind}
@@ -100,7 +100,7 @@ const DynamicZoneContent = ({ field, getBind, contentModel }: CmsModelFieldRende
                                 contentModel={contentModel}
                             />
                         </DynamicZoneContainer>
-                    </Bind.ValidationScope>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

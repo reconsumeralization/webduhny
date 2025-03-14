@@ -27,7 +27,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <DelayedOnChange
                                 value={bind.value}
                                 onChange={bind.onChange}
@@ -41,7 +41,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     validation={bind.validation}
                                 />
                             </DelayedOnChange>
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

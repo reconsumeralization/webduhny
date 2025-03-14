@@ -39,7 +39,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bindProps => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
                                 <ParentValueIndexProvider index={-1}>
                                     <Accordion>
@@ -58,7 +58,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     </Accordion>
                                 </ParentValueIndexProvider>
                             </ParentFieldProvider>
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

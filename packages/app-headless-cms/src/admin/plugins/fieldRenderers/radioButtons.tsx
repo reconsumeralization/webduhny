@@ -28,7 +28,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind defaultValue={defaultOption ? defaultOption.value : undefined}>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <RadioGroup {...bind} label={field.label} description={field.helpText}>
                                 {({ onChange, getValue }) => (
                                     <React.Fragment>
@@ -51,7 +51,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     </React.Fragment>
                                 )}
                             </RadioGroup>
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

@@ -62,7 +62,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                 <Bind>
                     {props => {
                         return (
-                            <Bind.ValidationScope>
+                            <Bind.ValidationContainer>
                                 <DelayedOnChange {...props}>
                                     <RichTextEditor
                                         key={getKey(field, form.data.id)}
@@ -73,7 +73,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                         data-testid={`fr.input.richtext.${field.label}`}
                                     />
                                 </DelayedOnChange>
-                            </Bind.ValidationScope>
+                            </Bind.ValidationContainer>
                         );
                     }}
                 </Bind>

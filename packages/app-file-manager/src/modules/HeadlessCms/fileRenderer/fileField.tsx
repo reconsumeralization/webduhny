@@ -52,7 +52,7 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
             {bind => {
                 const { value, onChange, validation } = bind;
                 return (
-                    <Bind.ValidationScope>
+                    <Bind.ValidationContainer>
                         <EditFileUsingUrl onSetFile={file => bind.onChange(file.src)}>
                             {({ editFile }) => (
                                 <div>
@@ -93,7 +93,7 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
                                 </div>
                             )}
                         </EditFileUsingUrl>
-                    </Bind.ValidationScope>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

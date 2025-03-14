@@ -39,7 +39,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind defaultValue={defaultValue}>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <CheckboxGroup
                                 {...bind}
                                 label={field.label}
@@ -62,7 +62,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     </React.Fragment>
                                 )}
                             </CheckboxGroup>
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

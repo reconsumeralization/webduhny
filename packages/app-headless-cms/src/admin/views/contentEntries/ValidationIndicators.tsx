@@ -3,10 +3,17 @@ import type { FormValidation } from "@webiny/form";
 import { makeDecoratable } from "@webiny/react-composition";
 import { Global, css } from "@emotion/react";
 
-const errorColor = `#fa5723`;
+// To customize the color and icon, define a CSS variable within the validation class:
+// .wby-content-entry-invalid-field {
+//     --error-color: blue;
+//     --error-icon: "🤔"
+// }
+
+const errorColor = `var(--error-color, #fa5723)`;
+const errorIcon = `var(--error-icon, "⚠️")`;
 
 const errorTitleMixin = `
-    content: "⚠️";
+    content: ${errorIcon};
     margin-right: 5px;
 `;
 
@@ -246,7 +253,7 @@ export const ValidationIndicators = makeDecoratable(
         className = "wby-content-entry-invalid-field"
     }: ValidationIndicatorsProps) => {
         const visualizeDomByPath = (path: string) => {
-            const selector = `hcms-field-validation-scope[data-path="${path}"]`;
+            const selector = `hcms-field-validation[data-path="${path}"]`;
             const marker = Array.from(document.querySelectorAll(selector).values())[0];
             if (marker) {
                 marker.classList.add(className);

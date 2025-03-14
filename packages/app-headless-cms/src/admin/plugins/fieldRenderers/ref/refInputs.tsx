@@ -27,13 +27,13 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <ContentEntriesMultiAutocomplete
                                 key={getKey(props.field, form.data.id)}
                                 {...props}
                                 bind={bind}
                             />
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

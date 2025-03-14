@@ -45,9 +45,9 @@ const plugin: CmsModelFieldRendererPlugin = {
                 <Bind>
                     {bind => {
                         return (
-                            <Bind.ValidationScope>
+                            <Bind.ValidationContainer>
                                 <Component bind={bind} field={field} />
-                            </Bind.ValidationScope>
+                            </Bind.ValidationContainer>
                         );
                     }}
                 </Bind>

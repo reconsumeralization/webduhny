@@ -228,7 +228,7 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
                                 <ParentValueIndexProvider key={index} index={index}>
                                     <Bind>
                                         {() => (
-                                            <Bind.ValidationScope>
+                                            <Bind.ValidationContainer>
                                                 <TemplateValueForm
                                                     value={value}
                                                     contentModel={contentModel}
@@ -240,7 +240,7 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
                                                     onDelete={onDelete}
                                                     onClone={value => cloneValue(value, index)}
                                                 />
-                                            </Bind.ValidationScope>
+                                            </Bind.ValidationContainer>
                                         )}
                                     </Bind>
                                 </ParentValueIndexProvider>

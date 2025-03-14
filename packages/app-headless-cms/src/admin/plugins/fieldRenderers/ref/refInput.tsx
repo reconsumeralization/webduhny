@@ -21,9 +21,9 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <ContentEntriesAutocomplete {...props} bind={bind} />
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

@@ -12,13 +12,13 @@ import { Typography } from "@webiny/ui/Typography";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
-const FieldLabel = styled("h3")({
-    fontSize: 24,
-    fontWeight: "normal",
-    borderBottom: "1px solid var(--mdc-theme-background)",
-    marginBottom: "20px",
-    paddingBottom: "5px"
-});
+const FieldLabel = styled.div`
+    font-size: 24px;
+    font-weight: normal;
+    border-bottom: 1px solid var(--mdc-theme-background);
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+`;
 
 const plugin: CmsModelFieldRendererPlugin = {
     type: "cms-editor-field-renderer",
@@ -45,7 +45,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bindProps => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
                                 <ParentValueIndexProvider index={-1}>
                                     <FieldLabel>
@@ -65,7 +65,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                     />
                                 </ParentValueIndexProvider>
                             </ParentFieldProvider>
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

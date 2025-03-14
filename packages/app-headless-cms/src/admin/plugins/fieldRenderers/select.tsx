@@ -25,7 +25,7 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind defaultValue={defaultOption ? defaultOption.value : undefined}>
                     {bind => (
-                        <Bind.ValidationScope>
+                        <Bind.ValidationContainer>
                             <Select
                                 {...bind}
                                 label={field.label}
@@ -34,7 +34,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 placeholder={field.placeholderText}
                                 data-testid={`fr.input.select.${field.label}`}
                             />
-                        </Bind.ValidationScope>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

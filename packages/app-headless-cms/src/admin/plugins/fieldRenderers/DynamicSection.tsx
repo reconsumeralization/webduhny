@@ -90,7 +90,7 @@ const DynamicSection = ({
                 const bindFieldValue: string[] = value || [];
 
                 return (
-                    <Bind.ValidationScope>
+                    <Bind.ValidationContainer>
                         <ParentFieldProvider value={value} path={Bind.parentName}>
                             {showLabel ? (
                                 <FieldLabel>
@@ -113,7 +113,7 @@ const DynamicSection = ({
                                         <Cell span={12} key={index}>
                                             <BindField>
                                                 {bindProps => (
-                                                    <BindField.ValidationScope>
+                                                    <BindField.ValidationContainer>
                                                         <ParentValueIndexProvider index={index}>
                                                             {children({
                                                                 Bind: BindField,
@@ -125,7 +125,7 @@ const DynamicSection = ({
                                                                 index
                                                             })}
                                                         </ParentValueIndexProvider>
-                                                    </BindField.ValidationScope>
+                                                    </BindField.ValidationContainer>
                                                 )}
                                             </BindField>
                                         </Cell>
@@ -152,7 +152,7 @@ const DynamicSection = ({
                                 </AddButtonCell>
                             </Grid>
                         </ParentFieldProvider>
-                    </Bind.ValidationScope>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>
