@@ -1,1 +1,1 @@
-export * from "@webiny/app-headless-cms-common/createValidationScope";
+export * from "@webiny/app-headless-cms-common/createValidationContainer";
