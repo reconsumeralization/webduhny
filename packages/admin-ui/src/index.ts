@@ -20,6 +20,7 @@ export * from "./Grid";
 export * from "./Heading";
 export * from "./Icon";
 export * from "./IconPicker";
+export * from "./Image";
 export * from "./Input";
 export * from "./Label";
 export * from "./List";
