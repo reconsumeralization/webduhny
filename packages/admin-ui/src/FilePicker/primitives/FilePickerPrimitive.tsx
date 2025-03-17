@@ -5,25 +5,7 @@ import { Label } from "~/Label";
 import { FormComponentLabel } from "~/FormComponent";
 import { inputVariants } from "~/Input";
 import { ImagePreview, RichItemPreview, TextOnlyPreview } from "./components";
-
-type FileItemPreviewProps = {
-    renderImagePreview?: (props: any) => React.ReactElement<any>;
-    value?: any;
-    style?: React.CSSProperties;
-};
-
-const FileItemPreview = ({ value, style, renderImagePreview }: FileItemPreviewProps) => {
-    const imagePreviewProps: any = {
-        src: value?.src,
-        style: style ?? null
-    };
-
-    if (typeof renderImagePreview === "function") {
-        return renderImagePreview(imagePreviewProps);
-    } else {
-        return <img {...imagePreviewProps} />;
-    }
-};
+import { FilePreview } from "~/FilePicker/primitives/components/previews/FilePreview";
 
 const filePickerVariants = cva(
     [
@@ -39,7 +21,7 @@ const filePickerVariants = cva(
                     "wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))] wby-py-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 compact: [
-                    "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                    "wby-py-[calc(theme(padding.sm)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm)-theme(borderWidth.sm))]"
                 ]
             },
             variant: {
@@ -55,20 +37,27 @@ const filePickerVariants = cva(
     }
 );
 
+type FileValue = {
+    name: string;
+    src: string;
+    mimeType?: string;
+    size?: number;
+};
+
 interface FilePickerPrimitiveProps
     extends React.HTMLAttributes<HTMLDivElement>,
         VariantProps<typeof inputVariants>,
         VariantProps<typeof filePickerVariants> {
     disabled?: boolean;
     placeholder?: string;
-    onSelectImage: () => void;
-    onRemoveImage?: (value: string | null) => void;
-    value?: any;
+    onSelectItem: () => void;
+    onRemoveItem?: (value: string | null) => void;
+    value?: FileValue | null;
     label?: React.ReactElement<typeof Label> | React.ReactNode;
     style?: React.CSSProperties;
     required?: boolean;
     containerStyle?: React.CSSProperties;
-    renderImagePreview?: (props: any) => React.ReactElement<any>;
+    renderFilePreview?: (props: any) => React.ReactElement<any>;
 }
 
 const BaseFilePickerPrimitive = ({
@@ -76,13 +65,14 @@ const BaseFilePickerPrimitive = ({
     disabled,
     invalid,
     label,
-    onRemoveImage,
-    onSelectImage,
+    onSelectItem,
+    onRemoveItem,
     placeholder,
     required,
     type,
     value,
     variant,
+    renderFilePreview,
     ...props
 }: FilePickerPrimitiveProps) => {
     return (
@@ -103,12 +93,18 @@ const BaseFilePickerPrimitive = ({
                     className={"wby-mb-0"}
                 />
             )}
-            {value && value.src ? (
-                <FileItemPreview {...props} value={value} />
+            {value ? (
+                <FilePreview
+                    value={value}
+                    renderFilePreview={renderFilePreview}
+                    type={type}
+                    onSelectItem={onSelectItem}
+                    onRemoveItem={() => onRemoveItem && onRemoveItem(value?.src)}
+                />
             ) : (
                 <Trigger
                     disabled={disabled}
-                    onClick={onSelectImage}
+                    onClick={onSelectItem}
                     text={placeholder}
                     type={type}
                     variant={variant}
@@ -131,4 +127,4 @@ const FilePickerPrimitive = withStaticProps(DecoratableFilePickerPrimitive, {
     }
 });
 
-export { FilePickerPrimitive, type FilePickerPrimitiveProps };
+export { FilePickerPrimitive, type FileValue, type FilePickerPrimitiveProps, filePickerVariants };
