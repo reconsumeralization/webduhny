@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { ReactComponent as AddImageIcon } from "./icons/round-add_photo_alternate-24px.svg";
 import { ReactComponent as RemoveImageIcon } from "./icons/round-close-24px.svg";
 import { ReactComponent as EditImageIcon } from "./icons/round-edit-24px.svg";
-import { File } from "@webiny/admin-ui";
+import { FilePicker } from "@webiny/admin-ui";
 import { Typography } from "../Typography";
 import { CircularProgress } from "../Progress";
 import {
@@ -31,14 +31,7 @@ interface ImageProps {
 }
 
 const Image = ({ uploadImage, removeImage, editImage, ...props }: ImageProps) => {
-    return (
-        <File
-            {...props}
-            onSelectImage={uploadImage}
-            onRemoveImage={removeImage}
-            onEditImage={editImage}
-        />
-    );
+    return <FilePicker {...props} onSelectImage={uploadImage} onRemoveImage={removeImage} />;
 };
 
 class OldImage extends React.Component<ImageProps> {

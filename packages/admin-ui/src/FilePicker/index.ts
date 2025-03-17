@@ -1,2 +1,2 @@
 export * from "./primitives";
-export * from "./File";
+export * from "./FilePicker";

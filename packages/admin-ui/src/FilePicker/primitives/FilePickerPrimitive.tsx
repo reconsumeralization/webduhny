@@ -1,12 +1,31 @@
 import * as React from "react";
-import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
-import { FilePlaceholder, FileImagePreview } from "./components";
-import { BrowseFilesParams } from "react-butterfiles";
+import { cn, cva, type VariantProps, makeDecoratable, withStaticProps } from "~/utils";
+import { Trigger } from "./components";
 import { Label } from "~/Label";
 import { FormComponentLabel } from "~/FormComponent";
 import { inputVariants } from "~/Input";
+import { ImagePreview, RichItemPreview, TextOnlyPreview } from "./components";
 
-const fileVariants = cva(
+type FileItemPreviewProps = {
+    renderImagePreview?: (props: any) => React.ReactElement<any>;
+    value?: any;
+    style?: React.CSSProperties;
+};
+
+const FileItemPreview = ({ value, style, renderImagePreview }: FileItemPreviewProps) => {
+    const imagePreviewProps: any = {
+        src: value?.src,
+        style: style ?? null
+    };
+
+    if (typeof renderImagePreview === "function") {
+        return renderImagePreview(imagePreviewProps);
+    } else {
+        return <img {...imagePreviewProps} />;
+    }
+};
+
+const filePickerVariants = cva(
     [
         "wby-w-full wby-border-sm wby-text-md wby-peer wby-rounded-md",
         "focus-visible:wby-outline-none",
@@ -16,11 +35,11 @@ const fileVariants = cva(
     {
         variants: {
             type: {
-                compact: [
-                    "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
-                ],
                 area: [
                     "wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))] wby-py-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
+                ],
+                compact: [
+                    "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ]
             },
             variant: {
@@ -30,29 +49,29 @@ const fileVariants = cva(
             }
         },
         defaultVariants: {
-            type: "compact",
+            type: "area",
             variant: "primary"
         }
     }
 );
 
-interface FilePrimitiveProps
+interface FilePickerPrimitiveProps
     extends React.HTMLAttributes<HTMLDivElement>,
         VariantProps<typeof inputVariants>,
-        VariantProps<typeof fileVariants> {
+        VariantProps<typeof filePickerVariants> {
     disabled?: boolean;
     placeholder?: string;
     onSelectImage: () => void;
     onRemoveImage?: (value: string | null) => void;
-    onEditImage?: (value: BrowseFilesParams | undefined) => void;
     value?: any;
     label?: React.ReactElement<typeof Label> | React.ReactNode;
     style?: React.CSSProperties;
     required?: boolean;
     containerStyle?: React.CSSProperties;
+    renderImagePreview?: (props: any) => React.ReactElement<any>;
 }
 
-const DecoratableFilePrimitive = ({
+const BaseFilePickerPrimitive = ({
     containerStyle,
     disabled,
     invalid,
@@ -65,11 +84,14 @@ const DecoratableFilePrimitive = ({
     value,
     variant,
     ...props
-}: FilePrimitiveProps) => {
+}: FilePickerPrimitiveProps) => {
     return (
         <div
             data-disabled={disabled}
-            className={cn(inputVariants({ variant, invalid }), fileVariants({ type, variant }))}
+            className={cn(
+                inputVariants({ variant, invalid }),
+                filePickerVariants({ type, variant })
+            )}
             style={containerStyle}
             {...props}
         >
@@ -82,13 +104,9 @@ const DecoratableFilePrimitive = ({
                 />
             )}
             {value && value.src ? (
-                <FileImagePreview
-                    onSelectImage={onSelectImage}
-                    onRemoveImage={onRemoveImage}
-                    value={value}
-                />
+                <FileItemPreview {...props} value={value} />
             ) : (
-                <FilePlaceholder
+                <Trigger
                     disabled={disabled}
                     onClick={onSelectImage}
                     text={placeholder}
@@ -100,6 +118,17 @@ const DecoratableFilePrimitive = ({
     );
 };
 
-const FilePrimitive = makeDecoratable("FilePrimitive", DecoratableFilePrimitive);
+const DecoratableFilePickerPrimitive = makeDecoratable(
+    "FilePickerPrimitive",
+    BaseFilePickerPrimitive
+);
 
-export { FilePrimitive, type FilePrimitiveProps };
+const FilePickerPrimitive = withStaticProps(DecoratableFilePickerPrimitive, {
+    Preview: {
+        Image: ImagePreview,
+        RichItem: RichItemPreview,
+        TextOnly: TextOnlyPreview
+    }
+});
+
+export { FilePickerPrimitive, type FilePickerPrimitiveProps };

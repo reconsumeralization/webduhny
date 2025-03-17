@@ -3,11 +3,11 @@ import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined
 import { Button } from "~/Button";
 import { cn, cva, type VariantProps } from "~/utils";
 
-const filePlaceholderVariants = cva("wby-flex", {
+const triggerVariants = cva("wby-flex", {
     variants: {
         type: {
-            compact: "wby-w-full",
-            area: ["wby-justify-center", "wby-px-xl wby-py-md-extra"]
+            area: ["wby-justify-center", "wby-px-xl wby-py-md-extra"],
+            compact: "wby-w-full [&>span]:!wby-flex-1 [&_button]:!wby-w-full"
         },
         variant: {
             primary: "",
@@ -16,6 +16,7 @@ const filePlaceholderVariants = cva("wby-flex", {
         }
     },
     compoundVariants: [
+        // Combination of `type = area` and different `variant`
         {
             type: "area",
             variant: "primary",
@@ -28,48 +29,51 @@ const filePlaceholderVariants = cva("wby-flex", {
         {
             type: "area",
             variant: "secondary",
-            className: ["wby-bg-neutral-base"]
+            className: [
+                "wby-bg-neutral-base",
+                "hover:wby-bg-neutral-base",
+                "data-[disabled=true]:wby-bg-neutral-disabled"
+            ]
         },
         {
             type: "area",
-            variant: "secondary",
+            variant: "ghost",
             className: [
                 "wby-bg-neutral-subtle",
                 "hover:wby-bg-neutral-light",
-                "data-[disabled=true]:wby-bg-transparent"
+                "data-[disabled=true]:wby-bg-neutral-base"
             ]
         }
     ],
     defaultVariants: {
-        type: "compact",
+        type: "area",
         variant: "primary"
     }
 });
 
-interface FilePlaceholderProps
+interface TriggerProps
     extends React.HTMLAttributes<HTMLDivElement>,
-        VariantProps<typeof filePlaceholderVariants> {
+        VariantProps<typeof triggerVariants> {
     disabled?: boolean;
     text?: string;
 }
 
-const FilePlaceholder = ({
+const Trigger = ({
     text = "Select from library",
     type,
     variant,
     disabled,
     className,
     ...props
-}: FilePlaceholderProps) => {
+}: TriggerProps) => {
     return (
         <div
             data-role={"select-image"}
             data-disabled={disabled}
-            className={cn(filePlaceholderVariants({ type, variant }), className)}
+            className={cn(triggerVariants({ type, variant }), className)}
             {...props}
         >
             <Button
-                className={cn(type !== "area" ? "wby-w-full" : "")}
                 text={text}
                 icon={<ImageIcon />}
                 variant={"ghost"}
@@ -80,4 +84,4 @@ const FilePlaceholder = ({
     );
 };
 
-export { FilePlaceholder, type FilePlaceholderProps, filePlaceholderVariants };
+export { Trigger, type TriggerProps, triggerVariants };

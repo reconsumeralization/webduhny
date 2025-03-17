@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { FilePrimitive, type FilePrimitiveProps } from "./primitives";
+import { FilePickerPrimitive, type FilePickerPrimitiveProps } from "./primitives";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
@@ -9,9 +9,9 @@ import {
     type FormComponentProps
 } from "~/FormComponent";
 
-type FileProps = FilePrimitiveProps & FormComponentProps;
+type FilePickerProps = FilePickerPrimitiveProps & FormComponentProps;
 
-const DecoratableFile = ({
+const DecoratableFilePicker = ({
     label,
     description,
     note,
@@ -21,7 +21,7 @@ const DecoratableFile = ({
     validate,
     onBlur: originalOnBlur,
     ...props
-}: FileProps) => {
+}: FilePickerProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
@@ -42,13 +42,13 @@ const DecoratableFile = ({
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
             <FormComponentDescription text={description} />
-            <FilePrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
+            <FilePickerPrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>
     );
 };
 
-const File = makeDecoratable("File", DecoratableFile);
+const FilePicker = makeDecoratable("FilePicker", DecoratableFilePicker);
 
-export { File, type FileProps };
+export { FilePicker, type FilePickerProps };
