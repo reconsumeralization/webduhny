@@ -24,7 +24,9 @@ const DecoratableImagePreview = ({
             data-testid={"image-preview"}
         >
             <div
-                className={"wby-cursor-pointer wby-max-w-[128px] wby-max-h-[128px]"}
+                className={
+                    "wby-cursor-pointer wby-size-[128px] wby-flex wby-justify-center wby-items-center"
+                }
                 data-role={"select-image"}
                 onClick={onSelectItem}
             >

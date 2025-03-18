@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { makeDecoratable } from "~/utils";
+import { makeDecoratable, withStaticProps } from "~/utils";
 import { FilePickerPrimitive, type FilePickerPrimitiveProps } from "./primitives";
 import {
     FormComponentDescription,
@@ -8,10 +8,11 @@ import {
     FormComponentNote,
     type FormComponentProps
 } from "~/FormComponent";
+import { ImagePreview, RichItemPreview, TextOnlyPreview } from "~/FilePicker/primitives/components";
 
 type FilePickerProps = FilePickerPrimitiveProps & FormComponentProps;
 
-const DecoratableFilePicker = ({
+const BaseFilePicker = ({
     label,
     description,
     note,
@@ -63,6 +64,13 @@ const DecoratableFilePicker = ({
     );
 };
 
-const FilePicker = makeDecoratable("FilePicker", DecoratableFilePicker);
+const DecoratableFilePicker = makeDecoratable("FilePicker", BaseFilePicker);
 
+const FilePicker = withStaticProps(DecoratableFilePicker, {
+    Preview: {
+        Image: ImagePreview,
+        RichItem: RichItemPreview,
+        TextOnly: TextOnlyPreview
+    }
+});
 export { FilePicker, type FilePickerProps };

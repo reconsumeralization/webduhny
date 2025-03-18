@@ -105,12 +105,12 @@ const RichItemThumbnail = ({
                 className
             )}
         >
-            {preview === "thumbnail" && isImage ? (
+            {preview === "thumbnail" || isImage ? (
                 <Thumbnail src={src} name={name} />
-            ) : preview === "file-type" ? (
-                <FileType mimeType={mimeType} name={name} />
-            ) : (
+            ) : preview === "placeholder" ? (
                 <Placeholder name={name} disabled={disabled} />
+            ) : (
+                <FileType mimeType={mimeType} name={name} />
             )}
         </div>
     );

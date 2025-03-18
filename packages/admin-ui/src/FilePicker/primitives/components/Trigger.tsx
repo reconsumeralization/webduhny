@@ -59,15 +59,7 @@ interface TriggerProps
     onClick?: ButtonProps["onClick"];
 }
 
-const Trigger = ({
-    className,
-    disabled,
-    onClick,
-    text = "Select from library",
-    type,
-    variant,
-    ...props
-}: TriggerProps) => {
+const Trigger = ({ className, disabled, onClick, text, type, variant, ...props }: TriggerProps) => {
     return (
         <div
             data-role={"select-image"}
@@ -80,7 +72,7 @@ const Trigger = ({
                 icon={<ImageIcon />}
                 onClick={onClick}
                 size={"sm"}
-                text={text}
+                text={text ?? "Select from library"}
                 variant={"ghost"}
             />
         </div>

@@ -52,6 +52,7 @@ interface FilePickerPrimitiveProps
     placeholder?: string;
     onSelectItem: () => void;
     onRemoveItem?: (value: string | null) => void;
+    onEditItem?: () => void;
     value?: FileValue | null;
     label?: React.ReactElement<typeof Label> | React.ReactNode;
     style?: React.CSSProperties;
