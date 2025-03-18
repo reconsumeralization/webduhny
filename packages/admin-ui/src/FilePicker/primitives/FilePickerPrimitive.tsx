@@ -75,6 +75,7 @@ const BaseFilePickerPrimitive = ({
     renderFilePreview,
     ...props
 }: FilePickerPrimitiveProps) => {
+    console.log("FilePickerPrimitiveProps", props);
     return (
         <div
             data-disabled={disabled}

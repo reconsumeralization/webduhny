@@ -92,7 +92,7 @@ const RichItemThumbnail = ({
     name,
     className,
     mimeType,
-    preview = "thumbnail",
+    preview,
     disabled
 }: RichItemThumbnailProps) => {
     const isImage = mimeType?.startsWith("image/");
@@ -105,7 +105,7 @@ const RichItemThumbnail = ({
                 className
             )}
         >
-            {preview === "thumbnail" || isImage ? (
+            {preview === "thumbnail" && isImage ? (
                 <Thumbnail src={src} name={name} />
             ) : preview === "file-type" ? (
                 <FileType mimeType={mimeType} name={name} />

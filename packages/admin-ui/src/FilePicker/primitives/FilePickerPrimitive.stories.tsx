@@ -46,10 +46,6 @@ export const Default: Story = {
     }
 };
 
-/**
- * Area Type
- */
-
 export const AreaType: Story = {
     args: {
         ...Default.args,
@@ -120,17 +116,10 @@ export const AreaGhostVariantInvalid: Story = {
     }
 };
 
-/**
- * Area Type With Image Preview
- */
-
 export const AreaWithImagePreview: Story = {
     args: {
         ...AreaType.args,
-        value: file,
-        renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.Image onRemoveItem={() => console.log(props)} {...props} />
-        )
+        renderFilePreview: props => <FilePickerPrimitive.Preview.Image {...props} />
     }
 };
 
@@ -161,14 +150,9 @@ export const AreaWithImagePreviewTransparent: Story = {
     }
 };
 
-/**
- * Area Type With RichItem Preview
- */
-
 export const AreaWithRichItemPreview: Story = {
     args: {
         ...AreaType.args,
-        value: file,
         renderFilePreview: props => <FilePickerPrimitive.Preview.RichItem {...props} />
     }
 };
@@ -200,19 +184,43 @@ export const AreaWithRichItemPreviewTransparent: Story = {
     }
 };
 
-/**
- * Area Type With Text Only Preview
- */
+export const AreaWithRichItemThumbnailPreview: Story = {
+    args: {
+        ...AreaType.args,
+        renderFilePreview: props => (
+            <FilePickerPrimitive.Preview.RichItem preview={"thumbnail"} {...props} />
+        )
+    }
+};
+
+export const AreaWithRichItemFileTypePreview: Story = {
+    args: {
+        ...AreaType.args,
+        value: {
+            name: "export.csv",
+            src: "export.csv",
+            mimeType: "text/csv",
+            size: 100000
+        },
+        renderFilePreview: props => (
+            <FilePickerPrimitive.Preview.RichItem preview={"file-type"} {...props} />
+        )
+    }
+};
+
+export const AreaWithRichItemFileTypePlaceholder: Story = {
+    args: {
+        ...AreaType.args,
+        renderFilePreview: props => (
+            <FilePickerPrimitive.Preview.RichItem preview={"placeholder"} {...props} />
+        )
+    }
+};
+
 export const AreaWithTextOnlyPreview: Story = {
     args: {
         ...AreaType.args,
-        value: file,
-        renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.TextOnly
-                onRemoveItem={() => console.log(props)}
-                {...props}
-            />
-        )
+        renderFilePreview: props => <FilePickerPrimitive.Preview.TextOnly {...props} />
     }
 };
 
@@ -243,9 +251,6 @@ export const AreaWithTextOnlyPreviewTransparent: Story = {
     }
 };
 
-/**
- * Compact Type
- */
 export const CompactType: Story = {
     args: {
         ...Default.args,
@@ -313,5 +318,12 @@ export const CompactGhostVariantInvalid: Story = {
     args: {
         ...CompactGhostVariant.args,
         invalid: true
+    }
+};
+
+export const CompactWithTextOnlyPreviewSmall: Story = {
+    args: {
+        ...CompactType.args,
+        renderFilePreview: props => <FilePickerPrimitive.Preview.TextOnly {...props} small={true} />
     }
 };

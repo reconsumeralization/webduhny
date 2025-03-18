@@ -14,11 +14,11 @@ const FilePreview = ({ type, renderFilePreview, ...props }: FilePreviewProps) =>
         return renderFilePreview(props);
     }
 
-    if (type === "area") {
-        return <RichItemPreview {...props} />;
+    if (type === "compact") {
+        return <TextOnlyPreview {...props} />;
     }
 
-    return <TextOnlyPreview {...props} />;
+    return <RichItemPreview {...props} />;
 };
 
 export { FilePreview, type FilePreviewProps };

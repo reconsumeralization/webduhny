@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/upload.svg";
+import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
 import { Icon } from "~/Icon";
 import { IconButton, type IconButtonProps } from "~/Button";
 

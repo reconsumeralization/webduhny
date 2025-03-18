@@ -1,10 +1,10 @@
 import React from "react";
 import { cn, makeDecoratable } from "~/utils";
+import { RichItemThumbnail } from "./RichItemThumbnail";
+import { ItemDescription } from "../ItemDescription";
+import { RemoveItem } from "../RemoveItem";
 import { previewVariants } from "../variants";
-import { RemoveItem } from "../../RemoveItem";
 import type { FilePreviewDefaultProps } from "../types";
-import { RichItemThumbnail } from "~/FilePicker/primitives/components/previews/RichItemPreview/RichItemThumbnail";
-import { RichItemDescription } from "~/FilePicker/primitives/components/previews/RichItemPreview/RichItemDescription";
 
 type RichItemPreviewProps = FilePreviewDefaultProps & {
     preview?: "thumbnail" | "file-type" | "placeholder";
@@ -17,6 +17,7 @@ const DecoratableRichItemPreview = ({
     onSelectItem,
     value,
     variant,
+    preview,
     ...props
 }: RichItemPreviewProps) => {
     const { src, name, mimeType, size } = value;
@@ -44,8 +45,9 @@ const DecoratableRichItemPreview = ({
                         name={name}
                         mimeType={mimeType}
                         disabled={disabled}
+                        preview={preview}
                     />
-                    <RichItemDescription name={name} size={size} disabled={disabled} />
+                    <ItemDescription name={name} size={size} disabled={disabled} />
                 </div>
 
                 {onRemoveItem && (

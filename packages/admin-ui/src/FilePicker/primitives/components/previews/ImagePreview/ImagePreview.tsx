@@ -1,8 +1,8 @@
 import React from "react";
 import { cn, makeDecoratable } from "~/utils";
-import { RemoveItem } from "../../RemoveItem";
-import type { FilePreviewDefaultProps } from "../types";
+import { RemoveItem } from "../RemoveItem";
 import { previewVariants } from "../variants";
+import type { FilePreviewDefaultProps } from "../types";
 
 type ImagePreviewProps = FilePreviewDefaultProps;
 
