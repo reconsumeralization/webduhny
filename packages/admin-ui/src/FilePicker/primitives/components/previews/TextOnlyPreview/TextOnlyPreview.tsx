@@ -1,8 +1,7 @@
 import React from "react";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
-import { RemoveItem } from "../RemoveItem";
-import { SelectItem } from "../SelectItem";
 import { ItemDescription } from "../ItemDescription";
+import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
 import type { FilePreviewDefaultProps } from "../types";
 import { previewVariants } from "../variants";
 
@@ -22,7 +21,7 @@ const textOnlyPreviewVariants = cva(
 );
 
 type TextOnlyPreviewProps = FilePreviewDefaultProps &
-    React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> &
+    React.HTMLAttributes<HTMLDivElement> &
     VariantProps<typeof previewVariants> &
     VariantProps<typeof textOnlyPreviewVariants>;
 
@@ -30,14 +29,13 @@ const DecoratableTextOnlyPreview = ({
     className,
     disabled,
     onRemoveItem,
-    onSelectItem,
+    onReplaceItem,
+    onEditItem,
     small,
     variant,
     value,
     ...props
 }: TextOnlyPreviewProps) => {
-    const { name, size } = value;
-
     return (
         <div
             data-testid="image-preview"
@@ -50,19 +48,18 @@ const DecoratableTextOnlyPreview = ({
         >
             <div
                 data-role="select-image"
-                onClick={onSelectItem}
-                className={"wby-overflow-hidden wby-flex-1 wby-min-w-0"}
+                onClick={onReplaceItem}
+                className={"wby-overflow-hidden wby-flex-1 wby-min-w-0 wby-cursor-pointer"}
             >
-                <ItemDescription name={name} size={size} disabled={disabled} small={!!small} />
+                <ItemDescription item={value} disabled={disabled} small={!!small} />
             </div>
-            <div className={"wby-flex wby-justify-center wby-items-center wby-gap-sm"}>
-                {small && (
-                    <SelectItem onSelectItem={onSelectItem} small={!!small} disabled={disabled} />
-                )}
-                {onRemoveItem && (
-                    <RemoveItem onRemoveItem={onRemoveItem} small={!!small} disabled={disabled} />
-                )}
-            </div>
+            <ItemActions
+                onRemoveItem={onRemoveItem}
+                onReplaceItem={onReplaceItem}
+                onEditItem={onEditItem}
+                small={!!small}
+                disabled={disabled}
+            />
         </div>
     );
 };

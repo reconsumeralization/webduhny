@@ -2,22 +2,17 @@ import React from "react";
 import bytes from "bytes";
 import { Text } from "~/Text";
 import { cn } from "~/utils";
+import type { FileItem } from "~/FilePicker";
 
 interface ItemDescriptionProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
-    name: string;
-    size?: number;
+    item: FileItem;
     disabled?: boolean;
     small?: boolean;
 }
 
-const ItemDescription = ({
-    className,
-    disabled,
-    name,
-    size,
-    small,
-    ...props
-}: ItemDescriptionProps) => {
+const ItemDescription = ({ className, disabled, item, small, ...props }: ItemDescriptionProps) => {
+    const formattedSize = item.size && bytes.format(item.size, { unitSeparator: " " });
+
     return (
         <div
             className={cn(
@@ -27,7 +22,7 @@ const ItemDescription = ({
             {...props}
         >
             <Text
-                text={name}
+                text={item.name}
                 size="sm"
                 as="div"
                 className={cn(
@@ -35,11 +30,10 @@ const ItemDescription = ({
                     disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-primary"
                 )}
             />
-            {size && !small && (
+            {!small && (formattedSize || item.mimeType) && (
                 <Text
-                    text={bytes.format(size, { unitSeparator: " " })}
                     size="sm"
-                    as="div"
+                    text={[formattedSize, item.mimeType].filter(Boolean).join(" - ")}
                     className={cn(
                         "wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full",
                         disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-muted"

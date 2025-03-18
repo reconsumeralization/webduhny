@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { MultiFilePickerPrimitive, type FileValue } from "./MultiFilePickerPrimitive";
+import { MultiFilePickerPrimitive, type FileItem } from "./MultiFilePickerPrimitive";
 
 const getRandomNumber = (min: number, max: number): number =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
-const createFileList = (size: number = 10): FileValue[] => {
+const createFileList = (size: number = 10): FileItem[] => {
     return Array.from({ length: size }, (_, index) => {
         const width = getRandomNumber(500, 2000); // Random width between 500 and 2000
         const height = getRandomNumber(500, 2000); // Random height between 500 and 2000
@@ -26,6 +26,7 @@ const meta: Meta<typeof MultiFilePickerPrimitive> = {
     tags: ["autodocs"],
     argTypes: {
         onSelectItem: { action: "onSelectItem" },
+        onReplaceItem: { action: "onReplaceItem" },
         onEditItem: { action: "onEditItem" },
         onRemoveItem: { action: "onRemoveItem" },
         disabled: {
@@ -37,7 +38,7 @@ const meta: Meta<typeof MultiFilePickerPrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [selectedFiles, setSelectedFiles] = useState<FileValue[] | null | undefined>(
+        const [selectedFiles, setSelectedFiles] = useState<FileItem[] | null | undefined>(
             args.values
         );
         return (
@@ -45,7 +46,25 @@ const meta: Meta<typeof MultiFilePickerPrimitive> = {
                 {...args}
                 values={selectedFiles}
                 onSelectItem={() => setSelectedFiles(createFileList())}
-                onRemoveItem={() => setSelectedFiles(null)}
+                onReplaceItem={(_, index) =>
+                    setSelectedFiles(prevState => {
+                        if (!prevState) {
+                            return [];
+                        }
+
+                        return [
+                            ...prevState.slice(0, index),
+                            ...createFileList(1),
+                            ...prevState.slice(index + 1)
+                        ];
+                    })
+                }
+                onRemoveItem={item =>
+                    setSelectedFiles(prevState =>
+                        prevState?.filter(value => value.name !== item?.name)
+                    )
+                }
+                onEditItem={(item, i) => alert(`Editing ${item?.name} at position ${i}`)}
             />
         );
     }
@@ -343,6 +362,7 @@ export const CompactGhostVariantInvalid: Story = {
 export const CompactWithTextOnlyPreviewSmall: Story = {
     args: {
         ...CompactType.args,
+        values: createFileList(50),
         renderFilePreview: props => (
             <MultiFilePickerPrimitive.Preview.TextOnly {...props} small={true} />
         )

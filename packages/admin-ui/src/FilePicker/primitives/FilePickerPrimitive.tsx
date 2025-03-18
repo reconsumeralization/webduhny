@@ -37,7 +37,7 @@ const filePickerVariants = cva(
     }
 );
 
-type FileValue = {
+type FileItem = {
     name: string;
     src: string;
     mimeType?: string;
@@ -48,17 +48,17 @@ interface FilePickerPrimitiveProps
     extends React.HTMLAttributes<HTMLDivElement>,
         VariantProps<typeof inputVariants>,
         VariantProps<typeof filePickerVariants> {
-    disabled?: boolean;
-    placeholder?: string;
-    onSelectItem: () => void;
-    onRemoveItem?: (value: string | null) => void;
-    onEditItem?: () => void;
-    value?: FileValue | null;
-    label?: React.ReactElement<typeof Label> | React.ReactNode;
-    style?: React.CSSProperties;
-    required?: boolean;
     containerStyle?: React.CSSProperties;
+    disabled?: boolean;
+    label?: React.ReactElement<typeof Label> | React.ReactNode;
+    onEditItem?: (item: FileItem | null) => void;
+    onRemoveItem?: (item: FileItem | null) => void;
+    onSelectItem: () => void;
+    placeholder?: string;
     renderFilePreview?: (props: any) => React.ReactElement<any>;
+    required?: boolean;
+    style?: React.CSSProperties;
+    value?: FileItem | null;
 }
 
 const BaseFilePickerPrimitive = ({
@@ -66,14 +66,15 @@ const BaseFilePickerPrimitive = ({
     disabled,
     invalid,
     label,
-    onSelectItem,
+    onEditItem,
     onRemoveItem,
+    onSelectItem,
     placeholder,
+    renderFilePreview,
     required,
     type = "area",
     value,
     variant,
-    renderFilePreview,
     ...props
 }: FilePickerPrimitiveProps) => {
     return (
@@ -97,8 +98,9 @@ const BaseFilePickerPrimitive = ({
             {value ? (
                 <FilePreview
                     disabled={disabled}
-                    onRemoveItem={() => onRemoveItem && onRemoveItem(value?.src)}
-                    onSelectItem={onSelectItem}
+                    onEditItem={() => onEditItem && onEditItem(value)}
+                    onRemoveItem={() => onRemoveItem && onRemoveItem(value)}
+                    onReplaceItem={onSelectItem}
                     renderFilePreview={renderFilePreview}
                     type={type}
                     value={value}
@@ -129,4 +131,4 @@ const FilePickerPrimitive = withStaticProps(DecoratableFilePickerPrimitive, {
     }
 });
 
-export { FilePickerPrimitive, type FileValue, type FilePickerPrimitiveProps, filePickerVariants };
+export { FilePickerPrimitive, type FileItem, type FilePickerPrimitiveProps, filePickerVariants };

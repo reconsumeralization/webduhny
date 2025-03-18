@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactComponent as PlaceholderIcon } from "@material-design-icons/svg/outlined/image.svg";
-import type { FileValue } from "~/FilePicker";
+import type { FileItem } from "~/FilePicker";
 import { Icon } from "~/Icon";
 import { cn } from "~/utils";
 import type { RichItemPreviewProps } from "~/FilePicker/primitives/components";
@@ -17,12 +17,12 @@ import xlsThumb from "../assets/xls.svg";
 import xlsxThumb from "../assets/xlsx.svg";
 
 type RichItemThumbnailProps = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> &
-    FileValue & {
+    FileItem & {
         preview?: RichItemPreviewProps["preview"];
         disabled?: boolean;
     };
 
-type ThumbnailProps = Pick<FileValue, "src" | "name">;
+type ThumbnailProps = Pick<FileItem, "src" | "name">;
 
 const Thumbnail = ({ src, name }: ThumbnailProps) => {
     return (
@@ -32,7 +32,7 @@ const Thumbnail = ({ src, name }: ThumbnailProps) => {
     );
 };
 
-type FileTypeProps = Pick<FileValue, "mimeType" | "name">;
+type FileTypeProps = Pick<FileItem, "mimeType" | "name">;
 
 const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     const getMimeTypeSrc = (mimeType: string) => {
@@ -65,7 +65,7 @@ const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     );
 };
 
-type PlaceholderProps = Pick<FileValue, "name"> & {
+type PlaceholderProps = Pick<FileItem, "name"> & {
     disabled?: boolean;
 };
 

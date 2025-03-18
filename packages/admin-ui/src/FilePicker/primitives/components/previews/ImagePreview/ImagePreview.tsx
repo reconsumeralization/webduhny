@@ -1,8 +1,8 @@
 import React from "react";
 import { cn, makeDecoratable } from "~/utils";
-import { RemoveItem } from "../RemoveItem";
 import { previewVariants } from "../variants";
 import type { FilePreviewDefaultProps } from "../types";
+import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
 
 type ImagePreviewProps = FilePreviewDefaultProps;
 
@@ -12,7 +12,8 @@ const DecoratableImagePreview = ({
     variant,
     disabled,
     onRemoveItem,
-    onSelectItem
+    onReplaceItem,
+    onEditItem
 }: ImagePreviewProps) => {
     return (
         <div
@@ -28,7 +29,7 @@ const DecoratableImagePreview = ({
                     "wby-cursor-pointer wby-size-[128px] wby-flex wby-justify-center wby-items-center"
                 }
                 data-role={"select-image"}
-                onClick={onSelectItem}
+                onClick={onReplaceItem}
             >
                 <img
                     src={value.src}
@@ -36,11 +37,14 @@ const DecoratableImagePreview = ({
                     className={"wby-object-contain wby-size-full"}
                 />
             </div>
-            {onRemoveItem && (
-                <div className={"wby-absolute wby-top-1 wby-right-1.5"}>
-                    <RemoveItem onRemoveItem={onRemoveItem} disabled={disabled} />
-                </div>
-            )}
+            <div className={"wby-absolute wby-top-1 wby-right-1.5"}>
+                <ItemActions
+                    onRemoveItem={onRemoveItem}
+                    onEditItem={onEditItem}
+                    disabled={disabled}
+                    className={"wby-flex-col"}
+                />
+            </div>
         </div>
     );
 };

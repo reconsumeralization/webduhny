@@ -6,7 +6,7 @@ import {
 import { FileManager } from "@webiny/app-admin/components";
 import { EditFileUsingUrl } from "~/components/EditFileUsingUrl";
 import { FilePicker } from "@webiny/admin-ui";
-import { getFileValue } from "~/modules/HeadlessCms/fileRenderer/utils";
+import { getFileItem } from "~/modules/HeadlessCms/fileRenderer/utils";
 
 const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
     const Bind = getBind();
@@ -29,7 +29,7 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
                                             label={field.label}
                                             validation={validation}
                                             description={field.helpText}
-                                            value={getFileValue(value)}
+                                            value={getFileItem(value)}
                                             onSelectItem={() =>
                                                 showFileManager(file => onChange(file.src))
                                             }

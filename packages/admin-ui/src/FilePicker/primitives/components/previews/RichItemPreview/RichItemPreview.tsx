@@ -2,7 +2,7 @@ import React from "react";
 import { cn, makeDecoratable } from "~/utils";
 import { RichItemThumbnail } from "./RichItemThumbnail";
 import { ItemDescription } from "../ItemDescription";
-import { RemoveItem } from "../RemoveItem";
+import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
 import { previewVariants } from "../variants";
 import type { FilePreviewDefaultProps } from "../types";
 
@@ -14,14 +14,13 @@ const DecoratableRichItemPreview = ({
     className,
     disabled,
     onRemoveItem,
-    onSelectItem,
+    onReplaceItem,
+    onEditItem,
     value,
     variant,
     preview,
     ...props
 }: RichItemPreviewProps) => {
-    const { src, name, mimeType, size } = value;
-
     return (
         <div
             data-testid="image-preview"
@@ -38,23 +37,19 @@ const DecoratableRichItemPreview = ({
             >
                 <div
                     className="wby-flex wby-items-center wby-justify-between wby-flex-1 wby-cursor-pointer wby-gap-sm-extra wby-self-stretch wby-min-w-0"
-                    onClick={onSelectItem}
+                    onClick={onReplaceItem}
                 >
-                    <RichItemThumbnail
-                        src={src}
-                        name={name}
-                        mimeType={mimeType}
-                        disabled={disabled}
-                        preview={preview}
-                    />
-                    <ItemDescription name={name} size={size} disabled={disabled} />
+                    <RichItemThumbnail {...value} disabled={disabled} preview={preview} />
+                    <ItemDescription item={value} disabled={disabled} />
                 </div>
 
-                {onRemoveItem && (
-                    <div className="wby-pr-sm-extra">
-                        <RemoveItem onRemoveItem={onRemoveItem} disabled={disabled} />
-                    </div>
-                )}
+                <ItemActions
+                    onRemoveItem={onRemoveItem}
+                    onReplaceItem={onReplaceItem}
+                    onEditItem={onEditItem}
+                    disabled={disabled}
+                    className={"wby-pr-sm-extra"}
+                />
             </div>
         </div>
     );
