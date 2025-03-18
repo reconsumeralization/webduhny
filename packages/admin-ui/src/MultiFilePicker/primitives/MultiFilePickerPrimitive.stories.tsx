@@ -1,17 +1,28 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { FilePickerPrimitive, type FileValue } from "./FilePickerPrimitive";
+import { MultiFilePickerPrimitive, type FileValue } from "./MultiFilePickerPrimitive";
 
-const file: FileValue = {
-    name: "selected-background.jpg",
-    mimeType: "image/jpeg",
-    size: 1715938,
-    src: "https://picsum.photos/1000/750"
+const getRandomNumber = (min: number, max: number): number =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+const createFileList = (size: number = 10): FileValue[] => {
+    return Array.from({ length: size }, (_, index) => {
+        const width = getRandomNumber(500, 2000); // Random width between 500 and 2000
+        const height = getRandomNumber(500, 2000); // Random height between 500 and 2000
+        const fileSize = getRandomNumber(500000, 5000000); // Random file size between 500KB and 5MB
+
+        return {
+            name: `file-${index + 1}.jpg`,
+            mimeType: "image/jpeg",
+            size: fileSize,
+            src: `https://picsum.photos/${width}/${height}`
+        };
+    });
 };
 
-const meta: Meta<typeof FilePickerPrimitive> = {
-    title: "Components/Form Primitives/FilePicker",
-    component: FilePickerPrimitive,
+const meta: Meta<typeof MultiFilePickerPrimitive> = {
+    title: "Components/Form Primitives/Multi FilePicker",
+    component: MultiFilePickerPrimitive,
     tags: ["autodocs"],
     argTypes: {
         onSelectItem: { action: "onSelectItem" },
@@ -26,24 +37,26 @@ const meta: Meta<typeof FilePickerPrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [selectedFile, setSelectedFile] = useState<FileValue | null | undefined>(args.value);
+        const [selectedFiles, setSelectedFiles] = useState<FileValue[] | null | undefined>(
+            args.values
+        );
         return (
-            <FilePickerPrimitive
+            <MultiFilePickerPrimitive
                 {...args}
-                value={selectedFile}
-                onSelectItem={() => setSelectedFile(file)}
-                onRemoveItem={() => setSelectedFile(null)}
+                values={selectedFiles}
+                onSelectItem={() => setSelectedFiles(createFileList())}
+                onRemoveItem={() => setSelectedFiles(null)}
             />
         );
     }
 };
 
 export default meta;
-type Story = StoryObj<typeof FilePickerPrimitive>;
+type Story = StoryObj<typeof MultiFilePickerPrimitive>;
 
 export const Default: Story = {
     args: {
-        label: "Upload background image"
+        label: "Add gallery files"
     }
 };
 
@@ -120,7 +133,7 @@ export const AreaGhostVariantInvalid: Story = {
 export const AreaWithImagePreview: Story = {
     args: {
         ...AreaType.args,
-        renderFilePreview: props => <FilePickerPrimitive.Preview.Image {...props} />
+        renderFilePreview: props => <MultiFilePickerPrimitive.Preview.Image {...props} />
     }
 };
 
@@ -128,7 +141,7 @@ export const AreaWithImagePreviewLight: Story = {
     args: {
         ...AreaWithImagePreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.Image variant={"light"} {...props} />
+            <MultiFilePickerPrimitive.Preview.Image variant={"light"} {...props} />
         )
     }
 };
@@ -137,7 +150,7 @@ export const AreaWithImagePreviewBase: Story = {
     args: {
         ...AreaWithImagePreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.Image variant={"base"} {...props} />
+            <MultiFilePickerPrimitive.Preview.Image variant={"base"} {...props} />
         )
     }
 };
@@ -146,7 +159,7 @@ export const AreaWithImagePreviewTransparent: Story = {
     args: {
         ...AreaWithImagePreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.Image variant={"transparent"} {...props} />
+            <MultiFilePickerPrimitive.Preview.Image variant={"transparent"} {...props} />
         )
     }
 };
@@ -154,7 +167,7 @@ export const AreaWithImagePreviewTransparent: Story = {
 export const AreaWithRichItemPreview: Story = {
     args: {
         ...AreaType.args,
-        renderFilePreview: props => <FilePickerPrimitive.Preview.RichItem {...props} />
+        renderFilePreview: props => <MultiFilePickerPrimitive.Preview.RichItem {...props} />
     }
 };
 
@@ -162,7 +175,7 @@ export const AreaWithRichItemPreviewLight: Story = {
     args: {
         ...AreaWithRichItemPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem variant={"light"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem variant={"light"} {...props} />
         )
     }
 };
@@ -171,7 +184,7 @@ export const AreaWithRichItemPreviewBase: Story = {
     args: {
         ...AreaWithRichItemPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem variant={"base"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem variant={"base"} {...props} />
         )
     }
 };
@@ -180,7 +193,7 @@ export const AreaWithRichItemPreviewTransparent: Story = {
     args: {
         ...AreaWithRichItemPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem variant={"transparent"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem variant={"transparent"} {...props} />
         )
     }
 };
@@ -189,7 +202,7 @@ export const AreaWithRichItemThumbnailPreview: Story = {
     args: {
         ...AreaType.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem preview={"thumbnail"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem preview={"thumbnail"} {...props} />
         )
     }
 };
@@ -197,14 +210,19 @@ export const AreaWithRichItemThumbnailPreview: Story = {
 export const AreaWithRichItemFileTypePreview: Story = {
     args: {
         ...AreaType.args,
-        value: {
-            name: "export.csv",
-            src: "export.csv",
-            mimeType: "text/csv",
-            size: 100000
-        },
+        values: AreaType.args?.values
+            ? [
+                  ...AreaType.args.values,
+                  {
+                      name: "export.csv",
+                      src: "export.csv",
+                      mimeType: "text/csv",
+                      size: 100000
+                  }
+              ]
+            : undefined,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem preview={"file-type"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem preview={"file-type"} {...props} />
         )
     }
 };
@@ -213,7 +231,7 @@ export const AreaWithRichItemFileTypePlaceholder: Story = {
     args: {
         ...AreaType.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.RichItem preview={"placeholder"} {...props} />
+            <MultiFilePickerPrimitive.Preview.RichItem preview={"placeholder"} {...props} />
         )
     }
 };
@@ -221,7 +239,7 @@ export const AreaWithRichItemFileTypePlaceholder: Story = {
 export const AreaWithTextOnlyPreview: Story = {
     args: {
         ...AreaType.args,
-        renderFilePreview: props => <FilePickerPrimitive.Preview.TextOnly {...props} />
+        renderFilePreview: props => <MultiFilePickerPrimitive.Preview.TextOnly {...props} />
     }
 };
 
@@ -229,7 +247,7 @@ export const AreaWithTextOnlyPreviewLight: Story = {
     args: {
         ...AreaWithTextOnlyPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.TextOnly variant={"light"} {...props} />
+            <MultiFilePickerPrimitive.Preview.TextOnly variant={"light"} {...props} />
         )
     }
 };
@@ -238,7 +256,7 @@ export const AreaWithTextOnlyPreviewBase: Story = {
     args: {
         ...AreaWithTextOnlyPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.TextOnly variant={"base"} {...props} />
+            <MultiFilePickerPrimitive.Preview.TextOnly variant={"base"} {...props} />
         )
     }
 };
@@ -247,7 +265,7 @@ export const AreaWithTextOnlyPreviewTransparent: Story = {
     args: {
         ...AreaWithTextOnlyPreview.args,
         renderFilePreview: props => (
-            <FilePickerPrimitive.Preview.TextOnly variant={"transparent"} {...props} />
+            <MultiFilePickerPrimitive.Preview.TextOnly variant={"transparent"} {...props} />
         )
     }
 };
@@ -325,6 +343,8 @@ export const CompactGhostVariantInvalid: Story = {
 export const CompactWithTextOnlyPreviewSmall: Story = {
     args: {
         ...CompactType.args,
-        renderFilePreview: props => <FilePickerPrimitive.Preview.TextOnly {...props} small={true} />
+        renderFilePreview: props => (
+            <MultiFilePickerPrimitive.Preview.TextOnly {...props} small={true} />
+        )
     }
 };

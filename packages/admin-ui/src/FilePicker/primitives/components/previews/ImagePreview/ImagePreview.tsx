@@ -30,7 +30,11 @@ const DecoratableImagePreview = ({
                 data-role={"select-image"}
                 onClick={onSelectItem}
             >
-                <img src={value.src} alt={value.name} />
+                <img
+                    src={value.src}
+                    alt={value.name}
+                    className={"wby-object-contain wby-size-full"}
+                />
             </div>
             {onRemoveItem && (
                 <div className={"wby-absolute wby-top-1 wby-right-1.5"}>

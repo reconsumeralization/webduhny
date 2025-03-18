@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { FilePicker } from "~/FilePicker";
+import { MultiFilePicker } from "~/MultiFilePicker";
 
-const meta: Meta<typeof FilePicker> = {
-    title: "Components/Form/FilePicker",
-    component: FilePicker,
+const meta: Meta<typeof MultiFilePicker> = {
+    title: "Components/Form/Multi FilePicker",
+    component: MultiFilePicker,
     argTypes: {
         onSelectItem: { action: "onSelectItem" },
         onEditItem: { action: "onEditItem" },
@@ -20,7 +20,7 @@ const meta: Meta<typeof FilePicker> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FilePicker>;
+type Story = StoryObj<typeof MultiFilePicker>;
 
 export const Default: Story = {};
 
@@ -89,7 +89,7 @@ export const AreaWithValidateFunction: Story = {
             setValidation({ isValid: false, message: "Any custom error message." });
         };
 
-        return <FilePicker {...args} validate={validate} validation={validation} />;
+        return <MultiFilePicker {...args} validate={validate} validation={validation} />;
     }
 };
 
@@ -172,7 +172,7 @@ export const CompactWithValidateFunction: Story = {
             setValidation({ isValid: false, message: "Any custom error message." });
         };
 
-        return <FilePicker {...args} validate={validate} validation={validation} />;
+        return <MultiFilePicker {...args} validate={validate} validation={validation} />;
     }
 };
 

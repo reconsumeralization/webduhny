@@ -26,6 +26,7 @@ export * from "./Label";
 export * from "./List";
 export * from "./Loader";
 export * from "./MultiAutoComplete";
+export * from "./MultiFilePicker";
 export * from "./Popover";
 export * from "./Providers";
 export * from "./RadioGroup";
