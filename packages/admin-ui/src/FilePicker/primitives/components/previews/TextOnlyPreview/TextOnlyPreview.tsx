@@ -1,4 +1,5 @@
 import React from "react";
+import bytes from "bytes";
 import { Text } from "~/Text";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { previewVariants } from "../variants";
@@ -28,18 +29,22 @@ type TextOnlyPreviewProps = FilePreviewDefaultProps &
 
 const DecoratableTextOnlyPreview = ({
     className,
+    disabled,
+    onRemoveItem,
+    onSelectItem,
     small,
     variant,
-    onSelectItem,
-    onRemoveItem,
+    value,
     ...props
 }: TextOnlyPreviewProps) => {
+    const { name, size } = value;
+
     return (
         <div
             data-testid="image-preview"
             className={cn(
                 textOnlyPreviewVariants({ small }),
-                previewVariants({ variant }),
+                previewVariants({ variant, disabled }),
                 className
             )}
             {...props}
@@ -50,20 +55,33 @@ const DecoratableTextOnlyPreview = ({
                 className={"wby-overflow-hidden wby-flex-1 wby-min-w-0"}
             >
                 <Text
-                    text="Logotype_final.png"
+                    text={name}
                     size="sm"
                     as="div"
-                    className="wby-text-neutral-primary wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full"
+                    className={cn(
+                        "wby-text-neutral-primary wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full",
+                        disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-primary"
+                    )}
                 />
-                <Text
-                    text="1.8mb"
-                    size="sm"
-                    className="wby-text-neutral-muted wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full"
-                />
+                {size && small && (
+                    <Text
+                        text={bytes.format(size, { unitSeparator: " " })}
+                        size="sm"
+                        as="div"
+                        className={cn(
+                            "wby-text-neutral-muted wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full",
+                            disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-primary"
+                        )}
+                    />
+                )}
             </div>
             <div>
-                {small && <SelectItem onSelectItem={onSelectItem} small={!!small} />}
-                {onRemoveItem && <RemoveItem onRemoveItem={onRemoveItem} small={!!small} />}
+                {small && (
+                    <SelectItem onSelectItem={onSelectItem} small={!!small} disabled={disabled} />
+                )}
+                {onRemoveItem && (
+                    <RemoveItem onRemoveItem={onRemoveItem} small={!!small} disabled={disabled} />
+                )}
             </div>
         </div>
     );

@@ -8,17 +8,24 @@ interface RemoveItemProps extends IconButtonProps {
     small?: boolean;
 }
 
-const RemoveItem = ({ onRemoveItem, small, ...props }: RemoveItemProps) => {
+const RemoveItem = ({ disabled, onRemoveItem, small, ...props }: RemoveItemProps) => {
     return (
         <IconButton
             {...props}
             icon={
-                <Icon icon={<TrashIcon />} label={"Remove"} size={"md"} color={"neutral-light"} />
+                <Icon
+                    icon={<TrashIcon />}
+                    label={"Remove"}
+                    size={"md"}
+                    color={"neutral-light"}
+                    disabled={disabled}
+                />
             }
             variant={"ghost"}
             size={small ? "xs" : "sm"}
             iconSize={small ? "default" : "lg"}
             onClick={onRemoveItem}
+            disabled={disabled}
         />
     );
 };

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/image.svg";
-import { Button } from "~/Button";
+import { Button, type ButtonProps } from "~/Button";
 import { cn, cva, type VariantProps } from "~/utils";
 
-const triggerVariants = cva("wby-flex", {
+const triggerVariants = cva(["wby-flex", "data-[disabled=true]:wby-cursor-not-allowed"], {
     variants: {
         type: {
             area: ["wby-justify-center", "wby-px-xl wby-py-md-extra"],
@@ -52,18 +52,20 @@ const triggerVariants = cva("wby-flex", {
 });
 
 interface TriggerProps
-    extends React.HTMLAttributes<HTMLDivElement>,
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onClick">,
         VariantProps<typeof triggerVariants> {
     disabled?: boolean;
     text?: string;
+    onClick?: ButtonProps["onClick"];
 }
 
 const Trigger = ({
+    className,
+    disabled,
+    onClick,
     text = "Select from library",
     type,
     variant,
-    disabled,
-    className,
     ...props
 }: TriggerProps) => {
     return (
@@ -74,11 +76,12 @@ const Trigger = ({
             {...props}
         >
             <Button
-                text={text}
-                icon={<ImageIcon />}
-                variant={"ghost"}
-                size={"sm"}
                 disabled={disabled}
+                icon={<ImageIcon />}
+                onClick={onClick}
+                size={"sm"}
+                text={text}
+                variant={"ghost"}
             />
         </div>
     );

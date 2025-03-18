@@ -95,11 +95,12 @@ const BaseFilePickerPrimitive = ({
             )}
             {value ? (
                 <FilePreview
-                    value={value}
+                    disabled={disabled}
+                    onRemoveItem={() => onRemoveItem && onRemoveItem(value?.src)}
+                    onSelectItem={onSelectItem}
                     renderFilePreview={renderFilePreview}
                     type={type}
-                    onSelectItem={onSelectItem}
-                    onRemoveItem={() => onRemoveItem && onRemoveItem(value?.src)}
+                    value={value}
                 />
             ) : (
                 <Trigger

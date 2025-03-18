@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FilePickerPrimitive, type FileValue } from "./FilePickerPrimitive";
 
 const file: FileValue = {
-    name: "Selected image",
+    name: "selected-background.jpg",
     mimeType: "image/jpeg",
     size: 1715938,
     src: "https://picsum.photos/1000/750"

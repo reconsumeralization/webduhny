@@ -11,6 +11,23 @@ export const previewVariants = cva("wby-w-full", {
             true: "wby-pointer-events-none"
         }
     },
+    compoundVariants: [
+        {
+            disabled: true,
+            variant: "light",
+            className: "wby-bg-neutral-dimmed"
+        },
+        {
+            disabled: true,
+            variant: "base",
+            className: "wby-bg-neutral-disabled"
+        },
+        {
+            disabled: true,
+            variant: "transparent",
+            className: "wby-bg-transparent"
+        }
+    ],
     defaultVariants: {
         variant: "light"
     }

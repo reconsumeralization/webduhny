@@ -19,6 +19,7 @@ import xlsxThumb from "../assets/xlsx.svg";
 type RichItemThumbnailProps = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> &
     FileValue & {
         preview?: RichItemPreviewProps["preview"];
+        disabled?: boolean;
     };
 
 type ThumbnailProps = Pick<FileValue, "src" | "name">;
@@ -64,16 +65,24 @@ const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     );
 };
 
-type PlaceholderProps = Pick<FileValue, "name">;
+type PlaceholderProps = Pick<FileValue, "name"> & {
+    disabled?: boolean;
+};
 
-const Placeholder = ({ name }: PlaceholderProps) => {
+const Placeholder = ({ name, disabled }: PlaceholderProps) => {
     return (
         <div
             className={
                 "wby-size-full wby-flex wby-justify-center wby-items-center wby-bg-transparent"
             }
         >
-            <Icon icon={<PlaceholderIcon />} label={name} size={"lg"} color={"neutral-light"} />
+            <Icon
+                icon={<PlaceholderIcon />}
+                label={name}
+                size={"lg"}
+                color={"neutral-light"}
+                disabled={disabled}
+            />
         </div>
     );
 };
@@ -83,7 +92,8 @@ const RichItemThumbnail = ({
     name,
     className,
     mimeType,
-    preview = "thumbnail"
+    preview = "thumbnail",
+    disabled
 }: RichItemThumbnailProps) => {
     const isImage = mimeType?.startsWith("image/");
 
@@ -91,6 +101,7 @@ const RichItemThumbnail = ({
         <div
             className={cn(
                 "wby-size-[56px] wby-m-xs wby-rounded-sm wby-overflow-hidden wby-relative",
+                disabled && "[&_img]:wby-filter [&_img]:wby-grayscale [&_img]:wby-opacity-50",
                 className
             )}
         >
@@ -99,7 +110,7 @@ const RichItemThumbnail = ({
             ) : preview === "file-type" ? (
                 <FileType mimeType={mimeType} name={name} />
             ) : (
-                <Placeholder name={name} />
+                <Placeholder name={name} disabled={disabled} />
             )}
         </div>
     );

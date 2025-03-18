@@ -1,11 +1,10 @@
 import React from "react";
-import bytes from "bytes";
-import { Text } from "~/Text";
 import { cn, makeDecoratable } from "~/utils";
 import { previewVariants } from "../variants";
 import { RemoveItem } from "../../RemoveItem";
 import type { FilePreviewDefaultProps } from "../types";
 import { RichItemThumbnail } from "~/FilePicker/primitives/components/previews/RichItemPreview/RichItemThumbnail";
+import { RichItemDescription } from "~/FilePicker/primitives/components/previews/RichItemPreview/RichItemDescription";
 
 type RichItemPreviewProps = FilePreviewDefaultProps & {
     preview?: "thumbnail" | "file-type" | "placeholder";
@@ -13,10 +12,11 @@ type RichItemPreviewProps = FilePreviewDefaultProps & {
 
 const DecoratableRichItemPreview = ({
     className,
-    variant,
-    onSelectItem,
+    disabled,
     onRemoveItem,
+    onSelectItem,
     value,
+    variant,
     ...props
 }: RichItemPreviewProps) => {
     const { src, name, mimeType, size } = value;
@@ -24,7 +24,11 @@ const DecoratableRichItemPreview = ({
     return (
         <div
             data-testid="image-preview"
-            className={cn("wby-w-full wby-rounded-md", previewVariants({ variant }), className)}
+            className={cn(
+                "wby-w-full wby-rounded-md",
+                previewVariants({ variant, disabled }),
+                className
+            )}
             {...props}
         >
             <div
@@ -35,27 +39,18 @@ const DecoratableRichItemPreview = ({
                     className="wby-flex wby-items-center wby-justify-between wby-flex-1 wby-cursor-pointer wby-gap-sm-extra wby-self-stretch wby-min-w-0"
                     onClick={onSelectItem}
                 >
-                    <RichItemThumbnail src={src} name={name} mimeType={mimeType} />
-                    <div className="wby-flex wby-flex-col wby-gap-xxs wby-overflow-hidden wby-flex-1 wby-min-w-0">
-                        <Text
-                            text={name}
-                            size="sm"
-                            as="div"
-                            className="wby-text-neutral-primary wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full"
-                        />
-                        {size && (
-                            <Text
-                                text={bytes.format(size, { unitSeparator: " " })}
-                                size="sm"
-                                className="wby-text-neutral-muted wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full"
-                            />
-                        )}
-                    </div>
+                    <RichItemThumbnail
+                        src={src}
+                        name={name}
+                        mimeType={mimeType}
+                        disabled={disabled}
+                    />
+                    <RichItemDescription name={name} size={size} disabled={disabled} />
                 </div>
 
                 {onRemoveItem && (
                     <div className="wby-pr-sm-extra">
-                        <RemoveItem onRemoveItem={onRemoveItem} />
+                        <RemoveItem onRemoveItem={onRemoveItem} disabled={disabled} />
                     </div>
                 )}
             </div>
