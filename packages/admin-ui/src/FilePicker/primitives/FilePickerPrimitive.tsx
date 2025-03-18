@@ -69,13 +69,12 @@ const BaseFilePickerPrimitive = ({
     onRemoveItem,
     placeholder,
     required,
-    type,
+    type = "area",
     value,
     variant,
     renderFilePreview,
     ...props
 }: FilePickerPrimitiveProps) => {
-    console.log("FilePickerPrimitiveProps", props);
     return (
         <div
             data-disabled={disabled}

@@ -20,6 +20,7 @@ const DecoratableFilePicker = ({
     validation,
     validate,
     onBlur: originalOnBlur,
+    type = "area",
     ...props
 }: FilePickerProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
@@ -40,9 +41,22 @@ const DecoratableFilePicker = ({
 
     return (
         <div className={"wby-w-full"}>
-            <FormComponentLabel text={label} required={required} disabled={disabled} />
+            {type !== "area" && (
+                <FormComponentLabel text={label} required={required} disabled={disabled} />
+            )}
             <FormComponentDescription text={description} />
-            <FilePickerPrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
+            <FilePickerPrimitive
+                {...props}
+                label={
+                    label && (
+                        <FormComponentLabel text={label} required={required} disabled={disabled} />
+                    )
+                }
+                disabled={disabled}
+                invalid={invalid}
+                onBlur={onBlur}
+                type={type}
+            />
             <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <FormComponentNote text={note} />
         </div>
