@@ -4,7 +4,7 @@ import {
     type FileItemDto,
     type FileItemFormatted,
     FileItemFormatter
-} from "~/FilePicker";
+} from "../../../FilePicker/domain";
 
 interface MultiFilePickerPresenterParams {
     values?: FileItemDto[] | string[] | null;
