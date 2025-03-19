@@ -3,7 +3,7 @@ import React from "react";
 import { Hotkeys } from "react-hotkeyz";
 // @ts-expect-error
 import dataURLtoBlob from "dataurl-to-blob";
-import { ImageEditorDialog } from "@webiny/ui/ImageUpload";
+import { ImageEditorDialog } from "~/components/ImageEditor/ImageEditorDialog";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
 import {
     FileManagerViewConfig,

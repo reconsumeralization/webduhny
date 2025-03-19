@@ -10,7 +10,7 @@ import { FileManager } from "@webiny/app-admin/components";
 import { getSupportedExtensionsLabelHint } from "./utils";
 import { EditFileUsingUrl } from "~/components/EditFileUsingUrl";
 import { FileItem } from "@webiny/app-admin/types";
-import { Label, MultiFilePicker } from "@webiny/admin-ui";
+import { MultiFilePicker } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/file");
 
@@ -71,16 +71,14 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
                                     return (
                                         <MultiFilePicker
                                             {...bind}
-                                            label={
-                                                <Label
-                                                    text={field.label}
-                                                    hint={getSupportedExtensionsLabelHint(
-                                                        imagesOnly
-                                                    )}
-                                                />
-                                            }
+                                            label={field.label}
                                             validation={validation}
-                                            description={field.helpText}
+                                            description={[
+                                                field.helpText,
+                                                getSupportedExtensionsLabelHint(imagesOnly)
+                                            ]
+                                                .filter(Boolean)
+                                                .concat(" ")}
                                             values={values}
                                             onSelectItem={() => selectFiles()}
                                             onReplaceItem={(_, index) => selectFiles(index)}

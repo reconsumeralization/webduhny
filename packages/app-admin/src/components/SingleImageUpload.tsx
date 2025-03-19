@@ -1,7 +1,6 @@
-import * as React from "react";
+import React, { useCallback } from "react";
 import { FileManager, FileManagerFileItem } from "~/index";
 import { FormComponentProps } from "@webiny/ui/types";
-import { useCallback } from "react";
 import { FileItem, FilePicker, type FilePickerProps } from "@webiny/admin-ui";
 
 export interface SingleImageUploadProps extends FormComponentProps {
@@ -113,17 +112,19 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
             images={!accept}
             maxSize={maxSize}
             render={({ showFileManager }) => (
-                <FilePicker
-                    label={label}
-                    description={description}
-                    validation={validation}
-                    className={className}
-                    disabled={disabled}
-                    value={value ? FileItem.createFromUrl(value.src) : null}
-                    onSelectItem={showFileManager}
-                    onRemoveItem={() => onChange(null)}
-                    renderFilePreview={renderFilePreview}
-                />
+                <>
+                    <FilePicker
+                        label={label}
+                        description={description}
+                        validation={validation}
+                        className={className}
+                        disabled={disabled}
+                        value={value ? FileItem.createFromUrl(value.src) : null}
+                        onSelectItem={showFileManager}
+                        onRemoveItem={() => onChange(null)}
+                        renderFilePreview={renderFilePreview}
+                    />
+                </>
             )}
         />
     );

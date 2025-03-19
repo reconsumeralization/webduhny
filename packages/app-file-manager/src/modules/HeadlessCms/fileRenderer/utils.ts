@@ -12,6 +12,6 @@ export const imagePlugins = [
 
 export const getSupportedExtensionsLabelHint = (imagesOnly?: boolean) => {
     return imagesOnly
-        ? `Supported files extensions: ${imagePlugins.filter(Boolean).join(", ")}`
+        ? `Supported files extensions: ${imagePlugins.filter(Boolean).join(", ")}.`
         : null;
 };

@@ -2,7 +2,6 @@ import * as React from "react";
 import { cn, cva, type VariantProps, makeDecoratable, withStaticProps } from "~/utils";
 import { Trigger } from "./components";
 import { Label } from "~/Label";
-import { FormComponentLabel } from "~/FormComponent";
 import { inputVariants } from "~/Input";
 import { ImagePreview, RichItemPreview, TextOnlyPreview, FilePreview } from "./components";
 import { FileItem, type FileItemDto, type FileItemFormatted } from "../domain";
@@ -50,12 +49,12 @@ interface FilePickerPrimitiveProps
     onSelectItem: () => void;
     placeholder?: string;
     renderFilePreview?: (props: any) => React.ReactElement<any>;
-    required?: boolean;
     style?: React.CSSProperties;
     value?: FileItemDto | string | null;
 }
 
 const BaseFilePickerPrimitive = ({
+    className,
     containerStyle,
     disabled,
     invalid,
@@ -65,32 +64,24 @@ const BaseFilePickerPrimitive = ({
     onSelectItem,
     placeholder,
     renderFilePreview,
-    required,
     type = "area",
     value,
     variant,
     ...props
 }: FilePickerPrimitiveProps) => {
     const { vm } = useFilePicker({ value });
-
     return (
         <div
+            {...props}
             data-disabled={disabled}
             className={cn(
                 inputVariants({ variant, invalid }),
-                filePickerVariants({ type, variant })
+                filePickerVariants({ type, variant }),
+                className
             )}
             style={containerStyle}
-            {...props}
         >
-            {label && type === "area" && (
-                <FormComponentLabel
-                    text={label}
-                    required={required}
-                    disabled={disabled}
-                    className={"wby-mb-0"}
-                />
-            )}
+            {label && type === "area" && label}
             {vm.file ? (
                 <FilePreview
                     disabled={disabled}

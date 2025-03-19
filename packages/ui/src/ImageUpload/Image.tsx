@@ -1,5 +1,4 @@
 import React from "react";
-import { FilePicker } from "@webiny/admin-ui";
 
 interface ImageProps {
     uploadImage: () => void;
@@ -19,24 +18,12 @@ interface ImageProps {
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `FilePicker` component from the `@webiny/admin-ui` package instead.
  */
-const Image = ({
-    uploadImage,
-    removeImage,
-    editImage,
-    renderImagePreview,
-    ...props
-}: ImageProps) => {
-    console.log("props", props);
-
+export const Image = ({}: ImageProps) => {
     return (
-        <FilePicker
-            {...props}
-            onEditItem={editImage}
-            onSelectItem={uploadImage}
-            onRemoveItem={() => removeImage && removeImage(null)}
-            renderFilePreview={renderImagePreview}
-        />
+        <>
+            {
+                "Deprecated component! The original code has been moved to `@webiny/admin-ui` package."
+            }
+        </>
     );
 };
-
-export default Image;

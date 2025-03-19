@@ -1,12 +1,48 @@
 import React, { useCallback } from "react";
+import styled from "@emotion/styled";
 import { FileManager, SingleImageUploadProps } from "@webiny/app-admin";
 import { ImageRenderer } from "@webiny/app-page-builder-elements/renderers/image";
-import { AddImageIconWrapper, AddImageWrapper } from "@webiny/ui/ImageUpload/styled";
-import { ReactComponent as AddImageIcon } from "@webiny/ui/ImageUpload/icons/round-add_photo_alternate-24px.svg";
+import { ReactComponent as AddImageIcon } from "@material-design-icons/svg/round/add_photo_alternate.svg";
 import { Typography } from "@webiny/ui/Typography";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { PbElement } from "~/types";
+
+export const AddImageIconWrapper = styled("div")({
+    color: "var(--mdc-theme-text-secondary-on-background)",
+    ">svg": {
+        width: "100%",
+        height: "100%",
+        maxWidth: 50,
+        maxHeight: 50,
+        display: "block",
+        opacity: 0.5,
+        margin: "0 auto"
+    }
+});
+
+export const AddImageWrapper = styled("div")({
+    width: "100%",
+    height: "100%",
+    minHeight: 50,
+    minWidth: 50,
+    textAlign: "center",
+    backgroundColor: "var(--mdc-theme-on-background)",
+    borderRadius: 0,
+    borderBottom: "1px solid var(--mdc-theme-text-hint-on-background)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "column",
+    transition: "color 0.2s",
+    cursor: "pointer",
+    padding: 10,
+    boxSizing: "border-box",
+    "&:hover": {
+        backgroundColor: "rgba(0,0,0, 0.5)",
+        borderBottom: "1px solid var(--mdc-theme-on-surface)"
+    }
+});
 
 const RenderBlank = (props: { onClick?: () => void }) => {
     return (

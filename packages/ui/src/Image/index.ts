@@ -1,4 +1,4 @@
-import { Image } from "@webiny/admin-ui/";
+import { Image } from "@webiny/admin-ui";
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.

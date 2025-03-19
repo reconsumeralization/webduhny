@@ -6,12 +6,14 @@ interface FormComponentLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     text?: React.ReactElement<typeof Label> | React.ReactNode;
     required?: boolean;
     disabled?: boolean;
+    hint?: React.ReactNode;
 }
 
 const DecoratableFormComponentLabel = ({
     text,
     required,
     disabled,
+    hint,
     className,
     ...props
 }: FormComponentLabelProps) => {
@@ -24,12 +26,13 @@ const DecoratableFormComponentLabel = ({
         if (React.isValidElement(text) && text.type === Label) {
             return React.cloneElement(text as React.ReactElement<LabelProps>, {
                 required,
-                disabled
+                disabled,
+                hint
             });
         }
 
-        return <Label text={text} required={required} disabled={disabled} />;
-    }, [text, required, disabled]);
+        return <Label text={text} required={required} disabled={disabled} hint={hint} />;
+    }, [text, required, disabled, hint]);
 
     if (!renderLabel) {
         return null;

@@ -13,7 +13,6 @@ import {
 import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Button } from "~/Button";
 import { inputVariants } from "~/Input";
-import { FormComponentLabel } from "~/FormComponent";
 import { useMultiFilePicker } from "~/MultiFilePicker/primitives/useMultiFilePicker";
 
 interface MultiFilePickerPrimitiveProps
@@ -26,6 +25,7 @@ interface MultiFilePickerPrimitiveProps
 }
 
 const BaseMultiFilePickerPrimitive = ({
+    className,
     buttonPlaceholder,
     containerStyle,
     disabled,
@@ -37,7 +37,6 @@ const BaseMultiFilePickerPrimitive = ({
     onSelectItem,
     placeholder,
     renderFilePreview,
-    required,
     type = "area",
     values = [],
     variant,
@@ -47,23 +46,19 @@ const BaseMultiFilePickerPrimitive = ({
 
     return (
         <div
+            {...props}
             data-disabled={disabled}
             className={cn(
                 inputVariants({ variant, invalid }),
                 filePickerVariants({ type, variant }),
-                "wby-max-h-[280px]"
+                "wby-max-h-[280px]",
+                className
             )}
             style={containerStyle}
-            {...props}
         >
             {label && type === "area" && (
                 <div className={"wby-flex wby-justify-between"}>
-                    <FormComponentLabel
-                        text={label}
-                        required={required}
-                        disabled={disabled}
-                        className={"wby-mb-0"}
-                    />
+                    {label}
                     <Button
                         text={buttonPlaceholder ?? "Select a file"}
                         variant={"ghost"}
