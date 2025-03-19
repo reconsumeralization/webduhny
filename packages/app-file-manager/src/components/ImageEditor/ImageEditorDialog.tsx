@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ImageEditor } from "./ImageEditor";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { css } from "emotion";
 import {
     Dialog,
     DialogCancel,
@@ -25,22 +24,6 @@ interface ImageEditorDialogProps {
     "data-testid"?: string;
 }
 
-const imageEditorDialog = css({
-    width: "100vw",
-    height: "100vh",
-    ".mdc-dialog__surface": {
-        maxWidth: "100% !important",
-        maxHeight: "100% !important",
-        ".webiny-ui-dialog__content": {
-            maxWidth: "100% !important",
-            maxHeight: "100% !important",
-            width: "100vw",
-            height: "100vh",
-            paddingTop: "0 !important"
-        }
-    }
-});
-
 export const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     const { src, options, onAccept, open, dialogZIndex, ...dialogProps } = props;
     const imageEditor = React.createRef<ImageEditor>();
@@ -59,12 +42,7 @@ export const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     };
 
     return (
-        <Dialog
-            className={imageEditorDialog}
-            style={{ zIndex: dialogZIndex }}
-            open={open}
-            {...dialogProps}
-        >
+        <Dialog style={{ zIndex: dialogZIndex }} open={open} {...dialogProps}>
             {open && (
                 <ImageEditor ref={imageEditor} src={src} options={options}>
                     {({ render, activeTool }) => (

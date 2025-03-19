@@ -1,7 +1,6 @@
 import React from "react";
 import { flip, filter, crop, rotate } from "./toolbar";
 import { ImageEditorTool, ToolbarTool } from "./toolbar/types";
-import styled from "@emotion/styled";
 import { ButtonSecondary, ButtonPrimary } from "@webiny/ui/Button";
 /**
  * Package load-script does not have types.
@@ -15,35 +14,6 @@ const toolbar = {
     crop,
     rotate
 };
-
-const Toolbar = styled("div")({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "var(--mdc-theme-secondary)",
-    margin: "-24px -24px 0px -24px",
-    padding: 2,
-    position: "absolute",
-    width: "100%",
-    boxSizing: "border-box",
-    zIndex: 10,
-    "> div.disabled": {
-        opacity: 0.5,
-        pointerEvents: "none"
-    }
-});
-
-const ToolOptions = styled("div")({
-    margin: "50px -24px 10px -24px",
-    boxSizing: "border-box",
-    padding: 10,
-    backgroundColor: "var(--mdc-theme-background)",
-    borderTop: "1px solid var(--mdc-theme-on-background)"
-});
-
-const ApplyCancelActions = styled("div")({
-    textAlign: "center"
-});
 
 const initScripts = (): Promise<string> => {
     return new Promise((resolve: any) => {
@@ -216,7 +186,7 @@ class ImageEditor extends React.Component<ImageEditorProps, ImageEditorState> {
         const { tool } = this.state;
         const editor = (
             <React.Fragment>
-                <Toolbar>
+                <div className={"wby-flex wby-justify-center wby-items-center wby-w-full"}>
                     {tools.map(key => {
                         const tool: ImageEditorTool = toolbar[key];
                         if (!tool) {
@@ -224,16 +194,22 @@ class ImageEditor extends React.Component<ImageEditorProps, ImageEditorState> {
                         }
 
                         return (
-                            <div key={key} className={this.state.tool ? "disabled" : ""}>
+                            <div
+                                key={key}
+                                className={
+                                    this.state.tool
+                                        ? "wby-opacity-50 wby-cursor wby-pointer-events-none"
+                                        : ""
+                                }
+                            >
                                 {tool.icon({
                                     activateTool: () => this.activateTool(tool)
                                 })}
                             </div>
                         );
                     })}
-                </Toolbar>
-
-                <ToolOptions>
+                </div>
+                <div className={"wby-my-md"}>
                     {tool ? (
                         <>
                             {typeof tool.renderForm === "function" &&
@@ -243,7 +219,7 @@ class ImageEditor extends React.Component<ImageEditorProps, ImageEditorState> {
                                     canvas: this.canvas
                                 })}
 
-                            <ApplyCancelActions>
+                            <div className={"wby-text-center wby-mt-sm"}>
                                 <ButtonSecondary
                                     data-testid="button-cancel"
                                     onClick={() => {
@@ -261,20 +237,20 @@ class ImageEditor extends React.Component<ImageEditorProps, ImageEditorState> {
                                 >
                                     Apply
                                 </ButtonPrimary>
-                            </ApplyCancelActions>
+                            </div>
                         </>
                     ) : (
                         <div style={{ textAlign: "center" }}>
                             Select a tool to start working on your image.
                         </div>
                     )}
-                </ToolOptions>
+                </div>
 
                 <div style={{ margin: "0 auto", textAlign: "center" }}>
                     <canvas
                         key={src}
                         id={"canvas"}
-                        style={{ maxWidth: 700 }}
+                        style={{ maxWidth: "100%" }}
                         ref={this.canvas as React.Ref<any>}
                     />
                 </div>

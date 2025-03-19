@@ -1,6 +1,6 @@
 import React from "react";
 import { ImageEditorTool } from "./types";
-import { ReactComponent as FlipIcon } from "./icons/flip.svg";
+import { ReactComponent as FlipIcon } from "@material-design-icons/svg/outlined/flip.svg";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 

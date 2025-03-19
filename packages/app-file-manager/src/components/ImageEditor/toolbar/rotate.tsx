@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as RotateRight } from "./icons/rotateRight.svg";
+import { ReactComponent as RotateRight } from "@material-design-icons/svg/outlined/rotate_right.svg";
 import { ImageEditorTool } from "./types";
 import { Slider } from "@webiny/ui/Slider";
 import { Tooltip } from "@webiny/ui/Tooltip";
@@ -17,7 +17,7 @@ class RenderForm extends React.Component<any, any> {
 
     public override render() {
         return (
-            <div style={{ width: "500px", margin: "0 auto" }}>
+            <div style={{ width: "100%", margin: "0 auto" }}>
                 <Slider
                     label={"Range Input"}
                     value={this.state.rangeInput}
