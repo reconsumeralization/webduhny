@@ -26,7 +26,7 @@ import { PageTemplateContentPreview } from "~/admin/views/PageTemplates/PageTemp
 
 const ListContainer = styled.div`
     width: 100%;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 45px);
     overflow: clip;
     display: flex;
     flex-direction: column;

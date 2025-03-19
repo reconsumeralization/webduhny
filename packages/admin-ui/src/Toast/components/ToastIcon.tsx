@@ -2,7 +2,7 @@ import React from "react";
 import { ReactComponent as NotificationsIconActive } from "@material-design-icons/svg/outlined/notifications_active.svg";
 import { Icon as BaseIcon } from "~/Icon";
 
-const NotificationIcon = (
+const ToastNotificationIcon = (
     <BaseIcon
         icon={<NotificationsIconActive />}
         label={"Notification"}
@@ -11,18 +11,18 @@ const NotificationIcon = (
     />
 );
 
-type IconProps = {
+type ToastIconProps = {
     icon?: React.ReactElement<typeof BaseIcon>;
 };
 
-const ToastIcon = ({ icon }: IconProps) => {
+const ToastIcon = ({ icon }: ToastIconProps) => {
     return (
         <span>
             {React.isValidElement(icon)
-                ? React.cloneElement(icon, { ...NotificationIcon.props, ...icon.props })
-                : React.cloneElement(NotificationIcon)}
+                ? React.cloneElement(icon, { ...ToastNotificationIcon.props, ...icon.props })
+                : React.cloneElement(ToastNotificationIcon)}
         </span>
     );
 };
 
-export { ToastIcon, type IconProps };
+export { ToastIcon, type ToastIconProps };

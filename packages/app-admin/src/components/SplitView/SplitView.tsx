@@ -26,7 +26,7 @@ const grid = css({
 const RightPanelWrapper = styled("div")({
     backgroundColor: "var(--mdc-theme-background)",
     overflow: "auto",
-    height: "calc(100vh - 64px)"
+    height: "calc(100vh - 45px)"
 });
 
 export const leftPanel = css({
@@ -42,7 +42,7 @@ export const leftPanel = css({
     ">.mdc-deprecated-list": {
         display: "flex",
         flexDirection: "column",
-        maxHeight: "calc(100vh - 64px)",
+        maxHeight: "calc(100vh - 45px)",
         overflow: "auto"
     }
 });
@@ -57,6 +57,7 @@ const SplitView = ({ children, className, layoutId, ...props }: SplitViewProps) 
             direction="horizontal"
             id="splitView"
             autoSaveId={layoutId}
+            style={{ height: "auto" }}
             className={classSet(grid, className, "webiny-split-view")}
             {...props}
         >

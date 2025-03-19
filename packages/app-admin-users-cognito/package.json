@@ -14,6 +14,7 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@emotion/styled": "11.10.6",
+    "@webiny/admin-ui": "0.0.0",
     "@webiny/app": "0.0.0",
     "@webiny/app-admin": "0.0.0",
     "@webiny/app-admin-cognito": "0.0.0",

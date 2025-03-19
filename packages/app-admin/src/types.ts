@@ -1,36 +1,14 @@
 import React, { ReactElement } from "react";
 import { Plugin } from "@webiny/plugins/types";
 import { ApolloClient } from "apollo-client";
-import { ItemProps, MenuProps, SectionProps } from "~/plugins/MenuPlugin";
+import { SecurityPermission } from "@webiny/app-security/types";
 
 export { Icon } from "~/components/IconPicker/types";
-
-/**
- * LEGACY TYPE. Only for backwards compatibility.
- */
-export type AdminMenuLogoPlugin = Plugin & {
-    name: "admin-menu-logo";
-    type: "admin-menu-logo";
-    render(): React.ReactElement;
-};
-
-/**
- * Enables adding custom menu sections and items in the main menu, located on the left side of the screen.
- * @see https://docs.webiny.com/docs/webiny-apps/admin/development/plugins-reference/app#admin-menu
- */
-export type AdminMenuPlugin = Plugin & {
-    type: "admin-menu";
-    render(props: {
-        Menu: React.ComponentType<MenuProps>;
-        Section: React.ComponentType<SectionProps>;
-        Item: React.ComponentType<ItemProps>;
-    }): React.ReactNode;
-    order?: number;
-};
 
 export interface AdminFileManagerFileTypePluginRenderParams {
     file: FileItem;
 }
+
 export type AdminFileManagerFileTypePlugin = Plugin & {
     type: "admin-file-manager-file-type";
     types: string[];
@@ -43,6 +21,7 @@ export type AdminFileManagerFileTypePlugin = Plugin & {
 export interface AdminInstallationPluginRenderParams {
     onInstalled: () => Promise<void>;
 }
+
 export type AdminInstallationPlugin = Plugin & {
     type: "admin-installation";
     getInstalledVersion(params: { client: ApolloClient<object> }): Promise<string | null>;
@@ -57,8 +36,6 @@ export type AdminAppPermissionRendererPlugin = Plugin & {
     system?: boolean;
     render(params: any): ReactElement;
 };
-
-import { SecurityPermission } from "@webiny/app-security/types";
 
 /**
  * Represents a file as we receive from the GraphQL API.

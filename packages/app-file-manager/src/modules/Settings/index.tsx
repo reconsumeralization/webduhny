@@ -1,33 +1,42 @@
 import React from "react";
 import { plugins } from "@webiny/plugins";
-import { AddRoute, Plugin } from "@webiny/app";
 import { HasPermission } from "@webiny/app-security";
-import { AddMenu, Layout } from "@webiny/app-admin";
+import { Layout } from "@webiny/app-admin";
 import installation from "./plugins/installation";
 import permissionRenderer from "./plugins/permissionRenderer";
 import { FileManagerSettings } from "./views/FileManagerSettings";
+import { AdminConfig } from "@webiny/app-admin";
+
+const { Menu, Route } = AdminConfig;
 
 export const SettingsModule = () => {
     plugins.register(installation, permissionRenderer);
 
     return (
-        <Plugin>
+        <AdminConfig>
             <HasPermission name={"fm.settings"}>
-                <AddRoute path="/settings/file-manager/general">
-                    <Layout title={"File Manager - General Settings"}>
-                        <FileManagerSettings />
-                    </Layout>
-                </AddRoute>
-                <AddMenu name={"settings"}>
-                    <AddMenu name={"settings.fileManager"} label={"File Manager"}>
-                        <AddMenu
-                            name={"settings.fileManager.general"}
-                            label={"General"}
-                            path={"/settings/file-manager/general"}
-                        />
-                    </AddMenu>
-                </AddMenu>
+                <Route
+                    name={"settings.fm.general"}
+                    path={"/settings/file-manager/general"}
+                    element={
+                        <Layout title={"File Manager - General Settings"}>
+                            <FileManagerSettings />
+                        </Layout>
+                    }
+                />
+                <Menu
+                    parent={"settings"}
+                    name={"settings.fm"}
+                    element={<Menu.Group label={"File Manager"} />}
+                />
+                <Menu
+                    parent={"settings"}
+                    name={"settings.fm.general"}
+                    element={
+                        <Menu.Link label={"General"} path={"/settings/file-manager/general"} />
+                    }
+                />
             </HasPermission>
-        </Plugin>
+        </AdminConfig>
     );
 };

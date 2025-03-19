@@ -16,6 +16,9 @@ export const Compose = (props: ComposeProps) => {
     const targetFn = (props.function ?? props.component) as Decoratable;
 
     useEffect(() => {
+        if (!targetFn) {
+            console.warn("You must provide a function or a component to compose with!", props);
+        }
         if (typeof targetFn.original === "undefined") {
             console.warn(
                 `You must make your function "${

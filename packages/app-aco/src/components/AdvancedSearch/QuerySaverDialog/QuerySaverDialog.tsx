@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 
 import { Form } from "@webiny/form";
 import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
-import { DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Input } from "@webiny/ui/Input";
 import { CircularProgress } from "@webiny/ui/Progress";
@@ -10,8 +10,6 @@ import { CircularProgress } from "@webiny/ui/Progress";
 import { QuerySaverDialogFormData, QuerySaverDialogPresenter } from "./QuerySaverDialogPresenter";
 
 import { FilterDTO } from "../domain";
-
-import { DialogContainer } from "./QuerySaverDialog.styled";
 
 interface QuerySaverDialogProps {
     onClose: () => void;
@@ -44,7 +42,7 @@ export const QuerySaverDialog = ({ filter, ...props }: QuerySaverDialogProps) =>
     };
 
     return (
-        <DialogContainer open={props.vm.isOpen} onClose={props.onClose}>
+        <Dialog open={props.vm.isOpen} onClose={props.onClose}>
             {props.vm.isOpen ? (
                 <Form
                     data={presenter.vm.data}
@@ -82,6 +80,6 @@ export const QuerySaverDialog = ({ filter, ...props }: QuerySaverDialogProps) =>
                     )}
                 </Form>
             ) : null}
-        </DialogContainer>
+        </Dialog>
     );
 };

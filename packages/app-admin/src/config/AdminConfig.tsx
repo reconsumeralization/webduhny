@@ -1,5 +1,7 @@
 import React from "react";
 import { createConfigurableComponent } from "@webiny/react-properties";
+import { Menu, type MenuConfig } from "./AdminConfig/Menu";
+import { Route } from "./AdminConfig/Route";
 import { Theme } from "./AdminConfig/Theme";
 import { createProvider } from "@webiny/app";
 
@@ -9,26 +11,31 @@ export const AdminWithConfig = Object.assign(base.WithConfig, {
     displayName: "AdminWithConfig"
 });
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AdminConfig {
-    // Add properties here. At the moment, we don't have any.
-}
-
-function useAdminConfig() {
-    return base.useConfig();
+    menus: MenuConfig[];
 }
 
 export const AdminConfigProvider = createProvider(Original => {
     return function AdminConfigProvider({ children }) {
         return (
-            <AdminWithConfig>
-                <Original>{children}</Original>
-            </AdminWithConfig>
+            <Original>
+                <AdminWithConfig>{children}</AdminWithConfig>
+            </Original>
         );
     };
 });
 
+export const useAdminConfig = () => {
+    const baseConfig = base.useConfig();
+
+    return {
+        menus: baseConfig.menus ?? []
+    };
+};
+
 export const AdminConfig = Object.assign(base.Config, {
     Theme,
-    use: useAdminConfig
+    Menu,
+    Route,
+    useAdminConfig
 });

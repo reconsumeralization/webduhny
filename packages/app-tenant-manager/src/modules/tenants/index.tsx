@@ -1,11 +1,13 @@
 import React from "react";
 import { SplitView, LeftPanel, RightPanel } from "@webiny/app-admin/components/SplitView";
-import { AddMenu, AddRoute, Layout } from "@webiny/app-admin";
-import { ReactComponent as TenantIcon } from "~/assets/business_black_24dp.svg";
+import { Layout } from "@webiny/app-admin";
 import TenantDataList from "./TenantDataList";
 import TenantForm from "./TenantForm";
-import { Plugins } from "@webiny/app-admin";
 import { IsRootTenant } from "~/components/IsRootTenant";
+import { ReactComponent as TenantManagerIcon } from "@material-design-icons/svg/outlined/domain.svg";
+import { AdminConfig } from "@webiny/app-admin";
+
+const { Menu, Route } = AdminConfig;
 
 export const TenantsView = () => {
     return (
@@ -22,17 +24,30 @@ export const TenantsView = () => {
 
 export const TenantsModule = () => {
     return (
-        <Plugins>
+        <AdminConfig>
             <IsRootTenant>
-                <AddMenu name="tenantManager" label={`Tenant Manager`} icon={<TenantIcon />}>
-                    <AddMenu name={"tenantManager.tenants"} label={`Tenants`} path="/tenants" />
-                </AddMenu>
-                <AddRoute exact path={"/tenants"}>
-                    <Layout title={"Tenant Manager - Tenants"}>
-                        <TenantsView />
-                    </Layout>
-                </AddRoute>
+                <Menu
+                    name={"tenantManager"}
+                    element={
+                        <Menu.Link
+                            icon={<TenantManagerIcon />}
+                            label={"Tenant Manager"}
+                            path={"/tenants"}
+                        />
+                    }
+                />
+
+                <Route
+                    name={"tenantManager.tenants"}
+                    exact
+                    path={"/tenants"}
+                    element={
+                        <Layout title={"Tenant Manager - Tenants"}>
+                            <TenantsView />
+                        </Layout>
+                    }
+                />
             </IsRootTenant>
-        </Plugins>
+        </AdminConfig>
     );
 };

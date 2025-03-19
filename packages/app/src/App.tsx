@@ -1,12 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useMemo,
-    useState,
-    useCallback,
-    FunctionComponentElement,
-    ReactElement
-} from "react";
+import React, { createContext, useContext, useMemo, useState, useCallback } from "react";
 import { BrowserRouter, RouteProps, Route } from "@webiny/react-router";
 import {
     CompositionProvider,
@@ -19,20 +11,16 @@ import {
 import { Routes as SortRoutes } from "./core/Routes";
 import { DebounceRender } from "./core/DebounceRender";
 import { PluginsProvider } from "./core/Plugins";
-
-type RoutesByPath = {
-    [key: string]: ReactElement<RouteProps>;
-};
+import { RouterWithConfig, useRouterConfig } from "~/config/RouterConfig";
 
 interface State {
-    routes: RoutesByPath;
     plugins: JSX.Element[];
     providers: Decorator<GenericComponent<ProviderProps>>[];
 }
 
 interface AppContext extends State {
-    addRoute(route: JSX.Element): void;
     addProvider(hoc: Decorator<GenericComponent<ProviderProps>>): void;
+
     addPlugin(plugin: React.ReactNode): void;
 }
 
@@ -64,29 +52,16 @@ interface ProviderProps {
 
 type ComponentWithChildren = React.ComponentType<{ children?: React.ReactNode }>;
 
-export const App = ({
+export const AppBase = ({
     debounceRender = 50,
     routes = [],
     providers = [],
-    decorators = [],
     children
 }: AppProps) => {
     const [state, setState] = useState<State>({
-        routes: routes.reduce<RoutesByPath>((acc, item) => {
-            return { ...acc, [item.path as string]: <Route {...item} /> };
-        }, {}),
         plugins: [],
         providers
     });
-
-    const addRoute = useCallback((route: FunctionComponentElement<RouteProps>) => {
-        setState(state => {
-            return {
-                ...state,
-                routes: { ...state.routes, [route.props.path as string]: route }
-            };
-        });
-    }, []);
 
     const addProvider = useCallback((component: HigherOrderComponent<any, any>) => {
         setState(state => {
@@ -113,7 +88,6 @@ export const App = ({
     const appContext = useMemo(
         () => ({
             ...state,
-            addRoute,
             addProvider,
             addPlugin
         }),
@@ -122,10 +96,14 @@ export const App = ({
 
     const AppRouter = useMemo(() => {
         return function AppRouter() {
-            const routes = Object.values(state.routes);
-            return <SortRoutes key={routes.length} routes={routes} />;
+            const routerConfig = useRouterConfig();
+            const combinedRoutes = [...routes, ...routerConfig.routes].map(r => {
+                return <Route path={r.path} element={r.element} key={r.path} />;
+            });
+
+            return <SortRoutes key={routes.length} routes={combinedRoutes} />;
         };
-    }, [state.routes]);
+    }, [routes]);
 
     const Providers = useMemo(() => {
         return compose(...(state.providers || []))(({ children }: ProviderProps) => {
@@ -137,19 +115,25 @@ export const App = ({
 
     return (
         <AppContext.Provider value={appContext}>
-            <CompositionProvider decorators={decorators}>
-                {children}
-                <BrowserRouter>
-                    <Providers>
-                        <PluginsProvider>{state.plugins}</PluginsProvider>
-                        <DebounceRender wait={debounceRender}>
+            {children}
+            <BrowserRouter>
+                <Providers>
+                    <PluginsProvider>{state.plugins}</PluginsProvider>
+                    <DebounceRender wait={debounceRender}>
+                        <RouterWithConfig>
                             <AppRouter />
-                        </DebounceRender>
-                    </Providers>
-                </BrowserRouter>
-            </CompositionProvider>
+                        </RouterWithConfig>
+                    </DebounceRender>
+                </Providers>
+            </BrowserRouter>
         </AppContext.Provider>
     );
 };
 
-App.displayName = "App";
+export const App = ({ decorators, ...props }: AppProps) => {
+    return (
+        <CompositionProvider decorators={decorators}>
+            <AppBase decorators={decorators} {...props} />
+        </CompositionProvider>
+    );
+};

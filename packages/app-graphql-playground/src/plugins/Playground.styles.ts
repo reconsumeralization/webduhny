@@ -24,7 +24,7 @@ export const PlaygroundContainer = styled("div")({
     marginTop: -3,
     overflow: "hidden",
     ".playground": {
-        height: "calc(100vh - 64px)",
+        height: "calc(100vh - 45px)",
         margin: 0,
         padding: 0,
         fontFamily: "'Open Sans', sans-serif",

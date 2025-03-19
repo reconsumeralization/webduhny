@@ -13,7 +13,6 @@ export type { AppProps } from "./App";
 export * from "./core/Plugins";
 export * from "./core/Plugin";
 export * from "./core/Provider";
-export * from "./core/AddRoute";
 export * from "./core/DebounceRender";
 export * from "./core/createProvider";
 export * from "./core/createProviderPlugin";

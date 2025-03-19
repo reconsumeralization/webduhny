@@ -2,13 +2,35 @@ import { customAlphabet } from "nanoid";
 const nanoid = customAlphabet("1234567890abcdef");
 import { Property } from "./Properties";
 
+const sortPropertiesToTheTop = (a: Property, b: Property) => {
+    if (a.$isFirst && b.$isFirst) {
+        return -1;
+    }
+
+    return Number(b.$isFirst) - Number(a.$isFirst);
+};
+
+const sortPropertiesToTheBottom = (a: Property, b: Property) => {
+    if (a.$isLast && b.$isLast) {
+        return 1;
+    }
+
+    return Number(a.$isLast) - Number(b.$isLast);
+};
+
+const sortProperties = (properties: Property[]) => {
+    return properties.sort(sortPropertiesToTheTop).sort(sortPropertiesToTheBottom);
+};
+
 function buildRoots(roots: Property[], properties: Property[]) {
-    const obj: Record<string, unknown> = roots.reduce((acc, item) => {
-        const isArray = item.array === true || roots.filter(r => r.name === item.name).length > 1;
+    const sortedRoots = sortProperties(roots);
+    const obj: Record<string, unknown> = sortedRoots.reduce((acc, item) => {
+        const isArray =
+            item.array === true || sortedRoots.filter(r => r.name === item.name).length > 1;
         return { ...acc, [item.name]: isArray ? [] : {} };
     }, {});
 
-    roots.forEach(root => {
+    sortedRoots.forEach(root => {
         const isArray = root.array === true || Array.isArray(obj[root.name]);
         if (root.value !== undefined) {
             obj[root.name] = isArray ? [...(obj[root.name] as Array<any>), root.value] : root.value;

@@ -97,7 +97,7 @@ export const EntryMeta = styled.div`
  */
 export const FullScreenContentEntryContent = styled.div`
     overflow-y: scroll;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 45px);
     margin-top: 64px;
 `;
 

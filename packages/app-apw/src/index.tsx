@@ -1,5 +1,5 @@
 import React from "react";
-import { Compose, MenuItemRenderer, Plugins, useWcp } from "@webiny/app-admin";
+import { Compose, Plugins, useWcp } from "@webiny/app-admin";
 /**
  * Plugins for "page builder"
  */
@@ -22,7 +22,6 @@ import { DecoratePublishEntryAction, EntryRevisionListItem } from "~/plugins/cms
 import { Module } from "~/plugins/Module";
 import { WorkflowScope } from "~/views/publishingWorkflows/components/WorkflowScope";
 import { DefaultBar } from "~/plugins/editor/defaultBar";
-import { MenuGroupRenderer } from "~/plugins/cms/MenuGroupRenderer";
 import { ApwPermissions } from "~/plugins/permissionRenderer";
 import { ContentEntryEditorConfig } from "@webiny/app-headless-cms";
 
@@ -38,16 +37,17 @@ export const AdvancedPublishingWorkflow = () => {
                 with={[ApwPageBuilderWorkflowScope, ApwHeadlessCmsWorkflowScope]}
                 component={WorkflowScope}
             />
-            <Compose with={MenuGroupRenderer} component={MenuItemRenderer} />
             <ContentEntryEditorConfig>
                 <DecoratePublishEntryAction />
                 <Compose with={EntryRevisionListItem} component={PublishEntryRevisionListItem} />
                 <ApwOnEntryDelete />
                 <ApwOnEntryPublish />
             </ContentEntryEditorConfig>
+
+            <Module />
+
             <Plugins>
                 <DefaultBar />
-                <Module />
                 <DecoratePagePublishActions />
                 <ApwOnPublish />
                 <ApwOnPageDelete />

@@ -1,12 +1,15 @@
 import React, { memo } from "react";
 import { plugins } from "@webiny/plugins";
-import { AddMenu, AddRoute, Layout, Plugins, useWcp } from "@webiny/app-admin";
+import { Layout, useWcp } from "@webiny/app-admin";
 import { HasPermission } from "@webiny/app-security";
 import { Permission } from "~/plugins/constants";
 import { Groups } from "~/ui/views/Groups";
 import { Teams } from "~/ui/views/Teams";
 import { ApiKeys } from "~/ui/views/ApiKeys";
 import accessManagementPlugins from "./plugins";
+import { AdminConfig } from "@webiny/app-admin";
+
+const { Menu, Route } = AdminConfig;
 
 /**
  * TODO @ts-refactor
@@ -14,7 +17,7 @@ import accessManagementPlugins from "./plugins";
  */
 export default () => [];
 
-export const AccessManagementExtension = () => {
+const AccessManagementExtension = () => {
     plugins.register(accessManagementPlugins());
 
     const { getProject } = useWcp();
@@ -26,61 +29,78 @@ export const AccessManagementExtension = () => {
     }
 
     return (
-        <Plugins>
+        <AdminConfig>
             <HasPermission name={Permission.Groups}>
-                <AddRoute exact path={"/access-management/roles"}>
-                    <Layout title={"Access Management - Roles"}>
-                        <Groups />
-                    </Layout>
-                </AddRoute>
-            </HasPermission>{" "}
+                <Route
+                    name={"security.groups"}
+                    exact
+                    path={"/access-management/roles"}
+                    element={
+                        <Layout title={"Access Management - Roles"}>
+                            <Groups />
+                        </Layout>
+                    }
+                />
+            </HasPermission>
             {teams && (
                 <HasPermission name={Permission.Teams}>
-                    <AddRoute exact path={"/access-management/teams"}>
-                        <Layout title={"Access Management - Teams"}>
-                            <Teams />
-                        </Layout>
-                    </AddRoute>
+                    <Route
+                        name={"security.teams"}
+                        exact
+                        path={"/access-management/teams"}
+                        element={
+                            <Layout title={"Access Management - Teams"}>
+                                <Teams />
+                            </Layout>
+                        }
+                    />
                 </HasPermission>
             )}
             <HasPermission name={Permission.ApiKeys}>
-                <AddRoute exact path={"/access-management/api-keys"}>
-                    <Layout title={"Access Management - API Keys"}>
-                        <ApiKeys />
-                    </Layout>
-                </AddRoute>
+                <Route
+                    name={"security.apiKeys"}
+                    exact
+                    path={"/access-management/api-keys"}
+                    element={
+                        <Layout title={"Access Management - API Keys"}>
+                            <ApiKeys />
+                        </Layout>
+                    }
+                />
             </HasPermission>
-            <HasPermission any={[Permission.Groups, Permission.ApiKeys, Permission.Teams]}>
-                <AddMenu name={"settings"}>
-                    <AddMenu name={"settings.accessManagement"} label={"Access Management"}>
-                        <HasPermission name={Permission.Groups}>
-                            <AddMenu
-                                name={"settings.accessManagement.roles"}
-                                label={"Roles"}
-                                path={"/access-management/roles"}
-                            />
-                        </HasPermission>
-                        {teams && (
-                            <HasPermission name={Permission.Teams}>
-                                <AddMenu
-                                    name={"settings.accessManagement.teams"}
-                                    label={"Teams"}
-                                    path={"/access-management/teams"}
-                                />
-                            </HasPermission>
-                        )}
 
-                        <HasPermission name={Permission.ApiKeys}>
-                            <AddMenu
-                                name={"settings.accessManagement.apiKeys"}
-                                label={"API Keys"}
-                                path={"/access-management/api-keys"}
-                            />
-                        </HasPermission>
-                    </AddMenu>
-                </AddMenu>
+            <HasPermission any={[Permission.Groups, Permission.ApiKeys, Permission.Teams]}>
+                <Menu
+                    name={"security.settings"}
+                    parent={"settings"}
+                    element={<Menu.Group label={"Access Management"} />}
+                />
             </HasPermission>
-        </Plugins>
+            <HasPermission name={Permission.Groups}>
+                <Menu
+                    name={"security.roles"}
+                    parent={"settings"}
+                    element={<Menu.Link label={"Roles"} path={"/access-management/roles"} />}
+                />
+            </HasPermission>
+            {teams && (
+                <HasPermission name={Permission.Teams}>
+                    <Menu
+                        name={"security.teams"}
+                        parent={"settings"}
+                        element={<Menu.Link label={"Teams"} path={"/access-management/teams"} />}
+                    />
+                </HasPermission>
+            )}
+
+            <HasPermission name={Permission.ApiKeys}>
+                <Menu
+                    name={"security.apiKeys"}
+                    parent={"settings"}
+                    element={<Menu.Link label={"API Keys"} path={"/access-management/api-keys"} />}
+                />
+            </HasPermission>
+        </AdminConfig>
     );
 };
 

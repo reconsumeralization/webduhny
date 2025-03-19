@@ -7,6 +7,8 @@ export interface Property {
     name: string;
     value?: unknown;
     array?: boolean;
+    $isFirst?: boolean;
+    $isLast?: boolean;
 }
 
 function removeByParent(id: string, properties: Property[]): Property[] {
@@ -263,7 +265,10 @@ export const Property = ({
             return;
         }
 
-        addProperty(property, { after, before });
+        const $isFirst = before === "$first";
+        const $isLast = after === "$last";
+
+        addProperty({ ...property, $isFirst, $isLast }, { after, before });
 
         return () => {
             removeProperty(uniqueId);

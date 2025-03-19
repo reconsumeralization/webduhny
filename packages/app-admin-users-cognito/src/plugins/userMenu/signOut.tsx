@@ -1,8 +1,7 @@
 import React from "react";
-import { ListItem, ListItemGraphic } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 import { ReactComponent as SignOutIcon } from "~/assets/icons/round-lock_open-24px.svg";
+import { DropdownMenu } from "@webiny/admin-ui";
 
 export const SignOut = () => {
     const { identity } = useSecurity();
@@ -17,16 +16,6 @@ export const SignOut = () => {
     }
 
     return (
-        <ListItem onClick={identity.logout}>
-            <ListItemGraphic>{<Icon icon={<SignOutIcon />} />}</ListItemGraphic>
-            Sign out
-        </ListItem>
+        <DropdownMenu.Item content={"Sign out"} icon={<SignOutIcon />} onClick={identity.logout} />
     );
-};
-
-export default () => {
-    console.log(
-        `[DEPRECATED] Import "@webiny/app-admin-users-cognito/plugins/userMenu/signOut" is no longer used!`
-    );
-    return { type: "dummy" };
 };

@@ -9096,6 +9096,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-collapsible@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@radix-ui/react-collapsible@npm:1.1.3"
+  dependencies:
+    "@radix-ui/primitive": "npm:1.1.1"
+    "@radix-ui/react-compose-refs": "npm:1.1.1"
+    "@radix-ui/react-context": "npm:1.1.1"
+    "@radix-ui/react-id": "npm:1.1.0"
+    "@radix-ui/react-presence": "npm:1.1.2"
+    "@radix-ui/react-primitive": "npm:2.0.2"
+    "@radix-ui/react-use-controllable-state": "npm:1.1.0"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.0"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10/4d8fcd68e3b3b9ad87728d0acc6b9afb61d6eb742187536a1eb335fe54855e0039632d5c36e86e61359b45ad1f5768688216c7732cd27add5b87c054e60ae9e6
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-collection@npm:1.0.3":
   version: 1.0.3
   resolution: "@radix-ui/react-collection@npm:1.0.3"
@@ -9675,6 +9701,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-primitive@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@radix-ui/react-primitive@npm:2.0.2"
+  dependencies:
+    "@radix-ui/react-slot": "npm:1.1.2"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10/877b20d63487d0dec3f152f59a11d5826507d0839603b48b6aaa3f3eededea11f040ed36d6b868c02a7364570e5fbbbdb102c624fd930d4ed308b36c57154638
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-radio-group@npm:^1.2.1":
   version: 1.2.2
   resolution: "@radix-ui/react-radio-group@npm:1.2.2"
@@ -9888,6 +9933,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-slot@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@radix-ui/react-slot@npm:1.1.2"
+  dependencies:
+    "@radix-ui/react-compose-refs": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/6d5e1fac17b3eb79019a697581133dff23a3f6406f8ecfca476ab4a6a73baa53d66a7c9caeeebcc677363aa3b4132aa9d2168641ba9642658a2e4a297c05e4d3
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-switch@npm:^1.1.0":
   version: 1.1.2
   resolution: "@radix-ui/react-switch@npm:1.1.2"
@@ -9936,36 +9996,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10/b4b160399408918412edc35be50deb22433808fcefb776e158cc0fc534bc558cf73104191f6ee757f024a37320bed263d91608d1d83fd514019a1f18cc844ef7
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-toast@npm:^1.2.1":
-  version: 1.2.5
-  resolution: "@radix-ui/react-toast@npm:1.2.5"
-  dependencies:
-    "@radix-ui/primitive": "npm:1.1.1"
-    "@radix-ui/react-collection": "npm:1.1.1"
-    "@radix-ui/react-compose-refs": "npm:1.1.1"
-    "@radix-ui/react-context": "npm:1.1.1"
-    "@radix-ui/react-dismissable-layer": "npm:1.1.4"
-    "@radix-ui/react-portal": "npm:1.1.3"
-    "@radix-ui/react-presence": "npm:1.1.2"
-    "@radix-ui/react-primitive": "npm:2.0.1"
-    "@radix-ui/react-use-callback-ref": "npm:1.1.0"
-    "@radix-ui/react-use-controllable-state": "npm:1.1.0"
-    "@radix-ui/react-use-layout-effect": "npm:1.1.0"
-    "@radix-ui/react-visually-hidden": "npm:1.1.1"
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 10/289718070b026a1efaef633286d486b800ede72edc50f373e16a200bf07b14a6ce629ab06014c85c98e386822167ac22eebdec029730d03b753ee507b317f710
   languageName: node
   linkType: hard
 
@@ -14968,7 +14998,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/admin-ui@npm:0.0.0, @webiny/admin-ui@workspace:packages/admin-ui":
+"@webiny/admin-ui@npm:0.0.0, @webiny/admin-ui@workspace:^, @webiny/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@webiny/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -14981,6 +15011,7 @@ __metadata:
     "@radix-ui/react-accordion": "npm:^1.2.2"
     "@radix-ui/react-avatar": "npm:^1.1.0"
     "@radix-ui/react-checkbox": "npm:^1.1.2"
+    "@radix-ui/react-collapsible": "npm:^1.1.3"
     "@radix-ui/react-dialog": "npm:^1.1.4"
     "@radix-ui/react-dropdown-menu": "npm:^2.1.4"
     "@radix-ui/react-label": "npm:^2.1.0"
@@ -14992,7 +15023,6 @@ __metadata:
     "@radix-ui/react-slot": "npm:^1.1.0"
     "@radix-ui/react-switch": "npm:^1.1.0"
     "@radix-ui/react-tabs": "npm:^1.1.0"
-    "@radix-ui/react-toast": "npm:^1.2.1"
     "@radix-ui/react-tooltip": "npm:^1.1.2"
     "@storybook/addon-a11y": "npm:7.6.20"
     "@storybook/addon-essentials": "npm:7.6.20"
@@ -15029,6 +15059,7 @@ __metadata:
     react-virtualized: "npm:^9.22.5"
     rimraf: "npm:^6.0.1"
     sass: "npm:1.44.0"
+    sonner: "npm:^2.0.1"
     storybook: "npm:7.6.20"
     tailwind-merge: "npm:^2.4.0"
     tailwindcss: "npm:^3.4.6"
@@ -16692,38 +16723,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/app-admin-rmwc@npm:0.0.0, @webiny/app-admin-rmwc@workspace:packages/app-admin-rmwc":
+"@webiny/app-admin-ui@npm:0.0.0, @webiny/app-admin-ui@workspace:packages/app-admin-ui":
   version: 0.0.0-use.local
-  resolution: "@webiny/app-admin-rmwc@workspace:packages/app-admin-rmwc"
+  resolution: "@webiny/app-admin-ui@workspace:packages/app-admin-ui"
   dependencies:
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/styled": "npm:11.10.6"
     "@material-design-icons/svg": "npm:^0.14.13"
-    "@rmwc/base": "npm:14.3.5"
-    "@rmwc/provider": "npm:14.3.5"
     "@types/react": "npm:18.2.79"
     "@types/react-helmet": "npm:^6.1.11"
+    "@webiny/admin-ui": "workspace:^"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-plugin-admin-welcome-screen": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
-    "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
     "@webiny/ui": "npm:0.0.0"
     babel-plugin-named-asset-import: "npm:^1.0.0-next.3e165448"
-    classnames: "npm:^2.5.1"
     emotion: "npm:10.0.27"
     lodash: "npm:^4.17.21"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     react-helmet: "npm:^6.1.0"
-    react-hotkeyz: "npm:^1.0.4"
-    react-transition-group: "npm:^4.4.5"
     rimraf: "npm:^6.0.1"
-    store: "npm:^2.0.12"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -16734,6 +16759,7 @@ __metadata:
   dependencies:
     "@apollo/react-hooks": "npm:^3.1.5"
     "@emotion/styled": "npm:11.10.6"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-admin-cognito": "npm:0.0.0"
@@ -16837,6 +16863,7 @@ __metadata:
     "@emotion/is-prop-valid": "npm:^1.1.1"
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
+    "@material-design-icons/svg": "npm:^0.14.13"
     "@types/react": "npm:18.2.79"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
@@ -17223,6 +17250,7 @@ __metadata:
   resolution: "@webiny/app-i18n-content@workspace:packages/app-i18n-content"
   dependencies:
     "@emotion/babel-plugin": "npm:^11.11.0"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-i18n": "npm:0.0.0"
@@ -17232,7 +17260,6 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/ui": "npm:0.0.0"
-    emotion: "npm:10.0.27"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     rimraf: "npm:^6.0.1"
@@ -17543,7 +17570,7 @@ __metadata:
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-aco": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
-    "@webiny/app-admin-rmwc": "npm:0.0.0"
+    "@webiny/app-admin-ui": "npm:0.0.0"
     "@webiny/app-apw": "npm:0.0.0"
     "@webiny/app-audit-logs": "npm:0.0.0"
     "@webiny/app-dynamic-pages": "npm:0.0.0"
@@ -17613,7 +17640,9 @@ __metadata:
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
+    "@material-design-icons/svg": "npm:^0.14.13"
     "@types/react": "npm:18.2.79"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
@@ -17817,6 +17846,7 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-composition": "npm:0.0.0"
+    "@webiny/react-properties": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
     "@webiny/ui": "npm:0.0.0"
     apollo-cache: "npm:^1.3.5"
@@ -40782,6 +40812,16 @@ __metadata:
   dependencies:
     atomic-sleep: "npm:^1.0.0"
   checksum: 10/385ef7fb5ea5976c1d2a1fef0b6df8df6b7caba8696d2d67f689d60c05e3ea2d536752ce7e1c69b9fad844635f1036d07c446f8e8149f5c6a80e0040a455b310
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "sonner@npm:2.0.1"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+  checksum: 10/9213bc2d3da62075a4b8e7d20f56c8fd8d2d36ee793e68f3eba7c49c084755b61a158a4fb028a27c7e9c8ad54e584c77c22a3b3dfd6ea40798c1a703c6eb6506
   languageName: node
   linkType: hard
 
