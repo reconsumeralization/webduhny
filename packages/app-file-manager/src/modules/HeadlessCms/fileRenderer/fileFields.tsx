@@ -103,7 +103,6 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
                                             }}
                                             placeholder={field.placeholderText}
                                             data-testid={`fr.input.filefields.${field.label}`}
-                                            type={"area"}
                                         />
                                     );
                                 }}

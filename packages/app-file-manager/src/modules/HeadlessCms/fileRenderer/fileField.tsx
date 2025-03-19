@@ -48,7 +48,6 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
                                             onRemoveItem={() => onChange(null)}
                                             placeholder={field.placeholderText}
                                             data-testid={`fr.input.filefield.${field.label}`}
-                                            type={"area"}
                                         />
                                     );
                                 }}
