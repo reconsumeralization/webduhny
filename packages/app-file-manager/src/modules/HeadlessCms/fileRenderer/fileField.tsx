@@ -5,13 +5,17 @@ import {
 } from "@webiny/app-headless-cms/types";
 import { FileManager } from "@webiny/app-admin/components";
 import { EditFileUsingUrl } from "~/components/EditFileUsingUrl";
-import { FilePicker } from "@webiny/admin-ui";
-import { getFileItem } from "~/modules/HeadlessCms/fileRenderer/utils";
+import { FilePicker, Label } from "@webiny/admin-ui";
+import {
+    getFileItem,
+    getSupportedExtensionsLabelHint
+} from "~/modules/HeadlessCms/fileRenderer/utils";
 
 const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
     const Bind = getBind();
 
     const imagesOnly = field.settings && field.settings.imagesOnly;
+
     return (
         <Bind>
             {bind => {
@@ -26,7 +30,14 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
                                     return (
                                         <FilePicker
                                             {...bind}
-                                            label={field.label}
+                                            label={
+                                                <Label
+                                                    text={field.label}
+                                                    hint={getSupportedExtensionsLabelHint(
+                                                        imagesOnly
+                                                    )}
+                                                />
+                                            }
                                             validation={validation}
                                             description={field.helpText}
                                             value={getFileItem(value)}

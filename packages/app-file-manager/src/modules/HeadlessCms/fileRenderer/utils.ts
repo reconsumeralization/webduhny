@@ -1,5 +1,23 @@
 import type { FileItem } from "@webiny/admin-ui";
 
+export const imagePlugins = [
+    ".jpg",
+    ".jpeg",
+    ".tif",
+    ".gif",
+    ".png",
+    ".svg",
+    ".webp",
+    "bmp",
+    "svg"
+];
+
+export const getSupportedExtensionsLabelHint = (imagesOnly?: boolean) => {
+    return imagesOnly
+        ? `Supported files extensions: ${imagePlugins.filter(Boolean).join(", ")}`
+        : null;
+};
+
 export const getFileItem = (value?: string): FileItem | null => {
     if (!value) {
         return null;
