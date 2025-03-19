@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Image } from "@webiny/app/components/Image";
-import { MultiImageUpload as UiMultiImageUpload } from "@webiny/ui/ImageUpload";
+import { MultiFilePicker } from "@webiny/admin-ui";
 
 /**
  * TODO @ts-refactor
@@ -12,28 +11,7 @@ interface MultiImageUploadProps {
     };
     [key: string]: any;
 }
-const MultiImageUpload = ({
-    imagePreviewProps,
-    ...multiImageUploadProps
-}: MultiImageUploadProps) => {
-    return (
-        <UiMultiImageUpload
-            /**
-             * TODO @ts-refactor
-             * It appears that renderImagePreview does not exist on  UiMultiImageUpload. So how did this work?
-             */
-            // @ts-expect-error
-            renderImagePreview={(renderImageProps: Record<string, any>) => {
-                return (
-                    <Image
-                        transform={{ width: 300 }}
-                        {...imagePreviewProps}
-                        {...renderImageProps}
-                    />
-                );
-            }}
-            {...multiImageUploadProps}
-        />
-    );
+const MultiImageUpload = ({ props }: MultiImageUploadProps) => {
+    return <MultiFilePicker {...props} />;
 };
 export default MultiImageUpload;

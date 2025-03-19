@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Image } from "@webiny/app/components/Image";
-import * as Ui from "@webiny/ui/ImageUpload";
 import { FileManager, FileManagerFileItem } from "~/index";
 import { FormComponentProps } from "@webiny/ui/types";
 import { useCallback } from "react";
+import { FileItem, FilePicker, type FilePickerProps } from "@webiny/admin-ui";
 
 export interface SingleImageUploadProps extends FormComponentProps {
     /**
@@ -56,6 +55,7 @@ export interface SingleImageUploadProps extends FormComponentProps {
 
     /**
      * Is the wrapper round?
+     * @deprecated Provide a custom `renderImagePreview` instead.
      */
     round?: boolean;
 
@@ -64,10 +64,26 @@ export interface SingleImageUploadProps extends FormComponentProps {
      * @deprecated Pick the desired file attributes in the `onChange` callback, or `beforeChange` on the `<Bind>` element.
      */
     onChangePick?: string[];
+
+    /**
+     * Render the image preview.
+     */
+    renderFilePreview?: FilePickerProps["renderFilePreview"];
 }
 
 const SingleImageUpload = (props: SingleImageUploadProps) => {
-    const { value, accept, includeFileMeta = false, maxSize, imagePreviewProps, round } = props;
+    const {
+        accept,
+        className,
+        description,
+        disabled,
+        includeFileMeta = false,
+        label,
+        maxSize,
+        renderFilePreview,
+        validation,
+        value
+    } = props;
 
     const onChange = useCallback(
         (value: FileManagerFileItem | null) => {
@@ -97,15 +113,16 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
             images={!accept}
             maxSize={maxSize}
             render={({ showFileManager }) => (
-                <Ui.Image
-                    renderImagePreview={renderImageProps => (
-                        <Image {...renderImageProps} {...imagePreviewProps} />
-                    )}
-                    style={{ width: "100%", height: "auto" }}
-                    value={value}
-                    uploadImage={showFileManager}
-                    removeImage={() => onChange(null)}
-                    round={round}
+                <FilePicker
+                    label={label}
+                    description={description}
+                    validation={validation}
+                    className={className}
+                    disabled={disabled}
+                    value={value ? FileItem.createFromUrl(value.src) : null}
+                    onSelectItem={showFileManager}
+                    onRemoveItem={() => onChange(null)}
+                    renderFilePreview={renderFilePreview}
                 />
             )}
         />

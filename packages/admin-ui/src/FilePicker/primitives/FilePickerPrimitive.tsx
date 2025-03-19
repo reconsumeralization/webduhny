@@ -4,8 +4,9 @@ import { Trigger } from "./components";
 import { Label } from "~/Label";
 import { FormComponentLabel } from "~/FormComponent";
 import { inputVariants } from "~/Input";
-import { ImagePreview, RichItemPreview, TextOnlyPreview } from "./components";
-import { FilePreview } from "~/FilePicker/primitives/components/previews/FilePreview";
+import { ImagePreview, RichItemPreview, TextOnlyPreview, FilePreview } from "./components";
+import { FileItem, type FileItemDto, type FileItemFormatted } from "../domain";
+import { useFilePicker } from "./useFilePicker";
 
 const filePickerVariants = cva(
     [
@@ -37,13 +38,6 @@ const filePickerVariants = cva(
     }
 );
 
-type FileItem = {
-    name: string;
-    src: string;
-    mimeType?: string;
-    size?: number;
-};
-
 interface FilePickerPrimitiveProps
     extends React.HTMLAttributes<HTMLDivElement>,
         VariantProps<typeof inputVariants>,
@@ -51,14 +45,14 @@ interface FilePickerPrimitiveProps
     containerStyle?: React.CSSProperties;
     disabled?: boolean;
     label?: React.ReactElement<typeof Label> | React.ReactNode;
-    onEditItem?: (item: FileItem | null) => void;
-    onRemoveItem?: (item: FileItem | null) => void;
+    onEditItem?: (item: FileItemFormatted | null) => void;
+    onRemoveItem?: (item: FileItemFormatted | null) => void;
     onSelectItem: () => void;
     placeholder?: string;
     renderFilePreview?: (props: any) => React.ReactElement<any>;
     required?: boolean;
     style?: React.CSSProperties;
-    value?: FileItem | null;
+    value?: FileItemDto | string | null;
 }
 
 const BaseFilePickerPrimitive = ({
@@ -77,6 +71,8 @@ const BaseFilePickerPrimitive = ({
     variant,
     ...props
 }: FilePickerPrimitiveProps) => {
+    const { vm } = useFilePicker({ value });
+
     return (
         <div
             data-disabled={disabled}
@@ -95,15 +91,15 @@ const BaseFilePickerPrimitive = ({
                     className={"wby-mb-0"}
                 />
             )}
-            {value ? (
+            {vm.file ? (
                 <FilePreview
                     disabled={disabled}
-                    onEditItem={() => onEditItem && onEditItem(value)}
-                    onRemoveItem={() => onRemoveItem && onRemoveItem(value)}
+                    onEditItem={onEditItem ? () => onEditItem(vm.file) : undefined}
+                    onRemoveItem={onRemoveItem ? () => onRemoveItem(vm.file) : undefined}
                     onReplaceItem={onSelectItem}
                     renderFilePreview={renderFilePreview}
                     type={type}
-                    value={value}
+                    value={vm.file}
                 />
             ) : (
                 <Trigger

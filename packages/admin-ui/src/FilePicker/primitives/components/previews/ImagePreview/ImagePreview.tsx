@@ -32,7 +32,7 @@ const DecoratableImagePreview = ({
                 onClick={onReplaceItem}
             >
                 <img
-                    src={value.src}
+                    src={value.url}
                     alt={value.name}
                     className={"wby-object-contain wby-size-full"}
                 />

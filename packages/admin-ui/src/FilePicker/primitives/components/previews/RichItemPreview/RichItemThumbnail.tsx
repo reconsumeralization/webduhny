@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactComponent as PlaceholderIcon } from "@material-design-icons/svg/outlined/image.svg";
-import type { FileItem } from "~/FilePicker";
+import type { FileItemFormatted } from "~/FilePicker";
 import { Icon } from "~/Icon";
 import { cn } from "~/utils";
 import type { RichItemPreviewProps } from "~/FilePicker/primitives/components";
@@ -17,22 +17,22 @@ import xlsThumb from "../assets/xls.svg";
 import xlsxThumb from "../assets/xlsx.svg";
 
 type RichItemThumbnailProps = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> &
-    FileItem & {
+    FileItemFormatted & {
         preview?: RichItemPreviewProps["preview"];
         disabled?: boolean;
     };
 
-type ThumbnailProps = Pick<FileItem, "src" | "name">;
+type ThumbnailProps = Pick<FileItemFormatted, "url" | "name">;
 
-const Thumbnail = ({ src, name }: ThumbnailProps) => {
+const Thumbnail = ({ url, name }: ThumbnailProps) => {
     return (
         <div className={"wby-size-full wby-bg-neutral-muted"}>
-            <img src={src} alt={name} className="wby-size-full wby-object-cover" />
+            <img src={url} alt={name} className="wby-size-full wby-object-cover" />
         </div>
     );
 };
 
-type FileTypeProps = Pick<FileItem, "mimeType" | "name">;
+type FileTypeProps = Pick<FileItemFormatted, "mimeType" | "name">;
 
 const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     const getMimeTypeSrc = (mimeType: string) => {
@@ -65,7 +65,7 @@ const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     );
 };
 
-type PlaceholderProps = Pick<FileItem, "name"> & {
+type PlaceholderProps = Pick<FileItemFormatted, "name"> & {
     disabled?: boolean;
 };
 
@@ -88,7 +88,7 @@ const Placeholder = ({ name, disabled }: PlaceholderProps) => {
 };
 
 const RichItemThumbnail = ({
-    src,
+    url,
     name,
     className,
     mimeType,
@@ -106,7 +106,7 @@ const RichItemThumbnail = ({
             )}
         >
             {preview === "thumbnail" || isImage ? (
-                <Thumbnail src={src} name={name} />
+                <Thumbnail url={url} name={name} />
             ) : preview === "placeholder" ? (
                 <Placeholder name={name} disabled={disabled} />
             ) : (

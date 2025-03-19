@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { MultiFilePickerPrimitive, type FileItem } from "./MultiFilePickerPrimitive";
+import { MultiFilePickerPrimitive, type FileItemDto } from "./MultiFilePickerPrimitive";
 
 const getRandomNumber = (min: number, max: number): number =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
-const createFileList = (size: number = 10): FileItem[] => {
+const createFileList = (size: number = 10): FileItemDto[] => {
     return Array.from({ length: size }, (_, index) => {
         const width = getRandomNumber(500, 2000); // Random width between 500 and 2000
         const height = getRandomNumber(500, 2000); // Random height between 500 and 2000
@@ -15,7 +15,7 @@ const createFileList = (size: number = 10): FileItem[] => {
             name: `file-${index + 1}.jpg`,
             mimeType: "image/jpeg",
             size: fileSize,
-            src: `https://picsum.photos/${width}/${height}`
+            url: `https://picsum.photos/${width}/${height}`
         };
     });
 };
@@ -38,8 +38,8 @@ const meta: Meta<typeof MultiFilePickerPrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [selectedFiles, setSelectedFiles] = useState<FileItem[] | null | undefined>(
-            args.values
+        const [selectedFiles, setSelectedFiles] = useState<FileItemDto[]>(
+            args.values as FileItemDto[]
         );
         return (
             <MultiFilePickerPrimitive
@@ -229,17 +229,14 @@ export const AreaWithRichItemThumbnailPreview: Story = {
 export const AreaWithRichItemFileTypePreview: Story = {
     args: {
         ...AreaType.args,
-        values: AreaType.args?.values
-            ? [
-                  ...AreaType.args.values,
-                  {
-                      name: "export.csv",
-                      src: "export.csv",
-                      mimeType: "text/csv",
-                      size: 100000
-                  }
-              ]
-            : undefined,
+        values: [
+            {
+                name: "export.csv",
+                url: "export.csv",
+                mimeType: "text/csv",
+                size: 100000
+            }
+        ],
         renderFilePreview: props => (
             <MultiFilePickerPrimitive.Preview.RichItem preview={"file-type"} {...props} />
         )

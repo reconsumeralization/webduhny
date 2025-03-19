@@ -1,6 +1,7 @@
 import React from "react";
 import {
-    type FileItem,
+    type FileItemDto,
+    type FileItemFormatted,
     type FilePickerPrimitiveProps,
     filePickerVariants,
     FilePreview,
@@ -13,14 +14,15 @@ import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Button } from "~/Button";
 import { inputVariants } from "~/Input";
 import { FormComponentLabel } from "~/FormComponent";
+import { useMultiFilePicker } from "~/MultiFilePicker/primitives/useMultiFilePicker";
 
 interface MultiFilePickerPrimitiveProps
     extends Omit<FilePickerPrimitiveProps, "value" | "onEditItem" | "onRemoveItem"> {
-    values?: FileItem[] | null;
+    values?: FileItemDto[] | string[] | null;
     buttonPlaceholder?: string;
-    onReplaceItem: (item: FileItem | null, index: number) => void;
-    onEditItem?: (item: FileItem | null, index: number) => void;
-    onRemoveItem?: (item: FileItem | null, index: number) => void;
+    onReplaceItem: (item: FileItemFormatted | null, index: number) => void;
+    onEditItem?: (item: FileItemFormatted | null, index: number) => void;
+    onRemoveItem?: (item: FileItemFormatted | null, index: number) => void;
 }
 
 const BaseMultiFilePickerPrimitive = ({
@@ -41,6 +43,8 @@ const BaseMultiFilePickerPrimitive = ({
     variant,
     ...props
 }: MultiFilePickerPrimitiveProps) => {
+    const { vm } = useMultiFilePicker({ values });
+
     return (
         <div
             data-disabled={disabled}
@@ -69,18 +73,18 @@ const BaseMultiFilePickerPrimitive = ({
                     />
                 </div>
             )}
-            {values?.length ? (
+            {vm.hasFiles ? (
                 <div className="wby-overflow-y-scroll wby-flex wby-flex-col wby-gap-xs">
-                    {values.map((value, i) => (
+                    {vm.files.map((file, i) => (
                         <FilePreview
                             key={`file-preview-${i}`}
                             disabled={disabled}
-                            onEditItem={() => onEditItem && onEditItem(value, i)}
-                            onRemoveItem={() => onRemoveItem && onRemoveItem(value, i)}
-                            onReplaceItem={() => onReplaceItem(value, i)}
+                            onEditItem={onEditItem ? () => onEditItem(file, i) : undefined}
+                            onRemoveItem={onRemoveItem ? () => onRemoveItem(file, i) : undefined}
+                            onReplaceItem={onReplaceItem ? () => onReplaceItem(file, i) : undefined}
                             renderFilePreview={renderFilePreview}
                             type={type}
-                            value={value}
+                            value={file}
                         />
                     ))}
                 </div>
@@ -110,4 +114,9 @@ const MultiFilePickerPrimitive = withStaticProps(DecoratableMultiFilePickerPrimi
     }
 });
 
-export { MultiFilePickerPrimitive, type FileItem, type MultiFilePickerPrimitiveProps };
+export {
+    MultiFilePickerPrimitive,
+    type FileItemFormatted,
+    type FileItemDto,
+    type MultiFilePickerPrimitiveProps
+};

@@ -1,6 +1,6 @@
-import type { FileItem } from "~/FilePicker";
 import type { VariantProps } from "~/utils";
 import { previewVariants } from "./variants";
+import type { FileItemFormatted } from "../../../domain";
 
 export interface FilePreviewDefaultProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "children">,
@@ -8,6 +8,6 @@ export interface FilePreviewDefaultProps
     onReplaceItem?: () => void;
     onRemoveItem?: () => void;
     onEditItem?: () => void;
-    value: FileItem;
+    value: FileItemFormatted;
     disabled?: boolean;
 }

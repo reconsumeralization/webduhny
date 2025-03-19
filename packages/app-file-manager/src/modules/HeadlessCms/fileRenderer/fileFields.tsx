@@ -7,7 +7,7 @@ import {
 } from "@webiny/app-headless-cms/types";
 import { i18n } from "@webiny/app/i18n";
 import { FileManager } from "@webiny/app-admin/components";
-import { getFileItem, getSupportedExtensionsLabelHint } from "./utils";
+import { getSupportedExtensionsLabelHint } from "./utils";
 import { EditFileUsingUrl } from "~/components/EditFileUsingUrl";
 import { FileItem } from "@webiny/app-admin/types";
 import { Label, MultiFilePicker } from "@webiny/admin-ui";
@@ -81,9 +81,7 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
                                             }
                                             validation={validation}
                                             description={field.helpText}
-                                            values={values
-                                                .map(url => getFileItem(url))
-                                                .filter((value): value is FileItem => !!value)}
+                                            values={values}
                                             onSelectItem={() => selectFiles()}
                                             onReplaceItem={(_, index) => selectFiles(index)}
                                             onRemoveItem={(_, index) =>
@@ -96,10 +94,10 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
 
                                                 editFileRef.current = {
                                                     index,
-                                                    url: value.src
+                                                    url: value.url
                                                 };
 
-                                                editFile(value.src);
+                                                editFile(value.url);
                                             }}
                                             placeholder={field.placeholderText}
                                             data-testid={`fr.input.filefields.${field.label}`}

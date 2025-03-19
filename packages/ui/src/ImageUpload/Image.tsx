@@ -1,25 +1,10 @@
 import React from "react";
-import classNames from "classnames";
-import { ReactComponent as AddImageIcon } from "./icons/round-add_photo_alternate-24px.svg";
-import { ReactComponent as RemoveImageIcon } from "./icons/round-close-24px.svg";
-import { ReactComponent as EditImageIcon } from "./icons/round-edit-24px.svg";
 import { FilePicker } from "@webiny/admin-ui";
-import { Typography } from "../Typography";
-import { CircularProgress } from "../Progress";
-import {
-    AddImageIconWrapper,
-    AddImageWrapper,
-    AddImageWrapperRound,
-    EditImage,
-    ImagePreviewWrapper,
-    RemoveImage
-} from "./styled";
-import { BrowseFilesParams } from "react-butterfiles";
 
 interface ImageProps {
     uploadImage: () => void;
     removeImage?: (value: string | null) => void;
-    editImage?: (value: BrowseFilesParams | undefined) => void;
+    editImage?: (value: any | undefined) => void;
     value?: any;
     disabled?: boolean;
     loading?: boolean;
@@ -30,101 +15,28 @@ interface ImageProps {
     containerStyle?: React.CSSProperties;
 }
 
-const Image = ({ uploadImage, removeImage, editImage, ...props }: ImageProps) => {
-    return <FilePicker {...props} onSelectImage={uploadImage} onRemoveImage={removeImage} />;
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `FilePicker` component from the `@webiny/admin-ui` package instead.
+ */
+const Image = ({
+    uploadImage,
+    removeImage,
+    editImage,
+    renderImagePreview,
+    ...props
+}: ImageProps) => {
+    console.log("props", props);
+
+    return (
+        <FilePicker
+            {...props}
+            onEditItem={editImage}
+            onSelectItem={uploadImage}
+            onRemoveItem={() => removeImage && removeImage(null)}
+            renderFilePreview={renderImagePreview}
+        />
+    );
 };
-
-class OldImage extends React.Component<ImageProps> {
-    static defaultProps = {
-        placeholder: "Select an image",
-        containerStyle: { height: "100%" }
-    };
-
-    renderBlank() {
-        const { uploadImage, round } = this.props;
-
-        const ImageWrapper = round ? AddImageWrapperRound : AddImageWrapper;
-
-        return (
-            <ImageWrapper
-                data-role={"select-image"}
-                onClick={() => {
-                    uploadImage();
-                }}
-            >
-                <AddImageIconWrapper>
-                    <AddImageIcon />
-                    <Typography use={"caption"}>{this.props.placeholder}</Typography>
-                </AddImageIconWrapper>
-            </ImageWrapper>
-        );
-    }
-
-    renderImg() {
-        const { removeImage, editImage, uploadImage, value, renderImagePreview } = this.props;
-
-        const imagePreviewProps: any = {
-            src: value ? value.src : null,
-            style: this.props.style ? this.props.style : null,
-            onClick: () => uploadImage()
-        };
-
-        if (!imagePreviewProps.style) {
-            imagePreviewProps.style = {};
-        }
-
-        if (!imagePreviewProps.style.width && !imagePreviewProps.style.height) {
-            imagePreviewProps.style.width = "100%";
-            imagePreviewProps.style.height = "100%";
-        }
-
-        let imagePreview = null;
-        if (typeof renderImagePreview === "function") {
-            imagePreview = renderImagePreview(imagePreviewProps);
-        } else {
-            imagePreview = <img {...imagePreviewProps} />;
-        }
-
-        return (
-            <ImagePreviewWrapper data-testid={"image-preview"}>
-                {imagePreview}
-
-                {typeof removeImage === "function" && (
-                    <RemoveImage onClick={() => removeImage(null)} data-testid={"remove-image"}>
-                        <RemoveImageIcon />
-                    </RemoveImage>
-                )}
-
-                {typeof editImage === "function" && (
-                    <EditImage onClick={() => editImage(value)}>
-                        <EditImageIcon />
-                    </EditImage>
-                )}
-
-                <AddImageWrapper
-                    data-role={"select-image"}
-                    onClick={() => {
-                        uploadImage();
-                    }}
-                >
-                    <AddImageIconWrapper>
-                        <AddImageIcon />
-                        <Typography use={"caption"}>{this.props.placeholder}</Typography>
-                    </AddImageIconWrapper>
-                </AddImageWrapper>
-            </ImagePreviewWrapper>
-        );
-    }
-
-    public override render() {
-        const { value, disabled, containerStyle } = this.props;
-        return (
-            <div className={classNames({ disabled })} style={containerStyle}>
-                {this.props.loading && <CircularProgress />}
-                {value && value.src ? this.renderImg() : this.renderBlank()}
-            </div>
-        );
-    }
-}
 
 export default Image;
