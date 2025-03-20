@@ -49,6 +49,7 @@ interface FilePickerPrimitiveProps
     onSelectItem: () => void;
     placeholder?: string;
     renderFilePreview?: (props: any) => React.ReactElement<any>;
+    renderTrigger?: (props: any) => React.ReactElement<any>;
     style?: React.CSSProperties;
     value?: FileItemDto | string | null;
 }
@@ -64,12 +65,15 @@ const BaseFilePickerPrimitive = ({
     onSelectItem,
     placeholder,
     renderFilePreview,
+    renderTrigger,
     type = "area",
     value,
     variant,
     ...props
 }: FilePickerPrimitiveProps) => {
     const { vm } = useFilePicker({ value });
+    console.log("className", className);
+
     return (
         <div
             {...props}
@@ -95,7 +99,8 @@ const BaseFilePickerPrimitive = ({
             ) : (
                 <Trigger
                     disabled={disabled}
-                    onClick={onSelectItem}
+                    onSelectItem={onSelectItem}
+                    renderTrigger={renderTrigger}
                     text={placeholder}
                     type={type}
                     variant={variant}

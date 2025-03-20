@@ -37,6 +37,7 @@ const BaseMultiFilePickerPrimitive = ({
     onSelectItem,
     placeholder,
     renderFilePreview,
+    renderTrigger,
     type = "area",
     values = [],
     variant,
@@ -86,7 +87,8 @@ const BaseMultiFilePickerPrimitive = ({
             ) : (
                 <Trigger
                     disabled={disabled}
-                    onClick={onSelectItem}
+                    onSelectItem={onSelectItem}
+                    renderTrigger={renderTrigger}
                     text={placeholder}
                     type={type}
                     variant={variant}

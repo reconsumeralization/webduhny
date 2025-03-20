@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/image.svg";
-import { Button, type ButtonProps } from "~/Button";
+import { Button } from "~/Button";
 import { cn, cva, type VariantProps } from "~/utils";
 
 const triggerVariants = cva(["wby-flex", "data-[disabled=true]:wby-cursor-not-allowed"], {
@@ -56,10 +56,24 @@ interface TriggerProps
         VariantProps<typeof triggerVariants> {
     disabled?: boolean;
     text?: string;
-    onClick?: ButtonProps["onClick"];
+    onSelectItem: () => void;
+    renderTrigger?: (props: any) => React.ReactElement<any>;
 }
 
-const Trigger = ({ className, disabled, onClick, text, type, variant, ...props }: TriggerProps) => {
+const Trigger = ({
+    renderTrigger,
+    type,
+    variant,
+    text,
+    className,
+    disabled,
+    onSelectItem,
+    ...props
+}: TriggerProps) => {
+    if (typeof renderTrigger === "function") {
+        return renderTrigger({ disabled, text, onSelectItem, ...props });
+    }
+
     return (
         <div
             data-role={"select-image"}
@@ -70,7 +84,7 @@ const Trigger = ({ className, disabled, onClick, text, type, variant, ...props }
             <Button
                 disabled={disabled}
                 icon={<ImageIcon />}
-                onClick={onClick}
+                onClick={onSelectItem}
                 size={"sm"}
                 text={text ?? "Select from library"}
                 variant={"ghost"}

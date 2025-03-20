@@ -9,24 +9,17 @@ interface AvatarImagePreviewProps {
     onReplaceItem: any;
     onRemoveItem: any;
     disabled?: boolean;
-    round?: boolean;
 }
 
 const AvatarImagePreview = ({
     value,
     onReplaceItem,
     onRemoveItem,
-    disabled,
-    round
+    disabled
 }: AvatarImagePreviewProps) => {
     return (
         <div className={"wby-w-full wby-flex-1"}>
-            <div
-                className={cn([
-                    "wby-size-[128px] wby-mx-auto wby-relative wby-overflow-hidden",
-                    round && "wby-rounded-full"
-                ])}
-            >
+            <div className={cn("wby-size-[128px] wby-mx-auto wby-relative wby-overflow-hidden")}>
                 <div className={"wby-size-full"}>
                     <img
                         src={value.url}
@@ -38,7 +31,7 @@ const AvatarImagePreview = ({
                     className={cn([
                         "wby-flex wby-justify-center wby-items-center wby-gap-xs wby-size-full",
                         "wby-absolute wby-top-0 wby-left-0",
-                        "wby-bg-neutral-xstrong/85",
+                        "wby-bg-neutral-xstrong/90",
                         "wby-opacity-0 hover:wby-opacity-100 wby-transition-opacity"
                     ])}
                 >

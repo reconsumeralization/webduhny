@@ -9,7 +9,7 @@ import { CircularProgress } from "@webiny/ui/Progress";
 import { SnackbarAction } from "@webiny/ui/Snackbar";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { validation } from "@webiny/validation";
-import AvatarImage from "../../components/AvatarImage";
+import { AvatarImage } from "../../components/AvatarImage";
 import { GET_CURRENT_USER, UPDATE_CURRENT_USER } from "./graphql";
 import { config as appConfig } from "@webiny/app/config";
 

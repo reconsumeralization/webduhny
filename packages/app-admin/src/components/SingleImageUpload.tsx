@@ -69,8 +69,19 @@ export interface SingleImageUploadProps extends FormComponentProps {
      */
     renderFilePreview?: FilePickerProps["renderFilePreview"];
 
+    /**
+     * Render the trigger button.
+     */
+    renderTrigger?: FilePickerProps["renderTrigger"];
+
+    /**
+     * Component type.
+     */
     type?: FilePickerProps["type"];
 
+    /**
+     * Component variant.
+     */
     variant?: FilePickerProps["variant"];
 }
 
@@ -84,6 +95,7 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
         label,
         maxSize,
         renderFilePreview,
+        renderTrigger,
         validation,
         value,
         variant,
@@ -129,6 +141,7 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
                         onSelectItem={showFileManager}
                         onRemoveItem={() => onChange(null)}
                         renderFilePreview={renderFilePreview}
+                        renderTrigger={renderTrigger}
                         variant={variant}
                         type={type}
                     />
