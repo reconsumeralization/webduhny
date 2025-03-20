@@ -14,7 +14,7 @@ const AvatarImageTrigger = ({ onSelectItem, disabled }: AvatarImageTriggerProps)
             className={cn([
                 "wby-size-[128px]",
                 "wby-flex wby-justify-center wby-items-center wby-gap-xs",
-                "wby-bg-neutral-xstrong/75"
+                "wby-bg-neutral-strong"
             ])}
         >
             <Tooltip
