@@ -68,6 +68,10 @@ export interface SingleImageUploadProps extends FormComponentProps {
      * Render the image preview.
      */
     renderFilePreview?: FilePickerProps["renderFilePreview"];
+
+    type?: FilePickerProps["type"];
+
+    variant?: FilePickerProps["variant"];
 }
 
 const SingleImageUpload = (props: SingleImageUploadProps) => {
@@ -81,7 +85,9 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
         maxSize,
         renderFilePreview,
         validation,
-        value
+        value,
+        variant,
+        type
     } = props;
 
     const onChange = useCallback(
@@ -123,6 +129,8 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
                         onSelectItem={showFileManager}
                         onRemoveItem={() => onChange(null)}
                         renderFilePreview={renderFilePreview}
+                        variant={variant}
+                        type={type}
                     />
                 </>
             )}

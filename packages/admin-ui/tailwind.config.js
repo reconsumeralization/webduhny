@@ -1,9 +1,9 @@
 const { fontFamily } = require("tailwindcss/defaultTheme");
 const { getProject } = require("@webiny/cli/utils");
 const project = getProject();
-const webinyPackagesGlob = `${project.root}/node_modules/@webiny/app*/**/*.js`;
-const webinyAdminUiPackageGlob = `${project.root}/node_modules/@webiny/admin-ui/**/*.js`;
-const webinyUiPackageGlob = `${project.root}/node_modules/@webiny/ui/**/*.js`;
+const webinyPackagesGlob = `${project.root}/node_modules/@webiny/app*/**/*.{js,ts,tsx}`;
+const webinyAdminUiPackageGlob = `${project.root}/node_modules/@webiny/admin-ui/**/*.{js,ts,tsx}`;
+const webinyUiPackageGlob = `${project.root}/node_modules/@webiny/ui/**/*.{js,ts,tsx}`;
 const adminAppSourceGlob = `${project.root}/apps/admin`;
 const {
     animation,
@@ -44,7 +44,6 @@ module.exports = {
 
         backgroundColor,
         borderColor,
-        borderRadius,
         borderWidth,
         fill,
         fontSize,
@@ -61,6 +60,7 @@ module.exports = {
 
         extend: {
             animation,
+            borderRadius,
             keyframes,
             margin,
             padding,
