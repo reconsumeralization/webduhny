@@ -1,5 +1,6 @@
 import React from "react";
 import { FormComponentProps } from "../types";
+import { Alert } from "@webiny/admin-ui";
 
 interface MultiImageUploadProps extends FormComponentProps {
     // Component label.
@@ -44,10 +45,10 @@ interface MultiImageUploadProps extends FormComponentProps {
  */
 export const MultiImageUpload = ({}: MultiImageUploadProps) => {
     return (
-        <>
+        <Alert type="danger" variant={"strong"}>
             {
                 "Deprecated component! The original code has been moved to `@webiny/admin-ui` package."
             }
-        </>
+        </Alert>
     );
 };

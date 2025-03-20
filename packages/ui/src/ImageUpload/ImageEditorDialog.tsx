@@ -1,5 +1,6 @@
 import React from "react";
 import { DialogOnClose } from "../Dialog";
+import { Alert } from "@webiny/admin-ui";
 
 interface ImageEditorDialogProps {
     dialogZIndex?: number;
@@ -21,10 +22,10 @@ interface ImageEditorDialogProps {
  */
 export const ImageEditorDialog = ({}: ImageEditorDialogProps) => {
     return (
-        <>
+        <Alert type="danger" variant={"strong"}>
             {
                 "Deprecated component! The original code has been moved to `@webiny/app-file-manager` package."
             }
-        </>
+        </Alert>
     );
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "@webiny/admin-ui";
 
 interface ImageProps {
     uploadImage: () => void;
@@ -20,10 +21,10 @@ interface ImageProps {
  */
 export const Image = ({}: ImageProps) => {
     return (
-        <>
+        <Alert type="danger" variant={"strong"}>
             {
                 "Deprecated component! The original code has been moved to `@webiny/admin-ui` package."
             }
-        </>
+        </Alert>
     );
 };

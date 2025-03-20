@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "@webiny/admin-ui";
 
 interface RenderPropArgs {
     render: () => React.ReactNode;
@@ -32,10 +33,10 @@ interface ImageEditorProps {
  */
 export const ImageEditor = ({}: ImageEditorProps) => {
     return (
-        <>
+        <Alert type="danger" variant={"strong"}>
             {
                 "Deprecated component! The original code has been moved to `@webiny/app-file-manager` package."
             }
-        </>
+        </Alert>
     );
 };
