@@ -6,6 +6,7 @@ import { inputVariants } from "~/Input";
 import { ImagePreview, RichItemPreview, TextOnlyPreview, FilePreview } from "./components";
 import { FileItem, type FileItemDto, type FileItemFormatted } from "../domain";
 import { useFilePicker } from "./useFilePicker";
+import type { FilePreviewRendererProps, TriggerRendererProps } from "./components/types";
 
 const filePickerVariants = cva(
     [
@@ -48,8 +49,8 @@ interface FilePickerPrimitiveProps
     onRemoveItem?: (item: FileItemFormatted | null) => void;
     onSelectItem: () => void;
     placeholder?: string;
-    renderFilePreview?: (props: any) => React.ReactElement<any>;
-    renderTrigger?: (props: any) => React.ReactElement<any>;
+    renderFilePreview?: (props: FilePreviewRendererProps) => React.ReactElement<any>;
+    renderTrigger?: (props: TriggerRendererProps) => React.ReactElement<any>;
     style?: React.CSSProperties;
     value?: FileItemDto | string | null;
 }

@@ -2,6 +2,7 @@ import * as React from "react";
 import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/image.svg";
 import { Button } from "~/Button";
 import { cn, cva, type VariantProps } from "~/utils";
+import type { TriggerDefaultProps } from "~/FilePicker/primitives/components/types";
 
 const triggerVariants = cva(["wby-flex", "data-[disabled=true]:wby-cursor-not-allowed"], {
     variants: {
@@ -51,12 +52,7 @@ const triggerVariants = cva(["wby-flex", "data-[disabled=true]:wby-cursor-not-al
     }
 });
 
-interface TriggerProps
-    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onClick">,
-        VariantProps<typeof triggerVariants> {
-    disabled?: boolean;
-    text?: string;
-    onSelectItem: () => void;
+interface TriggerProps extends TriggerDefaultProps, VariantProps<typeof triggerVariants> {
     renderTrigger?: (props: any) => React.ReactElement<any>;
 }
 

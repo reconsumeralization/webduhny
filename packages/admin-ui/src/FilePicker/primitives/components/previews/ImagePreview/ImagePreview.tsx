@@ -1,7 +1,7 @@
 import React from "react";
 import { cn, makeDecoratable } from "~/utils";
 import { previewVariants } from "../variants";
-import type { FilePreviewDefaultProps } from "../types";
+import type { FilePreviewDefaultProps } from "../../types";
 import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
 
 type ImagePreviewProps = FilePreviewDefaultProps;

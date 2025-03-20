@@ -2,7 +2,7 @@ import React from "react";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { ItemDescription } from "../ItemDescription";
 import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
-import type { FilePreviewDefaultProps } from "../types";
+import type { FilePreviewDefaultProps } from "../../types";
 import { previewVariants } from "../variants";
 
 const textOnlyPreviewVariants = cva(

@@ -4,7 +4,7 @@ import { RichItemThumbnail } from "./RichItemThumbnail";
 import { ItemDescription } from "../ItemDescription";
 import { ItemActions } from "~/FilePicker/primitives/components/previews/ItemActions";
 import { previewVariants } from "../variants";
-import type { FilePreviewDefaultProps } from "../types";
+import type { FilePreviewDefaultProps } from "../../types";
 
 type RichItemPreviewProps = FilePreviewDefaultProps & {
     preview?: "thumbnail" | "file-type" | "placeholder";

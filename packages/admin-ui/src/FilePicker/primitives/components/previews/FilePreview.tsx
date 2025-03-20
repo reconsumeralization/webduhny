@@ -1,7 +1,7 @@
 import * as React from "react";
 import { type VariantProps } from "~/utils";
 import { filePickerVariants } from "~/FilePicker";
-import { FilePreviewDefaultProps } from "./types";
+import { FilePreviewDefaultProps } from "../types";
 import { RichItemPreview, TextOnlyPreview } from "../previews";
 
 type FilePreviewProps = FilePreviewDefaultProps & {
