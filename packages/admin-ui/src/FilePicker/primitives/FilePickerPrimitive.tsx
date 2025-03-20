@@ -73,7 +73,6 @@ const BaseFilePickerPrimitive = ({
     ...props
 }: FilePickerPrimitiveProps) => {
     const { vm } = useFilePicker({ value });
-    console.log("className", className);
 
     return (
         <div
