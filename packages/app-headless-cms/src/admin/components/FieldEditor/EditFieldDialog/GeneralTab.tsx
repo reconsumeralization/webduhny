@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useRef, useMemo } from "react";
 import camelCase from "lodash/camelCase";
-import { Input } from "@webiny/ui/Input";
-import { Switch } from "@webiny/ui/Switch";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Grid, Switch, Input } from "@webiny/admin-ui";
 import { validation } from "@webiny/validation";
 import { Tags } from "@webiny/ui/Tags";
 import { useForm, Bind } from "@webiny/form";
@@ -81,8 +79,8 @@ const GeneralTab = () => {
 
     return (
         <>
-            <Grid>
-                <Cell span={6}>
+            <Grid gap={"comfortable"}>
+                <Grid.Column span={6}>
                     <Bind
                         name={"label"}
                         validators={validation.create("required")}
@@ -99,8 +97,8 @@ const GeneralTab = () => {
                             data-testid="cms.editor.field.settings.general.label"
                         />
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind
                         name={"fieldId"}
                         validators={[
@@ -115,28 +113,36 @@ const GeneralTab = () => {
                             data-testid={`cms.editor.field.settings.general.label-${field.id}`}
                         />
                     </Bind>
-                </Cell>
+                </Grid.Column>
 
-                <Cell span={6}>
+                <Grid.Column span={6}>
                     <Bind name={"multipleValues"}>
-                        <Switch
-                            label={fieldPlugin.field.multipleValuesLabel}
-                            disabled={!fieldPlugin.field.allowMultipleValues}
-                            data-testid={`cms.editor.field.settings.general.switch-multiplevalues`}
-                        />
+                        {({ value, onChange }) => (
+                            <Switch
+                                checked={value}
+                                onCheckedChange={onChange}
+                                label={fieldPlugin.field.multipleValuesLabel}
+                                disabled={!fieldPlugin.field.allowMultipleValues}
+                                data-testid={`cms.editor.field.settings.general.switch-multiplevalues`}
+                            />
+                        )}
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind name={"predefinedValues.enabled"}>
-                        <Switch
-                            label={"Use predefined values"}
-                            disabled={!predefinedValuesEnabled}
-                            data-testid={`cms.editor.field.settings.general.switch-predefinedvalues`}
-                        />
+                        {({ value, onChange }) => (
+                            <Switch
+                                checked={value}
+                                onCheckedChange={onChange}
+                                label={"Use predefined values"}
+                                disabled={!predefinedValuesEnabled}
+                                data-testid={`cms.editor.field.settings.general.switch-predefinedvalues`}
+                            />
+                        )}
                     </Bind>
-                </Cell>
+                </Grid.Column>
 
-                <Cell span={12}>
+                <Grid.Column span={12}>
                     <Bind name={"helpText"}>
                         <Input
                             label={"Help text"}
@@ -144,8 +150,8 @@ const GeneralTab = () => {
                             data-testid={`cms.editor.field.settings.general.helptext`}
                         />
                     </Bind>
-                </Cell>
-                <Cell span={12}>
+                </Grid.Column>
+                <Grid.Column span={12}>
                     <Bind name={"tags"}>
                         <Tags
                             label={"Tags"}
@@ -154,9 +160,9 @@ const GeneralTab = () => {
                             data-testid={`cms.editor.field.settings.general.tags`}
                         />
                     </Bind>
-                </Cell>
+                </Grid.Column>
+                <Grid.Column span={12}>{additionalSettings}</Grid.Column>
             </Grid>
-            {additionalSettings}
         </>
     );
 };

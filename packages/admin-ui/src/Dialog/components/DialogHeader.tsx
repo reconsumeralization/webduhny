@@ -47,7 +47,7 @@ export const DialogHeader = ({
                     </DialogPrimitive.Close>
                 )}
             </DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            {description && <DialogDescription>{description}</DialogDescription>}
         </div>
     );
 };

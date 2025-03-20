@@ -6,11 +6,11 @@ import { css } from "emotion";
 import { validation } from "@webiny/validation";
 import { useBind } from "@webiny/form";
 import { allowCmsLegacyRichTextInput } from "~/utils/allowCmsLegacyRichTextInput";
-import { Typography } from "@webiny/ui/Typography";
 import { RendererOptions } from "./AppearanceTab/RendererOptions";
 import { LegacyRichTextInput } from "./AppearanceTab/LegacyRichTextInput";
 import { useRendererPlugins } from "./useRendererPlugins";
 import { useModelField } from "~/admin/components/ModelFieldProvider";
+import { Text } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/content-model-editor/tabs/appearance-tab");
 
@@ -84,13 +84,17 @@ const AppearanceTab = () => {
                                             onChange={setValue}
                                         />
 
-                                        <div onClick={setValue}>
-                                            <div>{item.renderer.name}</div>
-                                            <div>
-                                                <Typography use={"caption"}>
-                                                    {item.renderer.description}
-                                                </Typography>
-                                            </div>
+                                        <div onClick={setValue} className={"wby-ml-sm-extra"}>
+                                            <Text
+                                                as={"div"}
+                                                size={"md"}
+                                                text={item.renderer.name}
+                                            />
+                                            <Text
+                                                as={"div"}
+                                                size={"sm"}
+                                                text={item.renderer.description}
+                                            />
                                         </div>
                                     </div>
                                 );
