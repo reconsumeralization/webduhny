@@ -1,29 +1,27 @@
 import { SelectPresenter } from "./SelectPresenter";
 
 describe("SelectPresenter", () => {
-    const onValueChange = jest.fn();
+    const onChange = jest.fn();
 
     it("should return the compatible `vm.selectTrigger` based on props", () => {
-        const onValueChange = jest.fn();
-
         // `placeholder`
         {
             const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, placeholder: "Custom placeholder" });
+            presenter.init({ onChange, placeholder: "Custom placeholder" });
             expect(presenter.vm.selectTrigger.placeholder).toEqual("Custom placeholder");
         }
 
         // `displayResetAction`
         {
             const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, displayResetAction: false });
+            presenter.init({ onChange, displayResetAction: false });
             expect(presenter.vm.selectTrigger.displayResetAction).toEqual(false);
         }
 
         {
             // default: no props
             const presenter = new SelectPresenter();
-            presenter.init({ onValueChange });
+            presenter.init({ onChange });
             expect(presenter.vm.selectTrigger.placeholder).toEqual("Select an option");
             expect(presenter.vm.selectTrigger.hasValue).toEqual(false);
         }
@@ -33,7 +31,7 @@ describe("SelectPresenter", () => {
         // with `options` as string
         {
             const presenter = new SelectPresenter();
-            presenter.init({ onValueChange, options: ["Option 1", "Option 2"] });
+            presenter.init({ onChange, options: ["Option 1", "Option 2"] });
             expect(presenter.vm.selectOptions.options).toEqual([
                 {
                     value: "Option 1",
@@ -56,7 +54,7 @@ describe("SelectPresenter", () => {
         {
             const presenter = new SelectPresenter();
             presenter.init({
-                onValueChange,
+                onChange,
                 options: [
                     {
                         value: "option-1",
@@ -134,19 +132,19 @@ describe("SelectPresenter", () => {
         }
     });
 
-    it("should call `onValueChange` callback when `changeValue` is called", () => {
+    it("should call `onChange` callback when `changeValue` is called", () => {
         const presenter = new SelectPresenter();
-        presenter.init({ onValueChange, value: "value" });
+        presenter.init({ onChange, value: "value" });
         presenter.changeValue("value-2");
-        expect(onValueChange).toHaveBeenCalledWith("value-2");
+        expect(onChange).toHaveBeenCalledWith("value-2");
     });
 
     it("should call `onValueChange` and `onValueReset` callbacks when `resetValue` is called", () => {
         const onValueReset = jest.fn();
         const presenter = new SelectPresenter();
-        presenter.init({ onValueChange, onValueReset, value: "value" });
+        presenter.init({ onChange, onValueReset, value: "value" });
         presenter.resetValue();
-        expect(onValueChange).toHaveBeenCalledWith("");
+        expect(onChange).toHaveBeenCalledWith("");
         expect(onValueReset).toHaveBeenCalled();
     });
 });
