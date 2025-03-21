@@ -17,7 +17,7 @@ const meta: Meta<typeof Switch> = {
     },
     render: args => {
         const [checked, setChecked] = useState(args.checked);
-        return <Switch {...args} checked={checked} onCheckedChange={value => setChecked(value)} />;
+        return <Switch {...args} checked={checked} onChange={value => setChecked(value)} />;
     }
 };
 

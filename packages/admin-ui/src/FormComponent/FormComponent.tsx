@@ -56,6 +56,11 @@ interface FormComponentProps<TValue = any> {
     validate?: () => Promise<boolean | any>;
 
     /**
+     *  Form component's value.
+     */
+    value?: TValue;
+
+    /**
      * A callback that is executed each time a value is changed.
      */
     onChange?: (value: TValue) => void;

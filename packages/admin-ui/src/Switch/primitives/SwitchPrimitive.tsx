@@ -23,11 +23,11 @@ const switchVariants = cva("wby-inline-flex wby-items-start wby-space-x-sm", {
 
 type SwitchPrimitiveProps = Omit<
     SwitchPrimitives.SwitchProps,
-    "defaultChecked" | "onCheckedChange"
+    "defaultChecked" | "onCheckedChange" | "onChange"
 > &
     VariantProps<typeof switchVariants> &
     SwitchItemDto & {
-        onCheckedChange: (checked: boolean) => void;
+        onChange?: (checked: boolean) => void;
     };
 
 type SwitchPrimitivVm = {
@@ -62,6 +62,7 @@ const SwitchRenderer = ({
             <SwitchPrimitives.Root
                 {...props}
                 id={id}
+                onChange={() => {}}
                 className={cn([
                     "wby-peer wby-inline-flex wby-h-md wby-w-[26px] wby-mt-xxs wby-shrink-0 wby-cursor-pointer wby-items-center wby-rounded-xxl wby-border-sm wby-transition-colors",
                     "wby-border-transparent data-[state=checked]:wby-bg-secondary-default data-[state=unchecked]:wby-bg-neutral-strong",
@@ -86,6 +87,7 @@ const SwitchRenderer = ({
  */
 const DecoratableSwitchPrimitive = (props: SwitchPrimitiveProps) => {
     const { vm, changeChecked } = useSwitch(props);
+
     if (!vm.item) {
         return null;
     }

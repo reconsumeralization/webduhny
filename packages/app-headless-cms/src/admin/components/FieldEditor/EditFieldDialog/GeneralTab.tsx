@@ -117,28 +117,20 @@ const GeneralTab = () => {
 
                 <Grid.Column span={6}>
                     <Bind name={"multipleValues"}>
-                        {({ value, onChange }) => (
-                            <Switch
-                                checked={value}
-                                onCheckedChange={onChange}
-                                label={fieldPlugin.field.multipleValuesLabel}
-                                disabled={!fieldPlugin.field.allowMultipleValues}
-                                data-testid={`cms.editor.field.settings.general.switch-multiplevalues`}
-                            />
-                        )}
+                        <Switch
+                            label={fieldPlugin.field.multipleValuesLabel}
+                            disabled={!fieldPlugin.field.allowMultipleValues}
+                            data-testid={`cms.editor.field.settings.general.switch-multiplevalues`}
+                        />
                     </Bind>
                 </Grid.Column>
                 <Grid.Column span={6}>
                     <Bind name={"predefinedValues.enabled"}>
-                        {({ value, onChange }) => (
-                            <Switch
-                                checked={value}
-                                onCheckedChange={onChange}
-                                label={"Use predefined values"}
-                                disabled={!predefinedValuesEnabled}
-                                data-testid={`cms.editor.field.settings.general.switch-predefinedvalues`}
-                            />
-                        )}
+                        <Switch
+                            label={"Use predefined values"}
+                            disabled={!predefinedValuesEnabled}
+                            data-testid={`cms.editor.field.settings.general.switch-predefinedvalues`}
+                        />
                     </Bind>
                 </Grid.Column>
 

@@ -3,7 +3,7 @@ import { SwitchPrimitivVm } from "../SwitchPrimitive";
 import { SwitchItem, SwitchItemDto, SwitchItemMapper } from "../domains";
 
 type SwitchPresenterParams = SwitchItemDto & {
-    onCheckedChange: (checked: boolean) => void;
+    onChange?: (checked: boolean) => void;
 };
 
 interface ISwitchPresenter<TParams extends SwitchPresenterParams = SwitchPresenterParams> {
@@ -38,7 +38,7 @@ class SwitchPresenter implements ISwitchPresenter {
     }
 
     public changeChecked = (checked: boolean) => {
-        this.params?.onCheckedChange?.(checked);
+        this.params?.onChange?.(checked);
     };
 }
 
