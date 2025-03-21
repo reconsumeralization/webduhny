@@ -18,7 +18,7 @@ const meta: Meta<typeof ColorPicker> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <ColorPicker {...args} value={value} onValueChange={setValue} />;
+        return <ColorPicker {...args} value={value} onChange={setValue} />;
     }
 };
 

@@ -35,9 +35,7 @@ const ColorPicker = ({ value, onChange, align: originalAlign, ...props }: ColorP
         return "start";
     }, [originalAlign]);
 
-    return (
-        <AdminColorPicker {...props} value={value} onValueChange={onValueChange} align={align} />
-    );
+    return <AdminColorPicker {...props} value={value} onChange={onValueChange} align={align} />;
 };
 
 export { ColorPicker };

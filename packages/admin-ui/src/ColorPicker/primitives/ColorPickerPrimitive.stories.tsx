@@ -7,7 +7,7 @@ const meta: Meta<typeof ColorPickerPrimitive> = {
     component: ColorPickerPrimitive,
     tags: ["autodocs"],
     argTypes: {
-        onValueChange: { action: "onValueChange" },
+        onChange: { action: "onChange" },
         onOpenChange: { action: "onOpenChange" }
     },
     parameters: {
@@ -18,7 +18,7 @@ const meta: Meta<typeof ColorPickerPrimitive> = {
         return (
             <div className={"wby-w-full"}>
                 <div className={"wby-flex wby-items-center wby-justify-center wby-mb-4"}>
-                    <ColorPickerPrimitive {...args} value={value} onValueChange={setValue} />
+                    <ColorPickerPrimitive {...args} value={value} onChange={setValue} />
                 </div>
                 <div className={"wby-text-center"}>
                     Current selected value: <pre>{value}</pre>

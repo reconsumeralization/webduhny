@@ -22,7 +22,7 @@ const colorPickerVariants = cva("wby-cursor-pointer", {
 });
 
 interface ColorPickerPrimitiveProps
-    extends React.HTMLAttributes<HTMLDivElement>,
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">,
         VariantProps<typeof inputVariants> {
     /**
      * Callback triggered when the open state changes.
@@ -31,7 +31,7 @@ interface ColorPickerPrimitiveProps
     /**
      * Callback triggered when the value changes.
      */
-    onValueChange: (value: string) => void;
+    onChange: (value: string) => void;
     /**
      * Optional selected value.
      */
