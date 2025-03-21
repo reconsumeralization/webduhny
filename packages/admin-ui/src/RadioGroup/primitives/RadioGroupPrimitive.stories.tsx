@@ -13,9 +13,7 @@ const meta: Meta<typeof RadioGroupPrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return (
-            <RadioGroupPrimitive {...args} value={value} onValueChange={value => setValue(value)} />
-        );
+        return <RadioGroupPrimitive {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 
@@ -199,7 +197,7 @@ export const WithExternalValueControl: Story = {
                     <RadioGroupPrimitive
                         {...args}
                         value={value}
-                        onValueChange={value => setValue(value)}
+                        onChange={value => setValue(value)}
                     />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>

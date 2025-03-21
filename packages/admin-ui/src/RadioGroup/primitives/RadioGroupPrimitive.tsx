@@ -24,16 +24,20 @@ const RadioGroupRoot = ({
  * Radio Group Renderer
  */
 interface RadioGroupPrimitiveProps
-    extends Omit<RadioGroupPrimitives.RadioGroupProps, "defaultValue" | "onValueChange"> {
+    extends Omit<
+        RadioGroupPrimitives.RadioGroupProps,
+        "defaultValue" | "onChange" | "onValueChange"
+    > {
     items: RadioItemParams[];
-    onValueChange: (value: string) => void;
+    onChange: (value: string) => void;
 }
 
 interface RadioGroupVm {
     items: RadioItemFormatted[];
 }
 
-interface RadioGroupRendererProps extends Omit<RadioGroupPrimitiveProps, "onValueChange"> {
+interface RadioGroupRendererProps
+    extends Omit<RadioGroupPrimitiveProps, "onValueChange" | "onChange"> {
     items: RadioItemFormatted[];
     changeValue: (value: string) => void;
 }

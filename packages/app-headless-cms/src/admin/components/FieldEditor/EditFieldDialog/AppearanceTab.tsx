@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
 import { i18n } from "@webiny/app/i18n";
-import { Radio, RadioGroup } from "@webiny/ui/Radio";
 import { css } from "emotion";
 import { validation } from "@webiny/validation";
 import { useBind } from "@webiny/form";
@@ -10,7 +8,7 @@ import { RendererOptions } from "./AppearanceTab/RendererOptions";
 import { LegacyRichTextInput } from "./AppearanceTab/LegacyRichTextInput";
 import { useRendererPlugins } from "./useRendererPlugins";
 import { useModelField } from "~/admin/components/ModelFieldProvider";
-import { Text } from "@webiny/admin-ui";
+import { RadioGroup, Text, Grid } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/content-model-editor/tabs/appearance-tab");
 
@@ -41,10 +39,10 @@ const AppearanceTab = () => {
     if (renderers.length === 0) {
         return (
             <Grid>
-                <Cell
+                <Grid.Column
                     span={12}
                     className={style.noComponentsMessage}
-                >{t`There are no components that can render this field.`}</Cell>
+                >{t`There are no components that can render this field.`}</Grid.Column>
             </Grid>
         );
     }
@@ -66,42 +64,36 @@ const AppearanceTab = () => {
     return (
         <>
             <Grid>
-                {allowCmsLegacyRichTextInput && (
-                    <Cell span={6}>
-                        <LegacyRichTextInput />
-                    </Cell>
-                )}
-                <Cell span={12}>Choose a component that will render the field:</Cell>
-                <Cell span={12}>
-                    <RadioGroup {...rendererName}>
-                        {({ onChange, getValue }) =>
-                            renderers.map(item => {
-                                const setValue = onChange(item.renderer.rendererName);
-                                return (
-                                    <div key={item.name} className={style.radioContainer}>
-                                        <Radio
-                                            value={getValue(item.renderer.rendererName)}
-                                            onChange={setValue}
+                <>
+                    {allowCmsLegacyRichTextInput && (
+                        <Grid.Column span={6}>
+                            <LegacyRichTextInput />
+                        </Grid.Column>
+                    )}
+                    <Grid.Column span={12}>
+                        Choose a component that will render the field:
+                    </Grid.Column>
+                    <Grid.Column span={12}>
+                        <RadioGroup
+                            {...rendererName}
+                            items={renderers.map(item => ({
+                                id: item.renderer.rendererName,
+                                value: item.renderer.rendererName,
+                                label: (
+                                    <div>
+                                        <Text as={"div"} size={"md"} text={item.renderer.name} />
+                                        <Text
+                                            as={"div"}
+                                            size={"sm"}
+                                            text={item.renderer.description}
+                                            className={"wby-text-neutral-muted"}
                                         />
-
-                                        <div onClick={setValue} className={"wby-ml-sm-extra"}>
-                                            <Text
-                                                as={"div"}
-                                                size={"md"}
-                                                text={item.renderer.name}
-                                            />
-                                            <Text
-                                                as={"div"}
-                                                size={"sm"}
-                                                text={item.renderer.description}
-                                            />
-                                        </div>
                                     </div>
-                                );
-                            })
-                        }
-                    </RadioGroup>
-                </Cell>
+                                )
+                            }))}
+                        />
+                    </Grid.Column>
+                </>
             </Grid>
             <RendererOptions plugin={selectedPlugin} />
         </>

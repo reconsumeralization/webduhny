@@ -7,16 +7,18 @@ export const useRadioGroup = (props: RadioGroupPrimitiveProps) => {
     const params: RadioGroupPresenterParams = useMemo(
         () => ({
             items: props.items,
-            onValueChange: props.onValueChange
+            onValueChange: props.onChange
         }),
-        [props.items, props.onValueChange]
+        [props.items, props.onChange]
     );
 
     const presenter = useMemo(() => {
-        const presenter = new RadioGroupPresenter();
-        presenter.init(params);
-        return presenter;
+        return new RadioGroupPresenter();
     }, []);
+
+    useEffect(() => {
+        presenter.init(params);
+    }, [params]);
 
     const [vm, setVm] = useState(presenter.vm);
 
