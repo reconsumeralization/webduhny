@@ -77,7 +77,15 @@ export const ContentGroupsMenuItems = () => {
                                 name={group.id}
                                 parent={"headlessCMS"}
                                 element={
-                                    <Menu.Group label={group.name} icon={<Icon group={group} />} />
+                                    <Menu.Group
+                                        text={group.name}
+                                        icon={
+                                            <Menu.Group.Icon
+                                                label={group.name}
+                                                element={<Icon group={group} />}
+                                            />
+                                        }
+                                    />
                                 }
                             />
 
@@ -85,7 +93,7 @@ export const ContentGroupsMenuItems = () => {
                                 <Menu
                                     parent={"headlessCMS"}
                                     name={`${group.id}-empty`}
-                                    element={<Menu.Group label={"Nothing to show"} />}
+                                    element={<Menu.Group text={"Nothing to show"} />}
                                 />
                             )}
                             {group.contentModels.length > 0 &&
@@ -100,8 +108,8 @@ export const ContentGroupsMenuItems = () => {
                                             name={contentModel.modelId}
                                             element={
                                                 <Menu.Link
-                                                    label={contentModel.name}
-                                                    path={`/cms/content-entries/${contentModel.modelId}`}
+                                                    text={contentModel.name}
+                                                    to={`/cms/content-entries/${contentModel.modelId}`}
                                                 />
                                             }
                                         />

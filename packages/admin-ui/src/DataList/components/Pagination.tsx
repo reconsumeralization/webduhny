@@ -41,7 +41,7 @@ const Pagination = (props: DataListProps) => {
                                 onClick={() =>
                                     pagination.setPerPage && pagination.setPerPage(perPage)
                                 }
-                                content={perPage}
+                                text={perPage}
                             />
                         ))}
                 </DropdownMenu>

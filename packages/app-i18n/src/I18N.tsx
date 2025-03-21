@@ -49,12 +49,12 @@ const I18NExtension = () => {
                     <Menu
                         name="i18n.settings"
                         parent={"settings"}
-                        element={<Menu.Group label={"Languages"} />}
+                        element={<Menu.Group text={"Languages"} />}
                     />
                     <Menu
                         name="i18n.settings.locales"
                         parent={"settings"}
-                        element={<Menu.Link label={"Locales"} path={"/i18n/locales"} />}
+                        element={<Menu.Link text={"Locales"} to={"/i18n/locales"} />}
                     />
                 </HasPermission>
             </AdminConfig>

@@ -56,74 +56,70 @@ const PageBuilderMenu = () => {
                     name="pb"
                     element={
                         <Menu.Link
-                            label={"Page Builder"}
-                            icon={<PagesIcon />}
-                            path={"/page-builder/pages"}
+                            text={"Page Builder"}
+                            icon={<Menu.Link.Icon label={"Page Builder"} element={<PagesIcon />} />}
+                            to={"/page-builder/pages"}
                         />
                     }
                 />
             </HasPermission>
 
             <HasPermission any={["pb.menu", "pb.category", "pb.page", "pb.template", "pb.block"]}>
-                <Menu name="pb.pagesLabel" parent="pb" element={<Menu.Group label={"Pages"} />} />
+                <Menu name="pb.pagesLabel" parent="pb" element={<Menu.Group text={"Pages"} />} />
             </HasPermission>
             <HasPermission name={"pb.category"}>
                 <Menu
                     name="pb.categories"
                     parent={"pb"}
-                    element={<Menu.Link label={"Categories"} path={"/page-builder/categories"} />}
+                    element={<Menu.Link text={"Categories"} to={"/page-builder/categories"} />}
                 />
             </HasPermission>
             <HasPermission name={"pb.page"}>
                 <Menu
                     name="pb.pages"
                     parent={"pb"}
-                    element={<Menu.Link label={"Pages"} path={"/page-builder/pages"} />}
+                    element={<Menu.Link text={"Pages"} to={"/page-builder/pages"} />}
                 />
             </HasPermission>
             <HasPermission name={"pb.template"}>
                 <Menu
                     name="pb.templates"
                     parent={"pb"}
-                    element={
-                        <Menu.Link label={"Templates"} path={"/page-builder/page-templates"} />
-                    }
+                    element={<Menu.Link text={"Templates"} to={"/page-builder/page-templates"} />}
                 />
             </HasPermission>
             <HasPermission name={"pb.menu"}>
                 <Menu
                     name="pb.menus"
                     parent={"pb"}
-                    element={<Menu.Link label={"Menus"} path={"/page-builder/menus"} />}
+                    element={<Menu.Link text={"Menus"} to={"/page-builder/menus"} />}
                 />
             </HasPermission>
             <HasPermission any={["pb.block"]}>
-                <Menu name="pb.blocksLabel" parent="pb" element={<Menu.Group label={"Blocks"} />} />
+                <Menu name="pb.blocksLabel" parent="pb" element={<Menu.Group text={"Blocks"} />} />
                 <Menu
                     name="pb.blocks.categories"
                     parent={"pb"}
                     element={
-                        <Menu.Link label={"Categories"} path={"/page-builder/block-categories"} />
+                        <Menu.Link text={"Categories"} to={"/page-builder/block-categories"} />
                     }
                 />
                 <Menu
                     name="pb.blocks.pageBlocks"
                     parent={"pb"}
-                    element={<Menu.Link label={"Blocks"} path={"/page-builder/page-blocks"} />}
+                    element={<Menu.Link text={"Blocks"} to={"/page-builder/page-blocks"} />}
                 />
             </HasPermission>
             <HasPermission name={"pb.settings"}>
                 <Menu
                     name="pb.settings"
                     parent="settings"
-                    element={<Menu.Group label={"Page Builder"} />}
+                    element={<Menu.Group text={"Page Builder"} />}
                 />
                 <Menu
                     name="pb.settings.website"
                     parent={"settings"}
-                    element={
-                        <Menu.Link label={"Website"} path={"/settings/page-builder/website"} />
-                    }
+                    element={<Menu.Link text={"Website"} to={"/settings/page-builder/website"} />}
                 />
             </HasPermission>
         </AdminConfig>

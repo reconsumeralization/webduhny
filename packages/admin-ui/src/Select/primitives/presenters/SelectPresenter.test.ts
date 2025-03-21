@@ -13,6 +13,13 @@ describe("SelectPresenter", () => {
             expect(presenter.vm.selectTrigger.placeholder).toEqual("Custom placeholder");
         }
 
+        // `displayResetAction`
+        {
+            const presenter = new SelectPresenter();
+            presenter.init({ onValueChange, displayResetAction: false });
+            expect(presenter.vm.selectTrigger.displayResetAction).toEqual(false);
+        }
+
         {
             // default: no props
             const presenter = new SelectPresenter();

@@ -76,9 +76,11 @@ export const ApwMenusRoutes = () => {
                 name={"apw"}
                 element={
                     <Menu.Link
-                        icon={<ApwIcon />}
-                        label={"Publishing Workflows"}
-                        path={"/apw/content-reviews"}
+                        icon={
+                            <Menu.Link.Icon element={<ApwIcon />} label={"Publishing Workflows"} />
+                        }
+                        text={"Publishing Workflows"}
+                        to={"/apw/content-reviews"}
                     />
                 }
             />
@@ -86,13 +88,13 @@ export const ApwMenusRoutes = () => {
             <Menu
                 name={"apw.contentReviews"}
                 parent={"apw"}
-                element={<Menu.Link label={"Content Reviews"} path={"/apw/content-reviews"} />}
+                element={<Menu.Link text={"Content Reviews"} to={"/apw/content-reviews"} />}
             />
             {manageWorkflows && (
                 <Menu
                     name={"apw.publishingWorkflows"}
                     parent={"apw"}
-                    element={<Menu.Link label={"Workflows"} path={"/apw/publishing-workflows"} />}
+                    element={<Menu.Link text={"Workflows"} to={"/apw/publishing-workflows"} />}
                 />
             )}
         </AdminConfig>

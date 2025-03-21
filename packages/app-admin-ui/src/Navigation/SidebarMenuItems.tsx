@@ -8,7 +8,7 @@ export interface MenusProps {
 
 // This component is called recursively to render root and nested menu items.
 // The menu items are defined via AdminConfig.
-export const NavigationMenuItems = (props: MenusProps) => {
+export const SidebarMenuItems = (props: MenusProps) => {
     const { menus: allMenus, where = {} } = props;
     const filteredMenus = allMenus.filter(menu => {
         const whereParent = where.parent || null;
@@ -38,7 +38,7 @@ export const NavigationMenuItems = (props: MenusProps) => {
             return React.cloneElement(
                 m.element,
                 { key: m.parent + m.name },
-                <NavigationMenuItems menus={allMenus} where={{ parent: m.name }} />
+                <SidebarMenuItems menus={allMenus} where={{ parent: m.name }} />
             );
         }
 

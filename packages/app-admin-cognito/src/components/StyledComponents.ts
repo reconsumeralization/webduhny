@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { css } from "emotion";
 
 export const Wrapper = styled("section")({
+    margin: "auto",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

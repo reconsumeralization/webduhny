@@ -1,26 +1,18 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { makeDecoratable } from "~/index";
-import { Sidebar } from "@webiny/admin-ui";
+import { Sidebar, type SidebarMenuItemLinkProps } from "@webiny/admin-ui";
 import { useLocation } from "@webiny/react-router";
-import { type BaseMenuItemProps } from "./types";
 
-export interface MenuLinkProps extends BaseMenuItemProps, React.HTMLAttributes<HTMLAnchorElement> {
-    path: string;
-}
-
-const MenuLinkBase = ({ label, icon, path, ...rest }: MenuLinkProps) => {
+const MenuLinkBase = (props: SidebarMenuItemLinkProps) => {
     const location = useLocation();
-
-    const mappedProps = useMemo(() => {
-        return {
-            text: label,
-            icon: icon ? <Sidebar.Item.Icon label={label} element={icon} /> : null,
-            to: path,
-            ...rest
-        };
-    }, [label, icon, rest]);
-
-    return <Sidebar.Item {...mappedProps} active={location.pathname === mappedProps.to} />;
+    return <Sidebar.Link {...props} active={location.pathname === props.to} />;
 };
 
-export const MenuLink = makeDecoratable("MenuLink", MenuLinkBase);
+const DecoratableMenuLink = makeDecoratable("MenuLink", MenuLinkBase);
+
+const MenuLink = Object.assign(DecoratableMenuLink, {
+    Action: Sidebar.Link.Action,
+    Icon: Sidebar.Link.Icon
+});
+
+export { MenuLink };

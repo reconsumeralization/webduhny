@@ -58,12 +58,12 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
         <DropdownMenu
             trigger={<IconButton icon={<SettingsIcon />} variant={"ghost"} size={"xs"} />}
         >
-            <DropdownMenu.Label content={"Display columns"} />
+            <DropdownMenu.Label text={"Display columns"} />
             {options.map(option => {
                 return (
                     <DropdownMenu.Item
                         key={option.id}
-                        content={
+                        text={
                             <Checkbox
                                 label={option.header}
                                 onCheckedChange={option.onChange}

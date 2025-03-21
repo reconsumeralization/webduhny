@@ -30,9 +30,14 @@ export const TenantsModule = () => {
                     name={"tenantManager"}
                     element={
                         <Menu.Link
-                            icon={<TenantManagerIcon />}
-                            label={"Tenant Manager"}
-                            path={"/tenants"}
+                            icon={
+                                <Menu.Link.Icon
+                                    element={<TenantManagerIcon />}
+                                    label={"Tenant Manager"}
+                                />
+                            }
+                            text={"Tenant Manager"}
+                            to={"/tenants"}
                         />
                     }
                 />

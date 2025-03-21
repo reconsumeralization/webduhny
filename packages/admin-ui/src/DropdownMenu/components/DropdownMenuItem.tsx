@@ -1,17 +1,26 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { cn, cva, makeDecoratable } from "~/utils";
-import { DropdownMenuSubRoot } from "~/DropdownMenu/components/DropdownMenuSubRoot";
-import { DropdownMenuSubTrigger } from "~/DropdownMenu/components/DropdownMenuSubTrigger";
-import { DropdownMenuPortal } from "~/DropdownMenu/components/DropdownMenuPortal";
-import { DropdownMenuSubContent } from "~/DropdownMenu/components/DropdownMenuSubContent";
+import { DropdownMenuSubRoot } from "./DropdownMenuSubRoot";
+import { DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
+import { DropdownMenuPortal } from "./DropdownMenuPortal";
+import { DropdownMenuSubContent } from "./DropdownMenuSubContent";
+import { DropdownMenuItemIcon } from "./DropdownMenuItemIcon";
+import { Link, LinkProps, To } from "@webiny/react-router";
 
-export interface DropdownMenuItemProps
-    extends Omit<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>, "content"> {
+interface DropdownMenuItemBaseProps {
     icon?: React.ReactNode;
     readOnly?: boolean;
-    content?: React.ReactNode;
+    text?: React.ReactNode;
+    disabled?: boolean;
+    onClick?: React.MouseEventHandler;
 }
+
+type DropdownMenuItemButtonProps = (DropdownMenuItemBaseProps &
+    React.HTMLAttributes<HTMLDivElement>) & { to?: never };
+type DropdownMenuItemLinkProps = (DropdownMenuItemBaseProps & LinkProps) & { to: To };
+
+type DropdownMenuItemProps = DropdownMenuItemButtonProps | DropdownMenuItemLinkProps;
 
 const variants = cva(
     [
@@ -38,13 +47,13 @@ const variants = cva(
 const DropdownMenuItemBase = React.forwardRef<
     React.ElementRef<typeof DropdownMenuPrimitive.Item>,
     DropdownMenuItemProps
->(({ className, icon, content, readOnly, children, ...props }, ref) => {
+>(({ className, icon, text, readOnly, disabled, onClick, children, ...linkProps }, ref) => {
     if (children) {
         return (
             <DropdownMenuSubRoot>
                 <DropdownMenuSubTrigger>
                     {icon}
-                    <span>{content}</span>
+                    <span>{text}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>{children}</DropdownMenuSubContent>
@@ -53,27 +62,45 @@ const DropdownMenuItemBase = React.forwardRef<
         );
     }
 
+    const sharedProps = {
+        className: cn(
+            "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors",
+            {
+                "[&_svg]:wby-fill-neutral-disabled": disabled
+            }
+        )
+    };
+
+    const content = linkProps.to ? (
+        <Link {...sharedProps} {...linkProps}>
+            {icon}
+            <span>{text}</span>
+        </Link>
+    ) : (
+        <div {...sharedProps} onClick={onClick}>
+            {icon}
+            <span>{text}</span>
+        </div>
+    );
+
     return (
-        <DropdownMenuPrimitive.Item
-            ref={ref}
-            className={cn(variants({ readOnly }), className)}
-            {...props}
-        >
-            <div
-                className={cn(
-                    "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors",
-                    {
-                        "[&_svg]:wby-fill-neutral-disabled": props.disabled
-                    }
-                )}
-            >
-                {icon}
-                <span>{content}</span>
-            </div>
+        <DropdownMenuPrimitive.Item ref={ref} className={cn(variants({ readOnly }), className)}>
+            {content}
         </DropdownMenuPrimitive.Item>
     );
 });
 
 DropdownMenuItemBase.displayName = DropdownMenuPrimitive.Item.displayName;
 
-export const DropdownMenuItem = makeDecoratable("DropdownMenuItem", DropdownMenuItemBase);
+const DecoratableDropdownMenuItem = makeDecoratable("DropdownMenuItem", DropdownMenuItemBase);
+
+const DropdownMenuItem = Object.assign(DecoratableDropdownMenuItem, {
+    Icon: DropdownMenuItemIcon
+});
+
+export {
+    DropdownMenuItem,
+    type DropdownMenuItemProps,
+    DropdownMenuItemButtonProps,
+    DropdownMenuItemLinkProps
+};

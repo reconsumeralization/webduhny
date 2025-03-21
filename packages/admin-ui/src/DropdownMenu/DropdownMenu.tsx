@@ -4,7 +4,8 @@ import { DropdownMenuRoot } from "./components/DropdownMenuRoot";
 import { DropdownMenuTrigger } from "./components/DropdownMenuTrigger";
 import { DropdownMenuContent } from "./components/DropdownMenuContent";
 import { DropdownMenuSeparator } from "./components/DropdownMenuSeparator";
-import { DropdownMenuItem } from "./components/DropdownMenuItem";
+import { DropdownMenuItem, DropdownMenuItemProps } from "./components/DropdownMenuItem";
+import { DropdownMenuLink, DropdownMenuLinkProps } from "./components/DropdownMenuLink";
 import { DropdownMenuCheckboxItem } from "./components/DropdownMenuCheckboxItem";
 import { DropdownMenuLabel } from "./components/DropdownMenuLabel";
 import { DropdownMenuGroup } from "./components/DropdownMenuGroup";
@@ -72,7 +73,8 @@ const DropdownMenu = withStaticProps(DecoratableDropdownMenu, {
     Label: DropdownMenuLabel,
     Group: DropdownMenuGroup,
     Item: DropdownMenuItem,
+    Link: DropdownMenuLink,
     CheckboxItem: DropdownMenuCheckboxItem
 });
 
-export { DropdownMenu };
+export { DropdownMenu, DropdownMenuItemProps, DropdownMenuLinkProps };

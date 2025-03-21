@@ -15,6 +15,7 @@ import { ReactComponent as User } from "@material-design-icons/svg/outlined/pers
 import { ReactComponent as Keyboard } from "@material-design-icons/svg/outlined/keyboard.svg";
 import { ReactComponent as Mail } from "@material-design-icons/svg/outlined/mail.svg";
 import { ReactComponent as MessageSquare } from "@material-design-icons/svg/outlined/chat_bubble.svg";
+import { ReactComponent as LinkIcon } from "@material-design-icons/svg/outlined/link.svg";
 import { Text } from "~/Text";
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -28,63 +29,110 @@ export default meta;
 
 type Story = StoryObj<typeof DropdownMenu>;
 
-const { Label, Separator, Group, Item, CheckboxItem } = DropdownMenu;
+const { Label, Separator, Group, Item, Link, CheckboxItem } = DropdownMenu;
 
 export const Default: Story = {
     args: {
         trigger: <Button variant="primary" text={"Open"} />,
         children: (
             <>
-                <Label content={"My Account"} />
-                <Item icon={<User />} content={"Profile"} />
+                <Label text={"My Account"} />
+                <Item icon={<Item.Icon label={"Profile"} element={<User />} />} text={"Profile"} />
                 <Group>
-                    <Item icon={<CreditCard />} content={"Billing"} />
-                    <Item icon={<Settings />} content={"Settings"} />
-                    <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
+                    <Item
+                        icon={<Item.Icon element={<CreditCard />} label={"Billing"} />}
+                        text={"Billing"}
+                    />
+                    <Item
+                        icon={<Item.Icon element={<Settings />} label={"Settings"} />}
+                        text={"Settings"}
+                    />
+                    <Item
+                        icon={<Item.Icon element={<Keyboard />} label={"Keyboard shortcuts"} />}
+                        text={"Keyboard shortcuts"}
+                    />
                 </Group>
                 <Separator />
                 <Group>
-                    <Item icon={<Users />} content={"Team"} />
-                    <Item icon={<UserPlus />} content={"Invite users"}>
-                        <Item icon={<Mail />} content={"Email"} />
-                        <Item icon={<MessageSquare />} content={"Message"} />
+                    <Item icon={<Item.Icon element={<Users />} label={"Team"} />} text={"Team"} />
+                    <Item
+                        icon={<Item.Icon element={<UserPlus />} label={"Invite users"} />}
+                        text={"Invite users"}
+                    >
+                        <Item
+                            icon={<Item.Icon element={<Mail />} label={"Email"} />}
+                            text={"Email"}
+                        />
+                        <Item
+                            icon={<Item.Icon element={<MessageSquare />} label={"Message"} />}
+                            text={"Message"}
+                        />
                         <Separator />
-                        <Item icon={<PlusCircle />} content={"More..."} />
+                        <Item
+                            icon={<Item.Icon label={"More..."} element={<PlusCircle />} />}
+                            text={"More..."}
+                        />
                     </Item>
-                    <Item icon={<Plus />} content={"New Team"} />
+                    <Item
+                        icon={<Item.Icon label={"New Team"} element={<Plus />} />}
+                        text={"New Team"}
+                    />
                 </Group>
                 <Separator />
-                <Item icon={<LifeBuoy />} content={"Support"} />
-                <Item icon={<Cloud />} content={"API"} disabled />
+                <Item
+                    icon={<Item.Icon label={"Support"} element={<LifeBuoy />} />}
+                    text={"Support"}
+                />
+                <Item
+                    icon={<Item.Icon label={"API"} element={<Cloud />} />}
+                    text={"API"}
+                    disabled
+                />
                 <Separator />
-                <Item icon={<LogOut />} content={"Log out"} />
+                <Item
+                    icon={<Item.Icon label={"Log out"} element={<LogOut />} />}
+                    text={"Log out"}
+                />
+                <Separator />
+                <Label text={"Links"} />
+                <Link
+                    text={"Link 1"}
+                    to={"#link-1"}
+                    icon={<Link.Icon label="Link 1" element={<LinkIcon />} />}
+                />
+                <Link
+                    text={"Link 2"}
+                    to={"#link-2"}
+                    icon={<Link.Icon label="Link 2" element={<LinkIcon />} />}
+                />
+                <Link
+                    text={"Link 3"}
+                    to={"#link-3"}
+                    icon={<Link.Icon label="Link 3" element={<LinkIcon />} />}
+                />
             </>
         )
     },
     argTypes: {}
 };
 
-export const SimpleMenu: Story = {
-    args: {
-        trigger: <Button variant="primary" text={"Open"} />,
-        children: (
-            <>
-                <Item content={"Billing"} />
-                <Item content={"Settings"} />
-                <Item content={"Keyboard shortcuts"} />
-            </>
-        )
-    },
-    argTypes: {}
-};
 export const SimpleMenuWithIcons: Story = {
     args: {
         trigger: <Button variant="primary" text={"Open"} />,
         children: (
             <>
-                <Item icon={<CreditCard />} content={"Billing"} />
-                <Item icon={<Settings />} content={"Settings"} />
-                <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
+                <Item
+                    icon={<Item.Icon label={"Billing"} element={<CreditCard />} />}
+                    text={"Billing"}
+                />
+                <Item
+                    icon={<Item.Icon label={"Settings"} element={<Settings />} />}
+                    text={"Settings"}
+                />
+                <Item
+                    icon={<Item.Icon label={"Keyboard shortcuts"} element={<Keyboard />} />}
+                    text={"Keyboard shortcuts"}
+                />
             </>
         )
     },
@@ -96,34 +144,77 @@ export const WithSubMenus: Story = {
         trigger: <Button variant="primary" text={"Open"} />,
         children: (
             <>
-                <Label content={"My Account"} />
-                <Item icon={<User />} content={"Profile"} />
+                <Label text={"My Account"} />
+                <Item icon={<Item.Icon element={<User />} label={"Profile"} />} text={"Profile"} />
                 <Group>
-                    <Item icon={<CreditCard />} content={"Billing"} />
-                    <Item icon={<Settings />} content={"Settings"} />
-                    <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
+                    <Item
+                        icon={<Item.Icon label={"Billing"} element={<CreditCard />} />}
+                        text={"Billing"}
+                    />
+                    <Item
+                        icon={<Item.Icon label={"Settings"} element={<Settings />} />}
+                        text={"Settings"}
+                    />
+                    <Item
+                        icon={<Item.Icon label={"Keyboard shortcuts"} element={<Keyboard />} />}
+                        text={"Keyboard shortcuts"}
+                    />
                 </Group>
                 <Separator />
                 <Group>
-                    <Item icon={<Users />} content={"Team"} />
-                    <Item icon={<UserPlus />} content={"Invite users"}>
-                        <Item icon={<Mail />} content={"Email"} />
-                        <Item icon={<MessageSquare />} content={"Message"} />
+                    <Item icon={<Item.Icon label={"Team"} element={<Users />} />} text={"Team"} />
+                    <Item
+                        icon={<Item.Icon label={"Invite user"} element={<UserPlus />} />}
+                        text={"Invite users"}
+                    >
+                        <Item
+                            icon={<Item.Icon label={"Email"} element={<Mail />} />}
+                            text={"Email"}
+                        />
+                        <Item
+                            icon={<Item.Icon label={"Message"} element={<MessageSquare />} />}
+                            text={"Message"}
+                        />
                         <Separator />
-                        <Item icon={<PlusCircle />} content={"More..."}>
-                            <Item icon={<Mail />} content={"Email"} />
-                            <Item icon={<MessageSquare />} content={"Message"} />
+                        <Item
+                            icon={<Item.Icon label={"More..."} element={<PlusCircle />} />}
+                            text={"More..."}
+                        >
+                            <Item
+                                icon={<Item.Icon label={"Email"} element={<Mail />} />}
+                                text={"Email"}
+                            />
+                            <Item
+                                icon={<Item.Icon label={"Message"} element={<MessageSquare />} />}
+                                text={"Message"}
+                            />
                             <Separator />
-                            <Item icon={<PlusCircle />} content={"More..."} />
+                            <Item
+                                icon={<Item.Icon label={"More..."} element={<PlusCircle />} />}
+                                text={"More..."}
+                            />
                         </Item>
                     </Item>
-                    <Item icon={<Plus />} content={"New Team"} />
+                    <Item
+                        icon={<Item.Icon label={"New Team"} element={<Plus />} />}
+                        text={"New Team"}
+                    />
                 </Group>
                 <Separator />
-                <Item icon={<LifeBuoy />} content={"Support"} />
-                <Item icon={<Cloud />} content={"API"} disabled />
+                <Item
+                    icon={<Item.Icon label={"Support"} element={<LifeBuoy />} />}
+                    text={"Support"}
+                />
+                <Item
+                    icon={<Item.Icon label={"API"} element={<Cloud />} />}
+                    text={"API"}
+                    disabled
+                />
                 <Separator />
-                <Item icon={<LogOut />} content={"Log out"} />
+                <Item
+                    icon={<Item.Icon label={"Log out"} element={<LogOut />} />}
+                    text={"Log out"}
+                />
             </>
         )
     },
@@ -157,7 +248,7 @@ export const WithCheckboxItems: Story = {
                     <CheckboxItem
                         key={level.id}
                         checked={level.id === "viewer"}
-                        content={
+                        text={
                             <div>
                                 <Text as={"div"} text={level.label} />
                                 <Text
@@ -174,7 +265,7 @@ export const WithCheckboxItems: Story = {
                     />
                 ))}
                 <DropdownMenu.Separator />
-                <DropdownMenu.Item content={"Remove access"} />
+                <DropdownMenu.Item text={"Remove access"} />
             </>
         )
     },
@@ -189,9 +280,18 @@ export const WithOnOpenChange: Story = {
         },
         children: (
             <>
-                <Item icon={<CreditCard />} content={"Billing"} />
-                <Item icon={<Settings />} content={"Settings"} />
-                <Item icon={<Keyboard />} content={"Keyboard shortcuts"} />
+                <Item
+                    icon={<Item.Icon element={<CreditCard />} label={"Billing"} />}
+                    text={"Billing"}
+                />
+                <Item
+                    icon={<Item.Icon element={<Settings />} label={"Settings"} />}
+                    text={"Settings"}
+                />
+                <Item
+                    icon={<Item.Icon element={<Keyboard />} label={"Keyboard shortcuts"} />}
+                    text={"Keyboard shortcuts"}
+                />
             </>
         )
     },

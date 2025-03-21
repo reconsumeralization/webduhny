@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "@webiny/react-router";
-import { ReactComponent as AccountIcon } from "~/assets/icons/round-account_circle-24px.svg";
-import { ReactComponent as LogoutIcon } from "~/assets/icons/logout_black_24dp.svg";
 import { useSecurity } from "@webiny/app-security";
 import { useTenancy } from "@webiny/app-tenancy";
 import { useIsDefaultTenant } from "./useIsDefaultTenant";
 import { DropdownMenu } from "@webiny/admin-ui";
+import { ReactComponent as AccountIcon } from "@material-design-icons/svg/outlined/account_circle.svg";
+import { ReactComponent as SignOutIcon } from "@material-design-icons/svg/outlined/logout.svg";
 
 interface AccountDetailsProps {
     accountRoute: `/${string}`;
@@ -26,9 +25,9 @@ export const AccountDetails = ({ accountRoute }: AccountDetailsProps) => {
     if (tenancy && !isDefaultTenant) {
         return (
             <DropdownMenu.Item
-                icon={<LogoutIcon />}
+                icon={<DropdownMenu.Link.Icon element={<SignOutIcon />} label={"Exit tenant"} />}
                 onClick={() => tenancy.setTenant(defaultTenant.id)}
-                content={"Exit tenant"}
+                text={"Exit tenant"}
             />
         );
     }
@@ -38,9 +37,10 @@ export const AccountDetails = ({ accountRoute }: AccountDetailsProps) => {
     }
 
     return (
-        <DropdownMenu.Item
-            icon={<AccountIcon />}
-            content={<Link to={accountRoute}>Account details</Link>}
+        <DropdownMenu.Link
+            icon={<DropdownMenu.Link.Icon element={<AccountIcon />} label={"Account settings"} />}
+            to={accountRoute}
+            text={"Account settings"}
         />
     );
 };

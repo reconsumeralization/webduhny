@@ -73,14 +73,14 @@ const AccessManagementExtension = () => {
                 <Menu
                     name={"security.settings"}
                     parent={"settings"}
-                    element={<Menu.Group label={"Access Management"} />}
+                    element={<Menu.Group text={"Access Management"} />}
                 />
             </HasPermission>
             <HasPermission name={Permission.Groups}>
                 <Menu
                     name={"security.roles"}
                     parent={"settings"}
-                    element={<Menu.Link label={"Roles"} path={"/access-management/roles"} />}
+                    element={<Menu.Link text={"Roles"} to={"/access-management/roles"} />}
                 />
             </HasPermission>
             {teams && (
@@ -88,7 +88,7 @@ const AccessManagementExtension = () => {
                     <Menu
                         name={"security.teams"}
                         parent={"settings"}
-                        element={<Menu.Link label={"Teams"} path={"/access-management/teams"} />}
+                        element={<Menu.Link text={"Teams"} to={"/access-management/teams"} />}
                     />
                 </HasPermission>
             )}
@@ -97,7 +97,7 @@ const AccessManagementExtension = () => {
                 <Menu
                     name={"security.apiKeys"}
                     parent={"settings"}
-                    element={<Menu.Link label={"API Keys"} path={"/access-management/api-keys"} />}
+                    element={<Menu.Link text={"API Keys"} to={"/access-management/api-keys"} />}
                 />
             </HasPermission>
         </AdminConfig>

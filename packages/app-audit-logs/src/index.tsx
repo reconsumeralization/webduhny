@@ -34,7 +34,11 @@ export const AuditLogs = () => {
                     <Menu
                         name="auditLogs"
                         element={
-                            <Menu.Link label={"Audit Logs"} icon={<Icon />} path="/audit-logs" />
+                            <Menu.Link
+                                text={"Audit Logs"}
+                                icon={<Menu.Link.Icon element={<Icon />} label={"Audit Logs"} />}
+                                to={"/audit-logs"}
+                            />
                         }
                     />
                     <Route

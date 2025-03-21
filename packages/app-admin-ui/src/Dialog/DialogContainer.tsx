@@ -1,20 +1,12 @@
-// TODO (next PR): revisit this file and refresh it with the latest changes.
 import React, { useCallback, useEffect, useState } from "react";
-import get from "lodash/get";
 import { useUi } from "@webiny/app/hooks/useUi";
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    DialogCancel,
-    DialogAccept
-} from "@webiny/ui/Dialog";
+import { Dialog } from "@webiny/admin-ui";
 
 export const DialogContainer = () => {
     const ui = useUi();
     const [isLoading, setIsLoading] = useState(false);
-    const message: React.ReactNode = get(ui, "dialog.message");
+    const message: React.ReactNode = ui.dialog?.message;
+
     const {
         dataTestId,
         title,
@@ -22,7 +14,7 @@ export const DialogContainer = () => {
         actions = { cancel: null, accept: { label: "OK" } },
         style,
         onClose
-    } = get(ui, "dialog.options", {});
+    } = ui.dialog?.options || {};
 
     const hideDialog = useCallback(() => {
         ui.setState(ui => ({ ...ui, dialog: null }));
@@ -30,12 +22,13 @@ export const DialogContainer = () => {
             onClose();
         }
     }, [ui]);
+
     /**
      * We need this part because message can change while the dialog is opened and in loading state.
      */
     useEffect(() => {
         setIsLoading(false);
-    }, [ui?.dialog?.message]);
+    }, [ui.dialog?.message]);
 
     const handleConfirm = async () => {
         if (!actions.accept.onClick) {
@@ -56,29 +49,31 @@ export const DialogContainer = () => {
     return (
         <Dialog
             open={!!message}
-            onClose={hideDialog}
+            onOpenChange={open => !open && hideDialog()}
             data-testid={dataTestId}
             style={style}
             showCloseButton={false}
+            title={title}
+            actions={
+                <>
+                    {actions.cancel && (
+                        <Dialog.CancelButton
+                            onClick={actions.cancel.onClick}
+                            text={actions.cancel.label}
+                        />
+                    )}
+                    {actions.accept && (
+                        <Dialog.ConfirmButton
+                            onClick={handleConfirm}
+                            text={actions.accept.label}
+                            data-testid={"confirmationdialog-confirm-action"}
+                        />
+                    )}
+                </>
+            }
         >
             {isLoading ? loading : null}
-            {title && <DialogTitle>{title}</DialogTitle>}
-            <DialogContent>{message}</DialogContent>
-            <DialogActions>
-                {actions.cancel && (
-                    <DialogCancel onClick={actions.cancel.onClick}>
-                        {actions.cancel.label}
-                    </DialogCancel>
-                )}
-                {actions.accept && (
-                    <DialogAccept
-                        data-testid={"confirmationdialog-confirm-action"}
-                        onClick={handleConfirm}
-                    >
-                        {actions.accept.label}
-                    </DialogAccept>
-                )}
-            </DialogActions>
+            {message}
         </Dialog>
     );
 };

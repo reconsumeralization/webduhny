@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { css } from "emotion";
 import {
     Compose,
@@ -92,8 +92,8 @@ const UserMenuItemRendererImpl = () => {
         if (path) {
             return (
                 <DropdownMenu.Item
-                    icon={icon}
-                    content={
+                    icon={<DropdownMenu.Item.Icon element={icon} label={label || ""} />}
+                    text={
                         <Link to={path} className={linkStyles}>
                             {label}
                         </Link>
@@ -108,10 +108,10 @@ const UserMenuItemRendererImpl = () => {
 
 export const UserMenu = () => {
     return (
-        <Fragment>
+        <>
             <Compose component={UserMenuHandleRendererSpec} with={UserMenuHandleRendererImpl} />
             <Compose component={UserMenuRendererSpec} with={UserMenuRendererImpl} />
             <Compose component={UserMenuItemRendererSpec} with={UserMenuItemRendererImpl} />
-        </Fragment>
+        </>
     );
 };

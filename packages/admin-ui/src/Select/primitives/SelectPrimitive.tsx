@@ -27,6 +27,7 @@ const SelectValue = SelectPrimitives.Value;
 type SelectTriggerVm = {
     placeholder: string;
     hasValue: boolean;
+    displayResetAction: boolean;
 };
 
 type SelectTriggerProps = SelectPrimitives.SelectValueProps &
@@ -49,10 +50,11 @@ const Trigger = ({
     invalid,
     onValueReset,
     disabled,
+    displayResetAction,
     ...props
 }: SelectTriggerProps) => {
     const resetButton = React.useMemo(() => {
-        if (!hasValue) {
+        if (!hasValue || !displayResetAction) {
             return undefined;
         }
 
@@ -174,6 +176,7 @@ const SelectPrimitiveRenderer = ({
 type SelectOption = SelectOptionDto | string;
 
 type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
+    displayResetAction?: boolean;
     endIcon?: React.ReactElement;
     invalid?: VariantProps<typeof selectTriggerVariants>["invalid"];
     onValueChange: (value: string) => void;

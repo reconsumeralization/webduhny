@@ -4,17 +4,14 @@ import { cn, makeDecoratable } from "~/utils";
 import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
 
 export interface DropdownMenuItemProps
-    extends Omit<
-        React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>,
-        "content"
-    > {
-    content?: React.ReactNode;
+    extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> {
+    text?: React.ReactNode;
 }
 
 const DropdownMenuCheckboxItemBase = React.forwardRef<
     React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
     DropdownMenuItemProps
->(({ className, content, checked, ...props }, ref) => (
+>(({ className, text, checked, ...props }, ref) => (
     <DropdownMenuPrimitive.CheckboxItem
         ref={ref}
         className={cn(
@@ -36,7 +33,7 @@ const DropdownMenuCheckboxItemBase = React.forwardRef<
                 <Check />
             </DropdownMenuPrimitive.ItemIndicator>
             {!checked && <svg aria-hidden="true" />}
-            <span>{content}</span>
+            <span>{text}</span>
         </div>
     </DropdownMenuPrimitive.CheckboxItem>
 ));

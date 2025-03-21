@@ -80,7 +80,7 @@ const SidebarComponent = () => {
                         <DropdownMenu.Item content={"Slack"} icon={<ChatIcon />} />
                         <DropdownMenu.Separator />
                         <DropdownMenu.Item
-                            content={
+                            text={
                                 <div className={"flex wby-items-center"}>
                                     Webiny 5.43.0
                                     <Tag

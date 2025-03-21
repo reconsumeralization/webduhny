@@ -42,9 +42,9 @@ export const FormBuilder = () => {
                     name="fb"
                     element={
                         <Menu.Link
-                            label={"Form Builder"}
-                            icon={<FormsIcon />}
-                            path={"/form-builder/forms"}
+                            text={"Form Builder"}
+                            icon={<Menu.Link.Icon element={<FormsIcon />} label={"Form Builder"} />}
+                            to={"/form-builder/forms"}
                         />
                     }
                 />
@@ -84,13 +84,13 @@ export const FormBuilder = () => {
                 <Menu
                     name="fb.settings"
                     parent={"settings"}
-                    element={<Menu.Group label={"Form Builder"} />}
+                    element={<Menu.Group text={"Form Builder"} />}
                 />
                 <Menu
                     name="fb.settings.recaptcha"
                     parent={"settings"}
                     element={
-                        <Menu.Link label={"reCAPTCHA"} path={"/settings/form-builder/recaptcha"} />
+                        <Menu.Link text={"reCAPTCHA"} to={"/settings/form-builder/recaptcha"} />
                     }
                 />
             </HasPermission>

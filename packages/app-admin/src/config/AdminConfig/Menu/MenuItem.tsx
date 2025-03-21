@@ -1,24 +1,16 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { makeDecoratable } from "~/index";
-import { Sidebar } from "@webiny/admin-ui";
-import { type BaseMenuItemProps } from "./types";
+import { Sidebar, type SidebarMenuItemButtonProps } from "@webiny/admin-ui";
 
-export interface MenuItemProps
-    extends BaseMenuItemProps,
-        Omit<React.HTMLAttributes<HTMLButtonElement>, "onClick"> {
-    onClick?: () => void;
-}
-
-const MenuLinkBase = ({ label, icon, ...rest }: MenuItemProps) => {
-    const mappedProps = useMemo(() => {
-        return {
-            text: label,
-            icon: icon ? <Sidebar.Item.Icon label={label} element={icon} /> : null,
-            ...rest
-        };
-    }, [label, icon, rest]);
-
-    return <Sidebar.Item {...mappedProps} />;
+const MenuLinkBase = (props: SidebarMenuItemButtonProps) => {
+    return <Sidebar.Item {...props} />;
 };
 
-export const MenuItem = makeDecoratable("MenuItem", MenuLinkBase);
+const DecoratableMenuItem = makeDecoratable("MenuItem", MenuLinkBase);
+
+const MenuItem = Object.assign(DecoratableMenuItem, {
+    Action: Sidebar.Item.Action,
+    Icon: Sidebar.Item.Icon
+});
+
+export { MenuItem };

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
-import { ReactComponent as SignOutIcon } from "~/assets/icons/round-lock_open-24px.svg";
+import { ReactComponent as SignOutIcon } from "@material-design-icons/svg/outlined/logout.svg";
 import { DropdownMenu } from "@webiny/admin-ui";
 
 export const SignOut = () => {
@@ -16,6 +16,10 @@ export const SignOut = () => {
     }
 
     return (
-        <DropdownMenu.Item content={"Sign out"} icon={<SignOutIcon />} onClick={identity.logout} />
+        <DropdownMenu.Item
+            text={"Sign out"}
+            icon={<DropdownMenu.Item.Icon element={<SignOutIcon />} label={"Sign out"} />}
+            onClick={identity.logout}
+        />
     );
 };

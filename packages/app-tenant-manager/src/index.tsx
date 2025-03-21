@@ -1,20 +1,15 @@
-import { Compose, LocaleSelector, useWcp } from "@webiny/app-admin";
+import { TenantSelector as BaseTenantSelector, useWcp } from "@webiny/app-admin";
 import React, { Fragment, memo } from "react";
 import { AddTenantFormField } from "./components/AddTenantFormField";
 import { CurrentTenant } from "./components/CurrentTenant";
 import { DomainsModule } from "./modules/domains";
 import { TenantsModule } from "./modules/tenants";
 
-const TenantIndicator = (LocaleSelector: React.ComponentType) => {
-    return function TenantIndicator() {
-        return (
-            <Fragment>
-                <CurrentTenant />
-                <LocaleSelector />
-            </Fragment>
-        );
+const TenantSelector = BaseTenantSelector.createDecorator(() => {
+    return function TenantSelector() {
+        return <CurrentTenant />;
     };
-};
+});
 
 const TenantManagerExtension = () => {
     const { canUseFeature } = useWcp();
@@ -24,7 +19,7 @@ const TenantManagerExtension = () => {
 
     return (
         <Fragment>
-            <Compose component={LocaleSelector} with={TenantIndicator} />
+            <TenantSelector />
             <TenantsModule />
             <DomainsModule />
         </Fragment>

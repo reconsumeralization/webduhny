@@ -19,7 +19,7 @@ const CmsContentModelsMenu = ({ canAccess }: ChildMenuProps) => {
         <Menu
             name={"headlessCMS.contentModels.models"}
             parent={"headlessCMS"}
-            element={<Menu.Link label={"Models"} path={"/cms/content-models"} />}
+            element={<Menu.Link text={"Models"} to={"/cms/content-models"} />}
         />
     );
 };
@@ -32,7 +32,7 @@ const CmsContentGroupsMenu = ({ canAccess }: ChildMenuProps) => {
         <Menu
             name={"headlessCMS.contentModels.groups"}
             parent={"headlessCMS"}
-            element={<Menu.Link label={"Groups"} path={"/cms/content-model-groups"} />}
+            element={<Menu.Link text={"Groups"} to={"/cms/content-model-groups"} />}
         />
     );
 };
@@ -60,9 +60,11 @@ const CmsMenuLoaderComponent = () => {
                 after={"home"}
                 element={
                     <Menu.Link
-                        label={"Headless CMS"}
-                        icon={<HeadlessCmsIcon />}
-                        path={"/cms/content-models"}
+                        text={"Headless CMS"}
+                        icon={
+                            <Menu.Link.Icon label={"Headless CMS"} element={<HeadlessCmsIcon />} />
+                        }
+                        to={"/cms/content-models"}
                     />
                 }
             />
@@ -72,7 +74,7 @@ const CmsMenuLoaderComponent = () => {
                     <Menu
                         name={"headlessCMS.contentModels"}
                         parent={"headlessCMS"}
-                        element={<Menu.Group label={"Content Models"} />}
+                        element={<Menu.Group text={"Content Models"} />}
                     />
 
                     <CmsContentModelsMenu canAccess={canCreateContentModels} />

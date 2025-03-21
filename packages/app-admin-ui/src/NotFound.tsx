@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Link } from "@webiny/react-router";
-import { Compose, NotFound as NotFoundSpec } from "@webiny/app-admin";
-import authErrorImg from "./SecureRouteError.svg";
+import { NotFound as NotFoundBase } from "@webiny/app-admin";
+import notFoundImage from "./NotFound/notFound.svg";
 
-const NotFoundHOC = () => {
+export const NotFound = NotFoundBase.createDecorator(() => {
     return function NotFound() {
         return (
             <div
@@ -14,7 +14,7 @@ const NotFoundHOC = () => {
                 <img
                     width={200}
                     height={200}
-                    src={authErrorImg}
+                    src={notFoundImage}
                     alt="Not Accessible"
                     className={"wby-mb-xl"}
                 />
@@ -24,8 +24,4 @@ const NotFoundHOC = () => {
             </div>
         );
     };
-};
-
-export const NotFound = () => {
-    return <Compose component={NotFoundSpec} with={NotFoundHOC} />;
-};
+});

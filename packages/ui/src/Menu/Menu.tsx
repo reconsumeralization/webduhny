@@ -145,7 +145,7 @@ const MenuItem = ({ children, ...rest }: MenuItemProps) => {
         });
     }, [children]);
 
-    return <AdminUiDropdownMenu.Item icon={icon} content={content} {...rest} />;
+    return <AdminUiDropdownMenu.Item icon={icon} text={content} {...rest} />;
 };
 
 export { Menu, MenuItem, MenuDivider };

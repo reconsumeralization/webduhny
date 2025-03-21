@@ -1,20 +1,20 @@
-import React, { Fragment } from "react";
-import { Layout } from "./modules/Layout";
-import { Navigation } from "./modules/Navigation";
-import { UserMenu } from "~/modules/UserMenu";
-import { Overlays } from "./modules/Overlays";
-import { NotFound } from "./modules/NotFound";
-import { Dashboard } from "./modules/Dashboard";
+import React from "react";
+import { Layout } from "./Layout";
+import { Navigation } from "./Navigation";
+import { UserMenu } from "~/UserMenu";
+import { Dialog } from "./Dialog";
+import { NotFound } from "./NotFound";
+import { Dashboard } from "./Dashboard";
 
 export const AdminUI = () => {
     return (
-        <Fragment>
-            <Layout />
+        <>
             <Dashboard />
-            <NotFound />
+            <Dialog />
+            <Layout />
             <Navigation />
+            <NotFound />
             <UserMenu />
-            <Overlays />
-        </Fragment>
+        </>
     );
 };

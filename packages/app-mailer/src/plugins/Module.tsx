@@ -51,12 +51,12 @@ const MailerSettings = () => {
                 <Menu
                     name={"mailer.settings"}
                     parent={"settings"}
-                    element={<Menu.Group label={"Mailer"} />}
+                    element={<Menu.Group text={"Mailer"} />}
                 />
                 <Menu
                     name={"mailer.settings.general"}
                     parent={"settings"}
-                    element={<Menu.Link label={"Settings"} path={"/mailer/settings"} />}
+                    element={<Menu.Link text={"Settings"} to={"/mailer/settings"} />}
                 />
             </AdminConfig>
         </HasPermission>

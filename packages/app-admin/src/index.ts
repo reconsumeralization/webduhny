@@ -4,6 +4,7 @@ export type { HigherOrderComponent, ProviderProps, ComposeProps } from "@webiny/
 export * from "./base/ui/Tags";
 export * from "./base/ui/Layout";
 export * from "./base/ui/LocaleSelector";
+export * from "./base/ui/TenantSelector";
 export type { LayoutProps } from "./base/ui/Layout";
 export * from "./base/ui/Navigation";
 export * from "./base/ui/Brand";
