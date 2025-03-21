@@ -6,7 +6,7 @@ const meta: Meta<typeof Select> = {
     title: "Components/Form/Select",
     component: Select,
     argTypes: {
-        onValueChange: { action: "onValueChange" },
+        onChange: { action: "onChange" },
         onOpenChange: { action: "onOpenChange" },
         disabled: {
             control: "boolean",
@@ -18,7 +18,7 @@ const meta: Meta<typeof Select> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <Select {...args} value={value} onValueChange={setValue} />;
+        return <Select {...args} value={value} onChange={setValue} />;
     }
 };
 

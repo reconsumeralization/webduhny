@@ -148,10 +148,10 @@ const SelectOptions = (props: SelectOptionsProps) => {
 type SelectRootProps = SelectPrimitives.SelectProps;
 
 type SelectRendererProps = {
-    selectRootProps: Omit<SelectRootProps, "onValueChange">;
+    selectRootProps: Omit<SelectRootProps, "onChange">;
     selectTriggerProps: Omit<SelectTriggerProps, "onValueReset">;
     selectOptionsProps: SelectOptionsProps;
-    onValueChange: (value: string) => void;
+    onChange: (value: string) => void;
     onValueReset: () => void;
 };
 
@@ -159,11 +159,11 @@ const SelectPrimitiveRenderer = ({
     selectRootProps,
     selectTriggerProps,
     selectOptionsProps,
-    onValueChange,
+    onChange,
     onValueReset
 }: SelectRendererProps) => {
     return (
-        <SelectRoot {...selectRootProps} onValueChange={onValueChange}>
+        <SelectRoot {...selectRootProps} onChange={onChange}>
             <Trigger {...selectTriggerProps} onValueReset={onValueReset} />
             <SelectOptions {...selectOptionsProps} />
         </SelectRoot>
@@ -179,7 +179,7 @@ type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
     displayResetAction?: boolean;
     endIcon?: React.ReactElement;
     invalid?: VariantProps<typeof selectTriggerVariants>["invalid"];
-    onValueChange: (value: string) => void;
+    onChange: (value: string) => void;
     onValueReset?: () => void;
     options?: SelectOption[];
     placeholder?: string;
@@ -205,7 +205,7 @@ const SelectPrimitive = (props: SelectPrimitiveProps) => {
                 disabled
             }}
             selectOptionsProps={vm.selectOptions}
-            onValueChange={changeValue}
+            onChange={changeValue}
             onValueReset={resetValue}
         />
     );

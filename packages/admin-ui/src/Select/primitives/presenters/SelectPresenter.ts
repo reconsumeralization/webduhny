@@ -11,7 +11,7 @@ interface SelectPresenterParams {
     value?: string;
     placeholder?: string;
     displayResetAction?: boolean;
-    onValueChange: (value: string) => void;
+    onChange: (value: string) => void;
     onValueReset?: () => void;
 }
 
@@ -55,11 +55,11 @@ class SelectPresenter implements ISelectPresenter {
     }
 
     public changeValue = (value: string) => {
-        this.params?.onValueChange(value);
+        this.params?.onChange(value);
     };
 
     public resetValue = () => {
-        this.params?.onValueChange?.("");
+        this.params?.onChange?.("");
         this.params?.onValueReset?.();
     };
 

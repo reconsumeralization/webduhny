@@ -10,7 +10,7 @@ const meta: Meta<typeof SelectPrimitive> = {
     component: SelectPrimitive,
     tags: ["autodocs"],
     argTypes: {
-        onValueChange: { action: "onValueChange" },
+        onChange: { action: "onChange" },
         onOpenChange: { action: "onOpenChange" },
         variant: { control: "select", options: ["primary", "secondary", "ghost"] },
         size: { control: "select", options: ["md", "lg", "xl"] },
@@ -22,7 +22,7 @@ const meta: Meta<typeof SelectPrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <SelectPrimitive {...args} value={value} onValueChange={setValue} />;
+        return <SelectPrimitive {...args} value={value} onChange={setValue} />;
     }
 };
 
@@ -314,11 +314,7 @@ export const WithExternalValueControl: Story = {
         return (
             <div className={"wby-w-full"}>
                 <div>
-                    <SelectPrimitive
-                        {...args}
-                        value={value}
-                        onValueChange={value => setValue(value)}
-                    />
+                    <SelectPrimitive {...args} value={value} onChange={value => setValue(value)} />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>
                     <Button text={"Reset"} onClick={() => setValue("")} />
