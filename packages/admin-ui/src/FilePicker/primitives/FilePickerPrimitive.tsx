@@ -69,14 +69,12 @@ const BaseFilePickerPrimitive = ({
     renderTrigger,
     type = "area",
     value,
-    variant,
-    ...props
+    variant
 }: FilePickerPrimitiveProps) => {
     const { vm } = useFilePicker({ value });
 
     return (
         <div
-            {...props}
             data-disabled={disabled}
             className={cn(
                 inputVariants({ variant, invalid }),
