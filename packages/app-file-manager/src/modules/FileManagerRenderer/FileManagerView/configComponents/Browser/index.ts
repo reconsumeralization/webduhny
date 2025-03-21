@@ -1,3 +1,4 @@
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { Filter, FilterConfig } from "./Filter";
 import { FiltersToWhere, FiltersToWhereConverter } from "./FiltersToWhere";
@@ -11,6 +12,7 @@ import { Thumbnail } from "./Grid/Thumbnail";
 import { GridConfig } from "./Grid";
 import { ActionButton } from "~/components/Grid/ActionButton";
 import { File } from "~/components/Grid/File";
+import { shouldDecorateFolderField } from "./FolderFieldDecorator";
 
 export interface BrowserConfig {
     bulkActions: BulkActionConfig[];
@@ -36,6 +38,19 @@ export const Browser = {
     Filter,
     FiltersToWhere,
     FilterByTags,
+    Folder: {
+        ExtensionField: {
+            createDecorator: createFolderFieldDecoratorFactory({
+                scope: "fm",
+                shouldDecorate: shouldDecorateFolderField
+            })
+        },
+        Action: FolderAction
+    },
+    /**
+     * @deprecated
+     * Use `Browser.Folder.Action` instead
+     */
     FolderAction,
     FileAction,
     Table

@@ -30,56 +30,28 @@ export interface CreateFolderVariables {
     >;
 }
 
-export const CREATE_FOLDER = gql`
-    mutation CreateFolder($data: FolderCreateInput!) {
-        aco {
-            createFolder(data: $data) {
-                data {
-                    id
-                    title
-                    slug
-                    permissions {
-                        target
-                        level
-                        inheritedFrom
+export const CREATE_FOLDER = (FOLDER_FIELDS: string) => gql`
+        mutation CreateFolder($data: FolderCreateInput!) {
+            aco {
+                createFolder(data: $data) {
+                    data ${FOLDER_FIELDS}
+                    error {
+                        code
+                        data
+                        message
                     }
-                    hasNonInheritedPermissions
-                    canManagePermissions
-                    canManageStructure
-                    canManageContent
-                    parentId
-                    type
-                    savedOn
-                    savedBy {
-                        id
-                        displayName
-                    }
-                    createdOn
-                    createdBy {
-                        id
-                        displayName
-                    }
-                    modifiedOn
-                    modifiedBy {
-                        id
-                        displayName
-                    }
-                }
-                error {
-                    code
-                    data
-                    message
                 }
             }
         }
-    }
-`;
+    `;
 
 export class CreateFolderGqlGateway implements ICreateFolderGateway {
     private client: ApolloClient<any>;
+    private modelFields: string;
 
-    constructor(client: ApolloClient<any>) {
+    constructor(client: ApolloClient<any>, modelFields: string) {
         this.client = client;
+        this.modelFields = modelFields;
     }
 
     async execute(folder: FolderDto) {
@@ -87,7 +59,7 @@ export class CreateFolderGqlGateway implements ICreateFolderGateway {
             CreateFolderResponse,
             CreateFolderVariables
         >({
-            mutation: CREATE_FOLDER,
+            mutation: CREATE_FOLDER(this.modelFields),
             variables: {
                 data: {
                     ...folder

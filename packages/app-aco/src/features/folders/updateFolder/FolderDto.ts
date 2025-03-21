@@ -6,4 +6,5 @@ export interface FolderDto {
     slug: string;
     permissions: FolderPermission[];
     parentId: string | null;
+    extensions: Record<string, any>;
 }

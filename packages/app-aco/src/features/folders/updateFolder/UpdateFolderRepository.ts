@@ -19,10 +19,12 @@ export class UpdateFolderRepository implements IUpdateFolderRepository {
             title: folder.title,
             slug: folder.slug,
             permissions: folder.permissions,
-            parentId: folder.parentId
+            parentId: folder.parentId,
+            extensions: folder.extensions
         };
 
         const result = await this.gateway.execute(dto);
+
         this.cache.updateItems(f => {
             if (f.id === folder.id) {
                 return Folder.create(result);

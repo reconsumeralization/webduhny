@@ -3,12 +3,13 @@ import { useApolloClient } from "@apollo/react-hooks";
 import { CreateFolderGqlGateway } from "./CreateFolderGqlGateway";
 import { CreateFolderParams } from "./ICreateFolderUseCase";
 import { CreateFolder } from "./CreateFolder";
-import { useFoldersType } from "~/hooks";
+import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 
 export const useCreateFolder = () => {
     const client = useApolloClient();
     const type = useFoldersType();
-    const gateway = new CreateFolderGqlGateway(client);
+    const fields = useGetFolderGraphQLSelection();
+    const gateway = new CreateFolderGqlGateway(client, fields);
 
     const createFolder = useCallback(
         (params: CreateFolderParams) => {

@@ -6,6 +6,7 @@ export interface CreateFolderParams {
     type: string;
     parentId: string | null;
     permissions: FolderPermission[];
+    extensions?: Record<string, any>;
 }
 
 export interface ICreateFolderUseCase {

@@ -20,41 +20,11 @@ export interface ListFoldersQueryVariables {
     after?: string | null;
 }
 
-export const LIST_FOLDERS = gql`
+export const LIST_FOLDERS = (FOLDER_FIELDS: string) => gql`
     query ListFolders($type: String!, $limit: Int!) {
         aco {
             listFolders(where: { type: $type }, limit: $limit) {
-                data {
-                    id
-                    title
-                    slug
-                    permissions {
-                        target
-                        level
-                        inheritedFrom
-                    }
-                    hasNonInheritedPermissions
-                    canManagePermissions
-                    canManageStructure
-                    canManageContent
-                    parentId
-                    type
-                    savedOn
-                    savedBy {
-                        id
-                        displayName
-                    }
-                    createdOn
-                    createdBy {
-                        id
-                        displayName
-                    }
-                    modifiedOn
-                    modifiedBy {
-                        id
-                        displayName
-                    }
-                }
+                data ${FOLDER_FIELDS}
                 error {
                     code
                     data
@@ -67,9 +37,11 @@ export const LIST_FOLDERS = gql`
 
 export class ListFoldersGqlGateway implements IListFoldersGateway {
     private client: ApolloClient<any>;
+    private modelFields: string;
 
-    constructor(client: ApolloClient<any>) {
+    constructor(client: ApolloClient<any>, modelFields: string) {
         this.client = client;
+        this.modelFields = modelFields;
     }
 
     async execute(params: ListFoldersGatewayParams) {
@@ -77,7 +49,7 @@ export class ListFoldersGqlGateway implements IListFoldersGateway {
             ListFoldersResponse,
             ListFoldersQueryVariables
         >({
-            query: LIST_FOLDERS,
+            query: LIST_FOLDERS(this.modelFields),
             variables: {
                 ...params,
                 limit: 10000
@@ -123,7 +95,8 @@ export class ListFoldersGqlGateway implements IListFoldersGateway {
             },
             modifiedOn: null,
             modifiedBy: null,
-            type: "$ROOT"
+            type: "$ROOT",
+            extensions: {}
         };
     }
 }

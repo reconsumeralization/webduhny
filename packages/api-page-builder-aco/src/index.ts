@@ -10,6 +10,7 @@ import { createPbPageWbyAcoLocationGqlField } from "~/page/graphql/createPbPageW
 
 export * from "./createAppModifier";
 export * from "./plugins";
+export * from "./page/plugins";
 
 const setupContext = async (context: PbAcoContext): Promise<void> => {
     const pageSearchProcessors: PageSearchProcessor[] = [];

@@ -41,6 +41,7 @@ export interface FolderItem {
     savedOn: string;
     modifiedBy: CmsIdentity | null;
     modifiedOn: string | null;
+    extensions: Record<string, any>;
 }
 
 export type GenericSearchData = {
