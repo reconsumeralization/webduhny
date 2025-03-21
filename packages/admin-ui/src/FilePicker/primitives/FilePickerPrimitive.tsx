@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn, cva, type VariantProps, makeDecoratable, withStaticProps } from "~/utils";
-import { Trigger } from "./components";
+import { FormPickerLabel, Trigger } from "./components";
 import { Label } from "~/Label";
 import { inputVariants } from "~/Input";
 import { ImagePreview, RichItemPreview, TextOnlyPreview, FilePreview } from "./components";
@@ -44,7 +44,7 @@ interface FilePickerPrimitiveProps
         VariantProps<typeof filePickerVariants> {
     containerStyle?: React.CSSProperties;
     disabled?: boolean;
-    label?: React.ReactElement<typeof Label> | React.ReactNode;
+    label?: React.ReactElement<typeof Label> | React.ReactNode | string;
     onEditItem?: (item: FileItemFormatted | null) => void;
     onRemoveItem?: (item: FileItemFormatted | null) => void;
     onSelectItem: () => void;
@@ -85,7 +85,13 @@ const BaseFilePickerPrimitive = ({
             )}
             style={containerStyle}
         >
-            {label && type === "area" && label}
+            {label &&
+                type === "area" &&
+                (typeof label === "string" ? (
+                    <FormPickerLabel label={label} className={"wby-m-0"} />
+                ) : (
+                    label
+                ))}
             {vm.file ? (
                 <FilePreview
                     disabled={disabled}

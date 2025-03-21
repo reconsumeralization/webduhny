@@ -37,9 +37,7 @@ const meta: Meta<typeof MultiFilePicker> = {
         layout: "padded"
     },
     render: args => {
-        const [selectedFiles, setSelectedFiles] = useState<FileItemDto[]>(
-            args.values as FileItemDto[]
-        );
+        const [selectedFiles, setSelectedFiles] = useState<FileItemDto[]>([]);
         return (
             <Providers>
                 <MultiFilePicker

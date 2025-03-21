@@ -5,6 +5,7 @@ import {
     type FilePickerPrimitiveProps,
     filePickerVariants,
     FilePreview,
+    FormPickerLabel,
     ImagePreview,
     RichItemPreview,
     TextOnlyPreview,
@@ -59,7 +60,11 @@ const BaseMultiFilePickerPrimitive = ({
         >
             {label && type === "area" && (
                 <div className={"wby-flex wby-justify-between"}>
-                    {label}
+                    {typeof label === "string" ? (
+                        <FormPickerLabel label={label} className={"wby-m-0"} />
+                    ) : (
+                        label
+                    )}
                     <Button
                         text={buttonPlaceholder ?? "Select a file"}
                         variant={"ghost"}

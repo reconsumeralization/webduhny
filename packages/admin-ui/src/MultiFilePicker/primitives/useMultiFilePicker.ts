@@ -17,9 +17,7 @@ export const useMultiFilePicker = (props: IMultiFilePickerPrimitiveProps) => {
     );
 
     const presenter = useMemo(() => {
-        const presenter = new MultiFilePickerPresenter();
-        presenter.init(params);
-        return presenter;
+        return new MultiFilePickerPresenter();
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);
