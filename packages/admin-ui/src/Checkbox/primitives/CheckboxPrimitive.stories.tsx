@@ -15,7 +15,7 @@ const meta: Meta<typeof CheckboxPrimitive> = {
             <CheckboxPrimitive
                 {...args}
                 checked={checked}
-                onCheckedChange={checked => setChecked(checked)}
+                onChange={checked => setChecked(checked)}
             />
         );
     }

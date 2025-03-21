@@ -16,13 +16,7 @@ const meta: Meta<typeof CheckboxGroup> = {
     },
     render: args => {
         const [values, setValues] = useState(args.values);
-        return (
-            <CheckboxGroup
-                {...args}
-                values={values}
-                onCheckedChange={values => setValues(values)}
-            />
-        );
+        return <CheckboxGroup {...args} values={values} onChange={values => setValues(values)} />;
     }
 };
 

@@ -209,7 +209,7 @@ const defineColumns = <T,>(
                                 <CheckboxPrimitive
                                     indeterminate={props.table.getIsSomeRowsSelected()}
                                     checked={props.table.getIsAllRowsSelected()}
-                                    onCheckedChange={props.table.toggleAllPageRowsSelected}
+                                    onChange={props.table.toggleAllPageRowsSelected}
                                     aria-label="Select all"
                                     disabled={!canSelectAllRows}
                                     onClick={e => e.stopPropagation()}
@@ -225,7 +225,7 @@ const defineColumns = <T,>(
                             <div className={"wby-flex wby-items-center wby-gap-xl"}>
                                 <CheckboxPrimitive
                                     checked={props.row.getIsSelected()}
-                                    onCheckedChange={value => props.row.toggleSelected(!!value)}
+                                    onChange={value => props.row.toggleSelected(!!value)}
                                     disabled={!props.row.getCanSelect()}
                                     aria-label="Select row"
                                     className={cn(!props.row.getCanSelect() ? "wby-invisible" : "")}

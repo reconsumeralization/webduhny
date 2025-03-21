@@ -16,7 +16,7 @@ const meta: Meta<typeof RadioGroup> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <RadioGroup {...args} value={value} onValueChange={value => setValue(value)} />;
+        return <RadioGroup {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 

@@ -46,7 +46,7 @@ class Checkbox extends React.Component<Props> {
                 indeterminate={indeterminate}
                 disabled={disabled}
                 checked={Boolean(value)}
-                onCheckedChange={this.onChange}
+                onChange={this.onChange}
                 onClick={() => typeof onClick === "function" && onClick(Boolean(value))}
                 label={label}
                 data-testid={this.props["data-testid"]}

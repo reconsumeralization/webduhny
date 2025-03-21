@@ -5,7 +5,7 @@ import { useCheckboxGroup } from "./useCheckboxGroup";
 
 type CheckboxGroupPrimitiveProps<TValue = any> = {
     items: CheckboxItemDto[];
-    onCheckedChange: (values: TValue[]) => void;
+    onChange: (values: TValue[]) => void;
     values: TValue[];
 };
 

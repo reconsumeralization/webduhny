@@ -16,7 +16,7 @@ const meta: Meta<typeof CheckboxGroupPrimitive> = {
             <CheckboxGroupPrimitive
                 {...args}
                 values={values}
-                onCheckedChange={values => setValues(values)}
+                onChange={values => setValues(values)}
             />
         );
     }
@@ -118,7 +118,7 @@ export const WithExternalValueControl: Story = {
                     <CheckboxGroupPrimitive
                         {...args}
                         values={values}
-                        onCheckedChange={values => setValues(values)}
+                        onChange={values => setValues(values)}
                     />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>

@@ -53,18 +53,18 @@ const checkboxVariants = cva(
 
 type CheckboxPrimitiveProps = Omit<
     CheckboxPrimitives.CheckboxProps,
-    "defaultChecked" | "onCheckedChange"
+    "defaultChecked" | "onCheckedChange" | "onChange"
 > &
     VariantProps<typeof checkboxVariants> &
     CheckboxItemDto & {
-        onCheckedChange: (checked: boolean) => void;
+        onChange: (checked: boolean) => void;
     };
 
 interface CheckboxPrimitiveVm {
     item?: CheckboxItemFormatted;
 }
 
-type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange"> &
+type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange" | "onChange"> &
     NonNullable<CheckboxPrimitiveVm["item"]> & {
         changeChecked: (checked: boolean) => void;
     };

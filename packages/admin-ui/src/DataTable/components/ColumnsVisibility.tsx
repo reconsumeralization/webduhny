@@ -66,7 +66,7 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
                         text={
                             <Checkbox
                                 label={option.header}
-                                onCheckedChange={option.onChange}
+                                onChange={option.onChange}
                                 checked={option.getValue()}
                             />
                         }
