@@ -7,7 +7,7 @@ import { ListItemIcon } from "./ListItemIcon";
 
 const listItemVariant = cva(
     [
-        "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
+        "wby-w-full wby-flex wby-items-center",
         "group-[.wby-list-background-base]:wby-bg-neutral-base",
         "group-[.wby-list-background-light]:wby-bg-neutral-light",
         "group-[.wby-list-variant-container]:wby-rounded-sm",
@@ -25,6 +25,9 @@ const listItemVariant = cva(
             },
             selected: {
                 true: "!wby-bg-neutral-light"
+            },
+            clickable: {
+                true: "wby-cursor-pointer"
             }
         }
     }
@@ -58,7 +61,10 @@ const DecoratableListItem = ({
         <div
             {...props}
             tabIndex={0}
-            className={cn(listItemVariant({ disabled, activated, selected }), className)}
+            className={cn(
+                listItemVariant({ disabled, activated, selected, clickable: Boolean(onClick) }),
+                className
+            )}
         >
             {handle}
             <div
