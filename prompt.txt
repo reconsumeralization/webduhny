@@ -1,0 +1,13 @@
+I need to you to build me a funnel builder app..
+
+The main requirement is that the user should be able, for starters, add say three fields.. Like text, long text, and a button. Then, user can create one or more steps, where they are designing each step by adding these elements.
+
+The key req is for the user to be able to put conditions. Like... disable x field if y field is > 3. User should also be able to say "jump to step 3 after step 2", if field x is {CONDITION}.
+
+So, I will be doing within Webiny's page builder, by creating a new page elemnet: https://www.webiny.com/docs/page-builder/extending/create-a-page-element
+
+Can you follow their docs and ensure that the generated code can be easily embeded into webiny?
+
+Also, I don't want shadcn / tailwind. Emotion is fine though.
+
+I guess that's it for now, let's see.

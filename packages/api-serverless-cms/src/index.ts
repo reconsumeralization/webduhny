@@ -57,6 +57,7 @@ export {
 
     // Models.
     createModelPlugin,
+    createModelField,
     createSingleEntryModelPlugin,
     createPrivateModelPlugin,
     createPrivateSingleEntryModelPlugin,

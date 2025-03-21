@@ -16707,6 +16707,7 @@ __metadata:
     core-js: "npm:3.39.0"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.1.5"
+    funnel-builder: "npm:1.0.0"
     prop-types: "npm:^15.8.1"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -17164,6 +17165,7 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     graphql-request: "npm:^3.7.0"
+    my-custom-extension: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -24500,6 +24502,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"funnel-builder@npm:1.0.0, funnel-builder@workspace:extensions/funnelBuilder":
+  version: 0.0.0-use.local
+  resolution: "funnel-builder@workspace:extensions/funnelBuilder"
+  dependencies:
+    "@webiny/app-page-builder": "npm:0.0.0"
+    "@webiny/app-page-builder-elements": "npm:0.0.0"
+    "@webiny/app-serverless-cms": "npm:0.0.0"
+    "@webiny/app-website": "npm:0.0.0"
+    "@webiny/form": "npm:0.0.0"
+    "@webiny/ui": "npm:0.0.0"
+    "@webiny/validation": "npm:0.0.0"
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
+
 "fuse.js@npm:7.0.0":
   version: 7.0.0
   resolution: "fuse.js@npm:7.0.0"
@@ -30388,6 +30405,12 @@ __metadata:
   checksum: 10/36fc968b0e9c9c63029d4f9dc63911950a3bdf55c9a87f58d3a266289b67180201cade911e7699f8b2fa596b34c9db43dad37649e3f7fdd13c3bb9edb0017ee7
   languageName: node
   linkType: hard
+
+"my-custom-extension@npm:1.0.0, my-custom-extension@workspace:extensions/myCustomExtension":
+  version: 0.0.0-use.local
+  resolution: "my-custom-extension@workspace:extensions/myCustomExtension"
+  languageName: unknown
+  linkType: soft
 
 "nanoid-dictionary@npm:^4.3.0":
   version: 4.3.0
@@ -39769,6 +39792,7 @@ __metadata:
     core-js: "npm:3.39.0"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.1.5"
+    funnel-builder: "npm:1.0.0"
     graphql: "npm:^15.9.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
