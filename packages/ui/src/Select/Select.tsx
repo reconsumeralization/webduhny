@@ -212,7 +212,7 @@ export const Select = (props: SelectProps) => {
             label={label}
             placeholder={placeholder}
             size={size}
-            onValueChange={value => props?.onChange?.(value)}
+            onChange={value => props?.onChange?.(value)}
         />
     );
 };
