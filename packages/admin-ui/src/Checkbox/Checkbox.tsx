@@ -16,10 +16,14 @@ const DecoratableCheckbox = ({ description, note, validation, ...props }: Checkb
 
     return (
         <div className={"wby-w-full"}>
-            <FormComponentDescription text={description} />
+            <FormComponentDescription text={description} disabled={props.disabled} />
             <CheckboxPrimitive {...props} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={props.disabled}
+            />
+            <FormComponentNote text={note} disabled={props.disabled} />
         </div>
     );
 };

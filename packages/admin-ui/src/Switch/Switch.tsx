@@ -16,10 +16,14 @@ const DecoratableSwitch = ({ description, note, validation, ...props }: SwitchPr
 
     return (
         <div className={"wby-w-full"}>
-            <FormComponentDescription text={description} />
+            <FormComponentDescription text={description} disabled={props.disabled} />
             <SwitchPrimitive {...props} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={props.disabled}
+            />
+            <FormComponentNote text={note} disabled={props.disabled} />
         </div>
     );
 };

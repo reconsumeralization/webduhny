@@ -8,7 +8,11 @@ const meta: Meta<typeof MultiAutoComplete> = {
     tags: ["autodocs"],
     argTypes: {
         onValuesChange: { action: "onValuesChange" },
-        onOpenChange: { action: "onOpenChange" }
+        onOpenChange: { action: "onOpenChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

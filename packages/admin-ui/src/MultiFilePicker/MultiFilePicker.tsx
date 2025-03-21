@@ -69,8 +69,12 @@ const BaseMultiFilePicker = ({
                 onBlur={onBlur}
                 type={type}
             />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={disabled}
+            />
+            <FormComponentNote text={note} disabled={disabled} />
         </div>
     );
 };

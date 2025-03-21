@@ -7,7 +7,11 @@ const meta: Meta<typeof Select> = {
     component: Select,
     argTypes: {
         onValueChange: { action: "onValueChange" },
-        onOpenChange: { action: "onOpenChange" }
+        onOpenChange: { action: "onOpenChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

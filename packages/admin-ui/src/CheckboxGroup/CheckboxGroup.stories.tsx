@@ -5,6 +5,12 @@ import { CheckboxGroup } from "~/CheckboxGroup";
 const meta: Meta<typeof CheckboxGroup> = {
     title: "Components/Form/CheckboxGroup",
     component: CheckboxGroup,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },

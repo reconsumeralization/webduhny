@@ -5,6 +5,12 @@ import { Checkbox } from "~/Checkbox";
 const meta: Meta<typeof Checkbox> = {
     title: "Components/Form/Checkbox",
     component: Checkbox,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },

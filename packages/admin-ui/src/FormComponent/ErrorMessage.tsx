@@ -1,24 +1,42 @@
 import React from "react";
-import { Text } from "~/Text";
-import { makeDecoratable } from "~/utils";
+import { Text, type TextProps } from "~/Text";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 
-interface FormComponentErrorMessageProps
-    extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
-    text?: React.ReactNode;
-    invalid?: boolean;
-}
+const formComponentErrorMessageVariants = cva(
+    "wby-mt-xs wby-text-destructive-primary wby-font-semibold",
+    {
+        variants: {
+            disabled: {
+                true: "wby-text-destructive-muted"
+            }
+        }
+    }
+);
 
-const DecoratableFormComponentErrorMessage = (props: FormComponentErrorMessageProps) => {
-    if (!props.invalid || !props.text) {
+type FormComponentErrorMessageProps = TextProps &
+    VariantProps<typeof formComponentErrorMessageVariants> & {
+        text?: React.ReactNode;
+        invalid?: boolean;
+    };
+
+const DecoratableFormComponentErrorMessage = ({
+    text,
+    invalid,
+    disabled,
+    className,
+    ...props
+}: FormComponentErrorMessageProps) => {
+    if (!invalid || !text) {
         return null;
     }
 
     return (
         <Text
-            text={props.text}
+            {...props}
+            text={text}
             size={"sm"}
             as={"div"}
-            className={"wby-mt-xs wby-text-destructive-primary wby-font-semibold"}
+            className={cn(formComponentErrorMessageVariants({ disabled }), className)}
         />
     );
 };
