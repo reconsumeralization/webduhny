@@ -1,6 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import { CheckboxGroupPrimitiveVm } from "../CheckboxGroupPrimitive";
-import { CheckboxItem, CheckboxItemDto, CheckboxItemMapper } from "~/Checkbox";
+import { CheckboxItem } from "../../../Checkbox/primitives/domains/CheckboxItem";
+import { CheckboxItemMapper } from "../../../Checkbox/primitives/domains/CheckboxItemMapper";
+import type { CheckboxItemDto } from "../../../Checkbox/primitives/domains/CheckboxItemDto";
 
 interface CheckboxGroupPresenterParams<TValue = string | number> {
     items: CheckboxItemDto[];

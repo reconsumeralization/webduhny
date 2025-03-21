@@ -160,7 +160,9 @@ describe("AutoCompletePresenter", () => {
             // default: no params
             presenter.init({ onValueChange });
             expect(presenter.vm.optionsListVm.options).toEqual([]);
-            expect(presenter.vm.optionsListVm.emptyMessage).toEqual("No results.");
+            expect(presenter.vm.optionsListVm.emptyMessage).toEqual(
+                "Start typing to find an option."
+            );
             expect(presenter.vm.optionsListVm.loadingMessage).toEqual("Loading...");
             expect(presenter.vm.optionsListVm.open).toEqual(false);
             expect(presenter.vm.optionsListVm.empty).toEqual(true);

@@ -3,7 +3,8 @@ import * as CheckboxPrimitives from "@radix-ui/react-checkbox";
 import { ReactComponent as CheckIcon } from "@material-design-icons/svg/outlined/check.svg";
 import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
-import { CheckboxItemFormatted, CheckboxItemDto } from "./domains";
+import { CheckboxItemFormatted } from "./domains/CheckboxItemFormatted";
+import { CheckboxItemDto } from "./domains/CheckboxItemDto";
 import { Label } from "~/Label";
 
 /**
