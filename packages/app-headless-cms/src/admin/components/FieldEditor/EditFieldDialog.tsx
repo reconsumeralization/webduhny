@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import { Dialog, Tabs } from "@webiny/admin-ui";
+import { Dialog, Drawer, Tabs } from "@webiny/admin-ui";
 import { Form, FormOnSubmit } from "@webiny/form";
 import { i18n } from "@webiny/app/i18n";
 import { CmsEditorContentModel, CmsModelField } from "~/types";
@@ -84,16 +84,17 @@ const EditFieldDialog = (props: EditFieldDialogProps) => {
                     shadowField.multipleValues || individualValidation.validators.length > 0;
 
                 return (
-                    <Dialog
+                    <Drawer
+                        width={800}
                         title={headerTitle}
                         open={true}
+                        modal={true}
                         onOpenChange={open => {
                             if (!open) {
                                 props.onClose();
                             }
                         }}
                         bodyPadding={false}
-                        dismissible={false}
                         actions={
                             <>
                                 <Dialog.CancelButton
@@ -145,7 +146,7 @@ const EditFieldDialog = (props: EditFieldDialogProps) => {
                                 ]}
                             />
                         </ModelFieldProvider>
-                    </Dialog>
+                    </Drawer>
                 );
             }}
         </Form>

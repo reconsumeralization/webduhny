@@ -57,6 +57,7 @@ const plugin: CmsModelFieldTypePlugin = {
                                     type="number"
                                     label={t`Value`}
                                     onChange={value => bind.onChange(parseFloat(value))}
+                                    size={"lg"}
                                 />
                             )}
                         </Bind>

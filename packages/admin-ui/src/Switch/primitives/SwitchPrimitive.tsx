@@ -37,12 +37,14 @@ type SwitchPrimitivVm = {
 type SwitchRendererProps = Omit<SwitchPrimitiveProps, "onCheckedChange"> &
     NonNullable<SwitchPrimitivVm["item"]> & {
         changeChecked: (checked: boolean) => void;
+        description?: React.ReactNode;
     };
 
 const SwitchRenderer = ({
     id,
     label,
     changeChecked,
+    description,
     className,
     labelPosition,
     disabled,
@@ -56,6 +58,7 @@ const SwitchRenderer = ({
                 text={label}
                 disabled={disabled}
                 required={required}
+                hint={description}
                 weight={"light"}
                 className={"wby-text-md"}
             />

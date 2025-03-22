@@ -86,7 +86,7 @@ const AppearanceTab = () => {
                                             as={"div"}
                                             size={"sm"}
                                             text={item.renderer.description}
-                                            className={"wby-text-neutral-muted"}
+                                            className={"wby-text-sm wby-text-neutral-strong"}
                                         />
                                     </div>
                                 )

@@ -47,7 +47,7 @@ export const DrawerHeader = ({
                     </DrawerPrimitive.Close>
                 )}
             </DrawerTitle>
-            <DrawerDescription>{description}</DrawerDescription>
+            {description && <DrawerDescription>{description}</DrawerDescription>}
         </div>
     );
 };
