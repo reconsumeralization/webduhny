@@ -16813,6 +16813,7 @@ __metadata:
     "@webiny/app-wcp": "npm:0.0.0"
     "@webiny/cli": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
+    "@webiny/icons": "npm:0.0.0"
     "@webiny/lexical-editor": "npm:0.0.0"
     "@webiny/lexical-theme": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
@@ -18528,6 +18529,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/icons@npm:0.0.0, @webiny/icons@workspace:packages/icons":
+  version: 0.0.0-use.local
+  resolution: "@webiny/icons@workspace:packages/icons"
+  dependencies:
+    "@material-design-icons/svg": "npm:^0.14.13"
+    "@webiny/cli": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/ioc@npm:0.0.0, @webiny/ioc@workspace:packages/ioc":
   version: 0.0.0-use.local
   resolution: "@webiny/ioc@workspace:packages/ioc"
@@ -19027,8 +19040,6 @@ __metadata:
     cli-table3: "npm:^0.6.5"
     execa: "npm:^5.1.1"
     semver: "npm:^7.6.3"
-  bin:
-    webiny: ./bin.js
   languageName: unknown
   linkType: soft
 

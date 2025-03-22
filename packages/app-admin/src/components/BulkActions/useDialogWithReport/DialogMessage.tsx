@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as ErrorIcon } from "@material-design-icons/svg/round/error.svg";
-import { ReactComponent as SuccessIcon } from "@material-design-icons/svg/round/check_circle.svg";
+import { ReactComponent as ErrorIcon } from "@webiny/icons/error.svg";
+import { ReactComponent as SuccessIcon } from "@webiny/icons/check_circle.svg";
 import { Icon } from "@webiny/ui/Icon";
 import { List, ListItemText, ListItemTextPrimary, ListItemTextSecondary } from "@webiny/ui/List";
 import { ShowResultsDialogParams } from "./index";

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ReactComponent as MoreVerticalIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { IconButton } from "@webiny/ui/Button";
 
 import { OptionsMenuItemProvider } from "./useOptionsMenuItem";
