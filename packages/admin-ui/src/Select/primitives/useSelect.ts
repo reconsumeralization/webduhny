@@ -10,7 +10,7 @@ export const useSelect = (props: SelectPrimitiveProps) => {
             value: props.value,
             placeholder: props.placeholder,
             displayResetAction: props.displayResetAction,
-            onChange: props.onChange,
+            onValueChange: props.onChange,
             onValueReset: props.onValueReset
         }),
         [
@@ -24,9 +24,7 @@ export const useSelect = (props: SelectPrimitiveProps) => {
     );
 
     const presenter = useMemo(() => {
-        const presenter = new SelectPresenter();
-        presenter.init(params);
-        return presenter;
+        return new SelectPresenter();
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);

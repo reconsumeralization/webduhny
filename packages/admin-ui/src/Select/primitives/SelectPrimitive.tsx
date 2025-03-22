@@ -148,10 +148,10 @@ const SelectOptions = (props: SelectOptionsProps) => {
 type SelectRootProps = SelectPrimitives.SelectProps;
 
 type SelectRendererProps = {
-    selectRootProps: Omit<SelectRootProps, "onChange">;
+    selectRootProps: Omit<SelectRootProps, "onValueChange">;
     selectTriggerProps: Omit<SelectTriggerProps, "onValueReset">;
     selectOptionsProps: SelectOptionsProps;
-    onChange: (value: string) => void;
+    onValueChange: (value: string) => void;
     onValueReset: () => void;
 };
 
@@ -159,11 +159,11 @@ const SelectPrimitiveRenderer = ({
     selectRootProps,
     selectTriggerProps,
     selectOptionsProps,
-    onChange,
+    onValueChange,
     onValueReset
 }: SelectRendererProps) => {
     return (
-        <SelectRoot {...selectRootProps} onChange={onChange}>
+        <SelectRoot {...selectRootProps} onValueChange={onValueChange}>
             <Trigger {...selectTriggerProps} onValueReset={onValueReset} />
             <SelectOptions {...selectOptionsProps} />
         </SelectRoot>
@@ -176,15 +176,45 @@ const SelectPrimitiveRenderer = ({
 type SelectOption = SelectOptionDto | string;
 
 type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
+    /**
+     * Whether to display the reset action button.
+     */
     displayResetAction?: boolean;
+    /**
+     * Icon to display at the end of the select trigger.
+     */
     endIcon?: React.ReactElement;
+    /**
+     * Whether the select input is invalid.
+     */
     invalid?: VariantProps<typeof selectTriggerVariants>["invalid"];
-    onChange: (value: string) => void;
+    /**
+     * Callback function called when the value changes.
+     */
+    onChange?: (value: string) => void;
+    /**
+     * Callback function called when the value is reset.
+     */
     onValueReset?: () => void;
+    /**
+     * Array of options to display in the select dropdown.
+     */
     options?: SelectOption[];
+    /**
+     * Placeholder text to display when no value is selected.
+     */
     placeholder?: string;
+    /**
+     * Size variant of the select trigger.
+     */
     size?: VariantProps<typeof selectTriggerVariants>["size"];
+    /**
+     * Icon to display at the start of the select trigger.
+     */
     startIcon?: React.ReactElement;
+    /**
+     * Style variant of the select trigger.
+     */
     variant?: VariantProps<typeof selectTriggerVariants>["variant"];
 };
 
@@ -205,7 +235,7 @@ const SelectPrimitive = (props: SelectPrimitiveProps) => {
                 disabled
             }}
             selectOptionsProps={vm.selectOptions}
-            onChange={changeValue}
+            onValueChange={changeValue}
             onValueReset={resetValue}
         />
     );

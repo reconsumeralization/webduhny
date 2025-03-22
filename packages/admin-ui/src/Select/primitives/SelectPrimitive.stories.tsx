@@ -22,7 +22,14 @@ const meta: Meta<typeof SelectPrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <SelectPrimitive {...args} value={value} onChange={setValue} />;
+        return (
+            <div className={"wby-w-full"}>
+                <SelectPrimitive {...args} value={value} onChange={setValue} />
+                <div className={"wby-mt-4 wby-text-center"}>
+                    Current selected value: <pre>{value}</pre>
+                </div>
+            </div>
+        );
     }
 };
 
