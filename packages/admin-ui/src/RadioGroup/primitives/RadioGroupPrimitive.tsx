@@ -29,7 +29,7 @@ interface RadioGroupPrimitiveProps
         "defaultValue" | "onChange" | "onValueChange"
     > {
     items: RadioItemParams[];
-    onChange: (value: string) => void;
+    onChange?: (value: string) => void;
 }
 
 interface RadioGroupVm {

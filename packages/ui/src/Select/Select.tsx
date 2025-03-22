@@ -164,9 +164,6 @@ const getRmwcProps = (props: SelectProps): FormComponentProps & RmwcSelectProps 
  */
 export const Select = (props: SelectProps) => {
     const { value: initialValue, ...other } = props;
-
-    console.log("Select props", props);
-
     const value = initialValue === null || initialValue === undefined ? "" : initialValue;
 
     const options = getOptions(other.options);

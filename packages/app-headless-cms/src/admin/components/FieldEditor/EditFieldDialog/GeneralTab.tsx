@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef, useMemo } from "react";
 import camelCase from "lodash/camelCase";
-import { Grid, Switch, Input } from "@webiny/admin-ui";
+import { Grid, Switch, Input, Label } from "@webiny/admin-ui";
 import { validation } from "@webiny/validation";
 import { Tags } from "@webiny/ui/Tags";
 import { useForm, Bind } from "@webiny/form";
@@ -93,6 +93,7 @@ const GeneralTab = () => {
                     >
                         <Input
                             label={"Label"}
+                            size={"lg"}
                             inputRef={inputRef}
                             data-testid="cms.editor.field.settings.general.label"
                         />
@@ -110,6 +111,7 @@ const GeneralTab = () => {
                     >
                         <Input
                             label={"Field ID"}
+                            size={"lg"}
                             data-testid={`cms.editor.field.settings.general.label-${field.id}`}
                         />
                     </Bind>
@@ -137,8 +139,8 @@ const GeneralTab = () => {
                 <Grid.Column span={12}>
                     <Bind name={"helpText"}>
                         <Input
-                            label={"Help text"}
-                            description={"Help text (optional)"}
+                            label={<Label text={"Help text"} description={"(optional)"} />}
+                            size={"lg"}
                             data-testid={`cms.editor.field.settings.general.helptext`}
                         />
                     </Bind>
@@ -146,9 +148,8 @@ const GeneralTab = () => {
                 <Grid.Column span={12}>
                     <Bind name={"tags"}>
                         <Tags
-                            label={"Tags"}
+                            label={<Label text={"Tags"} description={"(optional)"} />}
                             protectedTags={fieldPlugin.field.tags}
-                            description={"Field tags (optional)"}
                             data-testid={`cms.editor.field.settings.general.tags`}
                         />
                     </Bind>

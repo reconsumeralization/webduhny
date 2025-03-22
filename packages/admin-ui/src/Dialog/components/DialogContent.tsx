@@ -35,6 +35,8 @@ const DialogContent = React.forwardRef<
                 "focus:wby-outline-none focus-visible:wby-outline-none",
                 className
             )}
+            // TODO: An optional accessible description to be announced when the dialog is opened. At the moment we skip this.
+            aria-describedby={undefined}
         >
             {/* We needed to add this wrapper so that absolute-positioned elements can be placed */}
             {/* inside the dialog. We noticed this while showing a loader inside the dialog. */}
