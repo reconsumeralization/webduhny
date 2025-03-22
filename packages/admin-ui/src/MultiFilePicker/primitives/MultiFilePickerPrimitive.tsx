@@ -18,10 +18,25 @@ import { useMultiFilePicker } from "~/MultiFilePicker/primitives/useMultiFilePic
 
 interface MultiFilePickerPrimitiveProps
     extends Omit<FilePickerPrimitiveProps, "value" | "onEditItem" | "onRemoveItem"> {
+    /**
+     * The list of file items or file paths.
+     */
     values?: FileItemDto[] | string[] | null;
+    /**
+     * Placeholder text for the button that allows users to select a file.
+     */
     buttonPlaceholder?: string;
+    /**
+     * Callback function to replace an item.
+     */
     onReplaceItem: (item: FileItemFormatted | null, index: number) => void;
+    /**
+     * Optional callback function to edit an item.
+     */
     onEditItem?: (item: FileItemFormatted | null, index: number) => void;
+    /**
+     * Optional callback function to remove an item.
+     */
     onRemoveItem?: (item: FileItemFormatted | null, index: number) => void;
 }
 

@@ -409,7 +409,7 @@ export const WithCustomSelectedOptionRenderer: Story = {
         ...WithCustomOptionRenderer.args
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.values || []);
         const selectedOptionRenderer = (item: any) => {
             return (
                 <Tag

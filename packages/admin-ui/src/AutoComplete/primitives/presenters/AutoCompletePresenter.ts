@@ -5,7 +5,7 @@ import {
     IAutoCompleteInputPresenter
 } from "./AutoCompleteInputPresenter";
 import { IAutoCompleteListOptionsPresenter } from "./AutoCompleteListOptionsPresenter";
-import { AutoCompleteOption } from "../domains";
+import { AutoCompleteOption } from "../../domains";
 
 interface AutoCompletePresenterParams {
     emptyMessage?: any;

@@ -2,16 +2,13 @@ import * as React from "react";
 import * as RadioGroupPrimitives from "@radix-ui/react-radio-group";
 import { cn } from "~/utils";
 import { Radio } from "./Radio";
-import { RadioItemParams, RadioItemFormatted } from "./domains";
+import { RadioItemParams, RadioItemFormatted } from "../domains";
 import { useRadioGroup } from "./useRadioGroup";
 
 /**
  * Radio Group Root
  */
-const RadioGroupRoot = ({
-    className,
-    ...props
-}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root>) => {
+const RadioGroupRoot = ({ className, ...props }: RadioGroupPrimitives.RadioGroupProps) => {
     return (
         <RadioGroupPrimitives.Root
             className={cn("wby-grid wby-gap-sm-extra", className)}
@@ -26,25 +23,31 @@ const RadioGroupRoot = ({
 interface RadioGroupPrimitiveProps
     extends Omit<
         RadioGroupPrimitives.RadioGroupProps,
-        "defaultValue" | "onChange" | "onValueChange"
+        "defaultValue" | "onChange" | "onValueChange" | "value"
     > {
     items: RadioItemParams[];
+    /**
+     * Callback triggered when the selected value changes.
+     */
     onChange?: (value: string) => void;
+    /**
+     * Optional selected item.
+     */
+    value?: string;
 }
 
 interface RadioGroupVm {
     items: RadioItemFormatted[];
 }
 
-interface RadioGroupRendererProps
-    extends Omit<RadioGroupPrimitiveProps, "onValueChange" | "onChange"> {
+interface RadioGroupRendererProps extends Omit<RadioGroupPrimitiveProps, "onChange"> {
     items: RadioItemFormatted[];
     changeValue: (value: string) => void;
 }
 
-const RadioGroupRenderer = ({ items, changeValue, ...props }: RadioGroupRendererProps) => {
+const RadioGroupRenderer = ({ items, changeValue, value }: RadioGroupRendererProps) => {
     return (
-        <RadioGroupRoot {...props} onValueChange={value => changeValue(value)}>
+        <RadioGroupRoot value={value} onValueChange={value => changeValue(value)}>
             {items.map(item => (
                 <Radio
                     id={item.id}

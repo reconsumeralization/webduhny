@@ -3,7 +3,7 @@ import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { Label } from "~/Label";
 import { useSwitch } from "./useSwitch";
-import { SwitchItemDto, SwitchItemFormatted } from "./domains";
+import { SwitchItemDto, SwitchItemFormatted } from "../domains";
 
 /**
  * Switch Renderer
@@ -47,7 +47,7 @@ const SwitchRenderer = ({
     labelPosition,
     disabled,
     required,
-    ...props
+    checked
 }: SwitchRendererProps) => {
     return (
         <div className={cn(switchVariants({ labelPosition }), className)}>
@@ -60,9 +60,8 @@ const SwitchRenderer = ({
                 className={"wby-text-md"}
             />
             <SwitchPrimitives.Root
-                {...props}
                 id={id}
-                onChange={() => {}}
+                checked={checked}
                 className={cn([
                     "wby-peer wby-inline-flex wby-h-md wby-w-[26px] wby-mt-xxs wby-shrink-0 wby-cursor-pointer wby-items-center wby-rounded-xxl wby-border-sm wby-transition-colors",
                     "wby-border-transparent data-[state=checked]:wby-bg-secondary-default data-[state=unchecked]:wby-bg-neutral-strong",

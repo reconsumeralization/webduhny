@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { inputVariants } from "~/Input";
+import { InputPrimitiveProps, inputVariants } from "~/Input";
 import { PopoverPrimitive } from "~/Popover";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerGrid, IconPickerInput, IconPickerTrigger } from "./components";
@@ -22,13 +22,33 @@ const iconPickerVariants = cva("wby-cursor-pointer wby-text-neutral-strong", {
     }
 });
 
-interface IconPickerPrimitiveProps
-    extends VariantProps<typeof iconPickerVariants>,
-        VariantProps<typeof inputVariants> {
-    value?: string;
-    onChange?: (value: string) => void;
-    icons: IconPickerIconDto[];
+interface IconPickerPrimitiveProps extends VariantProps<typeof iconPickerVariants> {
+    /**
+     * Indicates if the field is disabled.
+     */
     disabled?: boolean;
+    /**
+     * Callback triggered when the value changes.
+     */
+    onChange?: (value: string) => void;
+    /**
+     * List of icons to be displayed in the icon picker.
+     */
+    icons: IconPickerIconDto[];
+    /**
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
+     */
+    invalid?: InputPrimitiveProps["invalid"];
+    /**
+     * Optional selected icon.
+     */
+    value?: string;
+    /**
+     * Variant of the input field.
+     * Refer to `InputPrimitiveProps["variant"]` for possible values.
+     */
+    variant?: InputPrimitiveProps["variant"];
 }
 
 const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {

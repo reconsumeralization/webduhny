@@ -4,7 +4,7 @@ import {
     SelectTriggerVm,
     SelectOption as SelectOptionParams
 } from "../SelectPrimitive";
-import { SelectOption, SelectOptionMapper } from "../domains";
+import { SelectOption, SelectOptionMapper } from "../../domains";
 
 interface SelectPresenterParams {
     options?: SelectOptionParams[];

@@ -1,3 +1,3 @@
-export * from "./domain";
+export * from "./domains";
 export * from "./primitives";
 export * from "./FilePicker";

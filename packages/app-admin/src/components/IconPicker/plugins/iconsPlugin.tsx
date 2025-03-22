@@ -47,7 +47,7 @@ const IconColorPicker = ({ color, onChange }: IconColorPickerProps) => {
     return (
         <DelayedOnChange value={color} onChange={onChange}>
             {({ value, onChange }) => (
-                <ColorPicker align={"end"} value={value} onValueChange={onChange} />
+                <ColorPicker align={"end"} value={value} onChange={onChange} />
             )}
         </DelayedOnChange>
     );

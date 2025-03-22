@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { SwitchPrimitivVm } from "../SwitchPrimitive";
-import { SwitchItem, SwitchItemDto, SwitchItemMapper } from "../domains";
+import { SwitchItem, SwitchItemDto, SwitchItemMapper } from "../../domains";
 
 type SwitchPresenterParams = SwitchItemDto & {
     onChange?: (checked: boolean) => void;

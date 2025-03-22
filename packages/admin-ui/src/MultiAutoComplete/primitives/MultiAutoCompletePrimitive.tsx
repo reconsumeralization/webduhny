@@ -9,29 +9,40 @@ import {
     MultiAutoCompleteInputIcons,
     MultiAutoCompleteList
 } from "./components";
-import { MultiAutoCompleteOption } from "./domains";
+import { MultiAutoCompleteOption } from "../domains";
+import { Icon } from "~/Icon";
 
-type MultiAutoCompletePrimitiveProps = Omit<
-    InputPrimitiveProps,
-    "endIcon" | "value" | "onValueChange"
-> & {
-    /**
-     * Accessible label for the command menu. Not shown visibly.
-     */
-    label?: string;
+interface MultiAutoCompletePrimitiveProps {
     /**
      * Allows free input of values not present in the options.
      */
     allowFreeInput?: boolean;
     /**
+     * Indicates if the reset action should be displayed.
+     */
+    displayResetAction?: boolean;
+    /**
+     * Indicates if the field is disabled.
+     */
+    disabled?: boolean;
+    /**
      * Message to display when there are no options.
      */
     emptyMessage?: React.ReactNode;
+    /**
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
+     */
+    invalid?: InputPrimitiveProps["invalid"];
     /**
      * Message to display when there are no options loaded or selected.
      * Use it to invite the user to interact with the autocomplete by typing a value.
      */
     initialMessage?: React.ReactNode;
+    /**
+     * Accessible label for the command menu. Not shown visibly.
+     */
+    label?: string;
     /**
      * Indicates if the autocomplete is loading options.
      */
@@ -45,6 +56,10 @@ type MultiAutoCompletePrimitiveProps = Omit<
      */
     onOpenChange?: (open: boolean) => void;
     /**
+     * Callback triggered when a value has been searched by the user.
+     */
+    onValueSearch?: (value: string) => void;
+    /**
      * Callback triggered when the values change.
      */
     onValuesChange: (values: string[]) => void;
@@ -53,34 +68,44 @@ type MultiAutoCompletePrimitiveProps = Omit<
      */
     onValuesReset?: () => void;
     /**
-     * Callback triggered when a value has been searched by the user.
+     * List of options for the autocomplete.
      */
-    onValueSearch?: (value: string) => void;
+    options?: MultiAutoCompleteOption[];
     /**
      * Custom renderer for the options.
      */
     optionRenderer?: (item: any, index: number) => React.ReactNode;
     /**
-     * List of options for the autocomplete.
+     * Placeholder text for the input field.
      */
-    options?: MultiAutoCompleteOption[];
+    placeholder?: string;
+    /**
+     * Size of the input field.
+     * Refer to `InputPrimitiveProps["size"]` for possible values.
+     */
+    size?: InputPrimitiveProps["size"];
     /**
      * Custom renderer for the selected options.
      */
     selectedOptionRenderer?: (item: any, index: number) => React.ReactNode;
     /**
+     * Icon to be displayed at the start of the input field.
+     */
+    startIcon?: React.ReactElement<typeof Icon> | React.ReactElement;
+    /**
      * Ensures that each value is unique.
      */
     uniqueValues?: boolean;
     /**
+     * Variant of the input field.
+     * Refer to `InputPrimitiveProps["variant"]` for possible values.
+     */
+    variant?: InputPrimitiveProps["variant"];
+    /**
      * Optional selected items.
      */
-    values: string[];
-    /**
-     * Indicates if the reset action should be displayed.
-     */
-    displayResetAction?: boolean;
-};
+    values?: string[];
+}
 
 const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitiveProps) => {
     const {

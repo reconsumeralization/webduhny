@@ -3,7 +3,7 @@ import { ColorState } from "react-color";
 
 interface ColorPickerPresenterParams {
     onOpenChange?: (open: boolean) => void;
-    onValueChange: (value: string) => void;
+    onValueChange?: (value: string) => void;
     value?: string;
 }
 
