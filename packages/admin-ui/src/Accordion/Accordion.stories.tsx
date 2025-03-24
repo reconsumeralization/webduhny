@@ -191,6 +191,31 @@ export const WithDefaultOpenedItem: Story = {
     }
 };
 
+export const WithDisabledItem: Story = {
+    ...Default,
+    args: {
+        children: (
+            <>
+                <AccordionItem
+                    index={1}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                />
+                <AccordionItem
+                    index={2}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    disabled={true}
+                />
+                <AccordionItem
+                    index={3}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    defaultOpen={true}
+                    disabled={true}
+                />
+            </>
+        )
+    }
+};
+
 export const WithControlledOpenedItem: Story = {
     ...Default,
     render: args => {
