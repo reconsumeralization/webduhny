@@ -1,9 +1,11 @@
+import { Region } from "@pulumi/aws";
 import { createPulumiApp, PulumiAppParam } from "@webiny/pulumi";
-import { SyncSystemDynamo } from "./SyncSystemDynamo";
-import { DEFAULT_PROD_ENV_NAMES } from "~/constants";
-import { SyncSystemSQS } from "./SyncSystemSQS";
-import { SyncSystemLambda } from "./SyncSystemLambda";
-import { addTableItems } from "./addTableItems";
+import { DEFAULT_PROD_ENV_NAMES } from "~/constants.js";
+import { SyncSystemSQS } from "./SyncSystemSQS.js";
+import { SyncSystemInputLambda } from "./SyncSystemInputLambda.js";
+import { SyncSystemS3 } from "./SyncSystemS3.js";
+import type { IDeployment } from "./types.js";
+import { createRegionProvider } from "~/apps/syncSystem/createRegionProvider.js";
 
 export type SyncSystemPulumiApp = ReturnType<typeof createSyncSystemPulumiApp>;
 
@@ -61,9 +63,11 @@ export interface CreateSyncSystemPulumiAppParams {
      * https://www.webiny.com/docs/architecture/deployment-modes/production
      */
     productionEnvironments?: PulumiAppParam<string[]>;
+
+    deployments: () => [IDeployment, IDeployment];
 }
 
-export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulumiAppParams = {}) {
+export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulumiAppParams) {
     return createPulumiApp({
         name: "syncSystem",
         path: "apps/syncSystem",
@@ -74,40 +78,31 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
 
-            const dynamoDbTable = app.addModule(SyncSystemDynamo, {
-                protect
+            const region = createRegionProvider({
+                region: Region.USEast1
+            });
+
+            const s3 = app.addModule(SyncSystemS3, {
+                protect,
+                region
             });
 
             const sqs = app.addModule(SyncSystemSQS, {
-                protect
+                protect,
+                region
             });
 
-            app.addModule(SyncSystemLambda, {
+            const inputLambda = app.addModule(SyncSystemInputLambda, {
                 protect,
-                config: {
-                    // TODO
-                }
-            });
-            /**
-             * Add
-             */
-            addTableItems({
-                app,
-                table: dynamoDbTable,
-                items: {}
+                region
             });
 
             return {
-                /**
-                 * Sync System resources.
-                 */
-                dynamodbTable: dynamoDbTable,
-                dynamodbTableArn: dynamoDbTable.output.arn,
-                dynamodbTableName: dynamoDbTable.output.name,
-                dynamodbTableHashKey: dynamoDbTable.output.hashKey,
-                dynamodbTableRangeKey: dynamoDbTable.output.rangeKey,
-                sqs,
-                sqsArn: sqs.output.arn,
+                s3: s3.output,
+                sqs: sqs.output,
+                inputLambda: inputLambda.lambda.output,
+                inputLambdaRole: inputLambda.role.output,
+                inputLambdaPolicy: inputLambda.policy.output,
                 /**
                  * Systems we are connecting together.
                  */
