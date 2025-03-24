@@ -1,11 +1,11 @@
 import * as React from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { cva, type VariantProps, cn } from "~/utils";
 
 const accordionContentVariants = cva(
     [
         "wby-overflow-hidden wby-text-md",
-        "wby-transition-all data-[state=closed]:wby-animate-accordion-up data-[state=open]:wby-animate-accordion-down"
+        "wby-transition-all data-[state=closed]:wby-animate-collapsible-up data-[state=open]:wby-animate-collapsible-down"
     ],
     {
         // Using pixel values here because of non-existing design tokens.
@@ -32,17 +32,17 @@ const accordionContentVariants = cva(
 );
 
 export interface AccordionContentProps
-    extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>,
+    extends React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>,
         VariantProps<typeof accordionContentVariants> {}
 
 const AccordionContent = ({ children, withIcon, withHandle, ...props }: AccordionContentProps) => {
     return (
-        <AccordionPrimitive.Content
+        <CollapsiblePrimitive.Content
             {...props}
             className={cn(accordionContentVariants({ withHandle, withIcon }), props.className)}
         >
             <div className={"wby-pt-sm wby-pb-lg wby-pl-md wby-pr-[52px]"}>{children}</div>
-        </AccordionPrimitive.Content>
+        </CollapsiblePrimitive.Content>
     );
 };
 
