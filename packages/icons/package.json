@@ -1,7 +1,6 @@
 {
   "name": "@webiny/icons",
   "version": "0.0.0",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/webiny/webiny-js.git"
@@ -9,22 +8,17 @@
   "description": "This package contains icons used throughout the Webiny's Admin UI applications.",
   "author": "Webiny Ltd.",
   "license": "MIT",
-  "dependencies": {
-    "@material-design-icons/svg": "^0.14.13"
-  },
   "devDependencies": {
+    "@material-design-icons/svg": "^0.14.13",
     "@webiny/cli": "0.0.0",
-    "@webiny/project-utils": "0.0.0",
-    "rimraf": "^6.0.1",
-    "typescript": "5.3.3"
+    "rimraf": "^6.0.1"
   },
   "publishConfig": {
     "access": "public",
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "yarn webiny run build"
   },
   "gitHead": "8476da73b653c89cc1474d968baf55c1b0ae0e5f"
 }

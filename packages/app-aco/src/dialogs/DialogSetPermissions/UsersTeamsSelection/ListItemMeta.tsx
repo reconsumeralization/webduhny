@@ -103,7 +103,7 @@ export const ListItemMeta = ({
                         <DropdownMenu.CheckboxItem
                             key={level.id}
                             checked={currentLevel.id === level.id}
-                            content={
+                            text={
                                 <div>
                                     <Text as={"div"} text={level.label} />
                                     <Text
