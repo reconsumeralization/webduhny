@@ -18474,6 +18474,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/icons@workspace:packages/icons":
+  version: 0.0.0-use.local
+  resolution: "@webiny/icons@workspace:packages/icons"
+  dependencies:
+    "@material-design-icons/svg": "npm:^0.14.13"
+    "@webiny/cli": "npm:0.0.0"
+    rimraf: "npm:^6.0.1"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/ioc@npm:0.0.0, @webiny/ioc@workspace:packages/ioc":
   version: 0.0.0-use.local
   resolution: "@webiny/ioc@workspace:packages/ioc"
@@ -18973,8 +18983,6 @@ __metadata:
     cli-table3: "npm:^0.6.5"
     execa: "npm:^5.1.1"
     semver: "npm:^7.6.3"
-  bin:
-    webiny: ./bin.js
   languageName: unknown
   linkType: soft
 
