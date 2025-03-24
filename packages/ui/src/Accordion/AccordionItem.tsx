@@ -27,9 +27,6 @@ export interface AccordionItemProps {
 
     open?: boolean;
 
-    /**
-     * @deprecated This prop no longer has any effect.
-     */
     interactive?: boolean;
 
     handle?: React.ReactNode;

@@ -26,7 +26,7 @@ interface AccordionItemProps extends Omit<BaseAccordionItemProps, "value" | "tit
 const AccordionItem = (props: AccordionItemProps) => {
     return (
         <Accordion.Item
-            value={`Accordion item ${props.index}`}
+            value={`accordion-item-${props.index}`}
             title={`Accordion item ${props.index}`}
             {...props}
         >
@@ -173,6 +173,19 @@ export const WithMultipleOpenedItems: Story = {
                     index={2}
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 />
+            </>
+        )
+    }
+};
+
+export const WithNotInteractiveItem: Story = {
+    ...Default,
+    args: {
+        children: (
+            <>
+                <AccordionItem index={1} description="Not interactive item." interactive={false} />
+                <AccordionItem index={2} />
+                <AccordionItem index={3} />
             </>
         )
     }

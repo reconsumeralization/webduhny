@@ -14,6 +14,7 @@ interface AccordionItemProps
     icon?: React.ReactNode;
     handle?: React.ReactNode;
     actions?: React.ReactNode;
+    interactive?: boolean;
     children: React.ReactNode;
 }
 
@@ -23,6 +24,7 @@ const AccordionItemBase = (props: AccordionItemProps) => {
             // Item props.
             value,
             className,
+            interactive,
 
             // Content props.
             children,
@@ -36,7 +38,10 @@ const AccordionItemBase = (props: AccordionItemProps) => {
                 value,
                 className
             },
-            triggerProps,
+            triggerProps: {
+                ...triggerProps,
+                interactive
+            },
             contentProps: { children, withIcon: !!props.icon, withHandle: !!props.handle }
         };
     }, [props]);
