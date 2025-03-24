@@ -37,6 +37,10 @@ export const SyncSystemS3 = createAppModule({
                 blockPublicPolicy: true,
                 ignorePublicAcls: true,
                 restrictPublicBuckets: true
+            },
+            opts: {
+                protect: params.protect,
+                provider: params.region.provider
             }
         });
         return bucket;

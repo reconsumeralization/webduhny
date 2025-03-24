@@ -2,7 +2,7 @@ import path from "path";
 import * as aws from "@pulumi/aws";
 import type { PulumiApp, PulumiAppModule } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
-import { createLambdaRoleWithoutVpc, getCommonLambdaEnvVariables } from "../lambdaUtils.js";
+import { createLambdaRoleWithoutVpc } from "../lambdaUtils.js";
 import { LAMBDA_RUNTIME } from "~/constants.js";
 import { createSyncSystemLambdaPolicy } from "./lambda/policy.js";
 import { createResourceName } from "./createResourceName.js";
@@ -12,7 +12,6 @@ import type { RegionProvider } from "~/apps/syncSystem/types.js";
 export interface SyncSystemInputLambdaParams {
     region: RegionProvider;
     protect: boolean;
-    env?: Record<string, string>;
 }
 
 export type SyncSystemInputLambda = PulumiAppModule<typeof SyncSystemInputLambda>;
@@ -38,17 +37,20 @@ export const SyncSystemInputLambda = createAppModule({
                 handler: "handler.handler",
                 role: role.output.arn,
                 timeout: 900,
-                memorySize: 1024,
+                memorySize: 512,
                 code: createAssetArchive(path.join(app.paths.workspace, "input/build")),
                 environment: {
-                    variables: getCommonLambdaEnvVariables().apply(value => {
-                        return {
-                            ...value,
-                            ...params.env,
-                            AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
-                        };
-                    })
+                    variables: {
+                        DEBUG: String(process.env.DEBUG),
+                        PULUMI_APPS: "true",
+
+                        AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+                    }
                 }
+            },
+            opts: {
+                provider: params.region.provider,
+                protect: params.protect
             }
         });
 
