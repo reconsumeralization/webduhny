@@ -26,8 +26,8 @@ export const ValidationsSection = ({
         <div className="wby-mb-xl">
             <Grid>
                 <Grid.Column span={12}>
-                    <Heading text={title} level={5} />
-                    <Text text={description} size={"sm"} />
+                    <Heading level={5}>{title}</Heading>
+                    <Text size={"sm"}>{description}</Text>
                 </Grid.Column>
                 <Grid.Column span={12}>
                     <ValidatorsList name={bindTo[fieldKey]} validators={validators} />

@@ -74,7 +74,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                     <RightPanel span={8} className={"wby-bg-neutral-base"}>
                         {contentModel && (
                             <div className={"wby-px-xl wby-pt-lg wby-pb-md-extra"}>
-                                <Heading level={4} text={contentModel.name} />
+                                <Heading level={4}>{contentModel.name}</Heading>
                                 <Text size={"sm"} className={"wby-text-neutral-muted"}>
                                     {`Created by ${contentModel.createdBy.displayName}. Last modified: `}
                                     <TimeAgo datetime={contentModel.savedOn} />.

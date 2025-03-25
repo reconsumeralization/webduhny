@@ -162,14 +162,12 @@ const PredefinedValuesDynamicFieldset = ({
                                                 return (
                                                     <React.Fragment>
                                                         <Header>
-                                                            <Text text={t`Predefined values`} />
+                                                            <Text>{t`Predefined values`}</Text>
                                                         </Header>
 
                                                         <Grid className={"wby-text-center"}>
                                                             <Grid.Column span={12}>
-                                                                <Text
-                                                                    text={t`There are no predefined values available.`}
-                                                                />
+                                                                <Text>{t`There are no predefined values available.`}</Text>
                                                             </Grid.Column>
                                                             <Grid.Column span={12}>
                                                                 <Button
@@ -183,7 +181,7 @@ const PredefinedValuesDynamicFieldset = ({
                                             })}
                                             {header(() => (
                                                 <Header>
-                                                    <Text text={t`Predefined values`} />
+                                                    <Text>{t`Predefined values`}</Text>
                                                 </Header>
                                             ))}
                                         </React.Fragment>

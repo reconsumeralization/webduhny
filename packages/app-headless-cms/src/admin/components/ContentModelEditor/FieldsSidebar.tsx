@@ -35,12 +35,10 @@ const Field = (props: FieldProps) => {
                             />
                         </div>
                         <div>
-                            <Heading text={label} level={6} />
-                            <Text
-                                text={description}
-                                size={"sm"}
-                                className={"wby-text-neutral-strong"}
-                            />
+                            <Heading level={6}>{label}</Heading>
+                            <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                {description}
+                            </Text>
                         </div>
                     </div>
                 </div>

@@ -81,13 +81,16 @@ const AppearanceTab = () => {
                                 value: item.renderer.rendererName,
                                 label: (
                                     <div>
-                                        <Text as={"div"} size={"md"} text={item.renderer.name} />
+                                        <Text as={"div"} size={"md"}>
+                                            {item.renderer.name}
+                                        </Text>
                                         <Text
                                             as={"div"}
                                             size={"sm"}
-                                            text={item.renderer.description}
                                             className={"wby-text-sm wby-text-neutral-strong"}
-                                        />
+                                        >
+                                            {item.renderer.description}
+                                        </Text>
                                     </div>
                                 )
                             }))}
