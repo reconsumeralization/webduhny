@@ -17285,7 +17285,6 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^6.0.0"
     "@fortawesome/react-fontawesome": "npm:^0.1.17"
     "@lexical/utils": "npm:0.23.1"
-    "@material-design-icons/svg": "npm:^0.14.13"
     "@svgr/webpack": "npm:^6.1.1"
     "@types/react": "npm:18.2.79"
     "@webiny/admin-ui": "npm:0.0.0"

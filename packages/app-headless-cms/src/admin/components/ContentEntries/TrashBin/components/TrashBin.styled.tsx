@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ReactComponent as Plus } from "@material-design-icons/svg/filled/delete.svg";
+import { ReactComponent as Plus } from "@webiny/icons/delete.svg";
 
 export const Button = styled("button")`
     background: none;

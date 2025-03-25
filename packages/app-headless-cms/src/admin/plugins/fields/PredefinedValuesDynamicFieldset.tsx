@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { ReactComponent as RemoveIcon } from "@material-design-icons/svg/outlined/remove.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as RemoveIcon } from "@webiny/icons/remove.svg";
 import { i18n } from "@webiny/app/i18n";
 import { BindComponent, CmsModelField } from "~/types";
 import { BindComponentRenderProp, FormAPI, useForm } from "@webiny/form";

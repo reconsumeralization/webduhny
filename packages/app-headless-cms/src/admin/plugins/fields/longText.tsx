@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as LongTextIcon } from "@material-design-icons/svg/outlined/notes.svg";
+import { ReactComponent as LongTextIcon } from "@webiny/icons/notes.svg";
 import { CmsModelFieldTypePlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
 import { Bind } from "@webiny/form";

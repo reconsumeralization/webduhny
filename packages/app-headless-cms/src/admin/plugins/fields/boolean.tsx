@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as BooleanIcon } from "@material-design-icons/svg/outlined/toggle_on.svg";
+import { ReactComponent as BooleanIcon } from "@webiny/icons/toggle_on.svg";
 import { CmsModelFieldTypePlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
 import { Bind } from "@webiny/form";

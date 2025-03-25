@@ -7,7 +7,7 @@ import {
 import { validation, ValidationError } from "@webiny/validation";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { CmsModel, CmsModelFieldTypePlugin } from "~/types";
-import { ReactComponent as RefIcon } from "@material-design-icons/svg/outlined/link.svg";
+import { ReactComponent as RefIcon } from "@webiny/icons/link.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Bind, BindComponentRenderProp, useForm } from "@webiny/form";
 import { useModel, useQuery } from "~/admin/hooks";

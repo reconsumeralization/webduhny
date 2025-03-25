@@ -1,8 +1,8 @@
 import React, { Fragment, useCallback, useMemo } from "react";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
-import { ReactComponent as TitleIcon } from "@material-design-icons/svg/outlined/title.svg";
-import { ReactComponent as MoreVerticalIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as TitleIcon } from "@webiny/icons/title.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { plugins } from "@webiny/plugins";
 import { CmsModelField, CmsEditorFieldOptionPlugin, CmsModel } from "~/types";
 import { i18n } from "@webiny/app/i18n";

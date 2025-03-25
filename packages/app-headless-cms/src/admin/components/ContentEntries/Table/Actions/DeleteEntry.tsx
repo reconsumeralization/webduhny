@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Delete } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as Delete } from "@webiny/icons/delete.svg";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useContentEntry, useEntry, usePermission } from "~/admin/hooks";
 

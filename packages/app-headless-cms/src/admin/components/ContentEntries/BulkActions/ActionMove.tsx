@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as MoveIcon } from "@material-design-icons/svg/outlined/drive_file_move.svg";
+import { ReactComponent as MoveIcon } from "@webiny/icons/drive_file_move.svg";
 import { useRecords, useMoveToFolderDialog, useNavigateFolder } from "@webiny/app-aco";
 import { useSnackbar } from "@webiny/app-admin";
 import { FolderItem } from "@webiny/app-aco/types";

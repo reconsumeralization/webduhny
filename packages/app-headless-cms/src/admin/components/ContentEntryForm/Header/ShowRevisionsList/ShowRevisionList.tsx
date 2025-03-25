@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ListIcon } from "@material-design-icons/svg/outlined/checklist.svg";
+import { ReactComponent as ListIcon } from "@webiny/icons/checklist.svg";
 import { ContentEntryEditorConfig } from "~/admin/config/contentEntries";
 import { useFullScreenContentEntry } from "~/admin/views/contentEntries/ContentEntry/FullScreenContentEntry/useFullScreenContentEntry";
 

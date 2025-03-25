@@ -12,8 +12,8 @@ import {
     EditIcon,
     ListIcon
 } from "@webiny/ui/List/DataList/icons";
-import { ReactComponent as DownloadFileIcon } from "@material-design-icons/svg/outlined/file_download.svg";
-import { ReactComponent as UploadFileIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
+import { ReactComponent as DownloadFileIcon } from "@webiny/icons/file_download.svg";
+import { ReactComponent as UploadFileIcon } from "@webiny/icons/file_upload.svg";
 import { useModels } from "../../hooks";
 import * as UIL from "@webiny/ui/List";
 import { Tooltip } from "@webiny/ui/Tooltip";
