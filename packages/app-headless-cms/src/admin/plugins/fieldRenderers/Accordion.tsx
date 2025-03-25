@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useState } from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import classNames from "classnames";
 import { Typography } from "@webiny/ui/Typography";

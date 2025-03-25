@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { plugins } from "@webiny/plugins";

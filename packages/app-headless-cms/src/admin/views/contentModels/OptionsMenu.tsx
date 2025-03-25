@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Menu, MenuItem } from "@webiny/ui/Menu";
 import { IconButton } from "@webiny/ui/Button";
@@ -7,12 +7,12 @@ import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg"
 import { ListItemGraphic } from "@webiny/ui/List";
 import { Icon } from "@webiny/ui/Icon";
 
-const menuStyles = css({
-    ".disabled": {
-        opacity: 0.5,
-        pointerEvents: "none"
+const menuStyles = css`
+    .disabled {
+        opacity: 0.5;
+        pointer-events: none;
     }
-});
+`;
 
 export interface OptionsMenuItem {
     label: string;

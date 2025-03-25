@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { i18n } from "@webiny/app/i18n";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { validation } from "@webiny/validation";
 import { useBind } from "@webiny/form";
 import { allowCmsLegacyRichTextInput } from "~/utils/allowCmsLegacyRichTextInput";
