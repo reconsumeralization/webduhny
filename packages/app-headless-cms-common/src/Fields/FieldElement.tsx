@@ -7,8 +7,23 @@ import { useBind } from "./useBind";
 import { useRenderPlugins } from "./useRenderPlugins";
 import { ModelFieldProvider, useModelField } from "../ModelFieldProvider";
 import { CmsModelField, CmsEditorContentModel, BindComponent } from "~/types";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 const t = i18n.ns("app-headless-cms/admin/components/content-form");
+
+declare global {
+    // eslint-disable-next-line
+    namespace JSX {
+        interface IntrinsicElements {
+            "hcms-model-field": {
+                "data-id": string;
+                "data-type": string;
+                "data-field-id": string;
+                children: React.ReactNode;
+            };
+        }
+    }
+}
 
 type RenderFieldProps = Omit<FieldElementProps, "field">;
 
@@ -44,10 +59,22 @@ export interface FieldElementProps {
 export const FieldElement = makeDecoratable(
     "FieldElement",
     ({ field, ...props }: FieldElementProps) => {
+        if (!field) {
+            return null;
+        }
+
         return (
-            <ModelFieldProvider field={field}>
-                <RenderField {...props} />
-            </ModelFieldProvider>
+            <hcms-model-field
+                data-id={field.id}
+                data-field-id={field.fieldId}
+                data-type={field.type}
+            >
+                <ErrorBoundary field={field}>
+                    <ModelFieldProvider field={field}>
+                        <RenderField {...props} />
+                    </ModelFieldProvider>
+                </ErrorBoundary>
+            </hcms-model-field>
         );
     }
 );

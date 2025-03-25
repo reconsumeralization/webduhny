@@ -1,7 +1,8 @@
 import React from "react";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { FieldElement } from "./FieldElement";
-import {
+import { FieldElementError } from "./FieldElementError";
+import type {
     CmsEditorContentModel,
     CmsModelField,
     CmsEditorFieldsLayout,
@@ -25,16 +26,25 @@ export const Fields = ({ Bind, fields, layout, contentModel, gridClassName }: Fi
         <Grid className={gridClassName}>
             {layout.map((row, rowIndex) => (
                 <React.Fragment key={rowIndex}>
-                    {row.map(fieldId => {
-                        const field = getFieldById(fields, fieldId) as CmsModelField;
+                    {row.map(id => {
+                        const field = getFieldById(fields, id) as CmsModelField;
 
                         return (
-                            <Cell span={Math.floor(12 / row.length)} key={fieldId}>
-                                <FieldElement
-                                    field={field}
-                                    Bind={Bind}
-                                    contentModel={contentModel}
-                                />
+                            <Cell span={Math.floor(12 / row.length)} key={id}>
+                                {field ? (
+                                    <FieldElement
+                                        field={field}
+                                        Bind={Bind}
+                                        contentModel={contentModel}
+                                    />
+                                ) : (
+                                    <FieldElementError
+                                        title={`Missing field with id "${id}"!`}
+                                        description={
+                                            "Make sure field layout contains the correct field ids (hint: check for typos)."
+                                        }
+                                    />
+                                )}
                             </Cell>
                         );
                     })}
