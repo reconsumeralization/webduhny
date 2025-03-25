@@ -213,6 +213,7 @@ export interface PagesCrud {
         category: string,
         meta?: Record<string, any>
     ): Promise<TPage>;
+    createPageV2<TPage extends Page = Page>(data: PbCreatePageInput): Promise<TPage>;
     createPageFrom<TPage extends Page = Page>(
         page: string,
         meta?: Record<string, any>
@@ -895,6 +896,15 @@ export interface PbCategoryInput {
 }
 
 export interface PbUpdatePageInput extends DynamicDocument {
+    title?: string;
+    category?: string;
+    path?: string;
+    settings?: PageSettings;
+    content?: Record<string, any> | null;
+}
+
+
+export interface PbCreatePageInput extends DynamicDocument {
     title?: string;
     category?: string;
     path?: string;

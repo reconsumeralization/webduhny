@@ -1,5 +1,6 @@
-import { CREATE_MENU, LIST_MENUS, ListMenusGqlResponse, CreateMenuGqlResponse } from "./graphql";
+import { CREATE_MENU, LIST_MENUS } from "./graphql";
 import { GqlClient } from "../../utils";
+import { Pojo } from "../../types";
 
 export class PbMenusMigrator {
     private readonly sourceGqlClient: GqlClient;
@@ -12,10 +13,8 @@ export class PbMenusMigrator {
 
     async run() {
         // Migrate menus.
-        const sourceListMenusRes =
-            await this.sourceGqlClient.run<ListMenusGqlResponse>(LIST_MENUS);
-        const targetListMenusRes =
-            await this.targetGqlClient.run<ListMenusGqlResponse>(LIST_MENUS);
+        const sourceListMenusRes = await this.sourceGqlClient.run(LIST_MENUS);
+        const targetListMenusRes = await this.targetGqlClient.run(LIST_MENUS);
 
         const { data } = sourceListMenusRes.pageBuilder.listMenus;
 
@@ -27,7 +26,7 @@ export class PbMenusMigrator {
         console.log(`Found ${data.length} menu(s) to migrate.`);
         for (const menu of data) {
             const alreadyExists = targetListMenusRes.pageBuilder.listMenus.data.some(
-                m => m.slug === menu.slug
+                (m: Pojo) => m.slug === menu.slug
             );
 
             if (alreadyExists) {
@@ -38,17 +37,21 @@ export class PbMenusMigrator {
             console.log(`Migrating menu "${menu.title}"...`);
 
             // Migrate menu items.
-            await this.targetGqlClient.run<CreateMenuGqlResponse>(CREATE_MENU, {
+            const res = await this.targetGqlClient.run(CREATE_MENU, {
                 data: {
                     title: menu.title,
                     description: menu.description,
                     slug: menu.slug,
                     items: menu.items,
-                    id: menu.id,
                     createdBy: menu.createdBy,
                     createdOn: menu.createdOn
                 }
             });
+
+            const { error } = res.pageBuilder.createMenu;
+            if (error) {
+                console.log(`Failed to migrate menu "${menu.title}". Error:`, error);
+            }
         }
     }
 }

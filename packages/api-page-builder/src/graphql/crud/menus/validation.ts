@@ -9,7 +9,7 @@ const baseValidation = zod.object({
 export const createMenuCreateValidation = () => {
     return baseValidation.extend({
         slug: zod.string().min(1).max(100),
-        id: zod.string().optional(),
+        createdOn: zod.date().optional(),
         createdBy: zod.object({
             id: zod.string(),
             type: zod.string(),

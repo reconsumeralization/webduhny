@@ -24,7 +24,6 @@ export const createMenuGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     items: [JSON]
                     
                     # Meta fields. 👇
-                    id: ID
                     createdBy: PbIdentityInput
                     createdOn: DateTime
                 }

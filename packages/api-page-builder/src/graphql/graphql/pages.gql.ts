@@ -109,6 +109,16 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     dataBindings: [DataBindingInput!]
                 }
 
+                input PbCreatePageV2Input {
+                    title: String
+                    category: ID
+                    path: String
+                    settings: PbPageSettingsInput
+                    content: JSON
+                    dataSources: [DataSourceInput!]
+                    dataBindings: [DataBindingInput!]
+                }
+
                 input PbPageSettingsInput {
                     _empty: String
                 }
@@ -241,6 +251,8 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
 
                 extend type PbMutation {
                     createPage(from: ID, category: String, meta: JSON): PbPageResponse
+                    
+                    createPageV2(data: PbCreatePageV2Input!): PbPageResponse
 
                     # Update page by given ID.
                     updatePage(id: ID!, data: PbUpdatePageInput!): PbPageResponse

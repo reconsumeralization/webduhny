@@ -11,7 +11,6 @@ export const ERROR_FIELDS = gql`
 
 const DATA_FIELDS = /* GraphQL */ gql`
     fragment DataFields on PbMenu {
-        id
         slug
         description
         title

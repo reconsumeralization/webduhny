@@ -13,7 +13,8 @@ import {
     PageStorageOperationsGetWhereParams,
     PageStorageOperationsListParams,
     PageStorageOperationsListTagsParams,
-    PbContext
+    PbContext,
+    PbCreatePageInput
 } from "~/types";
 import normalizePath from "./pages/normalizePath";
 import {
@@ -416,6 +417,143 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
                     }
                 );
             }
+        },
+
+        async createPageV2(this: PageBuilderContextObject, input: PbCreatePageInput): Promise<any> {
+            await pagesPermissions.ensure({ rwd: "w" });
+
+            const categorySlug = input.category;
+            if (!categorySlug) {
+                throw new WebinyError("Category slug is missing.", "CATEGORY_SLUG_MISSING");
+            }
+
+            const category = await this.getCategory(categorySlug);
+            if (!category) {
+                throw new NotFoundError(`Category with slug "${categorySlug}" not found.`);
+            }
+
+            const title = input.title || "Untitled";
+
+            let pagePath = input.path;
+            if (!pagePath) {
+                if (category.slug === "static") {
+                    pagePath = normalizePath("untitled-" + uniqid.time()) as string;
+                } else {
+                    pagePath = normalizePath(
+                        [category.url, "untitled-" + uniqid.time()].join("/").replace(/\/\//g, "/")
+                    ) as string;
+                }
+            }
+
+            return {};
+            const identity = context.security.getIdentity();
+
+            // const result = await createPageCreateValidation().safeParseAsync({
+            //     category: category.slug
+            // });
+            // if (!result.success) {
+            //     throw createZodError(result.error);
+            // }
+            //
+            // const pageId = mdbid();
+            // const version = 1;
+            //
+            // const id = createIdentifier({
+            //     id: pageId,
+            //     version
+            // });
+            //
+            // const updateSettingsValidationResult =
+            //     await createPageSettingsUpdateValidation().safeParseAsync({
+            //         general: {
+            //             layout: category.layout
+            //         },
+            //         social: {
+            //             description: null,
+            //             image: null,
+            //             meta: [],
+            //             title: null
+            //         },
+            //         seo: {
+            //             title: null,
+            //             description: null,
+            //             meta: []
+            //         }
+            //     });
+            // if (!updateSettingsValidationResult.success) {
+            //     throw createZodError(updateSettingsValidationResult.error);
+            // }
+            //
+            // const settings = updateSettingsValidationResult.data;
+            //
+            // const owner: CreatedBy = {
+            //     id: identity.id,
+            //     displayName: identity.displayName,
+            //     type: identity.type
+            // };
+            //
+            // const page: Page = {
+            //     id,
+            //     pid: pageId,
+            //     locale: getLocaleCode(),
+            //     tenant: getTenantId(),
+            //     editor: DEFAULT_EDITOR,
+            //     category: category.slug,
+            //     title,
+            //     path: pagePath,
+            //     version,
+            //     status: STATUS_DRAFT,
+            //     locked: false,
+            //     publishedOn: null,
+            //     createdFrom: null,
+            //     settings: {
+            //         ...settings,
+            //         general: {
+            //             ...settings.general,
+            //             tags: settings.general?.tags || undefined
+            //         },
+            //         social: {
+            //             ...settings.social,
+            //             meta: settings.social?.meta || []
+            //         },
+            //         seo: {
+            //             ...settings.seo,
+            //             meta: settings.seo?.meta || []
+            //         }
+            //     },
+            //     savedOn: new Date().toISOString(),
+            //     createdOn: new Date().toISOString(),
+            //     ownedBy: owner,
+            //     createdBy: owner,
+            //     content: PageContent.createEmpty().getValue(),
+            //     webinyVersion: context.WEBINY_VERSION
+            // };
+            //
+            // try {
+            //     await onPageBeforeCreate.publish({
+            //         page,
+            //         meta
+            //     });
+            //
+            //     await storageOperations.pages.create({
+            //         input: {
+            //             slug
+            //         },
+            //         page: await compressPage(page)
+            //     });
+            //     await onPageAfterCreate.publish({ page, meta });
+            //
+            //     return page;
+            // } catch (ex) {
+            //     throw new WebinyError(
+            //         ex.message || "Could not create new page.",
+            //         ex.code || "CREATE_PAGE_ERROR",
+            //         {
+            //             ...(ex.data || {}),
+            //             page
+            //         }
+            //     );
+            // }
         },
 
         async createPageFrom(this: PageBuilderContextObject, id): Promise<any> {
