@@ -34,6 +34,7 @@ const twMerge = extendTailwindMerge({
                 "border-success-default",
                 "border-success-subtle"
             ],
+            "border-style": ["border-solid", "border-dashed", "border-dotted"],
             "ring-color": [
                 "ring-primary",
                 "ring-primary-dimmed",

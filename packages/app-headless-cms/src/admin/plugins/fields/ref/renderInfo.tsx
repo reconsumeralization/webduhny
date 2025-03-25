@@ -5,49 +5,17 @@ import {
     LIST_REFERENCED_MODELS,
     ListReferencedModelsQueryResult
 } from "~/admin/plugins/fields/ref/graphql";
-import styled from "@emotion/styled";
 import { useSnackbar } from "@webiny/app-admin";
+import { Tag } from "@webiny/admin-ui";
 
 type CmsModel = Pick<BaseCmsModel, "modelId" | "name">;
-
-const Information = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "right",
-    alignItems: "center",
-    flex: "1"
-});
-
-const BadgeItem = styled("div")({
-    display: "inline-block",
-    padding: "5px 20px 7px 20px",
-    backgroundColor: "#FFF",
-    borderRadius: "5px",
-    border: "1px solid darkgrey",
-    marginRight: "10px",
-    cursor: "default",
-    fontWeight: "normal"
-});
-
-const Extras = styled("div")({
-    display: "inline-block",
-    padding: "5px 10px 7px 10px",
-    backgroundColor: "#FFF",
-    borderRadius: "5px",
-    border: "1px solid darkgrey",
-    maxWidth: "20px",
-    textAlign: "center",
-    marginRight: "10px",
-    cursor: "default",
-    fontWeight: "normal"
-});
 
 interface BadgeProps {
     model: CmsModel;
 }
 
 const Badge = ({ model }: BadgeProps) => {
-    return <BadgeItem>{model.name}</BadgeItem>;
+    return <Tag content={model.name} />;
 };
 
 interface RenderInfoParams {
@@ -102,11 +70,11 @@ const RenderInfo = ({ field }: RenderInfoParams) => {
     }
 
     return (
-        <Information>
+        <div className={"wby-flex wby-justify-end wby-items-center wby-gap-sm"}>
             {items.map(model => {
                 return <Badge key={`model-${model.modelId}`} model={model} />;
             })}
-            {badges > 0 && <Extras>+{badges}</Extras>}
-        </Information>
+            {badges > 0 && <Tag content={`+${badges}`}></Tag>}
+        </div>
     );
 };

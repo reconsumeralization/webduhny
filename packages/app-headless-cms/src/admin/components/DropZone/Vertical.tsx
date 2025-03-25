@@ -1,65 +1,44 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { Droppable, IsVisibleCallable } from "../Droppable";
 import { DragSource } from "~/types";
-
-const InnerDivVertical = styled("div")({
-    position: "absolute",
-    width: 10,
-    height: "100%",
-    zIndex: 3,
-    borderRadius: 0,
-    display: "none",
-    boxSizing: "border-box",
-    border: "1px dashed black",
-    borderSpacing: 5
-});
-
-const BackgroundColorDiv = styled("div")({
-    width: "100%",
-    height: "100%"
-});
+import { cn } from "@webiny/admin-ui";
 
 interface OuterDivVerticalProps {
     isOver: boolean;
     last?: boolean;
-    isVisible?: IsVisibleCallable;
     isDragging?: boolean;
 }
 
-const OuterDivVertical = styled("div")(
-    {
-        position: "absolute",
-        width: "30%",
-        top: 0,
-        height: "100%",
-        zIndex: 10,
-        backgroundColor: "transparent"
-    },
-    (props: OuterDivVerticalProps) => ({
-        [props.last ? "right" : "left"]: -9,
-        textAlign: props.last ? "right" : "left",
-        // @ts-expect-error
-        [InnerDivVertical]: {
-            borderColor: props.isOver ? "var(--mdc-theme-primary)" : "var(--mdc-theme-secondary)",
-            [props.last ? "right" : "left"]: -2,
-            display: props.isDragging ? "block" : "none",
-            // @ts-expect-error
-            [BackgroundColorDiv]: {
-                opacity: 0.5,
-                backgroundColor: props.isOver
-                    ? "var(--mdc-theme-primary)"
-                    : "var(--mdc-theme-secondary)"
-            }
-        }
-    })
+const OuterDivVertical = ({ isOver, last, isDragging }: OuterDivVerticalProps) => (
+    <div
+        className={cn(
+            "wby-absolute wby-top-0 wby-h-full wby-w-[30%] wby-z-10 wby-bg-transparent",
+            last ? "wby-text-right -wby-right-sm" : "wby-text-left -wby-left-sm"
+        )}
+    >
+        <div
+            className={cn(
+                "wby-absolute wby-w-md wby-h-full wby-z-3 wby-border-dashed wby-border-sm wby-hidden",
+                isOver ? "wby-border-accent-default" : "wby-border-success-default",
+                last ? "-wby-right-sm" : "-wby-left-sm",
+                isDragging && "wby-block"
+            )}
+        >
+            <div
+                className={cn(
+                    "wby-w-full wby-h-full wby-opacity-50",
+                    isOver ? "wby-bg-primary-muted" : "wby-bg-success-muted"
+                )}
+            />
+        </div>
+    </div>
 );
 
 interface VerticalProps {
     depth?: number;
     onDrop(item: DragSource): void;
     last?: boolean;
-    isVisible?: any;
+    isVisible?: IsVisibleCallable;
 }
 
 const Vertical = ({ depth, last, onDrop, isVisible }: VerticalProps) => {
@@ -79,11 +58,7 @@ const Vertical = ({ depth, last, onDrop, isVisible }: VerticalProps) => {
                         zIndex: isDragging ? 1000 + (depth || 0) : -1
                     }}
                 >
-                    <OuterDivVertical isOver={isOver} isDragging={isDragging} last={last}>
-                        <InnerDivVertical>
-                            <BackgroundColorDiv />
-                        </InnerDivVertical>
-                    </OuterDivVertical>
+                    <OuterDivVertical isOver={isOver} isDragging={isDragging} last={last} />
                 </div>
             )}
         </Droppable>

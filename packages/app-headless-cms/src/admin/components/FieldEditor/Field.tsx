@@ -1,8 +1,8 @@
 import React, { Fragment, useCallback, useMemo } from "react";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as DeleteIcon } from "~/admin/icons/delete.svg";
-import { ReactComponent as TitleIcon } from "~/admin/icons/title-24px.svg";
-import { ReactComponent as MoreVerticalIcon } from "~/admin/icons/more_vert.svg";
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as TitleIcon } from "@material-design-icons/svg/outlined/title.svg";
+import { ReactComponent as MoreVerticalIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
 import { plugins } from "@webiny/plugins";
 import { CmsModelField, CmsEditorFieldOptionPlugin, CmsModel } from "~/types";
 import { i18n } from "@webiny/app/i18n";
@@ -211,9 +211,9 @@ const Field = (props: FieldProps) => {
     return (
         <Fragment>
             <div className={"wby-flex wby-justify-between wby-align-center"}>
-                <div className={"wby-flex wby-flex-col wby-justify-center wby-align-start"}>
+                <div>
                     <Heading level={6}>{field.label}</Heading>
-                    <Text size={"sm"}>
+                    <Text size={"sm"} className={"wby-text-neutral-strong"}>
                         {fieldPlugin.field.label}
                         {info && <span className={"wby-lowercase"}> ({info})</span>}
                     </Text>
@@ -287,7 +287,7 @@ const Field = (props: FieldProps) => {
                 </div>
             </div>
             {fieldPlugin.field.render && (
-                <div className={"wby-py-sm wby-pb-none"}>
+                <div className={"wby-pt-md"}>
                     {fieldPlugin.field.render({ field, data: model, setData: setModel })}
                 </div>
             )}

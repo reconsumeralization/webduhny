@@ -17303,6 +17303,7 @@ __metadata:
     "@webiny/error": "npm:0.0.0"
     "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
+    "@webiny/icons": "npm:0.0.0"
     "@webiny/lexical-editor": "npm:0.0.0"
     "@webiny/lexical-nodes": "npm:0.0.0"
     "@webiny/lexical-theme": "npm:0.0.0"
@@ -18626,7 +18627,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/icons@workspace:packages/icons":
+"@webiny/icons@npm:0.0.0, @webiny/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@webiny/icons@workspace:packages/icons"
   dependencies:
