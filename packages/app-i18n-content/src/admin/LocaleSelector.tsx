@@ -35,7 +35,7 @@ export const LocaleSelector = BaseLocaleSelector.createDecorator(() => {
             <Select
                 displayResetAction={false}
                 value={currentLocale}
-                onValueChange={value => {
+                onChange={value => {
                     setCurrentLocale(value, "content");
                     window.location.reload();
                 }}
