@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactComponent as KeyboardArrowDownIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { cn } from "~/utils";
 import { type AccordionItemProps } from "./AccordionItem";
 import { AccordionItemAction } from "./AccordionItemAction";
@@ -8,7 +8,7 @@ import { Icon } from "~/Icon";
 
 type AccordionTriggerProps = Pick<
     AccordionItemProps,
-    "title" | "description" | "icon" | "handle" | "actions" | "interactive"
+    "title" | "description" | "icon" | "handle" | "interactive" | "actions"
 >;
 
 const AccordionTrigger = ({
@@ -36,60 +36,54 @@ const AccordionTrigger = ({
     }, [interactive]);
 
     return (
-        <AccordionPrimitive.AccordionHeader>
-            <AccordionPrimitive.Trigger
-                asChild
-                onClick={e => !interactive && e.preventDefault()} // Prevent clicking if not interactive
+        <CollapsiblePrimitive.Trigger
+            asChild
+            onClick={e => !interactive && e.preventDefault()} // Prevent clicking if not interactive
+        >
+            <div
+                {...divAsButtonProps}
+                className={cn(
+                    "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
+                    "focus-visible:wby-outline-none focus-visible:wby-border-none focus-visible:wby-ring-sm focus-visible:wby-ring-primary-dimmed",
+                    "hover:wby-bg-neutral-dimmed",
+                    "group-[.wby-accordion-variant-container]:wby-rounded-lg",
+                    "[&[data-state=open]_[data-role=open-close-indicator]]:wby-rotate-180",
+                    interactive ? "wby-cursor-pointer" : "wby-cursor-default"
+                )}
             >
+                {handle}
                 <div
-                    {...divAsButtonProps}
-                    className={cn(
-                        "wby-w-full wby-flex wby-items-center wby-cursor-pointer",
-                        "focus-visible:wby-outline-none focus-visible:wby-border-none focus-visible:wby-ring-sm focus-visible:wby-ring-primary-dimmed",
-                        "hover:wby-bg-neutral-dimmed",
-                        "group-[.wby-accordion-variant-container]:wby-rounded-lg",
-                        "[&[data-state=open]_[data-role=open-close-indicator]]:wby-rotate-180",
-                        interactive ? "wby-cursor-pointer" : "wby-cursor-default"
-                    )}
+                    className={
+                        "wby-w-full wby-flex wby-justify-between wby-items-center wby-px-md wby-py-sm-extra"
+                    }
                 >
-                    {handle}
+                    {icon && <div className={"wby-mr-md"}>{icon}</div>}
                     <div
-                        className={
-                            "wby-w-full wby-flex wby-justify-between wby-items-center wby-px-md wby-py-sm-extra"
-                        }
+                        className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}
                     >
-                        {icon && <div className={"wby-mr-md"}>{icon}</div>}
-                        <div
-                            className={
-                                "wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"
-                            }
-                        >
-                            <div className={"wby-text-md wby-font-semibold"}>{title}</div>
-                            <div className={"wby-text-sm wby-text-neutral-strong"}>
-                                {description}
-                            </div>
-                        </div>
-                        <div className={"wby-flex wby-ml-3xl wby-gap-xs"}>
-                            {actions}
+                        <div className={"wby-text-md wby-font-semibold"}>{title}</div>
+                        <div className={"wby-text-sm wby-text-neutral-strong"}>{description}</div>
+                    </div>
+                    <div className={"wby-flex wby-ml-3xl wby-gap-xs"}>
+                        {actions}
 
-                            {/* No need to show the separator if there are no actions and the item is not interactive. */}
-                            {actions && interactive && <AccordionItemAction.Separator />}
+                        {/* No need to show the separator if there are no actions and the item is not interactive. */}
+                        {actions && interactive && <AccordionItemAction.Separator />}
 
-                            {interactive && (
-                                <Icon
-                                    size={"lg"}
-                                    className={"wby-transition"}
-                                    color={"neutral-strong"}
-                                    data-role={"open-close-indicator"}
-                                    label={"Open/close indicator"}
-                                    icon={<KeyboardArrowDownIcon />}
-                                />
-                            )}
-                        </div>
+                        {interactive && (
+                            <Icon
+                                size={"lg"}
+                                className={"wby-transition"}
+                                color={"neutral-strong"}
+                                data-role={"open-close-indicator"}
+                                label={"Open/close indicator"}
+                                icon={<KeyboardArrowDownIcon />}
+                            />
+                        )}
                     </div>
                 </div>
-            </AccordionPrimitive.Trigger>
-        </AccordionPrimitive.AccordionHeader>
+            </div>
+        </CollapsiblePrimitive.Trigger>
     );
 };
 
