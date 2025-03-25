@@ -19,11 +19,10 @@ const textVariants = cva("wby-font-sans", {
 
 interface TextProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof textVariants> {
     as?: TextTags;
-    text: React.ReactNode;
 }
 
-const TextBase = ({ size, text, className, as: Tag = "span" }: TextProps) => {
-    return <Tag className={cn(textVariants({ size }), className)}>{text}</Tag>;
+const TextBase = ({ children, size, className, as: Tag = "span" }: TextProps) => {
+    return <Tag className={cn(textVariants({ size }), className)}>{children}</Tag>;
 };
 
 const Text = makeDecoratable("Text", TextBase);

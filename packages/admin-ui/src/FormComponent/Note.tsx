@@ -28,11 +28,12 @@ const DecoratableFormComponentNote = ({
     return (
         <Text
             {...props}
-            text={text}
             size={"sm"}
             as={"div"}
             className={cn(formComponentNoteVariants({ disabled }), className)}
-        />
+        >
+            {text}
+        </Text>
     );
 };
 

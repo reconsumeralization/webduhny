@@ -14,7 +14,9 @@ const DecoratableToastDescription = ({ text, className, ...props }: DescriptionP
             className
         )}
     >
-        <Text text={text} as={"div"} size={"md"} className={"wby-text-neutral-dimmed"} />
+        <Text as={"div"} size={"md"} className={"wby-text-neutral-dimmed"}>
+            {text}
+        </Text>
     </div>
 );
 

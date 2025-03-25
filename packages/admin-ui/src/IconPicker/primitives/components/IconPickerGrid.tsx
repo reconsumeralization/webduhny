@@ -55,9 +55,10 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                     <Text
                         as={"div"}
                         size={"sm"}
-                        text={item.name}
                         className={"wby-w-full wby-truncate wby-text-center wby-text-neutral-muted"}
-                    />
+                    >
+                        {item.name}
+                    </Text>
                 </div>
             );
         };
@@ -67,7 +68,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
         <div>
             {props.iconsLength === 0 ? (
                 <div className={`wby-px-sm-extra wby-py-md wby-text-neutral-strong`}>
-                    <Text text={"No results found."} />
+                    <Text>{"No results found."}</Text>
                 </div>
             ) : (
                 <Grid

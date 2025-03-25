@@ -33,7 +33,9 @@ const SliderTooltip = ({ textValue, showTooltip, tooltipSide }: SliderTooltipPro
 
     return (
         <div className={cn(sliderTooltipVariants({ side: tooltipSide }))}>
-            <Text text={textValue} size={"sm"} as={"div"} />
+            <Text size={"sm"} as={"div"}>
+                {textValue}
+            </Text>
         </div>
     );
 };

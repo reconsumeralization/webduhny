@@ -15,7 +15,9 @@ interface LabelDescriptionProps extends VariantProps<typeof labelDescriptionVari
 }
 
 const LabelDescription = ({ content, disabled }: LabelDescriptionProps) => (
-    <Text className={cn(labelDescriptionVariants({ disabled }))} text={content} size={"sm"} />
+    <Text className={cn(labelDescriptionVariants({ disabled }))} size={"sm"}>
+        {content}
+    </Text>
 );
 
 export { LabelDescription, type LabelDescriptionProps };

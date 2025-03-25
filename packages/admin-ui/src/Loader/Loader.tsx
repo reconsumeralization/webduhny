@@ -126,11 +126,9 @@ const DecoratableLoader = ({
                 </svg>
             </div>
             {text && (
-                <Text
-                    text={text}
-                    as={"div"}
-                    className={"wby-text-neutral-strong wby-w-full wby-pt-sm-plus"}
-                />
+                <Text as={"div"} className={"wby-text-neutral-strong wby-w-full wby-pt-sm-plus"}>
+                    {text}
+                </Text>
             )}
         </div>
     );

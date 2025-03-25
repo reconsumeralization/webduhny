@@ -20,10 +20,10 @@ type FormComponentErrorMessageProps = TextProps &
     };
 
 const DecoratableFormComponentErrorMessage = ({
-    text,
     invalid,
     disabled,
     className,
+    text,
     ...props
 }: FormComponentErrorMessageProps) => {
     if (!invalid || !text) {
@@ -33,11 +33,12 @@ const DecoratableFormComponentErrorMessage = ({
     return (
         <Text
             {...props}
-            text={text}
             size={"sm"}
             as={"div"}
             className={cn(formComponentErrorMessageVariants({ disabled }), className)}
-        />
+        >
+            {text}
+        </Text>
     );
 };
 

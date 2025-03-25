@@ -23,11 +23,9 @@ export default meta;
 type Story = StoryObj<typeof HeaderBar>;
 
 const StartExample = () => (
-    <Text
-        size={"sm"}
-        className={"wby-text-neutral-dimmed"}
-        text={"Headless CMS / Articles / The best article ever"}
-    />
+    <Text size={"sm"} className={"wby-text-neutral-dimmed"}>
+        {"Headless CMS / Articles / The best article ever"}
+    </Text>
 );
 
 const MiddleExample = () => <>Content in the middle</>;
