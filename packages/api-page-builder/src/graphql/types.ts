@@ -8,7 +8,7 @@ import { Context as BaseContext } from "@webiny/handler/types";
 
 import {
     BlockCategory,
-    Category,
+    Category, CreatedBy,
     DefaultSettings,
     DynamicDocument,
     Menu,
@@ -412,6 +412,12 @@ interface CreateMenuInput {
     slug: string;
     description: string;
     items: any[];
+
+    // Meta fields. 👇
+    id?: string;
+    createdOn?: Date | string;
+    createdBy?: CreatedBy;
+
 }
 /**
  * @category Menu
@@ -895,3 +901,4 @@ export interface PbUpdatePageInput extends DynamicDocument {
     settings?: PageSettings;
     content?: Record<string, any> | null;
 }
+

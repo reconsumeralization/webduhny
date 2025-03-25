@@ -163,6 +163,7 @@ export const createMenuCrud = (params: CreateMenuCrudParams): MenusCrud => {
 
             const data = validationResult.data;
 
+            console.log('DAEEEEETA', data)
             const existing = await storageOperations.menus.get({
                 where: {
                     slug: data.slug,

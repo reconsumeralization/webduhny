@@ -18,11 +18,15 @@ export const createMenuGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                 }
 
                 input PbMenuInput {
-                    id: ID
                     title: String!
                     slug: String!
                     description: String
                     items: [JSON]
+                    
+                    # Meta fields. 👇
+                    id: ID
+                    createdBy: PbIdentityInput
+                    createdOn: DateTime
                 }
 
                 # Response types

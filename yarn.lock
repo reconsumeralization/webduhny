@@ -5516,7 +5516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-typed-document-node/core@npm:^3.1.1":
+"@graphql-typed-document-node/core@npm:^3.1.1, @graphql-typed-document-node/core@npm:^3.2.0":
   version: 3.2.0
   resolution: "@graphql-typed-document-node/core@npm:3.2.0"
   peerDependencies:
@@ -22137,6 +22137,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.4.7":
+  version: 16.4.7
+  resolution: "dotenv@npm:16.4.7"
+  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^8.2.0":
   version: 8.6.0
   resolution: "dotenv@npm:8.6.0"
@@ -25218,6 +25225,18 @@ __metadata:
   peerDependencies:
     graphql: 14 - 16
   checksum: 10/e619da8e070dfa29c4d8a2ff18706596d95819bc1dcc6f4396f1efe0866097977a8a427685848904fdab468a29cbdd5fe70d80c10a63c0125a9d45db958a9759
+  languageName: node
+  linkType: hard
+
+"graphql-request@npm:^6.0.0":
+  version: 6.1.0
+  resolution: "graphql-request@npm:6.1.0"
+  dependencies:
+    "@graphql-typed-document-node/core": "npm:^3.2.0"
+    cross-fetch: "npm:^3.1.5"
+  peerDependencies:
+    graphql: 14 - 16
+  checksum: 10/a9c6f2eeaad972cdecb91437c15c785a282263fd0ef36f6fc5648e0945da488cdc10ab4736891ee1fbb928c7bf6e0bc8e0284df514254adefe02cc406ba5fce5
   languageName: node
   linkType: hard
 
@@ -29858,6 +29877,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"migration@workspace:extensions/migration":
+  version: 0.0.0-use.local
+  resolution: "migration@workspace:extensions/migration"
+  dependencies:
+    "@webiny/project-utils": "npm:0.0.0"
+    dotenv: "npm:^16.4.7"
+    graphql-request: "npm:^6.0.0"
+    p-retry: "npm:^4.0.0"
+  languageName: unknown
+  linkType: soft
+
 "miller-rabin@npm:^4.0.0":
   version: 4.0.1
   resolution: "miller-rabin@npm:4.0.1"
@@ -31743,7 +31773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-retry@npm:^4.5.0, p-retry@npm:^4.6.2":
+"p-retry@npm:^4.0.0, p-retry@npm:^4.5.0, p-retry@npm:^4.6.2":
   version: 4.6.2
   resolution: "p-retry@npm:4.6.2"
   dependencies:
