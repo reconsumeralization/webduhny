@@ -66,7 +66,7 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
     return (
         <PopoverPrimitive open={vm.open} onOpenChange={setListOpenState}>
             <PopoverPrimitive.Trigger asChild>
-                <div
+                <button
                     data-disabled={props.disabled}
                     className={cn(
                         inputVariants({
@@ -78,9 +78,13 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
                     )}
                 >
                     <IconPickerTrigger value={props.value} size={props.size} />
-                </div>
+                </button>
             </PopoverPrimitive.Trigger>
-            <PopoverPrimitive.Content align={"start"} className={"wby-min-w-96"}>
+            <PopoverPrimitive.Content
+                align={"start"}
+                className={"wby-min-w-96"}
+                onWheel={e => e.stopPropagation()} // Wheel event should not propagate to the parent: this fixes scrolling issues when the IconPicker is placed inside a Dialog.
+            >
                 <IconPickerInput value={vm.searchQuery} onChange={searchIcon} inputRef={inputRef} />
                 <IconPickerGrid
                     icons={vm.icons}
