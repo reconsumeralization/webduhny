@@ -22,23 +22,25 @@ const ItemDescription = ({ className, disabled, item, small, ...props }: ItemDes
             {...props}
         >
             <Text
-                text={item.name}
                 size="sm"
                 as="div"
                 className={cn(
                     "wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full",
                     disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-primary"
                 )}
-            />
+            >
+                {item.name}
+            </Text>
             {!small && (formattedSize || item.mimeType) && (
                 <Text
                     size="sm"
-                    text={[formattedSize, item.mimeType].filter(Boolean).join(" - ")}
                     className={cn(
                         "wby-truncate wby-overflow-hidden wby-whitespace-nowrap wby-w-full",
                         disabled ? "wby-text-neutral-disabled" : "wby-text-neutral-muted"
                     )}
-                />
+                >
+                    {[formattedSize, item.mimeType].filter(Boolean).join(" - ")}
+                </Text>
             )}
         </div>
     );

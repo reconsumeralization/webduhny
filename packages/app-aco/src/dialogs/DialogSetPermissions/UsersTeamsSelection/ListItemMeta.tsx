@@ -105,13 +105,14 @@ export const ListItemMeta = ({
                             checked={currentLevel.id === level.id}
                             text={
                                 <div>
-                                    <Text as={"div"} text={level.label} />
+                                    <Text as={"div"}>{level.label}</Text>
                                     <Text
                                         as={"div"}
-                                        text={level.description}
                                         size={"sm"}
                                         className={"wby-text-neutral-strong"}
-                                    />
+                                    >
+                                        {level.description}
+                                    </Text>
                                 </div>
                             }
                             onClick={() => {

@@ -15,11 +15,12 @@ const DecoratableFormComponentErrorMessage = (props: FormComponentErrorMessagePr
 
     return (
         <Text
-            text={props.text}
             size={"sm"}
             as={"div"}
             className={"wby-mt-xs wby-text-destructive-primary wby-font-semibold"}
-        />
+        >
+            {props.text}
+        </Text>
     );
 };
 

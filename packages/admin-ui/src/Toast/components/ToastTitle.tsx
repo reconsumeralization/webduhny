@@ -14,7 +14,7 @@ const DecoratableToastTitle = ({ text, className, ...props }: ToastTitleProps) =
             className
         )}
     >
-        <Heading level={6} text={text} />
+        <Heading level={6}>{text}</Heading>
     </div>
 );
 

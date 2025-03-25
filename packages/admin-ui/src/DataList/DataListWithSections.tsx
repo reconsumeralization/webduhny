@@ -69,11 +69,9 @@ export const DataListWithSections = <TData,>(propsInput: DataListProps<TData>) =
             <div className={"wby-pt-md-extra wby-pb-md wby-px-md wby-border"}>
                 {(props.title || props.actions) && (
                     <div className={"wby-flex wby-justify-between wby-items-center"}>
-                        <Heading
-                            className={"wby-text-accent-primary"}
-                            level={4}
-                            text={props.title}
-                        />
+                        <Heading className={"wby-text-accent-primary"} level={4}>
+                            {props.title}
+                        </Heading>
                         <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
                             {props.actions}
                         </div>

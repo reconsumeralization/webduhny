@@ -12,12 +12,9 @@ const DecoratableFormComponentNote = (props: FormComponentNoteProps) => {
     }
 
     return (
-        <Text
-            text={props.text}
-            size={"sm"}
-            as={"div"}
-            className={"wby-mt-sm wby-text-neutral-strong"}
-        />
+        <Text size={"sm"} as={"div"} className={"wby-mt-sm wby-text-neutral-strong"}>
+            {props.text}
+        </Text>
     );
 };
 

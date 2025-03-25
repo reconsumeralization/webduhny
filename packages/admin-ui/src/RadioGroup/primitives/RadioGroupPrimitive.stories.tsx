@@ -145,7 +145,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 1"}</div>
-                        <Text text={"Option description 1"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 1"}</Text>
                     </div>
                 )
             },
@@ -155,7 +155,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 2"}</div>
-                        <Text text={"Option description 2"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 2"}</Text>
                     </div>
                 )
             },
@@ -165,7 +165,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 3"}</div>
-                        <Text text={"Option description 3"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 3"}</Text>
                     </div>
                 )
             }

@@ -46,10 +46,18 @@ const Typography = (props: TypographyProps) => {
 
     if (use in headingLevelMap) {
         const level = headingLevelMap[use];
-        return <Heading level={level} text={children} className={className} />;
+        return (
+            <Heading level={level} className={className}>
+                {children}
+            </Heading>
+        );
     }
 
-    return <Text size={"md"} text={children} className={className} />;
+    return (
+        <Text size={"md"} className={className}>
+            {children}
+        </Text>
+    );
 };
 
 export { Typography, TypographyProps };

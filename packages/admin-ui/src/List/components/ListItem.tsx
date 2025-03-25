@@ -73,16 +73,14 @@ const DecoratableListItem = ({
                     >
                         <Text
                             size={"md"}
-                            text={title}
                             as={"div"}
                             className={"wby-font-semibold wby-text-neutral-primary"}
-                        />
-                        <Text
-                            size={"sm"}
-                            text={description}
-                            as={"div"}
-                            className={"wby-text-neutral-strong"}
-                        />
+                        >
+                            {title}
+                        </Text>
+                        <Text size={"sm"} as={"div"} className={"wby-text-neutral-strong"}>
+                            {description}
+                        </Text>
                     </div>
                 </div>
                 {actions && (

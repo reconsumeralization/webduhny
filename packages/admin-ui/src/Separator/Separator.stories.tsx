@@ -31,16 +31,14 @@ export const Default: Story = {
         return (
             <div>
                 <div className="wby-space-y-1">
-                    <Heading level={6} text={"This is a heading."} />
-                    <Text
-                        text={"This is a short description here"}
-                        size="sm"
-                        className={"wby-text-neutral-strong"}
-                    />
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
                 </div>
                 <Separator margin={props.margin} variant={props.variant} />
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
-                    <Text text={"This is text 1."} />
+                    <Text>{"This is text 1."}</Text>
                 </div>
             </div>
         );
@@ -62,20 +60,18 @@ export const VerticalAndHorizontal: Story = {
         return (
             <div>
                 <div className="wby-space-y-1">
-                    <Heading level={6} text={"This is a heading."} />
-                    <Text
-                        text={"This is a short description here"}
-                        size="sm"
-                        className={"wby-text-neutral-strong"}
-                    />
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
                 </div>
                 <Separator margin={"lg"} />
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
-                    <Text text={"This is text 1."} />
+                    <Text>{"This is text 1."}</Text>
                     <Separator orientation="vertical" margin={"lg"} />
-                    <Text text={"This is text 2."} />
+                    <Text>{"This is text 2."}</Text>
                     <Separator orientation="vertical" margin={"lg"} />
-                    <Text text={"This is text 3."} />
+                    <Text>{"This is text 3."}</Text>
                 </div>
             </div>
         );
@@ -90,16 +86,14 @@ export const HorizontalOrientation: Story = {
         return (
             <div>
                 <div className="wby-space-y-1">
-                    <Heading level={6} text={"This is a heading."} />
-                    <Text
-                        text={"This is a short description here"}
-                        size="sm"
-                        className={"wby-text-neutral-strong"}
-                    />
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
                 </div>
                 <Separator margin={"lg"} />
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
-                    <Text text={"This is text 1."} />
+                    <Text>{"This is text 1."}</Text>
                 </div>
             </div>
         );
@@ -113,11 +107,11 @@ export const VerticalOrientation: Story = {
     render: () => {
         return (
             <div className="wby-flex wby-justify-center wby-h-6 wby-text-sm">
-                <Text text={"This is text 1."} />
+                <Text>{"This is text 1."}</Text>
                 <Separator orientation="vertical" margin={"lg"} />
-                <Text text={"This is text 2."} />
+                <Text>{"This is text 2."}</Text>
                 <Separator orientation="vertical" margin={"lg"} />
-                <Text text={"This is text 3."} />
+                <Text>{"This is text 3."}</Text>
             </div>
         );
     }
@@ -128,20 +122,18 @@ export const LessMargin: Story = {
         return (
             <div>
                 <div className="wby-space-y-1">
-                    <Heading level={6} text={"This is a heading."} />
-                    <Text
-                        text={"This is a short description here"}
-                        size="sm"
-                        className={"wby-text-neutral-strong"}
-                    />
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
                 </div>
                 <Separator margin={"md"} />
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
-                    <Text text={"This is text 1."} />
+                    <Text>{"This is text 1."}</Text>
                     <Separator orientation="vertical" margin={"md"} />
-                    <Text text={"This is text 2."} />
+                    <Text>{"This is text 2."}</Text>
                     <Separator orientation="vertical" margin={"md"} />
-                    <Text text={"This is text 3."} />
+                    <Text>{"This is text 3."}</Text>
                 </div>
             </div>
         );
@@ -153,20 +145,18 @@ export const MoreMargin: Story = {
         return (
             <div>
                 <div className="wby-space-y-1">
-                    <Heading level={6} text={"This is a heading."} />
-                    <Text
-                        text={"This is a short description here"}
-                        size="sm"
-                        className={"wby-text-neutral-strong"}
-                    />
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
                 </div>
                 <Separator margin={"xl"} />
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
-                    <Text text={"This is text 1."} />
+                    <Text>{"This is text 1."}</Text>
                     <Separator orientation="vertical" margin={"xl"} />
-                    <Text text={"This is text 2."} />
+                    <Text>{"This is text 1."}</Text>
                     <Separator orientation="vertical" margin={"xl"} />
-                    <Text text={"This is text 3."} />
+                    <Text>{"This is text 1."}</Text>
                 </div>
             </div>
         );
