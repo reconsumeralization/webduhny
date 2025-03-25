@@ -1,9 +1,9 @@
 import React from "react";
-import { ReactComponent as ChartIcon } from "@material-design-icons/svg/outlined/insert_chart.svg";
-import { ReactComponent as MoreIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
-import { ReactComponent as OpenIcon } from "@material-design-icons/svg/outlined/visibility.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as TrashIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as ChartIcon } from "@webiny/icons/insert_chart.svg";
+import { ReactComponent as MoreIcon } from "@webiny/icons/more_vert.svg";
+import { ReactComponent as OpenIcon } from "@webiny/icons/visibility.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as TrashIcon } from "@webiny/icons/delete.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { List, type ListItemProps as BaseListItemProps } from "./List";
 import { Avatar } from "~/Avatar";

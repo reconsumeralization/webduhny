@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/round/close.svg";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { Icon } from "~/Icon";
 import { IconButton, iconButtonVariants } from "~/Button";

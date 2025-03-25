@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
-import { ReactComponent as ChevronRight } from "@material-design-icons/svg/outlined/chevron_right.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
+import { ReactComponent as ChevronRight } from "@webiny/icons/chevron_right.svg";
 import { SelectPrimitive } from "./SelectPrimitive";
 import { Button } from "~/Button";
 

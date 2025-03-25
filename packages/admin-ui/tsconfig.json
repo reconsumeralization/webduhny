@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
+    { "path": "../icons" },
     { "path": "../react-composition" },
     { "path": "../react-router" },
     { "path": "../utils" }
@@ -13,6 +14,8 @@
     "paths": {
       "~/*": ["./src/*"],
       "~tests/*": ["./__tests__/*"],
+      "@webiny/icons/*": ["../icons/src/*"],
+      "@webiny/icons": ["../icons/src"],
       "@webiny/react-composition/*": ["../react-composition/src/*"],
       "@webiny/react-composition": ["../react-composition/src"],
       "@webiny/react-router/*": ["../react-router/src/*"],

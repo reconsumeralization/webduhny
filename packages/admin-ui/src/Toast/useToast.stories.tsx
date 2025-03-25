@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast } from "./Toast";
 import { useToast, type ShowToastParams } from "./useToast";

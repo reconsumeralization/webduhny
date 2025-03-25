@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { cn } from "~/utils";
-import { ReactComponent as ChevronRight } from "@material-design-icons/svg/filled/chevron_right.svg";
+import { ReactComponent as ChevronRight } from "@webiny/icons/chevron_right.svg";
 
 const DropdownMenuSubTrigger = React.forwardRef<
     React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

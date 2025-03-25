@@ -1,6 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { ReactComponent as XIcon } from "@webiny/icons/close.svg";
 import { Icon } from "./Icon";
 
 const meta: Meta<typeof Icon> = {

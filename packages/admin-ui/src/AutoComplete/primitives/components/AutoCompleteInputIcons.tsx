@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
-import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
+import { ReactComponent as ChevronDown } from "@webiny/icons/keyboard_arrow_down.svg";
 import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
 import { Loader } from "~/Loader";

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { Column } from "@tanstack/react-table";
 import { IconButton } from "~/Button";
 import { Checkbox } from "~/Checkbox";

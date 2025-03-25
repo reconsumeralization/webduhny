@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as CheckboxPrimitives from "@radix-ui/react-checkbox";
-import { ReactComponent as CheckIcon } from "@material-design-icons/svg/outlined/check.svg";
+import { ReactComponent as CheckIcon } from "@webiny/icons/check.svg";
 import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
 import { Label } from "~/Label";

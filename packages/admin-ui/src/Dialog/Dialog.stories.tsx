@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
-import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
+import { ReactComponent as DoorbellIcon } from "@webiny/icons/ring_volume.svg";
 import { Tabs } from "~/Tabs";
 
 const meta: Meta<typeof Dialog> = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Tag } from "./Tag";
 
