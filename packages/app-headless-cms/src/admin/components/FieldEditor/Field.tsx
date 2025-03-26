@@ -1,4 +1,5 @@
 import React, { Fragment, useCallback, useMemo } from "react";
+import capitalize from "lodash/capitalize";
 import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { ReactComponent as TitleIcon } from "@webiny/icons/title.svg";
@@ -188,13 +189,7 @@ const Field = (props: FieldProps) => {
             if (!fieldTypeName) {
                 return null;
             }
-            return (
-                <Tag
-                    content={fieldTypeName}
-                    variant={"neutral-base"}
-                    className={"wby-capitalize mr-sm"}
-                />
-            );
+            return <Tag content={capitalize(fieldTypeName)} variant={"neutral-base"} />;
         };
 
         fn.displayName = "FieldTypeRenderer";
