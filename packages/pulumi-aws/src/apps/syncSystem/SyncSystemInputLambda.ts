@@ -4,7 +4,7 @@ import type { PulumiApp, PulumiAppModule } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
 import { createLambdaRoleWithoutVpc } from "../lambdaUtils.js";
 import { LAMBDA_RUNTIME } from "~/constants.js";
-import { createSyncSystemLambdaPolicy } from "./lambda/policy.js";
+import { createSyncSystemInputLambdaPolicy } from "./lambda/createSyncSystemInputLambdaPolicy.js";
 import { createResourceName } from "./createResourceName.js";
 import { createAssetArchive } from "~/utils/createAssetArchive.js";
 import type { RegionProvider } from "~/apps/syncSystem/types.js";
@@ -20,7 +20,7 @@ export const SyncSystemInputLambda = createAppModule({
     name: "SyncSystemInputLambda",
     config(app: PulumiApp, params: SyncSystemInputLambdaParams) {
         const roleName = createResourceName("input-lambda-role");
-        const policy = createSyncSystemLambdaPolicy({
+        const policy = createSyncSystemInputLambdaPolicy({
             name: `${roleName}-policy`,
             app,
             protect: params.protect
@@ -43,7 +43,6 @@ export const SyncSystemInputLambda = createAppModule({
                     variables: {
                         DEBUG: String(process.env.DEBUG),
                         PULUMI_APPS: "true",
-
                         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
                     }
                 }

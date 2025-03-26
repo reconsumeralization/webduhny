@@ -9,7 +9,7 @@ interface ICreateSyncSystemLambdaPolicyParams {
     protect: boolean;
 }
 
-export function createSyncSystemLambdaPolicy(params: ICreateSyncSystemLambdaPolicyParams) {
+export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambdaPolicyParams) {
     const { app } = params;
     const s3 = app.getModule(SyncSystemS3);
     const sqs = app.getModule(SyncSystemSQS);
