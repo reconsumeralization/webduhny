@@ -5,7 +5,6 @@ import { ButtonCreate } from "./ButtonCreate";
 import { Empty } from "./Empty";
 import { Loader } from "./Loader";
 import { List } from "./List";
-import { Container } from "./styled";
 import { FolderItem } from "~/types";
 import { ROOT_FOLDER } from "~/constants";
 import { AcoWithConfig } from "~/config";
@@ -35,38 +34,37 @@ export const FolderTree = ({
             return [];
         }
 
-        return folders.reduce<FolderItem[]>((acc, item) => {
-            if (item.id === ROOT_FOLDER && rootFolderLabel) {
-                return [...acc, { ...item, title: rootFolderLabel }];
-            }
-            return [...acc, item];
-        }, []);
-    }, [folders]);
+        return folders.map(item =>
+            item.id === ROOT_FOLDER && rootFolderLabel ? { ...item, title: rootFolderLabel } : item
+        );
+    }, [folders, rootFolderLabel]);
 
-    const renderList = () => {
-        if (!folders) {
-            return <Loader />;
+    const createButton = useMemo(() => {
+        if (!enableCreate) {
+            return null;
         }
 
-        let createButton = null;
-        if (enableCreate) {
-            const canCreate = flp.canManageStructure(focusedFolderId!);
+        const canCreate = flp.canManageStructure(focusedFolderId!);
+        const button = <ButtonCreate disabled={!canCreate} />;
 
-            createButton = <ButtonCreate disabled={!canCreate} />;
+        return canCreate ? (
+            button
+        ) : (
+            <Tooltip
+                content={`Cannot create folder because you're not an owner.`}
+                trigger={button}
+            />
+        );
+    }, [enableCreate, flp, focusedFolderId]);
 
-            if (!canCreate) {
-                createButton = (
-                    <Tooltip
-                        content={`Cannot create folder because you're not an owner.`}
-                        trigger={createButton}
-                    />
-                );
-            }
-        }
+    if (!folders) {
+        return <Loader />;
+    }
 
-        if (localFolders.length > 0) {
-            return (
-                <AcoWithConfig>
+    return (
+        <AcoWithConfig>
+            {localFolders.length > 0 ? (
+                <>
                     <List
                         folders={localFolders}
                         onFolderClick={onFolderClick}
@@ -74,17 +72,14 @@ export const FolderTree = ({
                         hiddenFolderIds={hiddenFolderIds}
                         enableActions={enableActions}
                     />
-                    {enableCreate && createButton}
-                </AcoWithConfig>
-            );
-        }
-
-        return (
-            <>
-                <Empty />
-                {createButton}
-            </>
-        );
-    };
-    return <Container>{renderList()}</Container>;
+                    {enableCreate && <div className={"wby-mt-sm"}>{createButton}</div>}
+                </>
+            ) : (
+                <>
+                    <Empty />
+                    {createButton}
+                </>
+            )}
+        </AcoWithConfig>
+    );
 };

@@ -1,10 +1,8 @@
 import React from "react";
-
 import { OptionsMenu } from "@webiny/app-admin";
+import { cn } from "@webiny/admin-ui";
 import { useAcoConfig } from "~/config";
 import { useFolder } from "~/hooks";
-
-import { Container } from "./styled";
 
 export const MenuActions = () => {
     const { folder } = useFolder();
@@ -16,8 +14,14 @@ export const MenuActions = () => {
     }
 
     return (
-        <Container className={"folder-tree-menu-action"}>
+        <div
+            className={cn([
+                "wby-absolute wby-right-0 wby-right-0",
+                "wby-invisible group-hover:wby-visible",
+                "wby-cursor-pointer0"
+            ])}
+        >
             <OptionsMenu actions={folderConfig.actions} data-testid={"folder.tree.menu-action"} />
-        </Container>
+        </div>
     );
 };
