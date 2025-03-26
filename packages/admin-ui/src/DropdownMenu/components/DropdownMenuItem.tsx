@@ -66,7 +66,7 @@ const DropdownMenuItemBase = React.forwardRef<
         className: cn(
             "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors",
             {
-                "[&_svg]:wby-fill-neutral-disabled": disabled
+                "[&_svg]:!wby-fill-neutral-disabled": disabled
             }
         )
     };
@@ -84,7 +84,11 @@ const DropdownMenuItemBase = React.forwardRef<
     );
 
     return (
-        <DropdownMenuPrimitive.Item ref={ref} className={cn(variants({ readOnly }), className)}>
+        <DropdownMenuPrimitive.Item
+            disabled={disabled}
+            ref={ref}
+            className={cn(variants({ readOnly }), className)}
+        >
             {content}
         </DropdownMenuPrimitive.Item>
     );
