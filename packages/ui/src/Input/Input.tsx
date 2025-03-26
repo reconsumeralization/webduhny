@@ -134,6 +134,7 @@ export const Input = (props: InputProps) => {
         validation,
         icon,
         trailingIcon,
+        onBlur,
         onChange,
         rawOnChange,
         required,
@@ -183,6 +184,7 @@ export const Input = (props: InputProps) => {
                 rows={rows}
                 forwardEventOnChange={rawOnChange}
                 textareaRef={inputRef as React.Ref<HTMLTextAreaElement> | undefined}
+                onBlur={onBlur}
             />
         );
     }
@@ -204,6 +206,7 @@ export const Input = (props: InputProps) => {
             required={required}
             forwardEventOnChange={rawOnChange}
             inputRef={inputRef as React.Ref<HTMLInputElement> | undefined}
+            onBlur={onBlur}
         />
     );
 };

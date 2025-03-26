@@ -1,18 +1,14 @@
 import React, { useCallback, useState } from "react";
 import slugify from "slugify";
-import { useSnackbar } from "@webiny/app-admin";
+import { Grid, Input } from "@webiny/admin-ui";
+import { useDialogs, useSnackbar } from "@webiny/app-admin";
 import { Bind, GenericFormData, useForm } from "@webiny/form";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import { Typography } from "@webiny/ui/Typography";
 import { validation } from "@webiny/validation";
-
 import { FolderTree } from "~/components";
-import { useDialogs } from "@webiny/app-admin";
-import { DialogFoldersContainer } from "~/dialogs/styled";
 import { useFolders } from "~/hooks";
 import { ROOT_FOLDER } from "~/constants";
 import { FolderItem } from "~/types";
+import { ParentFolderField } from "./ParentFolderField";
 
 interface ShowDialogParams {
     currentParentId?: string | null;
@@ -49,19 +45,27 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
 
     return (
         <Grid>
-            <Cell span={12}>
+            <Grid.Column span={12}>
                 <Bind name={"title"} validators={validation.create("required")}>
-                    {bind => <Input {...bind} label={"Title"} onBlur={generateSlug} />}
+                    {bind => (
+                        <Input
+                            {...bind}
+                            label={"Title"}
+                            onBlur={generateSlug}
+                            size={"lg"}
+                            required
+                            autoFocus={true}
+                        />
+                    )}
                 </Bind>
-            </Cell>
-            <Cell span={12}>
+            </Grid.Column>
+            <Grid.Column span={12}>
                 <Bind name={"slug"} validators={validation.create("required,slug")}>
-                    <Input label={"Slug"} />
+                    <Input label={"Slug"} size={"lg"} required />
                 </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Typography use="body1">{"Parent folder"}</Typography>
-                <DialogFoldersContainer>
+            </Grid.Column>
+            <Grid.Column span={12}>
+                <ParentFolderField>
                     <Bind name={"parentId"} defaultValue={parentId}>
                         {({ onChange }) => (
                             <FolderTree
@@ -73,8 +77,8 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
                             />
                         )}
                     </Bind>
-                </DialogFoldersContainer>
-            </Cell>
+                </ParentFolderField>
+            </Grid.Column>
         </Grid>
     );
 };

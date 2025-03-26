@@ -1,5 +1,4 @@
 import { useSnackbar } from "@webiny/app-admin";
-
 import { useDialogs } from "@webiny/app-admin";
 import { useFolders } from "~/hooks";
 import { FolderItem } from "~/types";
