@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { Tooltip } from "@webiny/ui/Tooltip";
+import { Tooltip } from "@webiny/admin-ui";
 import { useFolders } from "~/hooks/useFolders";
-import { CreateButton } from "./ButtonCreate";
+import { ButtonCreate } from "./ButtonCreate";
 import { Empty } from "./Empty";
 import { Loader } from "./Loader";
 import { List } from "./List";
@@ -52,13 +52,14 @@ export const FolderTree = ({
         if (enableCreate) {
             const canCreate = flp.canManageStructure(focusedFolderId!);
 
-            createButton = <CreateButton disabled={!canCreate} />;
+            createButton = <ButtonCreate disabled={!canCreate} />;
 
             if (!canCreate) {
                 createButton = (
-                    <Tooltip content={`Cannot create folder because you're not an owner.`}>
-                        {createButton}
-                    </Tooltip>
+                    <Tooltip
+                        content={`Cannot create folder because you're not an owner.`}
+                        trigger={createButton}
+                    />
                 );
             }
         }

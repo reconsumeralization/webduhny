@@ -1,15 +1,16 @@
 import React, { useMemo } from "react";
-import { ReactComponent as ArrowRight } from "@material-symbols/svg-400/rounded/arrow_right.svg";
-import { ReactComponent as Folder } from "@material-symbols/svg-400/rounded/folder-fill.svg";
-import { ReactComponent as FolderShared } from "@material-symbols/svg-400/rounded/folder_shared-fill.svg";
-import { ReactComponent as HomeIcon } from "@material-design-icons/svg/filled/home.svg";
+import { ReactComponent as ArrowRight } from "@webiny/icons/chevron_right.svg";
+import { ReactComponent as Folder } from "@webiny/icons/folder.svg";
+import { ReactComponent as FolderShared } from "@webiny/icons/folder_shared.svg";
+import { ReactComponent as HomeIcon } from "@webiny/icons/home.svg";
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import { MenuActions } from "../MenuActions";
-import { Container, ArrowIcon, FolderIcon, Text, Content } from "./styled";
+import { Container, ArrowIcon, FolderIcon, Content } from "./styled";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { parseIdentifier } from "@webiny/utils";
 import { ROOT_FOLDER } from "~/constants";
 import { useFolder } from "~/hooks";
+import { cn, Icon, Text } from "@webiny/admin-ui";
 
 type NodeProps = {
     node: NodeModel<DndFolderItemData>;
@@ -47,12 +48,22 @@ export const FolderNode = ({
     }
 
     return (
-        <>
-            <FolderIcon>{icon}</FolderIcon>
-            <Text className={isFocused ? "focused" : ""} use={"body2"}>
-                {text}
-            </Text>
-        </>
+        <div
+            className={cn([
+                "wby-flex wby-items-center wby-gap-sm",
+                "wby-text-neutral-primary",
+                isFocused && "wby-font-semibold wby-bg-neutral-dark/5"
+            ])}
+        >
+            <Icon
+                icon={icon}
+                size="sm"
+                label={"Folder"}
+                color={"neutral-light"}
+                className={cn("wby-whitespace-nowrap wby-overflow-hidden wby-text-ellipsis")}
+            />
+            <Text className={isFocused ? "focused" : ""}>{text}</Text>
+        </div>
     );
 };
 
@@ -92,9 +103,18 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
             {...dragOverProps}
         >
             {isRoot ? null : (
-                <ArrowIcon isOpen={isOpen} onClick={handleToggle}>
-                    <ArrowRight />
-                </ArrowIcon>
+                <div onClick={handleToggle} className={cn("wby-cursor-pointer")}>
+                    <Icon
+                        icon={<ArrowRight />}
+                        size="sm"
+                        label={"Open / Close folder"}
+                        color={"neutral-strong"}
+                        className={cn(
+                            "wby-transition wby-transform wby-duration-100 wby-ease-linear",
+                            isOpen ? "wby-rotate-90" : "wby-rotate-0"
+                        )}
+                    />
+                </div>
             )}
             <Content onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode
