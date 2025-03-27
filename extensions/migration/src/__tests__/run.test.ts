@@ -16,9 +16,5 @@ describe("Migrator Tests", () => {
 
         const migrator = new Migrator(sourceApiUrl, sourceApiKey, targetApiUrl, targetApiKey);
         migrator.run();
-
-
     });
-
-
 });

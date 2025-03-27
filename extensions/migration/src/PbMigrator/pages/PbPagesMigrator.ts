@@ -19,10 +19,7 @@ export class PbPagesMigrator {
             return;
         }
 
-        console.log(`Found ${sourcePagesList.data.length} page(s) to migrate.`);
         for (const { id: pageId } of sourcePagesList.data) {
-            console.log(`Migrating page "${pageId}"...`);
-
             const sourcePage = await sourceGqlClient
                 .run(GET_PAGE, {
                     id: pageId
@@ -37,6 +34,7 @@ export class PbPagesMigrator {
 
             const res = await targetGqlClient.run(CREATE_PAGE, {
                 data: {
+                    pid: sourcePage.pid,
                     id: sourcePage.id,
                     category: sourcePage.category.slug,
                     title: sourcePage.title,

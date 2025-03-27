@@ -8,7 +8,7 @@ export abstract class AbstractMigrator {
         sourceApiUrl: string,
         sourceApiKey: string,
         targetApiUrl: string,
-        targetApiKey: string,
+        targetApiKey: string
     ) {
         this.sourceApiUrl = sourceApiUrl;
         this.sourceApiKey = sourceApiKey;

@@ -1,10 +1,4 @@
-export const ERROR_FIELDS = /*GraphQL*/ `
-    fragment ErrorFields on PbError {
-        code
-        data
-        message
-    }
-`;
+import { ERROR_FIELDS } from "../utils";
 
 export const DATA_FIELDS = /* GraphQL */ `
     fragment DataFields on PbPage {
@@ -124,6 +118,22 @@ export const GET_PAGE = /* GraphQL */ `
             getPage(id: $id) {
                 data {
                     ...DataFields
+                }
+                error {
+                    ...ErrorFields
+                }
+            }
+        }
+    }
+`;
+
+export const GET_SETTINGS = /* GraphQL */ `
+    ${ERROR_FIELDS}
+    query GetSettings($id: ID!) {
+        pageBuilder {
+            getSettings(id: $id) {
+                data {
+                    pages
                 }
                 error {
                     ...ErrorFields

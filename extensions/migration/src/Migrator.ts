@@ -14,12 +14,12 @@ export class Migrator extends AbstractMigrator {
 
     async run() {
         const migrations = [
-            new FmMigrator(
-                this.sourceApiUrl,
-                this.sourceApiKey,
-                this.targetApiUrl,
-                this.targetApiKey
-            ),
+            // new FmMigrator(
+            //     this.sourceApiUrl,
+            //     this.sourceApiKey,
+            //     this.targetApiUrl,
+            //     this.targetApiKey
+            // ),
             new PbMigrator(
                 this.sourceApiUrl,
                 this.sourceApiKey,

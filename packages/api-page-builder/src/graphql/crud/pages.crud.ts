@@ -13,7 +13,7 @@ import {
     PageStorageOperationsGetWhereParams,
     PageStorageOperationsListParams,
     PageStorageOperationsListTagsParams,
-    PbContext,
+    PbContext
 } from "~/types";
 import normalizePath from "./pages/normalizePath";
 import {
@@ -420,11 +420,7 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
             }
         },
 
-        async createPageV2(
-            this: PageBuilderContextObject,
-            input,
-            meta
-        ): Promise<any> {
+        async createPageV2(this: PageBuilderContextObject, input, meta): Promise<any> {
             await pagesPermissions.ensure({ rwd: "w" });
 
             const categorySlug = input.category;
@@ -460,7 +456,21 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
             const currentIdentity = context.security.getIdentity();
             const currentDateTime = new Date();
 
-            const pageId = mdbid();
+            let pageId = "",
+                version = 1;
+            if (input.id) {
+                const splitId = input.id.split("#");
+                pageId = splitId[0];
+                version = Number(splitId[1]);
+            } else if (input.pid) {
+                pageId = input.pid;
+            } else {
+                pageId = mdbid();
+            }
+
+            if (input.version) {
+                version = input.version;
+            }
 
             const id = createIdentifier({
                 id: pageId,
@@ -491,6 +501,13 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
             }
 
             const settings = settingsValidationResult.data;
+            const status = input.status || STATUS_DRAFT;
+            const locked = status !== STATUS_DRAFT;
+
+            let publishedOn = null;
+            if (status === STATUS_PUBLISHED) {
+                publishedOn = getDate(input.publishedOn, currentDateTime);
+            }
 
             const page: Page = {
                 id,
@@ -501,10 +518,10 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
                 category: category.slug,
                 title,
                 path: pagePath,
-                version: 1,
-                status: input.status || STATUS_DRAFT,
-                locked: false,
-                publishedOn: null,
+                version,
+                status,
+                locked,
+                publishedOn,
                 createdFrom: null,
                 settings: {
                     ...settings,
@@ -529,10 +546,6 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
                 webinyVersion: context.WEBINY_VERSION
             };
 
-            if (page.status === "published") {
-                page.publishedOn = getDate(input.publishedOn, currentDateTime);
-            }
-
             try {
                 await onPageBeforeCreate.publish({
                     page,
@@ -541,7 +554,7 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
 
                 await storageOperations.pages.create({
                     input: {
-                        slug:categorySlug
+                        slug: categorySlug
                     },
                     page: await compressPage(page)
                 });

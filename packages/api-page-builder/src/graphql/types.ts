@@ -1010,8 +1010,9 @@ export interface PbCreatePageV2Input extends DynamicDocument {
     publishedOn?: Date | string;
     settings?: PageSettings;
     content?: Record<string, any> | null;
-
+    version?: number;
     id?: string;
+    pid?: string;
     createdOn?: Date | string;
     createdBy?: CreatedBy;
     ownedBy?: CreatedBy;

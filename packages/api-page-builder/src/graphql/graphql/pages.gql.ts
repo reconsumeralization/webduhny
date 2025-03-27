@@ -111,8 +111,10 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
 
                 input PbCreatePageV2Input {
                     id: ID
+                    pid: ID
                     category: ID
                     title: String
+                    version: Int
                     path: String
                     content: JSON
                     savedOn: DateTime

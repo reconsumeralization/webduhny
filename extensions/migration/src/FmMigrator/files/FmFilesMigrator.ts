@@ -40,7 +40,10 @@ export class FmFilesMigrator {
                 .then(res => res.fileManager.getPreSignedPostPayload);
 
             // 2. Upload file to S3
-            const uploadFileToS3Res = await uploadFileToS3(s3PresignedPostPayload.data.data, downloadedFile);
+            const uploadFileToS3Res = await uploadFileToS3(
+                s3PresignedPostPayload.data.data,
+                downloadedFile
+            );
 
             const createFileRes = await this.targetGqlClient.run(CREATE_FILE, {
                 data: {
@@ -54,7 +57,7 @@ export class FmFilesMigrator {
                     createdOn: sourceFile.createdOn,
                     createdBy: sourceFile.createdBy,
                     meta: sourceFile.meta,
-                    location: sourceFile.location,
+                    location: sourceFile.location
                 }
             });
 
@@ -66,11 +69,13 @@ export class FmFilesMigrator {
     }
 }
 
-async function downloadFile(sourceFile: Record<string,any>) {
+async function downloadFile(sourceFile: Record<string, any>) {
     const response = await fetch(sourceFile.src);
 
     if (!response.ok) {
-        throw new Error(`Failed to fetch ${sourceFile.src}: ${response.status} ${response.statusText}`);
+        throw new Error(
+            `Failed to fetch ${sourceFile.src}: ${response.status} ${response.statusText}`
+        );
     }
 
     const blob = await response.blob();

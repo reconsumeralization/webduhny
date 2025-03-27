@@ -1,15 +1,6 @@
-import { gql } from "graphql-request";
-import { GqlResponseError, Pojo } from "../../types";
+import { ERROR_FIELDS } from "../utils";
 
-export const ERROR_FIELDS = gql`
-    fragment ErrorFields on PbError {
-        code
-        data
-        message
-    }
-`;
-
-const DATA_FIELDS = /* GraphQL */ gql`
+const DATA_FIELDS = /* GraphQL */ `
     fragment DataFields on PbMenu {
         slug
         description
@@ -24,7 +15,7 @@ const DATA_FIELDS = /* GraphQL */ gql`
     }
 `;
 
-export const CREATE_MENU = gql`
+export const CREATE_MENU = `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
     mutation CreateMenu($data: PbMenuInput!) {
@@ -41,7 +32,7 @@ export const CREATE_MENU = gql`
     }
 `;
 
-export const LIST_MENUS = gql`
+export const LIST_MENUS = `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
     query ListMenus {
@@ -57,4 +48,3 @@ export const LIST_MENUS = gql`
         }
     }
 `;
-

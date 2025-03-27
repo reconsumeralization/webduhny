@@ -1,6 +1,5 @@
 import { GraphQLClient } from "graphql-request";
 import pRetry from "p-retry";
-import { Pojo } from "./types";
 
 export class GqlClient {
     gqlClient: GraphQLClient;
@@ -13,7 +12,7 @@ export class GqlClient {
         });
     }
 
-    run<TResponse = Pojo>(query: string, variables?: Pojo) {
+    run<TResponse = Record<string, any>>(query: string, variables?: Record<string, any>) {
         return pRetry<TResponse>(() => this.gqlClient.request(query, variables), {
             onFailedAttempt: error => {
                 console.log(error.message);
