@@ -116,6 +116,7 @@ const permissionsField = () =>
 const extensionsField = () =>
     createModelField({
         label: "Extensions",
+        fieldId: "extensions",
         type: "object",
         settings: {
             layout: [],
