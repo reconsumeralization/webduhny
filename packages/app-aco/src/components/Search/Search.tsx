@@ -1,7 +1,6 @@
 import React from "react";
-import SearchUI from "@webiny/app-admin/components/SearchUI";
-
-import { SearchWrapper } from "./styled";
+import { Icon, Input } from "@webiny/admin-ui";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 
 interface SearchProps {
     value: string;
@@ -10,8 +9,13 @@ interface SearchProps {
 
 export const Search = ({ value, onChange }: SearchProps) => {
     return (
-        <SearchWrapper>
-            <SearchUI value={value} onChange={onChange} />
-        </SearchWrapper>
+        <Input
+            value={value}
+            onChange={onChange}
+            size={"md"}
+            variant={"secondary"}
+            startIcon={<Icon label={"Search"} icon={<SearchIcon />} />}
+            className={"wby-w-[256px]"}
+        />
     );
 };

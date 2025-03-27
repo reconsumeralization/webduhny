@@ -52,10 +52,10 @@ const FormComponent = ({ folder }: FormComponentProps) => {
     }, [permissions]);
 
     const addPermission = useCallback(
-        (value: FolderPermission[]) => {
+        (value: FolderPermission["target"][]) => {
             const selectedUserOrTeam = value[value.length - 1];
             const newPermission: FolderPermission = {
-                target: selectedUserOrTeam.target,
+                target: selectedUserOrTeam,
                 level: "editor"
             };
 
@@ -94,7 +94,7 @@ const FormComponent = ({ folder }: FormComponentProps) => {
             <Grid.Column span={12}>
                 <UsersTeamsMultiAutocomplete
                     options={targetsList}
-                    value={permissions}
+                    value={permissions.map(permission => permission.target)}
                     onChange={addPermission}
                 />
             </Grid.Column>

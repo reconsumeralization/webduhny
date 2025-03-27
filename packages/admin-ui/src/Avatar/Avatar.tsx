@@ -11,7 +11,7 @@ import {
 interface AvatarProps
     extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>,
         VariantProps<typeof avatarVariants> {
-    image: React.ReactElement<AvatarImageProps>;
+    image?: React.ReactElement<AvatarImageProps>;
     fallback?: React.ReactElement<AvatarFallbackProps>;
 }
 
