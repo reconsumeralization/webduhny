@@ -1,9 +1,9 @@
 import React from "react";
 import {
     RichTextEditor as AdminRichTextEditor,
-    RichTextEditorProps as AdminRichTextEditorProps,
-    RichTextEditorValue,
-    OnReadyParams
+    type RichTextEditorProps as AdminRichTextEditorProps,
+    type RichTextEditorValue,
+    type OnReadyParams
 } from "@webiny/admin-ui";
 import { FormComponentProps } from "~/types";
 

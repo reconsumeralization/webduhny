@@ -1,4 +1,4 @@
-import { DynamicFieldset, DynamicFieldsetProps } from "@webiny/admin-ui";
+import type { DynamicFieldset, DynamicFieldsetProps } from "@webiny/admin-ui";
 
 export {
     /**
