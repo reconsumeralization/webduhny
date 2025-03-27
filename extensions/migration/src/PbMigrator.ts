@@ -20,10 +20,10 @@ export class PbMigrator extends AbstractMigrator {
     }
 
     async run() {
-        // const pbMenusMigrator = new PbMenusMigrator(this.sourceGqlClient, this.targetGqlClient);
+        const pbMenusMigrator = new PbMenusMigrator(this.sourceGqlClient, this.targetGqlClient);
         const pbPagesMigrator = new PbPagesMigrator(this);
 
-        // await pbMenusMigrator.run();
+        await pbMenusMigrator.run();
         await pbPagesMigrator.run();
     }
 }

@@ -58,7 +58,7 @@ export class FmFilesMigrator {
                 }
             });
 
-            const { error } = createFileRes.pageBuilder.createFile;
+            const { error } = createFileRes.fileManager.createFile;
             if (error) {
                 console.log(`Failed to migrate file "${sourceFile.name}". Error:`, error);
             }

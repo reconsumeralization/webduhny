@@ -51,7 +51,7 @@ export class PbPagesMigrator {
                 }
             });
 
-            const { error } = res.pageBuilder.createPage;
+            const { error } = res.pageBuilder.createPageV2;
             if (error) {
                 console.log(`Failed to migrate page "${sourcePage.title}". Error:`, error);
             }
