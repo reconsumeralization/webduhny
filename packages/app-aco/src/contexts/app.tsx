@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ApolloClient } from "apollo-client";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { DialogsProvider } from "@webiny/app-admin";
+import { OverlayLoader } from "@webiny/admin-ui";
 import { AcoApp, AcoAppMode, AcoError, AcoModel, AcoModelField } from "~/types";
 import { createGetAppQuery, GetAppResult, GetAppVariables } from "~/graphql/app.gql";
 import { FoldersProvider as FoldersContextProvider } from "./folders";
@@ -228,7 +228,7 @@ export const AcoAppProvider = ({
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (loading) {
-        return <CircularProgress />;
+        return <OverlayLoader />;
     } else if (!app) {
         return (
             <DisplayError>

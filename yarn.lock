@@ -16546,7 +16546,6 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-properties": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
-    "@webiny/ui": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
     apollo-client: "npm:^2.6.10"
