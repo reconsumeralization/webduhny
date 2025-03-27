@@ -1,6 +1,6 @@
-import {CreateCmsEntryInput} from "@webiny/api-headless-cms/types";
-import {createIdentifier, mdbid} from "@webiny/utils";
-import {WebinyError} from "@webiny/error";
+import { CreateCmsEntryInput } from "@webiny/api-headless-cms/types";
+import { createIdentifier, mdbid } from "@webiny/utils";
+import { WebinyError } from "@webiny/error";
 
 export const createEntryId = (input: CreateCmsEntryInput) => {
     let entryId = mdbid();

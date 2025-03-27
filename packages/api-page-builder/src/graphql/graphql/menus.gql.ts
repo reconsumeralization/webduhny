@@ -22,7 +22,7 @@ export const createMenuGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     slug: String!
                     description: String
                     items: [JSON]
-                    
+
                     # Meta fields. 👇
                     createdBy: PbIdentityInput
                     createdOn: DateTime
