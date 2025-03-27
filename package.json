@@ -20,7 +20,8 @@
 			"extensions/theme",
 			"scripts/buildPackages",
 			"scripts/prepublishOnly",
-			"extensions/migration"
+			"extensions/migration",
+			"extensions/disableGqllntrospection"
 		]
 	},
 	"author": "Webiny Ltd.",

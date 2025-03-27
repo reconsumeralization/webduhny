@@ -1,8 +1,8 @@
 export abstract class AbstractMigrator {
-    protected readonly sourceApiUrl: string;
-    protected readonly sourceApiKey: string;
-    protected readonly targetApiUrl: string;
-    protected readonly targetApiKey: string;
+    public readonly sourceApiUrl: string;
+    public readonly sourceApiKey: string;
+    public readonly targetApiUrl: string;
+    public readonly targetApiKey: string;
 
     protected constructor(
         sourceApiUrl: string,

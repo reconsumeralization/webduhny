@@ -41,15 +41,6 @@ export const CREATE_MENU = gql`
     }
 `;
 
-export interface CreateMenuGqlResponse {
-    pageBuilder: {
-        createMenu: {
-            data: Pojo;
-            error: GqlResponseError;
-        };
-    };
-}
-
 export const LIST_MENUS = gql`
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
@@ -67,11 +58,3 @@ export const LIST_MENUS = gql`
     }
 `;
 
-export interface ListMenusGqlResponse {
-    pageBuilder: {
-        listMenus: {
-            data: Pojo[];
-            error: GqlResponseError;
-        };
-    };
-}

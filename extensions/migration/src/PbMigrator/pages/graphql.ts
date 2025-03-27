@@ -73,9 +73,9 @@ export const DATA_FIELDS = /* GraphQL */ `
 export const CREATE_PAGE = /* GraphQL */ `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
-    mutation CreatePage($from: ID, $category: String) {
+    mutation CreatePageV2($data: PbCreatePageV2Input!) {
         pageBuilder {
-            createPage(from: $from, category: $category) {
+            createPageV2(data: $data) {
                 data {
                     ...DataFields
                 }
@@ -107,6 +107,23 @@ export const LIST_PAGES = /* GraphQL */ `
                     cursor
                     hasMoreItems
                     totalCount
+                }
+                error {
+                    ...ErrorFields
+                }
+            }
+        }
+    }
+`;
+
+export const GET_PAGE = /* GraphQL */ `
+    ${DATA_FIELDS}
+    ${ERROR_FIELDS}
+    query GetPage($id: ID!) {
+        pageBuilder {
+            getPage(id: $id) {
+                data {
+                    ...DataFields
                 }
                 error {
                     ...ErrorFields

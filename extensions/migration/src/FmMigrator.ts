@@ -1,11 +1,10 @@
 import { AbstractMigrator } from "./AbstractMigrator";
 import { GqlClient } from "./utils";
-import { PbMenusMigrator } from "./PbMigrator/menus/PbMenusMigrator";
-import { PbPagesMigrator } from "./PbMigrator/pages/PbPagesMigrator";
+import { FmFilesMigrator } from "./FmMigrator/files/FmFilesMigrator";
 
-export class PbMigrator extends AbstractMigrator {
-    readonly sourceGqlClient: GqlClient;
-    readonly targetGqlClient: GqlClient;
+export class FmMigrator extends AbstractMigrator {
+    private readonly sourceGqlClient: GqlClient;
+    private readonly targetGqlClient: GqlClient;
 
     constructor(
         sourceApiUrl: string,
@@ -20,10 +19,8 @@ export class PbMigrator extends AbstractMigrator {
     }
 
     async run() {
-        // const pbMenusMigrator = new PbMenusMigrator(this.sourceGqlClient, this.targetGqlClient);
-        const pbPagesMigrator = new PbPagesMigrator(this);
+        const fmFilesMigrator = new FmFilesMigrator(this.sourceGqlClient, this.targetGqlClient);
 
-        // await pbMenusMigrator.run();
-        await pbPagesMigrator.run();
+        await fmFilesMigrator.run();
     }
 }

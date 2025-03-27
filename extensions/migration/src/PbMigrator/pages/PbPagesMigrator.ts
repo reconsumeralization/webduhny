@@ -1,54 +1,59 @@
-import { CREATE_PAGE, LIST_PAGES } from "./graphql";
-import { GqlClient } from "../../utils";
-import { Pojo } from "../../types";
+import { CREATE_PAGE, LIST_PAGES, GET_PAGE } from "./graphql";
+import { PbMigrator } from "../../PbMigrator";
 
 export class PbPagesMigrator {
-    private readonly sourceGqlClient: GqlClient;
-    private readonly targetGqlClient: GqlClient;
+    private readonly pbMigrator: PbMigrator;
 
-    constructor(sourceGqlClient: GqlClient, targetGqlClient: GqlClient) {
-        this.sourceGqlClient = sourceGqlClient;
-        this.targetGqlClient = targetGqlClient;
+    constructor(pbMigrator: PbMigrator) {
+        this.pbMigrator = pbMigrator;
     }
 
     async run() {
-        const sourceListPagesRes = await this.sourceGqlClient.run(LIST_PAGES);
+        const { sourceGqlClient, targetGqlClient } = this.pbMigrator;
+        const sourcePagesList = await sourceGqlClient.run(LIST_PAGES).then(res => {
+            return res.pageBuilder.listPages;
+        });
 
-        const { data } = sourceListPagesRes.pageBuilder.listPages;
-
-        if (data.length === 0) {
+        if (sourcePagesList.data.length === 0) {
             console.log("No pages to migrate.");
             return;
         }
 
-        console.log(`Found ${data.length} page(s) to migrate.`);
-        for (const page of data) {
-            const alreadyExists = targetListPagesRes.pageBuilder.listPages.data.some(
-                (m: Pojo) => m.slug === page.slug
-            );
+        console.log(`Found ${sourcePagesList.data.length} page(s) to migrate.`);
+        for (const { id: pageId } of sourcePagesList.data) {
+            console.log(`Migrating page "${pageId}"...`);
 
-            if (alreadyExists) {
-                console.log(`Page "${page.title}" already exists in the target environment.`);
-                continue;
-            }
-
-            console.log(`Migrating page "${page.title}"...`);
+            const sourcePage = await sourceGqlClient
+                .run(GET_PAGE, {
+                    id: pageId
+                })
+                .then(res => res.pageBuilder.getPage.data);
 
             // Migrate page items.
-            const res = await this.targetGqlClient.run(CREATE_PAGE, {
+            const { sourceApiUrl, targetApiUrl } = this.pbMigrator;
+            const contentWithReplacedFmUrls = JSON.parse(
+                JSON.stringify(sourcePage.content).replaceAll(sourceApiUrl, targetApiUrl)
+            );
+
+            const res = await targetGqlClient.run(CREATE_PAGE, {
                 data: {
-                    title: page.title,
-                    description: page.description,
-                    slug: page.slug,
-                    items: page.items,
-                    createdBy: page.createdBy,
-                    createdOn: page.createdOn
+                    id: sourcePage.id,
+                    category: sourcePage.category.slug,
+                    title: sourcePage.title,
+                    path: sourcePage.path,
+                    content: contentWithReplacedFmUrls,
+                    savedOn: sourcePage.savedOn,
+                    status: sourcePage.status,
+                    publishedOn: sourcePage.publishedOn,
+                    settings: sourcePage.settings,
+                    createdOn: sourcePage.createdOn,
+                    createdBy: sourcePage.createdBy
                 }
             });
 
             const { error } = res.pageBuilder.createPage;
             if (error) {
-                console.log(`Failed to migrate page "${page.title}". Error:`, error);
+                console.log(`Failed to migrate page "${sourcePage.title}". Error:`, error);
             }
         }
     }

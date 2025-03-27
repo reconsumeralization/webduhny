@@ -25,6 +25,7 @@ const plugin: GraphQLSchemaPlugin<FileManagerContext> = {
             }
 
             input PreSignedPostPayloadInput {
+                id: ID
                 name: String!
                 type: String!
                 size: Long!
@@ -111,6 +112,7 @@ const plugin: GraphQLSchemaPlugin<FileManagerContext> = {
 
                         const data = args.data as PresignedPostPayloadData;
 
+                        console.log('dobeoooo data', data)
                         const settings = await context.fileManager.getSettings();
                         if (!settings) {
                             throw new WebinyError(

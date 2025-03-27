@@ -17199,6 +17199,7 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     graphql-request: "npm:^3.7.0"
+    introspection-removal: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -26418,6 +26419,14 @@ __metadata:
   checksum: 10/8df24c9eadd7cdd1cbc160bc20914b961dfd0ca29767785b69e698f799e85466b6f7c637d237dca1472d09d333399f70cc05a2fb8d08cb449dc9a80d92193980
   languageName: node
   linkType: hard
+
+"introspection-removal@npm:1.0.0, introspection-removal@workspace:extensions/disableGqllntrospection":
+  version: 0.0.0-use.local
+  resolution: "introspection-removal@workspace:extensions/disableGqllntrospection"
+  dependencies:
+    "@webiny/handler": "npm:0.0.0"
+  languageName: unknown
+  linkType: soft
 
 "invariant@npm:^2.2.4":
   version: 2.2.4
