@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 
 import { AcoConfig } from "~/config";
 import { useDeleteDialog } from "~/dialogs";

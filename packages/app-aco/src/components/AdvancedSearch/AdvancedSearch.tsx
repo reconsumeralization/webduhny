@@ -12,8 +12,6 @@ import { QueryBuilderDrawer } from "./QueryBuilderDrawer";
 import { QuerySaverDialog } from "./QuerySaverDialog";
 import { SelectedFilter } from "./SelectedFilter";
 
-import { AdvancedSearchContainer } from "./AdvancedSearch.styled";
-
 export interface AdvancedSearchProps {
     fields: FieldDTOWithElement[];
     repository: FilterRepository;
@@ -68,7 +66,11 @@ export const AdvancedSearch = observer(
 
         return (
             <>
-                <AdvancedSearchContainer>
+                <div
+                    className={
+                        "wby-flex wby-flex-row-reverse wby-justify-between wby-items-center wby-gap-sm"
+                    }
+                >
                     <Button onClick={() => presenter.openManager()} />
                     {presenter.vm.appliedFilter ? (
                         <SelectedFilter
@@ -77,7 +79,7 @@ export const AdvancedSearch = observer(
                             onDelete={unsetFilter}
                         />
                     ) : null}
-                </AdvancedSearchContainer>
+                </div>
                 <QueryManagerDialog
                     onClose={() => presenter.closeManager()}
                     onCreate={() => presenter.createFilter()}

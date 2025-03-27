@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ListActions, ListItemMeta as UiListItemMeta } from "@webiny/ui/List";
 import { DropdownMenu, Text } from "@webiny/admin-ui";
-import { ReactComponent as More } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
+import { ReactComponent as More } from "@webiny/icons/arrow_drop_down.svg";
 import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import { useSecurity } from "@webiny/app-security";

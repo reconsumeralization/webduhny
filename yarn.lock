@@ -16533,8 +16533,6 @@ __metadata:
     "@apollo/react-hooks": "npm:^3.1.5"
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
-    "@material-design-icons/svg": "npm:^0.14.13"
-    "@material-symbols/svg-400": "npm:^0.4.1"
     "@minoru/react-dnd-treeview": "npm:3.2.1"
     "@types/react": "npm:18.2.79"
     "@webiny/admin-ui": "npm:0.0.0"

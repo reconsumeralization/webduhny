@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ReactComponent as FolderIcon } from "@material-design-icons/svg/outlined/folder.svg";
-import { ReactComponent as FolderSharedIcon } from "@material-design-icons/svg/outlined/folder_shared.svg";
+import { ReactComponent as FolderIcon } from "@webiny/icons/folder.svg";
+import { ReactComponent as FolderSharedIcon } from "@webiny/icons/folder_shared.svg";
 import { OptionsMenu } from "@webiny/app-admin";
 
 import { useFolder } from "~/hooks";
