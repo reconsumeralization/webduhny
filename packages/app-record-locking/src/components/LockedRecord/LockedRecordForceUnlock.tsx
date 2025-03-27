@@ -82,8 +82,8 @@ export const LockedRecordForceUnlock = (props: ILockedRecordForceUnlockProps) =>
         });
     }, [props.id, history, navigateTo]);
 
-    const { hasFullAccess } = usePermission();
-    if (!hasFullAccess) {
+    const { canForceUnlock } = usePermission();
+    if (!canForceUnlock) {
         return null;
     }
 

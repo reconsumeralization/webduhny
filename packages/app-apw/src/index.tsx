@@ -26,11 +26,12 @@ import { ApwPermissions } from "~/plugins/permissionRenderer";
 import { ContentEntryEditorConfig } from "@webiny/app-headless-cms";
 
 export const AdvancedPublishingWorkflow = () => {
-    const { canUseFeature } = useWcp();
+    const wcp = useWcp();
 
-    if (!canUseFeature("advancedPublishingWorkflow")) {
+    if (!wcp.canUseFeature("advancedPublishingWorkflow")) {
         return null;
     }
+
     return (
         <>
             <Compose

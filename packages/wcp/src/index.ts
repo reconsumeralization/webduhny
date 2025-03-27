@@ -1,6 +1,9 @@
 export * from "./encryption";
 export * from "./licenses";
 export * from "./urls";
+export * from "./License.js";
+export * from "./NullLicense";
+export * from "./getWcpProjectEnvironment";
 
 export const WCP_FEATURE_LABEL = {
     seats: "User Seats",
@@ -8,5 +11,6 @@ export const WCP_FEATURE_LABEL = {
     advancedPublishingWorkflow: "Advanced Publishing Workflow (APW)",
     advancedAccessControlLayer: "Advanced Access Control Layer (ACL)",
     auditLogs: "Audit Logs",
-    recordLocking: "Record Locking"
+    recordLocking: "Record Locking",
+    fileManager: "File Manager"
 };

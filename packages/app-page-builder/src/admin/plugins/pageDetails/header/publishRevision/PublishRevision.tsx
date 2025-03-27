@@ -7,7 +7,7 @@ import { ReactComponent as PublishIcon } from "@material-design-icons/svg/round/
 import { ReactComponent as UnpublishIcon } from "@material-design-icons/svg/round/settings_backup_restore.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { usePagesPermissions } from "~/hooks/permissions";
-import { useFolders } from "@webiny/app-aco";
+import { useGetFolderLevelPermission } from "@webiny/app-aco";
 import { usePage } from "~/admin/views/Pages/PageDetails";
 import { usePublishRevisionHandler } from "../../pageRevisions/usePublishRevisionHandler";
 
@@ -15,7 +15,8 @@ const t = i18n.ns("app-headless-cms/app-page-builder/page-details/header/publish
 
 const PublishRevision = () => {
     const { canPublish, canUnpublish, hasPermissions } = usePagesPermissions();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
     const { page } = usePage();
 
     const { publishRevision, unpublishRevision } = usePublishRevisionHandler();
@@ -45,7 +46,7 @@ const PublishRevision = () => {
     });
 
     const folderId = page.wbyAco_location?.folderId;
-    if (!hasPermissions() || !flp.canManageContent(folderId)) {
+    if (!hasPermissions() || !canManageContent(folderId)) {
         return null;
     }
 

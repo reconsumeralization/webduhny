@@ -79,6 +79,20 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
         ];
     },
 
+    "api-file-manager-aco": () => {
+        return [
+            { cmd: "packages/api-file-manager-aco --storage=ddb", storage: "ddb" },
+            {
+                cmd: "packages/api-file-manager-aco --storage=ddb-es,ddb",
+                storage: "ddb-es"
+            },
+            {
+                cmd: "packages/api-file-manager-aco --storage=ddb-os,ddb",
+                storage: "ddb-os"
+            }
+        ];
+    },
+
     "api-form-builder": () => {
         return [
             { cmd: "packages/api-form-builder --storage=ddb-es,ddb", storage: "ddb-es" },

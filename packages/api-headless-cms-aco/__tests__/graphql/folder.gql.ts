@@ -1,26 +1,29 @@
-const DATA_FIELD = /* GraphQL */ `
-    {
-        id
-        title
-        slug
-        type
-        parentId
-        permissions {
-            target
-            level
-            inheritedFrom
-        }
-        hasNonInheritedPermissions
-        canManagePermissions
-        canManageStructure
-        canManageContent
-        createdBy {
+const DATA_FIELD = (fields: string[] = []) => {
+    return /* GraphQL */ `
+        {
             id
-            displayName
+            title
+            slug
             type
+            parentId
+            permissions {
+                target
+                level
+                inheritedFrom
+            }
+            hasNonInheritedPermissions
+            canManagePermissions
+            canManageStructure
+            canManageContent
+            createdBy {
+                id
+                displayName
+                type
+            }
+             ${fields.join("\n")}
         }
-    }
-`;
+    `;
+};
 
 const ERROR_FIELD = /* GraphQL */ `
     {
@@ -30,16 +33,18 @@ const ERROR_FIELD = /* GraphQL */ `
     }
 `;
 
-export const CREATE_FOLDER = /* GraphQL */ `
-    mutation CreateFolder($data: FolderCreateInput!) {
-        aco {
-            createFolder(data: $data) {
-                data ${DATA_FIELD}
-                error ${ERROR_FIELD}
+export const CREATE_FOLDER = (fields: string[] = []) => {
+    return /* GraphQL */ `
+        mutation CreateFolder($data: FolderCreateInput!) {
+            aco {
+                createFolder(data: $data) {
+                     data ${DATA_FIELD(fields)}
+                    error ${ERROR_FIELD}
+                }
             }
         }
-    }
-`;
+    `;
+};
 
 export const DELETE_FOLDER = /* GraphQL */ `
     mutation DeleteFolder($id: ID!) {
@@ -51,3 +56,16 @@ export const DELETE_FOLDER = /* GraphQL */ `
         }
     }
 `;
+
+export const GET_FOLDER = (fields: string[] = []) => {
+    return /* GraphQL */ `
+        query GetFolder($id: ID!) {
+            aco {
+                getFolder(id: $id ) {
+                    data ${DATA_FIELD(fields)}
+                    error ${ERROR_FIELD}
+                }
+            }
+        }
+    `;
+};

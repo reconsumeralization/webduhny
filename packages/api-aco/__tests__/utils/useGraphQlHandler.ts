@@ -186,20 +186,20 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     };
 
     const aco = {
-        async createFolder(variables = {}) {
-            return invoke({ body: { query: CREATE_FOLDER, variables } });
+        async createFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: CREATE_FOLDER(fields), variables } });
         },
-        async updateFolder(variables = {}) {
-            return invoke({ body: { query: UPDATE_FOLDER, variables } });
+        async updateFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: UPDATE_FOLDER(fields), variables } });
         },
         async deleteFolder(variables = {}) {
             return invoke({ body: { query: DELETE_FOLDER, variables } });
         },
-        async listFolders(variables = {}) {
-            return invoke({ body: { query: LIST_FOLDERS, variables } });
+        async listFolders(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: LIST_FOLDERS(fields), variables } });
         },
-        async getFolder(variables = {}) {
-            return invoke({ body: { query: GET_FOLDER, variables } });
+        async getFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: GET_FOLDER(fields), variables } });
         },
         async getAppModel(variables: { id: string }) {
             return invoke({ body: { query: GET_APP_MODEL, variables } });

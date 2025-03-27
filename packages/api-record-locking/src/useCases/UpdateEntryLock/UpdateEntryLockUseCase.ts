@@ -1,21 +1,22 @@
-import {
+import type {
     IUpdateEntryLockUseCase,
     IUpdateEntryLockUseCaseExecuteParams
 } from "~/abstractions/IUpdateEntryLockUseCase";
-import { IGetIdentity, IRecordLockingLockRecord, IRecordLockingModelManager } from "~/types";
-import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
+import type { IGetIdentity, IRecordLockingLockRecord, IRecordLockingModelManager } from "~/types";
+import type { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
 import { WebinyError } from "@webiny/error";
-import { convertEntryToLockRecord } from "~/utils/convertEntryToLockRecord";
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
 import { createIdentifier } from "@webiny/utils";
 import { validateSameIdentity } from "~/utils/validateSameIdentity";
-import { ILockEntryUseCase } from "~/abstractions/ILockEntryUseCase";
+import type { ILockEntryUseCase } from "~/abstractions/ILockEntryUseCase";
+import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
 
 export interface IUpdateEntryLockUseCaseParams {
     readonly getLockRecordUseCase: IGetLockRecordUseCase;
     readonly lockEntryUseCase: ILockEntryUseCase;
     getManager(): Promise<IRecordLockingModelManager>;
     getIdentity: IGetIdentity;
+    convert: ConvertEntryToLockRecordCb;
 }
 
 export class UpdateEntryLockUseCase implements IUpdateEntryLockUseCase {
@@ -23,12 +24,14 @@ export class UpdateEntryLockUseCase implements IUpdateEntryLockUseCase {
     private readonly lockEntryUseCase: ILockEntryUseCase;
     private readonly getManager: () => Promise<IRecordLockingModelManager>;
     private readonly getIdentity: IGetIdentity;
+    private readonly convert: ConvertEntryToLockRecordCb;
 
     public constructor(params: IUpdateEntryLockUseCaseParams) {
         this.getLockRecordUseCase = params.getLockRecordUseCase;
         this.lockEntryUseCase = params.lockEntryUseCase;
         this.getManager = params.getManager;
         this.getIdentity = params.getIdentity;
+        this.convert = params.convert;
     }
 
     public async execute(
@@ -55,7 +58,7 @@ export class UpdateEntryLockUseCase implements IUpdateEntryLockUseCase {
             const result = await manager.update(id, {
                 savedOn: new Date().toISOString()
             });
-            return convertEntryToLockRecord(result);
+            return this.convert(result);
         } catch (ex) {
             throw new WebinyError(
                 `Could not update lock entry: ${ex.message}`,

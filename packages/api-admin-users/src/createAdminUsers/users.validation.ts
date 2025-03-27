@@ -11,16 +11,16 @@ const createUserDataValidation = zod.object({
     // For example: packages/api-security-okta/src/createAdminUsersHooks.ts:13
     // In the future, we might want to rename this field to `idpId` or similar.
     email: zod.string(),
-    firstName: zod.string().min(1).optional(),
-    lastName: zod.string().min(1).optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
     avatar: zod.object({}).passthrough().optional()
 });
 
 const updateUserDataValidation = zod.object({
     displayName: zod.string().min(1).optional(),
     avatar: zod.object({}).passthrough().optional().nullable(),
-    firstName: zod.string().min(1).optional(),
-    lastName: zod.string().min(1).optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
     group: zod.string().optional(),
     team: zod.string().optional()
 });

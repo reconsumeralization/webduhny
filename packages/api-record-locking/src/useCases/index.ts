@@ -1,7 +1,7 @@
-import {
+import type {
     IGetIdentity,
     IGetWebsocketsContextCallable,
-    IHasFullAccessCallable,
+    IHasRecordLockingAccessCallable,
     IRecordLockingModelManager
 } from "~/types";
 import { GetLockRecordUseCase } from "./GetLockRecord/GetLockRecordUseCase";
@@ -13,23 +13,25 @@ import { ListAllLockRecordsUseCase } from "./ListAllLockRecordsUseCase/ListAllLo
 import { ListLockRecordsUseCase } from "./ListLockRecordsUseCase/ListLockRecordsUseCase";
 import { isLockedFactory } from "~/utils/isLockedFactory";
 import { UpdateEntryLockUseCase } from "~/useCases/UpdateEntryLock/UpdateEntryLockUseCase";
-import { getTimeout } from "~/utils/getTimeout";
 import { KickOutCurrentUserUseCase } from "./KickOutCurrentUser/KickOutCurrentUserUseCase";
 import { GetLockedEntryLockRecordUseCase } from "~/useCases/GetLockedEntryLockRecord/GetLockedEntryLockRecordUseCase";
-import { IListAllLockRecordsUseCase } from "~/abstractions/IListAllLockRecordsUseCase";
-import { IListLockRecordsUseCase } from "~/abstractions/IListLockRecordsUseCase";
-import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
-import { IIsEntryLockedUseCase } from "~/abstractions/IIsEntryLocked";
-import { IGetLockedEntryLockRecordUseCase } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
-import { ILockEntryUseCase } from "~/abstractions/ILockEntryUseCase";
-import { IUpdateEntryLockUseCase } from "~/abstractions/IUpdateEntryLockUseCase";
-import { IUnlockEntryUseCase } from "~/abstractions/IUnlockEntryUseCase";
-import { IUnlockEntryRequestUseCase } from "~/abstractions/IUnlockEntryRequestUseCase";
+import type { IListAllLockRecordsUseCase } from "~/abstractions/IListAllLockRecordsUseCase";
+import type { IListLockRecordsUseCase } from "~/abstractions/IListLockRecordsUseCase";
+import type { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
+import type { IIsEntryLockedUseCase } from "~/abstractions/IIsEntryLocked";
+import type { IGetLockedEntryLockRecordUseCase } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
+import type { ILockEntryUseCase } from "~/abstractions/ILockEntryUseCase";
+import type { IUpdateEntryLockUseCase } from "~/abstractions/IUpdateEntryLockUseCase";
+import type { IUnlockEntryUseCase } from "~/abstractions/IUnlockEntryUseCase";
+import type { IUnlockEntryRequestUseCase } from "~/abstractions/IUnlockEntryRequestUseCase";
+import { convertEntryToLockRecord as baseConvertEntryToLockRecord } from "~/utils/convertEntryToLockRecord";
+import { ConvertEntryToLockRecordCb } from "~/useCases/types";
 
 export interface ICreateUseCasesParams {
+    getTimeout: () => number;
     getIdentity: IGetIdentity;
     getManager(): Promise<IRecordLockingModelManager>;
-    hasFullAccess: IHasFullAccessCallable;
+    hasRecordLockingAccess: IHasRecordLockingAccessCallable;
     getWebsockets: IGetWebsocketsContextCallable;
 }
 
@@ -46,11 +48,17 @@ export interface ICreateUseCasesResponse {
 }
 
 export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesResponse => {
+    const { getTimeout } = params;
     const timeout = getTimeout();
     const isLocked = isLockedFactory(timeout);
 
+    const convertEntryToLockRecord: ConvertEntryToLockRecordCb = entry => {
+        return baseConvertEntryToLockRecord(entry, timeout);
+    };
+
     const listAllLockRecordsUseCase = new ListAllLockRecordsUseCase({
-        getManager: params.getManager
+        getManager: params.getManager,
+        convert: convertEntryToLockRecord
     });
 
     const listLockRecordsUseCase = new ListLockRecordsUseCase({
@@ -60,7 +68,8 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
     });
 
     const getLockRecordUseCase = new GetLockRecordUseCase({
-        getManager: params.getManager
+        getManager: params.getManager,
+        convert: convertEntryToLockRecord
     });
 
     const isEntryLockedUseCase = new IsEntryLockedUseCase({
@@ -77,14 +86,16 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
 
     const lockEntryUseCase = new LockEntryUseCase({
         isEntryLockedUseCase,
-        getManager: params.getManager
+        getManager: params.getManager,
+        convert: convertEntryToLockRecord
     });
 
     const updateEntryLockUseCase = new UpdateEntryLockUseCase({
         getLockRecordUseCase,
         lockEntryUseCase,
         getManager: params.getManager,
-        getIdentity: params.getIdentity
+        getIdentity: params.getIdentity,
+        convert: convertEntryToLockRecord
     });
 
     const kickOutCurrentUserUseCase = new KickOutCurrentUserUseCase({
@@ -97,13 +108,14 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
         kickOutCurrentUserUseCase,
         getManager: params.getManager,
         getIdentity: params.getIdentity,
-        hasFullAccess: params.hasFullAccess
+        hasRecordLockingAccess: params.hasRecordLockingAccess
     });
 
     const unlockEntryRequestUseCase = new UnlockEntryRequestUseCase({
         getLockRecordUseCase,
         getIdentity: params.getIdentity,
-        getManager: params.getManager
+        getManager: params.getManager,
+        convert: convertEntryToLockRecord
     });
 
     return {

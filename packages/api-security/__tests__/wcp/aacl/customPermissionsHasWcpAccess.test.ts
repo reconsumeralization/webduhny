@@ -2,22 +2,13 @@ import { customPermissions } from "./mocks/customPermissions";
 import { mockCreateGetWcpProjectEnvironment } from "./mocks/mockCreateGetWcpProjectEnvironment";
 import { mockCreateGetWcpProjectLicense } from "./mocks/mockCreateGetWcpProjectLicense";
 
-jest.mock("@webiny/api-wcp/utils", () => {
-    // The mock returned only mocks the generateServerSeed method.
-    const actual = jest.requireActual("@webiny/api-wcp/utils");
-
-    return {
-        ...actual,
-        getWcpProjectEnvironment: mockCreateGetWcpProjectEnvironment()
-    };
-});
-
 jest.mock("@webiny/wcp", () => {
     // The mock returned only mocks the generateServerSeed method.
     const actual = jest.requireActual("@webiny/wcp");
 
     return {
         ...actual,
+        getWcpProjectEnvironment: mockCreateGetWcpProjectEnvironment(),
         getWcpProjectLicense: mockCreateGetWcpProjectLicense(license => {
             license.package.features.advancedAccessControlLayer.enabled = true;
             return license;

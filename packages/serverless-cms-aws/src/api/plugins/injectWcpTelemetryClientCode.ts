@@ -17,6 +17,11 @@ export const injectWcpTelemetryClientCode = new AfterBuildPlugin(
         const latestTelemetryClientUrl = getWcpApiUrl("/clients/latest.js");
         try {
             const response = await fetch(latestTelemetryClientUrl);
+            if (!response.ok) {
+                throw new Error(
+                    `Failed to download telemetry client: ${response.status} - ${response.statusText}`
+                );
+            }
 
             const telemetryCodeAsString = await response.text();
 
@@ -34,6 +39,7 @@ export const injectWcpTelemetryClientCode = new AfterBuildPlugin(
             }
         } catch (e) {
             context.warning(`WCP client is unavailable; telemetry was disabled.`);
+            context.debug(e);
         }
     }
 );

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { FolderGrid } from "@webiny/app-aco";
 import { i18n } from "@webiny/app/i18n";
 import { CircularProgress } from "@webiny/ui/Progress";
-import { FileThumbnail } from "./File";
+import { File } from "./File";
 import { FileList, FolderList } from "./styled";
 import { FolderItem } from "@webiny/app-aco/types";
 import { FileItem } from "@webiny/app-admin/types";
@@ -70,14 +70,14 @@ export const Grid = ({
             <FileList onClick={deselectAll}>
                 {records.map(record => (
                     <FileProvider file={record} key={record.id}>
-                        <FileThumbnail
+                        <File
                             file={record}
                             multiple={Boolean(multiple)}
                             selected={selected.some(current => current.id === record.id)}
                             onSelect={onSelect ? onSelect(record) : undefined}
                         >
                             <Thumbnail />
-                        </FileThumbnail>
+                        </File>
                     </FileProvider>
                 ))}
             </FileList>

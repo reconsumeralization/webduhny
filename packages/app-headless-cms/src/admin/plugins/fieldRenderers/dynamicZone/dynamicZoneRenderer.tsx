@@ -86,19 +86,21 @@ const DynamicZoneContent = ({ field, getBind, contentModel }: CmsModelFieldRende
         <Bind>
             {bind => {
                 return (
-                    <DynamicZoneContainer
-                        field={field}
-                        bind={bind}
-                        getBind={getBind}
-                        contentModel={contentModel}
-                    >
-                        <Component
-                            bind={bind}
+                    <Bind.ValidationContainer>
+                        <DynamicZoneContainer
                             field={field}
+                            bind={bind}
                             getBind={getBind}
                             contentModel={contentModel}
-                        />
-                    </DynamicZoneContainer>
+                        >
+                            <Component
+                                bind={bind}
+                                field={field}
+                                getBind={getBind}
+                                contentModel={contentModel}
+                            />
+                        </DynamicZoneContainer>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

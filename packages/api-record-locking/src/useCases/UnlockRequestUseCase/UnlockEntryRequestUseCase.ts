@@ -1,34 +1,33 @@
 import WebinyError from "@webiny/error";
-import {
+import type {
     IUnlockEntryRequestUseCase,
     IUnlockEntryRequestUseCaseExecuteParams
 } from "~/abstractions/IUnlockEntryRequestUseCase";
-import {
-    IGetIdentity,
-    IRecordLockingLockRecord,
-    IRecordLockingLockRecordActionType,
-    IRecordLockingModelManager
-} from "~/types";
-import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
+import type { IGetIdentity, IRecordLockingLockRecord, IRecordLockingModelManager } from "~/types";
+import { RecordLockingLockRecordActionType } from "~/types";
+import type { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
 import { createIdentifier } from "@webiny/utils";
-import { convertEntryToLockRecord } from "~/utils/convertEntryToLockRecord";
+import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
 
 export interface IUnlockEntryRequestUseCaseParams {
     getLockRecordUseCase: IGetLockRecordUseCase;
     getManager: () => Promise<IRecordLockingModelManager>;
     getIdentity: IGetIdentity;
+    convert: ConvertEntryToLockRecordCb;
 }
 
 export class UnlockEntryRequestUseCase implements IUnlockEntryRequestUseCase {
     private readonly getLockRecordUseCase: IGetLockRecordUseCase;
     private readonly getManager: () => Promise<IRecordLockingModelManager>;
     private readonly getIdentity: IGetIdentity;
+    private readonly convert: ConvertEntryToLockRecordCb;
 
     public constructor(params: IUnlockEntryRequestUseCaseParams) {
         this.getLockRecordUseCase = params.getLockRecordUseCase;
         this.getManager = params.getManager;
         this.getIdentity = params.getIdentity;
+        this.convert = params.convert;
     }
 
     public async execute(
@@ -68,7 +67,7 @@ export class UnlockEntryRequestUseCase implements IUnlockEntryRequestUseCase {
         }
 
         record.addAction({
-            type: IRecordLockingLockRecordActionType.requested,
+            type: RecordLockingLockRecordActionType.requested,
             createdOn: new Date(),
             createdBy: this.getIdentity()
         });
@@ -82,7 +81,7 @@ export class UnlockEntryRequestUseCase implements IUnlockEntryRequestUseCase {
                 version: 1
             });
             const result = await manager.update(id, record.toObject());
-            return convertEntryToLockRecord(result);
+            return this.convert(result);
         } catch (ex) {
             throw new WebinyError(
                 "Could not update record with a unlock request.",

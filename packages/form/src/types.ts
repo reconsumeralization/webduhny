@@ -1,6 +1,6 @@
 import React from "react";
 import { Validator } from "@webiny/validation/types";
-import { FormInvalidFields } from "~/FormPresenter";
+import { FormInvalidFields, InvalidFormFields } from "~/FormPresenter";
 
 export { FormInvalidFields };
 
@@ -30,6 +30,7 @@ export interface FormAPI<T = GenericFormData> {
     getValue: (name: string) => any;
     validate: () => Promise<boolean>;
     validateInput: (name: string) => Promise<boolean | any>;
+    invalidFields: InvalidFormFields;
     registerField: (props: BindComponentProps) => UseBindHook;
     unregisterField: (name: string) => void;
 }
@@ -54,6 +55,7 @@ export interface BindComponentProps {
     validators?: Validator | Validator[];
     children?: ((props: BindComponentRenderProp) => React.ReactElement) | React.ReactElement;
     validate?: Validator;
+    context?: any;
 }
 
 export type BindComponent = React.ComponentType<BindComponentProps>;
@@ -85,6 +87,7 @@ export interface FormValidation {
 export interface Validation {
     isValid: boolean | null;
     message?: string;
+    context?: any;
     results?: {
         [key: string]: any;
     };

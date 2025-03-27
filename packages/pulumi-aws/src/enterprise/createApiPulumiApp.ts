@@ -1,9 +1,11 @@
 import * as aws from "@pulumi/aws";
+import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
+import { License } from "@webiny/wcp";
 import {
     createApiPulumiApp as baseCreateApiPulumiApp,
     CreateApiPulumiAppParams as BaseCreateApiPulumiAppParams
 } from "~/apps/api/createApiPulumiApp";
-import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
+import { handleGuardDutyEvents } from "~/enterprise/api/handleGuardDutyEvents";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
 
@@ -23,20 +25,37 @@ export function createApiPulumiApp(projectAppParams: CreateApiPulumiAppParams = 
         // If using existing VPC, we ensure `vpc` param is set to `false`.
         vpc: ({ getParam }) => {
             const vpc = getParam(projectAppParams.vpc);
-            const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
-            return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
+            if (!vpc) {
+                // This could be `false` or `undefined`. If `undefined`, down the line,
+                // this means "deploy into VPC if dealing with a production environment".
+                return vpc;
+            }
+
+            // If using an existing VPC, we ensure Webiny does not deploy its own VPC.
+            const usingAdvancedVpcParams = typeof vpc !== "boolean";
+            if (usingAdvancedVpcParams && vpc.useExistingVpc) {
+                return false;
+            }
+
+            return true;
         },
-        pulumi(...args) {
-            const [{ getParam }] = args;
+        async pulumi(app) {
+            const license = await License.fromEnvironment();
+
+            const { getParam } = app;
             const vpc = getParam(projectAppParams.vpc);
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
 
-            // Not using advanced VPC params? Then immediately exit.
-            if (!usingAdvancedVpcParams) {
-                return projectAppParams.pulumi?.(...args);
+            if (license.canUseFileManagerThreatDetection()) {
+                handleGuardDutyEvents(app);
             }
 
-            const [{ onResource, addResource }] = args;
+            // Not using advanced VPC params? Then immediately exit.
+            if (!usingAdvancedVpcParams) {
+                return projectAppParams.pulumi?.(app);
+            }
+
+            const { onResource, addResource } = app;
             const { useExistingVpc } = vpc;
 
             // 1. We first deal with "existing VPC" setup.
@@ -69,7 +88,7 @@ export function createApiPulumiApp(projectAppParams: CreateApiPulumiAppParams = 
                 });
             }
 
-            return projectAppParams.pulumi?.(...args);
+            return projectAppParams.pulumi?.(app);
         }
     });
 }

@@ -1,16 +1,30 @@
 import React from "react";
 import { useWcp } from "@webiny/app-wcp";
 
-interface CanUsePrivateFilesProps {
+interface ChildrenProps {
     children: React.ReactNode;
 }
 
-function CanUsePrivateFiles({ children }: CanUsePrivateFilesProps) {
+function CanUseTeams({ children }: ChildrenProps) {
+    const wcp = useWcp();
+
+    return wcp.canUseTeams() ? <>{children}</> : null;
+}
+
+function CanUsePrivateFiles({ children }: ChildrenProps) {
     const wcp = useWcp();
 
     return wcp.canUsePrivateFiles() ? <>{children}</> : null;
 }
 
+function CanUseFileManagerThreatDetection({ children }: ChildrenProps) {
+    const wcp = useWcp();
+
+    return wcp.canUseFileManagerThreatDetection() ? <>{children}</> : null;
+}
+
 export const Wcp = {
-    CanUsePrivateFiles
+    CanUseTeams,
+    CanUsePrivateFiles,
+    CanUseFileManagerThreatDetection
 };

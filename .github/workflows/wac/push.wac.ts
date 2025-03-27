@@ -357,7 +357,6 @@ const createPushWorkflow = (branchName: string) => {
                     ...withCommonParams(
                         [
                             { name: "Install dependencies", run: "yarn --immutable" },
-                            { name: "Build packages (full)", run: "yarn build" },
                             { name: "Check types for Cypress tests", run: "yarn cy:ts" }
                         ],
                         { "working-directory": DIR_WEBINY_JS }

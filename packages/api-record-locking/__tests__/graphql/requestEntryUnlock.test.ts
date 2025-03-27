@@ -1,4 +1,4 @@
-import { IRecordLockingLockRecordActionType } from "~/types";
+import { RecordLockingLockRecordActionType } from "~/types";
 import { useGraphQLHandler } from "~tests/helpers/useGraphQLHandler";
 import { createIdentity } from "~tests/helpers/identity";
 
@@ -67,7 +67,7 @@ describe("request entry unlock", () => {
                             type: "cms#author",
                             actions: [
                                 {
-                                    type: IRecordLockingLockRecordActionType.requested,
+                                    type: RecordLockingLockRecordActionType.requested,
                                     message: null,
                                     createdBy: secondIdentity,
                                     createdOn: expect.toBeDateString()

@@ -1,2 +1,1 @@
-export * from "./ModelContext";
-export * from "./useModel";
+export * from "@webiny/app-headless-cms-common/ModelProvider";

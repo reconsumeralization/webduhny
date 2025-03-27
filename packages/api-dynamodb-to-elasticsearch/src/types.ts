@@ -1,4 +1,4 @@
-import { GenericRecord } from "@webiny/cli/types";
+import { GenericRecord } from "@webiny/api/types";
 import { DynamoDBRecord } from "@webiny/handler-aws/types";
 import { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
 import { Context as LoggerContext } from "@webiny/api-log/types";

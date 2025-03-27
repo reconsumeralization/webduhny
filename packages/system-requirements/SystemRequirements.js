@@ -47,30 +47,18 @@ class SystemRequirements {
     }
 
     static getNpmVersion() {
-        try {
-            const { stdout } = execa.sync("npm", ["--version"]);
-            return stdout;
-        } catch (err) {
-            return "";
-        }
+        const { stdout } = execa.sync("npm", ["--version"]);
+        return stdout;
     }
 
     static getNpxVersion() {
-        try {
-            const { stdout } = execa.sync("npx", ["--version"]);
-            return stdout;
-        } catch (err) {
-            return "";
-        }
+        const { stdout } = execa.sync("npx", ["--version"]);
+        return stdout;
     }
 
     static getYarnVersion() {
-        try {
-            const { stdout } = execa.sync("yarn", ["--version"]);
-            return stdout;
-        } catch (err) {
-            return "";
-        }
+        const { stdout } = execa.sync("yarn", ["--version"]);
+        return stdout;
     }
 }
 

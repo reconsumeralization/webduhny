@@ -24,6 +24,7 @@
     "noUncheckedIndexedAccess": false,
     "noStrictGenericChecks": false,
     "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
     "strictNullChecks": true,

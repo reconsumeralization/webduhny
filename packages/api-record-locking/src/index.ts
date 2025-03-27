@@ -5,7 +5,11 @@ import { createRecordLockingCrud } from "~/crud/crud";
 import { createLockingModel } from "~/crud/model";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 
-const createContextPlugin = () => {
+export interface ICreateContextPluginParams {
+    timeout?: number;
+}
+
+const createContextPlugin = (params?: ICreateContextPluginParams) => {
     const plugin = new ContextPlugin<Context>(async context => {
         if (!context.wcp.canUseRecordLocking()) {
             return;
@@ -18,7 +22,8 @@ const createContextPlugin = () => {
         context.plugins.register(createLockingModel());
 
         context.recordLocking = await createRecordLockingCrud({
-            context
+            context,
+            timeout: params?.timeout
         });
 
         const graphQlPlugin = await createGraphQLSchema({ context });
@@ -29,6 +34,6 @@ const createContextPlugin = () => {
     return plugin;
 };
 
-export const createRecordLocking = () => {
-    return [createContextPlugin()];
+export const createRecordLocking = (params?: ICreateContextPluginParams) => {
+    return [createContextPlugin(params)];
 };

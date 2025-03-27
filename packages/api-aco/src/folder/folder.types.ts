@@ -16,6 +16,7 @@ export interface Folder {
     permissions?: FolderPermission[];
     type: string;
     parentId?: string | null;
+    extensions?: Record<string, any>;
 }
 
 export interface ListFoldersWhere {

@@ -1,6 +1,7 @@
 import { EntryTableItem } from "@webiny/app-headless-cms/types";
 import { GenericRecord } from "@webiny/app/types";
 import { IRecordLockingUnlockEntryResult } from "~/domain/abstractions/IRecordLockingUnlockEntry";
+import { SecurityPermission } from "@webiny/app-security/types";
 
 export interface IRecordLockingIdentity {
     id: string;
@@ -88,4 +89,8 @@ export interface IRecordLockingError<T = GenericRecord> {
     message: string;
     code: string;
     data?: T;
+}
+
+export interface RecordLockingSecurityPermission extends SecurityPermission {
+    canForceUnlock?: string;
 }

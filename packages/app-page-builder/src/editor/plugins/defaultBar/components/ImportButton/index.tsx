@@ -17,7 +17,7 @@ export const WrapperWithFileUpload = ({ children, onSelect }: WrapperWithFileUpl
                 }
                 onSelect(uploadedFiles[0].src);
             }}
-            accept={["application/zip"]}
+            accept={["application/zip", "application/x-zip-compressed", "application/x-zip"]}
         >
             {({ showFileManager }) =>
                 typeof children === "function"

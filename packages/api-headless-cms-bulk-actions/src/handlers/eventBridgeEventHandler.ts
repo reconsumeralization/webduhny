@@ -4,14 +4,14 @@ import { HcmsBulkActionsContext } from "~/types";
 const DETAIL_TYPE = "WebinyEmptyTrashBin";
 
 export const createEventBridgeHandler = () => {
-    return createEventBridgeEventHandler<typeof DETAIL_TYPE, Record<string, any>>(
-        async ({ context: ctx, payload }) => {
+    const handler = createEventBridgeEventHandler<typeof DETAIL_TYPE, Record<string, any>>(
+        async ({ context: ctx, payload, next }) => {
             try {
                 /**
                  * If we receive an event that is not "WebinyEmptyTrashBin", we should exit.
                  */
                 if (payload["detail-type"] !== DETAIL_TYPE) {
-                    return;
+                    return next();
                 }
 
                 const context = ctx as unknown as HcmsBulkActionsContext;
@@ -44,4 +44,9 @@ export const createEventBridgeHandler = () => {
             }
         }
     );
+
+    // Assign a human-readable name for easier debugging.
+    handler.name = handler.type + ".cmsBulkActions";
+
+    return handler;
 };

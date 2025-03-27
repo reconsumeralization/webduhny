@@ -27,20 +27,22 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bind => (
-                        <DelayedOnChange
-                            value={bind.value}
-                            onChange={bind.onChange}
-                            onBlur={bind.validate}
-                        >
-                            <Input
-                                label={field.label}
-                                placeholder={field.placeholderText}
-                                description={field.helpText}
-                                type="number"
-                                data-testid={`fr.input.number.${field.label}`}
-                                validation={bind.validation}
-                            />
-                        </DelayedOnChange>
+                        <Bind.ValidationContainer>
+                            <DelayedOnChange
+                                value={bind.value}
+                                onChange={bind.onChange}
+                                onBlur={bind.validate}
+                            >
+                                <Input
+                                    label={field.label}
+                                    placeholder={field.placeholderText}
+                                    description={field.helpText}
+                                    type="number"
+                                    data-testid={`fr.input.number.${field.label}`}
+                                    validation={bind.validation}
+                                />
+                            </DelayedOnChange>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

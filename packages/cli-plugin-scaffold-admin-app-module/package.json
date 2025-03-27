@@ -16,7 +16,6 @@
   },
   "homepage": "https://github.com/webiny/webiny-js#readme",
   "dependencies": {
-    "@webiny/cli": "0.0.0",
     "@webiny/cli-plugin-scaffold": "0.0.0",
     "case": "^1.6.3",
     "chalk": "^4.1.2",
@@ -37,8 +36,8 @@
     "typescript": "5.3.3"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "publishConfig": {
     "access": "public",

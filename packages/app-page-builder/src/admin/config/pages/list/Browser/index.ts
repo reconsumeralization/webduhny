@@ -1,7 +1,9 @@
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { FolderAction, FolderActionConfig } from "./FolderAction";
 import { PageAction, PageActionConfig } from "./PageAction";
 import { Table, TableConfig } from "./Table";
+import { shouldDecorateFolderField } from "./FolderFieldDecorator";
 
 export interface BrowserConfig {
     bulkActions: BulkActionConfig[];
@@ -12,7 +14,20 @@ export interface BrowserConfig {
 
 export const Browser = {
     BulkAction,
-    FolderAction,
     PageAction,
-    Table
+    Table,
+    Folder: {
+        ExtensionField: {
+            createDecorator: createFolderFieldDecoratorFactory({
+                scope: "pb.page",
+                shouldDecorate: shouldDecorateFolderField
+            })
+        },
+        Action: FolderAction
+    },
+    /**
+     * @deprecated
+     * Use `Browser.Folder.Action` instead
+     */
+    FolderAction
 };

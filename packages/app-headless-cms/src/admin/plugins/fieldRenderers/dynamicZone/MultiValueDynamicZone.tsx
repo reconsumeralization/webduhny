@@ -226,17 +226,23 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
 
                             return (
                                 <ParentValueIndexProvider key={index} index={index}>
-                                    <TemplateValueForm
-                                        value={value}
-                                        contentModel={contentModel}
-                                        Bind={Bind}
-                                        isFirst={index === 0}
-                                        isLast={index === values.length - 1}
-                                        onMoveUp={() => bind.moveValueUp(index)}
-                                        onMoveDown={() => bind.moveValueDown(index)}
-                                        onDelete={onDelete}
-                                        onClone={value => cloneValue(value, index)}
-                                    />
+                                    <Bind>
+                                        {() => (
+                                            <Bind.ValidationContainer>
+                                                <TemplateValueForm
+                                                    value={value}
+                                                    contentModel={contentModel}
+                                                    Bind={Bind}
+                                                    isFirst={index === 0}
+                                                    isLast={index === values.length - 1}
+                                                    onMoveUp={() => bind.moveValueUp(index)}
+                                                    onMoveDown={() => bind.moveValueDown(index)}
+                                                    onDelete={onDelete}
+                                                    onClone={value => cloneValue(value, index)}
+                                                />
+                                            </Bind.ValidationContainer>
+                                        )}
+                                    </Bind>
                                 </ParentValueIndexProvider>
                             );
                         })}

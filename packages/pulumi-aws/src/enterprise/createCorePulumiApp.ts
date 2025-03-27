@@ -6,6 +6,8 @@ import {
 } from "~/apps/core/createCorePulumiApp";
 import { isResourceOfType, PulumiAppParam } from "@webiny/pulumi";
 import { getAwsRegion } from "~/apps/awsUtils";
+import { configureS3BucketMalwareProtection } from "~/enterprise/core/configureS3BucketMalwareProtection";
+import { License } from "@webiny/wcp";
 
 export type CorePulumiApp = ReturnType<typeof createCorePulumiApp>;
 
@@ -13,6 +15,7 @@ export type CorePulumiAppAdvancedVpcParams = Partial<{
     useVpcEndpoints: boolean;
     useExistingVpc: {
         elasticSearchDomainVpcConfig?: aws.types.input.elasticsearch.DomainVpcOptions;
+        openSearchDomainVpcConfig?: aws.types.input.opensearch.DomainVpcOptions;
         lambdaFunctionsVpcConfig: aws.types.input.lambda.FunctionVpcConfig;
     };
 }>;
@@ -27,14 +30,31 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
         // If using existing VPC, we ensure `vpc` param is set to `false`.
         vpc: ({ getParam }) => {
             const vpc = getParam(projectAppParams.vpc);
-            const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
-            return usingAdvancedVpcParams && vpc.useExistingVpc ? false : Boolean(vpc);
+            if (!vpc) {
+                // This could be `false` or `undefined`. If `undefined`, down the line,
+                // this means "deploy into VPC if dealing with a production environment".
+                return vpc;
+            }
+
+            // If using an existing VPC, we ensure Webiny does not deploy its own VPC.
+            const usingAdvancedVpcParams = typeof vpc !== "boolean";
+            if (usingAdvancedVpcParams && vpc.useExistingVpc) {
+                return false;
+            }
+
+            return true;
         },
-        pulumi(...args) {
+        async pulumi(...args) {
             const [app] = args;
             const { getParam } = app;
             const vpc = getParam(projectAppParams.vpc);
             const usingAdvancedVpcParams = vpc && typeof vpc !== "boolean";
+
+            const license = await License.fromEnvironment();
+
+            if (license.canUseFileManagerThreatDetection()) {
+                configureS3BucketMalwareProtection(app);
+            }
 
             // Not using advanced VPC params? Then immediately exit.
             if (!usingAdvancedVpcParams) {
@@ -64,6 +84,20 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
                             resource.config.vpcOptions(
                                 useExistingVpc!.elasticSearchDomainVpcConfig
                             );
+                        }
+                    });
+                }
+
+                if (projectAppParams.openSearch) {
+                    if (!useExistingVpc.openSearchDomainVpcConfig) {
+                        throw new Error(
+                            "Cannot specify `useExistingVpc` parameter because the `openSearchDomainVpcConfig` parameter wasn't provided."
+                        );
+                    }
+
+                    onResource(resource => {
+                        if (isResourceOfType(resource, aws.opensearch.Domain)) {
+                            resource.config.vpcOptions(useExistingVpc!.openSearchDomainVpcConfig);
                         }
                     });
                 }

@@ -17,6 +17,7 @@
     "@emotion/styled": "11.10.6",
     "@iconify/json": "^2.2.142",
     "@material-design-icons/svg": "^0.14.13",
+    "@monaco-editor/react": "^4.7.0",
     "@svgr/webpack": "^6.1.1",
     "@types/mime": "^2.0.3",
     "@types/react": "18.2.79",
@@ -54,6 +55,8 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-draggable": "^4.4.6",
+    "react-resizable": "^3.0.5",
     "react-resizable-panels": "^2.0.19",
     "react-transition-group": "^4.4.5",
     "react-virtualized": "^9.22.5",
@@ -67,10 +70,12 @@
     "@types/bytes": "^3.1.4",
     "@types/graphlib": "^2.1.12",
     "@types/is-hotkey": "^0.1.10",
+    "@types/react-resizable": "^3.0.8",
     "@types/store": "^2.0.2",
     "@types/tinycolor2": "^1.4.6",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
+    "monaco-editor": "^0.52.2",
     "rimraf": "^6.0.1",
     "typescript": "5.3.3"
   },
@@ -79,8 +84,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "adio": {
     "ignore": {
@@ -90,7 +95,11 @@
         "unicode-emoji-json",
         "@emotion/react",
         "@types/mime",
-        "reset-css"
+        "reset-css",
+        "unicode-emoji-json"
+      ],
+      "devDependencies": [
+        "monaco-editor"
       ],
       "peerDependencies": [
         "react-dom"

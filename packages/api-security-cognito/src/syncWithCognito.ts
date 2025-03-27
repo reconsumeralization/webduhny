@@ -64,6 +64,10 @@ export const syncWithCognito = ({
 
     return new ContextPlugin<AdminUsersContext>(({ adminUsers }) => {
         adminUsers.onUserBeforeCreate.subscribe(async ({ user, inputData }) => {
+            if (inputData.external) {
+                return;
+            }
+
             // Immediately delete password from `user`, as that object will be stored to the database.
             // Password field is attached by Cognito plugin, so we only want this plugin to handle it.
             // @ts-expect-error
@@ -154,13 +158,21 @@ export const syncWithCognito = ({
             }
         });
 
-        adminUsers.onUserBeforeUpdate.subscribe(({ updateData }) => {
+        adminUsers.onUserBeforeUpdate.subscribe(({ user, updateData }) => {
+            if (user.external) {
+                return;
+            }
+
             // Immediately delete password from `updateData`, as that object will be merged with the `user` data.
             // @ts-expect-error
             delete updateData["password"];
         });
 
         adminUsers.onUserAfterUpdate.subscribe(async ({ originalUser, updatedUser, inputData }) => {
+            if (originalUser.external) {
+                return;
+            }
+
             const newAttributes = Object.keys(updateAttributes).map(attr => {
                 const mappedAttr = updateAttributes[
                     attr as keyof typeof updateAttributes
@@ -201,6 +213,10 @@ export const syncWithCognito = ({
         });
 
         adminUsers.onUserAfterDelete.subscribe(async ({ user }) => {
+            if (user.external) {
+                return;
+            }
+
             await cognito.adminDeleteUser({ UserPoolId: userPoolId, Username: getUsername(user) });
         });
     });
