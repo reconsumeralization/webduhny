@@ -103,7 +103,7 @@ export const List = ({
 
     return (
         <>
-            <DndProvider backend={MultiBackend} options={getBackendOptions()} context={window}>
+            <DndProvider backend={MultiBackend} options={getBackendOptions()}>
                 <Tree
                     tree={treeData}
                     rootId={"0"}
@@ -127,7 +127,9 @@ export const List = ({
                             </FolderProvider>
                         );
                     }}
-                    dragPreviewRender={monitorProps => <NodePreview monitorProps={monitorProps} />}
+                    dragPreviewRender={monitorProps => (
+                        <NodePreview text={monitorProps.item.text} />
+                    )}
                     classes={{
                         dropTarget: "wby-bg-neutral-dark/5",
                         draggingSource: "wby-opacity-50",
