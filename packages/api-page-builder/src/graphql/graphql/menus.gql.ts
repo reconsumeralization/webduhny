@@ -18,6 +18,7 @@ export const createMenuGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                 }
 
                 input PbMenuInput {
+                    id: ID
                     title: String!
                     slug: String!
                     description: String
