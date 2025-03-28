@@ -10,19 +10,20 @@ export class PbMenusMigrator {
 
     async run() {
         const { sourceGqlClient, targetGqlClient } = this.pbMigrator;
-        const sourceListMenusRes = await sourceGqlClient.run(LIST_MENUS);
-        const targetListMenusRes = await targetGqlClient.run(LIST_MENUS);
+        const sourceListMenus = await sourceGqlClient.run(LIST_MENUS).then(res => {
+            return res.pageBuilder.listMenus;
+        });
+        const targetListMenus = await targetGqlClient.run(LIST_MENUS).then(res => {
+            return res.pageBuilder.listMenus;
+        });
 
-        const { data } = sourceListMenusRes.pageBuilder.listMenus;
-
-        if (data.length === 0) {
+        if (sourceListMenus.data.length === 0) {
             console.log("No menus to migrate.");
             return;
         }
 
-        console.log(`Found ${data.length} menu(s) to migrate.`);
-        for (const menu of data) {
-            const alreadyExists = targetListMenusRes.pageBuilder.listMenus.data.some(
+        for (const menu of sourceListMenus.data) {
+            const alreadyExists = targetListMenus.data.some(
                 (m: Record<string, any>) => m.slug === menu.slug
             );
 

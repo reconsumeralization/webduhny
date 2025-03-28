@@ -3,6 +3,7 @@ import { GqlClient } from "./utils";
 import { PbMenusMigrator } from "./PbMigrator/menus/PbMenusMigrator";
 import { PbPagesMigrator } from "./PbMigrator/pages/PbPagesMigrator";
 import { PbSettingsMigrator } from "./PbMigrator/settings/PbSettingsMigrator";
+import { PbCategoriesMigrator } from "./PbMigrator/categories/PbCategoriesMigrator";
 
 export class PbMigrator extends AbstractMigrator {
     readonly sourceGqlClient: GqlClient;
@@ -21,12 +22,14 @@ export class PbMigrator extends AbstractMigrator {
     }
 
     async run() {
-        const pbSettingsMigrator = new PbSettingsMigrator(this);
         const pbMenusMigrator = new PbMenusMigrator(this);
+        const pbCategoriesMigrator = new PbCategoriesMigrator(this);
         const pbPagesMigrator = new PbPagesMigrator(this);
+        const pbSettingsMigrator = new PbSettingsMigrator(this);
 
         await pbMenusMigrator.run();
-        await pbSettingsMigrator.run();
+        await pbCategoriesMigrator.run();
         await pbPagesMigrator.run();
+        await pbSettingsMigrator.run();
     }
 }

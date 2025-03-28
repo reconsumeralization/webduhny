@@ -472,9 +472,6 @@ interface CreateMenuInput {
     slug: string;
     description: string;
     items: any[];
-
-    // Meta fields. 👇
-    id?: string;
     createdOn?: Date | string;
     createdBy?: CreatedBy;
 }
@@ -992,6 +989,8 @@ export interface PbCategoryInput {
     slug: string;
     url: string;
     layout: string;
+    createdOn?: Date | string;
+    createdBy?: CreatedBy;
 }
 
 export interface PbUpdatePageInput extends DynamicDocument {

@@ -1,7 +1,5 @@
-- polish err reporting
-- categories
 - createdOn all good?
-
+- polish logging / err reporting
 
 FINAL STEPS
 - ext
@@ -9,6 +7,7 @@ FINAL STEPS
 
 Questions
 - cms?
+- custom exts
 - folders?
 - tenants?
 - users?
