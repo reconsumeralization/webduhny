@@ -50,7 +50,7 @@ export function createFieldsList({
      * If there are no fields, let's always load the `id` field.
      */
     if (fields.length === 0) {
-        fields.push("id");
+        fields.push("_empty");
     }
     return fields.join("\n");
 }
