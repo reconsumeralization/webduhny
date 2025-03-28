@@ -16,7 +16,7 @@ export const UsersTeamsMultiAutocomplete = ({
     return (
         <>
             {/* A hack that ensures the autocomplete is not being auto-focused. */}
-            <input style={{ position: "fixed", left: 10000 }} type="text" />
+            <input type="text" style={{ opacity: 0, position: "absolute" }} />
             <MultiAutoComplete
                 label={"Add user or a team"}
                 selectedOptionRenderer={() => null}
