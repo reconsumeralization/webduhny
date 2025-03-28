@@ -1,10 +1,11 @@
 import { AbstractMigrator } from "./AbstractMigrator";
 import { GqlClient } from "./utils";
 import { FmFilesMigrator } from "./FmMigrator/files/FmFilesMigrator";
+import { FmSettingsMigrator } from "./FmMigrator/settings/FmSettingsMigrator";
 
 export class FmMigrator extends AbstractMigrator {
-    private readonly sourceGqlClient: GqlClient;
-    private readonly targetGqlClient: GqlClient;
+    readonly sourceGqlClient: GqlClient;
+    readonly targetGqlClient: GqlClient;
 
     constructor(
         sourceApiUrl: string,
@@ -19,8 +20,10 @@ export class FmMigrator extends AbstractMigrator {
     }
 
     async run() {
-        const fmFilesMigrator = new FmFilesMigrator(this.sourceGqlClient, this.targetGqlClient);
+        const fmFilesMigrator = new FmFilesMigrator(this);
+        const fmSettingsMigrator = new FmSettingsMigrator(this);
 
         await fmFilesMigrator.run();
+        await fmSettingsMigrator.run();
     }
 }

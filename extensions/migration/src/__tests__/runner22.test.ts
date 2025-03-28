@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 import { Migrator } from "../../src/Migrator";
+jest.setTimeout(500_000);
 
 dotenv.config();
 
-describe("Migrator Tests", () => {
-    it("should work", async () => {
+describe("Migrator Tests2", () => {
+    it("should work2", async () => {
         const sourceApiUrl = process.env.SOURCE_API_URL;
         const sourceApiKey = process.env.SOURCE_API_KEY;
         const targetApiUrl = process.env.TARGET_API_URL;
@@ -15,6 +16,6 @@ describe("Migrator Tests", () => {
         }
 
         const migrator = new Migrator(sourceApiUrl, sourceApiKey, targetApiUrl, targetApiKey);
-        migrator.run();
+        await migrator.run();
     });
 });

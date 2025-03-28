@@ -22,11 +22,11 @@ export class PbMigrator extends AbstractMigrator {
 
     async run() {
         const pbSettingsMigrator = new PbSettingsMigrator(this);
-        // const pbMenusMigrator = new PbMenusMigrator(this);
+        const pbMenusMigrator = new PbMenusMigrator(this);
         const pbPagesMigrator = new PbPagesMigrator(this);
 
-        // await pbMenusMigrator.run();
-        await pbPagesMigrator.run();
+        await pbMenusMigrator.run();
         await pbSettingsMigrator.run();
+        await pbPagesMigrator.run();
     }
 }

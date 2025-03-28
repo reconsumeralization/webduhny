@@ -10,49 +10,53 @@ export class PbPagesMigrator {
 
     async run() {
         const { sourceGqlClient, targetGqlClient } = this.pbMigrator;
-        const sourcePagesList = await sourceGqlClient.run(LIST_PAGES).then(res => {
-            return res.pageBuilder.listPages;
-        });
 
-        if (sourcePagesList.data.length === 0) {
-            console.log("No pages to migrate.");
-            return;
-        }
+        // Repeat until we have no more pages to migrate.
+        let cursor = null;
 
-        for (const { id: pageId } of sourcePagesList.data) {
-            const sourcePage = await sourceGqlClient
-                .run(GET_PAGE, {
-                    id: pageId
-                })
-                .then(res => res.pageBuilder.getPage.data);
+        do {
+            const sourcePagesList: Record<string, any> = await sourceGqlClient
+                .run(LIST_PAGES, { after: cursor, limit: 50 })
+                .then(res => {
+                    return res.pageBuilder.listPages;
+                });
 
-            // Migrate page items.
-            const { sourceApiUrl, targetApiUrl } = this.pbMigrator;
-            const contentWithReplacedFmUrls = JSON.parse(
-                JSON.stringify(sourcePage.content).replaceAll(sourceApiUrl, targetApiUrl)
-            );
+            cursor = sourcePagesList.meta.cursor;
 
-            const res = await targetGqlClient.run(CREATE_PAGE, {
-                data: {
-                    pid: sourcePage.pid,
-                    id: sourcePage.id,
-                    category: sourcePage.category.slug,
-                    title: sourcePage.title,
-                    path: sourcePage.path,
-                    content: contentWithReplacedFmUrls,
-                    savedOn: sourcePage.savedOn,
-                    status: sourcePage.status,
-                    publishedOn: sourcePage.publishedOn,
-                    settings: sourcePage.settings,
-                    createdOn: sourcePage.createdOn,
-                    createdBy: sourcePage.createdBy
+            for (const { id: pageId } of sourcePagesList.data) {
+                // We have to get the page because listPages does not return the content.
+                const sourcePage = await sourceGqlClient
+                    .run(GET_PAGE, { id: pageId })
+                    .then(res => res.pageBuilder.getPage.data);
+
+                // Migrate page items.
+                const { sourceApiUrl, targetApiUrl } = this.pbMigrator;
+                const contentWithReplacedFmUrls = JSON.parse(
+                    JSON.stringify(sourcePage.content).replaceAll(sourceApiUrl, targetApiUrl)
+                );
+
+                const res = await targetGqlClient.run(CREATE_PAGE, {
+                    data: {
+                        pid: sourcePage.pid,
+                        id: sourcePage.id,
+                        category: sourcePage.category.slug,
+                        title: sourcePage.title,
+                        path: sourcePage.path,
+                        content: contentWithReplacedFmUrls,
+                        savedOn: sourcePage.savedOn,
+                        status: sourcePage.status,
+                        publishedOn: sourcePage.publishedOn,
+                        settings: sourcePage.settings,
+                        createdOn: sourcePage.createdOn,
+                        createdBy: sourcePage.createdBy
+                    }
+                });
+
+                const { error } = res.pageBuilder.createPageV2;
+                if (error) {
+                    console.log(`Failed to migrate page "${sourcePage.title}". Error:`, error);
                 }
-            });
-
-            const { error } = res.pageBuilder.createPageV2;
-            if (error) {
-                console.log(`Failed to migrate page "${sourcePage.title}". Error:`, error);
             }
-        }
+        } while (cursor);
     }
 }

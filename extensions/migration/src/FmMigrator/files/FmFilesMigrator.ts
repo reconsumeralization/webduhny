@@ -1,71 +1,72 @@
 import { CREATE_FILE, GET_PRESIGNED_POST_PAYLOAD, LIST_FILES } from "./graphql";
-import { GqlClient } from "../../utils";
+import { FmMigrator } from "../../FmMigrator";
 
 export class FmFilesMigrator {
-    private readonly sourceGqlClient: GqlClient;
-    private readonly targetGqlClient: GqlClient;
+    private readonly fmMigrator: FmMigrator;
 
-    constructor(sourceGqlClient: GqlClient, targetGqlClient: GqlClient) {
-        this.sourceGqlClient = sourceGqlClient;
-        this.targetGqlClient = targetGqlClient;
+    constructor(fmMigrator: FmMigrator) {
+        this.fmMigrator = fmMigrator;
     }
 
     async run() {
-        // Migrate files.
-        const sourceFilesList = await this.sourceGqlClient.run(LIST_FILES).then(res => {
-            return res.fileManager.listFiles;
-        });
+        const { sourceGqlClient, targetGqlClient } = this.fmMigrator;
 
-        if (sourceFilesList.error) {
-        }
+        // Repeat until we have no more pages to migrate.
+        let cursor = null;
 
-        if (sourceFilesList.data.length === 0) {
-            console.log("No files to migrate.");
-            return;
-        }
+        do {
+            const sourceFilesList: Record<string,any> = await sourceGqlClient
+                .run(LIST_FILES, { after: cursor, limit: 50 })
+                .then(res => {
+                    return res.fileManager.listFiles;
+                });
 
-        for (const sourceFile of [sourceFilesList.data[0]]) {
-            // 1. Get presigned post payload
-            const downloadedFile = await downloadFile(sourceFile);
+            cursor = sourceFilesList.meta.cursor;
 
-            const s3PresignedPostPayload = await this.targetGqlClient
-                .run(GET_PRESIGNED_POST_PAYLOAD, {
+            for (const sourceFile of [sourceFilesList.data[0]]) {
+                // 1. Get presigned post payload
+                const downloadedFile = await downloadFile(sourceFile);
+
+                const s3PresignedPostPayload = await targetGqlClient
+                    .run(GET_PRESIGNED_POST_PAYLOAD, {
+                        data: {
+                            id: sourceFile.id,
+                            size: sourceFile.size,
+                            name: sourceFile.name,
+                            type: sourceFile.type
+                        }
+                    })
+                    .then(res => res.fileManager.getPreSignedPostPayload);
+
+                // 2. Upload file to S3
+                const uploadFileToS3Res = await uploadFileToS3(
+                    s3PresignedPostPayload.data.data,
+                    downloadedFile
+                );
+
+                // 3. Create file in FM.
+                const createFileRes = await targetGqlClient.run(CREATE_FILE, {
                     data: {
                         id: sourceFile.id,
-                        size: sourceFile.size,
+                        key: sourceFile.key,
                         name: sourceFile.name,
-                        type: sourceFile.type
+                        size: sourceFile.size,
+                        type: sourceFile.type,
+                        tags: sourceFile.tags,
+                        aliases: sourceFile.aliases,
+                        createdOn: sourceFile.createdOn,
+                        createdBy: sourceFile.createdBy,
+                        meta: sourceFile.meta,
+                        location: sourceFile.location
                     }
-                })
-                .then(res => res.fileManager.getPreSignedPostPayload);
+                });
 
-            // 2. Upload file to S3
-            const uploadFileToS3Res = await uploadFileToS3(
-                s3PresignedPostPayload.data.data,
-                downloadedFile
-            );
-
-            const createFileRes = await this.targetGqlClient.run(CREATE_FILE, {
-                data: {
-                    id: sourceFile.id,
-                    key: sourceFile.key,
-                    name: sourceFile.name,
-                    size: sourceFile.size,
-                    type: sourceFile.type,
-                    tags: sourceFile.tags,
-                    aliases: sourceFile.aliases,
-                    createdOn: sourceFile.createdOn,
-                    createdBy: sourceFile.createdBy,
-                    meta: sourceFile.meta,
-                    location: sourceFile.location
+                const { error } = createFileRes.fileManager.createFile;
+                if (error) {
+                    console.log(`Failed to migrate file "${sourceFile.name}". Error:`, error);
                 }
-            });
-
-            const { error } = createFileRes.fileManager.createFile;
-            if (error) {
-                console.log(`Failed to migrate file "${sourceFile.name}". Error:`, error);
             }
-        }
+        } while (cursor);
     }
 }
 
