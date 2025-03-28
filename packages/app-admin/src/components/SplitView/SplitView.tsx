@@ -16,7 +16,6 @@ const grid = css({
     "&.mdc-layout-grid": {
         padding: 0,
         margin: "-3px auto 0 auto",
-        backgroundColor: "var(--mdc-theme-background)",
         ">.mdc-layout-grid__inner": {
             gridGap: 0
         }
@@ -24,7 +23,6 @@ const grid = css({
 });
 
 const RightPanelWrapper = styled("div")({
-    backgroundColor: "var(--mdc-theme-background)",
     overflow: "auto",
     height: "calc(100vh - 45px)"
 });

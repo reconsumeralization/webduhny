@@ -6,7 +6,11 @@ const meta: Meta<typeof Textarea> = {
     title: "Components/Form/Textarea",
     component: Textarea,
     argTypes: {
-        onChange: { action: "onChange" }
+        onChange: { action: "onChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

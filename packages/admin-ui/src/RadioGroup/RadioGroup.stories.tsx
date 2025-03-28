@@ -5,12 +5,18 @@ import { RadioGroup } from "./RadioGroup";
 const meta: Meta<typeof RadioGroup> = {
     title: "Components/Form/RadioGroup",
     component: RadioGroup,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <RadioGroup {...args} value={value} onValueChange={value => setValue(value)} />;
+        return <RadioGroup {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 

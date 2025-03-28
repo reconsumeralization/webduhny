@@ -6,7 +6,7 @@ import { GenericFormData, useBind } from "@webiny/form";
 import { UsersTeamsMultiAutocomplete } from "./DialogSetPermissions/UsersTeamsMultiAutocomplete";
 import { UsersTeamsSelection } from "./DialogSetPermissions/UsersTeamsSelection";
 import { LIST_FOLDER_LEVEL_PERMISSIONS_TARGETS } from "./DialogSetPermissions/graphql";
-import { useFolders } from "~/hooks";
+import { useUpdateFolder } from "~/features";
 import { FolderItem, FolderLevelPermissionsTarget, FolderPermission } from "~/types";
 
 interface ShowDialogParams {
@@ -112,14 +112,14 @@ const FormComponent = ({ folder }: FormComponentProps) => {
 
 export const useSetPermissionsDialog = (): UseSetPermissionsDialogResponse => {
     const dialogs = useDialogs();
-    const { updateFolder } = useFolders();
+    const { updateFolder } = useUpdateFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (folder: FolderItem, data: Partial<FolderItem>) => {
         const updateData = { ...folder, ...data };
 
         try {
-            await updateFolder(updateData, { refetchFoldersList: true });
+            await updateFolder(updateData);
             showSnackbar("Folder permissions updated successfully!");
         } catch (error) {
             showSnackbar(error.message);

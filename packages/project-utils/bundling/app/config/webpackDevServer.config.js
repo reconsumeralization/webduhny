@@ -54,7 +54,7 @@ module.exports = function ({ host, port, https, allowedHost, proxy, paths }) {
         // Enable HTTPS if the HTTPS environment variable is set to 'true'
         ...server,
         client: {
-            overlay: true,
+            overlay: false,
             // Silence WebpackDevServer's own logs since they're generally not useful.
             // It will still show compile warnings and errors with this setting.
             logging: "warn",

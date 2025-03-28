@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as PlaceholderIcon } from "@material-design-icons/svg/outlined/image.svg";
+import { ReactComponent as PlaceholderIcon } from "@webiny/icons/image.svg";
 import type { FileItemFormatted } from "~/FilePicker";
 import { Icon } from "~/Icon";
 import { cn } from "~/utils";

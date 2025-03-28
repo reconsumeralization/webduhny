@@ -10,6 +10,7 @@ import { CoreContext } from "~/types";
 import { createAdminUsersHooks } from "./createAdminUsersHooks";
 import adminUsersGqlPlugins from "./graphql/user.gql";
 import installGqlPlugins from "./graphql/install.gql";
+import { createExternalIdpAdminUserHooks } from "@webiny/api-admin-users/createExternalIdpAdminUserHooks";
 
 interface GetIdentityParams<TContext, TToken, TIdentity> {
     identity: TIdentity;
@@ -39,22 +40,6 @@ export interface CognitoTokenData extends TokenData {
     [key: string]: any;
 }
 
-const mustAddGroupsTeamsAuthorizer = (identity: SecurityIdentity) => {
-    if ("group" in identity) {
-        return true;
-    }
-
-    if ("groups" in identity) {
-        return true;
-    }
-
-    if ("team" in identity) {
-        return true;
-    }
-
-    return "teams" in identity;
-};
-
 export const createCognito = <
     TContext extends CoreContext = CoreContext,
     TToken extends CognitoTokenData = CognitoTokenData,
@@ -74,12 +59,11 @@ export const createCognito = <
         new ContextPlugin<TContext>(context => {
             context.security.addAuthenticator(async token => {
                 const tokenObj = await cognitoAuthenticator<TToken>(token);
-
                 if (!tokenObj) {
                     return null;
                 }
 
-                const defaultIdentity = {
+                let identity = {
                     id: tokenObj["custom:id"] || tokenObj.sub,
                     type: config.identityType,
                     displayName: `${tokenObj.given_name} ${tokenObj.family_name}`,
@@ -88,23 +72,32 @@ export const createCognito = <
                     lastName: tokenObj.family_name
                 } as unknown as TIdentity;
 
-                if (typeof getIdentity === "function") {
-                    const customIdentity = getIdentity({
-                        identity: defaultIdentity,
+                if (getIdentity) {
+                    identity = getIdentity({
+                        identity,
                         identityType: config.identityType,
                         token: tokenObj,
                         context
                     });
-
-                    if (mustAddGroupsTeamsAuthorizer(customIdentity)) {
-                        const authorizer = createGroupsTeamsAuthorizerHandler(config, context);
-                        context.security.addAuthorizer(authorizer);
-                    }
-
-                    return customIdentity;
                 }
 
-                return defaultIdentity;
+                const federatedIdentity = Boolean(tokenObj.identities);
+                if (!federatedIdentity) {
+                    return identity;
+                }
+
+                // With federated identities, teams and roles are loaded
+                // from identity objects and not from tenant links.
+                const authorizer = createGroupsTeamsAuthorizerHandler(config, context);
+                context.security.addAuthorizer(authorizer);
+
+                // With federated identities, we also want an Admin user entry to be created
+                // on Webiny's end. This is how other external IdP integrations work too, for
+                // example Okta or Auth0. This way we get to track distinct users in a Webiny
+                // instance, which WCP can then utilize in order to track active users.
+                createExternalIdpAdminUserHooks(context);
+
+                return identity;
             });
 
             if (getPermissions) {

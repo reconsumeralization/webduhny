@@ -13,7 +13,7 @@ export const Boolean = () => {
                 <div className="wby-w-full wby-mt-lg">
                     <RadioGroup
                         validation={validation}
-                        onValueChange={onChange}
+                        onChange={onChange}
                         value={value}
                         items={[
                             {

@@ -22,7 +22,6 @@
     "p-retry": "^4.6.2"
   },
   "devDependencies": {
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "rimraf": "^6.0.1",
     "typescript": "5.3.3"
@@ -31,8 +30,8 @@
     "zod": "^3.23.8"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "adio": {
     "ignore": {

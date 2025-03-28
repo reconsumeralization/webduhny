@@ -4,14 +4,14 @@ import {
     SelectTriggerVm,
     SelectOption as SelectOptionParams
 } from "../SelectPrimitive";
-import { SelectOption, SelectOptionMapper } from "../domains";
+import { SelectOption, SelectOptionMapper } from "../../domains";
 
 interface SelectPresenterParams {
     options?: SelectOptionParams[];
     value?: string;
     placeholder?: string;
     displayResetAction?: boolean;
-    onValueChange: (value: string) => void;
+    onValueChange?: (value: string) => void;
     onValueReset?: () => void;
 }
 
@@ -55,7 +55,7 @@ class SelectPresenter implements ISelectPresenter {
     }
 
     public changeValue = (value: string) => {
-        this.params?.onValueChange(value);
+        this.params?.onValueChange?.(value);
     };
 
     public resetValue = () => {

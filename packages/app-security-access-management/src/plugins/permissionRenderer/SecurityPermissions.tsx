@@ -32,18 +32,14 @@ interface SecurityPermissionsProps {
 
 export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProps) => {
     const { getPermission } = useSecurity();
-    const { getProject } = useWcp();
+    const wcp = useWcp();
 
     // We disable form elements for custom permissions if AACL cannot be used.
     const cannotUseAacl = useMemo(() => {
         return !getPermission<AaclPermission>("aacl", true);
     }, []);
 
-    const project = getProject();
-    let teams = false;
-    if (project) {
-        teams = project.package.features.advancedAccessControlLayer.options.teams;
-    }
+    const teams = wcp.canUseTeams();
 
     const onFormChange = useCallback(
         (formData: SecurityPermission) => {

@@ -6,7 +6,7 @@ import { SidebarMenuItemAction } from "./SidebarMenuItemAction";
 import { SidebarMenuSub } from "./SidebarMenuSub";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { IconButton } from "~/Button";
-import { ReactComponent as KeyboardArrowRightIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import { type SidebarMenuItemProps } from "./SidebarMenuItem";
 
 const SidebarMenuItemBase = ({ children, className, ...buttonProps }: SidebarMenuItemProps) => {

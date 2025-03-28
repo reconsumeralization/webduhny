@@ -28,11 +28,11 @@ import { AuditLogs } from "@webiny/app-audit-logs";
 import { LexicalEditorPlugin } from "@webiny/lexical-editor-pb-element";
 import { LexicalEditorActions } from "@webiny/lexical-editor-actions";
 import { Module as MailerSettings } from "@webiny/app-mailer";
-import { Folders } from "@webiny/app-aco";
 import { Websockets } from "@webiny/app-websockets";
 import { RecordLocking } from "@webiny/app-record-locking";
 import { TrashBinConfigs } from "@webiny/app-trash-bin";
 import { DynamicPages } from "@webiny/app-dynamic-pages/admin";
+import { AdvancedContentOrganisation } from "@webiny/app-aco";
 
 export interface AdminProps extends Omit<BaseAdminProps, "createApolloClient"> {
     createApolloClient?: BaseAdminProps["createApolloClient"];
@@ -52,7 +52,6 @@ const App = (props: AdminProps) => {
             <Security />
             <AccessManagement />
             <AppInstaller />
-            <Folders />
             <FileManager />
             <GraphQLPlayground createApolloClient={createApolloClient} />
             <I18N />
@@ -71,6 +70,7 @@ const App = (props: AdminProps) => {
             <MailerSettings />
             <TrashBinConfigs />
             <DynamicPages />
+            <AdvancedContentOrganisation />
             {props.children}
         </BaseAdmin>
     );

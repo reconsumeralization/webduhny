@@ -32,6 +32,13 @@ export const createCmsGroup = (group: CmsGroup): CmsGroupPlugin => {
     return new CmsGroupPlugin(group);
 };
 
+/**
+ * @deprecated Use `createModelGroupPlugin` instead.
+ */
 export const createCmsGroupPlugin = (group: CmsGroup): CmsGroupPlugin => {
+    return new CmsGroupPlugin(group);
+};
+
+export const createModelGroupPlugin = (group: CmsGroup): CmsGroupPlugin => {
     return new CmsGroupPlugin(group);
 };

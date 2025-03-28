@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
+import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
 import { Tooltip } from "~/Tooltip";
 import { Icon } from "~/Icon";
 

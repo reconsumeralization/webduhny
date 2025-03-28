@@ -22,6 +22,8 @@ export class FormField {
     private beforeChange?: BeforeChange;
     private afterChange?: AfterChange;
     private validation: FieldValidationResult | undefined = undefined;
+    // This property is used to attach context to a field.
+    private context: any;
 
     private constructor(props: BindComponentProps) {
         this.name = props.name;
@@ -29,6 +31,7 @@ export class FormField {
         this.beforeChange = props.beforeChange;
         this.afterChange = props.afterChange;
         this.setValidators(props.validators);
+        this.context = props.context;
     }
 
     static create(props: BindComponentProps) {
@@ -39,7 +42,11 @@ export class FormField {
         value: unknown,
         options?: FormValidationOptions
     ): Promise<FieldValidationResult> {
-        this.validation = await this.validator!.validate(value, options || { skipValidators: [] });
+        this.validation = await this.validator!.validate(
+            value,
+            options || { skipValidators: [] },
+            this.context
+        );
         return this.validation;
     }
 
@@ -65,6 +72,10 @@ export class FormField {
 
     getValidation() {
         return this.validation;
+    }
+
+    setContext(context: any) {
+        this.context = context;
     }
 
     setBeforeChange(cb: BeforeChange | undefined) {

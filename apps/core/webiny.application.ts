@@ -1,4 +1,4 @@
-import { createCoreApp } from "@webiny/serverless-cms-aws";
+import { createCoreApp } from "@webiny/serverless-cms-aws/enterprise";
 
 export default createCoreApp({
     pulumiResourceNamePrefix: "wby-"

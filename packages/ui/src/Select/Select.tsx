@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { FormComponentProps } from "~/types";
 import { Select as AdminSelect } from "@webiny/admin-ui";
-import { SelectOptionDto } from "@webiny/admin-ui/Select/primitives/domains";
+import { SelectOptionDto } from "@webiny/admin-ui";
 
 export interface FormattedOption extends Omit<React.AllHTMLAttributes<any>, "label"> {
     label: React.ReactNode;
@@ -164,7 +164,6 @@ const getRmwcProps = (props: SelectProps): FormComponentProps & RmwcSelectProps 
  */
 export const Select = (props: SelectProps) => {
     const { value: initialValue, ...other } = props;
-
     const value = initialValue === null || initialValue === undefined ? "" : initialValue;
 
     const options = getOptions(other.options);
@@ -212,7 +211,7 @@ export const Select = (props: SelectProps) => {
             label={label}
             placeholder={placeholder}
             size={size}
-            onValueChange={value => props?.onChange?.(value)}
+            onChange={value => props?.onChange?.(value)}
         />
     );
 };

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as ChevronDown } from "@webiny/icons/keyboard_arrow_down.svg";
 import { Icon as IconComponent } from "~/Icon";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerIcon as IconPickerIconComponent } from "./IconPickerIcon";

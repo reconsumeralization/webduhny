@@ -25,9 +25,10 @@ const DecoratableFormComponentLabel = ({
 
         if (React.isValidElement(text) && text.type === Label) {
             return React.cloneElement(text as React.ReactElement<LabelProps>, {
-                required,
-                disabled,
-                hint
+                ...text.props,
+                required: text.props.required ?? required,
+                disabled: text.props.disabled ?? disabled,
+                hint: text.props.hint ?? hint
             });
         }
 

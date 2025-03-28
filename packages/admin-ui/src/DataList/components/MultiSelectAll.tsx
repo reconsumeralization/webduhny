@@ -20,7 +20,7 @@ const MultiSelectAll = (props: DataListProps) => {
                     <CheckboxPrimitive
                         indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
                         checked={isAllMultiSelected(data)}
-                        onCheckedChange={() => {
+                        onChange={() => {
                             multiSelectAll(!isAllMultiSelected(data), data);
                         }}
                     />

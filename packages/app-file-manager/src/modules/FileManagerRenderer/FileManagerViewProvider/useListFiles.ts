@@ -1,6 +1,6 @@
 import isEqual from "lodash/isEqual";
 import { validateOrGetDefaultDbSort } from "@webiny/app-aco/sorting";
-import { useFolders } from "@webiny/app-aco";
+import { useGetDescendantFolders } from "@webiny/app-aco";
 import { ListMeta } from "@webiny/app-aco/types";
 import { useSecurity } from "@webiny/app-security";
 import { FileItem } from "@webiny/app-admin/types";
@@ -47,7 +47,7 @@ const defaultMeta: ListMeta = {
 export function useListFiles({ modifiers, folderId, state }: UseListFilesParams) {
     const { identity } = useSecurity();
     const fileManager = useFileManagerApi();
-    const { getDescendantFolders } = useFolders();
+    const { getDescendantFolders } = useGetDescendantFolders();
     const [meta, setMeta] = useStateIfMounted<ListMeta>(defaultMeta);
     const [files, setFiles] = useStateIfMounted<FileItem[]>([]);
     const [loading, setLoading] = useStateIfMounted<Loading<LoadingActions>>({});

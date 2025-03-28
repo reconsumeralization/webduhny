@@ -1,7 +1,7 @@
 import React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { cn, makeDecoratable } from "~/utils";
-import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
+import { ReactComponent as Check } from "@webiny/icons/check.svg";
 
 export interface DropdownMenuItemProps
     extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> {

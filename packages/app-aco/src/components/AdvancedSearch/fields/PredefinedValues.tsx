@@ -17,7 +17,7 @@ export const PredefinedValues = () => {
                         value: field.value
                     }))}
                     value={value}
-                    onValueChange={data => onChange(data)}
+                    onChange={data => onChange(data)}
                     validation={validation}
                     size={"lg"}
                 />

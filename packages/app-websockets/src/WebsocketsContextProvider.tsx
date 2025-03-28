@@ -6,6 +6,8 @@ import {
     IncomingGenericData,
     IWebsocketsContext,
     IWebsocketsContextSendCallable,
+    IWebsocketsManagerCloseEvent,
+    IWebsocketsManagerErrorEvent,
     WebsocketsCloseCode
 } from "~/types";
 import {
@@ -68,6 +70,7 @@ export const WebsocketsContextProvider = (props: IWebsocketsContextProviderProps
 
         return manager;
     }, []);
+
     /**
      * We need this useEffect to close the websocket connection and remove window focus event in case component is unmounted.
      * This will, probably, happen only during the development phase.
@@ -78,23 +81,35 @@ export const WebsocketsContextProvider = (props: IWebsocketsContextProviderProps
         /**
          * We want to add a window event listener which will check if the connection is closed, and if its - it will connect again.
          */
-        const fn = () => {
-            if (!socketsRef.current) {
-                return;
-            } else if (socketsRef.current.isClosed()) {
-                console.log("Running auto-reconnect on focus.");
-                socketsRef.current.connect();
-            }
-        };
-        window.addEventListener("focus", fn);
+        const abortController = new AbortController();
+
+        window.addEventListener(
+            "focus",
+            () => {
+                if (!socketsRef.current) {
+                    return;
+                } else if (socketsRef.current.isClosed()) {
+                    console.log("Running auto-reconnect on focus.");
+                    socketsRef.current.connect();
+                }
+            },
+            { signal: abortController.signal }
+        );
+        window.addEventListener(
+            "close",
+            () => {
+                subscriptionManager.triggerOnClose(
+                    new CloseEvent("windowClose", {
+                        code: WebsocketsCloseCode.GOING_AWAY,
+                        reason: "Closing Window or Tab."
+                    })
+                );
+            },
+            { signal: abortController.signal }
+        );
 
         return () => {
-            window.removeEventListener("focus", fn);
-            // if (!socketsRef.current) {
-            //     return;
-            // }
-
-            // socketsRef.current.close(WebsocketsCloseCode.NORMAL, "Component unmounted.");
+            abortController.abort();
         };
     }, []);
 
@@ -185,6 +200,24 @@ export const WebsocketsContextProvider = (props: IWebsocketsContextProviderProps
         [socketsRef.current]
     );
 
+    const onError = useCallback(
+        (cb: (data: IWebsocketsManagerErrorEvent) => void) => {
+            return socketsRef.current!.onError(data => {
+                return cb(data);
+            });
+        },
+        [socketsRef.current]
+    );
+
+    const onClose = useCallback(
+        (cb: (data: IWebsocketsManagerCloseEvent) => void) => {
+            return socketsRef.current!.onClose(data => {
+                return cb(data);
+            });
+        },
+        [socketsRef.current]
+    );
+
     if (!socketsRef.current) {
         return props.loader || null;
     }
@@ -192,7 +225,9 @@ export const WebsocketsContextProvider = (props: IWebsocketsContextProviderProps
     const value: IWebsocketsContext = {
         send,
         createAction,
-        onMessage
+        onMessage,
+        onError,
+        onClose
     };
     return <WebsocketsContext.Provider value={value} {...props} />;
 };

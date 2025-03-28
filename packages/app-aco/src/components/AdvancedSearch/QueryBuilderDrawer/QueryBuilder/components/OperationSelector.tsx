@@ -28,7 +28,7 @@ export const OperationSelector = ({ label, name }: OperationSelectorProps) => {
                 <Switch
                     label={label}
                     checked={getValue(value)}
-                    onCheckedChange={value => onChange(setValue(value))}
+                    onChange={value => onChange(setValue(value))}
                 />
             )}
         </Bind>

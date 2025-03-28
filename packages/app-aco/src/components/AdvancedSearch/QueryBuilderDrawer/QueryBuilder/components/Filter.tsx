@@ -62,7 +62,7 @@ export const Filter = ({ name, onDelete, onFieldSelectChange, fields, filter }: 
                                             ?.conditions || []
                                     }
                                     value={value}
-                                    onValueChange={onChange}
+                                    onChange={onChange}
                                     validation={validation}
                                     size={"lg"}
                                 />

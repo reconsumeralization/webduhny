@@ -5,18 +5,18 @@ import { CheckboxGroup } from "~/CheckboxGroup";
 const meta: Meta<typeof CheckboxGroup> = {
     title: "Components/Form/CheckboxGroup",
     component: CheckboxGroup,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },
     render: args => {
         const [values, setValues] = useState(args.values);
-        return (
-            <CheckboxGroup
-                {...args}
-                values={values}
-                onCheckedChange={values => setValues(values)}
-            />
-        );
+        return <CheckboxGroup {...args} values={values} onChange={values => setValues(values)} />;
     }
 };
 

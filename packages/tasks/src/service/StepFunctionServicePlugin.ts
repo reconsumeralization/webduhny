@@ -83,7 +83,10 @@ class StepFunctionService implements ITaskService {
             const result = await this.get({
                 executionArn
             });
-            return result || null;
+            if (!result) {
+                return null;
+            }
+            return JSON.parse(JSON.stringify(result));
         } catch (ex) {
             console.log("Could not get the execution details.");
             console.error(ex);

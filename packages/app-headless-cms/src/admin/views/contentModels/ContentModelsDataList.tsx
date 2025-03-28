@@ -3,7 +3,6 @@
  */
 import React, { useCallback, useMemo, useState } from "react";
 import { TimeAgo } from "@webiny/ui/TimeAgo";
-import { css } from "emotion";
 import { useRouter } from "@webiny/react-router";
 import {
     CloneIcon,
@@ -12,8 +11,8 @@ import {
     EditIcon,
     ListIcon
 } from "@webiny/ui/List/DataList/icons";
-import { ReactComponent as DownloadFileIcon } from "@material-design-icons/svg/outlined/file_download.svg";
-import { ReactComponent as UploadFileIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
+import { ReactComponent as DownloadFileIcon } from "@webiny/icons/file_download.svg";
+import { ReactComponent as UploadFileIcon } from "@webiny/icons/file_upload.svg";
 import { useModels } from "../../hooks";
 import * as UIL from "@webiny/ui/List";
 import { Tooltip } from "@webiny/ui/Tooltip";
@@ -26,6 +25,7 @@ import { Select } from "@webiny/ui/Select";
 import type { CmsEditorContentModel, CmsModel } from "~/types";
 import { usePermission } from "~/admin/hooks/usePermission";
 import styled from "@emotion/styled";
+import { css } from "@emotion/css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { OptionsMenu } from "./OptionsMenu";

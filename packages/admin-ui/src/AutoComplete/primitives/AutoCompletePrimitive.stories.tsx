@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { AutoCompletePrimitive } from "./AutoCompletePrimitive";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";

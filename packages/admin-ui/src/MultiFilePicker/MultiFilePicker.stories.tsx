@@ -1,6 +1,25 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { MultiFilePicker } from "~/MultiFilePicker";
+import { type FileItemDto, MultiFilePicker } from "~/MultiFilePicker";
+import { Providers } from "~/Providers";
+
+const getRandomNumber = (min: number, max: number): number =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+const createFileList = (size: number = 10): FileItemDto[] => {
+    return Array.from({ length: size }, (_, index) => {
+        const width = getRandomNumber(500, 2000); // Random width between 500 and 2000
+        const height = getRandomNumber(500, 2000); // Random height between 500 and 2000
+        const fileSize = getRandomNumber(500000, 5000000); // Random file size between 500KB and 5MB
+
+        return {
+            name: `file-${index + 1}.jpg`,
+            mimeType: "image/jpeg",
+            size: fileSize,
+            url: `https://picsum.photos/${width}/${height}`
+        };
+    });
+};
 
 const meta: Meta<typeof MultiFilePicker> = {
     title: "Components/Form/Multi FilePicker",
@@ -16,6 +35,37 @@ const meta: Meta<typeof MultiFilePicker> = {
     },
     parameters: {
         layout: "padded"
+    },
+    render: args => {
+        const [selectedFiles, setSelectedFiles] = useState<FileItemDto[]>([]);
+        return (
+            <Providers>
+                <MultiFilePicker
+                    {...args}
+                    values={selectedFiles}
+                    onSelectItem={() => setSelectedFiles(createFileList())}
+                    onReplaceItem={(_, index) =>
+                        setSelectedFiles(prevState => {
+                            if (!prevState) {
+                                return [];
+                            }
+
+                            return [
+                                ...prevState.slice(0, index),
+                                ...createFileList(1),
+                                ...prevState.slice(index + 1)
+                            ];
+                        })
+                    }
+                    onRemoveItem={item =>
+                        setSelectedFiles(prevState =>
+                            prevState?.filter(value => value.name !== item?.name)
+                        )
+                    }
+                    onEditItem={(item, i) => alert(`Editing ${item?.name} at position ${i}`)}
+                />
+            </Providers>
+        );
     }
 };
 

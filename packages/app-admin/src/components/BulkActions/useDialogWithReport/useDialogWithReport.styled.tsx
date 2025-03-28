@@ -6,7 +6,16 @@ export const MessageContainer = styled("div")`
 `;
 
 export const ListItem = styled(BaseListItem)`
-    overflow: visible !important;
+    overflow: visible;
+    height: auto !important;
+    align-items: flex-start;
+
+    .mdc-deprecated-list-item__secondary-text {
+        display: block;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
 `;
 
 type ListItemGraphicProps = {
@@ -14,6 +23,7 @@ type ListItemGraphicProps = {
 };
 
 export const ListItemGraphic = styled(BaseListItemGraphic)<ListItemGraphicProps>`
+    margin-top: 12px;
     color: ${props =>
         props.status === "failure"
             ? "var(--mdc-theme-error)"

@@ -14,6 +14,10 @@ const legacyIconIdToName = (id: string[]) => {
 };
 
 const convertIconToV2 = (icon: PbElementDataIconV1) => {
+    if (!icon.id) {
+        return null;
+    }
+
     const newIcon = {
         icon: {
             name: legacyIconIdToName(icon.id),

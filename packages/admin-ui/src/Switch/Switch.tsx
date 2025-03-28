@@ -1,25 +1,23 @@
 import React, { useMemo } from "react";
 import { makeDecoratable } from "~/utils";
 import { SwitchPrimitive, SwitchPrimitiveProps } from "./primitives";
-import {
-    FormComponentDescription,
-    FormComponentErrorMessage,
-    FormComponentNote,
-    FormComponentProps
-} from "~/FormComponent";
+import { FormComponentErrorMessage, FormComponentNote, FormComponentProps } from "~/FormComponent";
 
 type SwitchProps = SwitchPrimitiveProps & FormComponentProps;
 
-const DecoratableSwitch = ({ description, note, validation, ...props }: SwitchProps) => {
+const DecoratableSwitch = ({ note, validation, ...props }: SwitchProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
         <div className={"wby-w-full"}>
-            <FormComponentDescription text={description} />
-            <SwitchPrimitive {...props} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <SwitchPrimitive {...props} disabled={props.disabled} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={props.disabled}
+            />
+            <FormComponentNote text={note} disabled={props.disabled} />
         </div>
     );
 };

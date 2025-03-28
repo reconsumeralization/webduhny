@@ -9,7 +9,7 @@ interface TagsProps extends FormComponentProps {
     /**
      * Component label.
      */
-    label?: string;
+    label?: React.ReactNode;
 
     /**
      * Are input and chosen tags disabled?

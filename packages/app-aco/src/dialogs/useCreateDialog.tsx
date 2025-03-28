@@ -4,8 +4,8 @@ import { Grid, Input } from "@webiny/admin-ui";
 import { useDialogs, useSnackbar } from "@webiny/app-admin";
 import { Bind, GenericFormData, useForm } from "@webiny/form";
 import { validation } from "@webiny/validation";
-import { FolderTree } from "~/components";
-import { useFolders } from "~/hooks";
+import { Extensions, FolderTree } from "~/components";
+import { useCreateFolder } from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { FolderItem } from "~/types";
 import { ParentFolderField } from "./ParentFolderField";
@@ -44,48 +44,51 @@ const FormComponent = ({ currentParentId = null }: FormComponentProps) => {
     };
 
     return (
-        <Grid>
-            <Grid.Column span={12}>
-                <Bind name={"title"} validators={validation.create("required")}>
-                    {bind => (
-                        <Input
-                            {...bind}
-                            label={"Title"}
-                            onBlur={generateSlug}
-                            size={"lg"}
-                            required
-                            autoFocus={true}
-                        />
-                    )}
-                </Bind>
-            </Grid.Column>
-            <Grid.Column span={12}>
-                <Bind name={"slug"} validators={validation.create("required,slug")}>
-                    <Input label={"Slug"} size={"lg"} required />
-                </Bind>
-            </Grid.Column>
-            <Grid.Column span={12}>
-                <ParentFolderField>
-                    <Bind name={"parentId"} defaultValue={parentId}>
-                        {({ onChange }) => (
-                            <FolderTree
-                                focusedFolderId={parentId || ROOT_FOLDER}
-                                onFolderClick={folder => {
-                                    setParentId(folder.id);
-                                    onChange(folder.id === ROOT_FOLDER ? null : folder.id);
-                                }}
+        <>
+            <Grid>
+                <Grid.Column span={12}>
+                    <Bind name={"title"} validators={validation.create("required")}>
+                        {bind => (
+                            <Input
+                                {...bind}
+                                label={"Title"}
+                                onBlur={generateSlug}
+                                size={"lg"}
+                                required
+                                autoFocus={true}
                             />
                         )}
                     </Bind>
-                </ParentFolderField>
-            </Grid.Column>
-        </Grid>
+                </Grid.Column>
+                <Grid.Column span={12}>
+                    <Bind name={"slug"} validators={validation.create("required,slug")}>
+                        <Input label={"Slug"} size={"lg"} required />
+                    </Bind>
+                </Grid.Column>
+                <Grid.Column span={12}>
+                    <ParentFolderField>
+                        <Bind name={"parentId"} defaultValue={parentId}>
+                            {({ onChange }) => (
+                                <FolderTree
+                                    focusedFolderId={parentId || ROOT_FOLDER}
+                                    onFolderClick={folder => {
+                                        setParentId(folder.id);
+                                        onChange(folder.id === ROOT_FOLDER ? null : folder.id);
+                                    }}
+                                />
+                            )}
+                        </Bind>
+                    </ParentFolderField>
+                </Grid.Column>
+            </Grid>
+            <Extensions />
+        </>
     );
 };
 
 export const useCreateDialog = (): UseCreateDialogResponse => {
     const dialogs = useDialogs();
-    const { createFolder } = useFolders();
+    const { createFolder } = useCreateFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (data: FolderItem) => {

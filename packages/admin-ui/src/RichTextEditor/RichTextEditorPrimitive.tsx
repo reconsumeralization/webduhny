@@ -97,19 +97,55 @@ type RichTextEditorValue = OutputBlockData[];
 interface RichTextEditorPrimitiveProps
     extends Omit<React.ComponentProps<"div">, "onChange">,
         VariantProps<typeof richTextEditorVariants> {
+    /**
+     * If true, the editor will automatically focus when mounted.
+     */
     autofocus?: boolean;
+    /**
+     * Additional class names to apply to the editor container.
+     */
     className?: string;
+    /**
+     * Context object to pass to the editor tools.
+     */
     context?: { [key: string]: any };
+    /**
+     * If true, the editor will be disabled.
+     */
     disabled?: boolean;
+    /**
+     * Log level for the editor (e.g., "ERROR", "WARN").
+     */
     logLevel?: string;
+    /**
+     * Minimum height of the editor in pixels.
+     */
     minHeight?: number;
+    /**
+     * Callback function to handle changes in the editor content.
+     */
     onChange?: (data: RichTextEditorValue) => void;
+    /**
+     * Callback function to handle the editor's readiness state.
+     */
     onReady?: (params: OnReadyParams) => void;
+    /**
+     * Placeholder text to display when the editor is empty.
+     */
     placeholder?: string;
+    /**
+     * Configuration for sanitizing the editor content.
+     */
     sanitizer?: SanitizerConfig;
+    /**
+     * Configuration for the editor tools.
+     */
     tools?: {
         [toolName: string]: ToolSettings;
     };
+    /**
+     * Initial value of the editor content.
+     */
     value?: RichTextEditorValue;
 }
 

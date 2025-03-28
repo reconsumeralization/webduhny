@@ -34,6 +34,10 @@ const meta: Meta<typeof Input> = {
                 "image"
             ],
             defaultValue: "text"
+        },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
         }
     },
     parameters: {

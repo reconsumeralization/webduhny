@@ -1,3 +1,4 @@
+import { createFolderFieldDecoratorFactory } from "@webiny/app-aco";
 import { AdvancedSearch, AdvancedSearchConfig } from "./AdvancedSearch";
 import { BulkAction, BulkActionConfig } from "./BulkAction";
 import { EntryAction, EntryActionConfig } from "./EntryAction";
@@ -5,6 +6,7 @@ import { Filter, FilterConfig } from "./Filter";
 import { FiltersToWhere, FiltersToWhereConverter } from "./FiltersToWhere";
 import { FolderAction, FolderActionConfig } from "./FolderAction";
 import { Table, TableConfig } from "./Table";
+import { shouldDecorateFolderField } from "./FolderFieldDecorator";
 
 export interface BrowserConfig {
     advancedSearch: AdvancedSearchConfig;
@@ -22,6 +24,19 @@ export const Browser = {
     EntryAction,
     Filter,
     FiltersToWhere,
-    FolderAction,
-    Table
+    Folder: {
+        ExtensionField: {
+            createDecorator: createFolderFieldDecoratorFactory({
+                scope: "cms",
+                shouldDecorate: shouldDecorateFolderField
+            })
+        },
+        Action: FolderAction
+    },
+    Table,
+    /**
+     * @deprecated
+     * Use `Browser.Folder.Action` instead
+     */
+    FolderAction
 };

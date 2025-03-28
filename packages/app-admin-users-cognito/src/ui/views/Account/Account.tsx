@@ -23,6 +23,7 @@ import { useSecurity } from "@webiny/app-security";
 import { View } from "@webiny/app/components/View";
 import { CenteredView, useSnackbar } from "@webiny/app-admin";
 import { SecurityIdentity } from "@webiny/app-security/types";
+import { Alert } from "@webiny/ui/Alert";
 
 const t = i18n.ns("app-security-admin-users/account-form");
 
@@ -45,7 +46,7 @@ const UserAccountForm = () => {
     const onSubmit = async (formData: UserAccountFormData) => {
         setLoading(true);
         const { data: response } = await updateUser({
-            variables: { data: omit(formData, ["id"]) }
+            variables: { data: omit(formData, ["id", "external"]) }
         });
 
         const { error } = response.adminUsers.updateCurrentUser;
@@ -80,6 +81,8 @@ const UserAccountForm = () => {
         process.env.REACT_APP_ADMIN_USER_CAN_CHANGE_EMAIL === "false"
     );
 
+    const isExternal = user?.external === true;
+
     return (
         <CenteredView maxWidth={600}>
             <Form
@@ -96,10 +99,19 @@ const UserAccountForm = () => {
                         {loading && <CircularProgress style={{ zIndex: 3 }} />}
                         <SimpleFormHeader title={"Account"} />
                         <SimpleFormContent>
+                            {isExternal && (
+                                <Grid>
+                                    <Cell span={12}>
+                                        <Alert type={"info"} title={"External User"}>
+                                            This user is an external user and cannot be edited.
+                                        </Alert>
+                                    </Cell>
+                                </Grid>
+                            )}
                             <Grid>
                                 <Cell span={12} data-testid={"avatar"}>
                                     <Bind name="avatar">
-                                        <AvatarImage round />
+                                        <AvatarImage round disabled={isExternal} />
                                     </Bind>
                                 </Cell>
                                 <Cell span={12}>
@@ -109,6 +121,7 @@ const UserAccountForm = () => {
                                     >
                                         <Input
                                             label={t`First Name`}
+                                            disabled={isExternal}
                                             data-testid="account.firstname"
                                         />
                                     </Bind>
@@ -121,6 +134,7 @@ const UserAccountForm = () => {
                                     >
                                         <Input
                                             label={t`Last Name`}
+                                            disabled={isExternal}
                                             data-testid="account.lastname"
                                         />
                                     </Bind>
@@ -133,7 +147,7 @@ const UserAccountForm = () => {
                                         <Input
                                             value={data.email}
                                             label={t`Email`}
-                                            disabled={emailIsDisabled}
+                                            disabled={emailIsDisabled || isExternal}
                                             data-testid="account.email"
                                             description={
                                                 "Email is your unique identifier used to login!"
@@ -149,6 +163,7 @@ const UserAccountForm = () => {
                         </SimpleFormContent>
                         <SimpleFormFooter data-testid={"form-footer"}>
                             <ButtonPrimary
+                                disabled={isExternal}
                                 data-testid="account.updatebutton"
                                 onClick={ev => {
                                     form.submit(ev);

@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useRecordLocking } from "~/hooks";
-import { IIsRecordLockedParams, IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
-import {
-    IncomingGenericData,
-    IWebsocketsSubscription,
-    useWebsockets
-} from "@webiny/app-websockets";
+import type {
+    IIsRecordLockedParams,
+    IRecordLockingIdentity,
+    IRecordLockingLockRecord
+} from "~/types";
+import type { IncomingGenericData } from "@webiny/app-websockets";
+import { useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
 import styled from "@emotion/styled";
@@ -51,31 +52,30 @@ export const ContentEntryLocker = ({
 }: IContentEntryLockerProps) => {
     const { updateEntryLock, unlockEntry, fetchLockedEntryLockRecord, removeEntryLock } =
         useRecordLocking();
-
-    const subscription = useRef<IWebsocketsSubscription<any>>();
-
     const websockets = useWebsockets();
-
     const { showDialog } = useDialogs();
 
     useEffect(() => {
         if (!entry.id) {
             return;
-        } else if (subscription.current) {
-            subscription.current.off();
         }
         const { id: entryId } = parseIdentifier(entry.id);
 
-        subscription.current = websockets.onMessage<IKickOutWebsocketsMessage>(
+        const removeEntryLockCb = async () => {
+            const record: IIsRecordLockedParams = {
+                id: entryId,
+                $lockingType: model.modelId
+            };
+            removeEntryLock(record);
+            await unlockEntry(record);
+        };
+
+        let onMessageSub = websockets.onMessage<IKickOutWebsocketsMessage>(
             `recordLocking.entry.kickOut.${entryId}`,
             async incoming => {
                 const { user } = incoming.data;
-                const record: IIsRecordLockedParams = {
-                    id: entryId,
-                    $lockingType: model.modelId
-                };
-                removeEntryLock(record);
                 onDisablePrompt(true);
+                await removeEntryLockCb();
                 showDialog({
                     title: "Entry was forcefully unlocked!",
                     content: <ForceUnlocked user={user} />,
@@ -88,10 +88,12 @@ export const ContentEntryLocker = ({
         );
 
         return () => {
-            if (!subscription.current) {
-                return;
-            }
-            subscription.current.off();
+            onMessageSub.off();
+            /**
+             * Lets null subscriptions, just in case it...
+             */
+            // @ts-expect-error
+            onMessageSub = null;
         };
     }, [entry.id, onEntryUnlocked, model.modelId]);
 
@@ -112,7 +114,8 @@ export const ContentEntryLocker = ({
                 if (result) {
                     return;
                 }
-                unlockEntry(record);
+                removeEntryLock(record);
+                await unlockEntry(record);
             })();
         };
     }, [entry.id]);

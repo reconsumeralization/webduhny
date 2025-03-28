@@ -41,6 +41,7 @@ export interface FolderItem {
     savedOn: string;
     modifiedBy: CmsIdentity | null;
     modifiedOn: string | null;
+    extensions: Record<string, any>;
 }
 
 export type GenericSearchData = {
@@ -66,6 +67,17 @@ export type LoadingActions =
     | "UPDATE"
     | "DELETE"
     | "MOVE";
+
+export enum LoadingActionsEnum {
+    init = "INIT",
+    list = "LIST",
+    listMore = "LIST_MORE",
+    get = "GET",
+    create = "CREATE",
+    update = "UPDATE",
+    delete = "DELETE",
+    move = "MOVE"
+}
 
 export interface AcoError {
     code: string;
@@ -142,7 +154,17 @@ export interface CreateFolderResponse {
 export interface CreateFolderVariables {
     data: Omit<
         FolderItem,
-        "id" | "createdOn" | "createdBy" | "savedOn" | "savedBy" | "modifiedOn" | "modifiedBy"
+        | "id"
+        | "createdOn"
+        | "createdBy"
+        | "savedOn"
+        | "savedBy"
+        | "modifiedOn"
+        | "modifiedBy"
+        | "hasNonInheritedPermissions"
+        | "canManageContent"
+        | "canManagePermissions"
+        | "canManageStructure"
     >;
 }
 

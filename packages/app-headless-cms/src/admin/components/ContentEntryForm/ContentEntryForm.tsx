@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import type { FormOnSubmit } from "@webiny/form";
+import { FormOnSubmit, FormValidation } from "@webiny/form";
 import { makeDecoratable } from "@webiny/app-admin";
 import { CmsContentEntry } from "~/types";
 import { ModelProvider, useModel } from "~/admin/components/ModelProvider";
@@ -32,6 +32,7 @@ export interface ContentEntryFormProps
      */
     persistEntry: PersistEntry;
     onChange?: FormOnSubmit<Partial<CmsContentEntry>>;
+    onInvalidFields?: (invalidFields: FormValidation) => void;
     header?: React.ReactNode;
     /**
      * This prop is used to get a reference to `saveEntry` callback, so it can be triggered by components
@@ -47,6 +48,7 @@ export const ContentEntryForm = makeDecoratable(
         entry,
         persistEntry,
         onChange,
+        onInvalidFields,
         onAfterCreate,
         setSaveEntry,
         header = true,
@@ -81,6 +83,7 @@ export const ContentEntryForm = makeDecoratable(
                 model={model}
                 entry={entry}
                 onChange={onChange}
+                onInvalidFields={onInvalidFields}
                 onAfterCreate={onAfterCreate || defaultOnAfterCreate}
                 setSaveEntry={setSaveEntry}
                 confirmNavigationIfDirty={true}

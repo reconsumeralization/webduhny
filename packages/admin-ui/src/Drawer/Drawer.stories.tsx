@@ -4,7 +4,7 @@ import { Drawer } from "./Drawer";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
 import { Tabs } from "~/Tabs";
-import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
+import { ReactComponent as DoorbellIcon } from "@webiny/icons/ring_volume.svg";
 
 const meta: Meta<typeof Drawer> = {
     title: "Components/Drawer",

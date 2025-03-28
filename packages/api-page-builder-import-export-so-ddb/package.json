@@ -26,7 +26,6 @@
   "devDependencies": {
     "@webiny/api-security": "0.0.0",
     "@webiny/api-tenancy": "0.0.0",
-    "@webiny/cli": "0.0.0",
     "@webiny/handler-aws": "0.0.0",
     "@webiny/handler-graphql": "0.0.0",
     "@webiny/project-utils": "0.0.0",
@@ -40,8 +39,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "gitHead": "8476da73b653c89cc1474d968baf55c1b0ae0e5f"
 }

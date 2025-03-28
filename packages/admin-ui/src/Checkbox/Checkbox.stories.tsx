@@ -5,18 +5,18 @@ import { Checkbox } from "~/Checkbox";
 const meta: Meta<typeof Checkbox> = {
     title: "Components/Form/Checkbox",
     component: Checkbox,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },
     render: args => {
         const [checked, setChecked] = useState(args.checked);
-        return (
-            <Checkbox
-                {...args}
-                checked={checked}
-                onCheckedChange={checked => setChecked(checked)}
-            />
-        );
+        return <Checkbox {...args} checked={checked} onChange={checked => setChecked(checked)} />;
     }
 };
 

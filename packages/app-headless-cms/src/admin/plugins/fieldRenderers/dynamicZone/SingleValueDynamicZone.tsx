@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import { AddTemplateButton } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";

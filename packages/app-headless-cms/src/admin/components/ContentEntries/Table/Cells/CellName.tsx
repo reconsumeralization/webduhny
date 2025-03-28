@@ -1,8 +1,8 @@
 import React from "react";
 
-import { ReactComponent as Folder } from "@material-design-icons/svg/outlined/folder.svg";
-import { ReactComponent as FolderShared } from "@material-design-icons/svg/outlined/folder_shared.svg";
-import { ReactComponent as File } from "@material-design-icons/svg/outlined/description.svg";
+import { ReactComponent as Folder } from "@webiny/icons/folder.svg";
+import { ReactComponent as FolderShared } from "@webiny/icons/folder_shared.svg";
+import { ReactComponent as File } from "@webiny/icons/description.svg";
 import { useNavigateFolder } from "@webiny/app-aco";
 
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";

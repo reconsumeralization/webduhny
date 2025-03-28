@@ -5,6 +5,7 @@ import { FormValidationOptions } from "~/types";
 
 export interface FieldValidationResult {
     isValid: boolean | null;
+    context?: any;
     message?: string;
     results?: {
         [key: string]: any;
@@ -18,7 +19,11 @@ export class FormFieldValidator {
         this.validators = validators;
     }
 
-    async validate(value: unknown, options: FormValidationOptions): Promise<FieldValidationResult> {
+    async validate(
+        value: unknown,
+        options: FormValidationOptions,
+        context: any
+    ): Promise<FieldValidationResult> {
         if (this.validators.length === 0) {
             return {
                 isValid: true
@@ -40,7 +45,8 @@ export class FormFieldValidator {
             } catch (e) {
                 return {
                     isValid: false,
-                    message: e.message
+                    message: e.message,
+                    context
                 };
             }
         }

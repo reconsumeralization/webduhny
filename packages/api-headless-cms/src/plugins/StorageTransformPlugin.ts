@@ -53,3 +53,13 @@ export class StorageTransformPlugin<
         return this.config.fromStorage(params);
     }
 }
+
+export const createStorageTransformPlugin = <
+    T = any,
+    R = any,
+    F extends CmsModelField = CmsModelField
+>(
+    config: StorageTransformPluginParams<T, R, F>
+) => {
+    return new StorageTransformPlugin(config);
+};

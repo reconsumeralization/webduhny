@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { FilePicker } from "~/FilePicker";
+import { type FileItemDto, FilePicker } from "~/FilePicker";
+import { Providers } from "~/Providers";
+
+const getRandomNumber = (min: number, max: number): number =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+const getFile = (): FileItemDto => {
+    const width = getRandomNumber(500, 2000); // Random width between 500 and 2000
+    const height = getRandomNumber(500, 2000); // Random height between 500 and 2000
+    const fileSize = getRandomNumber(500000, 5000000); // Random file size between 500KB and 5MB
+
+    return {
+        name: "selected-file.jpg",
+        mimeType: "image/jpeg",
+        size: fileSize,
+        url: `https://picsum.photos/${width}/${height}`
+    };
+};
 
 const meta: Meta<typeof FilePicker> = {
     title: "Components/Form/FilePicker",
@@ -16,6 +33,20 @@ const meta: Meta<typeof FilePicker> = {
     },
     parameters: {
         layout: "padded"
+    },
+    render: args => {
+        const [selectedFile, setSelectedFile] = useState(args.value);
+        return (
+            <Providers>
+                <FilePicker
+                    {...args}
+                    value={selectedFile}
+                    onSelectItem={() => setSelectedFile(getFile())}
+                    onRemoveItem={() => setSelectedFile(null)}
+                    onEditItem={() => alert(`Editing File`)}
+                />
+            </Providers>
+        );
     }
 };
 

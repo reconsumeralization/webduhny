@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { plugins } from "@webiny/plugins";
 import { OverlayLayout } from "@webiny/app-admin/components/OverlayLayout";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
-import { Typography } from "@webiny/ui/Typography";
 import { Form } from "@webiny/form";
 import { Icon } from "@webiny/ui/Icon";
 import { ButtonPrimary } from "@webiny/ui/Button";
-import { List, ListItem, ListItemGraphic } from "@webiny/ui/List";
+import {
+    List,
+    ListItem,
+    ListItemGraphic,
+    ListItemText,
+    ListItemTextPrimary,
+    ListItemTextSecondary
+} from "@webiny/ui/List";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
 import * as SF from "@webiny/app-admin/components/SimpleForm";
 import { CmsEditorFormSettingsPlugin } from "~/types";
-import { listItem, ListItemTitle, listStyle, Title, TitleContent } from "./FormSettingsStyled";
+import { listItem, listStyle, Title } from "./FormSettingsStyled";
 import { useModelEditor } from "~/admin/hooks";
 
 const t = i18n.namespace("FormsApp.Editor.FormSettings");
@@ -43,10 +49,10 @@ const FormSettings = ({ onExited }: FormSettingsProps) => {
                                 <ListItemGraphic>
                                     <Icon icon={pl.icon} />
                                 </ListItemGraphic>
-                                <TitleContent>
-                                    <ListItemTitle>{pl.title}</ListItemTitle>
-                                    <Typography use={"body2"}>{pl.description}</Typography>
-                                </TitleContent>
+                                <ListItemText>
+                                    <ListItemTextPrimary>{pl.title}</ListItemTextPrimary>
+                                    <ListItemTextSecondary>{pl.description}</ListItemTextSecondary>
+                                </ListItemText>
                             </ListItem>
                         ))}
                     </List>

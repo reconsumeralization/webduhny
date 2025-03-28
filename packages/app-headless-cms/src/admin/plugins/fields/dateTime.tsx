@@ -1,12 +1,12 @@
 import React from "react";
 import get from "lodash/get";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
+
 import { CmsModelField, CmsModelFieldTypePlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
 import { ReactComponent as DateTimeIcon } from "./icons/schedule-black-24px.svg";
 import { useModel, useModelField } from "~/admin/hooks";
 import { Bind } from "@webiny/form";
+import { Grid, Label, Select } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields");
 
@@ -24,35 +24,46 @@ const DateTimeSettings = () => {
     return (
         <>
             <Grid>
-                <Cell span={6}>
+                <Grid.Column span={6}>
                     <Bind name={"settings.type"}>
                         <Select
-                            label={t`Format`}
-                            description={t`Cannot be changed later`}
+                            label={
+                                <Label
+                                    text={t`Format`}
+                                    description={t`(cannot be changed later)`}
+                                />
+                            }
                             disabled={lockedField && Boolean(lockedField.formatType)}
-                        >
-                            <option value={t`date`}>{t`Date only`}</option>
-                            <option value={t`time`}>{t`Time only`}</option>
-                            <option
-                                value={t`dateTimeWithTimezone`}
-                            >{t`Date and time with timezone`}</option>
-                            <option
-                                value={t`dateTimeWithoutTimezone`}
-                            >{t`Date and time without timezone`}</option>
-                        </Select>
+                            options={[
+                                { value: "date", label: t`Date only` },
+                                { value: "time", label: t`Time only` },
+                                { value: "dateTime", label: t`Date and time with timezone` },
+                                {
+                                    value: "dateTimeWithoutTimezone",
+                                    label: t`Date and time without timezone`
+                                }
+                            ]}
+                            size={"lg"}
+                        />
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind name={"settings.defaultSetValue"}>
                         <Select
-                            label={t`Default Admin UI value`}
-                            description={"Affects the Admin UI only"}
-                        >
-                            <option value={t`null`}>{t`Leave empty (null value)`}</option>
-                            <option value={t`current`}>{t`Current date/time`}</option>
-                        </Select>
+                            label={
+                                <Label
+                                    text={t`Default Admin UI value`}
+                                    hint={t`Affects the Admin UI only`}
+                                />
+                            }
+                            options={[
+                                { value: t`null`, label: t`Leave empty (null value)` },
+                                { value: t`current`, label: t`Current date/time` }
+                            ]}
+                            size={"lg"}
+                        />
                     </Bind>
-                </Cell>
+                </Grid.Column>
             </Grid>
         </>
     );

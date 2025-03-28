@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
+import { ReactComponent as Check } from "@webiny/icons/check.svg";
 import { Command as CommandPrimitive } from "cmdk";
 import { cn, cva, type VariantProps } from "~/utils";
 

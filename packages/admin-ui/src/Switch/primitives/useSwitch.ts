@@ -11,9 +11,9 @@ export const useSwitch = (props: SwitchPrimitiveProps) => {
             value: props.value,
             checked: props.checked,
             disabled: props.disabled,
-            onCheckedChange: props.onCheckedChange
+            onChange: props.onChange
         }),
-        [props.id, props.label, props.value, props.checked, props.disabled, props.onCheckedChange]
+        [props.id, props.label, props.value, props.checked, props.disabled, props.onChange]
     );
 
     const presenter = useMemo(() => {

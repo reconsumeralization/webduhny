@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import * as SelectPrimitives from "@radix-ui/react-select";
 import { type VariantProps } from "~/utils";
 import { useSelect } from "./useSelect";
-import { SelectOptionDto, SelectOptionFormatted } from "./domains";
+import { SelectOptionDto, SelectOptionFormatted } from "../domains";
 import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
 import {
@@ -175,18 +175,60 @@ const SelectPrimitiveRenderer = ({
  */
 type SelectOption = SelectOptionDto | string;
 
-type SelectPrimitiveProps = SelectPrimitives.SelectProps & {
+interface SelectPrimitiveProps {
+    /**
+     * Whether to display the reset action button.
+     */
     displayResetAction?: boolean;
+    /**
+     * Indicates if the field is disabled.
+     */
+    disabled?: boolean;
+    /**
+     * Icon to display at the end of the select trigger.
+     */
     endIcon?: React.ReactElement;
+    /**
+     * Whether the select input is invalid.
+     */
     invalid?: VariantProps<typeof selectTriggerVariants>["invalid"];
-    onValueChange: (value: string) => void;
+    /**
+     * Callback function called when the value changes.
+     */
+    onChange?: (value: string) => void;
+    /**
+     * Callback function called when the open state changes.
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
+     * Callback function called when the value is reset.
+     */
     onValueReset?: () => void;
+    /**
+     * Array of options to display in the select dropdown.
+     */
     options?: SelectOption[];
+    /**
+     * Placeholder text to display when no value is selected.
+     */
     placeholder?: string;
+    /**
+     * Size variant of the select trigger.
+     */
     size?: VariantProps<typeof selectTriggerVariants>["size"];
+    /**
+     * Icon to display at the start of the select trigger.
+     */
     startIcon?: React.ReactElement;
+    /**
+     * The value of the select input.
+     */
+    value?: string;
+    /**
+     * Style variant of the select trigger.
+     */
     variant?: VariantProps<typeof selectTriggerVariants>["variant"];
-};
+}
 
 const SelectPrimitive = (props: SelectPrimitiveProps) => {
     const { vm, changeValue, resetValue } = useSelect(props);

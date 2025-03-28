@@ -2,8 +2,8 @@ import React from "react";
 import { Separator } from "~/Separator";
 import { IconButton } from "~/Button";
 import { useSidebar } from "./SidebarProvider";
-import { ReactComponent as OpenSidebarIcon } from "@material-design-icons/svg/outlined/keyboard_double_arrow_right.svg";
-import { ReactComponent as CloseSidebarIcon } from "@material-design-icons/svg/outlined/chrome_reader_mode.svg";
+import { ReactComponent as OpenSidebarIcon } from "@webiny/icons/keyboard_double_arrow_right.svg";
+import { ReactComponent as CloseSidebarIcon } from "@webiny/icons/chrome_reader_mode.svg";
 
 interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     icon?: React.ReactNode;

@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as ReplaceIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as TrashIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as ReplaceIcon } from "@webiny/icons/file_upload.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as TrashIcon } from "@webiny/icons/delete.svg";
 import { IconButton } from "~/Button";
 import { Icon } from "~/Icon";
 import { cn } from "~/utils";

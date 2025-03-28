@@ -3,7 +3,7 @@ import { cn } from "~/utils";
 import { type DrawerProps } from "../Drawer";
 import { DrawerTitle } from "./DrawerTitle";
 import { DrawerDescription } from "./DrawerDescription";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { ReactComponent as XIcon } from "@webiny/icons/close.svg";
 import { IconButton } from "~/Button";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { useMemo } from "react";
@@ -47,7 +47,7 @@ export const DrawerHeader = ({
                     </DrawerPrimitive.Close>
                 )}
             </DrawerTitle>
-            <DrawerDescription>{description}</DrawerDescription>
+            {description && <DrawerDescription>{description}</DrawerDescription>}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/image.svg";
+import { ReactComponent as ImageIcon } from "@webiny/icons/image.svg";
 import { Button } from "~/Button";
 import { cn, cva, type VariantProps } from "~/utils";
 import type { TriggerDefaultProps } from "~/FilePicker/primitives/components/types";

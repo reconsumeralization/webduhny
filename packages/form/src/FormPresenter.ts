@@ -160,6 +160,7 @@ export class FormPresenter<T extends GenericFormData = GenericFormData> {
             existingField.setValidators(props.validators);
             existingField.setBeforeChange(props.beforeChange);
             existingField.setAfterChange(props.afterChange);
+            existingField.setContext(props.context);
             return;
         }
 

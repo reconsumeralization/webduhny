@@ -31,7 +31,7 @@ import {
     RESTORE_ENTRY
 } from "~tests/graphql/cms.gql";
 
-import { CREATE_FOLDER, DELETE_FOLDER } from "~tests/graphql/folder.gql";
+import { CREATE_FOLDER, DELETE_FOLDER, GET_FOLDER } from "~tests/graphql/folder.gql";
 
 export interface UseGQLHandlerParams {
     permissions?: SecurityPermission[];
@@ -145,12 +145,14 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     };
 
     const aco = {
-        async createFolder(variables = {}) {
-            return invoke({ body: { query: CREATE_FOLDER, variables } });
+        async createFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: CREATE_FOLDER(fields), variables } });
         },
-
         async deleteFolder(variables = {}) {
             return invoke({ body: { query: DELETE_FOLDER, variables } });
+        },
+        async getFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: GET_FOLDER(fields), variables } });
         }
     };
 

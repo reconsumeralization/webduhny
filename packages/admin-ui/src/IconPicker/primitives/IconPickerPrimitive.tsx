@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { inputVariants } from "~/Input";
+import { InputPrimitiveProps, inputVariants } from "~/Input";
 import { PopoverPrimitive } from "~/Popover";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerGrid, IconPickerInput, IconPickerTrigger } from "./components";
@@ -22,13 +22,33 @@ const iconPickerVariants = cva("wby-cursor-pointer wby-text-neutral-strong", {
     }
 });
 
-interface IconPickerPrimitiveProps
-    extends VariantProps<typeof iconPickerVariants>,
-        VariantProps<typeof inputVariants> {
-    value?: string;
-    onChange?: (value: string) => void;
-    icons: IconPickerIconDto[];
+interface IconPickerPrimitiveProps extends VariantProps<typeof iconPickerVariants> {
+    /**
+     * Indicates if the field is disabled.
+     */
     disabled?: boolean;
+    /**
+     * Callback triggered when the value changes.
+     */
+    onChange?: (value: string) => void;
+    /**
+     * List of icons to be displayed in the icon picker.
+     */
+    icons: IconPickerIconDto[];
+    /**
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
+     */
+    invalid?: InputPrimitiveProps["invalid"];
+    /**
+     * Optional selected icon.
+     */
+    value?: string;
+    /**
+     * Variant of the input field.
+     * Refer to `InputPrimitiveProps["variant"]` for possible values.
+     */
+    variant?: InputPrimitiveProps["variant"];
 }
 
 const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
@@ -46,7 +66,7 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
     return (
         <PopoverPrimitive open={vm.open} onOpenChange={setListOpenState}>
             <PopoverPrimitive.Trigger asChild>
-                <div
+                <button
                     data-disabled={props.disabled}
                     className={cn(
                         inputVariants({
@@ -58,9 +78,13 @@ const IconPickerPrimitive = (props: IconPickerPrimitiveProps) => {
                     )}
                 >
                     <IconPickerTrigger value={props.value} size={props.size} />
-                </div>
+                </button>
             </PopoverPrimitive.Trigger>
-            <PopoverPrimitive.Content align={"start"} className={"wby-min-w-96"}>
+            <PopoverPrimitive.Content
+                align={"start"}
+                className={"wby-min-w-96"}
+                onWheel={e => e.stopPropagation()} // Wheel event should not propagate to the parent: this fixes scrolling issues when the IconPicker is placed inside a Dialog.
+            >
                 <IconPickerInput value={vm.searchQuery} onChange={searchIcon} inputRef={inputRef} />
                 <IconPickerGrid
                     icons={vm.icons}

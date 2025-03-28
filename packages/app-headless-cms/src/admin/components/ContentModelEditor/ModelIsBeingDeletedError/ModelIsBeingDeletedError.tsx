@@ -1,6 +1,6 @@
 import * as React from "react";
 import Helmet from "react-helmet";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { Typography } from "@webiny/ui/Typography";
 import authErrorImg from "./SecureRouteError.svg";

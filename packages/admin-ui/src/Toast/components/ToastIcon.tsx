@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as NotificationsIconActive } from "@material-design-icons/svg/outlined/notifications_active.svg";
+import { ReactComponent as NotificationsIconActive } from "@webiny/icons/notifications_active.svg";
 import { Icon as BaseIcon } from "~/Icon";
 
 const ToastNotificationIcon = (

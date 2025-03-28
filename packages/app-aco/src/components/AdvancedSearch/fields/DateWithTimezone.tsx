@@ -50,7 +50,7 @@ export const DateWithTimezone = () => {
                         label,
                         value
                     }))}
-                    onValueChange={handleTimeZoneChange}
+                    onChange={handleTimeZoneChange}
                     size={"lg"}
                 />
             </div>

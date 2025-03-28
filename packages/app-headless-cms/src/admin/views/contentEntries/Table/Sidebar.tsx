@@ -7,7 +7,7 @@ import { Tooltip } from "@webiny/ui/Tooltip";
 import { Link } from "@webiny/react-router";
 import { useModel } from "~/admin/components/ModelProvider";
 import { i18n } from "@webiny/app/i18n";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { TrashBin } from "~/admin/components/ContentEntries/TrashBin/components/TrashBin";
 
 const t = i18n.ns("app-headless-cms/admin/content-entries/table");

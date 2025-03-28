@@ -3,6 +3,7 @@ import WebinyError from "@webiny/error";
 import { Plugin } from "@webiny/plugins";
 import {
     Context,
+    ITaskBeforeTriggerParams,
     ITaskDefinition,
     ITaskDefinitionField,
     ITaskResponseDoneResultOutput
@@ -82,6 +83,8 @@ export class TaskDefinitionPlugin<
         return this.task.maxIterations || DEFAULT_MAX_ITERATIONS;
     }
 
+    public onBeforeTrigger?: (params: ITaskBeforeTriggerParams<C>) => Promise<void>;
+
     public constructor(task: ITaskDefinitionParams<C, I, O>) {
         super();
         this.isPrivate = task.isPrivate || false;
@@ -94,6 +97,9 @@ export class TaskDefinitionPlugin<
             task.config(this);
         }
         this.validate();
+        if (task.onBeforeTrigger) {
+            this.onBeforeTrigger = task.onBeforeTrigger;
+        }
     }
 
     public getTask() {

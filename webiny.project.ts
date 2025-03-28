@@ -39,6 +39,7 @@ export default {
                                 return null;
                             }
                         }
+                        return null;
                     })
                     .filter(Boolean);
             } catch (e) {
@@ -48,6 +49,7 @@ export default {
         }
     },
     appAliases: {
+        blueGreen: "apps/blueGreen",
         core: "apps/core",
         api: "apps/api",
         admin: "apps/admin",
@@ -55,10 +57,8 @@ export default {
     },
 
     featureFlags: {
+        experimentalDynamicPages: false,
         newWatchCommand: true,
-        experimentalDynamicPages: false
-    },
-    env: {
-        ELASTICSEARCH_SHARED_INDEXES: true
+        rspack: true
     }
 };
