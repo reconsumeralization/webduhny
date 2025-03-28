@@ -15,7 +15,7 @@ export class FmFilesMigrator {
         let cursor = null;
 
         do {
-            const sourceFilesList: Record<string,any> = await sourceGqlClient
+            const sourceFilesList: Record<string, any> = await sourceGqlClient
                 .run(LIST_FILES, { after: cursor, limit: 50 })
                 .then(res => {
                     return res.fileManager.listFiles;
