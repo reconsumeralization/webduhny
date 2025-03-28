@@ -82,7 +82,7 @@ const DialogBase = (props: DialogProps) => {
                 // that are decorated with `makeDecoratable`. This will be fixed in the future.
                 children: <div>{trigger}</div>
             },
-            headerProps: { title, icon, description, showCloseButton },
+            headerProps: { title, icon, description },
             bodyProps: { children, bodyPadding },
             footerProps: { info, actions },
             closeButtonProps: { show: showCloseButton },
