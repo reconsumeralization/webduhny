@@ -2,10 +2,12 @@
 - polish logging / err reporting
 
 FINAL STEPS
+
 - ext
 - beta
 
 Questions
+
 - cms?
 - custom exts
 - folders?
