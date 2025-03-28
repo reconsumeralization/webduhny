@@ -6,7 +6,7 @@ const treeItemVariants = cva(
         "wby-group",
         "wby-relative",
         "wby-flex wby-items-center wby-gap-xs",
-        "wby-mb-xs wby-px-sm wby-py-xs-plus wby-rounded-md",
+        "wby-px-sm wby-py-xs-plus wby-rounded-md",
         "wby-text-neutral-primary",
         "wby-cursor-pointer",
         "hover:wby-bg-neutral-dark/5"
@@ -24,8 +24,10 @@ type TreeItemProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof 
 
 const TreeItem = ({ children, className, active, ...props }: TreeItemProps) => {
     return (
-        <div {...props} className={cn(treeItemVariants({ active }), className)}>
-            {children}
+        <div className={"wby-mb-xs"}>
+            <div {...props} className={cn(treeItemVariants({ active }), className)}>
+                {children}
+            </div>
         </div>
     );
 };
