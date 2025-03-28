@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useCallback } from "react";
 import { CmsReferenceContentEntry } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { useConfirmationDialog } from "@webiny/app-admin";
 import { ButtonLink } from "./elements/ButtonLink";
 import { useForm } from "@webiny/form";

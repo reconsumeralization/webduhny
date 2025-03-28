@@ -14,9 +14,7 @@ export const useFilePicker = (props: IFilePickerPrimitiveProps) => {
     );
 
     const presenter = useMemo(() => {
-        const presenter = new FilePickerPresenter();
-        presenter.init(params);
-        return presenter;
+        return new FilePickerPresenter();
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);

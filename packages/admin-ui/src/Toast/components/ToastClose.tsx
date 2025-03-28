@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as CloseIcon } from "@material-design-icons/svg/outlined/close.svg";
+import { ReactComponent as CloseIcon } from "@webiny/icons/close.svg";
 import { IconButton, type IconButtonProps } from "~/Button";
 import { Icon } from "~/Icon";
 

@@ -266,6 +266,13 @@ const CUSTOM_HANDLERS: Record<string, () => Array<PackageWithTests>> = {
             }
         ];
     },
+    "admin-ui": () => {
+        return [
+            {
+                cmd: "packages/admin-ui"
+            }
+        ];
+    },
     migrations: () => {
         return [
             {

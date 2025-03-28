@@ -1,9 +1,9 @@
 import React from "react";
 import { SketchPicker } from "react-color";
 import { useColorPicker } from "./useColorPicker";
-import { inputVariants } from "~/Input";
+import { type InputPrimitiveProps, inputVariants } from "~/Input";
 import { PopoverPrimitive, type PopoverPrimitiveContentProps } from "~/Popover";
-import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
+import { cn, cva, makeDecoratable } from "~/utils";
 
 const colorPickerVariants = cva("wby-cursor-pointer", {
     variants: {
@@ -21,9 +21,7 @@ const colorPickerVariants = cva("wby-cursor-pointer", {
     }
 });
 
-interface ColorPickerPrimitiveProps
-    extends React.HTMLAttributes<HTMLDivElement>,
-        VariantProps<typeof inputVariants> {
+interface ColorPickerPrimitiveProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
     /**
      * Callback triggered when the open state changes.
      */
@@ -31,7 +29,7 @@ interface ColorPickerPrimitiveProps
     /**
      * Callback triggered when the value changes.
      */
-    onValueChange: (value: string) => void;
+    onChange?: (value: string) => void;
     /**
      * Optional selected value.
      */
@@ -44,21 +42,42 @@ interface ColorPickerPrimitiveProps
      * Popover alignment.
      */
     align?: PopoverPrimitiveContentProps["align"];
+    /**
+     * Size of the input field.
+     * Refer to `InputPrimitiveProps["size"]` for possible values.
+     */
+    size?: InputPrimitiveProps["size"];
+    /**
+     * Variant of the input field.
+     * Refer to `InputPrimitiveProps["variant"]` for possible values.
+     */
+    variant?: InputPrimitiveProps["variant"];
+    /**
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
+     */
+    invalid?: InputPrimitiveProps["invalid"];
 }
 
 const DecoratableColorPickerPrimitive = ({
     align,
-    className,
     disabled,
     invalid,
     size,
     variant,
+    value,
+    onOpenChange,
+    onChange,
     ...props
 }: ColorPickerPrimitiveProps) => {
-    const { vm, setColor, setOpen } = useColorPicker(props);
+    const { vm, setColor, setOpen } = useColorPicker({
+        value,
+        onOpenChange,
+        onChange
+    });
 
     return (
-        <div className={className}>
+        <div {...props}>
             <PopoverPrimitive open={vm.open}>
                 <PopoverPrimitive.Trigger asChild>
                     <div

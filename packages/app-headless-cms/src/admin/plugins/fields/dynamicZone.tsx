@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ObjectIcon } from "@material-design-icons/svg/outlined/dynamic_form.svg";
+import { ReactComponent as ObjectIcon } from "@webiny/icons/dynamic_form.svg";
 import { i18n } from "@webiny/app/i18n";
 import { createFieldsList } from "@webiny/app-headless-cms-common";
 import { DynamicZone } from "~/admin/plugins/fields/dynamicZone/DynamicZone";

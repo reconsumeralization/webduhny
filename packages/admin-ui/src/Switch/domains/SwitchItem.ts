@@ -27,7 +27,7 @@ export class SwitchItem {
             id: generateId(data.id),
             label: data.label,
             value: data.value,
-            checked: Boolean(data.checked),
+            checked: data.checked ?? Boolean(data.value),
             disabled: data.disabled ?? false
         });
     }

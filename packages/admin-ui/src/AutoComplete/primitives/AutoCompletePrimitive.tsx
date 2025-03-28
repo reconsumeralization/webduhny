@@ -4,23 +4,37 @@ import { PopoverPrimitive } from "~/Popover";
 import { InputPrimitiveProps } from "~/Input";
 import { useAutoComplete } from "./useAutoComplete";
 import { AutoCompleteInputIcons, AutoCompleteList } from "./components";
-import { AutoCompleteOption } from "./domains";
+import { AutoCompleteOption } from "../domains";
 import { makeDecoratable } from "~/utils";
+import { Icon } from "~/Icon";
 
-type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
+interface AutoCompletePrimitiveProps {
     /**
-     * Accessible label for the command menu. Not shown visibly.
+     * Indicates if the reset action should be displayed.
      */
-    label?: string;
+    displayResetAction?: boolean;
+    /**
+     * Indicates if the field is disabled.
+     */
+    disabled?: boolean;
+    /**
+     * Message to display when there are no options.
+     */
+    emptyMessage?: React.ReactNode;
     /**
      * Message to display when there are no options loaded or selected.
      * Use it to invite the user to interact with the autocomplete by typing a value.
      */
     initialMessage?: React.ReactNode;
     /**
-     * Message to display when there are no options.
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
      */
-    emptyMessage?: React.ReactNode;
+    invalid?: InputPrimitiveProps["invalid"];
+    /**
+     * Accessible label for the command menu. Not shown visibly.
+     */
+    label?: string;
     /**
      * Indicates if the autocomplete is loading options.
      */
@@ -34,10 +48,6 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      */
     onOpenChange?: (open: boolean) => void;
     /**
-     * Callback triggered when the value changes.
-     */
-    onValueChange: (value: string) => void;
-    /**
      * Callback triggered to reset the value.
      */
     onValueReset?: () => void;
@@ -45,6 +55,10 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      * Callback triggered when a value has been searched by the user.
      */
     onValueSearch?: (value: string) => void;
+    /**
+     * Callback triggered when the value changes.
+     */
+    onValueChange: (value: string) => void;
     /**
      * List of options for the autocomplete.
      */
@@ -54,14 +68,28 @@ type AutoCompletePrimitiveProps = Omit<InputPrimitiveProps, "endIcon"> & {
      */
     optionRenderer?: (item: any, index: number) => React.ReactNode;
     /**
+     * Placeholder text for the input field.
+     */
+    placeholder?: string;
+    /**
+     * Size of the input field.
+     * Refer to `InputPrimitiveProps["size"]` for possible values.
+     */
+    size?: InputPrimitiveProps["size"];
+    /**
+     * Icon to be displayed at the start of the input field.
+     */
+    startIcon?: React.ReactElement<typeof Icon> | React.ReactElement;
+    /**
+     * Variant of the input field.
+     * Refer to `InputPrimitiveProps["variant"]` for possible values.
+     */
+    variant?: InputPrimitiveProps["variant"];
+    /**
      * Optional selected item.
      */
     value?: string;
-    /**
-     * Indicates if the reset action should be displayed.
-     */
-    displayResetAction?: boolean;
-};
+}
 
 const DecoratableAutoCompletePrimitive = (props: AutoCompletePrimitiveProps) => {
     const {

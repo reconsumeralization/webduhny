@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Add } from "@material-design-icons/svg/filled/add.svg";
+import { ReactComponent as Add } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { ButtonIcon, ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
 import { Container } from "./styled";

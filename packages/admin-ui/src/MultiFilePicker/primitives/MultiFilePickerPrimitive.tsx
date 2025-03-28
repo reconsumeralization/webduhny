@@ -5,6 +5,7 @@ import {
     type FilePickerPrimitiveProps,
     filePickerVariants,
     FilePreview,
+    FormPickerLabel,
     ImagePreview,
     RichItemPreview,
     TextOnlyPreview,
@@ -17,10 +18,25 @@ import { useMultiFilePicker } from "~/MultiFilePicker/primitives/useMultiFilePic
 
 interface MultiFilePickerPrimitiveProps
     extends Omit<FilePickerPrimitiveProps, "value" | "onEditItem" | "onRemoveItem"> {
+    /**
+     * The list of file items or file paths.
+     */
     values?: FileItemDto[] | string[] | null;
+    /**
+     * Placeholder text for the button that allows users to select a file.
+     */
     buttonPlaceholder?: string;
+    /**
+     * Callback function to replace an item.
+     */
     onReplaceItem: (item: FileItemFormatted | null, index: number) => void;
+    /**
+     * Optional callback function to edit an item.
+     */
     onEditItem?: (item: FileItemFormatted | null, index: number) => void;
+    /**
+     * Optional callback function to remove an item.
+     */
     onRemoveItem?: (item: FileItemFormatted | null, index: number) => void;
 }
 
@@ -40,14 +56,12 @@ const BaseMultiFilePickerPrimitive = ({
     renderTrigger,
     type = "area",
     values = [],
-    variant,
-    ...props
+    variant
 }: MultiFilePickerPrimitiveProps) => {
     const { vm } = useMultiFilePicker({ values });
 
     return (
         <div
-            {...props}
             data-disabled={disabled}
             className={cn(
                 inputVariants({ variant, invalid }),
@@ -59,7 +73,11 @@ const BaseMultiFilePickerPrimitive = ({
         >
             {label && type === "area" && (
                 <div className={"wby-flex wby-justify-between"}>
-                    {label}
+                    {typeof label === "string" ? (
+                        <FormPickerLabel label={label} className={"wby-m-0"} />
+                    ) : (
+                        label
+                    )}
                     <Button
                         text={buttonPlaceholder ?? "Select a file"}
                         variant={"ghost"}

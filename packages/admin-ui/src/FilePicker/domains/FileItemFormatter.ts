@@ -1,4 +1,4 @@
-import type { FileItem } from "./FileItem";
+import { FileItem } from "./FileItem";
 import type { FileItemFormatted } from "./FileItemFormatted";
 
 export class FileItemFormatter {

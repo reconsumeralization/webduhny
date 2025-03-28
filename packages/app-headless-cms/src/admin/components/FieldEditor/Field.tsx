@@ -1,85 +1,19 @@
 import React, { Fragment, useCallback, useMemo } from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
-import { IconButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as DeleteIcon } from "~/admin/icons/delete.svg";
-import { ReactComponent as TitleIcon } from "~/admin/icons/title-24px.svg";
-import { ReactComponent as MoreVerticalIcon } from "~/admin/icons/more_vert.svg";
-import { Menu, MenuItem } from "@webiny/ui/Menu";
+import capitalize from "lodash/capitalize";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as TitleIcon } from "@webiny/icons/title.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { plugins } from "@webiny/plugins";
 import { CmsModelField, CmsEditorFieldOptionPlugin, CmsModel } from "~/types";
-import { ListItemGraphic } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
 import { i18n } from "@webiny/app/i18n";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useModelEditor } from "~/admin/hooks";
 import { useModelFieldEditor } from "~/admin/components/FieldEditor/useModelFieldEditor";
 import { useConfirmationDialog } from "@webiny/app-admin";
+import { IconButton, Heading, Text, DropdownMenu, Tag } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/components/editor/field");
-
-const FieldContainer = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-});
-
-const LowerCase = styled.span`
-    text-transform: lowercase;
-`;
-
-const Info = styled("div")({
-    display: "flex",
-    flexDirection: "column",
-    "> *": {
-        flex: "1 100%",
-        lineHeight: "150%"
-    }
-});
-
-const Actions = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "right",
-    position: "relative",
-    "> *": {
-        flex: "1 100%"
-    }
-});
-
-/**
- * TODO @sven to give correct values
- */
-const FieldTypeName = styled("div")({
-    fontFamily: "var(--mdc-typography-font-family)",
-    display: "flex",
-    flexDirection: "column",
-    textTransform: "uppercase",
-    color: "#938F99",
-    flex: "1",
-    textAlign: "right",
-    fontSize: "14px",
-    paddingRight: "10px"
-});
-
-const menuStyles = css({
-    width: "220px",
-    ".disabled": {
-        opacity: 0.5,
-        pointerEvents: "none"
-    }
-});
-
-const FieldExtra = styled.div`
-    padding: 10px 0 10px;
-
-    :empty {
-        display: none;
-    }
-`;
 
 const allowedTitleFieldTypes: string[] = ["text", "number"];
 
@@ -255,7 +189,7 @@ const Field = (props: FieldProps) => {
             if (!fieldTypeName) {
                 return null;
             }
-            return <FieldTypeName>{fieldTypeName}</FieldTypeName>;
+            return <Tag content={capitalize(fieldTypeName)} variant={"neutral-base"} />;
         };
 
         fn.displayName = "FieldTypeRenderer";
@@ -271,74 +205,87 @@ const Field = (props: FieldProps) => {
 
     return (
         <Fragment>
-            <FieldContainer>
-                <Info>
-                    <Typography use={"subtitle1"}>{field.label}</Typography>
-                    <Typography use={"caption"}>
+            <div className={"wby-flex wby-justify-between wby-align-center"}>
+                <div>
+                    <Heading level={6}>{field.label}</Heading>
+                    <Text size={"sm"} className={"wby-text-neutral-strong"}>
                         {fieldPlugin.field.label}
-                        {info && <LowerCase> ({info})</LowerCase>}
-                    </Typography>
-                </Info>
-                {fieldInformationRenderer
-                    ? fieldInformationRenderer({ model, field })
-                    : defaultInformationRenderer()}
-                <Actions>
+                        {info && <span className={"wby-lowercase"}> ({info})</span>}
+                    </Text>
+                </div>
+                <div className={"wby-flex wby-items-center wby-justify-end wby-gap-sm"}>
+                    {fieldInformationRenderer
+                        ? fieldInformationRenderer({ model, field })
+                        : defaultInformationRenderer()}
                     {canEdit ? (
                         <IconButton
                             data-testid={"cms.editor.edit-field"}
                             icon={<EditIcon />}
                             onClick={() => onEdit(field)}
+                            variant={"ghost"}
+                            size={"sm"}
                         />
                     ) : null}
-                    <Menu
-                        className={menuStyles}
-                        handle={<IconButton icon={<MoreVerticalIcon />} />}
+                    <DropdownMenu
+                        trigger={
+                            <IconButton icon={<MoreVerticalIcon />} variant={"ghost"} size={"sm"} />
+                        }
                     >
                         {editorFieldOptionPlugins.map(pl =>
                             React.cloneElement(pl.render(), { key: pl.name })
                         )}
                         {/* We only allow this action for top-level fields. */}
-                        <MenuItem
+                        <DropdownMenu.Item
                             disabled={!isFieldAllowedToBeTitle(model, field, parent)}
                             onClick={setAsTitle}
-                        >
-                            <ListItemGraphic>
-                                <Icon icon={<TitleIcon />} />
-                            </ListItemGraphic>
-                            {t`Use as title`}
-                        </MenuItem>
-                        <MenuItem
+                            text={t`Use as title`}
+                            icon={
+                                <DropdownMenu.Item.Icon
+                                    element={<TitleIcon />}
+                                    label={t`Use as title`}
+                                />
+                            }
+                        />
+                        <DropdownMenu.Item
                             disabled={!isFieldAllowedToBeDescription(model, field, parent)}
                             onClick={setAsDescription}
-                        >
-                            <ListItemGraphic>
-                                <Icon icon={<TitleIcon />} />
-                            </ListItemGraphic>
-                            {t`Use as description`}
-                        </MenuItem>
-                        <MenuItem
+                            text={t`Use as description`}
+                            icon={
+                                <DropdownMenu.Item.Icon
+                                    element={<TitleIcon />}
+                                    label={t`Use as description`}
+                                />
+                            }
+                        />
+                        <DropdownMenu.Item
                             disabled={!isFieldAllowedToBeImage(model, field, parent)}
                             onClick={setAsImage}
-                        >
-                            <ListItemGraphic>
-                                <Icon icon={<TitleIcon />} />
-                            </ListItemGraphic>
-                            {t`Use as image`}
-                        </MenuItem>
-
-                        <MenuItem onClick={onDelete}>
-                            <ListItemGraphic>
-                                <Icon icon={<DeleteIcon />} />
-                            </ListItemGraphic>
-                            {t`Delete`}
-                        </MenuItem>
-                    </Menu>
-                </Actions>
-            </FieldContainer>
-            <FieldExtra>
-                {fieldPlugin.field.render &&
-                    fieldPlugin.field.render({ field, data: model, setData: setModel })}
-            </FieldExtra>
+                            text={t`Use as image`}
+                            icon={
+                                <DropdownMenu.Item.Icon
+                                    element={<TitleIcon />}
+                                    label={t`Use as image`}
+                                />
+                            }
+                        />
+                        <DropdownMenu.Item
+                            onClick={onDelete}
+                            text={t`Delete`}
+                            icon={
+                                <DropdownMenu.Item.Icon
+                                    element={<DeleteIcon />}
+                                    label={t`Delete`}
+                                />
+                            }
+                        />
+                    </DropdownMenu>
+                </div>
+            </div>
+            {fieldPlugin.field.render && (
+                <div className={"wby-pt-md"}>
+                    {fieldPlugin.field.render({ field, data: model, setData: setModel })}
+                </div>
+            )}
         </Fragment>
     );
 };

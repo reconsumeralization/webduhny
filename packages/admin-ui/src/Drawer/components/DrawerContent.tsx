@@ -59,6 +59,8 @@ const DrawerContent = React.forwardRef<
             ref={ref}
             className={cn(drawerVariants({ side }), className)}
             style={{ width, ...style }}
+            // TODO: An optional accessible description to be announced when the dialog is opened. At the moment we skip this.
+            aria-describedby={undefined}
         >
             <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>{children}</div>
         </DrawerPrimitive.Content>

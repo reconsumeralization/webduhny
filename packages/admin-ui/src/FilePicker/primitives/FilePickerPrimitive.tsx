@@ -1,10 +1,10 @@
 import * as React from "react";
 import { cn, cva, type VariantProps, makeDecoratable, withStaticProps } from "~/utils";
-import { Trigger } from "./components";
+import { FormPickerLabel, Trigger } from "./components";
 import { Label } from "~/Label";
-import { inputVariants } from "~/Input";
+import { InputPrimitiveProps, inputVariants } from "~/Input";
 import { ImagePreview, RichItemPreview, TextOnlyPreview, FilePreview } from "./components";
-import { FileItem, type FileItemDto, type FileItemFormatted } from "../domain";
+import { FileItem, type FileItemDto, type FileItemFormatted } from "../domains";
 import { useFilePicker } from "./useFilePicker";
 import type { FilePreviewRendererProps, TriggerRendererProps } from "./components/types";
 
@@ -40,18 +40,55 @@ const filePickerVariants = cva(
 
 interface FilePickerPrimitiveProps
     extends React.HTMLAttributes<HTMLDivElement>,
-        VariantProps<typeof inputVariants>,
         VariantProps<typeof filePickerVariants> {
+    /**
+     * Custom styles for the container.
+     */
     containerStyle?: React.CSSProperties;
+    /**
+     * Indicates if the file picker is disabled.
+     */
     disabled?: boolean;
-    label?: React.ReactElement<typeof Label> | React.ReactNode;
+    /**
+     * Indicates if the input field is invalid.
+     * Refer to `InputPrimitiveProps["invalid"]` for possible values.
+     */
+    invalid?: InputPrimitiveProps["invalid"];
+    /**
+     * Label for the file picker.
+     */
+    label?: React.ReactElement<typeof Label> | React.ReactNode | string;
+    /**
+     * Callback triggered when an item is edited.
+     */
     onEditItem?: (item: FileItemFormatted | null) => void;
+    /**
+     * Callback triggered when an item is removed.
+     */
     onRemoveItem?: (item: FileItemFormatted | null) => void;
+    /**
+     * Callback triggered when an item is selected.
+     */
     onSelectItem: () => void;
+    /**
+     * Placeholder text for the file picker.
+     */
     placeholder?: string;
+    /**
+     * Custom renderer for the file preview.
+     */
     renderFilePreview?: (props: FilePreviewRendererProps) => React.ReactElement<any>;
+    /**
+     * Custom renderer for the trigger.
+     */
     renderTrigger?: (props: TriggerRendererProps) => React.ReactElement<any>;
+    /**
+     * Custom styles for the file picker.
+     */
     style?: React.CSSProperties;
+    /**
+     * Value of the selected file.
+     */
     value?: FileItemDto | string | null;
 }
 
@@ -69,15 +106,12 @@ const BaseFilePickerPrimitive = ({
     renderTrigger,
     type = "area",
     value,
-    variant,
-    ...props
+    variant
 }: FilePickerPrimitiveProps) => {
     const { vm } = useFilePicker({ value });
-    console.log("className", className);
 
     return (
         <div
-            {...props}
             data-disabled={disabled}
             className={cn(
                 inputVariants({ variant, invalid }),
@@ -86,7 +120,13 @@ const BaseFilePickerPrimitive = ({
             )}
             style={containerStyle}
         >
-            {label && type === "area" && label}
+            {label &&
+                type === "area" &&
+                (typeof label === "string" ? (
+                    <FormPickerLabel label={label} className={"wby-m-0"} />
+                ) : (
+                    label
+                ))}
             {vm.file ? (
                 <FilePreview
                     disabled={disabled}

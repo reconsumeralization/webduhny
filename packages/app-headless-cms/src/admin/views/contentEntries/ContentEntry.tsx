@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { Elevation } from "@webiny/ui/Elevation";

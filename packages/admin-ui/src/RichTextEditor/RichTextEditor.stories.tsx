@@ -7,7 +7,11 @@ const meta: Meta<typeof RichTextEditor> = {
     component: RichTextEditor,
     argTypes: {
         onChange: { action: "onChange" },
-        onReady: { action: "onReady" }
+        onReady: { action: "onReady" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

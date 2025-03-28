@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ArrowDown } from "@material-design-icons/svg/outlined/keyboard_arrow_up.svg";
+import { ReactComponent as ArrowDown } from "@webiny/icons/keyboard_arrow_up.svg";
 import { Icon } from "~/Icon";
 import { cn, cva, type VariantProps } from "~/utils";
 

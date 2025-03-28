@@ -34,7 +34,7 @@ type Props = Omit<SwitchProps, "value"> &
  */
 class Switch extends React.Component<Props> {
     public override render() {
-        const { value, description, validation, label } = this.props;
+        const { value, description, validation, label, disabled } = this.props;
 
         return (
             <AdminSwitch
@@ -44,7 +44,8 @@ class Switch extends React.Component<Props> {
                 className={"webiny-ui-switch"}
                 checked={Boolean(value)}
                 value={String(value)}
-                onCheckedChange={() => this.props.onChange && this.props.onChange(!value)}
+                onChange={() => this.props.onChange && this.props.onChange(!value)}
+                disabled={disabled}
             />
         );
     }

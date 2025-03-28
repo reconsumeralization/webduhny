@@ -89,6 +89,7 @@ const DecoratableTextareaPrimitive = ({
     onChange: originalOnChange,
     onEnter,
     onKeyDown: originalOnKeyDown,
+    value,
     ...props
 }: TextareaPrimitiveProps) => {
     const onChange = React.useCallback(
@@ -118,11 +119,12 @@ const DecoratableTextareaPrimitive = ({
 
     return (
         <textarea
+            {...props}
             ref={textareaRef}
             className={cn(textareaVariants({ variant, invalid, size }), className)}
             onChange={onChange}
             onKeyDown={onKeyDown}
-            {...props}
+            value={value ?? ""}
         />
     );
 };

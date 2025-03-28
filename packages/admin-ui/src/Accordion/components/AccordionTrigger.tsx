@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as KeyboardArrowDownIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as KeyboardArrowDownIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { cn } from "~/utils";
 import { type AccordionItemProps } from "./AccordionItem";
@@ -24,6 +24,7 @@ const AccordionTrigger = ({
     // can also contain one or more buttons.
     const divAsButtonProps = React.useMemo<React.HTMLAttributes<HTMLDivElement>>(() => {
         return {
+            role: "button",
             tabIndex: interactive ? 0 : -1, // Disable keyboard interaction if not interactive
             onKeyDown: e => {
                 if (e.key === "Enter" || e.key === " ") {

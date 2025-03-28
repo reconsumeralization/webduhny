@@ -1,6 +1,6 @@
 import type { VariantProps } from "~/utils";
 import { previewVariants } from "./previews/variants";
-import type { FileItemFormatted } from "../../domain";
+import type { FileItemFormatted } from "../../domains";
 
 /**
  * Default properties of a file preview component.

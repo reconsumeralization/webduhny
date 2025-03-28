@@ -78,7 +78,7 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
                                                 getSupportedExtensionsLabelHint(imagesOnly)
                                             ]
                                                 .filter(Boolean)
-                                                .concat(" ")}
+                                                .join(" ")}
                                             values={values}
                                             onSelectItem={() => selectFiles()}
                                             onReplaceItem={(_, index) => selectFiles(index)}

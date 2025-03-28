@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as DragHandleIcon } from "@material-design-icons/svg/filled/drag_indicator.svg";
+import { ReactComponent as DragHandleIcon } from "@webiny/icons/drag_indicator.svg";
 import { makeDecoratable } from "~/utils";
 import { Icon, IconProps as IconProps } from "~/Icon";
 

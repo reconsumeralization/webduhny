@@ -12,11 +12,7 @@ const meta: Meta<typeof SwitchPrimitive> = {
     render: args => {
         const [checked, setChecked] = useState(args.checked);
         return (
-            <SwitchPrimitive
-                {...args}
-                checked={checked}
-                onCheckedChange={value => setChecked(value)}
-            />
+            <SwitchPrimitive {...args} checked={checked} onChange={value => setChecked(value)} />
         );
     }
 };

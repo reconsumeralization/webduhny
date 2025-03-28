@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { MultiAutoCompletePrimitive } from "./MultiAutoCompletePrimitive";
 import { Button } from "~/Button";
 import { Icon } from "~/Icon";
@@ -409,7 +409,7 @@ export const WithCustomSelectedOptionRenderer: Story = {
         ...WithCustomOptionRenderer.args
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.values || []);
         const selectedOptionRenderer = (item: any) => {
             return (
                 <Tag

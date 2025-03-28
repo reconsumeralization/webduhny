@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
+import { ReactComponent as Check } from "@webiny/icons/check.svg";
 import * as SelectPrimitives from "@radix-ui/react-select";
 import { cn } from "~/utils";
 

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as CopyToClipboardIcon } from "@material-design-icons/svg/outlined/content_copy.svg";
+import { ReactComponent as CopyToClipboardIcon } from "@webiny/icons/content_copy.svg";
 import { ButtonProps, Button } from "./Button";
 import { makeDecoratable } from "../utils";
 

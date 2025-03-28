@@ -1,20 +1,38 @@
 import React from "react";
-import { Text } from "~/Text";
-import { makeDecoratable } from "~/utils";
+import { Text, type TextProps } from "~/Text";
+import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 
-interface FormComponentDescriptionProps
-    extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
-    text?: React.ReactNode;
-}
+const formComponentDescriptionVariants = cva("wby-mb-sm wby-text-neutral-strong", {
+    variants: {
+        disabled: {
+            true: "wby-text-neutral-disabled"
+        }
+    }
+});
 
-const DecoratableFormComponentDescription = (props: FormComponentDescriptionProps) => {
-    if (!props.text) {
+type FormComponentDescriptionProps = TextProps &
+    VariantProps<typeof formComponentDescriptionVariants> & {
+        text?: React.ReactNode;
+    };
+
+const DecoratableFormComponentDescription = ({
+    text,
+    disabled,
+    className,
+    ...props
+}: FormComponentDescriptionProps) => {
+    if (!text) {
         return null;
     }
 
     return (
-        <Text size={"sm"} as={"div"} className={"wby-mb-sm wby-text-neutral-strong"}>
-            {props.text}
+        <Text
+            {...props}
+            size={"sm"}
+            as={"div"}
+            className={cn(formComponentDescriptionVariants({ disabled }), className)}
+        >
+            {text}
         </Text>
     );
 };

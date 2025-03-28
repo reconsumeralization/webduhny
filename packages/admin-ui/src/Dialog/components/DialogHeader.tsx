@@ -3,7 +3,7 @@ import { cn } from "~/utils";
 import { type DialogProps } from "../Dialog";
 import { DialogTitle } from "./DialogTitle";
 import { DialogDescription } from "./DialogDescription";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { ReactComponent as XIcon } from "@webiny/icons/close.svg";
 import { IconButton } from "~/Button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useMemo } from "react";
@@ -47,7 +47,7 @@ export const DialogHeader = ({
                     </DialogPrimitive.Close>
                 )}
             </DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            {description && <DialogDescription>{description}</DialogDescription>}
         </div>
     );
 };

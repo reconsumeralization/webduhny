@@ -39,39 +39,35 @@ describe("MultiAutoCompletePresenter", () => {
         }
     });
 
-    it("should return the compatible `vm.selectedOptionsVm` based on params`", () => {
-        // `values`
-        {
-            presenter.init({
-                options: ["Option 1", "Option 2", "Option 3"],
-                values: ["Option 1", "Option 2"],
-                onValuesChange
-            });
-            expect(presenter.vm.selectedOptionsVm.options).toEqual([
-                {
-                    value: "Option 1",
-                    label: "Option 1",
-                    disabled: false,
-                    selected: true,
-                    separator: false,
-                    item: null
-                },
-                {
-                    value: "Option 2",
-                    label: "Option 2",
-                    disabled: false,
-                    selected: true,
-                    separator: false,
-                    item: null
-                }
-            ]);
-        }
+    it("should return the compatible `vm.selectedOptionsVm` based on params", () => {
+        presenter.init({
+            options: ["Option 1", "Option 2", "Option 3"],
+            values: ["Option 1", "Option 2"],
+            onValuesChange
+        });
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([
+            {
+                value: "Option 1",
+                label: "Option 1",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            },
+            {
+                value: "Option 2",
+                label: "Option 2",
+                disabled: false,
+                selected: true,
+                separator: false,
+                item: null
+            }
+        ]);
+    });
 
-        // default: no params
-        {
-            presenter.init({ options: ["Option 1", "Option 2"], onValuesChange });
-            expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
-        }
+    it("should return the compatible `vm.selectedOptionsVm` with  no params", () => {
+        presenter.init({ options: ["Option 1", "Option 2"], onValuesChange });
+        expect(presenter.vm.selectedOptionsVm.options).toEqual([]);
     });
 
     it("should return the compatible `vm.optionsListVm` based on params", () => {
@@ -213,7 +209,9 @@ describe("MultiAutoCompletePresenter", () => {
             // default: no params
             presenter.init({ onValuesChange });
             expect(presenter.vm.optionsListVm.options).toEqual([]);
-            expect(presenter.vm.optionsListVm.emptyMessage).toEqual("No results.");
+            expect(presenter.vm.optionsListVm.emptyMessage).toEqual(
+                "Start typing to find an option."
+            );
             expect(presenter.vm.optionsListVm.loadingMessage).toEqual("Loading...");
             expect(presenter.vm.optionsListVm.open).toEqual(false);
             expect(presenter.vm.optionsListVm.empty).toEqual(true);

@@ -5,7 +5,7 @@ import { SidebarMenuSubButton } from "./SidebarMenuSubButton";
 import { SidebarMenuSubItemIndentation } from "./SidebarMenuSubItemIndentation";
 import { SidebarMenuSub } from "./SidebarMenuSub";
 import { IconButton } from "~/Button";
-import { ReactComponent as KeyboardArrowRightIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import { useSidebarMenu } from "./SidebarMenuProvider";
 import { type SidebarMenuItemProps } from "./SidebarMenuItem";
 

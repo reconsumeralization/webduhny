@@ -68,15 +68,19 @@ const DecoratableSlider = ({
     if (labelPosition === "side") {
         return (
             <div className={"wby-w-full"}>
-                <FormComponentDescription text={description} />
+                <FormComponentDescription text={description} disabled={props.disabled} />
                 <SliderRendererWithSideValue
                     {...props}
                     {...vm}
                     onValueChange={changeValue}
                     onValueCommit={commitValue}
                 />
-                <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-                <FormComponentNote text={note} />
+                <FormComponentErrorMessage
+                    text={validationMessage}
+                    invalid={invalid}
+                    disabled={props.disabled}
+                />
+                <FormComponentNote text={note} disabled={props.disabled} />
             </div>
         );
     }
@@ -88,15 +92,19 @@ const DecoratableSlider = ({
                 disabled={props.disabled}
                 required={props.required}
             />
-            <FormComponentDescription text={description} />
+            <FormComponentDescription text={description} disabled={props.disabled} />
             <SliderPrimitiveRenderer
                 {...props}
                 {...vm}
                 onValueChange={changeValue}
                 onValueCommit={commitValue}
             />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={props.disabled}
+            />
+            <FormComponentNote text={note} disabled={props.disabled} />
         </div>
     );
 };

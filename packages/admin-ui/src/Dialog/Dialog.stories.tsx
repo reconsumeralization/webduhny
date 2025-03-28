@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
 import { Button } from "~/Button";
 import { DropdownMenu } from "~/DropdownMenu";
-import { ReactComponent as DoorbellIcon } from "@material-design-icons/svg/outlined/ring_volume.svg";
+import { ReactComponent as DoorbellIcon } from "@webiny/icons/ring_volume.svg";
 import { Tabs } from "~/Tabs";
+import { IconPicker } from "~/IconPicker";
+
+// @ts-expect-error
+library.add(fas);
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -119,6 +125,58 @@ export const DropdownMenuInDialog: Story = {
                 </DropdownMenu>
             </>
         )
+    }
+};
+
+export const DropdownIconPickerInDialog: Story = {
+    args: {
+        ...Default.args
+    },
+    render: args => {
+        const [value, setValue] = useState("");
+        return (
+            <Dialog {...args}>
+                <IconPicker
+                    icons={[
+                        { prefix: "fas", name: "trash-restore-alt" },
+                        { prefix: "fas", name: "trash-can-arrow-up" },
+                        { prefix: "fas", name: "naira-sign" },
+                        { prefix: "fas", name: "cart-arrow-down" },
+                        { prefix: "fas", name: "walkie-talkie" },
+                        { prefix: "fas", name: "file-edit" },
+                        { prefix: "fas", name: "file-pen" },
+                        { prefix: "fas", name: "receipt" },
+                        { prefix: "fas", name: "pen-square" },
+                        { prefix: "fas", name: "pencil-square" },
+                        { prefix: "fas", name: "square-pen" },
+                        { prefix: "fas", name: "suitcase-rolling" },
+                        { prefix: "fas", name: "person-circle-exclamation" },
+                        { prefix: "fas", name: "chevron-down" },
+                        { prefix: "fas", name: "battery" },
+                        { prefix: "fas", name: "battery-5" },
+                        { prefix: "fas", name: "battery-full" },
+                        { prefix: "fas", name: "skull-crossbones" },
+                        { prefix: "fas", name: "code-compare" },
+                        { prefix: "fas", name: "list-dots" },
+                        { prefix: "fas", name: "list-ul" },
+                        { prefix: "fas", name: "school-lock" },
+                        { prefix: "fas", name: "tower-cell" },
+                        { prefix: "fas", name: "long-arrow-alt-down" },
+                        { prefix: "fas", name: "down-long" },
+                        { prefix: "fas", name: "ranking-star" },
+                        { prefix: "fas", name: "chess-king" },
+                        { prefix: "fas", name: "person-harassing" },
+                        { prefix: "fas", name: "brazilian-real-sign" },
+                        { prefix: "fas", name: "landmark-alt" }
+                    ]}
+                    value={value}
+                    onChange={value => {
+                        console.log("Selected icon:", value);
+                        setValue(value);
+                    }}
+                />
+            </Dialog>
+        );
     }
 };
 

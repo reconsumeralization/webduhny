@@ -26,10 +26,14 @@ const DecoratableIconPicker = ({
     return (
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
-            <FormComponentDescription text={description} />
+            <FormComponentDescription text={description} disabled={disabled} />
             <IconPickerPrimitive {...props} disabled={disabled} invalid={invalid} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={disabled}
+            />
+            <FormComponentNote text={note} disabled={disabled} />
         </div>
     );
 };

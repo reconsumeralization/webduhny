@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as UnpublishIcon } from "@material-design-icons/svg/outlined/settings_backup_restore.svg";
+import { ReactComponent as UnpublishIcon } from "@webiny/icons/settings_backup_restore.svg";
 import { observer } from "mobx-react-lite";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useCms, useModel, usePermission } from "~/admin/hooks";

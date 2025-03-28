@@ -3,15 +3,24 @@ import { cn, makeDecoratable } from "~/utils";
 import { CheckboxItemDto, CheckboxItemFormatted, CheckboxPrimitiveRenderer } from "~/Checkbox";
 import { useCheckboxGroup } from "./useCheckboxGroup";
 
-type CheckboxGroupPrimitiveProps<TValue = any> = {
+interface CheckboxGroupPrimitiveProps<TValue = any> {
+    /**
+     * Array of checkbox items.
+     */
     items: CheckboxItemDto[];
-    onCheckedChange: (values: TValue[]) => void;
+    /**
+     * Callback function called when the checkbox values change.
+     */
+    onChange: (values: TValue[]) => void;
+    /**
+     * Array of selected checkbox values.
+     */
     values: TValue[];
-};
+}
 
-type CheckboxGroupPrimitiveVm = {
+interface CheckboxGroupPrimitiveVm {
     items: CheckboxItemFormatted[];
-};
+}
 
 type CheckboxGroupPrimitiveRendererProps<TValue = any> = CheckboxGroupPrimitiveVm & {
     changeChecked: (value: TValue) => void;

@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Prompt } from "@webiny/react-router";
-import styled from "@emotion/styled";
-import { css } from "emotion";
 import { i18n } from "@webiny/app/i18n";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
-import { Icon } from "@webiny/ui/Icon";
-import { Typography } from "@webiny/ui/Typography";
-import { Tab, Tabs } from "@webiny/ui/Tabs";
-import { ReactComponent as FormIcon } from "./icons/round-assignment-24px.svg";
+import { Heading, Separator, Tabs, Text, TimeAgo } from "@webiny/admin-ui";
 import { FieldsSidebar } from "./FieldsSidebar";
 import { FieldEditor } from "../FieldEditor";
 import { PreviewTab } from "./PreviewTab";
@@ -26,52 +21,15 @@ const t = i18n.ns("app-headless-cms/admin/editor");
 
 const prompt = t`There are some unsaved changes! Are you sure you want to navigate away and discard all changes?`;
 
-const ContentContainer = styled("div")({
-    paddingTop: 65
-});
-
-export const EditContainer = styled("div")({
-    padding: 40,
-    position: "relative"
-});
-
-const LeftBarTitle = styled("div")({
-    borderBottom: "1px solid var(--mdc-theme-on-background)",
-    display: "flex",
-    alignItems: "center",
-    padding: 25,
-    color: "var(--mdc-theme-on-surface)"
-});
-
-const titleIcon = css({
-    height: 24,
-    marginRight: 15,
-    color: "var(--mdc-theme-primary)"
-});
-
-const LeftBarFieldList = styled("div")({
-    padding: 40,
-    overflow: "auto",
-    height: "calc(100vh - 250px)"
-});
-
-const formTabs = css({
-    "&.webiny-ui-tabs": {
-        ".webiny-ui-tabs__tab-bar": {
-            backgroundColor: "var(--mdc-theme-surface)"
-        }
-    }
-});
-
 interface OnChangeParams {
     fields: CmsModelField[];
     layout: CmsEditorFieldsLayout;
 }
 
 export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
-    const { data, setData, isPristine } = useModelEditor();
+    const { data, setData, isPristine, contentModel } = useModelEditor();
 
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const [activeTabIndex, setActiveTabIndex] = useState<string>("edit");
 
     const onChange = ({ fields, layout }: OnChangeParams) => {
         setData(data => ({ ...data, fields, layout }));
@@ -84,52 +42,89 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
     }
 
     return (
-        <div className={"content-model-editor"}>
+        <div className={"content-model-editor wby-flex-1"}>
             <Prompt when={!isPristine} message={prompt} />
             <Header />
-            <ContentContainer>
+            {/*TODO: remove the height in favour of a TW variable for the height (h-main-section)*/}
+            <div className={"wby-w-full wby-h-[calc(100vh-65px)] wby-mt-[65px]"}>
                 <SplitView>
-                    <LeftPanel span={4}>
-                        <LeftBarTitle>
-                            <Icon className={titleIcon} icon={<FormIcon />} />
-                            <Typography use={"headline6"}>Fields</Typography>
-                        </LeftBarTitle>
-                        <LeftBarFieldList>
+                    <LeftPanel span={4} className={"wby-bg-neutral-light"}>
+                        <div className={"wby-px-lg wby-py-md"}>
+                            <Text
+                                className={
+                                    "wby-text-accent-primary wby-uppercase wby-font-semibold"
+                                }
+                            >
+                                {"Fields"}
+                            </Text>
+                        </div>
+                        <Separator margin={"none"} />
+                        <div
+                            className={
+                                "wby-px-lg wby-py-md wby-h-[calc(100vh-120px)] wby-overflow-y-auto"
+                            }
+                        >
                             <FieldsSidebar
                                 onFieldDragStart={() => {
-                                    setActiveTabIndex(0);
+                                    setActiveTabIndex("edit");
                                 }}
                             />
-                        </LeftBarFieldList>
+                        </div>
                     </LeftPanel>
-                    <RightPanel span={8}>
+                    <RightPanel span={8} className={"wby-bg-neutral-base"}>
+                        {contentModel && (
+                            <div className={"wby-px-xl wby-pt-lg wby-pb-md-extra"}>
+                                <Heading level={4}>{contentModel.name}</Heading>
+                                <Text size={"sm"} className={"wby-text-neutral-muted"}>
+                                    {`Created by ${contentModel.createdBy.displayName}. Last modified: `}
+                                    <TimeAgo datetime={contentModel.savedOn} />.
+                                </Text>
+                            </div>
+                        )}
                         <Tabs
-                            value={activeTabIndex}
-                            className={formTabs}
-                            onActivate={e => setActiveTabIndex(e)}
-                        >
-                            <Tab label={"Edit"} data-testid={"cms.editor.tab.edit"}>
-                                <EditContainer>
-                                    <FieldEditor
-                                        fields={data.fields}
-                                        layout={data.layout || []}
-                                        onChange={onChange}
-                                    />
-                                </EditContainer>
-                            </Tab>
-                            <Tab label={"Preview"} data-testid={"cms.editor.tab.preview"}>
-                                <ContentEntryEditorWithConfig>
-                                    <ContentEntriesProvider contentModel={data}>
-                                        <ContentEntryProvider readonly={true}>
-                                            <PreviewTab activeTab={activeTabIndex === 1} />
-                                        </ContentEntryProvider>
-                                    </ContentEntriesProvider>
-                                </ContentEntryEditorWithConfig>
-                            </Tab>
-                        </Tabs>
+                            size={"md"}
+                            spacing={"xl"}
+                            separator={true}
+                            value={String(activeTabIndex)}
+                            onValueChange={setActiveTabIndex}
+                            tabs={[
+                                <Tabs.Tab
+                                    key={"edit"}
+                                    value={"edit"}
+                                    trigger={"Edit"}
+                                    data-testid={"cms.editor.tab.edit"}
+                                    content={
+                                        <div className={"wby-relative"}>
+                                            <FieldEditor
+                                                fields={data.fields}
+                                                layout={data.layout || []}
+                                                onChange={onChange}
+                                            />
+                                        </div>
+                                    }
+                                />,
+                                <Tabs.Tab
+                                    key={"preview"}
+                                    value={"preview"}
+                                    trigger={"Preview"}
+                                    data-testid={"cms.editor.tab.preview"}
+                                    content={
+                                        <ContentEntryEditorWithConfig>
+                                            <ContentEntriesProvider contentModel={data}>
+                                                <ContentEntryProvider readonly={true}>
+                                                    <PreviewTab
+                                                        activeTab={activeTabIndex === "preview"}
+                                                    />
+                                                </ContentEntryProvider>
+                                            </ContentEntriesProvider>
+                                        </ContentEntryEditorWithConfig>
+                                    }
+                                />
+                            ]}
+                        />
                     </RightPanel>
                 </SplitView>
-            </ContentContainer>
+            </div>
             <DragPreview />
         </div>
     );

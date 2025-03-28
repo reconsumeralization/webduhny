@@ -6,7 +6,11 @@ const meta: Meta<typeof CodeEditor> = {
     component: CodeEditor,
     tags: ["autodocs"],
     argTypes: {
-        onChange: { action: "onChange" }
+        onChange: { action: "onChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

@@ -69,7 +69,10 @@ export const GridInner = ({ className, ...props }: GridInnerProps) => {
     return (
         <div
             {...props}
-            className={cn("grid grid-cols-12 gap-6 m-0 flex flex-wrap items-stretch", className)}
+            className={cn(
+                "wby-grid wby-grid-cols-12 wby-gap-6 wby-m-0 wby-flex wby-flex-wrap wby-items-stretch",
+                className
+            )}
         >
             {props.children}
         </div>

@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as CheckboxPrimitives from "@radix-ui/react-checkbox";
-import { ReactComponent as CheckIcon } from "@material-design-icons/svg/outlined/check.svg";
+import { ReactComponent as CheckIcon } from "@webiny/icons/check.svg";
 import { cn, makeDecoratable, cva, type VariantProps } from "~/utils";
 import { useCheckbox } from "./useCheckbox";
-import { CheckboxItemFormatted, CheckboxItemDto } from "./domains";
 import { Label } from "~/Label";
+import type { CheckboxItemDto, CheckboxItemFormatted } from "~/Checkbox";
 
 /**
  * Indeterminate Icon
@@ -53,18 +53,18 @@ const checkboxVariants = cva(
 
 type CheckboxPrimitiveProps = Omit<
     CheckboxPrimitives.CheckboxProps,
-    "defaultChecked" | "onCheckedChange"
+    "defaultChecked" | "onCheckedChange" | "onChange"
 > &
     VariantProps<typeof checkboxVariants> &
     CheckboxItemDto & {
-        onCheckedChange: (checked: boolean) => void;
+        onChange: (checked: boolean) => void;
     };
 
 interface CheckboxPrimitiveVm {
     item?: CheckboxItemFormatted;
 }
 
-type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange"> &
+type CheckboxPrimitiveRendererProps = Omit<CheckboxPrimitiveProps, "onCheckedChange" | "onChange"> &
     NonNullable<CheckboxPrimitiveVm["item"]> & {
         changeChecked: (checked: boolean) => void;
     };

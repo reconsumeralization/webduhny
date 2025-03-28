@@ -7,14 +7,18 @@ const meta: Meta<typeof ColorPicker> = {
     component: ColorPicker,
     tags: ["autodocs"],
     argTypes: {
-        onChange: { action: "onChange" }
+        onChange: { action: "onChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <ColorPicker {...args} value={value} onValueChange={setValue} />;
+        return <ColorPicker {...args} value={value} onChange={setValue} />;
     }
 };
 

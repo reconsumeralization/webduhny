@@ -1,8 +1,8 @@
 import React from "react";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Typography } from "@webiny/ui/Typography";
+
 import { ValidatorsList } from "./ValidatorsList";
 import { CmsModelFieldValidatorConfigAdapter } from "~/utils/CmsModelFieldValidatorConfigAdapter";
+import { Grid, Heading, Text } from "@webiny/admin-ui";
 
 interface ValidatorsSectionProps {
     title: string;
@@ -23,15 +23,16 @@ export const ValidationsSection = ({
     validators
 }: ValidatorsSectionProps) => {
     return (
-        <Grid>
-            <Cell span={12}>
-                <Typography use={"headline5"}>{title}</Typography>
-                <br />
-                <Typography use={"body2"}>{description}</Typography>
-            </Cell>
-            <Cell span={12}>
-                <ValidatorsList name={bindTo[fieldKey]} validators={validators} />
-            </Cell>
-        </Grid>
+        <div className="wby-mb-xl">
+            <Grid>
+                <Grid.Column span={12}>
+                    <Heading level={5}>{title}</Heading>
+                    <Text size={"sm"}>{description}</Text>
+                </Grid.Column>
+                <Grid.Column span={12}>
+                    <ValidatorsList name={bindTo[fieldKey]} validators={validators} />
+                </Grid.Column>
+            </Grid>
+        </div>
     );
 };

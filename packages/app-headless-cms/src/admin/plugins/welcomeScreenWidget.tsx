@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@webiny/react-router";
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
 import { ButtonSecondary } from "@webiny/ui/Button";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 
 const linkStyle = css({
     textDecoration: "none",

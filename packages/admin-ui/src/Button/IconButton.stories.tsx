@@ -1,6 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { IconButton } from "./IconButton";
 
 const meta: Meta<typeof IconButton> = {
@@ -27,7 +27,6 @@ const meta: Meta<typeof IconButton> = {
             defaultValue: "default"
         },
         disabled: {
-            description: "State",
             control: "boolean",
             defaultValue: false
         },

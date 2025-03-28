@@ -1,12 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import { RadioGroupVm } from "../RadioGroupPrimitive";
-import { RadioItem } from "~/RadioGroup/primitives/domains/RadioItem";
-import { RadioItemFormatter } from "~/RadioGroup/primitives/domains/RadioItemFormatter";
-import { RadioItemParams } from "~/RadioGroup/primitives/domains/RadioItemParams";
+import { RadioItem } from "~/RadioGroup/domains/RadioItem";
+import { RadioItemFormatter } from "~/RadioGroup/domains/RadioItemFormatter";
+import { RadioItemParams } from "~/RadioGroup/domains/RadioItemParams";
 
 interface RadioGroupPresenterParams<TValue = string> {
     items: RadioItemParams[];
-    onValueChange: (value: TValue) => void;
+    onValueChange?: (value: TValue) => void;
 }
 
 interface IRadioGroupPresenter<TValue = string> {
@@ -33,7 +33,7 @@ class RadioGroupPresenter<TValue = string> implements IRadioGroupPresenter<TValu
     }
 
     public changeValue = (value: TValue) => {
-        this.params?.onValueChange(value);
+        this.params?.onValueChange?.(value);
     };
 
     private getRadioItems() {

@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useRef, useMemo } from "react";
 import camelCase from "lodash/camelCase";
-import { Input } from "@webiny/ui/Input";
-import { Switch } from "@webiny/ui/Switch";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Grid, Switch, Input, Label } from "@webiny/admin-ui";
 import { validation } from "@webiny/validation";
 import { Tags } from "@webiny/ui/Tags";
 import { useForm, Bind } from "@webiny/form";
@@ -81,8 +79,8 @@ const GeneralTab = () => {
 
     return (
         <>
-            <Grid>
-                <Cell span={6}>
+            <Grid gap={"comfortable"}>
+                <Grid.Column span={6}>
                     <Bind
                         name={"label"}
                         validators={validation.create("required")}
@@ -95,12 +93,13 @@ const GeneralTab = () => {
                     >
                         <Input
                             label={"Label"}
+                            size={"lg"}
                             inputRef={inputRef}
                             data-testid="cms.editor.field.settings.general.label"
                         />
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind
                         name={"fieldId"}
                         validators={[
@@ -112,12 +111,13 @@ const GeneralTab = () => {
                     >
                         <Input
                             label={"Field ID"}
+                            size={"lg"}
                             data-testid={`cms.editor.field.settings.general.label-${field.id}`}
                         />
                     </Bind>
-                </Cell>
+                </Grid.Column>
 
-                <Cell span={6}>
+                <Grid.Column span={6}>
                     <Bind name={"multipleValues"}>
                         <Switch
                             label={fieldPlugin.field.multipleValuesLabel}
@@ -125,8 +125,8 @@ const GeneralTab = () => {
                             data-testid={`cms.editor.field.settings.general.switch-multiplevalues`}
                         />
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind name={"predefinedValues.enabled"}>
                         <Switch
                             label={"Use predefined values"}
@@ -134,29 +134,28 @@ const GeneralTab = () => {
                             data-testid={`cms.editor.field.settings.general.switch-predefinedvalues`}
                         />
                     </Bind>
-                </Cell>
+                </Grid.Column>
 
-                <Cell span={12}>
+                <Grid.Column span={12}>
                     <Bind name={"helpText"}>
                         <Input
-                            label={"Help text"}
-                            description={"Help text (optional)"}
+                            label={<Label text={"Help text"} description={"(optional)"} />}
+                            size={"lg"}
                             data-testid={`cms.editor.field.settings.general.helptext`}
                         />
                     </Bind>
-                </Cell>
-                <Cell span={12}>
+                </Grid.Column>
+                <Grid.Column span={12}>
                     <Bind name={"tags"}>
                         <Tags
-                            label={"Tags"}
+                            label={<Label text={"Tags"} description={"(optional)"} />}
                             protectedTags={fieldPlugin.field.tags}
-                            description={"Field tags (optional)"}
                             data-testid={`cms.editor.field.settings.general.tags`}
                         />
                     </Bind>
-                </Cell>
+                </Grid.Column>
+                <Grid.Column span={12}>{additionalSettings}</Grid.Column>
             </Grid>
-            {additionalSettings}
         </>
     );
 };

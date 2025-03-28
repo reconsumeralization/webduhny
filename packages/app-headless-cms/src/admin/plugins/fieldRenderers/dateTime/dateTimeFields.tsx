@@ -3,7 +3,7 @@ import get from "lodash/get";
 import DynamicSection from "../DynamicSection";
 import { CmsModelFieldRendererPlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { DateTimeWithoutTimezone } from "./DateTimeWithoutTimezone";
 import { DateTimeWithTimezone } from "./DateTimeWithTimezone";
 import { DateOnly } from "./DateOnly";
