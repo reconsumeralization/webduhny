@@ -3,7 +3,7 @@ import { ContextPlugin } from "@webiny/api";
 
 export default () => {
     return new ContextPlugin<PbContext>(async ({ pageBuilder }) => {
-        pageBuilder.onSettingsAfterUpdate.subscribe(async params => {
+        pageBuilder.onSettingsAfterUpdate.subscribe(async () => {
             // On every update of settings, we trigger a full website prerendering.
             // Might not be ideal for large websites, but it's a simple solution for now.
             await pageBuilder.prerendering.render({
