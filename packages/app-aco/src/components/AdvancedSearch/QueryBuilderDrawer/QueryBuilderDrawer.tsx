@@ -89,6 +89,8 @@ export const QueryBuilderDrawer = observer(({ filter, ...props }: QueryBuilderDr
                     />
                 </>
             }
+            headerSeparator={true}
+            footerSeparator={true}
         >
             <QueryBuilder
                 onForm={form => (ref.current = form)}

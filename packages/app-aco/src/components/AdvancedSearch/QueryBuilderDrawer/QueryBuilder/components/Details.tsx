@@ -9,26 +9,24 @@ export interface DetailsProps {
 
 export const Details = (props: DetailsProps) => {
     return (
-        <div className={"wby-my-lg"}>
-            <Grid>
-                <Grid.Column span={9}>
-                    <div className={"wby-flex wby-items-start wby-gap-md"}>
-                        <div className={"wby-text-left"}>
-                            <Heading level={5}>{props.name}</Heading>
-                            {props.description && (
-                                <Text as={"div"} className={"wby-text-sm"}>
-                                    {props.description}
-                                </Text>
-                            )}
-                        </div>
+        <Grid>
+            <Grid.Column span={9}>
+                <div className={"wby-flex wby-items-start wby-gap-md"}>
+                    <div className={"wby-text-left wby-text-neutral-primary"}>
+                        <Heading level={5}>{props.name}</Heading>
+                        {props.description && (
+                            <Text as={"div"} size={"sm"} className={"wby-mt-sm"}>
+                                {props.description}
+                            </Text>
+                        )}
                     </div>
-                </Grid.Column>
-                <Grid.Column span={3} align={"middle"}>
-                    <div className={"wby-text-right"}>
-                        <OperationSelector name={"operation"} label={"Match all filter groups"} />
-                    </div>
-                </Grid.Column>
-            </Grid>
-        </div>
+                </div>
+            </Grid.Column>
+            <Grid.Column span={3} align={"middle"}>
+                <div className={"wby-text-right"}>
+                    <OperationSelector name={"operation"} label={"Match all filter groups"} />
+                </div>
+            </Grid.Column>
+        </Grid>
     );
 };
