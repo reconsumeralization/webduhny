@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Tooltip } from "@webiny/admin-ui";
 import { useGetFolderLevelPermission, useListFolders } from "~/features";
 import { ButtonCreate } from "./ButtonCreate";
-import { Empty } from "./Empty";
 import { Loader } from "./Loader";
 import { List } from "./List";
 import { FolderItem } from "~/types";
@@ -28,7 +27,7 @@ export const FolderTree = ({
     onFolderClick,
     rootFolderLabel
 }: FolderTreeProps) => {
-    const { loading, folders } = useListFolders();
+    const { folders } = useListFolders();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
 
@@ -58,11 +57,7 @@ export const FolderTree = ({
                 trigger={button}
             />
         );
-    }, [enableCreate, canManageStructure, focusedFolderId]);
-
-    if (!folders || loading) {
-        return <Loader />;
-    }
+    }, [enableCreate, canManageStructure, focusedFolderId, localFolders]);
 
     return (
         <AcoWithConfig>
@@ -78,10 +73,7 @@ export const FolderTree = ({
                     {enableCreate && <div className={"wby-mt-sm"}>{createButton}</div>}
                 </>
             ) : (
-                <>
-                    <Empty />
-                    {createButton}
-                </>
+                <Loader />
             )}
         </AcoWithConfig>
     );
