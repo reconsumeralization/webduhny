@@ -47,7 +47,7 @@ export function createFieldsList({
         })
         .filter(Boolean);
     /**
-     * If there are no fields, let's always load the `id` field.
+     * If there are no fields, let's always load the `_empty` field.
      */
     if (fields.length === 0) {
         fields.push("_empty");
