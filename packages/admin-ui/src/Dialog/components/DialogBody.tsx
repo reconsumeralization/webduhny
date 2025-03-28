@@ -5,7 +5,5 @@ import type { DialogProps } from "~/Dialog";
 export type DialogBodyProps = Pick<DialogProps, "children" | "bodyPadding">;
 
 export const DialogBody = ({ bodyPadding, children }: DialogBodyProps) => {
-    return (
-        <div className={cn("wby-py-sm ", { "wby-px-lg": bodyPadding !== false })}>{children}</div>
-    );
+    return <div className={cn({ "wby-px-lg": bodyPadding !== false })}>{children}</div>;
 };

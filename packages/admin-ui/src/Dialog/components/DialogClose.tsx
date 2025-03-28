@@ -1,3 +1,16 @@
+import React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { ReactComponent as XIcon } from "@webiny/icons/close.svg";
+import { IconButton } from "~/Button";
 
-export const DialogClose = DialogPrimitive.Close;
+export const DialogClosePrimitive = DialogPrimitive.Close;
+
+export const DialogClose = () => {
+    return (
+        <div className={"wby-absolute wby-top-md wby-right-md"}>
+            <DialogPrimitive.Close asChild>
+                <IconButton size="md" iconSize="lg" variant={"ghost"} icon={<XIcon />} />
+            </DialogPrimitive.Close>
+        </div>
+    );
+};
