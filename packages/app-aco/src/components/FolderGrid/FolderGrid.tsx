@@ -4,7 +4,6 @@ import { FolderProvider } from "~/contexts/folder";
 import { Folder } from "~/components/FolderGrid/Folder";
 import { AcoWithConfig } from "~/config";
 import { FolderItem } from "~/types";
-import { Grid } from "@webiny/admin-ui";
 
 interface FolderGridProps {
     folders: FolderItem[];
@@ -18,15 +17,17 @@ export const FolderGrid = ({ folders, onFolderClick }: FolderGridProps) => {
 
     return (
         <AcoWithConfig>
-            <Grid>
+            <div
+                className={
+                    "wby-w-full wby-grid wby-grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] wby-gap-md"
+                }
+            >
                 {folders.map(folder => (
-                    <Grid.Column span={3} key={folder.id}>
-                        <FolderProvider folder={folder}>
-                            <Folder onClick={onFolderClick} />
-                        </FolderProvider>
-                    </Grid.Column>
+                    <FolderProvider folder={folder} key={folder.id}>
+                        <Folder onClick={onFolderClick} />
+                    </FolderProvider>
                 ))}
-            </Grid>
+            </div>
         </AcoWithConfig>
     );
 };
