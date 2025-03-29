@@ -27,7 +27,7 @@ export const DialogHeader = ({
         <div
             {...props}
             className={cn(
-                "wby-flex wby-flex-col wby-gap-sm wby-px-lg wby-pt-md wby-pb-md-extra wby-sm:text-left wby-text-neutral-primary",
+                "wby-flex wby-flex-col wby-gap-sm wby-px-lg wby-pt-md wby-pb-md-extra wby-mr-xl wby-sm:text-left wby-text-neutral-primary",
                 className
             )}
         >
