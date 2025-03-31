@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecordLocking } from "~/hooks";
 import type { IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
 import type { IncomingGenericData } from "@webiny/app-websockets";
@@ -41,8 +41,6 @@ const ForceUnlocked = ({ user }: IForceUnlockedProps) => {
     );
 };
 
-let entryLockerTimeout: number | null = null;
-
 export const ContentEntryLocker = ({
     onEntryUnlocked,
     onDisablePrompt,
@@ -53,6 +51,8 @@ export const ContentEntryLocker = ({
     const { updateEntryLock, removeEntryLock } = useRecordLocking();
     const websockets = useWebsockets();
     const { showDialog } = useDialogs();
+
+    const entryLockerTimeout = useRef<number | null>(null);
 
     useEffect(() => {
         if (!entry.id) {
@@ -95,7 +95,7 @@ export const ContentEntryLocker = ({
             return;
         }
 
-        if (entryLockerTimeout) {
+        if (entryLockerTimeout.current) {
             return;
         }
 
@@ -119,18 +119,18 @@ export const ContentEntryLocker = ({
         };
 
         const createTimeout = () => {
-            entryLockerTimeout = window.setTimeout(() => {
+            entryLockerTimeout.current = window.setTimeout(() => {
                 updateLock();
             }, autoUpdateTimeout * 1000);
         };
 
         updateLock();
         return () => {
-            if (!entryLockerTimeout) {
+            if (!entryLockerTimeout.current) {
                 return;
             }
-            clearTimeout(entryLockerTimeout);
-            entryLockerTimeout = null;
+            clearTimeout(entryLockerTimeout.current);
+            entryLockerTimeout.current = null;
         };
     }, [entry.id, onEntryUnlocked]);
 
