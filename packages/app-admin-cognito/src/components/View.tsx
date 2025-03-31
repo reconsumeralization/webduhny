@@ -7,15 +7,13 @@ export interface ContainerProps {
 }
 
 const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => (
-    <div
-        className={
-            "wby-m-auto wby-flex wby-flex-col wby-justify-center wby-flex-1 wby-min-h-screen"
-        }
-    >
-        <div className={"wby-mx-auto"}>
-            <Logo />
-        </div>
-        <div className={"wby-w-full wby-max-w-[480px] wby-mx-auto wby-my-lg"}>{children}</div>
+    <div className={"wby-w-screen wby-h-screen wby-bg-neutral-light wby-flex-1"}>
+        <section className={"wby-m-auto wby-flex wby-flex-col wby-justify-center wby-min-h-screen"}>
+            <div className={"wby-mx-auto"}>
+                <Logo />
+            </div>
+            <div className={"wby-w-full wby-max-w-[480px] wby-mx-auto wby-my-lg"}>{children}</div>
+        </section>
     </div>
 ));
 
