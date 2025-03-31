@@ -1,14 +1,14 @@
 import {
+    IFetchLockedEntryLockRecordParams,
+    IFetchLockRecordParams,
+    IFetchLockRecordResult,
     IIsRecordLockedParams,
-    IUpdateEntryLockParams,
-    IRecordLockingRecord,
     IPossiblyRecordLockingRecord,
     IRecordLockingError,
     IRecordLockingLockRecord,
+    IRecordLockingRecord,
     IUnlockEntryParams,
-    IFetchLockRecordParams,
-    IFetchLockRecordResult,
-    IFetchLockedEntryLockRecordParams
+    IUpdateEntryLockParams
 } from "~/types";
 import { IRecordLockingUnlockEntryResult } from "./IRecordLockingUnlockEntry";
 
@@ -35,7 +35,13 @@ export interface IRecordLocking<
         params: IFetchLockedEntryLockRecordParams
     ): Promise<IRecordLockingLockRecord | null>;
     updateEntryLock(params: IUpdateEntryLockParams): Promise<IRecordLockingUpdateEntryLockResult>;
+    /**
+     * Removes entry lock from the state - this is not an API call.
+     */
     removeEntryLock(params: IUnlockEntryParams): void;
+    /**
+     * Unlocks entry via an API call.
+     */
     unlockEntry(
         params: IUnlockEntryParams,
         force?: boolean

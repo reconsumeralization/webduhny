@@ -24,10 +24,10 @@ import {
     IFetchLockRecordParams,
     IFetchLockRecordResult,
     IIsRecordLockedParams,
+    IPossiblyRecordLockingRecord,
     IRecordLockingError,
     IRecordLockingLockRecord,
     IRecordLockingRecord,
-    IPossiblyRecordLockingRecord,
     IUnlockEntryParams,
     IUpdateEntryLockParams
 } from "~/types";
@@ -221,17 +221,9 @@ class RecordLocking<T extends IPossiblyRecordLockingRecord = IPossiblyRecordLock
             if (!id) {
                 return result;
             }
-            const index = this.records.findIndex(r => r.entryId === id);
-            if (index === -1) {
-                return result;
-            }
-
-            this.records[index] = {
-                ...this.records[index],
-                $locked: undefined,
-                $selectable: true
-            };
-
+            this.removeEntryLock({
+                ...params
+            });
             return result;
         } catch (ex) {
             this.triggerOnError(ex);
