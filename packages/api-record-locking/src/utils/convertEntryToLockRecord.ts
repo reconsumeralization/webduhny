@@ -128,4 +128,8 @@ export class HeadlessCmsLockRecord implements IRecordLockingLockRecord {
                 action.type === RecordLockingLockRecordActionType.denied
         );
     }
+
+    public isExpired(): boolean {
+        return this._expiresOn.getTime() < new Date().getTime();
+    }
 }
