@@ -1,18 +1,14 @@
 import React from "react";
 import { NavigationRenderer, useAdminConfig } from "@webiny/app-admin";
 import { Sidebar } from "@webiny/admin-ui";
-import wbyLogo from "./wby-logo.png";
 import { SidebarMenuItems } from "./SidebarMenuItems";
 
 export const Navigation = NavigationRenderer.createDecorator(() => {
     return function Navigation() {
-        const { menus } = useAdminConfig();
+        const { menus, tenant } = useAdminConfig();
 
-        // TODO (next PR): These will be registered via config API.
-        const title = "Webiny";
-        const icon = (
-            <Sidebar.Icon element={<img src={wbyLogo} alt={"Webiny"} />} label={"Webiny"} />
-        );
+        const title = tenant.name;
+        const icon = <Sidebar.Icon element={tenant.logo} label={"Webiny"} />;
 
         return (
             <Sidebar

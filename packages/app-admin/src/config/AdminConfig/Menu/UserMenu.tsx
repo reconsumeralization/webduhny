@@ -1,13 +1,11 @@
 import React from "react";
 import { makeDecoratable } from "~/index";
 import { Property, useIdGenerator } from "@webiny/react-properties";
-import { MenuItem } from "./Menu/MenuItem";
-import { MenuLink } from "./Menu/MenuLink";
-import { MenuGroup } from "./Menu/MenuGroup";
-import { SupportMenu } from "./Menu/SupportMenu";
-import { UserMenu } from "./Menu/UserMenu";
+import { UserMenuItem } from "./UserMenu/UserMenuItem";
+import { UserMenuLink } from "./UserMenu/UserMenuLink";
+import { UserMenuGroup } from "./UserMenu/UserMenuGroup";
 
-export interface MenuProps {
+export interface UserMenuProps {
     name: string;
     parent?: string | null;
     tags?: string[];
@@ -18,9 +16,9 @@ export interface MenuProps {
     after?: string;
 }
 
-export type MenuConfig = Pick<MenuProps, "name" | "parent" | "tags" | "element">;
+export type UserMenuConfig = Pick<UserMenuProps, "name" | "parent" | "tags" | "element">;
 
-const BaseMenu = ({
+const BaseUserMenu = ({
     name,
     parent = null,
     tags = [],
@@ -29,8 +27,8 @@ const BaseMenu = ({
     pin,
     before,
     after
-}: MenuProps) => {
-    const getId = useIdGenerator("Menu");
+}: UserMenuProps) => {
+    const getId = useIdGenerator("UserMenu");
 
     let placeAfter = after !== undefined ? getId(after) : undefined;
     let placeBefore = before !== undefined ? getId(before) : undefined;
@@ -45,7 +43,7 @@ const BaseMenu = ({
     return (
         <Property
             id={getId(name)}
-            name={"menus"}
+            name={"userMenus"}
             remove={remove}
             array={true}
             before={placeBefore}
@@ -59,19 +57,10 @@ const BaseMenu = ({
     );
 };
 
-const DecoratableMenu = makeDecoratable("Menu", BaseMenu);
+const DecoratableUserMenu = makeDecoratable("UserMenu", BaseUserMenu);
 
-const BaseFooterMenu = ({ tags, ...props }: MenuProps) => {
-    return <BaseMenu {...props} tags={["footer", ...(tags || [])]} />;
-};
-
-const DecoratableFooterMenu = makeDecoratable("FooterMenu", BaseFooterMenu);
-
-export const Menu = Object.assign(DecoratableMenu, {
-    Item: MenuItem,
-    Link: MenuLink,
-    Group: MenuGroup,
-    Footer: DecoratableFooterMenu,
-    Support: SupportMenu,
-    User: UserMenu
+export const UserMenu = Object.assign(DecoratableUserMenu, {
+    Item: UserMenuItem,
+    Link: UserMenuLink,
+    Group: UserMenuGroup
 });

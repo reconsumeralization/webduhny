@@ -4,9 +4,13 @@
 - top app bar menu items via config (packages/app-admin/src/base/ui/UserMenu.tsx)
     - user menu okta/a0 - kill AddUserMenu
 - Tenant.Name/Logo
+- webiny logo clickable 
+- logo.element or logo.src
+- logo not visible on the logi nscren
 ---------------
 
 ## NEXT PR
+- adminConfig APIs are directly using admin-ui packages, they should NOT be
 - Widgets APIs (Pavel)
 - hover effect on sidebar menu
 - No routes matched location "/" Error Component Stack

@@ -155,9 +155,3 @@ const UserInfoListItem = ({ avatarSrc, displayName, email }: UserInfoListItemPro
     );
 };
 
-export default () => {
-    console.log(
-        `[DEPRECATED] Import "@webiny/app-admin-users-cognito/plugins/userMenu/userInfo" is no longer used!`
-    );
-    return { type: "dummy" };
-};

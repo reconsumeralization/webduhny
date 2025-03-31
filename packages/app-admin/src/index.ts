@@ -12,7 +12,6 @@ export * from "./base/ui/Logo";
 export * from "./base/ui/Search";
 export type { SearchOptionData, SearchOptionProps } from "./base/ui/Search";
 export * from "./base/ui/UserMenu";
-export type { UserMenuItemProps } from "./base/ui/UserMenu";
 export * from "./base/ui/LoginScreen";
 export * from "./base/ui/CenteredView";
 export * from "./base/ui/Dashboard";

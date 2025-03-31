@@ -1,5 +1,5 @@
 import React, { Fragment, memo } from "react";
-import { AddUserMenuItem, Layout } from "@webiny/app-admin";
+import { Layout } from "@webiny/app-admin";
 import { plugins } from "@webiny/plugins";
 import { HasPermission } from "@webiny/app-security";
 import { Permission } from "~/plugins/constants";
@@ -13,9 +13,7 @@ import cognito from "./plugins/cognito";
 import { CognitoLogin, CognitoProps } from "./CognitoLogin";
 import { AdminConfig } from "@webiny/app-admin";
 
-const { Menu, Route } = AdminConfig;
-
-const ACCOUNT_ROUTE = "/account";
+const { Route, Menu } = AdminConfig;
 
 const CognitoIdP = (props: CognitoProps) => {
     plugins.register([installation, permissionRenderer, cognito()]);
@@ -37,6 +35,17 @@ const CognitoIdP = (props: CognitoProps) => {
                             </Layout>
                         }
                     />
+
+                    <Route
+                        name={"cognito.account"}
+                        path={"/account"}
+                        element={
+                            <Layout title={"User Account"}>
+                                <Account />
+                            </Layout>
+                        }
+                    />
+
                     <Menu
                         name={"cognito.settings"}
                         parent={"settings"}
@@ -49,17 +58,8 @@ const CognitoIdP = (props: CognitoProps) => {
                     />
                 </HasPermission>
 
-                <Route
-                    name={"cognito.account"}
-                    path={ACCOUNT_ROUTE}
-                    element={
-                        <Layout title={"User Account"}>
-                            <Account />
-                        </Layout>
-                    }
-                />
-                <AddUserMenuItem element={<AccountDetails accountRoute={ACCOUNT_ROUTE} />} />
-                <AddUserMenuItem element={<SignOut />} />
+                <Menu.User name={"accountSettings"} element={<AccountDetails />} />
+                <Menu.User name={"signOut"} element={<SignOut />} />
             </AdminConfig>
         </Fragment>
     );

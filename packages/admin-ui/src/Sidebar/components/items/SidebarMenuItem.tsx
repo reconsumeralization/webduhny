@@ -1,7 +1,7 @@
 import React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
-import { SidebarMenuItemIcon } from "./SidebarMenuItemIcon";
-import { SidebarMenuItemAction } from "./SidebarMenuItemAction";
+import { SidebarMenuItemIcon, SidebarMenuItemIconProps } from "./SidebarMenuItemIcon";
+import { SidebarMenuItemAction, SidebarMenuItemActionProps } from "./SidebarMenuItemAction";
 import { SidebarMenuSubItem } from "./SidebarMenuSubItem";
 import { useSidebarMenu } from "./SidebarMenuProvider";
 import { LinkProps, To } from "@webiny/react-router";
@@ -20,6 +20,7 @@ export interface SidebarMenuItemBaseProps {
 }
 
 type SidebarMenuItemButtonProps = SidebarMenuItemBaseProps & { to?: never };
+type SidebarMenuItemGroupProps = SidebarMenuItemButtonProps;
 type SidebarMenuItemLinkProps = SidebarMenuItemBaseProps & LinkProps & { to: To };
 
 type SidebarMenuItemProps = SidebarMenuItemButtonProps | SidebarMenuItemLinkProps;
@@ -45,5 +46,8 @@ export {
     SidebarMenuItem,
     type SidebarMenuItemProps,
     type SidebarMenuItemButtonProps,
-    type SidebarMenuItemLinkProps
+    type SidebarMenuItemLinkProps,
+    type SidebarMenuItemGroupProps,
+    type SidebarMenuItemIconProps,
+    type SidebarMenuItemActionProps
 };
