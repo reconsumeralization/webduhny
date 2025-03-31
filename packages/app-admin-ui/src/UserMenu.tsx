@@ -13,7 +13,7 @@ import {
 import { Avatar, DropdownMenu, IconButton } from "@webiny/admin-ui";
 import { Link } from "@webiny/react-router";
 import { useSecurity } from "@webiny/app-security";
-import { ReactComponent as KeyboardArrowRightIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 
 const UserMenuRendererImpl = () => {
     return function UserMenu() {

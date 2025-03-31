@@ -15357,7 +15357,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/admin-ui@npm:0.0.0, @webiny/admin-ui@workspace:^, @webiny/admin-ui@workspace:packages/admin-ui":
+"@webiny/admin-ui@npm:0.0.0, @webiny/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@webiny/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -17051,19 +17051,17 @@ __metadata:
   resolution: "@webiny/app-admin-ui@workspace:packages/app-admin-ui"
   dependencies:
     "@emotion/babel-plugin": "npm:^11.11.0"
-    "@emotion/styled": "npm:11.10.6"
-    "@material-design-icons/svg": "npm:^0.14.13"
     "@types/react": "npm:18.2.79"
     "@types/react-helmet": "npm:^6.1.11"
-    "@webiny/admin-ui": "workspace:^"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-plugin-admin-welcome-screen": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
+    "@webiny/icons": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
-    "@webiny/ui": "npm:0.0.0"
     babel-plugin-named-asset-import: "npm:^1.0.0-next.3e165448"
     emotion: "npm:10.0.27"
     react: "npm:18.2.0"
@@ -17399,6 +17397,7 @@ __metadata:
     "@types/json2csv": "npm:^4.5.1"
     "@types/react": "npm:18.2.79"
     "@types/react-google-recaptcha": "npm:^1.1.2"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-page-builder": "npm:0.0.0"
@@ -17407,6 +17406,7 @@ __metadata:
     "@webiny/app-security": "npm:0.0.0"
     "@webiny/app-tenancy": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
+    "@webiny/icons": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
@@ -17739,6 +17739,7 @@ __metadata:
     "@webiny/error": "npm:0.0.0"
     "@webiny/feature-flags": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
+    "@webiny/icons": "npm:0.0.0"
     "@webiny/lexical-editor": "npm:0.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"

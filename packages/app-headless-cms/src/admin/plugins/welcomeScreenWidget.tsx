@@ -1,19 +1,10 @@
 import React from "react";
-import { Link } from "@webiny/react-router";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as CmsIcon } from "@webiny/icons/wysiwyg.svg";
+
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
-import { ButtonSecondary } from "@webiny/ui/Button";
-import { css } from "@emotion/css";
 
-const linkStyle = css({
-    textDecoration: "none",
-    "&:hover": {
-        textDecoration: "none"
-    }
-});
-
-const buttonStyle = css({
-    margin: "1rem auto 1rem auto"
-});
+import { Button, Link } from "@webiny/admin-ui";
 
 const plugin: AdminWelcomeScreenWidgetPlugin = {
     type: "admin-welcome-screen-widget",
@@ -21,12 +12,15 @@ const plugin: AdminWelcomeScreenWidgetPlugin = {
     permission: "cms.endpoint.manage",
     widget: {
         cta: (
-            <Link to="/cms/content-models" className={linkStyle}>
-                <ButtonSecondary className={buttonStyle}>New Content Model</ButtonSecondary>
-            </Link>
+            <Button
+                text={<Link to="/cms/content-models">{"New Content Model"}</Link>}
+                icon={<AddIcon />}
+                asChild
+            />
         ),
         description: "GraphQL based headless CMS with powerful content modeling features.",
-        title: "Headless CMS"
+        title: "CMS",
+        icon: <CmsIcon />
     }
 };
 

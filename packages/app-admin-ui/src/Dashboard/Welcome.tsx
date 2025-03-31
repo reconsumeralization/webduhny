@@ -1,119 +1,16 @@
 import React from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import { Link } from "@webiny/react-router";
-import {
-    SimpleForm,
-    SimpleFormHeader,
-    SimpleFormContent,
-    SimpleFormFooter
-} from "@webiny/app-admin/components/SimpleForm";
+import { Alert, Grid, Heading, Icon, Text, Link as AdminLink } from "@webiny/admin-ui";
+import { ReactComponent as WidgetIcon } from "@webiny/icons/table_chart.svg";
+import { ReactComponent as HelpIcon } from "@webiny/icons/help_outline.svg";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 import { plugins } from "@webiny/plugins";
-import { Typography } from "@webiny/ui/Typography";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Elevation } from "@webiny/ui/Elevation";
 // Icons
 import { ReactComponent as YouTubeIcon } from "./icons/youtube.svg";
 import { ReactComponent as GithubIcon } from "./icons/github.svg";
 import { ReactComponent as SlackIcon } from "./icons/slack.svg";
-import { ReactComponent as TwitterIcon } from "./icons/twitter.svg";
-import { ReactComponent as TextbookIcon } from "./icons/textbook.svg";
-import { ReactComponent as LaptopIcon } from "./icons/laptop.svg";
+import { ReactComponent as TwitterIcon } from "./icons/x-twitter.svg";
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
-
-const linkStyle = css({
-    textDecoration: "none",
-    "&:hover": {
-        textDecoration: "none"
-    },
-    color: "var(--mdc-theme-text-primary-on-background)"
-});
-
-const imageStyle = css({
-    width: "30px",
-    height: "30px",
-    marginBottom: "5px"
-});
-
-const communityStyle = css({
-    textAlign: "left"
-});
-
-const widgetTitleStyle = css({
-    fontWeight: 600,
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
-    textAlign: "center"
-});
-
-const widgetDescriptionStyle = css({
-    textAlign: "center",
-    paddingLeft: "20px",
-    paddingRight: "20px"
-});
-
-const iconTextStyle = css({
-    textAlign: "center"
-});
-
-const pFormContentStyle = css({
-    fontWeight: 600
-});
-
-const pGetStartedStyle = css({
-    paddingLeft: "1.5rem",
-    paddingTop: "1.5rem"
-});
-
-const footerContainerStyle = css({
-    display: "flex",
-    padding: "1rem"
-});
-
-const widgetButtonStyle = css`
-    text-align: center;
-    margin-top: auto;
-`;
-
-const footerTextStyle = css({
-    backgroundColor: "var(--mdc-theme-on-background)",
-    margin: "1rem"
-});
-
-const footerLinkTextStyle = css({
-    fontWeight: 600,
-    paddingLeft: "1rem"
-});
-
-const ContentTheme = styled("div")({
-    color: "var(--mdc-theme-text-primary-on-background)"
-});
-
-const Widget = styled.div`
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
-    margin-bottom: 2rem;
-    flex: 1 1 21%;
-    max-width: 25%;
-    min-height: 250px;
-`;
-
-const WelcomeScreenWidgetsWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    @media (max-width: 479px) {
-        flex-direction: column;
-    }
-`;
-
-const elevation = css`
-    padding: 10px;
-    height: calc(100% - 20px);
-    display: flex;
-    flex-direction: column;
-`;
 
 const Welcome = () => {
     const { identity, getPermission } = useSecurity();
@@ -134,156 +31,244 @@ const Welcome = () => {
     const canSeeAnyWidget = widgets.length > 0;
 
     return (
-        <SimpleForm>
-            <SimpleFormHeader title={`Hi ${identity.displayName}!`} />
-            <SimpleFormContent>
-                <ContentTheme>
-                    <Cell span={12}>
-                        <Typography use={"headline6"}>
-                            {canSeeAnyWidget && (
-                                <p className={pGetStartedStyle}>
-                                    To get started - pick one of the actions below:
-                                </p>
-                            )}
-                            {!canSeeAnyWidget && (
-                                <p className={pGetStartedStyle}>
-                                    Please contact the administrator for permissions to access
-                                    Webiny apps.
-                                </p>
-                            )}
-                            <br />
-                        </Typography>
-                    </Cell>
-                    <WelcomeScreenWidgetsWrapper>
-                        {widgets.map(pl => {
-                            return (
-                                <Widget key={pl.name} data-testid={pl.name}>
-                                    <Elevation z={2} className={elevation}>
-                                        <Typography use={"headline6"}>
-                                            <p className={widgetTitleStyle}>{pl.widget.title}</p>
-                                        </Typography>
-                                        <Typography
-                                            use={"body1"}
-                                            className={widgetDescriptionStyle}
-                                        >
-                                            {pl.widget.description}
-                                        </Typography>
-                                        <div className={widgetButtonStyle}>{pl.widget.cta}</div>
-                                    </Elevation>
-                                </Widget>
-                            );
-                        })}
-                    </WelcomeScreenWidgetsWrapper>
-                </ContentTheme>
-            </SimpleFormContent>
-            <SimpleFormFooter>
-                <Grid>
-                    <Cell span={8}>
-                        <Typography use={"headline6"} className={communityStyle}>
-                            <p className={pFormContentStyle}>Learn more about Webiny:</p>
-                        </Typography>
-                    </Cell>
-                    <Cell span={4} style={{ marginLeft: "1rem" }}>
-                        <Typography use={"headline6"} className={communityStyle}>
-                            <p className={pFormContentStyle}>Join our community:</p>
-                        </Typography>
-                    </Cell>
-                    <Cell span={8}>
-                        <Typography use={"body1"} className={communityStyle}>
-                            Explore the Webiny documentation, learn about the architecture and check
-                            out code examples and guides:
-                        </Typography>
-                    </Cell>
-                    <Cell span={4} style={{ marginLeft: "1rem" }}>
-                        <Typography use={"body1"} className={communityStyle}>
-                            Get to know Webiny team members, discuss new ideas and get help:
-                        </Typography>
-                    </Cell>
-                    <Cell
-                        span={4}
-                        className={footerTextStyle}
-                        style={{ margin: "1rem 1rem 1rem 0rem" }}
-                    >
-                        <Link
-                            to="https://www.webiny.com/docs"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <Typography use={"headline5"}>
-                                <div className={footerContainerStyle}>
-                                    <TextbookIcon className={imageStyle} />
-                                    <p className={footerLinkTextStyle}>Documentation</p>
+        <div className={"wby-mt-xxl"}>
+            <div className={"wby-mb-3xl"}>
+                <Heading
+                    level={3}
+                >{`Hi ${identity.displayName}, what are we doing today?`}</Heading>
+            </div>
+            <div className={"wby-mb-xl"}>
+                {!canSeeAnyWidget && (
+                    <Alert title={"Missing permissions"} type={"warning"}>
+                        {"Please contact the administrator for permissions to access Webiny apps."}
+                    </Alert>
+                )}
+                <Grid gap={"spacious"}>
+                    {widgets.map(pl => {
+                        const { title, description, cta, icon = <WidgetIcon /> } = pl.widget;
+                        return (
+                            <Grid.Column span={4} key={pl.name}>
+                                <div
+                                    className={"wby-p-lg wby-bg-primary-subtle wby-rounded-xl"}
+                                    data-testid={pl.name}
+                                >
+                                    <div
+                                        className={"wby-flex wby-items-center wby-gap-sm wby-mb-sm"}
+                                    >
+                                        <Icon
+                                            icon={icon}
+                                            label={title}
+                                            size={"lg"}
+                                            color={"accent"}
+                                        />
+                                        <Heading level={4}>{title}</Heading>
+                                    </div>
+                                    <Text>{description}</Text>
+                                    <div className={"wby-mt-xl"}>{cta}</div>
                                 </div>
-                            </Typography>
-                        </Link>
-                    </Cell>
-                    <Cell
-                        span={4}
-                        className={footerTextStyle}
-                        style={{ margin: "1rem 1rem 1rem 9px", visibility: "hidden" }}
-                    >
-                        <Link
-                            to="https://github.com/webiny/webiny-examples"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <Typography use={"headline5"}>
-                                <span className={footerContainerStyle}>
-                                    <LaptopIcon className={imageStyle} />
-                                    <p className={footerLinkTextStyle}>Code examples</p>
-                                </span>
-                            </Typography>
-                        </Link>
-                    </Cell>
-                    <Cell span={1} className={iconTextStyle} align="middle">
-                        <Link
-                            to="https://github.com/webiny/webiny-js"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <GithubIcon className={imageStyle} />
-                            <p>Github</p>
-                        </Link>
-                    </Cell>
-                    <Cell span={1} className={iconTextStyle} align="middle">
-                        <Link
-                            to="https://www.webiny.com/slack/"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <SlackIcon className={imageStyle} />
-                            <p>Slack</p>
-                        </Link>
-                    </Cell>
-                    <Cell span={1} className={iconTextStyle} align="middle">
-                        <Link
-                            to="https://youtube.com/webiny"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <YouTubeIcon className={imageStyle} />
-                            <p>YouTube</p>
-                        </Link>
-                    </Cell>
-                    <Cell span={1} className={iconTextStyle} align="middle">
-                        <Link
-                            to="https://twitter.com/WebinyCMS"
-                            className={linkStyle}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                        >
-                            <TwitterIcon className={imageStyle} />
-                            <p>Twitter</p>
-                        </Link>
-                    </Cell>
+                            </Grid.Column>
+                        );
+                    })}
                 </Grid>
-            </SimpleFormFooter>
-        </SimpleForm>
+            </div>
+            <div>
+                <Grid gap={"spacious"}>
+                    <Grid.Column span={6}>
+                        <div className={"wby-bg-neutral-light wby-rounded-xl wby-p-lg"}>
+                            <div className={"wby-flex wby-items-center wby-gap-sm wby-mb-md"}>
+                                <Icon
+                                    icon={<HelpIcon />}
+                                    label={"Need some assistance?"}
+                                    size={"md"}
+                                    color={"accent"}
+                                />
+                                <Heading level={6}>{"Need some assistance?"}</Heading>
+                            </div>
+                            <div
+                                className={
+                                    "wby-bg-neutral-base wby-rounded-sm wby-px-md wby-py-sm-extra wby-mb-md"
+                                }
+                            >
+                                <Link
+                                    to="https://www.webiny.com/docs"
+                                    target={"_blank"}
+                                    rel={"noopener noreferrer"}
+                                    className={"!wby-no-underline"}
+                                >
+                                    <Text
+                                        as={"div"}
+                                        className={"wby-font-semibold !wby-text-neutral-primary"}
+                                    >
+                                        {"Documentation"}
+                                    </Text>
+                                    <Text size={"sm"} className={"!wby-text-neutral-strong"}>
+                                        {
+                                            "Explore the Webiny documentation and check out code examples and guides."
+                                        }
+                                    </Text>
+                                </Link>
+                            </div>
+
+                            <div
+                                className={
+                                    "wby-bg-neutral-base wby-rounded-sm wby-px-md wby-py-sm-extra"
+                                }
+                            >
+                                <Text as={"div"} className={"wby-font-semibold"}>
+                                    {"Contact us"}
+                                </Text>
+                                <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                    <AdminLink
+                                        to={"https://www.webiny.com/forms/product-demo"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                        variant={"secondary"}
+                                        underline
+                                    >
+                                        Contact Sales
+                                    </AdminLink>
+                                    ,{" "}
+                                    <AdminLink
+                                        to={"https://www.webiny.com/partners"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                        variant={"secondary"}
+                                        underline
+                                    >
+                                        Explore Partnerships
+                                    </AdminLink>{" "}
+                                    or{" "}
+                                    <AdminLink
+                                        to={"https://www.webiny.com/slack"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                        variant={"secondary"}
+                                        underline
+                                    >
+                                        Slack us
+                                    </AdminLink>
+                                    .
+                                </Text>
+                            </div>
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column span={6}>
+                        <div className={"wby-bg-neutral-light wby-rounded-xl wby-p-lg"}>
+                            <div className={"wby-mb-md"}>
+                                <Heading level={6}>{"Join our community:"}</Heading>
+                                <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                    {
+                                        "Get to know Webiny team members, discuss new ideas and get help:"
+                                    }
+                                </Text>
+                            </div>
+                            <Grid className={"wby-gap-md"}>
+                                <Grid.Column span={2}>
+                                    <Link
+                                        to="https://github.com/webiny/webiny-js"
+                                        className={"!wby-no-underline"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                    >
+                                        <div
+                                            className={
+                                                "wby-bg-neutral-base wby-px-xs wby-pt-sm-extra wby-pb-sm wby-rounded-md wby-text-center hover:wby-opacity-80 wby-transition-opacity"
+                                            }
+                                        >
+                                            <Icon
+                                                label={"Github"}
+                                                icon={<GithubIcon />}
+                                                size={"lg"}
+                                                color={"inherit"}
+                                                className={"wby-mx-auto wby-mb-sm"}
+                                            />
+                                            <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                                Github
+                                            </Text>
+                                        </div>
+                                    </Link>
+                                </Grid.Column>
+                                <Grid.Column span={2}>
+                                    <Link
+                                        to="https://www.webiny.com/slack"
+                                        className={"!wby-no-underline"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                    >
+                                        <div
+                                            className={
+                                                "wby-bg-neutral-base wby-px-xs wby-pt-sm-extra wby-pb-sm wby-rounded-md wby-text-center hover:wby-opacity-80 wby-transition-opacity"
+                                            }
+                                        >
+                                            <Icon
+                                                label={"Slack"}
+                                                icon={<SlackIcon />}
+                                                size={"lg"}
+                                                color={"inherit"}
+                                                className={"wby-mx-auto wby-mb-sm"}
+                                            />
+                                            <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                                Slack
+                                            </Text>
+                                        </div>
+                                    </Link>
+                                </Grid.Column>
+                                <Grid.Column span={2}>
+                                    <Link
+                                        to="https://youtube.com/webiny"
+                                        className={"!wby-no-underline"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                    >
+                                        <div
+                                            className={
+                                                "wby-bg-neutral-base wby-px-xs wby-pt-sm-extra wby-pb-sm wby-rounded-md wby-text-center hover:wby-opacity-80 wby-transition-opacity"
+                                            }
+                                        >
+                                            <Icon
+                                                label={"YouTube"}
+                                                icon={<YouTubeIcon />}
+                                                size={"lg"}
+                                                color={"inherit"}
+                                                className={"wby-mx-auto wby-mb-sm"}
+                                            />
+                                            <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                                YouTube
+                                            </Text>
+                                        </div>
+                                    </Link>
+                                </Grid.Column>
+                                <Grid.Column span={2}>
+                                    <Link
+                                        to="https://twitter.com/WebinyCMS"
+                                        className={"!wby-no-underline"}
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                    >
+                                        <div
+                                            className={
+                                                "wby-bg-neutral-base wby-px-xs wby-pt-sm-extra wby-pb-sm wby-rounded-md wby-text-center hover:wby-opacity-80 wby-transition-opacity"
+                                            }
+                                        >
+                                            <Icon
+                                                label={"YouTube"}
+                                                icon={<TwitterIcon />}
+                                                size={"lg"}
+                                                color={"inherit"}
+                                                className={"wby-mx-auto wby-mb-sm"}
+                                            />
+                                            <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                                                X.com
+                                            </Text>
+                                        </div>
+                                    </Link>
+                                </Grid.Column>
+                            </Grid>
+                        </div>
+                    </Grid.Column>
+                </Grid>
+            </div>
+        </div>
     );
 };
 
