@@ -29,6 +29,8 @@ export const createCategoryGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     slug: String!
                     url: String!
                     layout: String!
+                    createdBy: PbIdentityInput
+                    createdOn: DateTime
                 }
 
                 # Response types

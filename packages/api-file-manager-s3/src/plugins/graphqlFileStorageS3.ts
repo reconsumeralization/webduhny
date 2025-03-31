@@ -25,6 +25,7 @@ const plugin: GraphQLSchemaPlugin<FileManagerContext> = {
             }
 
             input PreSignedPostPayloadInput {
+                id: ID
                 name: String!
                 type: String!
                 size: Long!

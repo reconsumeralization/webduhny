@@ -9,6 +9,7 @@ import { Context as BaseContext } from "@webiny/handler/types";
 import {
     BlockCategory,
     Category,
+    CreatedBy,
     DefaultSettings,
     DynamicDocument,
     Menu,
@@ -17,6 +18,7 @@ import {
     PageElement,
     PageSettings,
     PageSpecialType,
+    PageStatus,
     PageTemplate,
     PageTemplateInput,
     Settings,
@@ -32,8 +34,10 @@ export interface ListPagesParamsWhere {
     category?: string;
     status?: string;
     tags?: { query: string[]; rule?: "any" | "all" };
+
     [key: string]: any;
 }
+
 export interface ListPagesParams {
     limit?: number;
     after?: string | null;
@@ -75,6 +79,7 @@ export interface OnPageBeforeCreateTopicParams<TPage extends Page = Page> {
     page: TPage;
     meta?: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -82,6 +87,7 @@ export interface OnPageAfterCreateTopicParams<TPage extends Page = Page> {
     page: TPage;
     meta?: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -90,6 +96,7 @@ export interface OnPageBeforeUpdateTopicParams<TPage extends Page = Page> {
     page: TPage;
     input: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -98,6 +105,7 @@ export interface OnPageAfterUpdateTopicParams<TPage extends Page = Page> {
     page: TPage;
     input: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -105,6 +113,7 @@ export interface OnPageBeforeCreateFromTopicParams<TPage extends Page = Page> {
     original: TPage;
     page: TPage;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -112,6 +121,7 @@ export interface OnPageAfterCreateFromTopicParams<TPage extends Page = Page> {
     original: TPage;
     page: TPage;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -121,6 +131,7 @@ export interface OnPageBeforeDeleteTopicParams<TPage extends Page = Page> {
     publishedPage: TPage | null;
     deleteMethod: "deleteAll" | "delete";
 }
+
 /**
  * @category Lifecycle events
  */
@@ -130,6 +141,7 @@ export interface OnPageAfterDeleteTopicParams<TPage extends Page = Page> {
     publishedPage: TPage | null;
     deleteMethod: "deleteAll" | "delete";
 }
+
 /**
  * @category Lifecycle events
  */
@@ -138,6 +150,7 @@ export interface OnPageBeforePublishTopicParams<TPage extends Page = Page> {
     latestPage: TPage;
     publishedPage: TPage | null;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -146,6 +159,7 @@ export interface OnPageAfterPublishTopicParams<TPage extends Page = Page> {
     latestPage: TPage;
     publishedPage: TPage | null;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -153,6 +167,7 @@ export interface OnPageBeforeUnpublishTopicParams<TPage extends Page = Page> {
     page: TPage;
     latestPage: TPage;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -193,34 +208,54 @@ export interface PageElementProcessor {
  */
 export interface PagesCrud {
     addPageElementProcessor(processor: PageElementProcessor): void;
+
     processPageContent(content: Page): Promise<Page>;
+
     getPage<TPage extends Page = Page>(id: string, options?: GetPagesOptions): Promise<TPage>;
+
     listLatestPages<TPage extends Page = Page>(
         args: ListPagesParams,
         options?: ListLatestPagesOptions
     ): Promise<[TPage[], ListMeta]>;
+
     listPublishedPages<TPage extends Page = Page>(
         args: ListPagesParams
     ): Promise<[TPage[], ListMeta]>;
+
     listPagesTags(args: { search: { query: string } }): Promise<string[]>;
+
     getPublishedPageById<TPage extends Page = Page>(args: {
         id: string;
         preview?: boolean;
     }): Promise<TPage>;
+
     getPublishedPageByPath<TPage extends Page = Page>(args: { path: string }): Promise<TPage>;
+
     listPageRevisions<TPage extends Page = Page>(id: string): Promise<TPage[]>;
+
     createPage<TPage extends Page = Page>(
         category: string,
         meta?: Record<string, any>
     ): Promise<TPage>;
+
+    createPageV2<TPage extends Page = Page>(
+        data: PbCreatePageV2Input,
+        meta?: Record<string, any>
+    ): Promise<TPage>;
+
     createPageFrom<TPage extends Page = Page>(
         page: string,
         meta?: Record<string, any>
     ): Promise<TPage>;
+
     updatePage<TPage extends Page = Page>(id: string, data: PbUpdatePageInput): Promise<TPage>;
+
     deletePage<TPage extends Page = Page>(id: string): Promise<[TPage, TPage]>;
+
     publishPage<TPage extends Page = Page>(id: string): Promise<TPage>;
+
     unpublishPage<TPage extends Page = Page>(id: string): Promise<TPage>;
+
     prerendering: {
         render(args: RenderParams): Promise<void>;
         flush(args: FlushParams): Promise<void>;
@@ -249,12 +284,14 @@ export interface ListPageElementsParams {
 export interface OnPageElementBeforeCreateTopicParams {
     pageElement: PageElement;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnPageElementAfterCreateTopicParams {
     pageElement: PageElement;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -262,6 +299,7 @@ export interface OnPageElementBeforeUpdateTopicParams {
     original: PageElement;
     pageElement: PageElement;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -269,12 +307,14 @@ export interface OnPageElementAfterUpdateTopicParams {
     original: PageElement;
     pageElement: PageElement;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnPageElementBeforeDeleteTopicParams {
     pageElement: PageElement;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -287,10 +327,15 @@ export interface OnPageElementAfterDeleteTopicParams {
  */
 export interface PageElementsCrud {
     getPageElement(id: string): Promise<PageElement | null>;
+
     listPageElements(params?: ListPageElementsParams): Promise<PageElement[]>;
+
     createPageElement(data: Record<string, any>): Promise<PageElement>;
+
     updatePageElement(id: string, data: Record<string, any>): Promise<PageElement>;
+
     deletePageElement(id: string): Promise<void>;
+
     /**
      * Lifecycle events
      */
@@ -308,12 +353,14 @@ export interface PageElementsCrud {
 export interface OnCategoryBeforeCreateTopicParams {
     category: Category;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnCategoryAfterCreateTopicParams {
     category: Category;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -321,6 +368,7 @@ export interface OnCategoryBeforeUpdateTopicParams {
     original: Category;
     category: Category;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -328,12 +376,14 @@ export interface OnCategoryAfterUpdateTopicParams {
     original: Category;
     category: Category;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnCategoryBeforeDeleteTopicParams {
     category: Category;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -346,10 +396,15 @@ export interface OnCategoryAfterDeleteTopicParams {
  */
 export interface CategoriesCrud {
     getCategory(slug: string, options?: { auth: boolean }): Promise<Category | null>;
+
     listCategories(): Promise<Category[]>;
+
     createCategory(data: PbCategoryInput): Promise<Category>;
+
     updateCategory(slug: string, data: PbCategoryInput): Promise<Category>;
+
     deleteCategory(slug: string): Promise<Category>;
+
     onCategoryBeforeCreate: Topic<OnCategoryBeforeCreateTopicParams>;
     onCategoryAfterCreate: Topic<OnCategoryAfterCreateTopicParams>;
     onCategoryBeforeUpdate: Topic<OnCategoryBeforeUpdateTopicParams>;
@@ -373,6 +428,7 @@ export interface OnMenuBeforeCreateTopicParams {
     menu: Menu;
     input: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -380,6 +436,7 @@ export interface OnMenuAfterCreateTopicParams {
     menu: Menu;
     input: Record<string, any>;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -387,6 +444,7 @@ export interface OnMenuBeforeUpdateTopicParams {
     original: Menu;
     menu: Menu;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -394,12 +452,14 @@ export interface OnMenuAfterUpdateTopicParams {
     original: Menu;
     menu: Menu;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnMenuBeforeDeleteTopicParams {
     menu: Menu;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -412,17 +472,26 @@ interface CreateMenuInput {
     slug: string;
     description: string;
     items: any[];
+    createdOn?: Date | string;
+    createdBy?: CreatedBy;
 }
+
 /**
  * @category Menu
  */
 export interface MenusCrud {
     getMenu(slug: string, options?: MenuGetOptions): Promise<Menu | null>;
+
     getPublicMenu(slug: string): Promise<Menu>;
+
     listMenus(params?: ListMenuParams): Promise<Menu[]>;
+
     createMenu(data: CreateMenuInput): Promise<Menu>;
+
     updateMenu(slug: string, data: Record<string, any>): Promise<Menu>;
+
     deleteMenu(slug: string): Promise<Menu>;
+
     onMenuBeforeCreate: Topic<OnMenuBeforeCreateTopicParams>;
     onMenuAfterCreate: Topic<OnMenuAfterCreateTopicParams>;
     onMenuBeforeUpdate: Topic<OnMenuBeforeUpdateTopicParams>;
@@ -444,6 +513,7 @@ export interface SettingsUpdateTopicMetaParams {
         pages: [PageSpecialType, string | null | undefined, string, Page][];
     };
 }
+
 /**
  * @category Lifecycle events
  */
@@ -452,6 +522,7 @@ export interface OnSettingsBeforeUpdateTopicParams {
     settings: Settings;
     meta: SettingsUpdateTopicMetaParams;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -484,20 +555,26 @@ export interface SettingsCrud {
 export interface OnSystemBeforeInstallTopicParams {
     tenant: string;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnSystemAfterInstallTopicParams {
     tenant: string;
 }
+
 /**
  * @category System
  */
 export interface SystemCrud {
     getSystem: () => Promise<System | null>;
+
     getSystemVersion(): Promise<string | null>;
+
     setSystemVersion(version: string): Promise<void>;
+
     installSystem(args: { name: string; insertDemoData: boolean }): Promise<void>;
+
     /**
      * Lifecycle events
      */
@@ -518,12 +595,14 @@ export interface PbBlockCategoryInput {
 export interface OnBeforeBlockCategoryCreateTopicParams {
     blockCategory: BlockCategory;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnAfterBlockCategoryCreateTopicParams {
     blockCategory: BlockCategory;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -531,6 +610,7 @@ export interface OnBeforeBlockCategoryUpdateTopicParams {
     original: BlockCategory;
     blockCategory: BlockCategory;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -538,12 +618,14 @@ export interface OnAfterBlockCategoryUpdateTopicParams {
     original: BlockCategory;
     blockCategory: BlockCategory;
 }
+
 /**
  * @category Lifecycle events
  */
 export interface OnBeforeBlockCategoryDeleteTopicParams {
     blockCategory: BlockCategory;
 }
+
 /**
  * @category Lifecycle events
  */
@@ -556,10 +638,15 @@ export interface OnAfterBlockCategoryDeleteTopicParams {
  */
 export interface BlockCategoriesCrud {
     getBlockCategory(slug: string, options?: { auth: boolean }): Promise<BlockCategory | null>;
+
     listBlockCategories(): Promise<BlockCategory[]>;
+
     createBlockCategory(data: PbBlockCategoryInput): Promise<BlockCategory>;
+
     updateBlockCategory(slug: string, data: PbBlockCategoryInput): Promise<BlockCategory>;
+
     deleteBlockCategory(slug: string): Promise<BlockCategory>;
+
     /**
      * Lifecycle events
      */
@@ -577,6 +664,7 @@ export interface ListPageBlocksParams {
         blockCategory?: string;
     };
 }
+
 /**
  * @category Lifecycle events
  */
@@ -633,10 +721,15 @@ export type PageBlockUpdateInput = Partial<PageBlockCreateInput>;
  */
 export interface PageBlocksCrud {
     getPageBlock(id: string): Promise<PageBlock | null>;
+
     listPageBlocks(params?: ListPageBlocksParams): Promise<PageBlock[]>;
+
     createPageBlock(data: PageBlockCreateInput): Promise<PageBlock>;
+
     updatePageBlock(id: string, data: PageBlockUpdateInput): Promise<PageBlock>;
+
     deletePageBlock(id: string): Promise<boolean>;
+
     resolvePageBlocks(content: Record<string, any> | null): Promise<any>;
 
     /**
@@ -653,6 +746,7 @@ export interface PageBlocksCrud {
 export interface ListPageTemplatesParams {
     sort?: string[];
 }
+
 /**
  * @category Lifecycle events
  */
@@ -742,17 +836,25 @@ export interface PageTemplatesCrud {
             auth: boolean;
         }
     ): Promise<PageTemplate | null>;
+
     listPageTemplates(params?: ListPageTemplatesParams): Promise<PageTemplate[]>;
+
     createPageTemplate(data: PageTemplateInput): Promise<PageTemplate>;
+
     createPageFromTemplate(data: CreatePageFromTemplateParams): Promise<Page>;
+
     createTemplateFromPage(
         pageId: string,
         data: Pick<PageTemplate, "title" | "description" | "slug">
     ): Promise<PageTemplate>;
+
     // Copy relevant data from page template to page instance, by reference.
     copyTemplateDataToPage(template: PageTemplate, page: Page): void;
+
     updatePageTemplate(id: string, data: Record<string, any>): Promise<PageTemplate>;
+
     deletePageTemplate(id: string): Promise<PageTemplate>;
+
     resolvePageTemplate(content: PageContentWithTemplate): Promise<any>;
 
     /**
@@ -878,6 +980,7 @@ export interface FlushParams {
 
 export interface PrerenderingHandlers {
     render(args: RenderParams): Promise<void>;
+
     flush(args: FlushParams): Promise<void>;
 }
 
@@ -886,6 +989,8 @@ export interface PbCategoryInput {
     slug: string;
     url: string;
     layout: string;
+    createdOn?: Date | string;
+    createdBy?: CreatedBy;
 }
 
 export interface PbUpdatePageInput extends DynamicDocument {
@@ -894,4 +999,20 @@ export interface PbUpdatePageInput extends DynamicDocument {
     path?: string;
     settings?: PageSettings;
     content?: Record<string, any> | null;
+}
+
+export interface PbCreatePageV2Input extends DynamicDocument {
+    title?: string;
+    category?: string;
+    path?: string;
+    status?: PageStatus;
+    publishedOn?: Date | string;
+    settings?: PageSettings;
+    content?: Record<string, any> | null;
+    version?: number;
+    id?: string;
+    pid?: string;
+    createdOn?: Date | string;
+    createdBy?: CreatedBy;
+    ownedBy?: CreatedBy;
 }
