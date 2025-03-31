@@ -2,15 +2,6 @@ import React, { useMemo } from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
-const buttonWrapperVariants = cva("wby-inline-block", {
-    variants: {
-        disabled: {
-            true: "wby-cursor-not-allowed",
-            false: "wby-cursor-pointer"
-        }
-    }
-});
-
 const buttonVariants = cva(
     [
         "wby-border-transparent wby-rounded wby-font-sans wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-ring-offset-background wby-transition-colors",
@@ -211,13 +202,11 @@ const ButtonBase = ({
     );
 
     return (
-        <span className={cn(buttonWrapperVariants({ disabled }))}>
-            <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
-                {iconPosition !== "end" && icon}
-                <Slottable>{text}</Slottable>
-                {iconPosition === "end" && icon}
-            </Comp>
-        </span>
+        <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
+            {iconPosition !== "end" && icon}
+            <Slottable>{text}</Slottable>
+            {iconPosition === "end" && icon}
+        </Comp>
     );
 };
 

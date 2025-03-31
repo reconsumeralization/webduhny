@@ -24,6 +24,7 @@ export * from "./IconPicker";
 export * from "./Image";
 export * from "./Input";
 export * from "./Label";
+export * from "./Link";
 export * from "./List";
 export * from "./Loader";
 export * from "./MultiAutoComplete";
