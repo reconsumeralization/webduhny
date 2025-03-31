@@ -1,13 +1,12 @@
 import React from "react";
 import { createVoidComponent, makeDecoratable } from "~/index";
 import type {
-    SidebarMenuItemActionProps,
-    SidebarMenuItemIconProps,
-    SidebarMenuItemLinkProps
-} from "@webiny/admin-ui/Sidebar/components/items/SidebarMenuItem";
+    DropdownMenuItemIconProps,
+    DropdownMenuItemLinkProps
+} from "@webiny/admin-ui/DropdownMenu/components/DropdownMenuLink";
 
 // UserMenuLink
-type UserMenuLinkRendererProps = SidebarMenuItemLinkProps;
+type UserMenuLinkRendererProps = DropdownMenuItemLinkProps;
 
 const UserMenuLinkRenderer = makeDecoratable(
     "UserMenuLinkRenderer",
@@ -18,32 +17,17 @@ const UserMenuLink = makeDecoratable("UserMenuLink", (props: UserMenuLinkRendere
     return <UserMenuLinkRenderer {...props} />;
 });
 
-// UserMenuLink > Action
-type SidebarMenuItemActionRendererProps = SidebarMenuItemActionProps;
-
-const UserMenuLinkActionRenderer = makeDecoratable(
-    "UserMenuLinkAction",
-    createVoidComponent<SidebarMenuItemActionRendererProps>()
-);
-
-const UserMenuLinkAction = makeDecoratable(
-    "UserMenuLinkAction",
-    (props: SidebarMenuItemActionRendererProps) => {
-        return <UserMenuLinkActionRenderer {...props} />;
-    }
-);
-
 // UserMenuLink > Icon
-type SidebarMenuItemIconRendererProps = SidebarMenuItemIconProps;
+type DropdownMenuItemIconRendererProps = DropdownMenuItemIconProps;
 
 const UserMenuLinkIconRenderer = makeDecoratable(
     "UserMenuLinkIcon",
-    createVoidComponent<SidebarMenuItemIconProps>()
+    createVoidComponent<DropdownMenuItemIconProps>()
 );
 
 const UserMenuLinkIcon = makeDecoratable(
     "UserMenuLinkIcon",
-    (props: SidebarMenuItemIconRendererProps) => {
+    (props: DropdownMenuItemIconRendererProps) => {
         return <UserMenuLinkIconRenderer {...props} />;
     }
 );
@@ -51,11 +35,8 @@ const UserMenuLinkIcon = makeDecoratable(
 export {
     UserMenuLink,
     UserMenuLinkRenderer,
-    UserMenuLinkAction,
-    UserMenuLinkActionRenderer,
     UserMenuLinkIcon,
     UserMenuLinkIconRenderer,
     type UserMenuLinkRendererProps,
-    type SidebarMenuItemActionRendererProps,
-    type SidebarMenuItemIconRendererProps
+    type DropdownMenuItemIconRendererProps
 };

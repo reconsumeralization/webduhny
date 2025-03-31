@@ -8,7 +8,7 @@ import { LinkProps, To } from "@webiny/react-router";
 import { SidebarMenuRootItem } from "~/Sidebar/components/items/SidebarMenuRootItem";
 
 export interface SidebarMenuItemBaseProps {
-    text: string;
+    text: React.ReactNode;
     className?: string;
     children?: React.ReactNode;
     onClick?: React.MouseEventHandler;

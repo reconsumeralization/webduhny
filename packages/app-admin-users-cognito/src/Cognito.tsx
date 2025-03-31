@@ -5,8 +5,9 @@ import { HasPermission } from "@webiny/app-security";
 import { Permission } from "~/plugins/constants";
 import { UsersView } from "~/ui/views/Users/UsersView";
 import { Account } from "~/ui/views/Account";
-import { AccountDetails } from "./plugins/userMenu/accountDetails";
-import { SignOut } from "./plugins/userMenu/signOut";
+import { AccountDetails } from "./plugins/userMenu/AccountDetails";
+import { UserInfo } from "./plugins/userMenu/UserInfo";
+import { SignOut } from "./plugins/userMenu/SignOut";
 import installation from "./plugins/installation";
 import permissionRenderer from "./plugins/permissionRenderer";
 import cognito from "./plugins/cognito";
@@ -14,6 +15,7 @@ import { CognitoLogin, CognitoProps } from "./CognitoLogin";
 import { AdminConfig } from "@webiny/app-admin";
 
 const { Route, Menu } = AdminConfig;
+const ACCOUNT_ROUTE = "/account";
 
 const CognitoIdP = (props: CognitoProps) => {
     plugins.register([installation, permissionRenderer, cognito()]);
@@ -38,7 +40,7 @@ const CognitoIdP = (props: CognitoProps) => {
 
                     <Route
                         name={"cognito.account"}
-                        path={"/account"}
+                        path={ACCOUNT_ROUTE}
                         element={
                             <Layout title={"User Account"}>
                                 <Account />
@@ -58,7 +60,11 @@ const CognitoIdP = (props: CognitoProps) => {
                     />
                 </HasPermission>
 
-                <Menu.User name={"accountSettings"} element={<AccountDetails />} />
+                <Menu.User name={"userInfo"} element={<UserInfo accountRoute={ACCOUNT_ROUTE} />} />
+                <Menu.User
+                    name={"accountSettings"}
+                    element={<AccountDetails accountRoute={ACCOUNT_ROUTE} />}
+                />
                 <Menu.User name={"signOut"} element={<SignOut />} />
             </AdminConfig>
         </Fragment>

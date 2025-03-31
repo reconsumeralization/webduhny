@@ -8,7 +8,11 @@ import { AdminConfig } from "@webiny/app-admin";
 
 const { Menu } = AdminConfig;
 
-export const AccountDetails = () => {
+interface AccountDetailsProps {
+    accountRoute: string;
+}
+
+export const AccountDetails = (props: AccountDetailsProps) => {
     const security = useSecurity();
     const tenancy = useTenancy();
     const isDefaultTenant = useIsDefaultTenant();
@@ -22,15 +26,10 @@ export const AccountDetails = () => {
 
     if (tenancy && !isDefaultTenant) {
         return (
-            <Menu.User
-                name={"cognito.settings.exitTenant"}
-                element={
-                    <Menu.User.Item
-                        icon={<Menu.User.Item.Icon element={<SignOutIcon />} label={"Exit tenant"} />}
-                        text={"Exit tenant"}
-                        onClick={() => tenancy.setTenant(defaultTenant.id)}
-                    />
-                }
+            <Menu.User.Item
+                icon={<Menu.User.Item.Icon element={<SignOutIcon />} label={"Exit tenant"} />}
+                text={"Exit tenant"}
+                onClick={() => tenancy.setTenant(defaultTenant.id)}
             />
         );
     }
@@ -40,15 +39,10 @@ export const AccountDetails = () => {
     }
 
     return (
-        <Menu.User
-            name={"cognito.settings.account"}
-            element={
-                <Menu.User.Link
-                    icon={<Menu.User.Item.Icon element={<AccountIcon />} label={"Account settings"} />}
-                    text={"Account settings"}
-                    to={"/account"}
-                />
-            }
+        <Menu.User.Link
+            icon={<Menu.User.Item.Icon element={<AccountIcon />} label={"Account settings"} />}
+            text={"Account settings"}
+            to={props.accountRoute}
         />
     );
 };

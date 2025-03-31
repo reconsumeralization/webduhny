@@ -5,7 +5,7 @@ import { DropdownMenuSubRoot } from "./DropdownMenuSubRoot";
 import { DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
 import { DropdownMenuPortal } from "./DropdownMenuPortal";
 import { DropdownMenuSubContent } from "./DropdownMenuSubContent";
-import { DropdownMenuItemIcon } from "./DropdownMenuItemIcon";
+import { DropdownMenuItemIcon, type DropdownMenuItemIconProps } from "./DropdownMenuItemIcon";
 import { Link, LinkProps, To } from "@webiny/react-router";
 
 interface DropdownMenuItemBaseProps {
@@ -105,6 +105,7 @@ const DropdownMenuItem = Object.assign(DecoratableDropdownMenuItem, {
 export {
     DropdownMenuItem,
     type DropdownMenuItemProps,
-    DropdownMenuItemButtonProps,
-    DropdownMenuItemLinkProps
+    type DropdownMenuItemButtonProps,
+    type DropdownMenuItemLinkProps,
+    type DropdownMenuItemIconProps
 };

@@ -3,7 +3,7 @@ import { makeDecoratable } from "~/index";
 import { Property, useIdGenerator } from "@webiny/react-properties";
 import { UserMenuItem } from "./UserMenu/UserMenuItem";
 import { UserMenuLink } from "./UserMenu/UserMenuLink";
-import { UserMenuGroup } from "./UserMenu/UserMenuGroup";
+import { UserMenuSeparator } from "./UserMenu/UserMenuSeparator";
 
 export interface UserMenuProps {
     name: string;
@@ -62,5 +62,5 @@ const DecoratableUserMenu = makeDecoratable("UserMenu", BaseUserMenu);
 export const UserMenu = Object.assign(DecoratableUserMenu, {
     Item: UserMenuItem,
     Link: UserMenuLink,
-    Group: UserMenuGroup
+    Separator: UserMenuSeparator
 });
