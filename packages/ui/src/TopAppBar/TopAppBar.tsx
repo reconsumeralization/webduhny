@@ -1,5 +1,5 @@
 import React from "react";
-
+import { HeaderBar } from "@webiny/admin-ui";
 import {
     TopAppBar as RmwcTopAppBar,
     TopAppBarProps as RmwcTopAppBarProps,
