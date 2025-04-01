@@ -1,35 +1,31 @@
 import * as React from "react";
-import { makeDecoratable, useAdminConfig } from "@webiny/app-admin";
-import * as Styled from "./StyledComponents";
-import { Elevation } from "@webiny/ui/Elevation";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Typography } from "@webiny/ui/Typography";
+import { Logo, makeDecoratable } from "@webiny/app-admin";
+import { Alert, Grid, Heading, Text } from "@webiny/admin-ui";
 
 export interface ContainerProps {
     children: React.ReactNode;
 }
 
-const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => {
-    const { tenant } = useAdminConfig();
-    return (
-        <Styled.Wrapper>
-            <Styled.LogoWrapper>
+const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => (
+    <div className={"wby-w-screen wby-h-screen wby-bg-neutral-light wby-flex-1"}>
+        <section className={"wby-m-auto wby-flex wby-flex-col wby-justify-center wby-min-h-screen"}>
+            <div className={"wby-mx-auto"}>
                 {/* TODO: Loading from AdminConfig does not work. Will resolve this in next PR. */}
-                {tenant.logo || null}
-            </Styled.LogoWrapper>
-            <Styled.LoginContent>{children}</Styled.LoginContent>
-        </Styled.Wrapper>
-    );
-});
+                <Logo />
+            </div>
+            <div className={"wby-w-full wby-max-w-[480px] wby-mx-auto wby-my-lg"}>{children}</div>
+        </section>
+    </div>
+));
 
 export interface ContentProps {
     children: React.ReactNode;
 }
 
 const Content = makeDecoratable("ViewContent", ({ children }: ContentProps) => (
-    <Elevation z={2}>
-        <Styled.InnerContent>{children}</Styled.InnerContent>
-    </Elevation>
+    <div className={"wby-relative wby-p-lg wby-pt-md wby-bg-neutral-base wby-rounded-xl"}>
+        {children}
+    </div>
 ));
 
 export interface FooterProps {
@@ -39,9 +35,9 @@ export interface FooterProps {
 const Footer = makeDecoratable("ViewFooter", ({ children }: FooterProps) => {
     return (
         <Grid>
-            <Cell span={12} style={{ textAlign: "center" }}>
+            <Grid.Column span={12} className={"wby-text-center wby-mt-lg"}>
                 {children}
-            </Cell>
+            </Grid.Column>
         </Grid>
     );
 });
@@ -53,20 +49,41 @@ export interface TitleProps {
 
 const Title = makeDecoratable("ViewTitle", ({ title, description }: TitleProps) => {
     return (
-        <Styled.Title>
-            <Typography use="headline4">{title}</Typography>
-            {description ? (
-                <p>
-                    <Typography use="body1">{description}</Typography>
-                </p>
-            ) : null}
-        </Styled.Title>
+        <div className={"wby-mb-md"}>
+            <Heading level={4}>{title}</Heading>
+            {description && (
+                <Text as={"div"} size={"sm"} className={"wby-text-neutral-strong"}>
+                    {description}
+                </Text>
+            )}
+        </div>
     );
 });
 
+export interface ErrorProps {
+    title?: string;
+    description?: string | null;
+}
+
+export const Error = ({ title = "Something went wrong", description }: ErrorProps) => {
+    if (!description) {
+        return null;
+    }
+
+    return (
+        <div className={"wby-mb-lg"}>
+            <Alert title={title} type={"danger"}>
+                {description}
+            </Alert>
+        </div>
+    );
+};
+
 export const View = {
     Container,
+    Logo,
     Content,
     Title,
-    Footer
+    Footer,
+    Error
 };

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { makeDecoratable } from "~/utils";
-import { DialogClose } from "./DialogClose";
+import { DialogClosePrimitive } from "./DialogClose";
 import { Button, ButtonProps } from "~/Button";
 
 const CancelButtonBase = (props: ButtonProps) => (
-    <DialogClose asChild>
+    <DialogClosePrimitive asChild>
         <Button text={"Cancel"} {...props} variant="secondary" />
-    </DialogClose>
+    </DialogClosePrimitive>
 );
 
 export const CancelButton = makeDecoratable("CancelButton", CancelButtonBase);

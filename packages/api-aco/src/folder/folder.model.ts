@@ -113,6 +113,17 @@ const permissionsField = () =>
         }
     });
 
+const extensionsField = () =>
+    createModelField({
+        label: "Extensions",
+        fieldId: "extensions",
+        type: "object",
+        settings: {
+            layout: [],
+            fields: []
+        }
+    });
+
 export const FOLDER_MODEL_ID = "acoFolder";
 
 export const createFolderModel = () => {
@@ -127,6 +138,13 @@ export const createFolderModel = () => {
             // flp: true
         },
         titleFieldId: "title",
-        fields: [titleField(), slugField(), typeField(), parentIdField(), permissionsField()]
+        fields: [
+            titleField(),
+            slugField(),
+            typeField(),
+            parentIdField(),
+            permissionsField(),
+            extensionsField()
+        ]
     });
 };

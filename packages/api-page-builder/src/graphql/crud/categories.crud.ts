@@ -23,6 +23,8 @@ import {
 import { createZodError, removeUndefinedValues } from "@webiny/utils";
 import { CategoriesPermissions } from "~/graphql/crud/permissions/CategoriesPermissions";
 import { PagesPermissions } from "~/graphql/crud/permissions/PagesPermissions";
+import { getDate } from "~/graphql/crud/utils/getDate";
+import { getIdentity } from "~/graphql/crud/utils/getIdentity";
 
 export interface CreateCategoriesCrudParams {
     context: PbContext;
@@ -172,17 +174,14 @@ export const createCategoriesCrud = (params: CreateCategoriesCrudParams): Catego
             }
 
             const identity = context.security.getIdentity();
+            const currentDateTime = new Date();
 
             const data = validationResult.data;
 
             const category: Category = {
                 ...data,
-                createdOn: new Date().toISOString(),
-                createdBy: {
-                    id: identity.id,
-                    type: identity.type,
-                    displayName: identity.displayName
-                },
+                createdOn: getDate(input.createdOn, currentDateTime),
+                createdBy: getIdentity(input.createdBy, identity),
                 tenant: getTenantId(),
                 locale: getLocaleCode()
             };

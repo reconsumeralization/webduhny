@@ -1,15 +1,18 @@
 import React, { useMemo } from "react";
-import { ReactComponent as ArrowRight } from "@material-symbols/svg-400/rounded/arrow_right.svg";
-import { ReactComponent as Folder } from "@material-symbols/svg-400/rounded/folder-fill.svg";
-import { ReactComponent as FolderShared } from "@material-symbols/svg-400/rounded/folder_shared-fill.svg";
-import { ReactComponent as HomeIcon } from "@material-design-icons/svg/filled/home.svg";
+import { ReactComponent as Folder } from "@webiny/icons/folder.svg";
+import { ReactComponent as FolderShared } from "@webiny/icons/folder_shared.svg";
+import { ReactComponent as HomeIcon } from "@webiny/icons/home.svg";
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import { MenuActions } from "../MenuActions";
-import { Container, ArrowIcon, FolderIcon, Text, Content } from "./styled";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { parseIdentifier } from "@webiny/utils";
 import { ROOT_FOLDER } from "~/constants";
 import { useFolder } from "~/hooks";
+import { cn, Text } from "@webiny/admin-ui";
+import { TreeItemCollapsibleTrigger } from "./components/TreeItemCollapsibleTrigger";
+import { TreeItem } from "./components/TreeItem";
+import { TreeItemIcon } from "./components/TreeItemIcon";
+import { TreeItemContent } from "./components/TreeItemContent";
 
 type NodeProps = {
     node: NodeModel<DndFolderItemData>;
@@ -20,21 +23,20 @@ type NodeProps = {
     onClick: (data: FolderItem) => void;
 };
 
-type FolderProps = {
+interface FolderProps extends React.HTMLAttributes<HTMLDivElement> {
     text: string;
     isRoot: boolean;
-    isOpen: boolean;
-    isFocused?: boolean;
     hasNonInheritedPermissions?: boolean;
     canManagePermissions?: boolean;
-};
+}
 
 export const FolderNode = ({
     isRoot,
-    isFocused,
     hasNonInheritedPermissions,
     canManagePermissions,
-    text
+    text,
+    className,
+    ...props
 }: FolderProps) => {
     let icon = <HomeIcon />;
 
@@ -47,12 +49,15 @@ export const FolderNode = ({
     }
 
     return (
-        <>
-            <FolderIcon>{icon}</FolderIcon>
-            <Text className={isFocused ? "focused" : ""} use={"body2"}>
+        <div
+            {...props}
+            className={cn("wby-flex wby-items-center wby-w-full wby-gap-sm wby-pr-xxl", className)}
+        >
+            <TreeItemIcon label={"Folder"} element={icon} />
+            <Text as={"div"} className={"wby-truncate"}>
                 {text}
             </Text>
-        </>
+        </div>
     );
 };
 
@@ -61,7 +66,7 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
     const isRoot = folder.id === ROOT_FOLDER;
     // Move the placeholder line to the left based on the element depth within the tree.
     // Let's add some pixels so that the element is detached from the container but takes up the whole length while it's highlighted during dnd.
-    const indent = depth === 1 ? 4 : (depth - 1) * 20 + 8;
+    const indent = depth === 1 ? 8 : (depth - 1) * 20 + 8;
 
     const dragOverProps = useDragOver(folder.id, isOpen, onToggle);
 
@@ -86,27 +91,21 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
     const { hasNonInheritedPermissions, canManagePermissions } = folder || {};
 
     return (
-        <Container
-            isFocused={!!node.data?.isFocused}
+        <TreeItem
+            active={!!node.data?.isFocused}
             style={{ paddingInlineStart: indent }}
             {...dragOverProps}
         >
-            {isRoot ? null : (
-                <ArrowIcon isOpen={isOpen} onClick={handleToggle}>
-                    <ArrowRight />
-                </ArrowIcon>
-            )}
-            <Content onClick={handleClick} className={`aco-folder-${id}`}>
+            {isRoot ? null : <TreeItemCollapsibleTrigger open={isOpen} onClick={handleToggle} />}
+            <TreeItemContent onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode
                     isRoot={isRoot}
                     text={node.text}
                     hasNonInheritedPermissions={hasNonInheritedPermissions}
                     canManagePermissions={canManagePermissions}
-                    isOpen={isRoot ? true : isOpen}
-                    isFocused={!!node.data?.isFocused}
                 />
-            </Content>
+            </TreeItemContent>
             {enableActions && !isRoot && <MenuActions />}
-        </Container>
+        </TreeItem>
     );
 };

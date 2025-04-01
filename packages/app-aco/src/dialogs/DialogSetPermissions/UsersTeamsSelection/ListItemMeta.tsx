@@ -1,11 +1,7 @@
 import React, { useMemo } from "react";
-import { ListActions, ListItemMeta as UiListItemMeta } from "@webiny/ui/List";
-import { DropdownMenu, Text } from "@webiny/admin-ui";
-import { ReactComponent as More } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
-import { Typography } from "@webiny/ui/Typography";
-import styled from "@emotion/styled";
+import { ReactComponent as More } from "@webiny/icons/arrow_drop_down.svg";
+import { Button, DropdownMenu, Text, Tooltip } from "@webiny/admin-ui";
 import { useSecurity } from "@webiny/app-security";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { FolderAccessLevel, FolderLevelPermissionsTarget, FolderPermission } from "~/types";
 
 const TARGET_LEVELS = [
@@ -25,14 +21,6 @@ const TARGET_LEVELS = [
         description: "Can edit and manage content permissions"
     }
 ];
-
-const StyledHandle = styled.div<{ disabled: boolean }>`
-    display: flex;
-    color: var(--mdc-theme-text-primary-on-background);
-    cursor: pointer;
-    padding: 20px 0 20px 20px;
-    ${({ disabled }) => disabled && `opacity: 0.5; pointer-events: none;`}
-`;
 
 interface ListItemMetaProps {
     permission: FolderPermission;
@@ -78,63 +66,58 @@ export const ListItemMeta = ({
 
     const handle = useMemo(() => {
         let handle = (
-            <StyledHandle disabled={!!disabledReason}>
-                <Typography use="body1">{currentLevel.label}</Typography>
-                <More />
-            </StyledHandle>
+            <Button
+                variant={"ghost"}
+                disabled={!!disabledReason}
+                text={currentLevel.label}
+                icon={<More />}
+                iconPosition={"end"}
+            />
         );
 
         if (disabledReason) {
-            handle = <Tooltip content={disabledReason}>{handle}</Tooltip>;
+            handle = <Tooltip content={disabledReason} trigger={handle} />;
         }
 
         return handle;
     }, [disabledReason, currentLevel.label]);
 
     return (
-        <UiListItemMeta>
-            <ListActions>
-                <DropdownMenu
-                    trigger={handle}
-                    // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
-                    // portalZIndex={101}
-                >
-                    {TARGET_LEVELS.map(level => (
-                        <DropdownMenu.CheckboxItem
-                            key={level.id}
-                            checked={currentLevel.id === level.id}
-                            text={
-                                <div>
-                                    <Text as={"div"}>{level.label}</Text>
-                                    <Text
-                                        as={"div"}
-                                        size={"sm"}
-                                        className={"wby-text-neutral-strong"}
-                                    >
-                                        {level.description}
-                                    </Text>
-                                </div>
-                            }
-                            onClick={() => {
-                                // Needed to do this with a short delay because of a visual glitch.
-                                setTimeout(() => {
-                                    onUpdatePermission({
-                                        permission: {
-                                            ...permission,
-                                            level: level.id as FolderAccessLevel
-                                        }
-                                    });
-                                }, 75);
-                            }}
-                        />
-                    ))}
-                    <DropdownMenu.Separator />
-                    <DropdownMenu.Item
-                        onClick={() => onRemoveAccess({ permission })}
-                        text={"Remove access"}
-                    />
-                </DropdownMenu>
-            </ListActions>
-        </UiListItemMeta>
+        <DropdownMenu
+            trigger={handle}
+            // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
+            // portalZIndex={101}
+        >
+            {TARGET_LEVELS.map(level => (
+                <DropdownMenu.CheckboxItem
+                    key={level.id}
+                    checked={currentLevel.id === level.id}
+                    text={
+                        <div>
+                            <Text as={"div"}>{level.label}</Text>
+                            <Text as={"div"} size={"sm"} className={"wby-text-neutral-strong"}>
+                                {level.description}
+                            </Text>
+                        </div>
+                    }
+                    onClick={() => {
+                        // Needed to do this with a short delay because of a visual glitch.
+                        setTimeout(() => {
+                            onUpdatePermission({
+                                permission: {
+                                    ...permission,
+                                    level: level.id as FolderAccessLevel
+                                }
+                            });
+                        }, 75);
+                    }}
+                />
+            ))}
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item
+                onClick={() => onRemoveAccess({ permission })}
+                text={"Remove access"}
+            />
+        </DropdownMenu>
     );
 };

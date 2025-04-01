@@ -1,16 +1,6 @@
 import React from "react";
-
-import { Elevation } from "@webiny/ui/Elevation";
-import { Cell, Grid } from "@webiny/ui/Grid";
-
+import { Grid, Heading, Text } from "@webiny/admin-ui";
 import { OperationSelector } from "./OperationSelector";
-
-import {
-    CellInner,
-    DetailsContainer,
-    FilterDetailsDetails,
-    FilterDetailsIcon
-} from "../Querybuilder.styled";
 
 export interface DetailsProps {
     name: string;
@@ -19,36 +9,24 @@ export interface DetailsProps {
 
 export const Details = (props: DetailsProps) => {
     return (
-        <DetailsContainer>
-            <Elevation z={0}>
-                <Grid>
-                    <Cell span={1} align={"middle"}>
-                        <CellInner align={"center"}>
-                            <FilterDetailsIcon />
-                        </CellInner>
-                    </Cell>
-                    <Cell span={8} align={"middle"}>
-                        <CellInner align={"left"}>
-                            <FilterDetailsDetails use={"headline5"} tag={"h3"}>
-                                {props.name}
-                            </FilterDetailsDetails>
-                            {props.description && (
-                                <FilterDetailsDetails use={"body1"} tag={"p"}>
-                                    {props.description}
-                                </FilterDetailsDetails>
-                            )}
-                        </CellInner>
-                    </Cell>
-                    <Cell span={3} align={"middle"}>
-                        <CellInner align={"right"}>
-                            <OperationSelector
-                                name={"operation"}
-                                label={"Match all filter groups"}
-                            />
-                        </CellInner>
-                    </Cell>
-                </Grid>
-            </Elevation>
-        </DetailsContainer>
+        <Grid>
+            <Grid.Column span={9}>
+                <div className={"wby-flex wby-items-start wby-gap-md"}>
+                    <div className={"wby-text-left wby-text-neutral-primary"}>
+                        <Heading level={5}>{props.name}</Heading>
+                        {props.description && (
+                            <Text as={"div"} size={"sm"} className={"wby-mt-sm"}>
+                                {props.description}
+                            </Text>
+                        )}
+                    </div>
+                </div>
+            </Grid.Column>
+            <Grid.Column span={3} align={"middle"}>
+                <div className={"wby-text-right"}>
+                    <OperationSelector name={"operation"} label={"Match all filter groups"} />
+                </div>
+            </Grid.Column>
+        </Grid>
     );
 };

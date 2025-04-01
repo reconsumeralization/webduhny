@@ -21,6 +21,8 @@ interface DrawerProps
     modal?: boolean;
     showCloseButton?: boolean;
     bodyPadding?: boolean;
+    headerSeparator?: boolean;
+    footerSeparator?: boolean;
     description?: React.ReactNode;
     children: React.ReactNode;
     actions?: React.ReactNode;
@@ -49,6 +51,7 @@ const DrawerBase = (props: DrawerProps) => {
                 icon,
                 description,
                 showCloseButton,
+                headerSeparator,
 
                 // Body props.
                 children,
@@ -57,6 +60,7 @@ const DrawerBase = (props: DrawerProps) => {
                 // Footer props.
                 actions,
                 info,
+                footerSeparator,
 
                 // Content props.
                 ...rest
@@ -75,9 +79,15 @@ const DrawerBase = (props: DrawerProps) => {
                     // that are decorated with `makeDecoratable`. This will be fixed in the future.
                     children: <div>{trigger}</div>
                 },
-                headerProps: { title, icon, description, showCloseButton },
+                headerProps: {
+                    title,
+                    icon,
+                    description,
+                    showCloseButton,
+                    separator: headerSeparator
+                },
                 bodyProps: { children, bodyPadding },
-                footerProps: { info, actions },
+                footerProps: { info, actions, separator: footerSeparator },
                 contentProps: rest
             };
         }, [props]);

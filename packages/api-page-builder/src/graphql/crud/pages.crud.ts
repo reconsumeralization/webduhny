@@ -52,6 +52,8 @@ import {
 import { createCompression } from "~/graphql/crud/pages/compression";
 import { PagesPermissions } from "./permissions/PagesPermissions";
 import { PageContent } from "./pages/PageContent";
+import { getDate } from "~/graphql/crud/utils/getDate";
+import { getIdentity } from "~/graphql/crud/utils/getIdentity";
 
 const STATUS_DRAFT = "draft";
 const STATUS_PUBLISHED = "published";
@@ -289,12 +291,12 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
         async processPageContent(page) {
             return processPageContent(page, pageElementProcessors);
         },
-        async createPage(this: PageBuilderContextObject, slug, meta): Promise<any> {
+        async createPage(this: PageBuilderContextObject, categorySlug, meta): Promise<any> {
             await pagesPermissions.ensure({ rwd: "w" });
 
-            const category = await this.getCategory(slug);
+            const category = await this.getCategory(categorySlug);
             if (!category) {
-                throw new NotFoundError(`Category with slug "${slug}" not found.`);
+                throw new NotFoundError(`Category with slug "${categorySlug}" not found.`);
             }
 
             const title = "Untitled";
@@ -399,7 +401,160 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
 
                 await storageOperations.pages.create({
                     input: {
-                        slug
+                        slug: categorySlug
+                    },
+                    page: await compressPage(page)
+                });
+                await onPageAfterCreate.publish({ page, meta });
+
+                return page;
+            } catch (ex) {
+                throw new WebinyError(
+                    ex.message || "Could not create new page.",
+                    ex.code || "CREATE_PAGE_ERROR",
+                    {
+                        ...(ex.data || {}),
+                        page
+                    }
+                );
+            }
+        },
+
+        async createPageV2(this: PageBuilderContextObject, input, meta): Promise<any> {
+            await pagesPermissions.ensure({ rwd: "w" });
+
+            const categorySlug = input.category;
+            if (!categorySlug) {
+                throw new WebinyError("Category slug is missing.", "CATEGORY_SLUG_MISSING");
+            }
+
+            const category = await this.getCategory(categorySlug);
+            if (!category) {
+                throw new NotFoundError(`Category with slug "${categorySlug}" not found.`);
+            }
+
+            const title = input.title || "Untitled";
+
+            let pagePath = input.path;
+            if (!pagePath) {
+                if (category.slug === "static") {
+                    pagePath = normalizePath("untitled-" + uniqid.time()) as string;
+                } else {
+                    pagePath = normalizePath(
+                        [category.url, "untitled-" + uniqid.time()].join("/").replace(/\/\//g, "/")
+                    ) as string;
+                }
+            }
+
+            const result = await createPageCreateValidation().safeParseAsync({
+                category: category.slug
+            });
+            if (!result.success) {
+                throw createZodError(result.error);
+            }
+
+            const currentIdentity = context.security.getIdentity();
+            const currentDateTime = new Date();
+
+            let pageId = "",
+                version = 1;
+            if (input.id) {
+                const splitId = input.id.split("#");
+                pageId = splitId[0];
+                version = Number(splitId[1]);
+            } else if (input.pid) {
+                pageId = input.pid;
+            } else {
+                pageId = mdbid();
+            }
+
+            if (input.version) {
+                version = input.version;
+            }
+
+            const id = createIdentifier({
+                id: pageId,
+                version: 1
+            });
+
+            const rawSettings = input.settings || {
+                general: {
+                    layout: category.layout
+                },
+                social: {
+                    description: null,
+                    image: null,
+                    meta: [],
+                    title: null
+                },
+                seo: {
+                    title: null,
+                    description: null,
+                    meta: []
+                }
+            };
+
+            const validation = createPageSettingsUpdateValidation();
+            const settingsValidationResult = validation.safeParse(rawSettings);
+            if (!settingsValidationResult.success) {
+                throw createZodError(settingsValidationResult.error);
+            }
+
+            const settings = settingsValidationResult.data;
+            const status = input.status || STATUS_DRAFT;
+            const locked = status !== STATUS_DRAFT;
+
+            let publishedOn = null;
+            if (status === STATUS_PUBLISHED) {
+                publishedOn = getDate(input.publishedOn, currentDateTime);
+            }
+
+            const page: Page = {
+                id,
+                pid: pageId,
+                locale: getLocaleCode(),
+                tenant: getTenantId(),
+                editor: DEFAULT_EDITOR,
+                category: category.slug,
+                title,
+                path: pagePath,
+                version,
+                status,
+                locked,
+                publishedOn,
+                createdFrom: null,
+                settings: {
+                    ...settings,
+                    general: {
+                        ...settings.general,
+                        tags: settings.general?.tags || undefined
+                    },
+                    social: {
+                        ...settings.social,
+                        meta: settings.social?.meta || []
+                    },
+                    seo: {
+                        ...settings.seo,
+                        meta: settings.seo?.meta || []
+                    }
+                },
+                createdOn: getDate(input.createdOn, currentDateTime),
+                savedOn: getDate(input.createdOn, currentDateTime),
+                createdBy: getIdentity(input.createdBy, currentIdentity),
+                ownedBy: getIdentity(input.createdBy, currentIdentity),
+                content: input.content || PageContent.createEmpty().getValue(),
+                webinyVersion: context.WEBINY_VERSION
+            };
+
+            try {
+                await onPageBeforeCreate.publish({
+                    page,
+                    meta
+                });
+
+                await storageOperations.pages.create({
+                    input: {
+                        slug: categorySlug
                     },
                     page: await compressPage(page)
                 });

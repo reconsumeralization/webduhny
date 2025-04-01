@@ -5,7 +5,7 @@ import Welcome from "./Dashboard/Welcome";
 export const Dashboard = DashboardRenderer.createDecorator(() => {
     return function DashboardRenderer() {
         return (
-            <CenteredView maxWidth={1300}>
+            <CenteredView>
                 <Welcome />
             </CenteredView>
         );

@@ -1,5 +1,5 @@
 import React, { Context, createContext, ReactNode, useContext } from "react";
-import { DefaultData } from "@webiny/ui/DataTable";
+import { DataTableDefaultData } from "@webiny/admin-ui";
 
 export interface TableRowContextData<T> {
     row: T;
@@ -24,9 +24,9 @@ export const TableRowProvider = <T,>({ row, children }: TableRowProviderProps<T>
 
 export const createUseTableRow = <TBaseRow = Record<string, any>,>() => {
     return <TUserRow = Record<string, any>,>() => {
-        const context = useContext<TableRowContextData<TBaseRow & DefaultData & TUserRow>>(
+        const context = useContext<TableRowContextData<TBaseRow & DataTableDefaultData & TUserRow>>(
             TableRowContext as unknown as Context<
-                TableRowContextData<TBaseRow & DefaultData & TUserRow>
+                TableRowContextData<TBaseRow & DataTableDefaultData & TUserRow>
             >
         );
 

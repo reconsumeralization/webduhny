@@ -1,8 +1,7 @@
 import React from "react";
-
-import { Chips, Chip } from "@webiny/ui/Chips";
+import { cn, IconButton, buttonVariants } from "@webiny/admin-ui";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { FilterDTO } from "~/components/AdvancedSearch/domain";
-import { CloseIcon, EditIcon } from "./SelectedFilter.styled";
 
 interface SelectedFilterProps {
     filter: FilterDTO;
@@ -12,15 +11,13 @@ interface SelectedFilterProps {
 
 export const SelectedFilter = (props: SelectedFilterProps) => {
     return (
-        <Chips>
-            <Chip
-                label={props.filter.name}
-                icon={<EditIcon />}
-                onRemove={props.onDelete}
-                trailingIconRemovesChip={true}
-                onInteraction={props.onEdit}
-                trailingIcon={<CloseIcon />}
-            />
-        </Chips>
+        <div
+            role={"button"}
+            className={cn(buttonVariants({ variant: "tertiary" }), "wby-gap-xs wby-cursor-pointer")}
+            onClick={props.onEdit}
+        >
+            <span className={"wby-truncate wby-max-w-[256px]"}>{props.filter.name}</span>
+            <IconButton icon={<Close />} onClick={props.onDelete} size={"xs"} variant={"ghost"} />
+        </div>
     );
 };

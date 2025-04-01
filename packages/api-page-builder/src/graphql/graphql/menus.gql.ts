@@ -23,6 +23,8 @@ export const createMenuGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     slug: String!
                     description: String
                     items: [JSON]
+                    createdBy: PbIdentityInput
+                    createdOn: DateTime
                 }
 
                 # Response types

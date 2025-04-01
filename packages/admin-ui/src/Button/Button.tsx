@@ -13,7 +13,7 @@ const buttonWrapperVariants = cva("wby-inline-block", {
 
 const buttonVariants = cva(
     [
-        "wby-border-transparent wby-rounded wby-font-sans wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-ring-offset-background wby-transition-colors",
+        "wby-border-transparent wby-rounded wby-font-sans wby-inline-flex wby-items-center wby-justify-center wby-whitespace-nowrap wby-ring-offset-background wby-transition-colors !wby-no-underline",
         "aria-disabled:wby-pointer-events-none",
         "focus-visible:wby-outline-none focus-visible:wby-border-accent-default"
     ],
@@ -172,6 +172,8 @@ interface ButtonProps
     iconPosition?: "start" | "end";
 
     asChild?: boolean;
+
+    containerClassName?: string;
 }
 
 type ContentLayout = "text" | "icon" | "text-icon-start" | "text-icon-end";
@@ -185,6 +187,7 @@ const ButtonBase = ({
     icon,
     iconPosition = "start",
     disabled,
+    containerClassName,
     ...rest
 }: ButtonProps) => {
     const Comp = asChild ? Slot : "button";
@@ -211,7 +214,7 @@ const ButtonBase = ({
     );
 
     return (
-        <span className={cn(buttonWrapperVariants({ disabled }))}>
+        <span className={cn(buttonWrapperVariants({ disabled }), containerClassName)}>
             <Comp className={cssClasses} disabled={disabled} aria-disabled={disabled} {...rest}>
                 {iconPosition !== "end" && icon}
                 <Slottable>{text}</Slottable>

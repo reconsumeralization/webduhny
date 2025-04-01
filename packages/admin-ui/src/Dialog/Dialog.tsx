@@ -11,6 +11,7 @@ import { DialogTrigger } from "./components/DialogTrigger";
 import { Icon } from "./components/Icon";
 import { ConfirmButton } from "./components/ConfirmButton";
 import { CancelButton } from "./components/CancelButton";
+import { DialogClose } from "~/Dialog/components/DialogClose";
 
 interface DialogProps
     extends React.ComponentPropsWithoutRef<typeof DialogRoot>,
@@ -28,56 +29,66 @@ interface DialogProps
 }
 
 const DialogBase = (props: DialogProps) => {
-    const { rootProps, triggerProps, contentProps, headerProps, bodyProps, footerProps } =
-        React.useMemo(() => {
-            const {
-                // Root props.
+    const {
+        rootProps,
+        triggerProps,
+        contentProps,
+        headerProps,
+        bodyProps,
+        footerProps,
+        closeButtonProps
+    } = React.useMemo(() => {
+        const {
+            // Root props.
+            defaultOpen,
+            open,
+            onOpenChange,
+            modal,
+            dir,
+
+            // Trigger props.
+            trigger,
+
+            // Header props.
+            title,
+            icon,
+            description,
+
+            // Body props.
+            children,
+            bodyPadding,
+
+            // Footer props.
+            actions,
+            info,
+
+            // Close button props.
+            showCloseButton = true,
+
+            // Content props.
+            ...contentProps
+        } = props;
+
+        return {
+            rootProps: {
                 defaultOpen,
                 open,
                 onOpenChange,
                 modal,
-                dir,
-
-                // Trigger props.
-                trigger,
-
-                // Header props.
-                title,
-                icon,
-                description,
-                showCloseButton,
-
-                // Body props.
-                children,
-                bodyPadding,
-
-                // Footer props.
-                actions,
-                info,
-
-                // Content props.
-                ...contentProps
-            } = props;
-
-            return {
-                rootProps: {
-                    defaultOpen,
-                    open,
-                    onOpenChange,
-                    modal,
-                    dir
-                },
-                triggerProps: {
-                    // Temporary fix. We need this because `ref` doesn't get passed to components
-                    // that are decorated with `makeDecoratable`. This will be fixed in the future.
-                    children: <div>{trigger}</div>
-                },
-                headerProps: { title, icon, description, showCloseButton },
-                bodyProps: { children, bodyPadding },
-                footerProps: { info, actions },
-                contentProps
-            };
-        }, [props]);
+                dir
+            },
+            triggerProps: {
+                // Temporary fix. We need this because `ref` doesn't get passed to components
+                // that are decorated with `makeDecoratable`. This will be fixed in the future.
+                children: <div>{trigger}</div>
+            },
+            headerProps: { title, icon, description },
+            bodyProps: { children, bodyPadding },
+            footerProps: { info, actions },
+            closeButtonProps: { show: showCloseButton },
+            contentProps
+        };
+    }, [props]);
 
     return (
         <DialogRoot {...rootProps}>
@@ -88,6 +99,7 @@ const DialogBase = (props: DialogProps) => {
                     <DialogHeader {...headerProps} />
                     <DialogBody {...bodyProps} />
                     <DialogFooter {...footerProps} />
+                    {closeButtonProps.show && <DialogClose />}
                 </DialogContent>
             </DialogPortal>
         </DialogRoot>
