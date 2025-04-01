@@ -72,22 +72,26 @@ const DefaultContent = (props: SignInDefaultContentProps) => {
                             <Input type={"password"} label={"Password"} size={"lg"} />
                         </Bind>
                     </Grid.Column>
-                    <Grid.Column span={6} className={"wby-flex wby-items-center"}>
-                        <Text as={"div"} size={"sm"}>
-                            <Link to="#" onClick={() => changeState("forgotPassword")}>
-                                Forgot password?
-                            </Link>
-                        </Text>
-                    </Grid.Column>
-                    <Grid.Column span={6} className={"wby-text-right"}>
-                        <Button
-                            text={"Submit"}
-                            data-testid="submit-sign-in-form-button"
-                            onClick={ev => {
-                                submit(ev);
-                            }}
-                            size="lg"
-                        />
+                    <Grid.Column span={12}>
+                        <div
+                            className={
+                                "wby-flex wby-flex-row-reverse wby-items-center wby-justify-between"
+                            }
+                        >
+                            <Button
+                                text={"Submit"}
+                                data-testid="submit-sign-in-form-button"
+                                onClick={ev => {
+                                    submit(ev);
+                                }}
+                                size="lg"
+                            />
+                            <Text as={"div"} size={"sm"}>
+                                <Link to="#" onClick={() => changeState("forgotPassword")}>
+                                    Forgot password?
+                                </Link>
+                            </Text>
+                        </div>
                     </Grid.Column>
                 </Grid>
             ) : null}
@@ -118,7 +122,7 @@ export const SignIn = makeDecoratable("SignIn", (props: SignInProps) => {
                             {loading && <OverlayLoader text={"Signing in..."} />}
                             {content ? content : <DefaultContent {...props} error={error} />}
                         </View.Content>
-                        {footer ? <View.Footer>{"footer"}</View.Footer> : null}
+                        {footer ? <View.Footer>{footer}</View.Footer> : null}
                     </>
                 )}
             </Form>

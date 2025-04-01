@@ -66,24 +66,31 @@ export const ForgotPassword = () => {
                                             />
                                         </Bind>
                                     </Grid.Column>
-                                    <Grid.Column span={6} className={"wby-flex wby-items-center"}>
-                                        <Text as={"div"} size={"sm"}>
-                                            Want to sign in?&nbsp;
-                                            <Link to={"#"} onClick={() => changeState("signIn")}>
-                                                Sign in
-                                            </Link>
-                                            .
-                                        </Text>
-                                    </Grid.Column>
-                                    <Grid.Column span={6} className={"wby-text-right"}>
-                                        <Button
-                                            text={"Send me the code"}
-                                            onClick={ev => {
-                                                submit(ev);
-                                            }}
-                                            data-testid="send-code"
-                                            size="lg"
-                                        />
+                                    <Grid.Column span={12}>
+                                        <div
+                                            className={
+                                                "wby-flex wby-flex-row-reverse wby-items-center wby-justify-between"
+                                            }
+                                        >
+                                            <Button
+                                                text={"Send me the code"}
+                                                onClick={ev => {
+                                                    submit(ev);
+                                                }}
+                                                data-testid="send-code"
+                                                size="lg"
+                                            />
+                                            <Text as={"div"} size={"sm"}>
+                                                Want to sign in?&nbsp;
+                                                <Link
+                                                    to={"#"}
+                                                    onClick={() => changeState("signIn")}
+                                                >
+                                                    Sign in
+                                                </Link>
+                                                .
+                                            </Text>
+                                        </div>
                                     </Grid.Column>
                                 </Grid>
                             </>
@@ -101,19 +108,23 @@ export const ForgotPassword = () => {
                                         </Text>
                                     </Grid.Column>
                                     <Grid.Column span={12}>
-                                        <div className={"wby-flex wby-justify-end wby-gap-sm"}>
+                                        <div
+                                            className={
+                                                "wby-flex wby-flex-row-reverse wby-justify-start wby-gap-md"
+                                            }
+                                        >
+                                            <Button
+                                                text={"I got the code!"}
+                                                onClick={ev => {
+                                                    submit(ev);
+                                                }}
+                                                size="lg"
+                                            />
                                             <Button
                                                 variant={"secondary"}
                                                 text={"Resend code"}
                                                 onClick={() => {
                                                     requestCode({ username: data.username });
-                                                }}
-                                                size="lg"
-                                            />
-                                            <Button
-                                                text={"I got the code!"}
-                                                onClick={ev => {
-                                                    submit(ev);
                                                 }}
                                                 size="lg"
                                             />

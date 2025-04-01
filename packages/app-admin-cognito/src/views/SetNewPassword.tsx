@@ -77,24 +77,28 @@ export const SetNewPassword = () => {
                                         />
                                     </Bind>
                                 </Grid.Column>
-                                <Grid.Column span={6} className={"wby-flex wby-items-center"}>
-                                    <Text as={"div"} size={"sm"}>
-                                        Want to sign in?&nbsp;
-                                        <Link to={"#"} onClick={() => changeState("signIn")}>
-                                            Sign in
-                                        </Link>
-                                        .
-                                    </Text>
-                                </Grid.Column>
-                                <Grid.Column span={6} className={"wby-text-right"}>
-                                    <Button
-                                        text={"Set new password"}
-                                        data-testid="submit-btn-new-psw"
-                                        onClick={ev => {
-                                            submit(ev);
-                                        }}
-                                        size={"lg"}
-                                    />
+                                <Grid.Column span={12}>
+                                    <div
+                                        className={
+                                            "wby-flex wby-flex-row-reverse wby-items-center wby-justify-between"
+                                        }
+                                    >
+                                        <Button
+                                            text={"Set new password"}
+                                            data-testid="submit-btn-new-psw"
+                                            onClick={ev => {
+                                                submit(ev);
+                                            }}
+                                            size={"lg"}
+                                        />
+                                        <Text as={"div"} size={"sm"}>
+                                            Want to sign in?&nbsp;
+                                            <Link to={"#"} onClick={() => changeState("signIn")}>
+                                                Sign in
+                                            </Link>
+                                            .
+                                        </Text>
+                                    </div>
                                 </Grid.Column>
                             </Grid>
                         </View.Content>
