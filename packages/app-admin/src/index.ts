@@ -8,6 +8,7 @@ export * from "./base/ui/TenantSelector";
 export type { LayoutProps } from "./base/ui/Layout";
 export * from "./base/ui/Navigation";
 export * from "./base/ui/Brand";
+export * from "./base/ui/Logo";
 export * from "./base/ui/UserMenu";
 export * from "./base/ui/LoginScreen";
 export * from "./base/ui/CenteredView";

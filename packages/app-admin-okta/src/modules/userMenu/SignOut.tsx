@@ -1,9 +1,9 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/app-serverless-cms";
-import { ListItem, ListItemGraphic } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
-import { ReactComponent as SignOutIcon } from "~/assets/icons/round-lock_open-24px.svg";
+import { ReactComponent as SignOutIcon } from "@webiny/icons/logout.svg";
+import { AdminConfig, makeDecoratable } from "@webiny/app-admin";
+
+const { Menu } = AdminConfig;
 
 export const SignOut = makeDecoratable("SignOut", () => {
     const { identity } = useSecurity();
@@ -18,9 +18,10 @@ export const SignOut = makeDecoratable("SignOut", () => {
     }
 
     return (
-        <ListItem onClick={identity.logout}>
-            <ListItemGraphic>{<Icon icon={<SignOutIcon />} />}</ListItemGraphic>
-            Sign out
-        </ListItem>
+        <Menu.User.Item
+            text={"Sign out"}
+            icon={<Menu.User.Item.Icon element={<SignOutIcon />} label={"Sign out"} />}
+            onClick={identity.logout}
+        />
     );
 });
