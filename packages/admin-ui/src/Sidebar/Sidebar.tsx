@@ -8,7 +8,7 @@ import { SidebarFooter } from "./components/SidebarFooter";
 import { SidebarMenuItem } from "./components/items/SidebarMenuItem";
 import { SidebarMenuLink } from "./components/items/SidebarMenuLink";
 import { SidebarMenuRoot } from "./components/items/SidebarMenuRoot";
-import {SidebarMenuGroup} from "~/Sidebar/components/items/SidebarMenuGroup";
+import { SidebarMenuGroup } from "~/Sidebar/components/items/SidebarMenuGroup";
 
 interface SidebarProps
     extends Omit<React.ComponentPropsWithoutRef<typeof SidebarRoot>, "title">,
