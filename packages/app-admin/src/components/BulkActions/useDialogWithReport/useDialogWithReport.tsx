@@ -1,7 +1,7 @@
 import React from "react";
+import { OverlayLoader } from "@webiny/admin-ui";
 import { useUi } from "@webiny/app/hooks/useUi";
 import { i18n } from "@webiny/app/i18n";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { ResultDialogMessage } from "./DialogMessage";
 import { Result } from "../Worker";
 
@@ -43,7 +43,7 @@ export const useDialogWithReport = (): UseDialogWithReportResponse => {
                     message: message || t`Are you sure you want to continue?`,
                     options: {
                         title: title || t`Confirm`,
-                        loading: <CircularProgress label={loadingLabel} />,
+                        loading: <OverlayLoader text={loadingLabel} />,
                         actions: {
                             accept: {
                                 label: t`Confirm`,

@@ -1,37 +1,33 @@
 import React from "react";
-import { ReactComponent as ErrorIcon } from "@material-design-icons/svg/round/error.svg";
-import { ReactComponent as SuccessIcon } from "@material-design-icons/svg/round/check_circle.svg";
-import { Icon } from "@webiny/ui/Icon";
-import { List, ListItemText, ListItemTextPrimary, ListItemTextSecondary } from "@webiny/ui/List";
+import { ReactComponent as ErrorIcon } from "@webiny/icons/error_outline.svg";
+import { ReactComponent as SuccessIcon } from "@webiny/icons/check_circle_outline.svg";
+import { List, Icon, cn } from "@webiny/admin-ui";
 import { ShowResultsDialogParams } from "./index";
-
-import { ListItem, ListItemGraphic, MessageContainer } from "./useDialogWithReport.styled";
 
 type ResultDialogMessageProps = Pick<ShowResultsDialogParams, "results" | "message">;
 
 export const ResultDialogMessage = ({ results, message }: ResultDialogMessageProps) => {
     return (
         <>
-            {message && <MessageContainer>{message}</MessageContainer>}
-            <List nonInteractive={true} twoLine={true}>
+            {message && <div className={"wby-mb-md"}>{message}</div>}
+            <List>
                 {results.map((result, index) => (
-                    <ListItem key={`item-${index}`} ripple={false}>
-                        <ListItemGraphic status={result.status}>
+                    <List.Item
+                        key={`item-${index}`}
+                        title={result.title}
+                        description={result.message}
+                        icon={
                             <Icon
                                 icon={result.status === "success" ? <SuccessIcon /> : <ErrorIcon />}
+                                label={result.title}
+                                className={cn(
+                                    result.status === "success"
+                                        ? "wby-fill-success"
+                                        : "wby-fill-destructive"
+                                )}
                             />
-                        </ListItemGraphic>
-                        <ListItemText>
-                            <ListItemTextPrimary>{result.title}</ListItemTextPrimary>
-                            <ListItemTextSecondary>
-                                <span
-                                    dangerouslySetInnerHTML={{
-                                        __html: `${result.message}`
-                                    }}
-                                ></span>
-                            </ListItemTextSecondary>
-                        </ListItemText>
-                    </ListItem>
+                        }
+                    />
                 ))}
             </List>
         </>
