@@ -2,10 +2,9 @@ import React from "react";
 import { useSecurity } from "@webiny/app-security";
 import { useTenancy } from "@webiny/app-tenancy";
 import { useIsDefaultTenant } from "./useIsDefaultTenant";
-import { ReactComponent as AccountIcon } from "@material-design-icons/svg/outlined/account_circle.svg";
-import { ReactComponent as SignOutIcon } from "@material-design-icons/svg/outlined/logout.svg";
+import { ReactComponent as AccountIcon } from "@webiny/icons/account_circle.svg";
+import { ReactComponent as SignOutIcon } from "@webiny/icons/logout.svg";
 import { AdminConfig } from "@webiny/app-admin";
-
 const { Menu } = AdminConfig;
 
 interface AccountDetailsProps {
