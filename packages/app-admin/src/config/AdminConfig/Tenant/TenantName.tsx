@@ -3,7 +3,7 @@ import { makeDecoratable } from "~/index";
 import { Property, useIdGenerator } from "@webiny/react-properties";
 
 export interface TenantNameProps {
-    value: string
+    value: string;
 }
 
 const BaseTenantName = ({ value }: TenantNameProps) => {

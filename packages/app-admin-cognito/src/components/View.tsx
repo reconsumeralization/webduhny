@@ -10,7 +10,7 @@ export interface ContainerProps {
 }
 
 const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => {
-    const {tenant} = useAdminConfig();
+    const { tenant } = useAdminConfig();
     return (
         <Styled.Wrapper>
             <Styled.LogoWrapper>

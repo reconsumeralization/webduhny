@@ -18,7 +18,7 @@ interface AdminConfig {
     menus: MenuConfig[];
     supportMenus: SupportMenuConfig[];
     userMenus: UserMenuConfig[];
-    tenant: TenantConfig
+    tenant: TenantConfig;
 }
 
 export const AdminConfigProvider = createProvider(Original => {

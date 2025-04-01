@@ -5,13 +5,13 @@ import { TenantName } from "./Tenant/TenantName";
 import { TenantLogo } from "./Tenant/TenantLogo";
 
 export interface TenantProps {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
 
 export type TenantConfig = {
-    name: string
-    logo: React.ReactNode
-}
+    name: string;
+    logo: React.ReactNode;
+};
 
 const BaseTenant = ({ children }: TenantProps) => {
     const getId = useIdGenerator("Tenant");

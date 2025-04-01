@@ -42,7 +42,7 @@ export type {
     Decorator,
     ProviderProps,
     LayoutProps,
-    LoginScreenProps,
+    LoginScreenProps
 } from "@webiny/app-admin";
 
 export { HasPermission, useSecurity, usePermission } from "@webiny/app-security";
