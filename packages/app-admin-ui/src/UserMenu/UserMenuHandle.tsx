@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, IconButton } from "@webiny/admin-ui";
 import { useSecurity } from "@webiny/app-security";
-import { ReactComponent as KeyboardArrowRightIcon } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import { UserMenuHandleRenderer as UserMenuHandleRendererSpec } from "@webiny/app-admin";
 
 export const UserMenuHandle = UserMenuHandleRendererSpec.createDecorator(() => {
