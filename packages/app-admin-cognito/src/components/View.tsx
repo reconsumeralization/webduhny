@@ -1,5 +1,5 @@
 import * as React from "react";
-import { makeDecoratable, useAdminConfig } from "@webiny/app-admin";
+import { Logo, makeDecoratable } from "@webiny/app-admin";
 import { Alert, Grid, Heading, Text } from "@webiny/admin-ui";
 
 export interface ContainerProps {
@@ -7,15 +7,13 @@ export interface ContainerProps {
 }
 
 const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => {
-    const { tenant } = useAdminConfig();
     return (
         <div className={"wby-w-screen wby-h-screen wby-bg-neutral-light wby-flex-1"}>
             <section
                 className={"wby-m-auto wby-flex wby-flex-col wby-justify-center wby-min-h-screen"}
             >
                 <div className={"wby-mx-auto"}>
-                    {/* TODO: Loading from AdminConfig does not work. Will resolve this in next PR. */}
-                    {tenant.logo || null}
+                    <Logo />
                 </div>
                 <div className={"wby-w-full wby-max-w-[480px] wby-mx-auto wby-my-lg"}>
                     {children}

@@ -1,10 +1,11 @@
 import React from "react";
 import { makeDecoratable } from "@webiny/app-serverless-cms";
-import { ListItem, ListItemGraphic } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
-import { ReactComponent as LogoutIcon } from "~/assets/icons/logout_black_24dp.svg";
 import { useSecurity } from "@webiny/app-security";
 import { useTenancy } from "@webiny/app-tenancy";
+import { AdminConfig } from "@webiny/app-admin";
+import { ReactComponent as SignOutIcon } from "@webiny/icons/logout.svg";
+
+const { Menu } = AdminConfig;
 
 export const ExitTenant = makeDecoratable("ExitTenant", () => {
     const security = useSecurity();
@@ -19,12 +20,11 @@ export const ExitTenant = makeDecoratable("ExitTenant", () => {
 
     if (tenancy && currentTenant && defaultTenant && currentTenant.id !== defaultTenant.id) {
         return (
-            <ListItem onClick={() => tenancy.setTenant(defaultTenant.id)}>
-                <ListItemGraphic>
-                    <Icon icon={<LogoutIcon />} />
-                </ListItemGraphic>
-                Exit tenant
-            </ListItem>
+            <Menu.User.Item
+                icon={<Menu.User.Item.Icon element={<SignOutIcon />} label={"Exit tenant"} />}
+                text={"Exit tenant"}
+                onClick={() => tenancy.setTenant(defaultTenant.id)}
+            />
         );
     }
 
