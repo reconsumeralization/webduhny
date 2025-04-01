@@ -46,21 +46,4 @@ export interface IRecordLocking<
         params: IUnlockEntryParams,
         force?: boolean
     ): Promise<IRecordLockingUnlockEntryResult>;
-    // lockEntry(params: IRecordLockingLockEntryParams): Promise<IRecordLockingLockEntryResult>;
-    // unlockEntryRequest(
-    //     params: IRecordLockingUnlockEntryRequestParams
-    // ): Promise<IRecordLockingUnlockEntryRequestResult>;
-    // isEntryLocked(
-    //     params: IRecordLockingIsEntryLockedParams
-    // ): Promise<IRecordLockingIsEntryLockedResult>;
-    // getLockRecord(
-    //     params: IRecordLockingGetLockRecordParams
-    // ): Promise<IRecordLockingGetLockRecordResult>;
-    // listLockRecords(
-    //     params: IRecordLockingListLockRecordsParams
-    // ): Promise<IRecordLockingListLockRecordsResult>;
-
-    // onRequestAccess(): Promise<void>;
-    // acceptAccessRequest(): Promise<void>;
-    // rejectAccessRequest(): Promise<void>;
 }
