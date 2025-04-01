@@ -4,11 +4,9 @@ import type {
     IGetLockedEntryLockRecordUseCase,
     IGetLockedEntryLockRecordUseCaseExecuteParams
 } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
-import type { IIsLocked } from "~/utils/isLockedFactory";
 
 export interface IGetLockedEntryLockRecordUseCaseParams {
     getLockRecordUseCase: IGetLockRecordUseCase;
-    isLocked: IIsLocked;
     getIdentity: IGetIdentity;
 }
 

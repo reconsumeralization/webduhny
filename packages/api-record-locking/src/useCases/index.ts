@@ -11,7 +11,6 @@ import { UnlockEntryUseCase } from "./UnlockEntryUseCase/UnlockEntryUseCase";
 import { UnlockEntryRequestUseCase } from "./UnlockRequestUseCase/UnlockEntryRequestUseCase";
 import { ListAllLockRecordsUseCase } from "./ListAllLockRecordsUseCase/ListAllLockRecordsUseCase";
 import { ListLockRecordsUseCase } from "./ListLockRecordsUseCase/ListLockRecordsUseCase";
-import { isLockedFactory } from "~/utils/isLockedFactory";
 import { UpdateEntryLockUseCase } from "~/useCases/UpdateEntryLock/UpdateEntryLockUseCase";
 import { KickOutCurrentUserUseCase } from "./KickOutCurrentUser/KickOutCurrentUserUseCase";
 import { GetLockedEntryLockRecordUseCase } from "~/useCases/GetLockedEntryLockRecord/GetLockedEntryLockRecordUseCase";
@@ -52,7 +51,6 @@ export interface ICreateUseCasesResponse {
 export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesResponse => {
     const { getTimeout } = params;
     const timeout = getTimeout();
-    const isLocked = isLockedFactory(timeout);
 
     const convertEntryToLockRecord: ConvertEntryToLockRecordCb = entry => {
         return baseConvertEntryToLockRecord(entry, timeout);
@@ -82,7 +80,6 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
 
     const getLockedEntryLockRecordUseCase = new GetLockedEntryLockRecordUseCase({
         getLockRecordUseCase,
-        isLocked,
         getIdentity: params.getIdentity
     });
 

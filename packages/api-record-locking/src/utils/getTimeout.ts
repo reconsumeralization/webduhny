@@ -1,6 +1,4 @@
-import { WebinyError } from "@webiny/error";
-
-const minTimeoutInSeconds = 20;
+const minTimeoutInSeconds = 30;
 const defaultTimeoutInSeconds = 60;
 /**
  * Input is in seconds.
@@ -9,9 +7,7 @@ const defaultTimeoutInSeconds = 60;
 export const getTimeout = (input: number | undefined) => {
     if (input && input > 0) {
         if (input < minTimeoutInSeconds) {
-            throw new WebinyError(
-                `Timeout cannot be less than ${minTimeoutInSeconds} seconds. Provided: ${input} seconds.`
-            );
+            return minTimeoutInSeconds * 1000;
         }
         return input * 1000;
     }
