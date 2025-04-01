@@ -1,5 +1,5 @@
 ## MH
-- webiny logo clickable
+
 - top app bar menu items via config (packages/app-admin/src/base/ui/UserMenu.tsx)
   - user menu okta/a0 - kill AddUserMenu
 - logo.element or logo.src
@@ -7,6 +7,7 @@
 ---
 
 ## NEXT PR
+
 - logo not visible on the login nscren
 - hover gray color on ddown is reaching edges, but should not
 - adminConfig APIs are directly using admin-ui packages, they should NOT be
