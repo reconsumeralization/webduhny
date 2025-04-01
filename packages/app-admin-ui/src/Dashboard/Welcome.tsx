@@ -176,7 +176,7 @@ const Welcome = () => {
                                             }
                                         >
                                             <Icon
-                                                label={"Github"}
+                                                label={"Github Icon"}
                                                 icon={<GithubIcon />}
                                                 size={"lg"}
                                                 color={"inherit"}
@@ -201,7 +201,7 @@ const Welcome = () => {
                                             }
                                         >
                                             <Icon
-                                                label={"Slack"}
+                                                label={"Slack Icon"}
                                                 icon={<SlackIcon />}
                                                 size={"lg"}
                                                 color={"inherit"}
@@ -226,7 +226,7 @@ const Welcome = () => {
                                             }
                                         >
                                             <Icon
-                                                label={"YouTube"}
+                                                label={"YouTube Icon"}
                                                 icon={<YouTubeIcon />}
                                                 size={"lg"}
                                                 color={"inherit"}
@@ -251,7 +251,7 @@ const Welcome = () => {
                                             }
                                         >
                                             <Icon
-                                                label={"YouTube"}
+                                                label={"X.com Icon"}
                                                 icon={<TwitterIcon />}
                                                 size={"lg"}
                                                 color={"inherit"}
