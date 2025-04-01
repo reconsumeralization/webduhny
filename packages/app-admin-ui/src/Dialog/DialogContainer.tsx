@@ -13,7 +13,8 @@ export const DialogContainer = () => {
         loading,
         actions = { cancel: null, accept: { label: "OK" } },
         style,
-        onClose
+        onClose,
+        showCloseButton
     } = ui.dialog?.options || {};
 
     const hideDialog = useCallback(() => {
@@ -52,24 +53,27 @@ export const DialogContainer = () => {
             onOpenChange={open => !open && hideDialog()}
             data-testid={dataTestId}
             style={style}
-            showCloseButton={false}
+            showCloseButton={showCloseButton}
             title={title}
             actions={
-                <>
-                    {actions.cancel && (
-                        <Dialog.CancelButton
-                            onClick={actions.cancel.onClick}
-                            text={actions.cancel.label}
-                        />
-                    )}
-                    {actions.accept && (
-                        <Dialog.ConfirmButton
-                            onClick={handleConfirm}
-                            text={actions.accept.label}
-                            data-testid={"confirmationdialog-confirm-action"}
-                        />
-                    )}
-                </>
+                actions.cancel ||
+                (actions.accept && (
+                    <>
+                        {actions.cancel && (
+                            <Dialog.CancelButton
+                                onClick={actions.cancel.onClick}
+                                text={actions.cancel.label}
+                            />
+                        )}
+                        {actions.accept && (
+                            <Dialog.ConfirmButton
+                                onClick={handleConfirm}
+                                text={actions.accept.label}
+                                data-testid={"confirmationdialog-confirm-action"}
+                            />
+                        )}
+                    </>
+                ))
             }
         >
             {isLoading ? loading : null}
