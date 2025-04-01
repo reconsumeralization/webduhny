@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Logo, makeDecoratable } from "@webiny/app-admin";
+import { makeDecoratable, useAdminConfig } from "@webiny/app-admin";
 import * as Styled from "./StyledComponents";
 import { Elevation } from "@webiny/ui/Elevation";
 import { Cell, Grid } from "@webiny/ui/Grid";
@@ -9,14 +9,18 @@ export interface ContainerProps {
     children: React.ReactNode;
 }
 
-const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => (
-    <Styled.Wrapper>
-        <Styled.LogoWrapper>
-            <Logo />
-        </Styled.LogoWrapper>
-        <Styled.LoginContent>{children}</Styled.LoginContent>
-    </Styled.Wrapper>
-));
+const Container = makeDecoratable("ViewContainer", ({ children }: ContainerProps) => {
+    const {tenant} = useAdminConfig();
+    return (
+        <Styled.Wrapper>
+            <Styled.LogoWrapper>
+                {/* TODO: Loading from AdminConfig does not work. Will resolve this in next PR. */}
+                {tenant.logo || null}
+            </Styled.LogoWrapper>
+            <Styled.LoginContent>{children}</Styled.LoginContent>
+        </Styled.Wrapper>
+    );
+});
 
 export interface ContentProps {
     children: React.ReactNode;
@@ -62,7 +66,6 @@ const Title = makeDecoratable("ViewTitle", ({ title, description }: TitleProps) 
 
 export const View = {
     Container,
-    Logo,
     Content,
     Title,
     Footer
