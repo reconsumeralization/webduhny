@@ -18,6 +18,10 @@ export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
     className?: string;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `HeaderBar` component from the `@webiny/admin-ui` package instead.
+ */
 const TopAppBarSection = (props: TopAppBarSectionProps) => {
     return <>{props.children}</>;
 };

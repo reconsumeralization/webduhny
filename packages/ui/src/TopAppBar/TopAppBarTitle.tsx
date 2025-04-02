@@ -8,6 +8,10 @@ export type TopAppBarTitleProps = {
     children: React.ReactNode;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `HeaderBar` component from the `@webiny/admin-ui` package instead.
+ */
 const TopAppBarTitle = (props: TopAppBarTitleProps) => {
     return <Text {...props} />;
 };
