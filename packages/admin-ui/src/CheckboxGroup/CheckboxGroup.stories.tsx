@@ -110,13 +110,14 @@ export const Disabled: Story = {
 export const FullExample: Story = {
     args: {
         ...Default.args,
-        label: "Any field label",
+        label: "Select which deploy option do you prefer",
         required: true,
-        description: "Provide the required information for processing your request.",
+        description:
+            "Deployment option is simly a way of parsing the data based on your database settings.",
         note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "This field is required."
+            message: "You must select at least one of the items!"
         }
     }
 };
