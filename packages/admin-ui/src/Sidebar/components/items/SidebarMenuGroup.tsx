@@ -3,11 +3,11 @@ import { SidebarMenuItem, type SidebarMenuItemGroupProps } from "./SidebarMenuIt
 import { makeDecoratable, withStaticProps } from "~/utils";
 import {
     SidebarMenuItemIcon,
-    SidebarMenuItemIconProps
+    type SidebarMenuItemIconProps
 } from "~/Sidebar/components/items/SidebarMenuItemIcon";
 import {
     SidebarMenuItemAction,
-    SidebarMenuItemActionProps
+    type SidebarMenuItemActionProps
 } from "~/Sidebar/components/items/SidebarMenuItemAction";
 
 const SidebarMenuGroupBase = (props: SidebarMenuItemGroupProps) => {

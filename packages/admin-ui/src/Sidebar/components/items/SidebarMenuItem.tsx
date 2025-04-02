@@ -1,7 +1,7 @@
 import React from "react";
 import { makeDecoratable, withStaticProps } from "~/utils";
-import { SidebarMenuItemIcon, SidebarMenuItemIconProps } from "./SidebarMenuItemIcon";
-import { SidebarMenuItemAction, SidebarMenuItemActionProps } from "./SidebarMenuItemAction";
+import { SidebarMenuItemIcon, type SidebarMenuItemIconProps } from "./SidebarMenuItemIcon";
+import { SidebarMenuItemAction, type SidebarMenuItemActionProps } from "./SidebarMenuItemAction";
 import { SidebarMenuSubItem } from "./SidebarMenuSubItem";
 import { useSidebarMenu } from "./SidebarMenuProvider";
 import { LinkProps, To } from "@webiny/react-router";
