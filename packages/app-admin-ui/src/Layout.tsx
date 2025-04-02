@@ -16,7 +16,7 @@ export const Layout = LayoutRenderer.createDecorator(() => {
             <>
                 {title ? <Helmet title={title} /> : null}
                 <Navigation />
-                <div className={"wby-w-[calc(100%-44px)] wby-bg-white"}>
+                <div className={"wby-w-[calc(100%-44px)] wby-ml-auto wby-bg-white"}>
                     <HeaderBar
                         end={
                             <div className={"wby-flex"}>

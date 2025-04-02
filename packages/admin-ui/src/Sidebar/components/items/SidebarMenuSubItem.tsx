@@ -31,7 +31,7 @@ const SidebarMenuSubItem = ({ children, className, ...buttonProps }: SidebarMenu
                     variant={"ghost"}
                     size={"xs"}
                     className={
-                        "wby-ml-auto wby-transition-transform wby-duration-200 group-data-[state=open]/menu-sub-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
+                        "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-sub-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
                     }
                     color={"neutral-strong"}
                     data-sidebar={"menu-item-expanded-indicator"}

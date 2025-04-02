@@ -61,7 +61,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                                 setClosingInProgress(true);
                                 setTimeout(() => {
                                     setClosingInProgress(false);
-                                }, 200);
+                                }, 175);
 
                                 toggleSidebar();
                             }}
