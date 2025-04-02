@@ -36,7 +36,7 @@ const View = () => {
     const layoutId = useLayoutId(`cms:${model.modelId}`);
 
     return (
-        <SplitView layoutId={layoutId}>
+        <SplitView layoutId={layoutId} className={"wby-relative wby-z-10"}>
             <LeftPanel span={2}>
                 <Sidebar folderId={currentFolderId} />
             </LeftPanel>
