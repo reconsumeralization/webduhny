@@ -79,11 +79,7 @@ export class HeaderElement extends UIElement<HeaderElementConfig> {
                 </TopAppBarSection>
                 <TopAppBarSection className={width} alignEnd>
                     {this.getRightSectionElement().render(props)}
-                    <IconButton
-                        ripple={false}
-                        onClick={this.config.onClose}
-                        icon={<CloseIcon />}
-                    />
+                    <IconButton ripple={false} onClick={this.config.onClose} icon={<CloseIcon />} />
                 </TopAppBarSection>
             </TopAppBarSecondary>
         );

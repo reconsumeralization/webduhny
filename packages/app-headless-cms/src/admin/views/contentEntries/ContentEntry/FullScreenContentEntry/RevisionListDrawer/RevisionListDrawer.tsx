@@ -24,7 +24,13 @@ export const RevisionListDrawer = () => {
     });
 
     return (
-        <DrawerRight open={isRevisionListOpen} onClose={() => openRevisionList(false)} modal dismissible className={"wby-w-[1000px] wby-max-w-[100vw]"}>
+        <DrawerRight
+            open={isRevisionListOpen}
+            onClose={() => openRevisionList(false)}
+            modal
+            dismissible
+            className={"wby-w-[1000px] wby-max-w-[100vw]"}
+        >
             <DrawerContent>
                 <Header onClose={() => openRevisionList(false)} />
                 <RevisionsList />
