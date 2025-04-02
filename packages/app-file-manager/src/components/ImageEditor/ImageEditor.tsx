@@ -186,7 +186,9 @@ class ImageEditor extends React.Component<ImageEditorProps, ImageEditorState> {
         const { tool } = this.state;
         const editor = (
             <React.Fragment>
-                <div className={"wby-flex wby-justify-center wby-items-center wby-w-full"}>
+                <div
+                    className={"wby-flex wby-justify-center wby-items-center wby-w-full wby-mt-md"}
+                >
                     {tools.map(key => {
                         const tool: ImageEditorTool = toolbar[key];
                         if (!tool) {

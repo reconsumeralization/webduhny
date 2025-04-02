@@ -41,78 +41,80 @@ export const QueryBuilder = (props: QueryBuilderProps) => {
     }, []);
 
     return (
-        <Form
-            ref={formRef}
-            data={props.vm.data}
-            onChange={props.onChange}
-            onSubmit={props.onSubmit}
-            invalidFields={props.vm.invalidFields}
-        >
-            {() => (
-                <>
-                    <Details name={props.vm.name} description={props.vm.description} />
-                    <Accordion background={"light"} variant={"container"}>
-                        {props.vm.data.groups.map((group, groupIndex, groups) => (
-                            <Accordion.Item
-                                className={"wby-relative"}
-                                title={group.title}
-                                defaultOpen={group.open}
-                                key={`group-${groupIndex}`}
-                                actions={
-                                    <>
-                                        <div className={"wby-mt-xxs wby-mr-xs-plus"}>
-                                            <OperationSelector
-                                                label={"Match all conditions"}
-                                                name={`groups.${groupIndex}.operation`}
+        <div className={"wby-py-lg"}>
+            <Form
+                ref={formRef}
+                data={props.vm.data}
+                onChange={props.onChange}
+                onSubmit={props.onSubmit}
+                invalidFields={props.vm.invalidFields}
+            >
+                {() => (
+                    <>
+                        <Details name={props.vm.name} description={props.vm.description} />
+                        <Accordion background={"light"} variant={"container"}>
+                            {props.vm.data.groups.map((group, groupIndex, groups) => (
+                                <Accordion.Item
+                                    className={"wby-relative"}
+                                    title={group.title}
+                                    defaultOpen={group.open}
+                                    key={`group-${groupIndex}`}
+                                    actions={
+                                        <>
+                                            <div className={"wby-mt-xxs wby-mr-xs-plus"}>
+                                                <OperationSelector
+                                                    label={"Match all conditions"}
+                                                    name={`groups.${groupIndex}.operation`}
+                                                />
+                                            </div>
+                                            <Accordion.Item.Action
+                                                icon={<DeleteIcon />}
+                                                onClick={() => props.onDeleteGroup(groupIndex)}
+                                                disabled={!group.canDelete}
                                             />
-                                        </div>
-                                        <Accordion.Item.Action
-                                            icon={<DeleteIcon />}
-                                            onClick={() => props.onDeleteGroup(groupIndex)}
-                                            disabled={!group.canDelete}
-                                        />
-                                    </>
-                                }
-                            >
-                                {group.filters.map((filter, filterIndex, filters) => (
-                                    <Fragment key={filterIndex}>
-                                        <Filter
-                                            name={`groups.${groupIndex}.filters.${filterIndex}`}
-                                            filter={filter}
-                                            fields={props.fields}
-                                            onFieldSelectChange={data =>
-                                                props.onSetFilterFieldData(
-                                                    groupIndex,
-                                                    filterIndex,
-                                                    data
-                                                )
-                                            }
-                                            onDelete={() => {
-                                                props.onDeleteFilterFromGroup(
-                                                    groupIndex,
-                                                    filterIndex
-                                                );
-                                            }}
-                                        />
-                                        <FilterOperationLabel
-                                            show={filters.length !== filterIndex + 1}
-                                            operation={group.operation}
-                                        />
-                                    </Fragment>
-                                ))}
-                                <AddFilter
-                                    onClick={() => props.onAddNewFilterToGroup(groupIndex)}
-                                />
-                                <GroupOperationLabel
-                                    show={groups.length !== groupIndex + 1}
-                                    operation={props.vm.data.operation}
-                                />
-                            </Accordion.Item>
-                        ))}
-                    </Accordion>
-                    <AddGroup onClick={() => props.onAddGroup()} />
-                </>
-            )}
-        </Form>
+                                        </>
+                                    }
+                                >
+                                    {group.filters.map((filter, filterIndex, filters) => (
+                                        <Fragment key={filterIndex}>
+                                            <Filter
+                                                name={`groups.${groupIndex}.filters.${filterIndex}`}
+                                                filter={filter}
+                                                fields={props.fields}
+                                                onFieldSelectChange={data =>
+                                                    props.onSetFilterFieldData(
+                                                        groupIndex,
+                                                        filterIndex,
+                                                        data
+                                                    )
+                                                }
+                                                onDelete={() => {
+                                                    props.onDeleteFilterFromGroup(
+                                                        groupIndex,
+                                                        filterIndex
+                                                    );
+                                                }}
+                                            />
+                                            <FilterOperationLabel
+                                                show={filters.length !== filterIndex + 1}
+                                                operation={group.operation}
+                                            />
+                                        </Fragment>
+                                    ))}
+                                    <AddFilter
+                                        onClick={() => props.onAddNewFilterToGroup(groupIndex)}
+                                    />
+                                    <GroupOperationLabel
+                                        show={groups.length !== groupIndex + 1}
+                                        operation={props.vm.data.operation}
+                                    />
+                                </Accordion.Item>
+                            ))}
+                        </Accordion>
+                        <AddGroup onClick={() => props.onAddGroup()} />
+                    </>
+                )}
+            </Form>
+        </div>
     );
 };

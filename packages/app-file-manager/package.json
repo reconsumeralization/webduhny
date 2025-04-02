@@ -28,6 +28,7 @@
     "@webiny/app-websockets": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/form": "0.0.0",
+    "@webiny/icons": "0.0.0",
     "@webiny/plugins": "0.0.0",
     "@webiny/react-composition": "0.0.0",
     "@webiny/react-properties": "0.0.0",

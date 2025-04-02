@@ -22,7 +22,7 @@ export const DrawerFooter = ({
 
     return (
         <>
-            {separator && <Separator variant={"dimmed"} margin={"none"} className={"wby-mt-lg"} />}
+            {separator && <Separator variant={"dimmed"} margin={"none"} />}
             <div
                 {...props}
                 className={cn("wby-flex wby-justify-between wby-p-lg wby-pt-md-extra", className)}

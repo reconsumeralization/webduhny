@@ -4,7 +4,7 @@ import { Hotkeys } from "react-hotkeyz";
 // @ts-expect-error
 import dataURLtoBlob from "dataurl-to-blob";
 import { ImageEditorDialog } from "~/components/ImageEditor/ImageEditorDialog";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import {
     FileManagerViewConfig,
     useFile,
@@ -86,7 +86,7 @@ export const EditImage = () => {
             <FileDetails.Action.IconButton
                 label={"Edit image"}
                 data-testid={"fm-edit-image-button"}
-                icon={<EditIcon style={{ margin: "0 8px 0 0" }} />}
+                icon={<EditIcon />}
                 onAction={async () => {
                     const dataUrl = await toDataUrl(file.src);
                     dispatch({ type: "setDataUrl", dataUrl });

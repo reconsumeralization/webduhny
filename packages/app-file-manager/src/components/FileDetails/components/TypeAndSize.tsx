@@ -1,24 +1,9 @@
 import React, { useMemo } from "react";
 import bytes from "bytes";
-import styled from "@emotion/styled";
-import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/insert_photo.svg";
-import { ReactComponent as FileIcon } from "@material-design-icons/svg/outlined/insert_drive_file.svg";
-import { Icon } from "@webiny/ui/Icon";
-import { Typography } from "@webiny/ui/Typography";
+import { Icon, Text } from "@webiny/admin-ui";
+import { ReactComponent as ImageIcon } from "@webiny/icons/insert_photo.svg";
+import { ReactComponent as FileIcon } from "@webiny/icons/insert_drive_file.svg";
 import { useFile } from "~/hooks/useFile";
-
-const TypeAndSizeWrapper = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const InlineIcon = styled(Icon)`
-    margin-right: 5px;
-    &.mdc-button__icon {
-        display: inline;
-        fill: var(--mdc-theme-text-secondary-on-background);
-    }
-`;
 
 export const TypeAndSize = () => {
     const { file } = useFile();
@@ -31,15 +16,19 @@ export const TypeAndSize = () => {
     }, [file]);
 
     return (
-        <TypeAndSizeWrapper>
-            <InlineIcon icon={fileTypeIcon} />
-            <Typography use={"caption"}>{file.type}</Typography>
-            <span>&nbsp;-&nbsp;</span>
-            <Typography use={"caption"} tag={"span"}>
-                {bytes.format(file.size, {
-                    unitSeparator: " "
-                })}
-            </Typography>
-        </TypeAndSizeWrapper>
+        <div className={"wby-flex wby-items-center wby-gap-xs"}>
+            <div>
+                <Icon icon={fileTypeIcon} label={"File icon"} color={"neutral-light"} />
+            </div>
+            <div>
+                <Text size={"sm"}>{file.type}</Text>
+                <span>&nbsp;-&nbsp;</span>
+                <Text size={"sm"}>
+                    {bytes.format(file.size, {
+                        unitSeparator: " "
+                    })}
+                </Text>
+            </div>
+        </div>
     );
 };

@@ -9,24 +9,30 @@ export interface DetailsProps {
 
 export const Details = (props: DetailsProps) => {
     return (
-        <Grid>
-            <Grid.Column span={9}>
-                <div className={"wby-flex wby-items-start wby-gap-md"}>
-                    <div className={"wby-text-left wby-text-neutral-primary"}>
-                        <Heading level={5}>{props.name}</Heading>
-                        {props.description && (
-                            <Text as={"div"} size={"sm"} className={"wby-mt-sm"}>
-                                {props.description}
-                            </Text>
-                        )}
+        <div className="wby-mb-lg">
+            <Grid>
+                <Grid.Column span={9}>
+                    <div className={"wby-flex wby-items-start wby-gap-md"}>
+                        <div className={"wby-text-left wby-text-neutral-primary"}>
+                            <Heading level={5}>{props.name}</Heading>
+                            {props.description && (
+                                <Text
+                                    as={"div"}
+                                    size={"sm"}
+                                    className={"wby-mt-xs wby-text-neutral-strong"}
+                                >
+                                    {props.description}
+                                </Text>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </Grid.Column>
-            <Grid.Column span={3} align={"middle"}>
-                <div className={"wby-text-right"}>
-                    <OperationSelector name={"operation"} label={"Match all filter groups"} />
-                </div>
-            </Grid.Column>
-        </Grid>
+                </Grid.Column>
+                <Grid.Column span={3} align={"middle"}>
+                    <div className={"wby-text-right"}>
+                        <OperationSelector name={"operation"} label={"Match all filter groups"} />
+                    </div>
+                </Grid.Column>
+            </Grid>
+        </div>
     );
 };
