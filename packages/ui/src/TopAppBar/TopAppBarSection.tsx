@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    TopAppBarSection as RmwcTopAppBarSection,
-    TopAppBarSectionProps as RmwcTopAppBarSectionProps
-} from "@rmwc/top-app-bar";
+import { TopAppBarSectionProps as RmwcTopAppBarSectionProps } from "@rmwc/top-app-bar";
 
 export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
     /**
@@ -22,8 +19,7 @@ export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
 };
 
 const TopAppBarSection = (props: TopAppBarSectionProps) => {
-    const { children, ...rest } = props;
-    return <RmwcTopAppBarSection {...rest}>{children}</RmwcTopAppBarSection>;
+    return <>{props.children}</>;
 };
 
 export { TopAppBarSection };

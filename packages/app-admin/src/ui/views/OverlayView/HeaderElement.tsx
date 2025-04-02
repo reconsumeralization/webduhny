@@ -82,7 +82,7 @@ export class HeaderElement extends UIElement<HeaderElementConfig> {
                     <IconButton
                         ripple={false}
                         onClick={this.config.onClose}
-                        icon={<CloseIcon style={{ width: 24, height: 24 }} />}
+                        icon={<CloseIcon />}
                     />
                 </TopAppBarSection>
             </TopAppBarSecondary>

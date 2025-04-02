@@ -20,7 +20,6 @@ const OverlayLayoutWrapper = styled("div")({
      * and below 20, so the image editor & Dialogs can be displayed above.
      */
     zIndex: 21,
-    paddingTop: 65,
     top: 0,
     left: 0
 });
@@ -112,7 +111,7 @@ export class OverlayLayout extends React.Component<OverlayLayoutProps, OverlayLa
                                 <IconButton
                                     ripple={false}
                                     onClick={() => this.hideComponent()}
-                                    icon={<CloseIcon style={{ width: 24, height: 24 }} />}
+                                    icon={<CloseIcon />}
                                 />
                             </TopAppBarSection>
                         </TopAppBarSecondary>

@@ -1,14 +1,15 @@
 ## TODO
-- apply user-menu refactors to the code in Okta/Auth0 packages
-- logo not visible on the login screen
 - top app bar - implement backwards compatibility layer
+  - hcms entry 
 - dropdown menu - hover grey color on dropdown menu items is reaching edges, but should not
 - main navigation - try to open on hover, not on click
 - see if we can avoid hardcoding of 45px height of the top app bar
+- red warnings in build
 
 ### Next PR
-- restructure sidebar components (the same way we did it with user menu)
-- adminConfig APIs are directly using admin-ui packages, they should NOT be
+
+- [p] logo not visible on the login screen
+- adminConfig APIs are directly using admin-ui packages, they should NOT be (sidebar)
 - Widgets APIs (Pavel)
 - No routes matched location "/" Error Component Stack
 - hcms menu bug
