@@ -56,8 +56,7 @@ export const DialogContainer = () => {
             showCloseButton={showCloseButton}
             title={title}
             actions={
-                actions.cancel ||
-                (actions.accept && (
+                !actions.cancel && !actions.accept ? null : (
                     <>
                         {actions.cancel && (
                             <Dialog.CancelButton
@@ -73,7 +72,7 @@ export const DialogContainer = () => {
                             />
                         )}
                     </>
-                ))
+                )
             }
         >
             {isLoading ? loading : null}
