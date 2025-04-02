@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "~/utils";
-import {getSidebarState, setSidebarState} from "./sidebarState";
+import { getSidebarState, setSidebarState } from "./sidebarState";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";

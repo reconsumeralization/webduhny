@@ -1,7 +1,13 @@
 ## TODO
-- main navigation - try to open on hover, not on click
 - see if we can avoid hardcoding of 45px height of the top app bar
-- [p] logo not visible on the login screen
+- 175 duration const?
+- packages/admin-ui/src/Sidebar/components/SidebarHeader.tsx ONCLICK CHECK... why t/o at all here?
+- update generation script so that new vars are included
+- finish storing of pinned / not pinned 
+- chevron visible briefly when expanding
+
+### Next PR
+- improve caching of state so that also opened items are stored
 - sidebar rerenders?
   - layout component not used?
   - secureRoute wrapping layout also kills sidebar?
@@ -9,7 +15,6 @@
   - HasPermissions instead of SecureRoute helps!
 - HCMS SIDEBAR bug
 
-### Next PR
 - adminConfig APIs are directly using admin-ui packages, they should NOT be (sidebar)
 - Widgets APIs (Pavel)
 - No routes matched location "/" Error Component Stack
