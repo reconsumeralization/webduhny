@@ -85,7 +85,7 @@ const SidebarRoot = ({ side = "left", className, children, ...props }: SidebarRo
             <div
                 data-sidebar={"extra-hover-area"}
                 className={
-                    "wby-absolute wby-top-0 wby-left-[theme(spacing.sidebarCollapsed)] wby-h-full wby-w-xl wby-hidden group-data-[state=collapsed]:wby-block"
+                    "wby-absolute wby-top-0 wby-left-[theme(spacing.sidebar-collapsed)] wby-h-full wby-w-xl wby-hidden group-data-[state=collapsed]:wby-block"
                 }
             />
         </div>
