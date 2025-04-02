@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography } from "@webiny/ui/Typography";
+import { Text } from "@webiny/admin-ui";
 import Accordion from "~/editor/plugins/elementSettings/components/Accordion";
 // assets
 import { ReactComponent as UploadInProgressIcon } from "../assets/undraw-uploading.svg";
@@ -12,7 +12,7 @@ export const ShowDetails = {
     Accordion: styled(Accordion)`
         border: 1px solid var(--mdc-theme-on-background);
     `,
-    Label: styled(Typography)`
+    Label: styled(Text)`
         display: inline-block;
         color: var(--mdc-theme-text-secondary-on-background);
         padding-bottom: 8px;
@@ -24,7 +24,7 @@ export const ShowDetails = {
     ListItem: styled.li`
         padding-bottom: 8px;
     `,
-    LinkText: styled(Typography)`
+    LinkText: styled(Text)`
         margin-left: 8px;
     `
 };
@@ -91,12 +91,6 @@ export const LoadingDialog = {
         display: flex;
         flex-direction: column;
         padding-right: 24px;
-    `,
-    StatusTitle: styled(Typography)`
-        color: var(--mdc-theme-text-secondary-on-background);
-    `,
-    StatusBody: styled(Typography)`
-        text-transform: capitalize;
     `,
     ProgressContainer: styled.div`
         display: flex;

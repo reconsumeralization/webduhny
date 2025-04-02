@@ -1,11 +1,9 @@
 import styled from "@emotion/styled";
-import { Typography } from "@webiny/ui/Typography";
+import { Text } from "@webiny/admin-ui";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 // assets
 import { ReactComponent as UploadInProgressIcon } from "../../../icons/undraw-uploading.svg";
 import { ReactComponent as ExportInProgressIcon } from "../../../icons/undraw_export_files.svg";
-import { ReactComponent as CircleIcon } from "@material-design-icons/svg/round/check_circle.svg";
-import { ReactComponent as CancelIcon } from "@material-design-icons/svg/round/cancel.svg";
 
 export const ShowDetails = {
     Container: styled.div`
@@ -14,7 +12,7 @@ export const ShowDetails = {
     Accordion: styled(Accordion)`
         border: 1px solid var(--mdc-theme-on-background);
     `,
-    Label: styled(Typography)`
+    Label: styled(Text)`
         display: inline-block;
         color: var(--mdc-theme-text-secondary-on-background);
         padding-bottom: 8px;
@@ -26,7 +24,7 @@ export const ShowDetails = {
     ListItem: styled.li`
         padding-bottom: 8px;
     `,
-    LinkText: styled(Typography)`
+    LinkText: styled(Text)`
         margin-left: 8px;
     `
 };
@@ -34,7 +32,6 @@ export const ShowDetails = {
 export const LoadingDialog = {
     Wrapper: styled.div`
         display: flex;
-        width: 600px;
     `,
 
     WrapperLeft: styled.div`
@@ -95,12 +92,6 @@ export const LoadingDialog = {
         flex-direction: column;
         padding-right: 24px;
     `,
-    StatusTitle: styled(Typography)`
-        color: var(--mdc-theme-text-secondary-on-background);
-    `,
-    StatusBody: styled(Typography)`
-        text-transform: capitalize;
-    `,
     ProgressContainer: styled.div`
         display: flex;
         flex-direction: column;
@@ -115,13 +106,5 @@ export const LoadingDialog = {
         width: 100%;
         max-width: 300px;
         height: auto;
-    `,
-    CheckMarkIcon: styled(CircleIcon)`
-        margin-right: 16px;
-        fill: var(--mdc-theme-secondary);
-    `,
-    CancelIcon: styled(CancelIcon)`
-        margin-right: 16px;
-        fill: var(--mdc-theme-error);
     `
 };

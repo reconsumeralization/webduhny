@@ -1,36 +1,17 @@
 import React, { useCallback, useState } from "react";
-import { css } from "emotion";
 import dotProp from "dot-prop-immutable";
+import { Button, Grid, Input, Text } from "@webiny/admin-ui";
 import { i18n } from "@webiny/app/i18n";
 import { useDialog } from "@webiny/app-admin/hooks/useDialog";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { Input } from "@webiny/ui/Input";
-import { Typography } from "@webiny/ui/Typography";
-import { Cell, Grid } from "@webiny/ui/Grid";
 import { Form } from "@webiny/form";
 import { useUi } from "@webiny/app/hooks/useUi";
 import { validation } from "@webiny/validation";
 import { WrapperWithFileUpload } from "./index";
 // assets
-import { ReactComponent as UploadFileIcon } from "@material-design-icons/svg/round/upload.svg";
-import { ReactComponent as LinkIcon } from "@material-design-icons/svg/round/link.svg";
+import { ReactComponent as UploadFileIcon } from "@webiny/icons/file_upload.svg";
+import { ReactComponent as LinkIcon } from "@webiny/icons/link.svg";
 
 const t = i18n.ns("app-form-builder/admin/plugins/editor/defaultBar/importForm");
-
-const contentContainer = css`
-    padding: 36px 0;
-`;
-
-const gridClass = css`
-    &.mdc-layout-grid {
-        padding-left: 0;
-        padding-right: 0;
-    }
-`;
-
-const separator = css`
-    margin: 0 24px;
-`;
 
 export const importFormDialogTitle = t`Import form`;
 
@@ -38,31 +19,48 @@ interface ImportFormDialogContentProps {
     onFileLink: (url: string) => void;
 }
 
-interface SetDialogStylesProps {
-    [key: string]: string | number;
-}
-
 export const ImportFormDialogContent = ({ onFileLink }: ImportFormDialogContentProps) => {
     const ui = useUi();
     const [showLink, setShowLink] = useState<boolean>(false);
 
-    const setDialogStyles = useCallback(
-        (style: SetDialogStylesProps) => {
-            ui.setState(state => dotProp.set(state, "dialog.options.style", style));
-        },
-        [ui]
-    );
+    const setDialogStyles = useCallback(() => {
+        // Update the dialog options style to hide the dialog.
+        ui.setState(state => dotProp.set(state, "dialog.options.style", { display: "none" }));
+
+        // Get the overlay element and the body element.
+        const overlay = document.getElementById("wby-admin-ui.dialog-overlay");
+        const body = document.body;
+
+        // If the overlay exists, hide it and make the body clickable.
+        if (overlay) {
+            overlay.style.visibility = "hidden";
+            overlay.style.pointerEvents = "none";
+            body.style.pointerEvents = "auto";
+        }
+    }, [ui]);
+
+    const restoreDialogStyles = useCallback(() => {
+        // Get the overlay element and the body element.
+        const overlay = document.getElementById("wby-admin-ui.dialog-overlay");
+        const body = document.body;
+
+        // If the overlay exists, hide it and make the body clickable.
+        if (overlay) {
+            overlay.style.visibility = "visible";
+            overlay.style.pointerEvents = "auto";
+            body.style.pointerEvents = "none";
+        }
+    }, [ui]);
 
     const closeDialog = useCallback(() => {
         ui.setState(state => ({ ...state, dialog: null }));
     }, [ui]);
 
     return (
-        <div>
-            <Typography use={"subtitle1"}>
+        <div className={"wby-pb-lg"}>
+            <Text as={"div"} className={"wby-mb-lg"}>
                 {t`You can import form(s) by either uploading a Webiny Form Export ZIP or by pasting export file URL.`}
-            </Typography>
-
+            </Text>
             {showLink ? (
                 <Form
                     data={{ url: "" }}
@@ -72,51 +70,55 @@ export const ImportFormDialogContent = ({ onFileLink }: ImportFormDialogContentP
                     }}
                 >
                     {({ Bind, submit }) => (
-                        <Grid className={gridClass}>
-                            <Cell span={12}>
+                        <Grid>
+                            <Grid.Column span={12}>
                                 <Bind name={"url"} validators={validation.create("required,url")}>
                                     <Input
                                         description={t`The URL has to be public. We'll use it to download the export form data file.`}
                                         label={"File URL"}
                                         data-testid={"import-forms.input-dialog.input-url"}
+                                        size={"lg"}
                                     />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
-                                <ButtonSecondary
+                            </Grid.Column>
+                            <Grid.Column span={12} className={"wby-text-right"}>
+                                <Button
+                                    text={"Import"}
                                     onClick={ev => {
                                         submit(ev);
                                     }}
-                                >
-                                    Continue
-                                </ButtonSecondary>
-                            </Cell>
+                                />
+                            </Grid.Column>
                         </Grid>
                     )}
                 </Form>
             ) : (
-                <div className={contentContainer}>
-                    <WrapperWithFileUpload onSelect={onFileLink}>
+                <div className={"wby-flex wby-items-center wby-gap-md"}>
+                    <WrapperWithFileUpload
+                        onSelect={file => {
+                            restoreDialogStyles();
+                            onFileLink(file);
+                        }}
+                    >
                         {({ showFileManager }) => (
-                            <ButtonSecondary
+                            <Button
+                                text={"Upload file"}
+                                icon={<UploadFileIcon />}
+                                variant={"secondary"}
                                 onClick={() => {
                                     showFileManager();
-                                    setDialogStyles({ display: "none" });
+                                    setDialogStyles();
                                 }}
-                            >
-                                <ButtonIcon icon={<UploadFileIcon />} />
-                                Upload File
-                            </ButtonSecondary>
+                            />
                         )}
                     </WrapperWithFileUpload>
-
-                    <span className={separator}>
-                        <Typography use={"overline"}>{t`Or`}</Typography>
-                    </span>
-                    <ButtonSecondary onClick={() => setShowLink(true)}>
-                        <ButtonIcon icon={<LinkIcon />} />
-                        Paste File URL
-                    </ButtonSecondary>
+                    <Text size={"sm"}>{t`OR`}</Text>
+                    <Button
+                        text={"Paste file URL"}
+                        icon={<LinkIcon />}
+                        variant={"secondary"}
+                        onClick={() => setShowLink(true)}
+                    />
                 </div>
             )}
         </div>
@@ -139,9 +141,7 @@ const useImportFormDialog = () => {
                 />,
                 {
                     title: importFormDialogTitle,
-                    actions: {
-                        cancel: { label: t`Cancel` }
-                    },
+                    actions: {},
                     dataTestId: "import-forms.input-dialog"
                 }
             );

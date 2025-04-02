@@ -57,7 +57,7 @@ export const ImportPageDialogContent = ({ onFileLink }: ImportPageDialogContentP
     }, [ui]);
 
     return (
-        <div>
+        <div className={"wby-pb-lg"}>
             <Text as={"div"} className={"wby-mb-lg"}>
                 {t`You can import page(s) by either uploading a Webiny Page Export ZIP or by pasting export file URL.`}
             </Text>
@@ -81,9 +81,9 @@ export const ImportPageDialogContent = ({ onFileLink }: ImportPageDialogContentP
                                     />
                                 </Bind>
                             </Grid.Column>
-                            <Grid.Column span={12} className={"wby-pb-lg wby-text-right"}>
+                            <Grid.Column span={12} className={"wby-text-right"}>
                                 <Button
-                                    text={"Continue"}
+                                    text={"Import"}
                                     onClick={ev => {
                                         submit(ev);
                                     }}
@@ -93,7 +93,7 @@ export const ImportPageDialogContent = ({ onFileLink }: ImportPageDialogContentP
                     )}
                 </Form>
             ) : (
-                <div className={"wby-flex wby-items-center wby-gap-md wby-pb-lg"}>
+                <div className={"wby-flex wby-items-center wby-gap-md"}>
                     <WrapperWithFileUpload
                         onSelect={file => {
                             restoreDialogStyles();
