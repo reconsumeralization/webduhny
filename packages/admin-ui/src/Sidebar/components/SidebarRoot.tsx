@@ -7,14 +7,27 @@ interface SidebarRootProps extends React.ComponentProps<"div"> {
 }
 
 const SidebarRoot = ({ side = "left", className, children, ...props }: SidebarRootProps) => {
-    const { state } = useSidebar();
+    const { state, setOpen } = useSidebar();
 
     const elementRef = useRef<HTMLDivElement>(null);
+    const timeoutRef = useRef<number | null>(null);
 
     return (
         <div
+            onMouseEnter={() => {
+                setOpen(true);
+                if (timeoutRef.current) {
+                    window.clearTimeout(timeoutRef.current);
+                    timeoutRef.current = null;
+                }
+            }}
+            onMouseLeave={() => {
+                timeoutRef.current = window.setTimeout(() => {
+                    setOpen(false);
+                }, 200);
+            }}
             ref={elementRef}
-            className="wby-group wby-peer wby-block wby-border-r-sm wby-border-neutral-dimmed wby-bg-neutral-light"
+            className="wby-group wby-peer wby-block wby-border-r-sm wby-border-neutral-dimmed wby-bg-neutral-light wby-fixed wby-top-0 wby-z-10"
             data-state={state}
             data-sidebar={"root"}
             data-side={side}
