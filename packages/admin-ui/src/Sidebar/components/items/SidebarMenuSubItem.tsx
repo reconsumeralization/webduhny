@@ -26,18 +26,16 @@ const SidebarMenuSubItem = ({ children, className, ...buttonProps }: SidebarMenu
         }
 
         const chevron = (
-            <CollapsibleTrigger asChild>
-                <IconButton
-                    variant={"ghost"}
-                    size={"xs"}
-                    className={
-                        "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-sub-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
-                    }
-                    color={"neutral-strong"}
-                    data-sidebar={"menu-item-expanded-indicator"}
-                    icon={<KeyboardArrowRightIcon />}
-                />
-            </CollapsibleTrigger>
+            <IconButton
+                variant={"ghost"}
+                size={"xs"}
+                className={
+                    "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-sub-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
+                }
+                color={"neutral-strong"}
+                data-sidebar={"menu-item-expanded-indicator"}
+                icon={<KeyboardArrowRightIcon />}
+            />
         );
 
         return (
@@ -47,7 +45,9 @@ const SidebarMenuSubItem = ({ children, className, ...buttonProps }: SidebarMenu
                         lvl={currentLevel}
                         variant={buttonProps.variant}
                     />
-                    <SidebarMenuSubButton {...buttonProps} action={chevron} />
+                    <CollapsibleTrigger asChild>
+                        <SidebarMenuSubButton {...buttonProps} action={chevron} />
+                    </CollapsibleTrigger>
                 </div>
                 <CollapsibleContent>
                     <SidebarMenuSub>{children}</SidebarMenuSub>

@@ -5,7 +5,7 @@ import { SidebarMenuItemIcon } from "./SidebarMenuItemIcon";
 import { SidebarMenuItemAction } from "./SidebarMenuItemAction";
 import { SidebarMenuSub } from "./SidebarMenuSub";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
-import { IconButton } from "~/Button";
+import { Icon } from "~/Icon";
 import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import { type SidebarMenuItemProps } from "./SidebarMenuItem";
 
@@ -16,23 +16,23 @@ const SidebarMenuItemBase = ({ children, className, ...buttonProps }: SidebarMen
         }
 
         const chevron = (
-            <CollapsibleTrigger asChild>
-                <IconButton
-                    variant={"ghost"}
-                    size={"xs"}
-                    className={
-                        "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
-                    }
-                    color={"neutral-strong"}
-                    data-sidebar={"menu-item-expanded-indicator"}
-                    icon={<KeyboardArrowRightIcon />}
-                />
-            </CollapsibleTrigger>
+            <Icon
+                label={"Expand / Collapse"}
+                size={"sm"}
+                className={
+                    "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
+                }
+                color={"neutral-strong"}
+                data-sidebar={"menu-item-expanded-indicator"}
+                icon={<KeyboardArrowRightIcon />}
+            />
         );
 
         return (
             <Collapsible className={cn("wby-w-full wby-group/menu-item-collapsible")}>
-                <SidebarMenuRootButton {...buttonProps} action={chevron} />
+                <CollapsibleTrigger asChild>
+                    <SidebarMenuRootButton {...buttonProps} action={chevron} />
+                </CollapsibleTrigger>
                 <CollapsibleContent
                     forceMount
                     className={"wby-hidden data-[state=open]:!wby-block"}

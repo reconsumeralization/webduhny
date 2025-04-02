@@ -21,7 +21,7 @@
     "@editorjs/editorjs": "2.26.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
-    "@material-design-icons/svg": "^0.14.13",
+    "@material-design-icons/svg": "^0.14.15",
     "@material-symbols/svg-400": "^0.4.1",
     "@svgr/webpack": "^6.1.1",
     "@types/react": "18.2.79",

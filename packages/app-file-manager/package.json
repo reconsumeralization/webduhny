@@ -14,7 +14,7 @@
     "@apollo/react-hooks": "^3.1.5",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
-    "@material-design-icons/svg": "^0.14.13",
+    "@material-design-icons/svg": "^0.14.15",
     "@types/react": "18.2.79",
     "@webiny/admin-ui": "0.0.0",
     "@webiny/app": "0.0.0",

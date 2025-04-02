@@ -55,10 +55,9 @@ const PageBuilderMenu = () => {
                 <Menu
                     name="pb"
                     element={
-                        <Menu.Link
+                        <Menu.Item
                             text={"Page Builder"}
                             icon={<Menu.Link.Icon label={"Page Builder"} element={<PagesIcon />} />}
-                            to={"/page-builder/pages"}
                         />
                     }
                 />

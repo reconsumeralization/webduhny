@@ -354,7 +354,9 @@ module.exports = {
         xs: "var(--spacing-xs)",
         "xs-plus": "var(--spacing-xs-plus)",
         xxl: "var(--spacing-xxl)",
-        xxs: "var(--spacing-xxs)"
+        xxs: "var(--spacing-xxs)",
+        "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
+        "sidebar-expanded": "var(--spacing-sidebar-expanded)"
     },
     textColor: {
         transparent: "transparent",

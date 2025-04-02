@@ -1,23 +1,15 @@
 import React from "react";
-import { useIsMobile } from "~/hooks/useIsMobile";
 import { cn } from "~/utils";
 
-import {
-    SIDEBAR_COOKIE_NAME,
-    SIDEBAR_COOKIE_MAX_AGE,
-    SIDEBAR_WIDTH,
-    SIDEBAR_WIDTH_ICON,
-    SIDEBAR_KEYBOARD_SHORTCUT
-} from "./constants";
+import { SIDEBAR_COOKIE_NAME, SIDEBAR_COOKIE_MAX_AGE } from "./constants";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";
     open: boolean;
+    pinned: boolean;
     setOpen: (open: boolean) => void;
-    openMobile: boolean;
-    setOpenMobile: (open: boolean) => void;
-    isMobile: boolean;
     toggleSidebar: () => void;
+    togglePinSidebar: () => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -33,26 +25,28 @@ function useSidebar() {
 
 type SidebarProviderProps = {
     defaultOpen?: boolean;
+    defaultPinned?: boolean;
     open?: boolean;
+    pinned?: boolean;
     onOpenChange?: (open: boolean) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const SidebarProvider = ({
     defaultOpen = false,
+    defaultPinned = false,
     open: openProp,
+    pinned: pinnedProp,
     onOpenChange: setOpenProp,
     className,
-    style,
     children,
     ...props
 }: SidebarProviderProps) => {
-    const isMobile = useIsMobile();
-    const [openMobile, setOpenMobile] = React.useState(false);
-
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = React.useState(defaultOpen);
+    const [_pinned, _setPinned] = React.useState(defaultPinned);
     const open = openProp ?? _open;
+    const pinned = pinnedProp ?? _pinned;
     const setOpen = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
             const openState = typeof value === "function" ? value(open) : value;
@@ -70,21 +64,12 @@ const SidebarProvider = ({
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-        return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open);
-    }, [isMobile, setOpen, setOpenMobile]);
+        return setOpen(open => !open);
+    }, [setOpen]); // Helper to toggle the sidebar.
 
-    // Adds a keyboard shortcut to toggle the sidebar.
-    React.useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
-                event.preventDefault();
-                toggleSidebar();
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [toggleSidebar]);
+    const togglePinSidebar = React.useCallback(() => {
+        return _setPinned(pinned => !pinned);
+    }, [_pinned]);
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
@@ -94,26 +79,18 @@ const SidebarProvider = ({
         () => ({
             state,
             open,
+            pinned,
             setOpen,
-            isMobile,
-            openMobile,
-            setOpenMobile,
-            toggleSidebar
+            toggleSidebar,
+            togglePinSidebar
         }),
-        [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+        [state, open, setOpen, toggleSidebar, togglePinSidebar]
     );
 
     return (
         <SidebarContext.Provider value={contextValue}>
             <div
                 data-sidebar={"provider"}
-                style={
-                    {
-                        "--sidebar-width": SIDEBAR_WIDTH,
-                        "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-                        ...style
-                    } as React.CSSProperties
-                }
                 {...props}
                 className={cn(
                     "wby-group/sidebar-wrapper wby-flex wby-min-h-svh wby-w-full",

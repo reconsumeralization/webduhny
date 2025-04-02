@@ -31,7 +31,7 @@
     "react": "18.2.0"
   },
   "devDependencies": {
-    "@material-design-icons/svg": "^0.14.13",
+    "@material-design-icons/svg": "^0.14.15",
     "@material-symbols/svg-400": "^0.4.1",
     "@types/react": "18.2.79",
     "@webiny/project-utils": "0.0.0",

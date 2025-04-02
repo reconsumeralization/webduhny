@@ -106,7 +106,9 @@ const twMerge = extendTailwindMerge({
                 "xs",
                 "xs-plus",
                 "xxl",
-                "xxs"
+                "xxs",
+                "sidebar-collapsed",
+                "sidebar-expanded"
             ]
         }
     }

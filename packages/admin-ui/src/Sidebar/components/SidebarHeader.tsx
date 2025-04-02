@@ -3,7 +3,8 @@ import { Separator } from "~/Separator";
 import { IconButton } from "~/Button";
 import { useSidebar } from "./SidebarProvider";
 import { ReactComponent as OpenSidebarIcon } from "@webiny/icons/keyboard_double_arrow_right.svg";
-import { ReactComponent as CloseSidebarIcon } from "@webiny/icons/chrome_reader_mode.svg";
+import { ReactComponent as PinSidebarIcon } from "@webiny/icons/push_pin.svg";
+import { ReactComponent as UnpinSidebarIcon } from "@webiny/icons/push_pin_off.svg";
 
 interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     icon?: React.ReactNode;
@@ -11,7 +12,7 @@ interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
 }
 
 const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
-    const { toggleSidebar, open } = useSidebar();
+    const { toggleSidebar, togglePinSidebar, open, pinned } = useSidebar();
 
     // We needed this to ensure smooth transition when closing the sidebar. Basically, when clicking
     // on the sidebar, for a super brief amount of time, users would still see the "expand" icon,
@@ -53,7 +54,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
 
                     {open && (
                         <IconButton
-                            icon={<CloseSidebarIcon />}
+                            icon={pinned ? <UnpinSidebarIcon /> : <PinSidebarIcon />}
                             data-sidebar="trigger"
                             size="xs"
                             variant={"ghost"}
@@ -63,7 +64,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                                     setClosingInProgress(false);
                                 }, 175);
 
-                                toggleSidebar();
+                                togglePinSidebar();
                             }}
                         />
                     )}
