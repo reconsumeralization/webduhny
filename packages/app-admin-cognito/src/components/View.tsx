@@ -86,7 +86,6 @@ export const Error = ({ title = "Something went wrong", description }: ErrorProp
 
 export const View = {
     Container,
-    Logo,
     Content,
     Title,
     Footer,
