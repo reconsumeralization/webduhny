@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "~/utils";
-
-import { SIDEBAR_COOKIE_NAME, SIDEBAR_COOKIE_MAX_AGE } from "./constants";
+import {getSidebarState, setSidebarState} from "./sidebarState";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";
@@ -45,8 +44,10 @@ const SidebarProvider = ({
     // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = React.useState(defaultOpen);
     const [_pinned, _setPinned] = React.useState(defaultPinned);
+
     const open = openProp ?? _open;
     const pinned = pinnedProp ?? _pinned;
+
     const setOpen = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
             const openState = typeof value === "function" ? value(open) : value;
@@ -56,8 +57,7 @@ const SidebarProvider = ({
                 _setOpen(openState);
             }
 
-            // This sets the cookie to keep the sidebar state.
-            document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+            setSidebarState({ pinned });
         },
         [setOpenProp, open]
     );
