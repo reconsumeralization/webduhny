@@ -1,6 +1,4 @@
 ## TODO
-- top app bar - implement backwards compatibility layer
-  - hcms entry 
 - dropdown menu - hover grey color on dropdown menu items is reaching edges, but should not
 - main navigation - try to open on hover, not on click
 - see if we can avoid hardcoding of 45px height of the top app bar
