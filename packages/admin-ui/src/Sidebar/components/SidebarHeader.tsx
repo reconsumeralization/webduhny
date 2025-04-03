@@ -62,14 +62,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                             data-sidebar="trigger"
                             size="xs"
                             variant={"ghost"}
-                            onClick={() => {
-                                setClosingInProgress(true);
-                                setTimeout(() => {
-                                    setClosingInProgress(false);
-                                }, 175);
-
-                                togglePinSidebar();
-                            }}
+                            onClick={togglePinned}
                         />
                     )}
                 </div>
