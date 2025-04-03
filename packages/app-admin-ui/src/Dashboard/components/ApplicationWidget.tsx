@@ -25,7 +25,7 @@ export const ApplicationWidget = ({
                     <Heading level={4}>{title}</Heading>
                 </div>
                 <Text>{description}</Text>
-                <div className={"wby-mt-xl"}>{cta}</div>
+                <div className={"wby-mt-lg"}>{cta}</div>
             </div>
         </Grid.Column>
     );

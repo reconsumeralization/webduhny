@@ -1,9 +1,14 @@
 import React from "react";
-import { Alert, Grid, Heading } from "@webiny/admin-ui";
+import { Grid, Heading } from "@webiny/admin-ui";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 import { plugins } from "@webiny/plugins";
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
-import { ApplicationWidget, AssistanceWidget, CommunityWidget } from "./components";
+import {
+    ApplicationWidget,
+    AssistanceWidget,
+    CommunityWidget,
+    MissingPermissionsWidget
+} from "./components";
 
 const Welcome = () => {
     const { identity, getPermission } = useSecurity();
@@ -30,17 +35,10 @@ const Welcome = () => {
                     level={3}
                 >{`Hi ${identity.displayName}, what are we doing today?`}</Heading>
             </div>
-            <div className={"wby-mb-xl"}>
-                <Grid gap={"spacious"}>
-                    <>
-                        {!canSeeAnyWidget && (
-                            <Grid.Column span={12}>
-                                <Alert title={"Missing permissions"} type={"warning"}>
-                                    {"For access to Webiny apps, please contact the administrator."}
-                                </Alert>
-                            </Grid.Column>
-                        )}
-
+            <Grid gap={"spacious"}>
+                <Grid.Column span={5}>
+                    {!canSeeAnyWidget && <MissingPermissionsWidget />}
+                    <div className={"wby-flex wby-flex-col wby-gap-lg"}>
                         {widgets.map(pl => (
                             <ApplicationWidget
                                 key={pl.name}
@@ -51,15 +49,13 @@ const Welcome = () => {
                                 title={pl.widget.title}
                             />
                         ))}
-                    </>
-                </Grid>
-            </div>
-            <Grid gap={"spacious"}>
-                <Grid.Column span={6}>
-                    <AssistanceWidget />
+                    </div>
                 </Grid.Column>
-                <Grid.Column span={6}>
-                    <CommunityWidget />
+                <Grid.Column span={7}>
+                    <div className={"wby-flex wby-flex-col wby-gap-lg"}>
+                        <AssistanceWidget />
+                        <CommunityWidget />
+                    </div>
                 </Grid.Column>
             </Grid>
         </div>

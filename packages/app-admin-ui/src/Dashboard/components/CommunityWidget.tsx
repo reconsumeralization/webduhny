@@ -2,10 +2,10 @@ import React from "react";
 import { Heading, Icon, Text } from "@webiny/admin-ui";
 import { Link } from "@webiny/react-router";
 // Icons
-import { ReactComponent as YouTubeIcon } from "./icons/youtube.svg";
-import { ReactComponent as GithubIcon } from "./icons/github.svg";
-import { ReactComponent as SlackIcon } from "./icons/slack.svg";
-import { ReactComponent as TwitterIcon } from "./icons/x-twitter.svg";
+import { ReactComponent as YouTubeIcon } from "./assets/youtube.svg";
+import { ReactComponent as GithubIcon } from "./assets/github.svg";
+import { ReactComponent as SlackIcon } from "./assets/slack.svg";
+import { ReactComponent as TwitterIcon } from "./assets/x-twitter.svg";
 
 interface SocialLinkProps {
     link: string;
