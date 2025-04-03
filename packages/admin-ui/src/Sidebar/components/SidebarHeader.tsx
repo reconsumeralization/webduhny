@@ -48,7 +48,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                                 />
                             }
                             content={pinned ? "Unpin" : "Pin"}
-                        ></Tooltip>
+                        />
                     )}
                 </div>
             </div>
