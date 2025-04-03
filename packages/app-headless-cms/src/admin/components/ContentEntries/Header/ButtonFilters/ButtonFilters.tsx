@@ -1,13 +1,9 @@
 import React, { useCallback } from "react";
-import styled from "@emotion/styled";
-import { ReactComponent as FilterIcon } from "@webiny/icons/filter_alt.svg";
-import { ReactComponent as CloseFilterIcon } from "@webiny/icons/filter_alt_off.svg";
-import { IconButton } from "@webiny/ui/Button";
-import { useContentEntriesList } from "~/admin/views/contentEntries/hooks";
+import { IconButton } from "@webiny/admin-ui";
+import { ReactComponent as FilterIcon } from "@webiny/icons/filter_list.svg";
+import { ReactComponent as CloseFilterIcon } from "@webiny/icons/filter_list_off.svg";
 
-const ButtonWrapper = styled("div")`
-    margin: 0 8px;
-`;
+import { useContentEntriesList } from "~/admin/views/contentEntries/hooks";
 
 interface IconProps {
     showingFilters?: boolean;
@@ -30,12 +26,11 @@ export const ButtonFilters = () => {
     }, [list.showingFilters]);
 
     return (
-        <ButtonWrapper>
-            <IconButton
-                icon={<IconComponent showingFilters={list.showingFilters} />}
-                onClick={toggleFilters}
-                data-testid="cms.list-entries.toggle-filters"
-            />
-        </ButtonWrapper>
+        <IconButton
+            variant={"ghost"}
+            icon={<IconComponent showingFilters={list.showingFilters} />}
+            onClick={toggleFilters}
+            data-testid="cms.list-entries.toggle-filters"
+        />
     );
 };

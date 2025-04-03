@@ -21,8 +21,12 @@ interface TextProps extends React.HTMLAttributes<HTMLElement>, VariantProps<type
     as?: TextTags;
 }
 
-const TextBase = ({ children, size, className, as: Tag = "span" }: TextProps) => {
-    return <Tag className={cn(textVariants({ size }), className)}>{children}</Tag>;
+const TextBase = ({ children, size, className, as: Tag = "span", ...props }: TextProps) => {
+    return (
+        <Tag {...props} className={cn(textVariants({ size }), className)}>
+            {children}
+        </Tag>
+    );
 };
 
 const Text = makeDecoratable("Text", TextBase);

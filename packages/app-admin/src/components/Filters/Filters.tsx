@@ -1,7 +1,6 @@
 import React from "react";
+import { Separator } from "@webiny/admin-ui";
 import { Form, FormOnSubmit, FormProps, GenericFormData } from "@webiny/form";
-
-import { FilterContainer, FiltersContainer, FormContainer } from "./Filters.styled";
 
 type Filter = {
     name: string;
@@ -28,17 +27,23 @@ export const Filters = <T extends GenericFiltersData = GenericFiltersData>(
     }
 
     return (
-        <FiltersContainer data-testid={props["data-testid"] || "filters-container"}>
-            <Form data={props.data} onChange={props.onChange}>
-                {() => (
-                    <FormContainer>
-                        {props.filters.map(filter => (
-                            <FilterContainer key={filter.name}>{filter.element}</FilterContainer>
-                        ))}
-                        {props.children}
-                    </FormContainer>
-                )}
-            </Form>
-        </FiltersContainer>
+        <>
+            <div
+                className={"wby-w-full wby-bg-neutral-base wby-px-md wby-my-sm"}
+                data-testid={props["data-testid"] || "filters-container"}
+            >
+                <Form data={props.data} onChange={props.onChange}>
+                    {() => (
+                        <div className={"wby-w-full wby-flex wby-gap-sm wby-flex-wrap"}>
+                            {props.filters.map(filter => (
+                                <div key={filter.name}>{filter.element}</div>
+                            ))}
+                            {props.children}
+                        </div>
+                    )}
+                </Form>
+            </div>
+            <Separator variant={"dimmed"} margin={"none"} />
+        </>
     );
 };

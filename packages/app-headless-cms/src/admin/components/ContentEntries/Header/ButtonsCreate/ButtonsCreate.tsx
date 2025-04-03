@@ -1,10 +1,8 @@
 import React from "react";
 import { ReactComponent as Add } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
-import { ButtonIcon, ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
-import { Container } from "./styled";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { useModel } from "~/admin/hooks";
+import { Button, Tooltip } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/components/content-entries/header/buttons/create");
 
@@ -24,49 +22,48 @@ export const ButtonsCreate = ({
     const { model } = useModel();
 
     let newFolderButton = (
-        <ButtonSecondary
+        <Button
             data-testid="new-folder-button"
             onClick={onCreateFolder}
             disabled={!canCreateFolder}
-        >
-            <ButtonIcon icon={<Add />} />
-            {t`New Folder`}
-        </ButtonSecondary>
+            text={t`New Folder`}
+            icon={<Add />}
+            variant={"secondary"}
+        />
     );
 
     if (!canCreateFolder) {
         newFolderButton = (
-            <Tooltip content={`Cannot create folder because you're not an owner.`}>
-                {newFolderButton}
-            </Tooltip>
+            <Tooltip
+                content={`Cannot create folder because you're not an owner.`}
+                trigger={newFolderButton}
+            />
         );
     }
 
     let newEntryButton = (
-        <ButtonPrimary
+        <Button
             data-testid="new-entry-button"
             onClick={onCreateEntry}
-            flat={true}
             disabled={!canCreateContent}
-        >
-            <ButtonIcon icon={<Add />} />
-            New {model.name}
-        </ButtonPrimary>
+            text={`New ${model.name}`}
+            icon={<Add />}
+        />
     );
 
     if (!canCreateContent) {
         newEntryButton = (
-            <Tooltip content={`Cannot create entry because you're not an owner.`}>
-                {newEntryButton}
-            </Tooltip>
+            <Tooltip
+                content={`Cannot create entry because you're not an owner.`}
+                trigger={newEntryButton}
+            />
         );
     }
 
     return (
-        <Container>
+        <>
             {newFolderButton}
-            &nbsp;
             {newEntryButton}
-        </Container>
+        </>
     );
 };

@@ -5,8 +5,6 @@ import { AvatarImageTrigger } from "~/ui/components/AvatarImage/AvatarImageTrigg
 import { cn } from "@webiny/admin-ui";
 
 export const AvatarImage = ({ round, ...props }: SingleImageUploadProps) => {
-    console.log("props", props);
-
     return (
         <div className={"wby-w-full wby-flex-1"}>
             <div

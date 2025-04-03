@@ -1,7 +1,7 @@
 import * as React from "react";
 import classSet from "classnames";
 import { CellProps } from "@webiny/ui/Grid";
-import { cn } from "@webiny/admin-ui";
+import { cn, Separator } from "@webiny/admin-ui";
 import { css } from "emotion";
 import styled from "@emotion/styled";
 import {
@@ -80,12 +80,14 @@ const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
                 defaultSize={defaultSize}
                 minSize={10}
                 id="leftPanel"
-                className={cn(leftPanel, "webiny-split-view__right-panel", className)}
+                className={cn("webiny-split-view__right-panel", className)}
                 {...props}
             >
                 {children}
             </Panel>
-            <PanelResizeHandle />
+            <PanelResizeHandle>
+                <Separator variant={"subtle"} orientation={"vertical"} margin={"none"} />
+            </PanelResizeHandle>
         </>
     );
 };

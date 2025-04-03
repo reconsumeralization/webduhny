@@ -1,10 +1,9 @@
 import React from "react";
+import { Button, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { i18n } from "@webiny/app/i18n";
-import { ButtonDefault } from "@webiny/ui/Button";
-import { Buttons, Icon } from "./styled";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { useModel } from "~/admin/components/ModelProvider";
 
 const t = i18n.ns("app-headless-cms/admin/components/content-entries/empty");
@@ -31,44 +30,44 @@ export const Empty = ({
     }
 
     let createEntryButton = (
-        <ButtonDefault
+        <Button
+            variant={"primary"}
             data-testid="new-entry-button"
             onClick={onCreateEntry}
             disabled={!canCreateContent}
-        >
-            <Icon /> {`New ${model.name}`}
-        </ButtonDefault>
+            text={`New ${model.name}`}
+            icon={<AddIcon />}
+        />
     );
 
     if (!canCreateContent) {
         createEntryButton = (
             <Tooltip
+                trigger={createEntryButton}
                 content={`Cannot create entry because you're not an owner.`}
-                placement={"bottom"}
-            >
-                {createEntryButton}
-            </Tooltip>
+                side={"bottom"}
+            />
         );
     }
 
     let createFolderButton = (
-        <ButtonDefault
+        <Button
+            variant={"secondary"}
             data-testid="new-folder-button"
             onClick={onCreateFolder}
             disabled={!canCreateFolder}
-        >
-            <Icon /> {t`New Folder`}
-        </ButtonDefault>
+            text={`New folder`}
+            icon={<AddIcon />}
+        />
     );
 
     if (!canCreateFolder) {
         createFolderButton = (
             <Tooltip
+                trigger={createFolderButton}
                 content={`Cannot create folder because you're not an owner.`}
-                placement={"bottom"}
-            >
-                {createFolderButton}
-            </Tooltip>
+                side={"bottom"}
+            />
         );
     }
 
@@ -80,11 +79,10 @@ export const Empty = ({
                     : "click on the left side to navigate to a different folder."
             })}
             action={
-                <Buttons>
+                <>
                     {createFolderButton}
-                    &nbsp;
                     {createEntryButton}
-                </Buttons>
+                </>
             }
         />
     );
