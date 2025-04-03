@@ -1,5 +1,4 @@
 ## TODO
-- update generation script so that new vars are included
 - improve caching of state so that also opened items are stored
 - see if we can avoid hardcoding of 45px height of the top app bar
 
