@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Text } from "@webiny/admin-ui";
 
 export interface ListMetaProps {
     loading: boolean;
@@ -15,5 +16,9 @@ export const ListMeta = (props: ListMetaProps) => {
         return null;
     }
 
-    return <span>{`Showing ${props.currentCount} out of ${getLabel(props.totalCount)}.`}</span>;
+    return (
+        <Text size={"sm"} as={"div"} className={"wby-text-neutral-strong"}>{`Showing ${
+            props.currentCount
+        } out of ${getLabel(props.totalCount)}.`}</Text>
+    );
 };

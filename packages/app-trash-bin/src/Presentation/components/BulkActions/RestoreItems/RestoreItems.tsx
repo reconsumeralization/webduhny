@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ReactComponent as RestoreIcon } from "@material-design-icons/svg/outlined/restore.svg";
+import { ReactComponent as RestoreIcon } from "@webiny/icons/restore.svg";
 import { observer } from "mobx-react-lite";
 import { useSnackbar } from "@webiny/app-admin";
 import { TrashBinListConfig } from "~/Presentation/configs";
