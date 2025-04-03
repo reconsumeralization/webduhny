@@ -1,14 +1,16 @@
 import React from "react";
 import { cn } from "~/utils";
-import { getSidebarState, setSidebarState } from "./sidebarState";
+import { SIDEBAR_TRANSITION_DURATION } from "./constants";
+import { SidebarCache } from "./SidebarCache";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";
     open: boolean;
     pinned: boolean;
+    transition: null | "opening" | "closing";
     setOpen: (open: boolean) => void;
-    toggleSidebar: () => void;
-    togglePinSidebar: () => void;
+    toggleOpen: () => void;
+    togglePinned: () => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -22,69 +24,92 @@ function useSidebar() {
     return context;
 }
 
-type SidebarProviderProps = {
-    defaultOpen?: boolean;
-    defaultPinned?: boolean;
-    open?: boolean;
-    pinned?: boolean;
-    onOpenChange?: (open: boolean) => void;
-} & React.HTMLAttributes<HTMLDivElement>;
+type SidebarProviderProps = React.HTMLAttributes<HTMLDivElement>;
 
-const SidebarProvider = ({
-    defaultOpen = false,
-    defaultPinned = false,
-    open: openProp,
-    pinned: pinnedProp,
-    onOpenChange: setOpenProp,
-    className,
-    children,
-    ...props
-}: SidebarProviderProps) => {
-    // This is the internal state of the sidebar.
-    // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
-    const [_pinned, _setPinned] = React.useState(defaultPinned);
+interface SidebarState {
+    expanded: boolean;
+    transition: null | "opening" | "closing";
+    pinned: boolean;
+}
 
-    const open = openProp ?? _open;
-    const pinned = pinnedProp ?? _pinned;
+const createDefaultSidebarState = (): SidebarState => {
+    const { pinned } = SidebarCache.get();
+    return {
+        expanded: pinned, // If pinned, we want the sidebar to be open by default.
+        pinned,
+        transition: null
+    };
+};
+
+const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps) => {
+    const [sidebarState, setSidebarState] = React.useState<SidebarState>(createDefaultSidebarState);
+
+    // With this timeout, we prevent the sidebar glitching (quickly opening/closing) during mouse enter/leave events.
+    const timeoutRef = React.useRef<number | null>(null);
+
+    const { expanded, transition, pinned } = sidebarState;
 
     const setOpen = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
-            const openState = typeof value === "function" ? value(open) : value;
-            if (setOpenProp) {
-                setOpenProp(openState);
-            } else {
-                _setOpen(openState);
+            const openState = typeof value === "function" ? value(expanded) : value;
+            setSidebarState(state => ({
+                ...state,
+                expanded: openState,
+                transition: openState ? "opening" : "closing"
+            }));
+
+            if (timeoutRef.current) {
+                window.clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
             }
 
-            setSidebarState({ pinned });
+            timeoutRef.current = window.setTimeout(() => {
+                setSidebarState(state => ({
+                    ...state,
+                    transition: null
+                }));
+            }, SIDEBAR_TRANSITION_DURATION);
         },
-        [setOpenProp, open]
+        [expanded]
     );
 
-    // Helper to toggle the sidebar.
-    const toggleSidebar = React.useCallback(() => {
-        return setOpen(open => !open);
+    const setPinned = React.useCallback(
+        (value: boolean | ((value: boolean) => boolean)) => {
+            const pinnedState = typeof value === "function" ? value(pinned) : value;
+            setSidebarState(state => ({
+                ...state,
+                pinned: pinnedState
+            }));
+
+            SidebarCache.set({ pinned: pinnedState });
+        },
+        [pinned]
+    );
+
+    const toggleOpen = React.useCallback(() => {
+        return setOpen(prev => !prev);
     }, [setOpen]); // Helper to toggle the sidebar.
 
-    const togglePinSidebar = React.useCallback(() => {
-        return _setPinned(pinned => !pinned);
-    }, [_pinned]);
+    const togglePinned = React.useCallback(() => {
+        return setPinned(prev => !prev);
+    }, [setPinned]);
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
-    const state = open ? "expanded" : "collapsed";
+    const state = expanded ? "expanded" : "collapsed";
 
     const contextValue = React.useMemo<SidebarContext>(
         () => ({
             state,
-            open,
+            transition,
+            open: expanded,
             pinned,
             setOpen,
-            toggleSidebar,
-            togglePinSidebar
+            setPinned,
+            toggleOpen,
+            togglePinned
         }),
-        [state, open, setOpen, toggleSidebar, togglePinSidebar]
+        [state, transition, open, pinned, setOpen, setPinned, toggleOpen, togglePinned]
     );
 
     return (
