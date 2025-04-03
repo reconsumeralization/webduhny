@@ -27,7 +27,7 @@ const SidebarRoot = ({ side = "left", className, children, ...props }: SidebarRo
 
     const onMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>(() => {
         // If the sidebar is pinned, we don't want to open the sidebar on mouse enter.
-        console.log('pinned', pinned);
+        console.log("pinned", pinned);
         if (pinned) {
             return;
         }
