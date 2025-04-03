@@ -16,6 +16,7 @@ import { Sidebar } from "./Sidebar";
 import { SidebarProvider } from "~/Sidebar/components/SidebarProvider";
 import { DropdownMenu } from "~/DropdownMenu";
 import { Tag } from "~/Tag";
+import { Tooltip } from "~/Tooltip";
 
 const meta: Meta<typeof Sidebar> = {
     title: "Components/Sidebar",
@@ -30,7 +31,14 @@ const meta: Meta<typeof Sidebar> = {
     // when the story is viewed in isolation.
     // tags: ["autodocs"],
 
-    argTypes: {}
+    argTypes: {},
+    decorators: [
+        Story => (
+            <Tooltip.Provider>
+                <Story />
+            </Tooltip.Provider>
+        )
+    ]
 };
 
 export default meta;
