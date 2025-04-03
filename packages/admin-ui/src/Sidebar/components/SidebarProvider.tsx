@@ -1,23 +1,19 @@
 import React from "react";
-import { useIsMobile } from "~/hooks/useIsMobile";
 import { cn } from "~/utils";
-
-import {
-    SIDEBAR_COOKIE_NAME,
-    SIDEBAR_COOKIE_MAX_AGE,
-    SIDEBAR_WIDTH,
-    SIDEBAR_WIDTH_ICON,
-    SIDEBAR_KEYBOARD_SHORTCUT
-} from "./constants";
+import { SIDEBAR_TRANSITION_DURATION } from "./constants";
+import { SidebarCache } from "./SidebarCache";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    openMobile: boolean;
-    setOpenMobile: (open: boolean) => void;
-    isMobile: boolean;
-    toggleSidebar: () => void;
+    expanded: boolean;
+    expandedSections: string[];
+    pinned: boolean;
+    transition: null | "expanding" | "collapsing";
+    setExpanded: (expanded: boolean) => void;
+    toggleExpanded: () => void;
+    togglePinned: () => void;
+    toggleSectionExpanded: (sectionId: string) => void;
+    isSectionExpanded: (sectionId: string) => boolean;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -31,89 +27,138 @@ function useSidebar() {
     return context;
 }
 
-type SidebarProviderProps = {
-    defaultOpen?: boolean;
-    open?: boolean;
-    onOpenChange?: (open: boolean) => void;
-} & React.HTMLAttributes<HTMLDivElement>;
+type SidebarProviderProps = React.HTMLAttributes<HTMLDivElement>;
 
-const SidebarProvider = ({
-    defaultOpen = false,
-    open: openProp,
-    onOpenChange: setOpenProp,
-    className,
-    style,
-    children,
-    ...props
-}: SidebarProviderProps) => {
-    const isMobile = useIsMobile();
-    const [openMobile, setOpenMobile] = React.useState(false);
+interface SidebarState {
+    expanded: boolean;
+    transition: null | "expanding" | "collapsing";
+    pinned: boolean;
+    expandedSections: string[];
+}
 
-    // This is the internal state of the sidebar.
-    // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
-    const open = openProp ?? _open;
-    const setOpen = React.useCallback(
+const createInitialSidebarState = (): SidebarState => {
+    const { pinned, expandedSections } = SidebarCache.get();
+    return {
+        expanded: pinned, // If pinned, we want the sidebar to be open by default.
+        pinned,
+        expandedSections,
+        transition: null
+    };
+};
+
+const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps) => {
+    const [sidebarState, setSidebarState] = React.useState<SidebarState>(createInitialSidebarState);
+
+    // With this timeout, we prevent the sidebar glitching (quickly opening/closing) during mouse enter/leave events.
+    const timeoutRef = React.useRef<number | null>(null);
+
+    const { expanded, transition, pinned, expandedSections } = sidebarState;
+
+    const setExpanded = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
-            const openState = typeof value === "function" ? value(open) : value;
-            if (setOpenProp) {
-                setOpenProp(openState);
-            } else {
-                _setOpen(openState);
+            const newValue = typeof value === "function" ? value(expanded) : value;
+            setSidebarState(state => ({
+                ...state,
+                expanded: newValue,
+                transition: newValue ? "expanding" : "collapsing"
+            }));
+
+            if (timeoutRef.current) {
+                window.clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
             }
 
-            // This sets the cookie to keep the sidebar state.
-            document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+            timeoutRef.current = window.setTimeout(() => {
+                setSidebarState(state => ({
+                    ...state,
+                    transition: null
+                }));
+            }, SIDEBAR_TRANSITION_DURATION);
         },
-        [setOpenProp, open]
+        [expanded]
     );
 
-    // Helper to toggle the sidebar.
-    const toggleSidebar = React.useCallback(() => {
-        return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open);
-    }, [isMobile, setOpen, setOpenMobile]);
+    const setPinned = React.useCallback(
+        (value: boolean | ((value: boolean) => boolean)) => {
+            const newValue = typeof value === "function" ? value(pinned) : value;
+            setSidebarState(state => ({
+                ...state,
+                pinned: newValue
+            }));
 
-    // Adds a keyboard shortcut to toggle the sidebar.
-    React.useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
-                event.preventDefault();
-                toggleSidebar();
-            }
-        };
+            SidebarCache.set({ pinned: newValue, expandedSections });
+        },
+        [pinned]
+    );
 
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [toggleSidebar]);
+    const toggleExpanded = React.useCallback(() => {
+        return setExpanded(prev => !prev);
+    }, [setExpanded]); // Helper to toggle the sidebar.
+
+    const togglePinned = React.useCallback(() => {
+        return setPinned(prev => !prev);
+    }, [setPinned]);
+
+    const toggleSectionExpanded = React.useCallback(
+        (sectionId: string) => {
+            setSidebarState(state => {
+                const expandedSections = state.expandedSections.includes(sectionId)
+                    ? state.expandedSections.filter(id => id !== sectionId)
+                    : [...state.expandedSections, sectionId];
+
+                SidebarCache.set({ pinned: state.pinned, expandedSections });
+
+                return {
+                    ...state,
+                    expandedSections
+                };
+            });
+        },
+        [setSidebarState]
+    );
+
+    const isSectionExpanded = React.useCallback(
+        (sectionId: string) => {
+            return expandedSections.includes(sectionId);
+        },
+        [expandedSections]
+    );
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
-    const state = open ? "expanded" : "collapsed";
+    const state = expanded ? "expanded" : "collapsed";
 
     const contextValue = React.useMemo<SidebarContext>(
         () => ({
             state,
-            open,
-            setOpen,
-            isMobile,
-            openMobile,
-            setOpenMobile,
-            toggleSidebar
+            transition,
+            expanded,
+            expandedSections,
+            pinned,
+            setExpanded,
+            toggleExpanded,
+            toggleSectionExpanded,
+            setPinned,
+            togglePinned,
+            isSectionExpanded
         }),
-        [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+        [
+            state,
+            transition,
+            expanded,
+            expandedSections,
+            pinned,
+            setExpanded,
+            setPinned,
+            toggleExpanded,
+            togglePinned
+        ]
     );
 
     return (
         <SidebarContext.Provider value={contextValue}>
             <div
                 data-sidebar={"provider"}
-                style={
-                    {
-                        "--sidebar-width": SIDEBAR_WIDTH,
-                        "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-                        ...style
-                    } as React.CSSProperties
-                }
                 {...props}
                 className={cn(
                     "wby-group/sidebar-wrapper wby-flex wby-min-h-svh wby-w-full",

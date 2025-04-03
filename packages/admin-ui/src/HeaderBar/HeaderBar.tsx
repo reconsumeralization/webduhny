@@ -10,7 +10,7 @@ interface HeaderBarProps {
 
 const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
     return (
-        <>
+        <header>
             <div
                 className={
                     "wby-grid wby-grid-cols-3 wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
@@ -25,7 +25,7 @@ const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
                 </div>
             </div>
             <Separator margin={"none"} variant={"subtle"} />
-        </>
+        </header>
     );
 };
 

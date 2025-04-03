@@ -1,38 +1,59 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { cn, makeDecoratable, withStaticProps } from "~/utils";
 import { SidebarMenuRootButton } from "./SidebarMenuRootButton";
 import { SidebarMenuItemIcon } from "./SidebarMenuItemIcon";
 import { SidebarMenuItemAction } from "./SidebarMenuItemAction";
 import { SidebarMenuSub } from "./SidebarMenuSub";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
-import { IconButton } from "~/Button";
+import { Icon } from "~/Icon";
 import { ReactComponent as KeyboardArrowRightIcon } from "@webiny/icons/keyboard_arrow_down.svg";
 import { type SidebarMenuItemProps } from "./SidebarMenuItem";
+import { useSidebarMenu } from "~/Sidebar/components/items/SidebarMenuProvider";
+import { useSidebar } from "~/Sidebar";
 
 const SidebarMenuItemBase = ({ children, className, ...buttonProps }: SidebarMenuItemProps) => {
+    const { currentLevel } = useSidebarMenu();
+    const sidebar = useSidebar();
+
+    const menuItemId = useMemo(() => {
+        return btoa(`sidebar-item-${currentLevel}-${buttonProps.text}`);
+    }, [buttonProps.text, currentLevel]);
+
+    const isSectionExpanded = useMemo(() => {
+        return sidebar.isSectionExpanded(menuItemId);
+    }, [sidebar.expandedSections]);
+
+    const toggleSectionExpanded = useCallback(() => {
+        sidebar.toggleSectionExpanded(menuItemId);
+    }, [isSectionExpanded]);
+
     const sidebarMenuButton = useMemo(() => {
         if (!children) {
             return <SidebarMenuRootButton {...buttonProps} />;
         }
 
         const chevron = (
-            <CollapsibleTrigger asChild>
-                <IconButton
-                    variant={"ghost"}
-                    size={"xs"}
-                    className={
-                        "wby-ml-auto wby-transition-transform wby-duration-200 group-data-[state=open]/menu-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
-                    }
-                    color={"neutral-strong"}
-                    data-sidebar={"menu-item-expanded-indicator"}
-                    icon={<KeyboardArrowRightIcon />}
-                />
-            </CollapsibleTrigger>
+            <Icon
+                label={"Expand / Collapse"}
+                size={"sm"}
+                className={
+                    "wby-ml-auto wby-transition-transform wby-duration-175 group-data-[state=open]/menu-item-collapsible:wby-rotate-180 group-data-[state=collapsed]:wby-hidden"
+                }
+                color={"neutral-strong"}
+                data-sidebar={"menu-item-expanded-indicator"}
+                icon={<KeyboardArrowRightIcon />}
+            />
         );
 
         return (
-            <Collapsible className={cn("wby-w-full wby-group/menu-item-collapsible")}>
-                <SidebarMenuRootButton {...buttonProps} action={chevron} />
+            <Collapsible
+                className={cn("wby-w-full wby-group/menu-item-collapsible")}
+                open={isSectionExpanded}
+                onOpenChange={toggleSectionExpanded}
+            >
+                <CollapsibleTrigger asChild>
+                    <SidebarMenuRootButton {...buttonProps} action={chevron} />
+                </CollapsibleTrigger>
                 <CollapsibleContent
                     forceMount
                     className={"wby-hidden data-[state=open]:!wby-block"}
@@ -41,7 +62,7 @@ const SidebarMenuItemBase = ({ children, className, ...buttonProps }: SidebarMen
                 </CollapsibleContent>
             </Collapsible>
         );
-    }, [children, buttonProps]);
+    }, [children, buttonProps, menuItemId, isSectionExpanded, toggleSectionExpanded]);
 
     return (
         <li

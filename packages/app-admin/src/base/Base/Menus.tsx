@@ -57,10 +57,9 @@ export const Menus = React.memo(() => {
                 name={"settings"}
                 pin={"end"}
                 element={
-                    <Menu.Link
+                    <Menu.Item
                         text={"Settings"}
                         icon={<Menu.Link.Icon label="Settings" element={<SettingsIcon />} />}
-                        to={"/access-management/roles"}
                     />
                 }
             />

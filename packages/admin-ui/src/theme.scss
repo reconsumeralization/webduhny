@@ -234,6 +234,8 @@
     --spacing-xs-plus: 6px;
     --spacing-xxl: 48px;
     --spacing-xxs: 2px;
+    --spacing-sidebar-collapsed: 44px;
+    --spacing-sidebar-expanded: 256px;
 
     // Text color.
     --text-accent-muted: var(--color-primary-300);
@@ -246,6 +248,7 @@
 
     --text-neutral-dimmed: var(--color-neutral-400);
     --text-neutral-disabled: var(--color-neutral-400);
+    --text-neutral-disabled-negative: var(--color-neutral-0-a50);
     --text-neutral-light: var(--color-neutral-0);
     --text-neutral-muted: var(--color-neutral-500);
     --text-neutral-primary: var(--color-neutral-900);

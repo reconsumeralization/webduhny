@@ -8,7 +8,7 @@ export const Navigation = NavigationRenderer.createDecorator(() => {
     return function Navigation() {
         const { menus, tenant } = useAdminConfig();
 
-        const title = tenant.name;
+        const title = <Link to={"/"}>{tenant.name}</Link>;
         const icon = (
             <Link to={"/"}>
                 <Sidebar.Icon element={tenant.logo} label={"Webiny"} />

@@ -64,6 +64,6 @@
 
   a {
     // Styles all links that were not rendered via the Link component.
-    @apply wby-text-accent-primary wby-hover:underline wby-focus-visible:outline-none wby-focus-visible:ring-lg wby-focus-visible:ring-primary-dimmed wby-rounded-xs;
+    @apply wby-text-accent-primary hover:wby-underline focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed wby-rounded-xs;
   }
 }
