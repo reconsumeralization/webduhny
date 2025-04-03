@@ -12,7 +12,7 @@ interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
 }
 
 const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
-    const { toggleSidebar, togglePinSidebar, open, pinned } = useSidebar();
+    const { toggleOpen, togglePinned, open, pinned, transition } = useSidebar();
 
     // We needed this to ensure smooth transition when closing the sidebar. Basically, when clicking
     // on the sidebar, for a super brief amount of time, users would still see the "expand" icon,
@@ -21,7 +21,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
     // it to work properly. To improve this and making look less hacky, I'd actually move this feature
     // into the `useSidebar` hook and have it be centralized there. Wanted to do it but I've already
     // spent a ton of time on this, so I decided to just leave it.
-    const [closingInProgress, setClosingInProgress] = React.useState(false);
+    const transitionInProgress = !!transition;
 
     return (
         <>
@@ -42,7 +42,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                         <span className={"wby-text-md wby-font-semibold wby-truncate"}>
                             {title}
                         </span>
-                        {!closingInProgress && (
+                        {!transitionInProgress && (
                             <IconButton
                                 className={
                                     "wby-absolute wby-right-[-10px] wby-hidden group-data-[state=collapsed]:group-hover:wby-flex"
@@ -51,7 +51,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                                 data-sidebar="trigger"
                                 size="xs"
                                 variant={"secondary"}
-                                onClick={toggleSidebar}
+                                onClick={toggleOpen}
                             />
                         )}
                     </div>
