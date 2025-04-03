@@ -1,10 +1,6 @@
 import React from "react";
-
-import {
-    TopAppBar as RmwcTopAppBar,
-    TopAppBarProps as RmwcTopAppBarProps,
-    TopAppBarRow
-} from "@rmwc/top-app-bar";
+import { HeaderBar } from "@webiny/admin-ui";
+import { TopAppBarProps as RmwcTopAppBarProps } from "@rmwc/top-app-bar";
 
 export type TopAppBarProps = RmwcTopAppBarProps & {
     /**
@@ -21,13 +17,28 @@ export type TopAppBarProps = RmwcTopAppBarProps & {
     style?: React.CSSProperties;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `HeaderBar` component from the `@webiny/admin-ui` package instead.
+ */
 const TopAppBar = (props: TopAppBarProps) => {
     const { children, ...rest } = props;
-    return (
-        <RmwcTopAppBar {...rest} className={"wby-bg-primary-default"}>
-            <TopAppBarRow>{children}</TopAppBarRow>
-        </RmwcTopAppBar>
-    );
+
+    let start, middle, end;
+    React.Children.forEach(children, child => {
+        if (!React.isValidElement(child)) {
+            return;
+        }
+
+        if (child.props.alignStart) {
+            start = child;
+        } else if (child.props.alignEnd) {
+            end = child;
+        } else {
+            middle = child;
+        }
+    });
+    return <HeaderBar start={start} middle={middle} end={end} {...rest} />;
 };
 
 export { TopAppBar };

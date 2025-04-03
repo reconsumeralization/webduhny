@@ -171,6 +171,7 @@
     "webiny-versions": "node ./scripts/webinyVersions.js",
     "trigger-release": "node ./scripts/release/triggerRelease.js",
     "dispatch-github-event": "node ./scripts/dispatchGitHubEvent.js",
+    "link-workspaces": "node ./scripts/linkWorkspaces.js",
     "lint-staged": "lint-staged",
     "postinstall": "yarn node ./scripts/linkWorkspaces.js",
     "prepublishOnly": "node scripts/prepublishOnly",

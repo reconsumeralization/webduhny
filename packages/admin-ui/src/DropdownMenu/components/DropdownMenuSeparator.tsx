@@ -2,11 +2,12 @@ import * as React from "react";
 import { Separator, type SeparatorProps } from "~/Separator";
 import { makeDecoratable } from "~/utils";
 
-const DropdownMenuSeparatorBase = (props: SeparatorProps) => {
+type DropdownMenuSeparatorProps = SeparatorProps;
+
+const DropdownMenuSeparatorBase = (props: DropdownMenuSeparatorProps) => {
     return <Separator variant={"strong"} margin={"md"} {...props} />;
 };
 
-export const DropdownMenuSeparator = makeDecoratable(
-    "DropdownMenuSeparator",
-    DropdownMenuSeparatorBase
-);
+const DropdownMenuSeparator = makeDecoratable("DropdownMenuSeparator", DropdownMenuSeparatorBase);
+
+export { DropdownMenuSeparator, type DropdownMenuSeparatorProps };

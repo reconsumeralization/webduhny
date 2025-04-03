@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    TopAppBarSection as RmwcTopAppBarSection,
-    TopAppBarSectionProps as RmwcTopAppBarSectionProps
-} from "@rmwc/top-app-bar";
+import { TopAppBarSectionProps as RmwcTopAppBarSectionProps } from "@rmwc/top-app-bar";
 
 export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
     /**
@@ -21,9 +18,12 @@ export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
     className?: string;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `HeaderBar` component from the `@webiny/admin-ui` package instead.
+ */
 const TopAppBarSection = (props: TopAppBarSectionProps) => {
-    const { children, ...rest } = props;
-    return <RmwcTopAppBarSection {...rest}>{children}</RmwcTopAppBarSection>;
+    return <>{props.children}</>;
 };
 
 export { TopAppBarSection };

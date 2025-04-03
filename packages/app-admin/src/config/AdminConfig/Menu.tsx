@@ -5,6 +5,7 @@ import { MenuItem } from "./Menu/MenuItem";
 import { MenuLink } from "./Menu/MenuLink";
 import { MenuGroup } from "./Menu/MenuGroup";
 import { SupportMenu } from "./Menu/SupportMenu";
+import { UserMenu } from "./Menu/UserMenu";
 
 export interface MenuProps {
     name: string;
@@ -71,5 +72,6 @@ export const Menu = Object.assign(DecoratableMenu, {
     Link: MenuLink,
     Group: MenuGroup,
     Footer: DecoratableFooterMenu,
-    Support: SupportMenu
+    Support: SupportMenu,
+    User: UserMenu
 });

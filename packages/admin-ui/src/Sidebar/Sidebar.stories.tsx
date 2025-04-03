@@ -119,7 +119,7 @@ const SidebarComponent = () => {
                     active={hash === "#cms"}
                     icon={<Sidebar.Item.Icon label="Headless CMS" element={<CmsIcon />} />}
                 >
-                    <Sidebar.Item text={"Content Models"} variant={"group-label"} />
+                    <Sidebar.Group text={"Content Models"} />
                     <Sidebar.Link
                         text={"Groups"}
                         to={"#cms-groups"}
@@ -137,7 +137,7 @@ const SidebarComponent = () => {
                     active={hash === "#page-builder"}
                     icon={<Sidebar.Item.Icon label="Page Builder" element={<PageBuilderIcon />} />}
                 >
-                    <Sidebar.Item text={"Blocks"} variant={"group-label"} />
+                    <Sidebar.Group text={"Blocks"} />
                     <Sidebar.Link
                         text={"Blocks"}
                         to={"#pb-blocks"}
@@ -149,12 +149,7 @@ const SidebarComponent = () => {
                         active={hash === "#pb-blocks-categories"}
                     />
 
-                    <Sidebar.Link
-                        to={"#pb-pages"}
-                        text={"Pages"}
-                        variant={"group-label"}
-                        active={hash === `#pb-pages`}
-                    />
+                    <Sidebar.Group text={"Pages"} active={hash === `#pb-pages`} />
                     <Sidebar.Link
                         to={"#pb-pages-categories"}
                         text={"Categories"}

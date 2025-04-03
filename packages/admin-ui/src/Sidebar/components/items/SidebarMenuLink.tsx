@@ -1,8 +1,14 @@
 import React from "react";
 import { SidebarMenuItem, type SidebarMenuItemLinkProps } from "./SidebarMenuItem";
 import { makeDecoratable, withStaticProps } from "~/utils";
-import { SidebarMenuItemIcon } from "~/Sidebar/components/items/SidebarMenuItemIcon";
-import { SidebarMenuItemAction } from "~/Sidebar/components/items/SidebarMenuItemAction";
+import {
+    SidebarMenuItemIcon,
+    type SidebarMenuItemIconProps
+} from "~/Sidebar/components/items/SidebarMenuItemIcon";
+import {
+    SidebarMenuItemAction,
+    type SidebarMenuItemActionProps
+} from "~/Sidebar/components/items/SidebarMenuItemAction";
 
 const SidebarMenuLinkBase = (props: SidebarMenuItemLinkProps) => {
     return <SidebarMenuItem {...props} />;
@@ -15,4 +21,9 @@ const SidebarMenuLink = withStaticProps(DecoratableSidebarMenuLink, {
     Action: SidebarMenuItemAction
 });
 
-export { SidebarMenuLink };
+export {
+    SidebarMenuLink,
+    type SidebarMenuItemLinkProps,
+    type SidebarMenuItemIconProps,
+    type SidebarMenuItemActionProps
+};

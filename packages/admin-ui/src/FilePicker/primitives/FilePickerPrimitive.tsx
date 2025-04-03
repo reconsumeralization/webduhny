@@ -164,4 +164,4 @@ const FilePickerPrimitive = withStaticProps(DecoratableFilePickerPrimitive, {
     }
 });
 
-export { FilePickerPrimitive, type FileItem, type FilePickerPrimitiveProps, filePickerVariants };
+export { FilePickerPrimitive, FileItem, type FilePickerPrimitiveProps, filePickerVariants };

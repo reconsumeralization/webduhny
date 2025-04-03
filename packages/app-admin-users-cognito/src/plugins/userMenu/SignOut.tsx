@@ -1,7 +1,9 @@
 import React from "react";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 import { ReactComponent as SignOutIcon } from "@material-design-icons/svg/outlined/logout.svg";
-import { DropdownMenu } from "@webiny/admin-ui";
+import { AdminConfig } from "@webiny/app-admin";
+
+const { Menu } = AdminConfig;
 
 export const SignOut = () => {
     const { identity } = useSecurity();
@@ -16,9 +18,9 @@ export const SignOut = () => {
     }
 
     return (
-        <DropdownMenu.Item
+        <Menu.User.Item
             text={"Sign out"}
-            icon={<DropdownMenu.Item.Icon element={<SignOutIcon />} label={"Sign out"} />}
+            icon={<Menu.User.Item.Icon element={<SignOutIcon />} label={"Sign out"} />}
             onClick={identity.logout}
         />
     );

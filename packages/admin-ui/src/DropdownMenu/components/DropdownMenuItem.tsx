@@ -5,7 +5,7 @@ import { DropdownMenuSubRoot } from "./DropdownMenuSubRoot";
 import { DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
 import { DropdownMenuPortal } from "./DropdownMenuPortal";
 import { DropdownMenuSubContent } from "./DropdownMenuSubContent";
-import { DropdownMenuItemIcon } from "./DropdownMenuItemIcon";
+import { DropdownMenuItemIcon, type DropdownMenuItemIconProps } from "./DropdownMenuItemIcon";
 import { Link, LinkProps, To } from "@webiny/react-router";
 
 interface DropdownMenuItemBaseProps {
@@ -29,7 +29,6 @@ const variants = cva(
         "wby-px-xs-plus wby-outline-none wby-transition-colors",
         "[&_svg]:wby-fill-neutral-xstrong [&_svg]:wby-pointer-events-none [&_svg]:wby-size-md [&_svg]:wby-shrink-0",
         "data-[disabled]:wby-pointer-events-none data-[disabled]:wby-text-neutral-disabled",
-        "focus:wby-bg-neutral-dimmed",
         "[&_a]:!wby-no-underline [&_a]:!wby-text-neutral-primary"
     ],
     {
@@ -61,10 +60,9 @@ const DropdownMenuItemBase = React.forwardRef<
             </DropdownMenuSubRoot>
         );
     }
-
     const sharedProps = {
         className: cn(
-            "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors",
+            "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors group-focus:wby-bg-neutral-dimmed",
             {
                 "[&_svg]:!wby-fill-neutral-disabled": disabled
             }
@@ -105,6 +103,7 @@ const DropdownMenuItem = Object.assign(DecoratableDropdownMenuItem, {
 export {
     DropdownMenuItem,
     type DropdownMenuItemProps,
-    DropdownMenuItemButtonProps,
-    DropdownMenuItemLinkProps
+    type DropdownMenuItemButtonProps,
+    type DropdownMenuItemLinkProps,
+    type DropdownMenuItemIconProps
 };

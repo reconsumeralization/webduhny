@@ -1,7 +1,7 @@
 import React from "react";
 import { DropdownMenuItem, type DropdownMenuItemLinkProps } from "./DropdownMenuItem";
 import { makeDecoratable, withStaticProps } from "~/utils";
-import { DropdownMenuItemIcon } from "./DropdownMenuItemIcon";
+import { DropdownMenuItemIcon, type DropdownMenuItemIconProps } from "./DropdownMenuItemIcon";
 
 export type DropdownMenuLinkProps = DropdownMenuItemLinkProps;
 
@@ -15,4 +15,4 @@ const DropdownMenuLink = withStaticProps(DecoratableDropdownMenuLink, {
     Icon: DropdownMenuItemIcon
 });
 
-export { DropdownMenuLink, type DropdownMenuItemLinkProps };
+export { DropdownMenuLink, type DropdownMenuItemLinkProps, type DropdownMenuItemIconProps };

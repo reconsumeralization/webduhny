@@ -1,30 +1,21 @@
 import React, { Fragment } from "react";
-import {
-    AddUserMenuItem,
-    UserMenuHandleRenderer,
-    Compose,
-    Plugins
-} from "@webiny/app-serverless-cms";
-import { UserInfo } from "~/modules/userMenu/userInfo";
-import { SignOut } from "~/modules/userMenu/signOut";
-import { UserImage } from "~/modules/userMenu/userImage";
-import { ExitTenant } from "~/modules/userMenu/exitTenant";
+import { AdminConfig } from "@webiny/app-serverless-cms";
+import { UserInfo } from "./UserInfo";
+import { SignOut } from "./SignOut";
+import { UserMenuHandle } from "./UserMenuHandle";
+import { ExitTenant } from "./ExitTenant";
 
-const UserImageHOC = () => {
-    return function UserImageHOC() {
-        return <UserImage />;
-    };
-};
+const { Menu } = AdminConfig;
 
 export const UserMenuModule = () => {
     return (
         <Fragment>
-            <Compose component={UserMenuHandleRenderer} with={UserImageHOC} />
-            <Plugins>
-                <AddUserMenuItem element={<UserInfo />} />
-                <AddUserMenuItem element={<ExitTenant />} />
-                <AddUserMenuItem element={<SignOut />} />
-            </Plugins>
+            <UserMenuHandle />
+            <AdminConfig>
+                <Menu.User name={"exitTenant"} element={<ExitTenant />} />
+                <Menu.User name={"signOut"} element={<SignOut />} />
+                <Menu.User name={"userInfo"} element={<UserInfo />} />
+            </AdminConfig>
         </Fragment>
     );
 };

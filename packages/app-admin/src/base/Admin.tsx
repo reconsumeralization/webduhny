@@ -8,8 +8,6 @@ import { createTelemetryProvider } from "./providers/TelemetryProvider";
 import { createUiStateProvider } from "./providers/UiStateProvider";
 import { createAdminUiStateProvider } from "./providers/AdminUiStateProvider";
 import { createUiProviders } from "./providers/UiProviders";
-import { SearchProvider } from "./ui/Search";
-import { UserMenuProvider } from "./ui/UserMenu";
 import { createDialogsProvider } from "~/components/Dialogs/DialogsContext";
 import { DefaultIcons, IconPickerConfigProvider } from "~/components/IconPicker/config";
 import { AdminConfigProvider } from "~/config/AdminConfig";
@@ -36,8 +34,6 @@ export const Admin = ({ children, createApolloClient }: AdminProps) => {
                             TelemetryProvider,
                             UIProviders,
                             UiStateProvider,
-                            SearchProvider,
-                            UserMenuProvider,
                             DialogsProvider,
                             IconPickerConfigProvider,
                             AdminConfigProvider,

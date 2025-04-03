@@ -1,6 +1,7 @@
 import React from "react";
 import { makeDecoratable } from "~/index";
-import { Sidebar, type SidebarMenuItemButtonProps } from "@webiny/admin-ui";
+import { Sidebar } from "@webiny/admin-ui";
+import { type SidebarMenuItemButtonProps } from "@webiny/admin-ui/Sidebar/components/items/SidebarMenuItem";
 
 const MenuLinkBase = (props: SidebarMenuItemButtonProps) => {
     return <Sidebar.Item {...props} />;

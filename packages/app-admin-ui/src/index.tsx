@@ -5,6 +5,7 @@ import { UserMenu } from "~/UserMenu";
 import { Dialog } from "./Dialog";
 import { NotFound } from "./NotFound";
 import { Dashboard } from "./Dashboard";
+import { Logo } from "./Logo";
 
 export const AdminUI = () => {
     return (
@@ -15,6 +16,7 @@ export const AdminUI = () => {
             <Navigation />
             <NotFound />
             <UserMenu />
+            <Logo />
         </>
     );
 };

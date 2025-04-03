@@ -7,6 +7,9 @@ import {
 
 export type TopAppBarNavigationIconProps = Omit<RmwcTopAppBarNavigationIconProps, "onChange">;
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ */
 const TopAppBarNavigationIcon = (props: TopAppBarNavigationIconProps) => {
     return <RmwcTopAppBarNavigationIcon {...props} />;
 };

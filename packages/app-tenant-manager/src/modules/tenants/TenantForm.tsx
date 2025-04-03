@@ -17,6 +17,7 @@ import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18
 import { useTenantForm } from "./hooks/useTenantForm";
 import { Input } from "@webiny/ui/Input";
 import { TenantFormFields } from "~/components/TenantFormFields";
+import SingleImageUpload from "@webiny/app-admin/components/SingleImageUpload";
 
 const t = i18n.ns("app-i18n/admin/locales/form");
 
@@ -54,6 +55,11 @@ const TenantForm = () => {
                             <Cell span={12}>
                                 <Bind name="description" validators={validation.create("required")}>
                                     <Input label={"Description"} rows={4} />
+                                </Bind>
+                            </Cell>{" "}
+                            <Cell span={12}>
+                                <Bind name={"image"}>
+                                    <SingleImageUpload label="Logo" />
                                 </Bind>
                             </Cell>
                             <Cell span={12}>

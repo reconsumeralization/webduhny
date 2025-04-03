@@ -32,7 +32,8 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                     }
                 >
                     <div className={"wby-flex wby-items-center wby-gap-x-sm"}>
-                        {icon}
+                        <div className={"wby-flex wby-flex-shrink-0"}>{icon}</div>
+
                         <span className={"wby-text-md wby-font-semibold wby-truncate"}>
                             {title}
                         </span>

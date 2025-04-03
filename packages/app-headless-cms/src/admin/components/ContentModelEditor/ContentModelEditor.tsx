@@ -46,7 +46,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
             <Prompt when={!isPristine} message={prompt} />
             <Header />
             {/*TODO: remove the height in favour of a TW variable for the height (h-main-section)*/}
-            <div className={"wby-w-full wby-h-[calc(100vh-65px)] wby-mt-[65px]"}>
+            <div className={"wby-w-full wby-h-[calc(100vh-65px)]"}>
                 <SplitView>
                     <LeftPanel span={4} className={"wby-bg-neutral-light"}>
                         <div className={"wby-px-lg wby-py-md"}>

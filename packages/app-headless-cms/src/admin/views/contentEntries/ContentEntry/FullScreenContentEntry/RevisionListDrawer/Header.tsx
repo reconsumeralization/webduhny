@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as CloseIcon } from "@webiny/icons/close.svg";
 import { SimpleFormHeader } from "@webiny/app-admin/components/SimpleForm";
-import { CloseButton } from "./RevisionListDrawer.styled";
+import { IconButton } from "@webiny/ui/Button";
 
 interface HeaderProps {
     onClose: () => void;
@@ -10,7 +10,7 @@ interface HeaderProps {
 export const Header = ({ onClose }: HeaderProps) => {
     return (
         <SimpleFormHeader title={"Entry revisions"}>
-            <CloseButton icon={<CloseIcon />} onClick={onClose} />
+            <IconButton icon={<CloseIcon />} onClick={onClose} />
         </SimpleFormHeader>
     );
 };

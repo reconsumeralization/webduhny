@@ -6,6 +6,7 @@ export default new GraphQLSchemaPlugin<TenancyContext>({
         type Tenant {
             id: ID!
             name: String!
+            image: JSON
             description: String!
             parent: ID
             tags: [String!]!

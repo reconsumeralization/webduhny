@@ -6,7 +6,7 @@ import { RevisionsList } from "~/admin/views/contentEntries/ContentEntry/Revisio
 import { cmsLegacyEntryEditor } from "~/utils/cmsLegacyEntryEditor";
 import { useFullScreenContentEntry } from "../useFullScreenContentEntry";
 import { Header } from "./Header";
-import { Drawer } from "./RevisionListDrawer.styled";
+import { DrawerRight } from "@webiny/ui/Drawer";
 
 export const RevisionListDrawer = () => {
     const { isRevisionListOpen, openRevisionList } = useFullScreenContentEntry();
@@ -24,11 +24,17 @@ export const RevisionListDrawer = () => {
     });
 
     return (
-        <Drawer open={isRevisionListOpen} onClose={() => openRevisionList(false)} modal dismissible>
+        <DrawerRight
+            open={isRevisionListOpen}
+            onClose={() => openRevisionList(false)}
+            modal
+            dismissible
+            className={"wby-w-[1000px] wby-max-w-[100vw]"}
+        >
             <DrawerContent>
                 <Header onClose={() => openRevisionList(false)} />
                 <RevisionsList />
             </DrawerContent>
-        </Drawer>
+        </DrawerRight>
     );
 };

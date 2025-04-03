@@ -5,13 +5,10 @@ import { SidebarHeader } from "./components/SidebarHeader";
 import { SidebarContent } from "./components/SidebarContent";
 import { SidebarIcon } from "./components/SidebarIcon";
 import { SidebarFooter } from "./components/SidebarFooter";
-import {
-    SidebarMenuItem,
-    type SidebarMenuItemLinkProps,
-    type SidebarMenuItemButtonProps
-} from "./components/items/SidebarMenuItem";
+import { SidebarMenuItem } from "./components/items/SidebarMenuItem";
 import { SidebarMenuLink } from "./components/items/SidebarMenuLink";
 import { SidebarMenuRoot } from "./components/items/SidebarMenuRoot";
+import { SidebarMenuGroup } from "~/Sidebar/components/items/SidebarMenuGroup";
 
 interface SidebarProps
     extends Omit<React.ComponentPropsWithoutRef<typeof SidebarRoot>, "title">,
@@ -72,7 +69,8 @@ const DecoratableSidebar = makeDecoratable("Sidebar", SidebarBase);
 const Sidebar = withStaticProps(DecoratableSidebar, {
     Item: SidebarMenuItem,
     Link: SidebarMenuLink,
+    Group: SidebarMenuGroup,
     Icon: SidebarIcon
 });
 
-export { Sidebar, type SidebarMenuItemLinkProps, type SidebarMenuItemButtonProps };
+export { Sidebar };
