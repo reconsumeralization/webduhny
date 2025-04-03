@@ -121,10 +121,8 @@ const SidebarComponent = () => {
                     }}
                     icon={<Sidebar.Item.Icon label="File Manager" element={<FileManagerIcon />} />}
                 />
-                <Sidebar.Link
+                <Sidebar.Item
                     text={"Headless CMS"}
-                    to={"#cms"}
-                    active={hash === "#cms"}
                     icon={<Sidebar.Item.Icon label="Headless CMS" element={<CmsIcon />} />}
                 >
                     <Sidebar.Group text={"Content Models"} />
@@ -138,11 +136,9 @@ const SidebarComponent = () => {
                         to={"#cms-models"}
                         active={hash === "#cms-models"}
                     />
-                </Sidebar.Link>
-                <Sidebar.Link
+                </Sidebar.Item>
+                <Sidebar.Item
                     text={"Page Builder"}
-                    to={"#page-builder"}
-                    active={hash === "#page-builder"}
                     icon={<Sidebar.Item.Icon label="Page Builder" element={<PageBuilderIcon />} />}
                 >
                     <Sidebar.Group text={"Blocks"} />
@@ -179,7 +175,7 @@ const SidebarComponent = () => {
                         disabled={true}
                         active={hash === `#pb-pages-templates`}
                     />
-                </Sidebar.Link>
+                </Sidebar.Item>
             </Sidebar>
         </SidebarProvider>
     );

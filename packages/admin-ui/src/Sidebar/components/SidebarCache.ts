@@ -2,10 +2,12 @@ import { SIDEBAR_LS_KEY } from "./constants";
 
 type CachedSidebarState = {
     pinned: boolean;
+    expandedSections: string[];
 };
 
 const DEFAULT_CACHED_STATE: CachedSidebarState = {
-    pinned: false
+    pinned: false,
+    expandedSections: []
 };
 
 export class SidebarCache {
@@ -15,8 +17,9 @@ export class SidebarCache {
             return DEFAULT_CACHED_STATE;
         }
 
+        console.log("JSON.parse(item)", JSON.parse(item));
         try {
-            return JSON.parse(item);
+            return JSON.parse(item) || DEFAULT_CACHED_STATE;
         } catch {
             return DEFAULT_CACHED_STATE;
         }

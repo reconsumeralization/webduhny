@@ -6,11 +6,14 @@ import { SidebarCache } from "./SidebarCache";
 type SidebarContext = {
     state: "expanded" | "collapsed";
     expanded: boolean;
+    expandedSections: string[];
     pinned: boolean;
     transition: null | "expanding" | "collapsing";
     setExpanded: (expanded: boolean) => void;
     toggleExpanded: () => void;
     togglePinned: () => void;
+    toggleSectionExpanded: (sectionId: string) => void;
+    isSectionExpanded: (sectionId: string) => boolean;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -30,13 +33,15 @@ interface SidebarState {
     expanded: boolean;
     transition: null | "expanding" | "collapsing";
     pinned: boolean;
+    expandedSections: string[];
 }
 
 const createInitialSidebarState = (): SidebarState => {
-    const { pinned } = SidebarCache.get();
+    const { pinned, expandedSections } = SidebarCache.get();
     return {
         expanded: pinned, // If pinned, we want the sidebar to be open by default.
         pinned,
+        expandedSections,
         transition: null
     };
 };
@@ -47,7 +52,7 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
     // With this timeout, we prevent the sidebar glitching (quickly opening/closing) during mouse enter/leave events.
     const timeoutRef = React.useRef<number | null>(null);
 
-    const { expanded, transition, pinned } = sidebarState;
+    const { expanded, transition, pinned, expandedSections } = sidebarState;
 
     const setExpanded = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
@@ -81,7 +86,7 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
                 pinned: newValue
             }));
 
-            SidebarCache.set({ pinned: newValue });
+            SidebarCache.set({ pinned: newValue, expandedSections });
         },
         [pinned]
     );
@@ -94,6 +99,31 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
         return setPinned(prev => !prev);
     }, [setPinned]);
 
+    const toggleSectionExpanded = React.useCallback(
+        (sectionId: string) => {
+            setSidebarState(state => {
+                const expandedSections = state.expandedSections.includes(sectionId)
+                    ? state.expandedSections.filter(id => id !== sectionId)
+                    : [...state.expandedSections, sectionId];
+
+                SidebarCache.set({ pinned: state.pinned, expandedSections });
+
+                return {
+                    ...state,
+                    expandedSections
+                };
+            });
+        },
+        [setSidebarState]
+    );
+
+    const isSectionExpanded = React.useCallback(
+        (sectionId: string) => {
+            return expandedSections.includes(sectionId);
+        },
+        [expandedSections]
+    );
+
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
     const state = expanded ? "expanded" : "collapsed";
@@ -103,13 +133,26 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
             state,
             transition,
             expanded,
+            expandedSections,
+            pinned,
+            setExpanded,
+            toggleExpanded,
+            toggleSectionExpanded,
+            setPinned,
+            togglePinned,
+            isSectionExpanded
+        }),
+        [
+            state,
+            transition,
+            expanded,
+            expandedSections,
             pinned,
             setExpanded,
             setPinned,
             toggleExpanded,
             togglePinned
-        }),
-        [state, transition, expanded, pinned, setExpanded, setPinned, toggleExpanded, togglePinned]
+        ]
     );
 
     return (
