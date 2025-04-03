@@ -13,12 +13,16 @@ const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
         <>
             <div
                 className={
-                    "wby-grid wby-grid-cols-[1fr_auto_1fr] wby-items-center wby-w-full wby-py-xs-plus wby-px-sm wby-bg-white"
+                    "wby-grid wby-grid-cols-3 wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
                 }
             >
-                <div className="wby-flex wby-items-center wby-justify-self-start">{start}</div>
-                <div className="wby-flex wby-items-center wby-justify-self-center">{middle}</div>
-                <div className="wby-flex wby-items-center wby-justify-self-end">{end}</div>
+                <div className="wby-h-full wby-flex wby-items-center wby-justify-self-start">
+                    {start}
+                </div>
+                <div className="wby-h-full wby-flex wby-items-center">{middle}</div>
+                <div className="wby-h-full wby-flex wby-items-center wby-justify-self-end">
+                    {end}
+                </div>
             </div>
             <Separator margin={"none"} variant={"subtle"} />
         </>

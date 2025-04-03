@@ -34,7 +34,11 @@ export const Header = (props: HeaderProps) => {
                 <div className={"wby-px-md wby-pb-sm"}>
                     <div className={"wby-flex wby-items-center wby-gap-sm wby-w-full"}>
                         <div className={"wby-flex-1"}>
-                            <Search value={searchValue} onChange={onSearchChange} />
+                            <Search
+                                value={searchValue}
+                                onChange={onSearchChange}
+                                placeholder={"Search..."}
+                            />
                         </div>
                         <div>
                             <div className={"wby-flex wby-gap-sm"}>

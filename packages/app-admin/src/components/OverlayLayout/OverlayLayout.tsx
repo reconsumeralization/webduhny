@@ -1,28 +1,12 @@
 import * as React from "react";
 import { Transition } from "react-transition-group";
-import styled from "@emotion/styled";
 import { css } from "emotion";
-import { TopAppBarSecondary, TopAppBarSection } from "@webiny/ui/TopAppBar";
-import { IconButton } from "@webiny/ui/Button";
 import noop from "lodash/noop";
 
-import { ReactComponent as CloseIcon } from "@material-design-icons/svg/outlined/close.svg";
+import { cn, HeaderBar, IconButton } from "@webiny/admin-ui";
+import { ReactComponent as CloseIcon } from "@webiny/icons/close.svg";
 import { OverlayView } from "~/ui/views/OverlayView";
 import { ExitHandler } from "react-transition-group/Transition";
-
-const OverlayLayoutWrapper = styled("div")({
-    position: "fixed",
-    width: "100%",
-    height: "100vh",
-    backgroundColor: "var(--mdc-theme-background)",
-    /**
-     * Has to be higher than 5 so it's above advanced settings dialog,
-     * and below 20, so the image editor & Dialogs can be displayed above.
-     */
-    zIndex: 21,
-    top: 0,
-    left: 0
-});
 
 const noScroll = css({
     overflow: "hidden",
@@ -56,6 +40,7 @@ export interface OverlayLayoutProps {
     children: React.ReactNode;
     onExited?: ExitHandler<HTMLElement>;
     style?: React.CSSProperties;
+    className?: string;
 }
 
 interface OverlayLayoutState {
@@ -90,34 +75,39 @@ export class OverlayLayout extends React.Component<OverlayLayoutProps, OverlayLa
     }
 
     public override render() {
-        const { onExited, barLeft, barMiddle, barRight, children, style, ...rest } = this.props;
+        const { onExited, barLeft, barMiddle, barRight, children, className, style, ...rest } =
+            this.props;
 
         return (
             <Transition in={this.state.isVisible} timeout={100} appear onExited={onExited}>
                 {state => (
-                    <OverlayLayoutWrapper
-                        {...rest}
+                    <div
+                        className={cn(
+                            [
+                                "wby-fixed wby-top-0 wby-left-0 wby-z-20 wby-h-screen wby-w-screen wby-bg-neutral-base"
+                            ],
+                            className
+                        )}
                         style={{ ...defaultStyle, ...style, ...transitionStyles[state] }}
+                        {...rest}
                     >
-                        <TopAppBarSecondary fixed style={{ top: 0 }}>
-                            <TopAppBarSection style={{ width: "33%" }} alignStart>
-                                {barLeft}
-                            </TopAppBarSection>
-                            <TopAppBarSection style={{ width: "33%" }}>
-                                {barMiddle}
-                            </TopAppBarSection>
-                            <TopAppBarSection style={{ width: "33%" }} alignEnd>
-                                {barRight}
-                                <IconButton
-                                    ripple={false}
-                                    onClick={() => this.hideComponent()}
-                                    icon={<CloseIcon />}
-                                />
-                            </TopAppBarSection>
-                        </TopAppBarSecondary>
+                        <HeaderBar
+                            start={barLeft}
+                            middle={barMiddle}
+                            end={
+                                <>
+                                    {barRight}
+                                    <IconButton
+                                        variant={"ghost"}
+                                        onClick={() => this.hideComponent()}
+                                        icon={<CloseIcon />}
+                                    />
+                                </>
+                            }
+                        />
 
                         {children}
-                    </OverlayLayoutWrapper>
+                    </div>
                 )}
             </Transition>
         );
