@@ -30,11 +30,13 @@ const SidebarRoot = ({ side = "left", className, children, ...props }: SidebarRo
         if (pinned) {
             return;
         }
-        setOpen(true);
+
         if (timeoutRef.current) {
             window.clearTimeout(timeoutRef.current);
             timeoutRef.current = null;
         }
+
+        setOpen(true);
     }, [pinned, setOpen]);
 
     const onMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(() => {
