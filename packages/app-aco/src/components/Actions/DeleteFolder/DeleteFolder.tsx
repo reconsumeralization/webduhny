@@ -26,6 +26,7 @@ export const DeleteFolder = () => {
             label={"Delete"}
             onAction={onAction}
             data-testid={"aco.actions.folder.delete"}
+            className={"!wby-text-destructive-primary [&_svg]:wby-fill-destructive"}
         />
     );
 };

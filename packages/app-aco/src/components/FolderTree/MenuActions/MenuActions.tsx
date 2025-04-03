@@ -1,6 +1,7 @@
 import React from "react";
 import { OptionsMenu } from "@webiny/app-admin";
-import { cn } from "@webiny/admin-ui";
+import { cn, IconButton } from "@webiny/admin-ui";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { useAcoConfig } from "~/config";
 import { useFolder } from "~/hooks";
 
@@ -21,7 +22,11 @@ export const MenuActions = () => {
                 "wby-cursor-pointer0"
             ])}
         >
-            <OptionsMenu actions={folderConfig.actions} data-testid={"folder.tree.menu-action"} />
+            <OptionsMenu
+                trigger={<IconButton icon={<MoreVerticalIcon />} size={"md"} variant={"ghost"} />}
+                actions={folderConfig.actions}
+                data-testid={"folder.tree.menu-action"}
+            />
         </div>
     );
 };

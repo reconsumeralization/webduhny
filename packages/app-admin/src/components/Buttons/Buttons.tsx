@@ -34,13 +34,13 @@ export const Buttons = (props: ButtonsProps) => {
     }
 
     return (
-        <>
+        <div className={"wby-flex wby-items-center wby-gap-sm"}>
             {props.actions.map(action => (
-                <ButtonContainer key={action.name}>
+                <div className={"empty:wby-hidden"} key={action.name}>
                     <ButtonsProvider>{action.element}</ButtonsProvider>
-                </ButtonContainer>
+                </div>
             ))}
-        </>
+        </div>
     );
 };
 

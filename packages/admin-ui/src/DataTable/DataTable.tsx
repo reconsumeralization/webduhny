@@ -458,9 +458,11 @@ const DecoratableDataTable = <T extends Record<string, any> & DataTableDefaultDa
                                                     direction={header.column.getIsSorted() || null}
                                                 />
                                                 {isLastCell && (
-                                                    <ColumnsVisibility
-                                                        columns={table.getAllColumns()}
-                                                    />
+                                                    <div className={"wby-mr-xs wby-h-md"}>
+                                                        <ColumnsVisibility
+                                                            columns={table.getAllColumns()}
+                                                        />
+                                                    </div>
                                                 )}
                                             </ColumnSorter>
                                         )}

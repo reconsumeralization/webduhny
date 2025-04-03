@@ -70,7 +70,9 @@ export const FolderTree = ({
                         hiddenFolderIds={hiddenFolderIds}
                         enableActions={enableActions}
                     />
-                    {enableCreate && <div className={"wby-mt-sm wby-ml-xxs"}>{createButton}</div>}
+                    {enableCreate && (
+                        <div className={"wby-mt-sm-plus wby-ml-xs"}>{createButton}</div>
+                    )}
                 </>
             ) : (
                 <Loader />

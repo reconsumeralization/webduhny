@@ -93,12 +93,12 @@ export const ContentEntriesModule = () => {
                 />
                 <Browser.Table.Column
                     name={"actions"}
-                    header={" "}
+                    header={""}
                     cell={<CellActions />}
-                    size={80}
+                    size={56}
                     resizable={false}
                     hideable={false}
-                    className={"rmwc-data-table__cell--align-end cms-aco-list-actions"}
+                    className={"cms-aco-list-actions wby-text-right"}
                 />
                 <Browser.AdvancedSearch.FieldRenderer
                     name={"ref"}

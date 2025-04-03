@@ -19,7 +19,8 @@ export const ButtonCreate = (props: ButtonCreateProps) => {
             disabled={props.disabled}
             icon={<Plus />}
             text={t`Create folder`}
-            variant={"ghost"}
+            variant={"secondary"}
+            size={"sm"}
         />
     );
 };
