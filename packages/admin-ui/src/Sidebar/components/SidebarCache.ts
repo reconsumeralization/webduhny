@@ -17,7 +17,6 @@ export class SidebarCache {
             return DEFAULT_CACHED_STATE;
         }
 
-        console.log("JSON.parse(item)", JSON.parse(item));
         try {
             return JSON.parse(item) || DEFAULT_CACHED_STATE;
         } catch {
