@@ -342,6 +342,8 @@ module.exports = {
         xxl: "var(--shadow-xxl)"
     },
     spacing: {
+        "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
+        "sidebar-expanded": "var(--spacing-sidebar-expanded)",
         "3xl": "var(--spacing-3xl)",
         lg: "var(--spacing-lg)",
         md: "var(--spacing-md)",
@@ -354,9 +356,7 @@ module.exports = {
         xs: "var(--spacing-xs)",
         "xs-plus": "var(--spacing-xs-plus)",
         xxl: "var(--spacing-xxl)",
-        xxs: "var(--spacing-xxs)",
-        "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
-        "sidebar-expanded": "var(--spacing-sidebar-expanded)"
+        xxs: "var(--spacing-xxs)"
     },
     textColor: {
         transparent: "transparent",
@@ -377,6 +377,7 @@ module.exports = {
             DEFAULT: "hsl(var(--text-neutral-default))",
             dimmed: "hsl(var(--text-neutral-dimmed))",
             disabled: "hsl(var(--text-neutral-disabled))",
+            "disabled-negative": "hsl(var(--text-neutral-disabled-negative))",
             light: "hsl(var(--text-neutral-light))",
             muted: "hsl(var(--text-neutral-muted))",
             primary: "hsl(var(--text-neutral-primary))",

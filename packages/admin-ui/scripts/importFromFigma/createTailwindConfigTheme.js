@@ -199,12 +199,19 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
             }
             return acc;
         }, {}),
-        spacing: normalizedFigmaExport.reduce((acc, { type, variantName }) => {
-            if (type === "spacing") {
-                acc[variantName] = `var(--spacing-${variantName})`;
+        spacing: normalizedFigmaExport.reduce(
+            (acc, { type, variantName }) => {
+                if (type === "spacing") {
+                    acc[variantName] = `var(--spacing-${variantName})`;
+                }
+                return acc;
+            },
+            {
+                // Custom sidebar-related variables.
+                "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
+                "sidebar-expanded": "var(--spacing-sidebar-expanded)"
             }
-            return acc;
-        }, {}),
+        ),
         textColor: normalizedFigmaExport.reduce(
             (acc, { type, variantName }) => {
                 if (type === "textColor") {
