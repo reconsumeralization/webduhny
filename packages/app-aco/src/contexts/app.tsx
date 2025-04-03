@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ApolloClient } from "apollo-client";
 import { DialogsProvider } from "@webiny/app-admin";
-import { OverlayLoader } from "@webiny/admin-ui";
 import { AcoApp, AcoAppMode, AcoError, AcoModel, AcoModelField } from "~/types";
 import { createGetAppQuery, GetAppResult, GetAppVariables } from "~/graphql/app.gql";
 import { FoldersProvider as FoldersContextProvider } from "./folders";
 import { SearchRecordsProvider as SearchRecordsContextProvider } from "./records";
 import { DisplayError } from "./DisplayError";
+import { Loading } from "./Loading";
 import { NavigateFolderWithRouterProvider } from "~/contexts/navigateFolderWithRouter";
 import { AcoListProvider } from "~/contexts/acoList";
 
@@ -228,7 +228,7 @@ export const AcoAppProvider = ({
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (loading) {
-        return <OverlayLoader />;
+        return <Loading />;
     } else if (!app) {
         return (
             <DisplayError>
