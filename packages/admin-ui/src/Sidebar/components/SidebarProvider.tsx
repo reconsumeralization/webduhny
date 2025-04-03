@@ -5,11 +5,11 @@ import { SidebarCache } from "./SidebarCache";
 
 type SidebarContext = {
     state: "expanded" | "collapsed";
-    open: boolean;
+    expanded: boolean;
     pinned: boolean;
-    transition: null | "opening" | "closing";
-    setOpen: (open: boolean) => void;
-    toggleOpen: () => void;
+    transition: null | "expanding" | "collapsing";
+    setExpanded: (expanded: boolean) => void;
+    toggleExpanded: () => void;
     togglePinned: () => void;
 };
 
@@ -28,11 +28,11 @@ type SidebarProviderProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SidebarState {
     expanded: boolean;
-    transition: null | "opening" | "closing";
+    transition: null | "expanding" | "collapsing";
     pinned: boolean;
 }
 
-const createDefaultSidebarState = (): SidebarState => {
+const createInitialSidebarState = (): SidebarState => {
     const { pinned } = SidebarCache.get();
     return {
         expanded: pinned, // If pinned, we want the sidebar to be open by default.
@@ -42,20 +42,20 @@ const createDefaultSidebarState = (): SidebarState => {
 };
 
 const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps) => {
-    const [sidebarState, setSidebarState] = React.useState<SidebarState>(createDefaultSidebarState);
+    const [sidebarState, setSidebarState] = React.useState<SidebarState>(createInitialSidebarState);
 
     // With this timeout, we prevent the sidebar glitching (quickly opening/closing) during mouse enter/leave events.
     const timeoutRef = React.useRef<number | null>(null);
 
     const { expanded, transition, pinned } = sidebarState;
 
-    const setOpen = React.useCallback(
+    const setExpanded = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
-            const openState = typeof value === "function" ? value(expanded) : value;
+            const newValue = typeof value === "function" ? value(expanded) : value;
             setSidebarState(state => ({
                 ...state,
-                expanded: openState,
-                transition: openState ? "opening" : "closing"
+                expanded: newValue,
+                transition: newValue ? "expanding" : "collapsing"
             }));
 
             if (timeoutRef.current) {
@@ -75,20 +75,20 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
 
     const setPinned = React.useCallback(
         (value: boolean | ((value: boolean) => boolean)) => {
-            const pinnedState = typeof value === "function" ? value(pinned) : value;
+            const newValue = typeof value === "function" ? value(pinned) : value;
             setSidebarState(state => ({
                 ...state,
-                pinned: pinnedState
+                pinned: newValue
             }));
 
-            SidebarCache.set({ pinned: pinnedState });
+            SidebarCache.set({ pinned: newValue });
         },
         [pinned]
     );
 
-    const toggleOpen = React.useCallback(() => {
-        return setOpen(prev => !prev);
-    }, [setOpen]); // Helper to toggle the sidebar.
+    const toggleExpanded = React.useCallback(() => {
+        return setExpanded(prev => !prev);
+    }, [setExpanded]); // Helper to toggle the sidebar.
 
     const togglePinned = React.useCallback(() => {
         return setPinned(prev => !prev);
@@ -102,14 +102,14 @@ const SidebarProvider = ({ className, children, ...props }: SidebarProviderProps
         () => ({
             state,
             transition,
-            open: expanded,
+            expanded,
             pinned,
-            setOpen,
+            setExpanded,
             setPinned,
-            toggleOpen,
+            toggleExpanded,
             togglePinned
         }),
-        [state, transition, open, pinned, setOpen, setPinned, toggleOpen, togglePinned]
+        [state, transition, expanded, pinned, setExpanded, setPinned, toggleExpanded, togglePinned]
     );
 
     return (

@@ -4,6 +4,7 @@ import { IconButton } from "~/Button";
 import { useSidebar } from "./SidebarProvider";
 import { ReactComponent as PinSidebarIcon } from "@webiny/icons/push_pin.svg";
 import { ReactComponent as UnpinSidebarIcon } from "@webiny/icons/push_pin_off.svg";
+import { Tooltip } from "~/Tooltip";
 
 interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     icon?: React.ReactNode;
@@ -11,7 +12,7 @@ interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
 }
 
 const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
-    const { togglePinned, open, pinned } = useSidebar();
+    const { togglePinned, expanded, pinned } = useSidebar();
 
     return (
         <>
@@ -34,14 +35,20 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                         </span>
                     </div>
 
-                    {open && (
-                        <IconButton
-                            icon={pinned ? <UnpinSidebarIcon /> : <PinSidebarIcon />}
-                            data-sidebar="trigger"
-                            size="xs"
-                            variant={"ghost"}
-                            onClick={togglePinned}
-                        />
+                    {expanded && (
+                        <Tooltip
+                            side={"right"}
+                            trigger={
+                                <IconButton
+                                    icon={pinned ? <UnpinSidebarIcon /> : <PinSidebarIcon />}
+                                    data-sidebar="trigger"
+                                    size="xs"
+                                    variant={"ghost"}
+                                    onClick={togglePinned}
+                                />
+                            }
+                            content={pinned ? "Unpin" : "Pin"}
+                        ></Tooltip>
                     )}
                 </div>
             </div>
