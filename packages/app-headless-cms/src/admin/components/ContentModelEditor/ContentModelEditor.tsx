@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Prompt } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
-import { Heading, Separator, Tabs, Text, TimeAgo } from "@webiny/admin-ui";
+import { Heading, OverlayLoader, Separator, Tabs, Text, TimeAgo } from "@webiny/admin-ui";
 import { FieldsSidebar } from "./FieldsSidebar";
 import { FieldEditor } from "../FieldEditor";
 import { PreviewTab } from "./PreviewTab";
@@ -36,7 +35,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
     };
 
     if (!data) {
-        return <CircularProgress label={"Loading content model..."} />;
+        return <OverlayLoader text={"Loading content model..."} />;
     } else if (data.isBeingDeleted) {
         return <ModelIsBeingDeletedError model={data} />;
     }

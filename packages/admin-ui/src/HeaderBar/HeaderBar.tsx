@@ -13,7 +13,7 @@ const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
         <header>
             <div
                 className={
-                    "wby-grid wby-grid-cols-3 wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
+                    "wby-grid wby-grid-cols-[1fr_auto_1fr] wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
                 }
             >
                 <div className="wby-h-full wby-flex wby-items-center wby-justify-self-start">

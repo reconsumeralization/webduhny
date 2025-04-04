@@ -1,14 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { Input } from "@webiny/ui/Input";
-import { Tooltip } from "@webiny/ui/Tooltip";
 /**
  * Package react-hotkeyz does not have types.
  */
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
-import { FormName, formNameWrapper, NameInputWrapper, NameWrapper } from "./NameStyled";
 import { i18n } from "@webiny/app/i18n";
 import { useModelEditor } from "~/admin/hooks";
+import { Input, Text, Tooltip } from "@webiny/admin-ui";
 
 const t = i18n.namespace("ContentModelEditor.Name");
 
@@ -68,26 +66,30 @@ export const Name = () => {
     const autoFocus = !window.Cypress;
 
     return editingEnabled ? (
-        <NameInputWrapper>
-            <Input
-                autoFocus={autoFocus}
-                fullwidth
-                value={localName}
-                onChange={setLocalName}
-                onBlur={saveName}
-            />
-        </NameInputWrapper>
+        <Input
+            autoFocus={autoFocus}
+            value={localName}
+            onChange={setLocalName}
+            onBlur={saveName}
+            variant={"ghost"}
+            size={"md"}
+        />
     ) : (
-        <NameWrapper>
-            <Tooltip
-                className={formNameWrapper}
-                placement={"bottom"}
-                content={<span>{t`rename`}</span>}
-            >
-                <FormName data-testid="cms-editor-model-title" onClick={startEditing}>
+        <Tooltip
+            side={"bottom"}
+            content={<span>{t`Rename content model`}</span>}
+            trigger={
+                <Text
+                    size={"lg"}
+                    className={
+                        "wby-p-xs wby-border-sm wby-border-neutral-base wby-rounded-md hover:wby-border-neutral-muted"
+                    }
+                    data-testid="cms-editor-model-title"
+                    onClick={startEditing}
+                >
                     {data.name}
-                </FormName>
-            </Tooltip>
-        </NameWrapper>
+                </Text>
+            }
+        />
     );
 };
