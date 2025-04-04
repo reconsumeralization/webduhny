@@ -3,7 +3,7 @@ import { Layout } from "@webiny/app-admin";
 import { HasPermission } from "@webiny/app-security";
 import { CircularProgress } from "@webiny/ui/Progress";
 import FormsSettings from "./admin/views/Settings/FormsSettings";
-import { ReactComponent as FormsIcon } from "@material-design-icons/svg/outlined/check_box.svg";
+import { ReactComponent as FormsIcon } from "@webiny/icons/check_box.svg";
 import { AdminConfig } from "@webiny/app-admin";
 
 const { Menu, Route } = AdminConfig;

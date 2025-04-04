@@ -1,6 +1,6 @@
 import React from "react";
 import { ContentEntryListConfig, useModel } from "@webiny/app-headless-cms";
-import { ReactComponent as LockedIcon } from "@material-design-icons/svg/round/lock.svg";
+import { ReactComponent as LockedIcon } from "@webiny/icons/lock.svg";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { useRecordLocking } from "~/hooks";
 import { UseContentEntriesListHookDecorator } from "./decorators/UseContentEntriesListHookDecorator";

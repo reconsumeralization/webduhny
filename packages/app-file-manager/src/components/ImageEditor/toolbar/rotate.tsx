@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as RotateRight } from "@material-design-icons/svg/outlined/rotate_right.svg";
+import { ReactComponent as RotateRight } from "@webiny/icons/rotate_right.svg";
 import { ImageEditorTool } from "./types";
 import { Slider } from "@webiny/ui/Slider";
 import { Tooltip } from "@webiny/ui/Tooltip";

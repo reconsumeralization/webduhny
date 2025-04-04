@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as LayoutIcon } from "@material-design-icons/svg/outlined/view_quilt.svg";
+import { ReactComponent as LayoutIcon } from "@webiny/icons/view_quilt.svg";
 import { PbEditorPageElementGroupPlugin } from "~/types";
 
 const layoutGroup: PbEditorPageElementGroupPlugin = {

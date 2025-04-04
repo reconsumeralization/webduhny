@@ -3,7 +3,7 @@
  * TODO: use some other library to edit images
  */
 import React from "react";
-import { ReactComponent as FilterIcon } from "@material-design-icons/svg/outlined/tune.svg";
+import { ReactComponent as FilterIcon } from "@webiny/icons/tune.svg";
 import { Slider } from "@webiny/ui/Slider";
 import { ImageEditorTool } from "./types";
 import { IconButton, ButtonDefault } from "@webiny/ui/Button";

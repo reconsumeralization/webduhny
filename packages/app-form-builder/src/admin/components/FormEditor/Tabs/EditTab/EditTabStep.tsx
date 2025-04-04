@@ -8,7 +8,7 @@ import { Horizontal } from "~/admin/components/FormEditor/DropZone";
 import { useEditTab } from "./EditFieldDialog/useEditTab";
 
 import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add_circle_outline.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add_circle_outline.svg";
 import { EditTabStepRow } from "./EditTabStepRow";
 
 const AddStepBtn = styled.div`

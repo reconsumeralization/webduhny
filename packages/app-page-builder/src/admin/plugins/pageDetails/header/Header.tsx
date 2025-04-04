@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { renderPlugins } from "@webiny/app/plugins";
 import { Typography } from "@webiny/ui/Typography";
-import { ReactComponent as OpenInNew } from "@material-design-icons/svg/round/open_in_new.svg";
+import { ReactComponent as OpenInNew } from "@webiny/icons/open_in_new.svg";
 import { PbPageData } from "~/types";
 import { usePreviewPage } from "~/admin/hooks/usePreviewPage";
 

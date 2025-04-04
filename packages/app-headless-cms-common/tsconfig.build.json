@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.build.json",
   "include": ["src"],
   "references": [
-    { "path": "../admin-ui/tsconfig.build.json" },
     { "path": "../app/tsconfig.build.json" },
     { "path": "../app-admin/tsconfig.build.json" },
     { "path": "../app-security/tsconfig.build.json" },
@@ -10,7 +9,8 @@
     { "path": "../plugins/tsconfig.build.json" },
     { "path": "../react-composition/tsconfig.build.json" },
     { "path": "../ui/tsconfig.build.json" },
-    { "path": "../validation/tsconfig.build.json" }
+    { "path": "../validation/tsconfig.build.json" },
+    { "path": "../admin-ui/tsconfig.build.json" }
   ],
   "compilerOptions": {
     "rootDir": "./src",

@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as FileIcon } from "@material-design-icons/svg/outlined/file_present.svg";
+import { ReactComponent as FileIcon } from "@webiny/icons/file_present.svg";
 import { CmsModelFieldTypePlugin } from "@webiny/app-headless-cms/types";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Switch } from "@webiny/ui/Switch";

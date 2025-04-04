@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Copy } from "@material-design-icons/svg/outlined/content_copy.svg";
+import { ReactComponent as Copy } from "@webiny/icons/content_copy.svg";
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 import { useCopyFile } from "~/hooks/useCopyFile";
 import { useFile } from "~/hooks/useFile";

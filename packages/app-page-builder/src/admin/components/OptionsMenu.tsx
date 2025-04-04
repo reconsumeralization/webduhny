@@ -3,7 +3,7 @@ import { css } from "emotion";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Menu, MenuItem } from "@webiny/ui/Menu";
 import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as MoreVerticalIcon } from "@material-design-icons/svg/filled/more_vert.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { ListItemGraphic } from "@webiny/ui/List";
 import { Icon } from "@webiny/ui/Icon";
 

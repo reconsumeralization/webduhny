@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
 
-import { ReactComponent as ExportIcon } from "@material-design-icons/svg/outlined/file_download.svg";
-import { ReactComponent as ImportIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
+import { ReactComponent as ExportIcon } from "@webiny/icons/file_download.svg";
+import { ReactComponent as ImportIcon } from "@webiny/icons/file_upload.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { IconButton } from "@webiny/ui/Button";

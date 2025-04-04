@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { Icon, InputPrimitive } from "@webiny/admin-ui";
 
 export interface SearchProps {

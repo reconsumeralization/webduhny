@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as TrashIcon } from "@material-design-icons/svg/outlined/delete.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as TrashIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 
 import { Icon, IconButton, Tooltip, cn, type FileItemFormatted } from "@webiny/admin-ui";
 

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { List } from "react-virtualized";
 import groupBy from "lodash/groupBy";
 

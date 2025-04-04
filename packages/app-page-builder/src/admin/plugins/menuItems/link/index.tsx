@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as LinkIcon } from "@material-design-icons/svg/filled/link.svg";
+import { ReactComponent as LinkIcon } from "@webiny/icons/link.svg";
 
 import LinkForm from "./LinkForm";
 import { PbMenuItemPlugin } from "../../../../types";

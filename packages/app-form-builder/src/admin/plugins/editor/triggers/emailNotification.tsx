@@ -4,7 +4,7 @@ import { Input } from "@webiny/ui/Input";
 import { ButtonPrimary } from "@webiny/ui/Button";
 import { i18n } from "@webiny/app/i18n";
 import { validation } from "@webiny/validation";
-import { ReactComponent as EmailIcon } from "@material-symbols/svg-400/outlined/mark_email_unread.svg";
+import { ReactComponent as EmailIcon } from "@webiny/icons/mark_email_unread.svg";
 import { FbEditorTrigger } from "~/types";
 
 const t = i18n.namespace("FormsApp.Editor.EmailNotificationTriggerSettings");

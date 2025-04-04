@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Move } from "@material-design-icons/svg/outlined/drive_file_move.svg";
+import { ReactComponent as Move } from "@webiny/icons/drive_file_move.svg";
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 import { useFile } from "~/hooks/useFile";
 import { useMoveFileToFolder } from "~/hooks/useMoveFileToFolder";

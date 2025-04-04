@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as HomeIcon } from "@material-design-icons/svg/round/home.svg";
+import { ReactComponent as HomeIcon } from "@webiny/icons/home.svg";
 import { useConfirmationDialog } from "@webiny/app-admin";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useAdminPageBuilder } from "~/admin/hooks/useAdminPageBuilder";

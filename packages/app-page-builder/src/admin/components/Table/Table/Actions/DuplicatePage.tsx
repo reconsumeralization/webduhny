@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as Duplicate } from "@material-design-icons/svg/outlined/library_add.svg";
+import { ReactComponent as Duplicate } from "@webiny/icons/library_add.svg";
 import { makeDecoratable } from "@webiny/react-composition";
 import { PageListConfig } from "~/admin/config/pages";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";

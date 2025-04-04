@@ -3,7 +3,7 @@ import { IconButton } from "@webiny/ui/Button";
 import { Icon } from "@webiny/ui/Icon";
 import { ReactComponent as MoreVerticalIcon } from "~/admin/assets/more_vert.svg";
 import { ReactComponent as HomeIcon } from "~/admin/assets/round-home-24px.svg";
-import { ReactComponent as GridViewIcon } from "@material-design-icons/svg/outlined/grid_view.svg";
+import { ReactComponent as GridViewIcon } from "@webiny/icons/grid_view.svg";
 import { ListItemGraphic } from "@webiny/ui/List";
 import { MenuItem, Menu } from "@webiny/ui/Menu";
 import { CreatePageTemplateDialog } from "~/admin/views/PageTemplates/CreatePageTemplateDialog";

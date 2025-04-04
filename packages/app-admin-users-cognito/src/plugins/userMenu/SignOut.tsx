@@ -1,6 +1,6 @@
 import React from "react";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
-import { ReactComponent as SignOutIcon } from "@material-design-icons/svg/outlined/logout.svg";
+import { ReactComponent as SignOutIcon } from "@webiny/icons/logout.svg";
 import { AdminConfig } from "@webiny/app-admin";
 
 const { Menu } = AdminConfig;

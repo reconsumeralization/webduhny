@@ -4,7 +4,7 @@ import { Elevation as BaseElevation } from "@webiny/ui/Elevation";
 import { useRecordLocking } from "~/hooks";
 import { useContentEntry } from "@webiny/app-headless-cms";
 import { LockedRecordForceUnlock } from "./LockedRecordForceUnlock";
-import { ReactComponent as LockIcon } from "@material-design-icons/svg/outlined/lock.svg";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
 import { IRecordLockingLockRecord } from "~/types";
 
 const StyledWrapper = styled("div")({

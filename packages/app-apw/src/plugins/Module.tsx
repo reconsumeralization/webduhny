@@ -6,7 +6,7 @@ import { ContentReviewDashboard } from "~/views/contentReviewDashboard";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { usePermission } from "~/hooks/usePermission";
 import { AdminConfig, Layout, Plugins } from "@webiny/app-admin";
-import { ReactComponent as ApwIcon } from "@material-design-icons/svg/outlined/account_tree.svg";
+import { ReactComponent as ApwIcon } from "@webiny/icons/account_tree.svg";
 
 const { Menu, Route } = AdminConfig;
 

@@ -4,7 +4,7 @@ import { keyframes } from "emotion";
 import styled from "@emotion/styled";
 import { Elevation } from "@webiny/ui/Elevation";
 import { ButtonFloating } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { useDisplayMode } from "~/editor/hooks/useDisplayMode";
 import { elementsInContentTotalSelector } from "~/pageEditor/state";
 import { useBlocksBrowser } from "./useBlocksBrowser";

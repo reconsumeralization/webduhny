@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import {
     FileManagerViewConfig,
     useFileManagerViewConfig

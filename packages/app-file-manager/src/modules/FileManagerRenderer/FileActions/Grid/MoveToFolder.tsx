@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as MoveIcon } from "@material-design-icons/svg/filled/drive_file_move.svg";
+import { ReactComponent as MoveIcon } from "@webiny/icons/drive_file_move.svg";
 import { FileManagerViewConfig, useFile, useMoveFileToFolder } from "~/index";
 
 const { Browser } = FileManagerViewConfig;

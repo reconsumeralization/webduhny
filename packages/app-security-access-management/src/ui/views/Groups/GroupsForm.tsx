@@ -25,9 +25,9 @@ import { CREATE_GROUP, LIST_GROUPS, READ_GROUP, UPDATE_GROUP } from "./graphql";
 import { SnackbarAction } from "@webiny/ui/Snackbar";
 import isEmpty from "lodash/isEmpty";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { ReactComponent as CopyIcon } from "@material-design-icons/svg/outlined/content_copy.svg";
+import { ReactComponent as CopyIcon } from "@webiny/icons/content_copy.svg";
 import { Group } from "~/types";
 
 const t = i18n.ns("app-security/admin/roles/form");

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
 export const AddOperationInner = styled.div`
     padding: 24px 0 0;

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ReactComponent as ExpandIcon } from "@material-design-icons/svg/filled/fullscreen.svg";
+import { ReactComponent as ExpandIcon } from "@webiny/icons/fullscreen.svg";
 import { Dialog, DialogActions, DialogContent } from "@webiny/ui/Dialog";
 import { ButtonPrimary, IconButton } from "@webiny/ui/Button";
 import { useVariable } from "@webiny/app-page-builder/hooks/useVariable";

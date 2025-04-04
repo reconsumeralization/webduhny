@@ -7,8 +7,8 @@ import { positionValues } from "react-custom-scrollbars";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
 import { observer } from "mobx-react-lite";
-import { ReactComponent as UploadIcon } from "@material-design-icons/svg/filled/cloud_upload.svg";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/filled/add.svg";
+import { ReactComponent as UploadIcon } from "@webiny/icons/cloud_upload.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useCreateDialog } from "@webiny/app-aco";
 import { OverlayLayout, useSnackbar } from "@webiny/app-admin";

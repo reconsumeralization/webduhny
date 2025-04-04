@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ScanIcon } from "@material-design-icons/svg/round/policy.svg";
+import { ReactComponent as ScanIcon } from "@webiny/icons/policy.svg";
 import styled from "@emotion/styled";
 
 const Container = styled.div`

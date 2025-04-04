@@ -6,7 +6,6 @@
     { "path": "../app-aco" },
     { "path": "../app-admin" },
     { "path": "../app-utils" },
-    { "path": "../icons" },
     { "path": "../react-composition" },
     { "path": "../react-properties" },
     { "path": "../ui" }
@@ -26,8 +25,6 @@
       "@webiny/app-admin": ["../app-admin/src"],
       "@webiny/app-utils/*": ["../app-utils/src/*"],
       "@webiny/app-utils": ["../app-utils/src"],
-      "@webiny/icons/*": ["../icons/src/*"],
-      "@webiny/icons": ["../icons/src"],
       "@webiny/react-composition/*": ["../react-composition/src/*"],
       "@webiny/react-composition": ["../react-composition/src"],
       "@webiny/react-properties/*": ["../react-properties/src/*"],

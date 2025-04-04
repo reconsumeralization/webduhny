@@ -15,7 +15,6 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@emotion/styled": "11.10.6",
-    "@material-design-icons/svg": "^0.14.15",
     "@webiny/app": "0.0.0",
     "@webiny/app-aco": "0.0.0",
     "@webiny/app-admin": "0.0.0",
@@ -25,6 +24,7 @@
     "@webiny/app-websockets": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/form": "0.0.0",
+    "@webiny/icons": "0.0.0",
     "@webiny/plugins": "0.0.0",
     "@webiny/react-router": "0.0.0",
     "@webiny/ui": "0.0.0",

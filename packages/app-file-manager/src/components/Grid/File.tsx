@@ -8,7 +8,7 @@ import { makeDecoratable } from "@webiny/app-admin";
 import { TimeAgo } from "@webiny/ui/TimeAgo";
 import { Typography } from "@webiny/ui/Typography";
 
-import { ReactComponent as SelectedMarker } from "@material-design-icons/svg/filled/check_circle.svg";
+import { ReactComponent as SelectedMarker } from "@webiny/icons/check_circle.svg";
 
 import { FileItem } from "@webiny/app-admin/types";
 

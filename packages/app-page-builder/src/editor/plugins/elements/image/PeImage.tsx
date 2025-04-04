@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import styled from "@emotion/styled";
 import { FileManager, SingleImageUploadProps } from "@webiny/app-admin";
 import { ImageRenderer } from "@webiny/app-page-builder-elements/renderers/image";
-import { ReactComponent as AddImageIcon } from "@material-design-icons/svg/round/add_photo_alternate.svg";
+import { ReactComponent as AddImageIcon } from "@webiny/icons/add_photo_alternate.svg";
 import { Typography } from "@webiny/ui/Typography";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";

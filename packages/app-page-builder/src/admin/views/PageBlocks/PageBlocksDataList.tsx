@@ -6,7 +6,7 @@ import { useRouter } from "@webiny/react-router";
 import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
 import { IconButton } from "@webiny/ui/Button";
 import { ReactComponent as DuplicateIcon } from "~/editor/assets/icons/round-queue-24px.svg";
-import { ReactComponent as ExportIcon } from "@material-design-icons/svg/round/download.svg";
+import { ReactComponent as ExportIcon } from "@webiny/icons/download.svg";
 import { CircularProgress } from "@webiny/ui/Progress";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { Typography } from "@webiny/ui/Typography";

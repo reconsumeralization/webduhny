@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 

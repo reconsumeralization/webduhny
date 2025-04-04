@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ImageIcon } from "@material-design-icons/svg/outlined/image.svg";
+import { ReactComponent as ImageIcon } from "@webiny/icons/image.svg";
 import { cn, Icon, IconButton, Tooltip } from "@webiny/admin-ui";
 
 interface AvatarImageTriggerProps {

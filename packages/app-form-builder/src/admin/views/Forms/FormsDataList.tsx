@@ -29,7 +29,7 @@ import {
 import { i18n } from "@webiny/app/i18n";
 import { removeFormFromListCache, updateLatestRevisionInListCache } from "../cache";
 import { ButtonPrimary } from "@webiny/ui/Button";
-import { ReactComponent as FileUploadIcon } from "@material-design-icons/svg/outlined/file_upload.svg";
+import { ReactComponent as FileUploadIcon } from "@webiny/icons/file_upload.svg";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";

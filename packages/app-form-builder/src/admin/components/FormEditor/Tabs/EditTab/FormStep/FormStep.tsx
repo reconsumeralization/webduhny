@@ -3,8 +3,8 @@ import React from "react";
 import { FbFormModelField, FbFormStep } from "~/types";
 import { StyledAccordion, StyledAccordionItem } from "../Styled";
 import { AccordionItem } from "@webiny/ui/Accordion";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { EmptyFormStep } from "./EmptyFormStep";
 import { FormStepWithFields } from "./FormStepWithFields";
 

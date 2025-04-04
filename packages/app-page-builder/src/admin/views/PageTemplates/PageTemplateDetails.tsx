@@ -7,9 +7,9 @@ import { CircularProgress } from "@webiny/ui/Progress";
 import { Typography } from "@webiny/ui/Typography";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { i18n } from "@webiny/app/i18n";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/filled/add.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/round/edit.svg";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/round/delete.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 
 import { CreatableItem } from "./PageTemplates";
 import { PbPageTemplate } from "~/types";
