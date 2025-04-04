@@ -20,7 +20,8 @@ const {
     ringWidth,
     shadow,
     spacing,
-    textColor
+    textColor,
+    zIndex
 } = require("./tailwind.config.theme");
 
 /** @type {import('tailwindcss').Config} */
@@ -65,7 +66,8 @@ module.exports = {
             keyframes,
             margin,
             padding,
-            spacing
+            spacing,
+            zIndex
         }
     },
 

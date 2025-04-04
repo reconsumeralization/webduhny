@@ -232,7 +232,10 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
                 return acc;
             },
             { ...DEFAULTS.COLORS }
-        )
+        ),
+        zIndex: {
+            5: 5
+        }
     };
 };
 module.exports = { createTailwindConfigTheme };

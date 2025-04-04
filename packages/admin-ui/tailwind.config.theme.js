@@ -389,5 +389,8 @@ module.exports = {
             primary: "hsl(var(--text-success-primary))",
             subtle: "hsl(var(--text-success-subtle))"
         }
+    },
+    zIndex: {
+        5: 5
     }
 };
