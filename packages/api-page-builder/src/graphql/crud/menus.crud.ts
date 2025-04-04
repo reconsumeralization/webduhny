@@ -23,6 +23,8 @@ import {
 } from "~/graphql/crud/menus/validation";
 import { createZodError, removeUndefinedValues } from "@webiny/utils";
 import { MenusPermissions } from "~/graphql/crud/permissions/MenusPermissions";
+import { getIdentity } from "./utils/getIdentity";
+import { getDate } from "./utils/getDate";
 
 export interface CreateMenuCrudParams {
     context: PbContext;
@@ -175,16 +177,13 @@ export const createMenuCrud = (params: CreateMenuCrudParams): MenusCrud => {
             }
 
             const identity = context.security.getIdentity();
+            const currentDateTime = new Date();
 
             const menu: Menu = {
                 ...data,
                 items: data.items || [],
-                createdOn: new Date().toISOString(),
-                createdBy: {
-                    id: identity.id,
-                    type: identity.type,
-                    displayName: identity.displayName
-                },
+                createdOn: getDate(input.createdOn, currentDateTime),
+                createdBy: getIdentity(input.createdBy, identity),
                 tenant: getTenantId(),
                 locale: getLocaleCode()
             };

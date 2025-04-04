@@ -69,6 +69,7 @@ export interface CreatePageStorageOperationsParams {
     elasticsearch: Client;
     plugins: PluginsContainer;
 }
+
 export const createPageStorageOperations = (
     params: CreatePageStorageOperationsParams
 ): PageStorageOperations => {
@@ -84,6 +85,11 @@ export const createPageStorageOperations = (
         const latestKeys = {
             ...versionKeys,
             SK: createLatestSortKey()
+        };
+
+        const publishedKeys = {
+            ...versionKeys,
+            SK: createPublishedSortKey()
         };
 
         const entityBatch = createEntityWriteBatch({
@@ -103,17 +109,41 @@ export const createPageStorageOperations = (
         });
 
         const esData = getESLatestPageData(plugins, page, input);
-        try {
-            await entityBatch.execute();
 
-            await put({
-                entity: esEntity,
-                item: {
+        const elasticsearchEntityBatch = createEntityWriteBatch({
+            entity: esEntity,
+            put: [
+                {
                     index: configurations.es(page).index,
                     data: esData,
                     ...latestKeys
                 }
+            ]
+        });
+
+        if (page.status === "published") {
+            entityBatch.put({
+                ...page,
+                ...publishedKeys,
+                TYPE: createPublishedType()
             });
+
+            entityBatch.put({
+                ...page,
+                TYPE: createPublishedPathType(),
+                PK: createPathPartitionKey(page),
+                SK: createPathSortKey(page)
+            });
+
+            elasticsearchEntityBatch.put({
+                index: configurations.es(page).index,
+                data: getESPublishedPageData(plugins, page),
+                ...publishedKeys
+            });
+        }
+        try {
+            await entityBatch.execute();
+            await elasticsearchEntityBatch.execute();
             return page;
         } catch (ex) {
             throw new WebinyError(

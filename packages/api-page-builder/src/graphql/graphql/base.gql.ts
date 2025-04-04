@@ -23,6 +23,12 @@ export const createBaseGraphQL = (): GraphQLSchemaPlugin => {
                     type: String
                 }
 
+                input PbIdentityInput {
+                    id: ID!
+                    displayName: String!
+                    type: String!
+                }
+
                 type PbError {
                     code: String
                     message: String
