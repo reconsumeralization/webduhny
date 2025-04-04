@@ -19,6 +19,7 @@ export interface FolderDto {
     savedOn: string;
     modifiedBy: CmsIdentity;
     modifiedOn: string;
+    extensions: Record<string, any>;
 }
 
 export class FolderDtoMapper {
@@ -39,7 +40,8 @@ export class FolderDtoMapper {
             savedBy: this.createIdentity(folder.savedBy),
             savedOn: folder.savedOn ?? "",
             slug: folder.slug,
-            type: folder.type
+            type: folder.type,
+            extensions: folder.extensions ?? {}
         };
     }
 

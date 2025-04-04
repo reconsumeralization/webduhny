@@ -17,6 +17,7 @@ interface DialogProps {
     closeDialog: () => void;
     loading: boolean;
     open: boolean;
+    formData?: GenericFormData;
 }
 
 export const Dialog = ({
@@ -28,7 +29,8 @@ export const Dialog = ({
     cancelLabel,
     loadingLabel = "Loading...",
     closeDialog,
-    onSubmit
+    onSubmit,
+    formData
 }: DialogProps) => {
     const handleSubmit: FormOnSubmit = data => {
         onSubmit(data);
@@ -37,7 +39,7 @@ export const Dialog = ({
     return (
         <DialogContainer open={open} onClose={closeDialog}>
             {open ? (
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} data={formData}>
                     {({ submit }) => (
                         <>
                             {loading && <CircularProgress label={loadingLabel} />}

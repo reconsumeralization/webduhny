@@ -101,7 +101,8 @@ export class ListFoldersCompressedGqlGateway implements IListFoldersGateway {
             },
             modifiedOn: null,
             modifiedBy: null,
-            type: "$ROOT"
+            type: "$ROOT",
+            extensions: {}
         };
     }
 }

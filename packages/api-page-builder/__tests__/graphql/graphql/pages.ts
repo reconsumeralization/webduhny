@@ -198,7 +198,21 @@ export const createPageCreateGraphQl = (params: CreateDataFieldsParams = {}) => 
     `;
 };
 
+export const createPageCreateV2GraphQl = (params: CreateDataFieldsParams = {}) => {
+    return /* GraphQL */ `
+        mutation CreatePageV2($data: PbCreatePageV2Input!) {
+            pageBuilder {
+                createPageV2(data: $data) {
+                    data ${createDataFields(params)}
+                    error ${ERROR_FIELD}
+                }
+            }
+        }
+    `;
+};
+
 export const CREATE_PAGE = createPageCreateGraphQl();
+export const CREATE_PAGE_V2 = createPageCreateV2GraphQl();
 
 export const createPageUpdateGraphQl = (params: CreateDataFieldsParams = {}) => {
     return /* GraphQL */ `

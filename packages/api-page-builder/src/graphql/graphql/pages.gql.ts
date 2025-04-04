@@ -109,6 +109,24 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     dataBindings: [DataBindingInput!]
                 }
 
+                input PbCreatePageV2Input {
+                    id: ID
+                    pid: ID
+                    category: ID
+                    title: String
+                    version: Int
+                    path: String
+                    content: JSON
+                    savedOn: DateTime
+                    status: String
+                    publishedOn: DateTime
+                    settings: PbPageSettingsInput
+                    createdOn: DateTime
+                    createdBy: PbIdentityInput
+                    dataSources: [DataSourceInput!]
+                    dataBindings: [DataBindingInput!]
+                }
+
                 input PbPageSettingsInput {
                     _empty: String
                 }
@@ -241,6 +259,8 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
 
                 extend type PbMutation {
                     createPage(from: ID, category: String, meta: JSON): PbPageResponse
+
+                    createPageV2(data: PbCreatePageV2Input!): PbPageResponse
 
                     # Update page by given ID.
                     updatePage(id: ID!, data: PbUpdatePageInput!): PbPageResponse
@@ -455,6 +475,12 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                              * We can safely cast because we check for category existence in the beginning of the fn
                              */
                             return context.pageBuilder.createPage(category as string, meta);
+                        });
+                    },
+                    createPageV2: async (_, args: any, context) => {
+                        return resolve(() => {
+                            const { data } = args;
+                            return context.pageBuilder.createPageV2(data);
                         });
                     },
 

@@ -3,12 +3,13 @@ import { useApolloClient } from "@apollo/react-hooks";
 import { UpdateFolderGqlGateway } from "./UpdateFolderGqlGateway";
 import { UpdateFolder } from "./UpdateFolder";
 import { UpdateFolderParams } from "./IUpdateFolderUseCase";
-import { useFoldersType } from "~/hooks";
+import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 
 export const useUpdateFolder = () => {
     const client = useApolloClient();
     const type = useFoldersType();
-    const gateway = new UpdateFolderGqlGateway(client);
+    const fields = useGetFolderGraphQLSelection();
+    const gateway = new UpdateFolderGqlGateway(client, fields);
 
     const updateFolder = useCallback(
         (params: UpdateFolderParams) => {

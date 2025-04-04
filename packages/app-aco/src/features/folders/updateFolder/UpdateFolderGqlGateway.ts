@@ -24,41 +24,11 @@ export interface UpdateFolderVariables {
     >;
 }
 
-export const UPDATE_FOLDER = gql`
+export const UPDATE_FOLDER = (FOLDER_FIELDS: string) => gql`
     mutation UpdateFolder($id: ID!, $data: FolderUpdateInput!) {
         aco {
             updateFolder(id: $id, data: $data) {
-                data {
-                    id
-                    title
-                    slug
-                    permissions {
-                        target
-                        level
-                        inheritedFrom
-                    }
-                    hasNonInheritedPermissions
-                    canManagePermissions
-                    canManageStructure
-                    canManageContent
-                    parentId
-                    type
-                    savedOn
-                    savedBy {
-                        id
-                        displayName
-                    }
-                    createdOn
-                    createdBy {
-                        id
-                        displayName
-                    }
-                    modifiedOn
-                    modifiedBy {
-                        id
-                        displayName
-                    }
-                }
+                data ${FOLDER_FIELDS}
                 error {
                     code
                     data
@@ -71,24 +41,27 @@ export const UPDATE_FOLDER = gql`
 
 export class UpdateFolderGqlGateway implements IUpdateFolderGateway {
     private client: ApolloClient<any>;
+    private modelFields: string;
 
-    constructor(client: ApolloClient<any>) {
+    constructor(client: ApolloClient<any>, modelFields: string) {
         this.client = client;
+        this.modelFields = modelFields;
     }
 
     async execute(folder: FolderDto) {
-        const { id, title, slug, permissions, parentId } = folder;
+        const { id, title, slug, permissions, parentId, extensions } = folder;
 
         const { data: response } = await this.client.mutate<
             UpdateFolderResponse,
             UpdateFolderVariables
         >({
-            mutation: UPDATE_FOLDER,
+            mutation: UPDATE_FOLDER(this.modelFields),
             variables: {
                 id,
                 data: {
                     title,
                     slug,
+                    extensions,
                     parentId: parentId === ROOT_FOLDER ? null : parentId,
                     permissions: permissions.filter(p => !p.inheritedFrom)
                 }

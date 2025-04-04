@@ -26,6 +26,7 @@ import {
 } from "./graphql/pageElements";
 import {
     CREATE_PAGE,
+    CREATE_PAGE_V2,
     DELETE_PAGE,
     DUPLICATE_PAGE,
     GET_PAGE,
@@ -240,6 +241,9 @@ export default ({ permissions, identity, plugins }: Params = {}) => {
         // Pages.
         async createPage(variables: Record<string, any>) {
             return invoke({ body: { query: CREATE_PAGE, variables } });
+        },
+        async createPageV2(variables: Record<string, any>) {
+            return invoke({ body: { query: CREATE_PAGE_V2, variables } });
         },
         async duplicatePage(variables: Record<string, any>) {
             return invoke({ body: { query: DUPLICATE_PAGE, variables } });

@@ -17,7 +17,8 @@ export class UpdateFolderUseCase implements IUpdateFolderUseCase {
                 slug: params.slug,
                 type: params.type,
                 parentId: params.parentId,
-                permissions: params.permissions
+                permissions: params.permissions,
+                extensions: params.extensions
             })
         );
     }

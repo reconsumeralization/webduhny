@@ -14,12 +14,12 @@ export interface CreateAcoStorageOperationsParams {
     getCmsContext: () => CmsContext;
 }
 
-export const createAcoStorageOperations = (
+export const createAcoStorageOperations = async (
     params: CreateAcoStorageOperationsParams
-): AcoStorageOperations => {
+): Promise<AcoStorageOperations> => {
     const context = params.getCmsContext();
 
-    createAcoModels(context);
+    await createAcoModels(context);
 
     return {
         ...createFolderOperations(params),

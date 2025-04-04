@@ -17,6 +17,7 @@ export interface FolderData {
     savedOn?: string;
     modifiedBy?: CmsIdentity | null;
     modifiedOn?: string | null;
+    extensions?: Record<string, any>;
 }
 
 export class Folder {
@@ -36,6 +37,7 @@ export class Folder {
     public savedOn?: string;
     public modifiedBy?: CmsIdentity | null;
     public modifiedOn?: string | null;
+    public extensions: Record<string, any>;
 
     protected constructor(folder: FolderData) {
         this.id = folder.id ?? "";
@@ -54,6 +56,7 @@ export class Folder {
         this.savedOn = folder.savedOn;
         this.modifiedBy = folder.modifiedBy;
         this.modifiedOn = folder.modifiedOn;
+        this.extensions = folder.extensions ?? {};
     }
 
     static create(folder: FolderData) {

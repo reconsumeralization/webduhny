@@ -15,6 +15,7 @@ interface ShowDialogParams {
     loadingLabel?: ReactNode;
     onAccept?: (data: GenericFormData) => void;
     onClose?: () => void;
+    formData?: GenericFormData;
 }
 
 interface ShowCustomDialogParams {
@@ -49,7 +50,8 @@ export const initializeState = (params: Partial<DialogState> = {}): DialogState 
     onClose: params.onClose,
     open: params.open ?? false,
     loading: params.loading ?? false,
-    element: params.element
+    element: params.element,
+    formData: params.formData ?? {}
 });
 
 export const DialogsContext = React.createContext<DialogsContext | undefined>(undefined);
@@ -140,6 +142,7 @@ export const DialogsProvider = ({ children }: DialogsProviderProps) => {
                         loading={dialog.loading}
                         closeDialog={() => closeDialog(dialog.id)}
                         onSubmit={data => onSubmit(dialog.id, data)}
+                        formData={dialog.formData}
                     />
                 )
             )}
