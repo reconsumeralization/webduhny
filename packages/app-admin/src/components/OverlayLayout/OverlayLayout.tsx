@@ -6,7 +6,7 @@ import noop from "lodash/noop";
 import { cn, HeaderBar, IconButton } from "@webiny/admin-ui";
 import { ReactComponent as CloseIcon } from "@webiny/icons/close.svg";
 import { OverlayView } from "~/ui/views/OverlayView";
-import { ExitHandler } from "react-transition-group/Transition";
+import type { ExitHandler } from "react-transition-group/Transition";
 
 const noScroll = css({
     overflow: "hidden",

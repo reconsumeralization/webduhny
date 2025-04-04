@@ -72,6 +72,7 @@
     "@types/graphlib": "^2.1.12",
     "@types/is-hotkey": "^0.1.10",
     "@types/react-resizable": "^3.0.8",
+    "@types/react-transition-group": "^4.4.12",
     "@types/store": "^2.0.2",
     "@types/tinycolor2": "^1.4.6",
     "@webiny/cli": "0.0.0",

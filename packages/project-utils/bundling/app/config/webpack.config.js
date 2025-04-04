@@ -21,12 +21,7 @@ const WebpackBar = require("webpackbar");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { getProjectApplication } = require("@webiny/cli/utils");
 
-const materialNodeModules = require.resolve("@material/base/package.json").split("@material")[0];
-const sassIncludePaths = [
-    path.resolve("./src"),
-    path.resolve("./node_modules"),
-    materialNodeModules
-];
+const sassIncludePaths = [path.resolve("./src"), path.resolve("./node_modules")];
 
 // Generates a unique static folder name, for example "static-mi7aan0cqpo".
 const STATIC_FOLDER = "static";
@@ -596,11 +591,7 @@ module.exports = function (webpackEnv, { paths, options }) {
                                 autoprefixer: {
                                     flexbox: "no-2009"
                                 },
-                                stage: 3,
-                                // Necessary for "@material" to work with dart implementation of sass
-                                features: {
-                                    "custom-properties": false
-                                }
+                                stage: 3
                             }),
                             // Adds PostCSS Normalize as the reset css with default options,
                             // so that it honors browserslist config in package.json
