@@ -92,13 +92,15 @@ export class OverlayLayout extends React.Component<OverlayLayoutProps, OverlayLa
                         {...rest}
                     >
                         <HeaderBar
-                            start={barLeft}
+                            start={<div className={"wby-pl-md"}>{barLeft}</div>}
                             middle={barMiddle}
                             end={
                                 <>
                                     {barRight}
                                     <IconButton
                                         variant={"ghost"}
+                                        size={"md"}
+                                        iconSize={"lg"}
                                         onClick={() => this.hideComponent()}
                                         icon={<CloseIcon />}
                                     />

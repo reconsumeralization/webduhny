@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { MenuItemProps as BaseMenuItemProps, MenuProps as RmwcMenuProps } from "@rmwc/menu";
 import { DropdownMenu as AdminUiDropdownMenu } from "@webiny/admin-ui/DropdownMenu";
 import { ListItemGraphic } from "~/List";
 
@@ -11,7 +10,37 @@ export interface RenderableMenuChildren {
     (props: MenuChildrenFunctionProps): React.ReactNode;
 }
 
-export type MenuProps = Omit<RmwcMenuProps, "children"> & {
+export interface BaseMenuItemProps {
+    /** Adds a ripple effect to the component */
+    ripple?: any;
+    /** A modifier for a selected state. */
+    selected?: boolean;
+    /** A modifier for an active state. */
+    activated?: boolean;
+    /** A modifier for a disabled state. */
+    disabled?: boolean;
+}
+
+export type MenuProps = {
+    /** Opens the menu. */
+    open?: boolean;
+    /** Make the menu position fixed. */
+    fixed?: boolean;
+    /** Renders the menu to a portal. Useful for situations where the content might be cutoff by an overflow: hidden container. You can pass "true" to render to the default RMWC portal. */
+    renderToPortal?: any;
+    /** Manually position the menu to one of the corners. */
+    anchorCorner?: any;
+    /** Children to render. */
+    children?: React.ReactNode;
+    /** An internal api for cross component communication. */
+    apiRef?: (api: any | null) => void;
+    /** Advanced: A reference to the MDCFoundation. */
+    foundationRef?: any;
+    /** Callback that fires when a Menu item is selected. evt.detail = { index: number; item: HTMLElement; } */
+    onSelect?: (evt: any) => void;
+    /** Whether or not to focus the first list item on open. Defaults to true. */
+    focusOnOpen?: boolean;
+
     // A handler which triggers the menu, e.g. button or link.
     handle?: React.ReactElement;
 
@@ -45,16 +74,16 @@ export type MenuProps = Omit<RmwcMenuProps, "children"> & {
     // If rendering to portal, you can specify an exact zIndex.
     portalZIndex?: number;
 } & ( // You can use either `children` or `render`, but not both.
-        | {
-              // One or more MenuItem components.
-              children: React.ReactNode | RenderableMenuChildren;
-              render?: never;
-          }
-        | {
-              render: RenderableMenuChildren;
-              children?: never;
-          }
-    );
+    | {
+          // One or more MenuItem components.
+          children: React.ReactNode | RenderableMenuChildren;
+          render?: never;
+      }
+    | {
+          render: RenderableMenuChildren;
+          children?: never;
+      }
+);
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.

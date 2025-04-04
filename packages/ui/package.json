@@ -14,7 +14,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@rmwc/menu": "^14.2.2",
     "@svgr/webpack": "^6.1.1",
     "@webiny/admin-ui": "0.0.0",
     "@webiny/utils": "0.0.0",

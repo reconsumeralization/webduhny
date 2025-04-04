@@ -19485,7 +19485,6 @@ __metadata:
   resolution: "@webiny/ui@workspace:packages/ui"
   dependencies:
     "@emotion/babel-plugin": "npm:^11.11.0"
-    "@rmwc/menu": "npm:^14.2.2"
     "@svgr/webpack": "npm:^6.1.1"
     "@testing-library/react": "npm:^15.0.7"
     "@webiny/admin-ui": "npm:0.0.0"
