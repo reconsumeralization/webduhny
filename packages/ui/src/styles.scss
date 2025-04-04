@@ -3,7 +3,6 @@
 // We still need to support these variables for backward compatibility.
 // Refer to the updated design system and theming approach from @webiny/admin-ui for current styling practices.
 
-
 :root {
   --mdc-theme-primary: var(hsl(--color-primary-500));
   --mdc-theme-on-primary: hsl(var(--color-neutral-0));
