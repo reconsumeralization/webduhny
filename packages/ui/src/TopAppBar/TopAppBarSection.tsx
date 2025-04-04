@@ -1,5 +1,11 @@
 import React from "react";
-import { TopAppBarSectionProps as RmwcTopAppBarSectionProps } from "@rmwc/top-app-bar";
+
+export interface RmwcTopAppBarSectionProps {
+    /** Aligns the section to the start. */
+    alignStart?: boolean;
+    /** Aligns the section to the end. */
+    alignEnd?: boolean;
+}
 
 export type TopAppBarSectionProps = RmwcTopAppBarSectionProps & {
     /**

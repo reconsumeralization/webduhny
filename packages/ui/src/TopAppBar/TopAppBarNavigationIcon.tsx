@@ -1,17 +1,12 @@
 import React from "react";
 
-import {
-    TopAppBarNavigationIcon as RmwcTopAppBarNavigationIcon,
-    TopAppBarNavigationIconProps as RmwcTopAppBarNavigationIconProps
-} from "@rmwc/top-app-bar";
-
-export type TopAppBarNavigationIconProps = Omit<RmwcTopAppBarNavigationIconProps, "onChange">;
+export type TopAppBarNavigationIconProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">;
 
 /**
  * @deprecated This component is deprecated and will be removed in future releases.
  */
-const TopAppBarNavigationIcon = (props: TopAppBarNavigationIconProps) => {
-    return <RmwcTopAppBarNavigationIcon {...props} />;
+const TopAppBarNavigationIcon = ({ children, ...props }: TopAppBarNavigationIconProps) => {
+    return <div {...props}>{children}</div>;
 };
 
 export { TopAppBarNavigationIcon };
