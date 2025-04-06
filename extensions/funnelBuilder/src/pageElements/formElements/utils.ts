@@ -1,6 +1,10 @@
+import { getRandomId } from "../../shared/getRandomId";
+
+export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
+
 export const createInitialElementData = (extra: Record<string, any> = {}) => ({
     field: {
-        fieldId: Math.random().toString(36).substr(2, 7), // Random field ID.
+        fieldId: getRandomId(),
         label: "",
         helpText: "",
         validators: [],

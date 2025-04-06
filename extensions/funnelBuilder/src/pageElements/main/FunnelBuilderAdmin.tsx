@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { createRenderer, useRenderer, Elements } from "@webiny/app-page-builder-elements";
+import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
 import { useRecoilValue } from "recoil";
 import { elementWithChildrenByIdSelector } from "@webiny/app-page-builder/editor/recoil/modules";
 import { Element } from "@webiny/app-page-builder-elements/types";
 import { ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
-import { createElement } from "@webiny/app-page-builder/editor/helpers";
 import { useUpdateElement } from "@webiny/app-page-builder/editor/hooks/useUpdateElement";
 import styled from "@emotion/styled";
 import { Form } from "@webiny/form";
+import { Tabs, Tab } from "@webiny/ui/Tabs";
 import { useConditionalRulesDialog } from "./useConditionalRulesDialog";
-
-export interface FunnelBuilderElementData {}
+import { createPageElement } from "../../shared/createPageElement";
 
 const Wrapper = styled.div``;
 
@@ -53,10 +52,12 @@ export const FunnelBuilderAdmin = createRenderer(() => {
     ) as Element;
 
     const addPage = () => {
-        const newGrid = createElement("grid");
         updateElement({
             ...element,
-            elements: [...element.elements, newGrid]
+            elements: [
+                ...element.elements,
+                createPageElement({ title: `Page ${element.elements.length + 1}` })
+            ]
         });
     };
 
@@ -64,26 +65,14 @@ export const FunnelBuilderAdmin = createRenderer(() => {
 
     return (
         <Wrapper>
-            <TopActions>
-                <ButtonPrimary onClick={addPage}>Add Page</ButtonPrimary>
-                <ButtonSecondary onClick={showConditionalRulesDialog}>
-                    Conditional Rules
-                </ButtonSecondary>
-            </TopActions>
-            <PagesTabs>
+            <Tabs onActivate={index => setActivePageIndex(index)}>
                 {element.elements.map((el, index) => {
                     const pageNumber = index + 1;
-                    return (
-                        <ButtonPrimary
-                            style={{ zIndex: 40 }}
-                            key={index}
-                            onClick={() => {
-                                setActivePageIndex(index);
-                            }}
-                        >{`Page ${pageNumber}`}</ButtonPrimary>
-                    );
+
+                    return <Tab label={`Page ${pageNumber}`} key={index} />;
                 })}
-            </PagesTabs>
+            </Tabs>
+
             <ElementsSection activePage={activePageIndex} data-role={"fub-steps-wrapper"}>
                 <Form
                     onSubmit={data => {

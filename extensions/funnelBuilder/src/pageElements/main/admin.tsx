@@ -4,13 +4,11 @@ import {
     PbEditorPageElementPlugin,
     PbRenderElementPlugin
 } from "@webiny/app-page-builder";
-import { FunnelBuilderAdmin, FunnelBuilderElementData } from "./FunnelBuilderAdmin";
+import { FunnelBuilderAdmin } from "./FunnelBuilderAdmin";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { AdvancedSettings } from "./AdvancedSettings";
-import { createElement } from "@webiny/app-page-builder/editor/helpers";
 import { ELEMENT_TYPE } from "./constants";
-
-const INITIAL_ELEMENT_DATA: FunnelBuilderElementData = {};
+import { createFunnelBuilderElement } from "../../shared/createFunnelBuilderElement";
 
 export const Main = () => (
     <>
@@ -29,7 +27,6 @@ export const Main = () => (
                     return <>Funnel Builder</>;
                 }
             }}
-            // Defines which types of element settings are available to the user.
             settings={[
                 "pb-editor-page-element-settings-delete",
                 "pb-editor-page-element-settings-visibility",
@@ -43,19 +40,10 @@ export const Main = () => (
             // In most cases, using `["cell", "block"]` will suffice.
             target={["cell", "block"]}
             onCreate={OnCreateActions.OPEN_SETTINGS}
-            // `create` function creates the initial data for the page element.
-            create={options => {
-                return {
-                    type: ELEMENT_TYPE,
+            create={createFunnelBuilderElement}
 
-                    // We are immediately creating a grid element inside our new page element.
-                    // This was users can start adding content to the grid right away.
-                    elements: [createElement("grid")],
-
-                    data: INITIAL_ELEMENT_DATA,
-                    ...options
-                };
-            }}
+            // We don't want to allow deleting the main element.
+            canDelete={() => false}
         />
         <PbEditorPageElementAdvancedSettingsPlugin
             elementType={ELEMENT_TYPE}

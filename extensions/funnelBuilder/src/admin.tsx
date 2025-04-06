@@ -5,12 +5,19 @@ import { Main } from "./pageElements/main/admin";
 import { InputAdmin } from "./pageElements/formElements/input/admin";
 import { ButtonAdmin } from "./pageElements/formElements/button/admin";
 
+// Other.
+import { FubPageElementGroup } from "./pageElements/FubPageElementGroup";
+
 export const Extension = () => (
     <>
-        <Main/>
+        {/* Funnel Builder Page Element */}
+        <Main />
 
         {/* Form Elements */}
-        <InputAdmin/>
-        <ButtonAdmin/>
+        <InputAdmin />
+        <ButtonAdmin />
+
+        {/* Other */}
+        <FubPageElementGroup />
     </>
 );

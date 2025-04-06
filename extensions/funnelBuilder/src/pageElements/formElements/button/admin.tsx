@@ -9,7 +9,7 @@ import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
 import { FormElementElementData } from "../types";
-import { createInitialElementData } from "../utils";
+import { createInitialElementData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
 
 const INITIAL_ELEMENT_DATA: FormElementElementData = createInitialElementData({
     action: "submit"
@@ -22,10 +22,8 @@ export const ButtonAdmin = () => (
             elementType={ELEMENT_TYPE}
             renderer={Button}
             toolbar={{
-                // We use `pb-editor-element-group-media` to put our new
-                // page element into the Media group in the left sidebar.
                 title: "Button",
-                group: "pb-editor-element-group-media",
+                group: FUB_PAGE_ELEMENT_GROUP,
                 preview() {
                     // We can return any JSX / React code here. To keep it
                     // simple, we are simply returning the element's name.
