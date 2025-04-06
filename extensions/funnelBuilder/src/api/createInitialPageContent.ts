@@ -1,13 +1,18 @@
 import { getRandomId } from "../shared/getRandomId";
 
+const DOCUMENT_ID = "fub-document";
+const BLOCK_ID = "fub-block";
+const MAIN_ID = "fub-main";
+const MAIN_DEFAULT_PAGE_ID = "fub-main-default-page";
+
 export const createInitialPageContent = () => {
     return {
-        id: "vIeNfaD3FI",
+        id: DOCUMENT_ID,
         type: "document",
         data: {},
         elements: [
             {
-                id: "BIzNgrNqV2",
+                id: BLOCK_ID,
                 type: "block",
                 data: {
                     settings: {
@@ -40,12 +45,12 @@ export const createInitialPageContent = () => {
                 },
                 elements: [
                     {
-                        id: "pniXFJnr0Q",
+                        id: MAIN_ID,
                         type: "funnel-builder-main",
                         data: {},
                         elements: [
                             {
-                                id: "BgNdkkgigz",
+                                id: MAIN_DEFAULT_PAGE_ID,
                                 type: "grid",
                                 data: {
                                     fub: {
@@ -122,16 +127,21 @@ export const createInitialPageContent = () => {
                                             }
                                         },
                                         elements: [],
-                                        path: ["BIzNgrNqV2", "pniXFJnr0Q", "BgNdkkgigz"]
+                                        path: [
+                                            DOCUMENT_ID,
+                                            BLOCK_ID,
+                                            MAIN_ID,
+                                            MAIN_DEFAULT_PAGE_ID,
+                                        ]
                                     }
                                 ],
-                                path: ["BIzNgrNqV2", "pniXFJnr0Q"]
+                                path: [DOCUMENT_ID, BLOCK_ID, MAIN_ID]
                             }
                         ],
-                        path: ["BIzNgrNqV2"]
+                        path: [DOCUMENT_ID, MAIN_ID]
                     }
                 ],
-                path: []
+                path: [DOCUMENT_ID]
             }
         ],
         path: []
