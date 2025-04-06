@@ -1,3 +1,5 @@
+import {getRandomId} from "../shared/getRandomId";
+
 export const createInitialPageContent = () => {
     return {
         id: "vIeNfaD3FI",
@@ -46,6 +48,12 @@ export const createInitialPageContent = () => {
                                 id: "BgNdkkgigz",
                                 type: "grid",
                                 data: {
+                                    fub: {
+                                        page: {
+                                            id: getRandomId(),
+                                            title: "Page 1"
+                                        }
+                                    },
                                     settings: {
                                         width: {
                                             desktop: {
