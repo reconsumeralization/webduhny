@@ -1,4 +1,5 @@
 import { getRandomId } from "../shared/getRandomId";
+import { ELEMENT_TYPE } from "../shared/constants";
 
 const DOCUMENT_ID = "fub-document";
 const BLOCK_ID = "fub-block";
@@ -46,7 +47,7 @@ export const createInitialPageContent = () => {
                 elements: [
                     {
                         id: MAIN_ID,
-                        type: "funnel-builder-main",
+                        type: ELEMENT_TYPE,
                         data: {},
                         elements: [
                             {
@@ -127,12 +128,7 @@ export const createInitialPageContent = () => {
                                             }
                                         },
                                         elements: [],
-                                        path: [
-                                            DOCUMENT_ID,
-                                            BLOCK_ID,
-                                            MAIN_ID,
-                                            MAIN_DEFAULT_PAGE_ID,
-                                        ]
+                                        path: [DOCUMENT_ID, BLOCK_ID, MAIN_ID, MAIN_DEFAULT_PAGE_ID]
                                     }
                                 ],
                                 path: [DOCUMENT_ID, BLOCK_ID, MAIN_ID]
