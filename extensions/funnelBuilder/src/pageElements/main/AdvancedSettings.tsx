@@ -186,6 +186,7 @@ export const AdvancedSettings = () => {
     const onCreate = useCallback(() => {
         updateElement({
             ...element,
+            // @ts-ignore
             elements: [
                 ...element.elements,
                 createPageElement({ title: `Page ${element.elements.length + 1}` })
