@@ -1,4 +1,4 @@
-import {getRandomId} from "../shared/getRandomId";
+import { getRandomId } from "../shared/getRandomId";
 
 export const createInitialPageContent = () => {
     return {
