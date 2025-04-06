@@ -72,8 +72,11 @@ const DecoratableListItem = ({
                     "wby-w-full wby-flex wby-justify-between wby-items-center wby-px-md wby-py-sm-extra"
                 }
             >
-                <div className={"wby-w-full wby-flex wby-items-center"} onClick={onClick}>
-                    {icon && <div className={"wby-mr-md"}>{icon}</div>}
+                <div
+                    className={"wby-w-full wby-flex wby-items-center wby-gap-md"}
+                    onClick={onClick}
+                >
+                    {icon && <div>{icon}</div>}
                     <div
                         className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}
                     >

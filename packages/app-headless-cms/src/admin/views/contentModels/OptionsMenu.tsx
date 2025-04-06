@@ -2,10 +2,10 @@ import React from "react";
 import { css } from "@emotion/css";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Menu, MenuItem } from "@webiny/ui/Menu";
-import { IconButton } from "@webiny/ui/Button";
 import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { ListItemGraphic } from "@webiny/ui/List";
 import { Icon } from "@webiny/ui/Icon";
+import { IconButton } from "@webiny/admin-ui";
 
 const menuStyles = css`
     .disabled {
@@ -37,7 +37,7 @@ export const OptionsMenu = makeDecoratable(
         return (
             <Menu
                 className={menuStyles}
-                handle={<IconButton icon={<MoreVerticalIcon />} />}
+                handle={<IconButton icon={<MoreVerticalIcon />} size={"sm"} variant={"ghost"} />}
                 anchor={"topLeft"}
                 {...props}
             >

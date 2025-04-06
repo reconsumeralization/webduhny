@@ -1,6 +1,7 @@
 import React from "react";
 import { RefreshIcon } from "../DataListIcons";
 import { DataListProps } from "../types";
+import { Tooltip } from "~/Tooltip";
 
 const RefreshButton = (props: DataListProps) => {
     const refresh = props.refresh;
@@ -8,7 +9,12 @@ const RefreshButton = (props: DataListProps) => {
         return null;
     }
 
-    return <RefreshIcon onClick={() => refresh()} size={"lg"} />;
+    return (
+        <Tooltip
+            trigger={<RefreshIcon onClick={() => refresh()} size={"sm"} />}
+            content={"Refresh list"}
+        />
+    );
 };
 
 export { RefreshButton };

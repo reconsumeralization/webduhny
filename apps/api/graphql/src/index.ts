@@ -46,6 +46,7 @@ import { createLogger } from "@webiny/api-log";
 
 import scaffoldsPlugins from "./plugins/scaffolds";
 import { extensions } from "./extensions";
+import { createModels } from "~/plugins/models";
 
 const debug = process.env.DEBUG === "true";
 const documentClient = getDocumentClient();
@@ -138,6 +139,7 @@ export const handler = createHandler({
         createAuditLogs(),
         createCountDynamoDbTask(),
         createContinuingTask(),
+        createModels(),
 
         // Leave this at the end.
         scaffoldsPlugins(),

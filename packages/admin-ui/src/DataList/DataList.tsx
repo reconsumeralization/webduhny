@@ -66,23 +66,18 @@ export const DataList = <TData,>(propsInput: DataListProps<TData>) => {
 
     return (
         <div data-testid={"ui.list.data-list"}>
-            <div className={"wby-pt-md-extra wby-pb-md wby-px-md wby-border"}>
+            <div className={"wby-pt-md wby-pb-sm wby-pl-lg wby-pr-md wby-border"}>
                 {(props.title || props.actions) && (
-                    <div className={"wby-flex wby-justify-between wby-items-center wby-mb-md-plus"}>
-                        <Heading className={"wby-text-accent-primary"} level={4}>
+                    <div className={"wby-flex wby-justify-between wby-items-center wby-mb-xl"}>
+                        <Heading className={"wby-text-neutral-primary"} level={4}>
                             {props.title}
                         </Heading>
-                        <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
-                            {props.actions}
-                        </div>
                     </div>
                 )}
 
                 {Object.keys(showOptions).length > 0 && (
                     <div
-                        className={
-                            "wby-flex wby-items-center wby-justify-space-between wby-gap-sm-extra"
-                        }
+                        className={"wby-flex wby-items-center wby-justify-space-between wby-gap-sm"}
                     >
                         <div className={"wby-flex-1"}>
                             {props.search ? React.cloneElement(props.search, props) : null}
@@ -104,6 +99,7 @@ export const DataList = <TData,>(propsInput: DataListProps<TData>) => {
                                 />
                             )}
                             <MultiSelectActions {...props} />
+                            {props.actions}
                         </div>
                     </div>
                 )}

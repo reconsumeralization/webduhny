@@ -3,7 +3,7 @@ import { ReactComponent as AutoRenew } from "@webiny/icons/autorenew.svg";
 import { ReactComponent as Delete } from "@webiny/icons/delete.svg";
 import { ReactComponent as Edit } from "@webiny/icons/edit.svg";
 import { ReactComponent as Sort } from "@webiny/icons/sort.svg";
-import { ReactComponent as Filter } from "@webiny/icons/filter_alt.svg";
+import { ReactComponent as Filter } from "@webiny/icons/filter_list.svg";
 import { ReactComponent as NavigateBefore } from "@webiny/icons/chevron_left.svg";
 import { ReactComponent as NavigateAfter } from "@webiny/icons/chevron_right.svg";
 import { ReactComponent as Tune } from "@webiny/icons/tune.svg";

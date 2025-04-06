@@ -2,6 +2,7 @@ import React from "react";
 import { DropdownMenu } from "~/DropdownMenu";
 import { NextPageIcon, OptionsIcon, PreviousPageIcon } from "../DataListIcons";
 import { DataListProps } from "../types";
+import { Tooltip } from "~/Tooltip";
 
 const Pagination = (props: DataListProps) => {
     const { pagination } = props;
@@ -13,27 +14,44 @@ const Pagination = (props: DataListProps) => {
         <>
             {pagination.setNextPage && (
                 <>
-                    <PreviousPageIcon
-                        onClick={() => {
-                            if (pagination.setPreviousPage && pagination.hasPreviousPage) {
-                                pagination.setPreviousPage();
-                            }
-                        }}
-                        size={"lg"}
+                    <Tooltip
+                        trigger={
+                            <PreviousPageIcon
+                                onClick={() => {
+                                    if (pagination.setPreviousPage && pagination.hasPreviousPage) {
+                                        pagination.setPreviousPage();
+                                    }
+                                }}
+                                size={"sm"}
+                            />
+                        }
+                        content={"Previous page"}
                     />
-                    <NextPageIcon
-                        onClick={() => {
-                            if (pagination.setNextPage && pagination.hasNextPage) {
-                                pagination.setNextPage();
-                            }
-                        }}
-                        size={"lg"}
+                    <Tooltip
+                        trigger={
+                            <NextPageIcon
+                                onClick={() => {
+                                    if (pagination.setNextPage && pagination.hasNextPage) {
+                                        pagination.setNextPage();
+                                    }
+                                }}
+                                size={"sm"}
+                            />
+                        }
+                        content={"Next page"}
                     />
                 </>
             )}
 
             {Array.isArray(pagination.perPageOptions) && pagination.setPerPage && (
-                <DropdownMenu trigger={<OptionsIcon size={"lg"} />}>
+                <DropdownMenu
+                    trigger={
+                        <Tooltip
+                            trigger={<OptionsIcon size={"sm"} />}
+                            content={"Navigate to page"}
+                        />
+                    }
+                >
                     {pagination.setPerPage &&
                         pagination.perPageOptions.map(perPage => (
                             <DropdownMenu.Item

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PopoverPrimitive } from "~/Popover";
 import { withStaticProps } from "~/utils";
 import { FilterIcon } from "~/DataList";
+import { Tooltip } from "~/Tooltip";
 
 interface DataListModalContentProps {
     children: React.ReactNode;
@@ -16,7 +17,7 @@ interface DataListModalTriggerProps {
 }
 
 const DataListModalTrigger = (props: DataListModalTriggerProps) => {
-    return <FilterIcon {...props} size={"lg"} />;
+    return <Tooltip trigger={<FilterIcon {...props} size={"lg"} />} content={"Sort list"} />;
 };
 
 interface DataListModalProps {

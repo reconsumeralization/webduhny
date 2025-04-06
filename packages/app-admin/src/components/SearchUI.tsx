@@ -20,8 +20,8 @@ const Search = ({ value, onChange, onEnter, inputPlaceholder = "Search..." }: Se
             onEnter={onEnter}
             autoComplete="off"
             startIcon={<Icon label={"Search"} icon={<SearchIcon />} />}
-            variant={"secondary"}
-            size={"lg"}
+            variant={"ghost"}
+            size={"md"}
         />
     );
 };

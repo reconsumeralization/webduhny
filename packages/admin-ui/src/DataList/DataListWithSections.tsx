@@ -80,9 +80,7 @@ export const DataListWithSections = <TData,>(propsInput: DataListProps<TData>) =
 
                 {Object.keys(showOptions).length > 0 && (
                     <div
-                        className={
-                            "wby-flex wby-items-center wby-justify-space-between wby-gap-sm-extra"
-                        }
+                        className={"wby-flex wby-items-center wby-justify-space-between wby-gap-sm"}
                     >
                         <div className={"wby-flex-1"}>
                             {props.search ? React.cloneElement(props.search, props) : null}
