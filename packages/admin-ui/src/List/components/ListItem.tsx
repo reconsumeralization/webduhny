@@ -69,7 +69,7 @@ const DecoratableListItem = ({
             {handle}
             <div
                 className={
-                    "wby-w-full wby-flex wby-justify-between wby-items-center wby-px-md wby-py-sm-extra"
+                    "wby-w-full wby-flex wby-justify-between wby-items-center wby-pl-lg wby-pr-md wby-py-sm-extra"
                 }
             >
                 <div
