@@ -1,7 +1,17 @@
 import React, { useCallback } from "react";
 import styled from "@emotion/styled";
-import { useRecoilValue } from "recoil";
+import { useUpdateElement } from "@webiny/app-page-builder/editor";
 import { ButtonIcon, IconButton, ButtonSecondary } from "@webiny/ui/Button";
+import { FunnelBuilderMainElement, FunnelBuilderPageElement } from "./types";
+
+// Icons.
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DragIndicatorIcon } from "@material-design-icons/svg/outlined/drag_indicator.svg";
+import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
+import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+
+// ----------------------------------------------------------------------------
+import { useRecoilValue } from "recoil";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import {
     activeElementAtom,
@@ -9,16 +19,9 @@ import {
 } from "@webiny/app-page-builder/editor/recoil/modules";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { moveInPlace, useSortableList } from "@webiny/app-page-builder/hooks/useSortableList";
-import { useUpdateElement } from "@webiny/app-page-builder/editor/hooks/useUpdateElement";
-import { FunnelBuilderMainElement, FunnelBuilderPageElement } from "./types";
 import { createPageElement } from "../../shared/createPageElement";
 import { useConditionalRulesDialog } from "./useConditionalRulesDialog";
-
-// Icons.
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
-import { ReactComponent as DragIndicatorIcon } from "@material-design-icons/svg/outlined/drag_indicator.svg";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
+// ----------------------------------------------------------------------------
 
 const PagesAccordion = styled(Accordion)`
     .accordion-content {
