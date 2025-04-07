@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import orderBy from "lodash/orderBy";
+import { Avatar, Button, Grid, Select, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useSecurity } from "@webiny/app-security";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { Image } from "@webiny/app/components";
 import {
     DataList,
     ScrollList,
@@ -18,11 +18,7 @@ import {
     DataListModalOverlay,
     ListItemTextPrimary
 } from "@webiny/ui/List";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { Avatar } from "@webiny/ui/Avatar";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
@@ -125,17 +121,17 @@ const UsersDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -148,17 +144,23 @@ const UsersDataList = () => {
         <DataList
             title={t`Admin Users`}
             actions={
-                <ButtonPrimary
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
                     data-testid="new-record-button"
                     onClick={() => history.push("/admin-users?new=true")}
-                >
-                    {t`New User`}
-                </ButtonPrimary>
+                />
             }
             data={userList}
             loading={loading}
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search users`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search users...`}
+                />
             }
             modalOverlay={usersDataListModalOverlay}
             modalOverlayAction={
@@ -175,12 +177,17 @@ const UsersDataList = () => {
                         >
                             <ListItemGraphic>
                                 <Avatar
-                                    renderImage={props => (
-                                        <Image {...props} transform={{ width: 100 }} />
-                                    )}
-                                    src={item.avatar ? item.avatar.src : item.gravatar}
-                                    fallbackText={item.firstName}
-                                    alt={t`User's avatar.`}
+                                    image={
+                                        <Avatar.Image
+                                            src={item.avatar ? item.avatar.src : item.gravatar}
+                                            alt={item.firstName}
+                                        />
+                                    }
+                                    fallback={
+                                        <Avatar.Fallback delayMs={0}>
+                                            {item.firstName.charAt(0)}
+                                        </Avatar.Fallback>
+                                    }
                                 />
                             </ListItemGraphic>
                             <ListItemText
@@ -201,13 +208,11 @@ const UsersDataList = () => {
                                         />
                                     ) : (
                                         <Tooltip
-                                            placement={"bottom"}
                                             content={
                                                 <span>{t`You can't delete your own user account.`}</span>
                                             }
-                                        >
-                                            <DeleteIcon disabled />
-                                        </Tooltip>
+                                            trigger={<DeleteIcon disabled />}
+                                        />
                                     )}
                                 </ListActions>
                             </ListItemMeta>

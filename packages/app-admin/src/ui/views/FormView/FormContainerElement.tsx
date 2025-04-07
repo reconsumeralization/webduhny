@@ -1,13 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import styled from "@emotion/styled";
-import { Elevation } from "@webiny/ui/Elevation";
 import { UIElement, UIElementConfig, UiElementRenderProps } from "~/ui/UIElement";
-
-const FormContainerWrapper = styled("div")({
-    position: "relative",
-    margin: "17px 50px"
-});
+import { SimpleForm } from "~/components/SimpleForm";
 
 interface FormContainerConfig extends UIElementConfig {
     testId?: string;
@@ -25,12 +19,12 @@ export class FormContainerElement extends UIElement<FormContainerConfig> {
         const children = super.render(props);
 
         return (
-            <FormContainerWrapper
+            <SimpleForm
                 className={classNames("webiny-data-list", this.config.className)}
                 data-testid={this.config.testId}
             >
-                {this.config.noElevation ? children : <Elevation z={1}>{children}</Elevation>}
-            </FormContainerWrapper>
+                {children}
+            </SimpleForm>
         );
     }
 }
