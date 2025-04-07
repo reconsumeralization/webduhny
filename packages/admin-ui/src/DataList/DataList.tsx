@@ -88,6 +88,7 @@ export const DataList = <TData,>(propsInput: DataListProps<TData>) => {
                             }
                         >
                             <MultiSelectAll {...props} />
+                            <MultiSelectActions {...props} />
                             {showOptions.refresh && <RefreshButton {...props} />}
                             {showOptions.pagination && <Pagination {...props} />}
                             {showOptions.sorters && <Sorters {...props} />}
@@ -98,7 +99,6 @@ export const DataList = <TData,>(propsInput: DataListProps<TData>) => {
                                     content={props.modalOverlay}
                                 />
                             )}
-                            <MultiSelectActions {...props} />
                             {props.actions}
                         </div>
                     </div>

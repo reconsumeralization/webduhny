@@ -1,22 +1,10 @@
 import React, { useCallback, useState } from "react";
-import { css } from "emotion";
 import { makeDecoratable } from "@webiny/app";
 import { Form } from "@webiny/form";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { SimpleFormContent } from "@webiny/app-admin/components/SimpleForm";
 import { validation } from "@webiny/validation";
-import { Dialog, DialogCancel, DialogTitle, DialogActions, DialogContent } from "@webiny/ui/Dialog";
-import { Input } from "@webiny/ui/Input";
 import { Validator } from "@webiny/validation/types";
 import { PbPageTemplate } from "~/types";
-
-const narrowDialog = css`
-    & .mdc-dialog__surface {
-        width: 600px;
-        min-width: 600px;
-    }
-`;
+import { Dialog, Grid, Input, Textarea } from "@webiny/admin-ui";
 
 const slugValidator: Validator = (value: string) => {
     if (!value.match(/^[a-z]+(\-[a-z]+)*$/)) {
@@ -53,54 +41,51 @@ export const CreatePageTemplateDialog = makeDecoratable(
         );
 
         return (
-            <Dialog open={open} onClose={onClose} className={narrowDialog}>
-                <Form onSubmit={submitForm}>
-                    {({ form, Bind }) => (
-                        <>
-                            <DialogTitle>Create Page Template</DialogTitle>
-                            <DialogContent>
-                                <SimpleFormContent>
-                                    <Grid>
-                                        <Cell span={6}>
-                                            <Bind
-                                                name="title"
-                                                validators={[validation.create("required")]}
-                                            >
-                                                <Input label="Title" />
-                                            </Bind>
-                                        </Cell>
-                                        <Cell span={6}>
-                                            <Bind
-                                                name="slug"
-                                                validators={[
-                                                    validation.create("required"),
-                                                    slugValidator
-                                                ]}
-                                            >
-                                                <Input label="Slug" />
-                                            </Bind>
-                                        </Cell>
-                                        <Cell span={12}>
-                                            <Bind
-                                                name="description"
-                                                validators={[validation.create("required")]}
-                                            >
-                                                <Input rows={2} label="Description" />
-                                            </Bind>
-                                        </Cell>
-                                    </Grid>
-                                </SimpleFormContent>
-                            </DialogContent>
-                            <DialogActions>
-                                <DialogCancel disabled={loading}>Cancel</DialogCancel>
-                                <ButtonPrimary disabled={loading} onClick={form.submit}>
-                                    Create
-                                </ButtonPrimary>
-                            </DialogActions>
-                        </>
-                    )}
-                </Form>
-            </Dialog>
+            <Form onSubmit={submitForm}>
+                {({ form, Bind }) => (
+                    <>
+                        <Dialog
+                            open={open}
+                            onOpenChange={open => !open && onClose()}
+                            title={"Create page template"}
+                            actions={
+                                <>
+                                    <Dialog.CancelButton disabled={loading} />
+                                    <Dialog.ConfirmButton
+                                        text={"Create"}
+                                        disabled={loading}
+                                        onClick={form.submit}
+                                    />
+                                </>
+                            }
+                        >
+                            <Grid>
+                                <Grid.Column span={12}>
+                                    <Bind name="title" validators={[validation.create("required")]}>
+                                        <Input size={"lg"} label="Title" />
+                                    </Bind>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
+                                    <Bind
+                                        name="slug"
+                                        validators={[validation.create("required"), slugValidator]}
+                                    >
+                                        <Input size={"lg"} label="Slug" />
+                                    </Bind>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
+                                    <Bind
+                                        name="description"
+                                        validators={[validation.create("required")]}
+                                    >
+                                        <Textarea size={"lg"} rows={2} label="Description" />
+                                    </Bind>
+                                </Grid.Column>
+                            </Grid>
+                        </Dialog>
+                    </>
+                )}
+            </Form>
         );
     }
 );

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
+import { Text } from "@webiny/admin-ui";
 import NodeRendererDefault, { NodeRendererDefaultProps } from "./MenuItemRenderer";
 import { SortableTree, TreeItems, TreeItemComponentProps } from "dnd-kit-sortable-tree";
-import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import { MenuTreeItem } from "~/admin/views/Menus/types";
 
@@ -12,15 +12,6 @@ const TreeWrapper = styled("div")({
         {
             backgroundColor: "var(--mdc-theme-on-surface)"
         }
-});
-
-const EmptyTree = styled("div")({
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "var(--mdc-theme-on-surface)"
 });
 
 export interface MenuItemsListProps {
@@ -57,9 +48,9 @@ const MenuItemsList = (props: MenuItemsListProps) => {
         [onChange]
     );
     let dom = (
-        <EmptyTree>
-            <Typography use={"overline"}>There are no menu items to display</Typography>
-        </EmptyTree>
+        <div className={"wby-size-full wby-flex wby-items-center wby-justify-center"}>
+            <Text className={"wby-text-neutral-strong"}>There are no menu items to display</Text>
+        </div>
     );
     const TreeNode = React.forwardRef<HTMLDivElement, TreeItemComponentProps<MenuTreeItem>>(
         (props, ref) => (

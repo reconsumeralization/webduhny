@@ -1,8 +1,8 @@
 import React from "react";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { i18n } from "@webiny/app/i18n";
 import useExportTemplateDialog, { ExportTemplatesDialogProps } from "./useExportTemplateDialog";
-import { DownloadIcon } from "@webiny/ui/List";
+import { ReactComponent as DownloadIcon } from "@webiny/icons/file_download.svg";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-page-builder/editor/plugins/defaultBar/exportTemplateButton");
 
@@ -29,12 +29,19 @@ export const ExportTemplatesButton = ({
     };
 
     return (
-        <Tooltip content={renderExportTemplatesTooltip(selected)} placement={"bottom"}>
-            <DownloadIcon
-                data-testid={"export-template-button"}
-                onClick={() => showExportTemplateInitializeDialog({ ids: selected, ...restProps })}
-                size={"lg"}
-            />
-        </Tooltip>
+        <Tooltip
+            trigger={
+                <IconButton
+                    icon={<DownloadIcon />}
+                    size={"sm"}
+                    variant={"ghost"}
+                    data-testid={"export-template-button"}
+                    onClick={() =>
+                        showExportTemplateInitializeDialog({ ids: selected, ...restProps })
+                    }
+                />
+            }
+            content={renderExportTemplatesTooltip(selected)}
+        />
     );
 };

@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { Button, Grid, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -19,11 +21,7 @@ import {
     ListItemTextSecondary,
     ListItemTextPrimary
 } from "@webiny/ui/List";
-
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { PbCategory } from "~/types";
 import { useCategoriesPermissions } from "~/hooks/permissions";
@@ -124,22 +122,19 @@ const PageBuilderCategoriesDataList = ({ canCreate }: PageBuilderCategoriesDataL
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Select
                             value={sort}
                             onChange={setSort}
                             label={t`Sort by`}
-                            description={"Sort categories by"}
-                        >
-                            {SORTERS.map(({ label, sort: value }) => {
-                                return (
-                                    <option key={label} value={value}>
-                                        {label}
-                                    </option>
-                                );
+                            options={SORTERS.map(({ label, sort: value }) => {
+                                return {
+                                    label,
+                                    value
+                                };
                             })}
-                        </Select>
-                    </Cell>
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -156,19 +151,22 @@ const PageBuilderCategoriesDataList = ({ canCreate }: PageBuilderCategoriesDataL
             data={categoryList}
             actions={
                 canCreate ? (
-                    <ButtonPrimary
+                    <Button
+                        text={t`New`}
+                        icon={<AddIcon />}
+                        size={"sm"}
+                        className={"wby-ml-xs"}
                         data-testid="data-list-new-record-button"
                         onClick={() => history.push("/page-builder/categories?new=true")}
-                    >
-                        {t`New Category`}
-                    </ButtonPrimary>
+                    />
                 ) : null
             }
             search={
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search categories`}
+                    inputPlaceholder={t`Search categories...`}
+                    dataTestId={"pb.category.data-list.search-input"}
                 />
             }
             modalOverlay={categoriesDataListModalOverlay}

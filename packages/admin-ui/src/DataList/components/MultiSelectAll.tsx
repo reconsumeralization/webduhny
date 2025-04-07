@@ -16,7 +16,7 @@ const MultiSelectAll = (props: DataListProps) => {
     return (
         <>
             {typeof multiSelectAll === "function" && (
-                <div className={"wby-size-10 wby-flex wby-items-center wby-justify-center"}>
+                <div className={"wby-size-lg wby-flex wby-items-center wby-justify-center"}>
                     <CheckboxPrimitive
                         indeterminate={!isAllMultiSelected(data) && !isNoneMultiSelected(data)}
                         checked={isAllMultiSelected(data)}

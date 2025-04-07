@@ -1,31 +1,14 @@
 import React, { useState } from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import uniqid from "uniqid";
 import { plugins } from "@webiny/plugins";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import MenuItemsList from "./MenuItems/MenuItemsList";
 import MenuItemForm from "./MenuItems/MenuItemForm";
 import findObject from "./MenuItems/findObject";
 import { PbMenuItemPlugin } from "~/types";
-import { Typography } from "@webiny/ui/Typography";
 import { MenuTreeItem } from "~/admin/views/Menus/types";
-import { DropdownMenu } from "@webiny/admin-ui";
-
-const leftPanel = css({
-    padding: 25,
-    backgroundColor: "var(--mdc-theme-background)",
-    overflow: "auto"
-});
-const MenuHolder = styled("div")({
-    textAlign: "center",
-    color: "var(--mdc-theme-text-primary-on-background)"
-});
-const AddMenu = styled("div")({
-    width: 180,
-    margin: "25px auto 0 auto"
-});
+import { Button, DropdownMenu, Grid } from "@webiny/admin-ui";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_chart.svg";
+import EmptyView from "@webiny/app-admin/components/EmptyView";
 
 interface MenuItemsProps {
     canSave: boolean;
@@ -56,8 +39,12 @@ const MenuItems = (props: MenuItemsProps) => {
     const pbMenuItemPlugins = plugins.byType<PbMenuItemPlugin>("pb-menu-item");
     return (
         <>
-            <Grid>
-                <Cell span={7} className={leftPanel}>
+            <Grid.Column span={7}>
+                <div
+                    className={
+                        "wby-p-lg wby-border-sm wby-border-neutral-muted wby-rounded-md wby-bg-neutral-base wby-overflow-auto"
+                    }
+                >
                     <MenuItemsList
                         canSave={canSave}
                         items={items}
@@ -65,48 +52,47 @@ const MenuItems = (props: MenuItemsProps) => {
                         editItem={editItem}
                         deleteItem={deleteItem}
                     />
-                </Cell>
-                <Cell span={5}>
-                    {!currentMenuItem && canSave && (
-                        <>
-                            <MenuHolder>
-                                <Typography use={"body2"}>
-                                    To build your menu you need to create menu items! Begin by
-                                    clicking the &quot;Add menu item&quot; button
-                                </Typography>
-                                <AddMenu>
-                                    <DropdownMenu
-                                        trigger={
-                                            <ButtonPrimary data-testid="pb.menu.add.addmenuitem">
-                                                + Add menu item
-                                            </ButtonPrimary>
-                                        }
-                                        data-testid="pb.menu.create.items.button"
-                                    >
-                                        {pbMenuItemPlugins.map(pl => (
-                                            <DropdownMenu.Item
-                                                icon={pl.menuItem.icon}
-                                                key={pl.name}
-                                                onClick={() => addItem(pl)}
-                                                content={pl.menuItem.title}
-                                            />
-                                        ))}
-                                    </DropdownMenu>
-                                </AddMenu>
-                            </MenuHolder>
-                        </>
-                    )}
-                    {currentMenuItem && (
-                        <MenuItemForm
-                            currentMenuItem={currentMenuItem}
-                            editItem={editItem}
-                            deleteItem={deleteItem}
-                            items={items}
-                            onChange={onChange}
-                        />
-                    )}
-                </Cell>
-            </Grid>
+                </div>
+            </Grid.Column>
+            <Grid.Column span={5}>
+                {!currentMenuItem && canSave && (
+                    <EmptyView
+                        icon={<TableIcon />}
+                        title={"To build your menu you need to create menu items!"}
+                        action={
+                            <div>
+                                <DropdownMenu
+                                    trigger={
+                                        <Button
+                                            text={"Add menu item"}
+                                            data-testid="pb.menu.add.addmenuitem"
+                                        />
+                                    }
+                                    data-testid="pb.menu.create.items.button"
+                                >
+                                    {pbMenuItemPlugins.map(pl => (
+                                        <DropdownMenu.Item
+                                            icon={pl.menuItem.icon}
+                                            key={pl.name}
+                                            onClick={() => addItem(pl)}
+                                            text={pl.menuItem.title}
+                                        />
+                                    ))}
+                                </DropdownMenu>
+                            </div>
+                        }
+                    />
+                )}
+                {currentMenuItem && (
+                    <MenuItemForm
+                        currentMenuItem={currentMenuItem}
+                        editItem={editItem}
+                        deleteItem={deleteItem}
+                        items={items}
+                        onChange={onChange}
+                    />
+                )}
+            </Grid.Column>
         </>
     );
 };

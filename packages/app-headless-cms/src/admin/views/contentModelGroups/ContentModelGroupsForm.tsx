@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { ReactComponent as DevicesIcon } from "@webiny/icons/devices_other.svg";
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 import { Form, FormRenderPropParams } from "@webiny/form";
@@ -165,6 +166,7 @@ const ContentModelGroupsForm = ({ canCreate }: ContentModelGroupsFormProps) => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<DevicesIcon />}
                 title={t`Click on the left side list to display group details {message}`({
                     message: canCreate ? "or create a..." : ""
                 })}

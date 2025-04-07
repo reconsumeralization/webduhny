@@ -5,7 +5,7 @@ import { ReactComponent as FileIcon } from "@webiny/icons/description.svg";
 export interface EmptyViewProps {
     icon?: ReactElement;
     title: string;
-    action: ReactElement | null;
+    action?: ReactElement | null;
 }
 const EmptyView = ({ icon = <FileIcon />, title, action }: EmptyViewProps) => {
     return (
@@ -26,7 +26,7 @@ const EmptyView = ({ icon = <FileIcon />, title, action }: EmptyViewProps) => {
             >
                 {title}
             </Text>
-            <div className={"wby-flex wby-justify-center wby-gap-sm"}>{action}</div>
+            {action && <div className={"wby-flex wby-justify-center wby-gap-sm"}>{action}</div>}
         </div>
     );
 };

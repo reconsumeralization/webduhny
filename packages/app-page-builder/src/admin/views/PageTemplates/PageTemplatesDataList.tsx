@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { Button, CheckboxPrimitive, Grid, Select, TimeAgo } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import orderBy from "lodash/orderBy";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
-
 import {
     DataList,
     DataListModalOverlay,
@@ -20,17 +20,12 @@ import {
     ScrollList,
     UploadIcon
 } from "@webiny/ui/List";
-import { Checkbox } from "@webiny/ui/Checkbox";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import { CreatableItem } from "./PageTemplates";
 import { useMultiSelect } from "~/admin/views/Pages/hooks/useMultiSelect";
 import { ExportTemplatesButton } from "~/editor/plugins/defaultBar/components/ExportTemplateButton";
 import useImportTemplate from "~/admin/views/PageTemplates/hooks/useImportTemplate";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
-
 import { PbPageTemplate } from "~/types";
 import { useListPageTemplates } from "~/features";
 
@@ -108,22 +103,17 @@ const PageTemplatesDataList = ({
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Select
                             value={sort}
                             onChange={setSort}
                             label={t`Sort by`}
-                            description={"Sort templates by"}
-                        >
-                            {SORTERS.map(({ label, sort: value }) => {
-                                return (
-                                    <option key={label} value={value}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                            options={SORTERS.map(({ label, sort: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -138,14 +128,19 @@ const PageTemplatesDataList = ({
         }
         return (
             <>
-                <ButtonPrimary data-testid="pb-templates-list-new-template-btn" onClick={onCreate}>
-                    {t`New Template`}
-                </ButtonPrimary>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    data-testid="data-list-new-record-button"
+                    onClick={onCreate}
+                />
                 <OptionsMenu
                     data-testid={"pb-templates-list-options-btn"}
                     items={[
                         {
-                            label: "Import Templates",
+                            label: "Import templates",
                             icon: <UploadIcon />,
                             onClick: showImportDialog,
                             "data-testid": "pb-templates-list-options-import-template-btn"
@@ -191,7 +186,8 @@ const PageTemplatesDataList = ({
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search templates`}
+                    inputPlaceholder={t`Search templates...`}
+                    dataTestId={"pb.template.data-list.search-input"}
                 />
             }
         >
@@ -205,9 +201,9 @@ const PageTemplatesDataList = ({
                                     selected={template.id === selectedTemplate}
                                 >
                                     <ListSelectBox>
-                                        <Checkbox
+                                        <CheckboxPrimitive
                                             onChange={() => multiSelectProps.multiSelect(template)}
-                                            value={multiSelectProps.isMultiSelected(template)}
+                                            checked={multiSelectProps.isMultiSelected(template)}
                                         />
                                     </ListSelectBox>
                                     <ListItemText

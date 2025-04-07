@@ -1,6 +1,4 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import { useQuery } from "@apollo/react-hooks";
@@ -10,7 +8,6 @@ import {
     DataListModalOverlay,
     DataListModalOverlayAction,
     DownloadIcon,
-    List,
     ListItem,
     ListItemGraphic,
     ListItemText,
@@ -19,44 +16,28 @@ import {
     ScrollList,
     UploadIcon
 } from "@webiny/ui/List";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
-import { Typography } from "@webiny/ui/Typography";
-import { CircularProgress } from "@webiny/ui/Progress";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
-import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 import { useSnackbar, useStateIfMounted, useStateWithCallback } from "@webiny/app-admin/hooks";
 import { Icon } from "~/admin/utils/createBlockCategoryPlugin";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
-
 import { PbBlockCategory } from "~/types";
 import { LIST_PAGE_CATEGORIES } from "./graphql";
 import useImportBlock from "~/admin/views/PageBlocks/hooks/useImportBlock";
 import useExportBlockDialog from "~/editor/plugins/defaultBar/components/ExportBlockButton/useExportBlockDialog";
 import useFilteredCategoriesListData from "./hooks/useFilteredCategoriesListData";
 import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import {
+    Button,
+    Dialog,
+    Grid,
+    List as AdminList,
+    OverlayLoader,
+    Select,
+    Text
+} from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
 const t = i18n.ns("app-page-builder/admin/page-blocks/by-categories-data-list");
-
-const narrowDialog = css`
-    .mdc-dialog__surface {
-        width: 400px;
-        min-width: 400px;
-    }
-`;
-
-const noRecordsWrapper = css`
-    display: flex;
-    justify-content: center;
-    color: var(--mdc-theme-on-surface);
-`;
-
-const DataListActionsWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
 
 interface Sorter {
     label: string;
@@ -119,22 +100,17 @@ const BlocksByCategoriesDataList = ({
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Select
                             value={sort}
                             onChange={setSort}
                             label={t`Sort by`}
-                            description={"Sort block categories by"}
-                        >
-                            {SORTERS.map(({ label, sort: value }) => {
-                                return (
-                                    <option key={label} value={value}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                            options={SORTERS.map(({ label, sort: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -171,14 +147,16 @@ const BlocksByCategoriesDataList = ({
                 loading={Boolean(loading)}
                 data={filteredBlockCategoriesList}
                 actions={
-                    <DataListActionsWrapper>
+                    <>
                         {canCreate ? (
-                            <ButtonPrimary
+                            <Button
+                                text={t`New`}
+                                icon={<AddIcon />}
+                                size={"sm"}
+                                className={"wby-ml-xs"}
                                 onClick={handleNewBlockClick}
                                 data-testid={"pb-blocks-list-new-block-btn"}
-                            >
-                                {t`New Block`}
-                            </ButtonPrimary>
+                            />
                         ) : null}
                         <OptionsMenu
                             data-testid="pb-blocks-list-options-menu"
@@ -201,13 +179,14 @@ const BlocksByCategoriesDataList = ({
                                 }
                             ]}
                         />
-                    </DataListActionsWrapper>
+                    </>
                 }
                 search={
                     <SearchUI
                         value={filter}
                         onChange={setFilter}
-                        inputPlaceholder={t`Search blocks`}
+                        inputPlaceholder={t`Search blocks...`}
+                        dataTestId={"pb.blocks.data-list.search-input"}
                     />
                 }
                 showOptions={{ refresh: false }}
@@ -249,53 +228,37 @@ const BlocksByCategoriesDataList = ({
             </DataList>
             <Dialog
                 open={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
-                className={narrowDialog}
+                onOpenChange={open => !open && setIsDialogOpen(false)}
+                title={"Please select a block category"}
+                actions={
+                    <>
+                        <Dialog.CancelButton />
+                        <Dialog.ConfirmButton
+                            data-testid={"pb-blocks-list-new-block-category-btn"}
+                            onClick={() => history.push("/page-builder/block-categories?new=true")}
+                        />
+                    </>
+                }
+                bodyPadding={false}
             >
-                <DialogTitle>
-                    <Typography use="headline5" tag={"span"}>
-                        Please select a block category
-                    </Typography>
-                </DialogTitle>
-                <DialogContent>
-                    {creatingBlock ? <CircularProgress label={"Creating page block..."} /> : null}
-                    <React.Fragment>
-                        {isEmpty(blockCategoriesData) ? (
-                            <div className={noRecordsWrapper}>
-                                <Typography use="overline">
-                                    There are no block categories
-                                </Typography>
-                            </div>
-                        ) : (
-                            <List twoLine>
-                                {blockCategoriesData.map(item => (
-                                    <ListItem
-                                        key={item.slug}
-                                        onClick={() => onCreatePageBlock(item.slug)}
-                                    >
-                                        <ListItemGraphic>
-                                            <Icon category={item} />
-                                        </ListItemGraphic>
-                                        <ListItemText>
-                                            <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
-                                            <ListItemTextSecondary>
-                                                {item.slug}
-                                            </ListItemTextSecondary>
-                                        </ListItemText>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        )}
-                    </React.Fragment>
-                </DialogContent>
-                <DialogActions>
-                    <ButtonDefault
-                        data-testid={"pb-blocks-list-new-block-category-btn"}
-                        onClick={() => history.push("/page-builder/block-categories?new=true")}
-                    >
-                        + Create a new block category
-                    </ButtonDefault>
-                </DialogActions>
+                {creatingBlock ? <OverlayLoader text={"Creating page block..."} /> : null}
+                <>
+                    {isEmpty(blockCategoriesData) ? (
+                        <Text size={"sm"}>There are no block categories</Text>
+                    ) : (
+                        <AdminList>
+                            {blockCategoriesData.map(item => (
+                                <AdminList.Item
+                                    key={item.slug}
+                                    onClick={() => onCreatePageBlock(item.slug)}
+                                    icon={<Icon category={item} />}
+                                    title={item.name}
+                                    description={item.slug}
+                                />
+                            ))}
+                        </AdminList>
+                    )}
+                </>
             </Dialog>
         </>
     );
