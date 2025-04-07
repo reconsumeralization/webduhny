@@ -3,29 +3,11 @@ import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-
 import { useRecoilValue } from "recoil";
 import { elementWithChildrenByIdSelector } from "@webiny/app-page-builder/editor/recoil/modules";
 import { Element } from "@webiny/app-page-builder-elements/types";
-import { ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
-import { useUpdateElement } from "@webiny/app-page-builder/editor/hooks/useUpdateElement";
 import styled from "@emotion/styled";
 import { Form } from "@webiny/form";
-import { Tabs, Tab } from "@webiny/ui/Tabs";
-import { useConditionalRulesDialog } from "./useConditionalRulesDialog";
-import { createPageElement } from "../../shared/createPageElement";
+import { Tab, Tabs } from "@webiny/ui/Tabs";
 
 const Wrapper = styled.div``;
-
-const TopActions = styled.div`
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-    margin-bottom: 10px;
-`;
-
-const PagesTabs = styled.div`
-    display: flex;
-    gap: 10px;
-    padding: 5px;
-`;
 
 const ElementsSection = styled.div<{ activePage: number }>`
     & > webiny-form-container > pb-grid {
@@ -44,40 +26,30 @@ const ElementsSection = styled.div<{ activePage: number }>`
 export const FunnelBuilderAdmin = createRenderer(() => {
     const { getElement } = useRenderer();
     const element = getElement();
-    const updateElement = useUpdateElement();
     const [activePageIndex, setActivePageIndex] = useState(0);
-
+    //    const { getElement } = useRenderer();
+    //     const element = getElement();
+    //     const elementWithChildren = useElementWithChildren(element.id!) as FunnelBuilderMainElement;
     const elementWithChildren = useRecoilValue(
         elementWithChildrenByIdSelector(element.id)
     ) as Element;
 
-    const addPage = () => {
-        updateElement({
-            ...element,
-            elements: [
-                ...element.elements,
-                createPageElement({ title: `Page ${element.elements.length + 1}` })
-            ]
-        });
-    };
-
-    const { showDialog: showConditionalRulesDialog } = useConditionalRulesDialog();
-
     return (
         <Wrapper>
             <Tabs onActivate={index => setActivePageIndex(index)}>
-                {element.elements.map((el, index) => {
-                    const pageNumber = index + 1;
-
-                    return <Tab label={`Page ${pageNumber}`} key={index} />;
+                {elementWithChildren.elements.map(element => {
+                    console.log("opaaa", element);
+                    if (element.data) {
+                        return <Tab label={element.data.fub.page.title} />;
+                    }
+                    return null;
                 })}
             </Tabs>
 
             <ElementsSection activePage={activePageIndex} data-role={"fub-steps-wrapper"}>
                 <Form
                     onSubmit={data => {
-                        console.log("Form submitted");
-                        console.log("dejta", data);
+                        console.log("Form submitted.", data);
                     }}
                 >
                     {() => <Elements element={elementWithChildren} />}
