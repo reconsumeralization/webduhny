@@ -1,11 +1,11 @@
 import type { Unwrap } from "@pulumi/pulumi";
 import type { ProviderArgs } from "@pulumi/aws";
 import { Provider } from "@pulumi/aws";
-import type { RegionProvider } from "./types.js";
+import type { IRegionProvider } from "./types.js";
 
 export const createRegionProvider = (
     params: Unwrap<ProviderArgs & Required<Pick<ProviderArgs, "region">>>
-): RegionProvider => {
+): IRegionProvider => {
     const provider = new Provider(params.region, params);
     return {
         provider,

@@ -80,6 +80,10 @@ export interface IDefaultStackOutput extends IStackOutput {
     apiDomain: string;
     apiUrl: string;
     graphqlLambdaRole: string;
+    graphqlLambdaRoleName: string;
+    fileManagerManageLambdaArn: string;
+    fileManagerManageLambdaRole: string;
+    fileManagerManageLambdaRoleName: string;
     apwSchedulerEventRule: string | undefined;
     apwSchedulerEventTargetId: string | undefined;
     apwSchedulerExecuteAction: string | undefined;

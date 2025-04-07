@@ -5,25 +5,21 @@ import { createAppModule } from "@webiny/pulumi";
 import { createLambdaRoleWithoutVpc } from "../lambdaUtils.js";
 import { LAMBDA_RUNTIME } from "~/constants.js";
 import { createSyncSystemInputLambdaPolicy } from "./lambda/createSyncSystemInputLambdaPolicy.js";
-import { createResourceName } from "./createResourceName.js";
+import { createSyncResourceName } from "./createSyncResourceName.js";
 import { createAssetArchive } from "~/utils/createAssetArchive.js";
-import type { RegionProvider } from "~/apps/syncSystem/types.js";
+import { SyncSystemSQS } from "./SyncSystemSQS.js";
 
-export interface SyncSystemInputLambdaParams {
-    region: RegionProvider;
-    protect: boolean;
-}
+export type SyncSystemLambda = PulumiAppModule<typeof SyncSystemLambda>;
 
-export type SyncSystemInputLambda = PulumiAppModule<typeof SyncSystemInputLambda>;
+export const SyncSystemLambda = createAppModule({
+    name: "SyncSystemLambda",
+    config(app: PulumiApp) {
+        const sqs = app.getModule(SyncSystemSQS);
 
-export const SyncSystemInputLambda = createAppModule({
-    name: "SyncSystemInputLambda",
-    config(app: PulumiApp, params: SyncSystemInputLambdaParams) {
-        const roleName = createResourceName("input-lambda-role");
+        const roleName = createSyncResourceName("input-lambda-role");
         const policy = createSyncSystemInputLambdaPolicy({
             name: `${roleName}-policy`,
-            app,
-            protect: params.protect
+            app
         });
         const role = createLambdaRoleWithoutVpc(app, {
             name: roleName,
@@ -31,7 +27,7 @@ export const SyncSystemInputLambda = createAppModule({
         });
 
         const lambda = app.addResource(aws.lambda.Function, {
-            name: createResourceName("lambda"),
+            name: createSyncResourceName("lambda"),
             config: {
                 runtime: LAMBDA_RUNTIME,
                 handler: "handler.handler",
@@ -46,17 +42,24 @@ export const SyncSystemInputLambda = createAppModule({
                         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
                     }
                 }
-            },
-            opts: {
-                provider: params.region.provider,
-                protect: params.protect
+            }
+        });
+
+        const eventSourceMapping = app.addResource(aws.lambda.EventSourceMapping, {
+            name: createSyncResourceName("sqs-to-lambda"),
+            config: {
+                eventSourceArn: sqs.output.arn,
+                functionName: lambda.output.arn,
+                batchSize: 10
+                // maximumBatchingWindowInSeconds: 2
             }
         });
 
         return {
             role,
             policy,
-            lambda
+            lambda,
+            eventSourceMapping
         };
     }
 });

@@ -2,19 +2,16 @@ import * as aws from "@pulumi/aws";
 import type { QueueArgs } from "@pulumi/aws/sqs";
 import type { PulumiApp } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
-import { createResourceName } from "./createResourceName.js";
-import type { RegionProvider } from "./types.js";
-
-export interface ISyncSystemSQSParams {
-    protect: boolean;
-    region: RegionProvider;
-}
+import { createSyncResourceName } from "./createSyncResourceName.js";
 
 export const SyncSystemSQS = createAppModule({
     name: "SyncSystemSQS",
-    config: (app: PulumiApp, params: ISyncSystemSQSParams) => {
+    config: (app: PulumiApp) => {
         const config: QueueArgs = {
             delaySeconds: 0,
+            /**
+             * 5 minutes should be enough for the message to be processed.
+             */
             visibilityTimeoutSeconds: 900,
             fifoQueue: true,
             receiveWaitTimeSeconds: 0,
@@ -22,8 +19,6 @@ export const SyncSystemSQS = createAppModule({
             /**
              * The maximum message size is 256 KB.
              * Chunks are billed in 64KB increments, so let's keep the message size below that.
-             * TODO we will store the message in S3 and only store the reference in the queue.
-             * TODO Use batching to reduce costs.
              */
             maxMessageSize: 60 * 1024, // KB
             /**
@@ -43,12 +38,8 @@ export const SyncSystemSQS = createAppModule({
             contentBasedDeduplication: true
         };
         return app.addResource(aws.sqs.Queue, {
-            name: createResourceName("sqs"),
-            config,
-            opts: {
-                protect: params.protect,
-                provider: params.region.provider
-            }
+            name: createSyncResourceName("sqs"),
+            config
         });
     }
 });

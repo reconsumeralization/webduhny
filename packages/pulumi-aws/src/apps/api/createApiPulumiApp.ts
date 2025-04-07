@@ -274,8 +274,13 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                 migrationLambdaArn: migration.function.output.arn,
                 graphqlLambdaName: graphql.functions.graphql.output.name,
                 graphqlLambdaRole: graphql.role.output.arn,
+                graphqlLambdaRoleName: graphql.role.output.name,
                 backgroundTaskLambdaArn: backgroundTask.backgroundTask.output.arn,
                 backgroundTaskStepFunctionArn: backgroundTask.stepFunction.output.arn,
+                fileManagerManageLambdaArn: fileManager.functions.manage.output.arn,
+                fileManagerManageLambdaRole: fileManager.roles.manage.output.arn,
+                fileManagerManageLambdaRoleName: fileManager.roles.manage.output.name,
+                fileManagerDownloadLambdaArn: fileManager.functions.download.output.arn,
                 websocketApiId: websocket.websocketApi.output.id,
                 websocketApiUrl: websocket.websocketApiUrl
             });

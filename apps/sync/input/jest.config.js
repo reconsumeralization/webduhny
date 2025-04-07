@@ -6,8 +6,8 @@ const TEST_TYPE = process.env.TEST_TYPE;
 const DEPLOY_ENVIRONMENT = "dev";
 
 if (TEST_TYPE !== "unit") {
-    log.info(`${log.info.hl("apps/syncSystem/input")}: Assigning environment variables...`);
-    const stackOutput = getStackOutput({ folder: "apps/syncSystem", env: DEPLOY_ENVIRONMENT });
+    log.info(`${log.info.hl("apps/sync/input")}: Assigning environment variables...`);
+    const stackOutput = getStackOutput({ folder: "apps/sync", env: DEPLOY_ENVIRONMENT });
 
     if (stackOutput) {
         Object.assign(process.env, {

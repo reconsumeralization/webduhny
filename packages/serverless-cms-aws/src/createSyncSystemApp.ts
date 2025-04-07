@@ -10,7 +10,7 @@ export function createSyncSystemApp(projectAppParams: CreateSyncSystemAppParams)
     const plugins = projectAppParams.plugins ? [...projectAppParams.plugins] : [];
 
     return {
-        id: "syncSystem",
+        id: "sync",
         name: "Sync System",
         description: "Your project's Sync System.",
         cli: {

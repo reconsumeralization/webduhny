@@ -1,11 +1,15 @@
+import * as pulumi from "@pulumi/pulumi";
 import { Region } from "@pulumi/aws";
 import { createPulumiApp, PulumiAppParam } from "@webiny/pulumi";
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants.js";
 import { SyncSystemSQS } from "./SyncSystemSQS.js";
-import { SyncSystemInputLambda } from "./SyncSystemInputLambda.js";
-import { SyncSystemS3 } from "./SyncSystemS3.js";
-import type { IDeployment } from "./types.js";
-import { createRegionProvider } from "~/apps/syncSystem/createRegionProvider.js";
+import { SyncSystemLambda } from "./SyncSystemLambda.js";
+import type { IDeployment, IGetSyncSystemOutputResult, PulumiOutput } from "./types.js";
+import { createRegionProvider } from "./createRegionProvider.js";
+import { APPS_SYNC_SYSTEM_PATH } from "./constants.js";
+import { SyncSystemEventBus } from "./SyncSystemEventBus.js";
+import { appWithRegion } from "./appWithRegion.js";
+import { attachDeployments } from "~/apps/syncSystem/deployments/attachDeployments.js";
 
 export type SyncSystemPulumiApp = ReturnType<typeof createSyncSystemPulumiApp>;
 
@@ -19,6 +23,14 @@ export interface OpenSearchConfig {
     domainName: string;
     indexPrefix: string;
     sharedIndexes: boolean;
+}
+
+export interface IDeploymentsCallableParams {
+    env: string;
+}
+
+export interface IDeploymentsCallable {
+    (params: IDeploymentsCallableParams): [IDeployment, IDeployment];
 }
 
 export interface CreateSyncSystemPulumiAppParams {
@@ -64,45 +76,101 @@ export interface CreateSyncSystemPulumiAppParams {
      */
     productionEnvironments?: PulumiAppParam<string[]>;
 
-    deployments: () => [IDeployment, IDeployment];
+    deployments: IDeploymentsCallable;
 }
 
 export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulumiAppParams) {
     return createPulumiApp({
-        name: "syncSystem",
-        path: "apps/syncSystem",
+        name: "sync",
+        path: APPS_SYNC_SYSTEM_PATH,
         config: projectAppParams,
         program: async app => {
+            const region = createRegionProvider({
+                region: Region.USEast1
+            });
             const productionEnvironments =
                 app.params.create.productionEnvironments || DEFAULT_PROD_ENV_NAMES;
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
+            const regionApp = appWithRegion({
+                app,
+                region,
+                protect
+            });
+            /**
+             * Sync System services.
+             */
+            const sqs = regionApp.addModule(SyncSystemSQS);
 
-            const region = createRegionProvider({
-                region: Region.USEast1
+            const lambda = regionApp.addModule(SyncSystemLambda);
+            const { eventBusRule, eventBus, eventBusTarget, eventBusPolicy } =
+                regionApp.addModule(SyncSystemEventBus);
+            /**
+             * Connect sync system to the deployments.
+             */
+            const deployments = projectAppParams.deployments({
+                env: app.params.run.env
             });
 
-            const s3 = app.addModule(SyncSystemS3, {
-                protect,
-                region
+            await attachDeployments({
+                app: regionApp,
+                deployments
             });
 
-            const sqs = app.addModule(SyncSystemSQS, {
-                protect,
-                region
-            });
-
-            const inputLambda = app.addModule(SyncSystemInputLambda, {
-                protect,
-                region
-            });
+            const output: PulumiOutput<IGetSyncSystemOutputResult> = {
+                /**
+                 * Region provider.
+                 */
+                region: pulumi.output(region.name),
+                /**
+                 * SyncSystemSQS
+                 */
+                sqsUrl: sqs.output.url,
+                sqsArn: sqs.output.arn,
+                sqsName: sqs.output.name,
+                /**
+                 * SyncSystemLambda
+                 */
+                lambdaArn: lambda.lambda.output.arn,
+                lambdaName: lambda.lambda.output.name,
+                lambdaRoleArn: lambda.role.output.arn,
+                lambdaRoleName: lambda.role.output.name,
+                lambdaRoleId: lambda.role.output.id,
+                lambdaPolicyArn: lambda.policy.output.arn,
+                lambdaPolicyName: lambda.policy.output.name,
+                lambdaPolicyId: lambda.policy.output.id,
+                lambdaEventSourceMappingArn: lambda.eventSourceMapping.output.arn,
+                lambdaEventSourceMappingId: lambda.eventSourceMapping.output.id,
+                /**
+                 * We can safely cast as we that the property exists.
+                 */
+                lambdaEventSourceMappingEventSourceArn: lambda.eventSourceMapping.output
+                    .eventSourceArn as pulumi.Output<string>,
+                /**
+                 * SyncSystemEventBus
+                 */
+                eventBusArn: eventBus.output.arn,
+                eventBusName: eventBus.output.name,
+                eventBusRuleArn: eventBusRule.output.arn,
+                eventBusRuleName: eventBusRule.output.id,
+                eventBusTargetArn: eventBusTarget.output.arn,
+                eventBusPolicyId: eventBusPolicy.output.id,
+                eventBusPolicyUrn: eventBusPolicy.output.urn,
+                eventBusPolicyQueueUrl: eventBusPolicy.output.queueUrl
+            };
+            app.addOutputs(output);
 
             return {
-                s3: s3.output,
+                region: region.provider,
                 sqs: sqs.output,
-                inputLambda: inputLambda.lambda.output,
-                inputLambdaRole: inputLambda.role.output,
-                inputLambdaPolicy: inputLambda.policy.output,
+                eventBus: eventBus.output,
+                eventBusRule: eventBusRule.output,
+                eventBusTarget: eventBusTarget.output,
+                eventBusPolicy: eventBusPolicy.output,
+                lambda: lambda.lambda.output,
+                lambdaRole: lambda.role.output,
+                lambdaPolicy: lambda.policy.output,
+                lambdaEventSourceMapping: lambda.eventSourceMapping.output,
                 /**
                  * Systems we are connecting together.
                  */
