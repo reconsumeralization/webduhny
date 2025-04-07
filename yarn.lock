@@ -16292,9 +16292,8 @@ __metadata:
   resolution: "@webiny/app-mailer@workspace:packages/app-mailer"
   dependencies:
     "@apollo/react-components": "npm:^3.1.5"
-    "@emotion/babel-plugin": "npm:^11.11.0"
-    "@emotion/react": "npm:11.10.8"
     "@types/react": "npm:18.2.79"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
