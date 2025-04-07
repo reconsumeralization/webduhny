@@ -1,10 +1,9 @@
 import React from "react";
 import { i18n } from "@webiny/app/i18n";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as TenantIcon } from "@webiny/icons/domain.svg";
 import { Form } from "@webiny/form";
 import { Tags } from "@webiny/ui/Tags";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import {
     SimpleForm,
     SimpleFormFooter,
@@ -13,11 +12,10 @@ import {
 } from "@webiny/app-admin/components/SimpleForm";
 import { validation } from "@webiny/validation";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
 import { useTenantForm } from "./hooks/useTenantForm";
-import { Input } from "@webiny/ui/Input";
 import { TenantFormFields } from "~/components/TenantFormFields";
 import SingleImageUpload from "@webiny/app-admin/components/SingleImageUpload";
+import { Button, Grid, Input, OverlayLoader, Textarea } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-i18n/admin/locales/form");
 
@@ -29,11 +27,15 @@ const TenantForm = () => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<TenantIcon />}
                 title={t`Click on the left side list to display tenant details or create a...`}
                 action={
-                    <ButtonDefault data-testid="new-record-button" onClick={createTenant}>
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Tenant`}
-                    </ButtonDefault>
+                    <Button
+                        text={t`New Tenant`}
+                        icon={<AddIcon />}
+                        data-testid="new-record-button"
+                        onClick={createTenant}
+                    />
                 }
             />
         );
@@ -43,26 +45,26 @@ const TenantForm = () => {
         <Form data={{ ...tenant }} onSubmit={onSubmit}>
             {({ data, form, Bind }) => (
                 <SimpleForm data-testid={"tenant-form"}>
-                    {loading && <CircularProgress />}
+                    {loading && <OverlayLoader />}
                     <SimpleFormHeader title={data.name || t`New tenant`} />
                     <SimpleFormContent>
                         <Grid>
-                            <Cell span={12}>
+                            <Grid.Column span={12}>
                                 <Bind name="name" validators={validation.create("required")}>
-                                    <Input label={"Name"} />
+                                    <Input size="lg" label={"Name"} />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind name="description" validators={validation.create("required")}>
-                                    <Input label={"Description"} rows={4} />
+                                    <Textarea size={"lg"} label={"Description"} rows={4} />
                                 </Bind>
-                            </Cell>{" "}
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind name={"image"}>
                                     <SingleImageUpload label="Logo" />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind
                                     name="tags"
                                     validators={validation.create("required")}
@@ -70,13 +72,22 @@ const TenantForm = () => {
                                 >
                                     <Tags label={"Tags"} />
                                 </Bind>
-                            </Cell>
+                            </Grid.Column>
+                            <TenantFormFields />
                         </Grid>
-                        <TenantFormFields />
                     </SimpleFormContent>
                     <SimpleFormFooter>
-                        <ButtonDefault onClick={cancelEditing}>{t`Cancel`}</ButtonDefault>
-                        <ButtonPrimary onClick={form.submit}>{t`Save tenant`}</ButtonPrimary>
+                        <Button
+                            variant={"secondary"}
+                            text={t`Cancel`}
+                            onClick={cancelEditing}
+                            data-testid="tenant.new.form.button.cancel"
+                        />
+                        <Button
+                            text={t`Save`}
+                            data-testid="tenant.new.form.button.save"
+                            onClick={form.submit}
+                        />
                     </SimpleFormFooter>
                 </SimpleForm>
             )}
