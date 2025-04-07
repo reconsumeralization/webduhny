@@ -28,7 +28,7 @@ export const ScrollListWithSections = (props: ScrollListWithSectionsProps) => {
     return (
         <List
             {...props}
-            className={cn("wby-overflow-auto wby-h-[calc(100vh-235px)]", props.className)}
+            className={cn("wby-overflow-auto wby-h-[calc(100vh-165px)]", props.className)}
         >
             {props.children}
         </List>

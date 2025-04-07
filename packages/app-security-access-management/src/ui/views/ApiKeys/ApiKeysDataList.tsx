@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import orderBy from "lodash/orderBy";
+import { Button, Grid, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataList,
@@ -13,10 +15,7 @@ import {
     DataListModalOverlay,
     ListItemTextPrimary
 } from "@webiny/ui/List";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import { useRouter } from "@webiny/react-router";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
@@ -117,17 +116,19 @@ export const ApiKeysDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => {
+                                return {
+                                    label,
+                                    value
+                                };
                             })}
-                        </Select>
-                    </Cell>
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -139,14 +140,16 @@ export const ApiKeysDataList = () => {
 
     return (
         <DataList
-            title={t`API Keys`}
+            title={t`API keys`}
             actions={
-                <ButtonPrimary
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/api-keys?new=true")}
-                >
-                    {t`New API Key`}
-                </ButtonPrimary>
+                />
             }
             data={list}
             loading={listLoading || deleteLoading}
@@ -154,7 +157,7 @@ export const ApiKeysDataList = () => {
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search API keys`}
+                    inputPlaceholder={t`Search API keys...`}
                 />
             }
             modalOverlay={groupsDataListModalOverlay}

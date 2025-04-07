@@ -88,6 +88,7 @@ module.exports = {
             dark: "hsl(var(--border-neutral-dark))",
             dimmed: "hsl(var(--border-neutral-dimmed))",
             muted: "hsl(var(--border-neutral-muted))",
+            smoked: "hsl(var(--border-neutral-smoked))",
             strong: "hsl(var(--border-neutral-strong))",
             subtle: "hsl(var(--border-neutral-subtle))"
         },
@@ -377,7 +378,6 @@ module.exports = {
             DEFAULT: "hsl(var(--text-neutral-default))",
             dimmed: "hsl(var(--text-neutral-dimmed))",
             disabled: "hsl(var(--text-neutral-disabled))",
-            "disabled-negative": "hsl(var(--text-neutral-disabled-negative))",
             light: "hsl(var(--text-neutral-light))",
             muted: "hsl(var(--text-neutral-muted))",
             primary: "hsl(var(--text-neutral-primary))",
