@@ -19,7 +19,6 @@ module.exports = {
     theme: {
         container: {
             center: true,
-            padding: padding.xxl,
             screens: {
                 "2xl": "1200px",
                 xl: "1200px"
@@ -36,7 +35,6 @@ module.exports = {
 
         extend: {
             margin,
-            padding,
             zIndex
         }
     },
