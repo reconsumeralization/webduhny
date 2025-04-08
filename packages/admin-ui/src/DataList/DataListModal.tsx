@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PopoverPrimitive } from "~/Popover";
 import { withStaticProps } from "~/utils";
-import { SortIcon } from "~/DataList";
+import { SortIcon } from "~/DataList/index";
 import { Tooltip } from "~/Tooltip";
 
 interface DataListModalContentProps {
@@ -17,7 +17,7 @@ interface DataListModalTriggerProps {
 }
 
 const DataListModalTrigger = (props: DataListModalTriggerProps) => {
-    return <Tooltip trigger={<SortIcon {...props} size={"sm"} />} content={"Sort list"} />;
+    return <SortIcon {...props} size={"sm"} />;
 };
 
 interface DataListModalProps {
@@ -34,9 +34,10 @@ const BaseDataListModal = (props: DataListModalProps) => {
 
     return (
         <PopoverPrimitive open={open} onOpenChange={open => setOpen(open)}>
-            <PopoverPrimitive.Trigger asChild>
-                <span>{props.trigger}</span>
-            </PopoverPrimitive.Trigger>
+            <Tooltip
+                trigger={<PopoverPrimitive.Trigger>{props.trigger}</PopoverPrimitive.Trigger>}
+                content={"Sort list"}
+            />
             <PopoverPrimitive.Content onOpenAutoFocus={e => e.preventDefault()} align={"end"}>
                 <div className={"wby-bg-neutral-base wby-p-md"}>{props.content}</div>
             </PopoverPrimitive.Content>

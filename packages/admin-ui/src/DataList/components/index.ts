@@ -1,4 +1,3 @@
-export * from "./DataListModal";
 export * from "./Filters";
 export * from "./Loader";
 export * from "./MultiSelectAll";

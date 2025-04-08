@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import isEmpty from "lodash/isEmpty";
 import { Heading } from "~/Heading";
 import {
-    DataListModal,
     Filters,
     Loader,
     MultiSelectActions,
@@ -12,6 +11,7 @@ import {
     RefreshButton,
     Sorters
 } from "~/DataList/components";
+import { DataListModal } from "~/DataList/DataListModal";
 import { DataListProps } from "~/DataList/types";
 
 const defaultDataListProps = {
