@@ -1,6 +1,7 @@
 import * as aws from "@pulumi/aws";
 import type { PulumiApp } from "@webiny/pulumi";
-import { SyncSystemSQS } from "~/apps/syncSystem/SyncSystemSQS.js";
+import { SyncSystemSQS } from "../SyncSystemSQS.js";
+import { SyncSystemDynamoDb } from "../SyncSystemDynamoDb.js";
 
 interface ICreateSyncSystemLambdaPolicyParams {
     name: string;
@@ -10,6 +11,7 @@ interface ICreateSyncSystemLambdaPolicyParams {
 export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambdaPolicyParams) {
     const { app } = params;
     const sqs = app.getModule(SyncSystemSQS);
+    const dynamoDb = app.getModule(SyncSystemDynamoDb);
 
     const policy: aws.iam.PolicyDocument = {
         Version: "2012-10-17",
@@ -31,6 +33,66 @@ export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambd
                     sqs.output.arn.apply(arn => `${arn}`),
                     sqs.output.arn.apply(arn => `${arn}/*`)
                 ]
+            },
+            {
+                Sid: "PermissionForDynamoDb",
+                Effect: "Allow",
+                Action: [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:CreateBackup",
+                    "dynamodb:CreateTable",
+                    "dynamodb:CreateTableReplica",
+                    "dynamodb:DeleteBackup",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DeleteTable",
+                    "dynamodb:DeleteTableReplica",
+                    "dynamodb:DescribeBackup",
+                    "dynamodb:DescribeContinuousBackups",
+                    "dynamodb:DescribeContributorInsights",
+                    "dynamodb:DescribeExport",
+                    "dynamodb:DescribeKinesisStreamingDestination",
+                    "dynamodb:DescribeLimits",
+                    "dynamodb:DescribeReservedCapacity",
+                    "dynamodb:DescribeReservedCapacityOfferings",
+                    "dynamodb:DescribeStream",
+                    "dynamodb:DescribeTable",
+                    "dynamodb:DescribeTableReplicaAutoScaling",
+                    "dynamodb:DescribeTimeToLive",
+                    "dynamodb:DisableKinesisStreamingDestination",
+                    "dynamodb:EnableKinesisStreamingDestination",
+                    "dynamodb:ExportTableToPointInTime",
+                    "dynamodb:GetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:ListBackups",
+                    "dynamodb:ListContributorInsights",
+                    "dynamodb:ListExports",
+                    "dynamodb:ListStreams",
+                    "dynamodb:ListTables",
+                    "dynamodb:ListTagsOfResource",
+                    "dynamodb:PartiQLDelete",
+                    "dynamodb:PartiQLInsert",
+                    "dynamodb:PartiQLSelect",
+                    "dynamodb:PartiQLUpdate",
+                    "dynamodb:PurchaseReservedCapacityOfferings",
+                    "dynamodb:PutItem",
+                    "dynamodb:Query",
+                    "dynamodb:RestoreTableFromBackup",
+                    "dynamodb:RestoreTableToPointInTime",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateContinuousBackups",
+                    "dynamodb:UpdateContributorInsights",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:UpdateTable",
+                    "dynamodb:UpdateTableReplicaAutoScaling",
+                    "dynamodb:UpdateTimeToLive"
+                ],
+                Resource: [
+                    dynamoDb.output.arn.apply(arn => `${arn}`),
+                    dynamoDb.output.arn.apply(arn => `${arn}/*`)
+                ]
             }
         ]
     };
@@ -38,7 +100,7 @@ export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambd
     return app.addResource(aws.iam.Policy, {
         name: params.name,
         config: {
-            description: "This policy enables access to Dynamodb, S3 and Lambda.",
+            description: "This policy enables access to DynamoDb and SQS.",
             policy
         }
     });

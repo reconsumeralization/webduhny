@@ -8,7 +8,12 @@ export type {
 export type { StreamRecord } from "@aws-sdk/client-dynamodb-streams";
 
 export {
+    PutCommandInput,
+    PutCommandOutput,
+    GetCommandInput,
     GetCommandOutput,
+    DeleteCommandInput,
+    DeleteCommandOutput,
     BatchWriteCommand,
     PutCommand,
     GetCommand,

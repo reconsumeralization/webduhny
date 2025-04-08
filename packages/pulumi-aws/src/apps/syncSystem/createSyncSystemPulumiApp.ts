@@ -9,7 +9,7 @@ import { createRegionProvider } from "./createRegionProvider.js";
 import { APPS_SYNC_SYSTEM_PATH } from "./constants.js";
 import { SyncSystemEventBus } from "./SyncSystemEventBus.js";
 import { appWithRegion } from "./appWithRegion.js";
-import { attachDeployments } from "~/apps/syncSystem/deployments/attachDeployments.js";
+import { SyncSystemDynamoDb } from "~/apps/syncSystem/SyncSystemDynamoDb.js";
 
 export type SyncSystemPulumiApp = ReturnType<typeof createSyncSystemPulumiApp>;
 
@@ -101,21 +101,11 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
              * Sync System services.
              */
             const sqs = regionApp.addModule(SyncSystemSQS);
+            const dynamoDb = regionApp.addModule(SyncSystemDynamoDb);
 
             const lambda = regionApp.addModule(SyncSystemLambda);
             const { eventBusRule, eventBus, eventBusTarget, eventBusPolicy } =
                 regionApp.addModule(SyncSystemEventBus);
-            /**
-             * Connect sync system to the deployments.
-             */
-            const deployments = projectAppParams.deployments({
-                env: app.params.run.env
-            });
-
-            await attachDeployments({
-                app: regionApp,
-                deployments
-            });
 
             const output: PulumiOutput<IGetSyncSystemOutputResult> = {
                 /**
@@ -128,6 +118,13 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
                 sqsUrl: sqs.output.url,
                 sqsArn: sqs.output.arn,
                 sqsName: sqs.output.name,
+                /**
+                 * DynamoDB
+                 */
+                dynamoDbArn: dynamoDb.output.arn,
+                dynamoDbName: dynamoDb.output.name,
+                dynamoDbHashKey: dynamoDb.output.hashKey,
+                dynamoDbRangeKey: dynamoDb.output.rangeKey as pulumi.Output<string>,
                 /**
                  * SyncSystemLambda
                  */
@@ -142,7 +139,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
                 lambdaEventSourceMappingArn: lambda.eventSourceMapping.output.arn,
                 lambdaEventSourceMappingId: lambda.eventSourceMapping.output.id,
                 /**
-                 * We can safely cast as we that the property exists.
+                 * We can safely cast as we know that the property exists.
                  */
                 lambdaEventSourceMappingEventSourceArn: lambda.eventSourceMapping.output
                     .eventSourceArn as pulumi.Output<string>,
@@ -163,6 +160,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
             return {
                 region: region.provider,
                 sqs: sqs.output,
+                dynamoDb: dynamoDb.output,
                 eventBus: eventBus.output,
                 eventBusRule: eventBusRule.output,
                 eventBusTarget: eventBusTarget.output,

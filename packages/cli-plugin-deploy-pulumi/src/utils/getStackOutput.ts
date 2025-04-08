@@ -94,6 +94,7 @@ export interface IDefaultStackOutput extends IStackOutput {
     cognitoUserPoolPasswordPolicy: string;
     websocketApiUrl: string;
     fileManagerBucketId: string;
+    fileManagerBucketArn: string;
     primaryDynamodbTableArn: string;
     primaryDynamodbTableName: string;
     primaryDynamodbTableHashKey: string;
@@ -109,6 +110,8 @@ export interface IDefaultStackOutput extends IStackOutput {
     vpcSecurityGroupIds: string[] | undefined;
     elasticsearchDomainArn: string | undefined;
     elasticsearchDomainEndpoint: string | undefined;
+    elasticsearchDynamodbTableHashKey: string;
+    elasticsearchDynamodbTableRangeKey: string;
     elasticsearchDynamodbTableArn: string | undefined;
     elasticsearchDynamodbTableName: string | undefined;
     appStorage: string;

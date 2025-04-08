@@ -32,6 +32,13 @@ export interface IGetSyncSystemOutputResult extends IStackOutput {
     sqsArn: string;
     sqsName: string;
     /**
+     * DynamoDb
+     */
+    dynamoDbArn: string;
+    dynamoDbName: string;
+    dynamoDbHashKey: string;
+    dynamoDbRangeKey: string;
+    /**
      * SyncSystemLambda
      */
     lambdaArn: string;

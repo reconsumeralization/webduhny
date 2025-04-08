@@ -14,7 +14,8 @@ export const SyncSystemOutput = createAppModule({
             const keys = Object.keys(output || {});
 
             if (keys.length === 0) {
-                throw new Error("Sync System application is not deployed.");
+                console.log("Sync System application is not deployed.");
+                return null;
             }
             return output;
         });
