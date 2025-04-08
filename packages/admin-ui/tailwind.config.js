@@ -25,18 +25,12 @@ module.exports = {
             }
         },
 
-        fontSize,
-
         fontFamily: {
             sans: ["var(--font-sans)", ...fontFamily.sans],
             serif: ["var(--font-serif)", ...fontFamily.serif],
             mono: ["var(--font-mono)", ...fontFamily.mono]
         },
 
-        extend: {
-            margin,
-            zIndex
-        }
     },
 
     plugins: [require("tailwindcss-animate")]
