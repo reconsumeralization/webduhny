@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    // Colors.
+    /* Colors. */
     --color-warning-900: 45 96.6% 11.6%;
     --color-warning-800: 45 98.2% 21.6%;
     --color-warning-700: 45 100% 37.3%;
@@ -69,7 +69,7 @@
     --color-destructive-200: 0 96.4% 89.2%;
     --color-destructive-100: 0 100% 96.9%;
 
-    // Background colors.
+    /* Background colors. */
     --bg-destructive-default: var(--color-destructive-500);
     --bg-destructive-disabled: var(--color-destructive-300);
     --bg-destructive-muted: var(--color-destructive-400);
@@ -115,7 +115,7 @@
     --bg-warning-subtle: var(--color-warning-100);
     --bg-warning-xstrong: var(--color-warning-800);
 
-    // Border color.
+    /* Border color. */
     --border-accent-default: var(--color-primary-500);
     --border-accent-dimmed: var(--color-primary-200);
     --border-accent-subtle: var(--color-primary-100);
@@ -134,7 +134,7 @@
     --border-success-default: var(--color-success-500);
     --border-success-subtle: var(--color-success-200);
 
-    // Border radius.
+    /* Border radius. */
     --radius-3Xl: 36px;
     --radius-lg: 8px;
     --radius-md: 6px;
@@ -143,12 +143,12 @@
     --radius-xs: 2px;
     --radius-xxl: 24px;
 
-    // Border width.
+    /* Border width. */
     --border-width-md: 2px;
     --border-width-none: 0px;
     --border-width-sm: 1px;
 
-    // Fill.
+    /* Fill. */
     --fill-accent-default: var(--color-primary-500);
 
     --fill-destructive: var(--color-destructive-500);
@@ -163,14 +163,14 @@
 
     --fill-warning: var(--color-warning-500);
 
-    // Font.
+    /* Font. */
     --font-sans: "Inter", sans-serif;
 
-    // Font weight.
-    --font-weight-regular: 400;
+  // Font weight.
+  --font-weight-regular: 400;
     --font-weight-semibold: 600;
 
-    // Margin.
+    /* Margin. */
     --margin-lg: 24px;
     --margin-md: 16px;
     --margin-md-plus: 20px;
@@ -184,7 +184,7 @@
     --margin-xxl: 48px;
     --margin-xxs: 2px;
 
-    // Padding.
+    /* Padding. */
     --padding-lg: 24px;
     --padding-md: 16px;
     --padding-md-extra: 20px;
@@ -198,7 +198,7 @@
     --padding-xxl: 48px;
     --padding-xxs: 2px;
 
-    // Ring color.
+    /* Ring color. */
     --ring-primary-dimmed: var(--color-primary-200);
     --ring-primary-strong: var(--color-primary-500);
     --ring-primary-subtle: var(--color-primary-100);
@@ -207,12 +207,12 @@
     --ring-success-strong: var(--color-success-500);
     --ring-success-subtle: var(--color-success-100);
 
-    // Ring width.
+    /* Ring width. */
     --ring-width-lg: 4px;
     --ring-width-md: 2px;
     --ring-width-sm: 1px;
 
-    // Shadow.
+    /* Shadow. */
     --shadow-flat: 0px;
     --shadow-lg: 16px;
     --shadow-md: 8px;
@@ -220,7 +220,7 @@
     --shadow-xl: 24px;
     --shadow-xxl: 48px;
 
-    // Spacing.
+    /* Spacing. */
     --spacing-3xl: 64px;
     --spacing-lg: 24px;
     --spacing-md: 16px;
@@ -237,7 +237,7 @@
     --spacing-sidebar-collapsed: 44px;
     --spacing-sidebar-expanded: 256px;
 
-    // Text color.
+    /* Text color. */
     --text-accent-muted: var(--color-primary-300);
     --text-accent-primary: var(--color-primary-500);
     --text-accent-subtle: var(--color-primary-100);
@@ -258,7 +258,7 @@
     --text-success-primary: var(--color-success-500);
     --text-success-subtle: var(--color-success-200);
 
-    // Text size.
+    /* Text size. */
     --text-h1: var(--text-4xl);
     --text-h1-leading: var(--text-4xl-leading);
     --text-h1-tracking: var(--text-4xl-tracking);
@@ -316,12 +316,12 @@
 
 @layer base {
   body {
-    // Styles all text that was not rendered via the Text component.
+    /* Styles all text that was not rendered via the Text component. */
     @apply wby-font-sans wby-antialiased wby-text-md wby-text-neutral-primary;
   }
 
   a {
-    // Styles all links that were not rendered via the Link component.
+    /* Styles all links that were not rendered via the Link component. */
     @apply wby-text-accent-primary hover:wby-underline focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed wby-rounded-xs;
   }
 }
