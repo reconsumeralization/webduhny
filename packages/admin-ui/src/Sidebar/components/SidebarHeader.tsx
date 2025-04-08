@@ -2,8 +2,8 @@ import React from "react";
 import { Separator } from "~/Separator";
 import { IconButton } from "~/Button";
 import { useSidebar } from "./SidebarProvider";
-import { ReactComponent as PinSidebarIcon } from "@webiny/icons/push_pin.svg";
-import { ReactComponent as UnpinSidebarIcon } from "@webiny/icons/push_pin_off.svg";
+import { ReactComponent as PinSidebarIcon } from "@webiny/icons/chrome_reader_mode.svg";
+import { ReactComponent as UnpinSidebarIcon } from "@webiny/icons/width_full.svg";
 import { Tooltip } from "~/Tooltip";
 
 interface SidebarHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
@@ -25,7 +25,7 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                 >
                     <div
                         className={
-                            "wby-flex wby-items-center wby-gap-x-sm [&_a]:!wby-no-underline [&_a]:!wby-text-neutral-primary"
+                            "wby-flex wby-items-center wby-gap-x-sm [&_a]:!wby-no-underline [&_a]:!wby-text-neutral-primary wby-truncate"
                         }
                     >
                         <div className={"wby-flex wby-flex-shrink-0"}>{icon}</div>
@@ -36,19 +36,21 @@ const SidebarHeader = ({ title, icon }: SidebarHeaderProps) => {
                     </div>
 
                     {expanded && (
-                        <Tooltip
-                            side={"right"}
-                            trigger={
-                                <IconButton
-                                    icon={pinned ? <UnpinSidebarIcon /> : <PinSidebarIcon />}
-                                    data-sidebar="trigger"
-                                    size="xs"
-                                    variant={"ghost"}
-                                    onClick={togglePinned}
-                                />
-                            }
-                            content={pinned ? "Unpin" : "Pin"}
-                        />
+                        <div className={"wby-size-md"}>
+                            <Tooltip
+                                side={"right"}
+                                trigger={
+                                    <IconButton
+                                        icon={pinned ? <UnpinSidebarIcon /> : <PinSidebarIcon />}
+                                        data-sidebar="trigger"
+                                        size="xs"
+                                        variant={"ghost"}
+                                        onClick={togglePinned}
+                                    />
+                                }
+                                content={pinned ? "Unlock sidebar" : "Lock sidebar open"}
+                            />
+                        </div>
                     )}
                 </div>
             </div>
