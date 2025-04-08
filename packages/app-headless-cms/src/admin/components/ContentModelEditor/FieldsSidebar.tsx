@@ -22,7 +22,7 @@ const Field = (props: FieldProps) => {
                     data-testid={`cms-editor-fields-field-${type}`}
                     onDragStart={onFieldDragStart}
                     className={
-                        "wby-bg-neutral-base wby-rounded-xs wby-mb-sm wby-py-sm wby-px-md wby-cursor-grab last-of-type:wby-mb-none hover:wby-opacity-80 wby-transition-opacity"
+                        "wby-bg-neutral-base wby-rounded-sm wby-mb-sm wby-py-sm wby-px-md wby-cursor-grab last-of-type:wby-mb-none hover:wby-opacity-80 wby-transition-opacity"
                     }
                 >
                     <div className={"wby-flex wby-items-center wby-gap-md"}>

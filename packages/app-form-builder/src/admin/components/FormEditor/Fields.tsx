@@ -1,87 +1,44 @@
 import React from "react";
 import { useFormEditor } from "./Context";
 import { plugins } from "@webiny/plugins";
-import styled from "@emotion/styled";
-import { css } from "emotion";
-import { Icon } from "@webiny/ui/Icon";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
-import { ReactComponent as HandleIcon } from "./icons/round-drag_indicator-24px.svg";
+import { ReactComponent as HandleIcon } from "@webiny/icons/drag_indicator.svg";
 import Draggable from "./Draggable";
 import { FbBuilderFieldPlugin, FbEditorFieldGroup, FbFormModelField } from "~/types";
-
-const FieldContainer = styled("div")({
-    padding: "10px 15px",
-    marginBottom: 20,
-    display: "flex",
-    width: "100%",
-    backgroundColor: "var(--mdc-theme-on-background)",
-    borderRadius: 15,
-    boxSizing: "border-box",
-    cursor: "grab",
-    opacity: 1,
-    transition: "opacity 225ms",
-    "&:hover": {
-        opacity: 0.8
-    },
-    "&:last-child": {
-        marginBottom: 0
-    }
-});
-
-const FieldLabel = styled("div")({
-    textTransform: "uppercase",
-    lineHeight: "145%",
-    color: "var(--mdc-theme-on-surface)"
-});
-
-const FieldHandle = styled("div")({
-    marginRight: 15,
-    color: "var(--mdc-theme-on-surface)"
-});
-
-const accordionItem = css({
-    "&.webiny-ui-accordion-item": {
-        ".webiny-ui-accordion-item__list-item": {
-            height: "14px",
-            borderRadius: "15px !important",
-            padding: "15px 20px 14px 20px",
-            textTransform: "uppercase",
-            backgroundColor: "var(--mdc-theme-on-background)",
-            marginBottom: 20,
-            ".webiny-ui-accordion-item__title": {
-                ">div": {
-                    fontWeight: 400
-                }
-            }
-        },
-        ".webiny-ui-accordion-item__content": {
-            border: "1px solid var(--mdc-theme-on-background)",
-            borderRadius: 15,
-            marginBottom: 20
-        }
-    }
-});
+import { Accordion, cn, Heading, Icon } from "@webiny/admin-ui";
 
 interface FieldProps {
     onFieldDragStart: () => void;
     fieldType: Pick<FbFormModelField, "name" | "label">;
+    className?: string;
 }
-const Field = ({ onFieldDragStart, fieldType: { name, label } }: FieldProps) => {
+const Field = ({ onFieldDragStart, fieldType: { name, label }, className }: FieldProps) => {
     return (
         <Draggable beginDrag={{ ui: "field", name }}>
             {({ drag }) => (
                 <div
                     ref={drag}
-                    style={{ marginBottom: 10 }}
+                    className={cn(
+                        [
+                            "wby-bg-neutral-base wby-rounded-sm wby-mb-sm wby-px-md wby-py-sm-extra wby-cursor-grab last-of-type:wby-mb-none hover:wby-opacity-80 wby-transition-opacity"
+                        ],
+                        className
+                    )}
                     data-testid={`fb.editor.fields.field.${name}`}
                     onDragStart={onFieldDragStart}
                 >
-                    <FieldContainer>
-                        <FieldHandle>
-                            <Icon icon={<HandleIcon />} />
-                        </FieldHandle>
-                        <FieldLabel>{label}</FieldLabel>
-                    </FieldContainer>
+                    <div className={"wby-flex wby-items-center wby-gap-sm-extra"}>
+                        <div>
+                            <Icon
+                                icon={<HandleIcon />}
+                                label={"Handle"}
+                                size={"md"}
+                                color={"neutral-light"}
+                            />
+                        </div>
+                        <div>
+                            <Heading level={6}>{label}</Heading>
+                        </div>
+                    </div>
                 </div>
             )}
         </Draggable>
@@ -119,14 +76,9 @@ export const Fields = ({ onFieldDragStart }: FieldsProps) => {
                 onFieldDragStart={onFieldDragStart}
             />
 
-            <Accordion elevation={0}>
+            <Accordion variant={"container"} color={"neutral"}>
                 {getGroups().map(group => (
-                    <AccordionItem
-                        key={group.name}
-                        title={group.title}
-                        className={accordionItem}
-                        data-testid={group.name}
-                    >
+                    <Accordion.Item key={group.name} title={group.title} data-testid={group.name}>
                         <>
                             {!group.fields.length && (
                                 <span>No fields are available at the moment!</span>
@@ -137,11 +89,12 @@ export const Fields = ({ onFieldDragStart }: FieldsProps) => {
                                         key={fieldType.name}
                                         fieldType={fieldType}
                                         onFieldDragStart={onFieldDragStart}
+                                        className={"wby-bg-neutral-light"}
                                     />
                                 );
                             })}
                         </>
-                    </AccordionItem>
+                    </Accordion.Item>
                 ))}
             </Accordion>
         </React.Fragment>

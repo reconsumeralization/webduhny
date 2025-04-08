@@ -1,22 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { Input } from "@webiny/ui/Input";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { Typography } from "@webiny/ui/Typography";
 import { useFormEditor } from "~/admin/components/FormEditor";
 /**
  * Package react-hotkeyz does not have types.
  */
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
-import {
-    FormMeta,
-    FormName,
-    formNameWrapper,
-    FormVersion,
-    NameInputWrapper,
-    NameWrapper
-} from "./NameStyled";
 import { i18n } from "@webiny/app/i18n";
+import { Input, Tag, Text, Tooltip } from "@webiny/admin-ui";
 const t = i18n.namespace("FormEditor.Name");
 
 declare global {
@@ -76,42 +66,41 @@ export const Name = () => {
 
     if (editingEnabled) {
         return (
-            <NameInputWrapper>
-                <Input
-                    autoFocus={autoFocus}
-                    fullwidth
-                    value={localName}
-                    onChange={setLocalName}
-                    onBlur={saveTitle}
-                />
-            </NameInputWrapper>
+            <Input
+                autoFocus={autoFocus}
+                value={localName}
+                onChange={setLocalName}
+                onBlur={saveTitle}
+                variant={"ghost"}
+                size={"md"}
+            />
         );
     }
 
     return (
-        <NameWrapper>
-            <FormMeta>
-                <Typography use={"overline"}>{`status: ${
-                    state.data.published ? t`published` : t`draft`
-                }`}</Typography>
-            </FormMeta>
-            <div style={{ width: "100%", display: "flex" }}>
-                <Tooltip
-                    className={formNameWrapper}
-                    placement={"bottom"}
-                    content={<span>{t`rename`}</span>}
-                >
-                    <FormName
-                        data-testid="fb-editor-form-title"
-                        onClick={() => {
-                            startEditing();
-                        }}
+        <div className={"wby-flex wby-items-center wby-gap-sm"}>
+            <Tooltip
+                side={"bottom"}
+                content={<span>{t`Rename`}</span>}
+                trigger={
+                    <Text
+                        size={"lg"}
+                        className={
+                            "wby-p-xs wby-border-sm wby-border-neutral-base wby-rounded-md hover:wby-border-neutral-muted"
+                        }
+                        data-testid="cms-editor-model-title"
+                        onClick={startEditing}
                     >
                         {state.data.name}
-                    </FormName>
-                </Tooltip>
-                <FormVersion>{`(v${state.data.version})`}</FormVersion>
-            </div>
-        </NameWrapper>
+                    </Text>
+                }
+            />
+            <Tag
+                content={`${state.data.published ? t`Published` : t`Draft`} (v${
+                    state.data.version
+                })`}
+                variant={state.data.published ? "success" : "neutral-base"}
+            />
+        </div>
     );
 };

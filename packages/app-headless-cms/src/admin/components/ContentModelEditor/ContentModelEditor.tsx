@@ -4,6 +4,8 @@ import { Prompt } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
 import { Heading, OverlayLoader, Separator, Tabs, Text, TimeAgo } from "@webiny/admin-ui";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as PreviewIcon } from "@webiny/icons/fullscreen.svg";
 import { FieldsSidebar } from "./FieldsSidebar";
 import { FieldEditor } from "../FieldEditor";
 import { PreviewTab } from "./PreviewTab";
@@ -28,7 +30,7 @@ interface OnChangeParams {
 export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
     const { data, setData, isPristine, contentModel } = useModelEditor();
 
-    const [activeTabIndex, setActiveTabIndex] = useState<string>("edit");
+    const [activeTab, setActiveTab] = useState<string>("edit");
 
     const onChange = ({ fields, layout }: OnChangeParams) => {
         setData(data => ({ ...data, fields, layout }));
@@ -50,14 +52,15 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                     <LeftPanel span={4} className={"wby-bg-neutral-light"}>
                         <div className={"wby-px-lg wby-py-md"}>
                             <Text
+                                as={"div"}
                                 className={
-                                    "wby-text-accent-primary wby-uppercase wby-font-semibold"
+                                    "wby-uppercase wby-font-semibold wby-text-neutral-xstrong"
                                 }
                             >
                                 {"Fields"}
                             </Text>
                         </div>
-                        <Separator margin={"none"} />
+                        <Separator />
                         <div
                             className={
                                 "wby-px-lg wby-py-md wby-h-[calc(100vh-120px)] wby-overflow-y-auto"
@@ -65,7 +68,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                         >
                             <FieldsSidebar
                                 onFieldDragStart={() => {
-                                    setActiveTabIndex("edit");
+                                    setActiveTab("edit");
                                 }}
                             />
                         </div>
@@ -84,13 +87,14 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                             size={"md"}
                             spacing={"xl"}
                             separator={true}
-                            value={String(activeTabIndex)}
-                            onValueChange={setActiveTabIndex}
+                            value={String(activeTab)}
+                            onValueChange={setActiveTab}
                             tabs={[
                                 <Tabs.Tab
                                     key={"edit"}
                                     value={"edit"}
                                     trigger={"Edit"}
+                                    icon={<EditIcon />}
                                     data-testid={"cms.editor.tab.edit"}
                                     content={
                                         <div className={"wby-relative"}>
@@ -106,13 +110,14 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                                     key={"preview"}
                                     value={"preview"}
                                     trigger={"Preview"}
+                                    icon={<PreviewIcon />}
                                     data-testid={"cms.editor.tab.preview"}
                                     content={
                                         <ContentEntryEditorWithConfig>
                                             <ContentEntriesProvider contentModel={data}>
                                                 <ContentEntryProvider readonly={true}>
                                                     <PreviewTab
-                                                        activeTab={activeTabIndex === "preview"}
+                                                        activeTab={activeTab === "preview"}
                                                     />
                                                 </ContentEntryProvider>
                                             </ContentEntriesProvider>

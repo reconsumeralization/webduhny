@@ -12,6 +12,7 @@ const BackButton = React.memo(() => {
             onClick={() => history.push(`/cms/content-models`)}
             icon={<BackIcon />}
             variant="ghost"
+            iconSize={"lg"}
         />
     );
 });

@@ -1,6 +1,5 @@
 import React from "react";
 import BackButton from "./BackButton";
-import Divider from "./Divider";
 import PublishFormButton from "./PublishFormButton";
 import { Name } from "./Name";
 import { FormSettingsButton } from "./FormSettings";
@@ -12,13 +11,6 @@ export default [
         type: "form-editor-default-bar-right",
         render() {
             return <Revisions />;
-        }
-    },
-    {
-        name: "form-editor-default-bar-right-revisions-divider",
-        type: "form-editor-default-bar-right",
-        render() {
-            return <Divider />;
         }
     },
     {
@@ -41,13 +33,6 @@ export default [
         type: "form-editor-default-bar-left",
         render() {
             return <BackButton />;
-        }
-    },
-    {
-        name: "form-editor-default-bar-left-divider",
-        type: "form-editor-default-bar-left",
-        render() {
-            return <Divider />;
         }
     },
     {

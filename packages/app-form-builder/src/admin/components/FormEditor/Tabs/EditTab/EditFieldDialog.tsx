@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import styled from "@emotion/styled";
 import {
     Dialog,
     DialogActions,
@@ -19,17 +18,9 @@ import FieldTypeSelector from "./EditFieldDialog/FieldTypeSelector";
 import { i18n } from "@webiny/app/i18n";
 import { useFormEditor } from "../../Context";
 import { FbBuilderFieldPlugin, FbFormModelField } from "~/types";
+import { Grid } from "@webiny/admin-ui";
 
 const t = i18n.namespace("FormEditor.EditFieldDialog");
-
-const FbFormModelFieldList = styled("div")({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
-    paddingTop: 25,
-    backgroundColor: "var(--mdc-theme-background) !important"
-});
 
 interface EditFieldDialogProps {
     field: FbFormModelField | null;
@@ -111,32 +102,33 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
                 render = (
                     <>
                         <DialogContent>
-                            <FbFormModelFieldList>
+                            <Grid>
                                 {plugins
                                     .byType<FbBuilderFieldPlugin>("form-editor-field-type")
                                     .filter(pl => !pl.field.group)
                                     .map(pl => (
-                                        <FieldTypeSelector
-                                            key={pl.name}
-                                            fieldType={pl.field}
-                                            onClick={() => {
-                                                const newCurrent = pl.field.createField();
-                                                if (current) {
-                                                    // User edited existing field, that's why we still want to
-                                                    // keep a couple of previous values.
-                                                    const { _id, label, fieldId, helpText } =
-                                                        current;
-                                                    newCurrent._id = _id;
-                                                    newCurrent.label = label;
-                                                    newCurrent.fieldId = fieldId;
-                                                    newCurrent.helpText = helpText;
-                                                }
-                                                setCurrent(newCurrent);
-                                                setScreen("fieldOptions");
-                                            }}
-                                        />
+                                        <Grid.Column span={6} key={pl.name}>
+                                            <FieldTypeSelector
+                                                fieldType={pl.field}
+                                                onClick={() => {
+                                                    const newCurrent = pl.field.createField();
+                                                    if (current) {
+                                                        // User edited existing field, that's why we still want to
+                                                        // keep a couple of previous values.
+                                                        const { _id, label, fieldId, helpText } =
+                                                            current;
+                                                        newCurrent._id = _id;
+                                                        newCurrent.label = label;
+                                                        newCurrent.fieldId = fieldId;
+                                                        newCurrent.helpText = helpText;
+                                                    }
+                                                    setCurrent(newCurrent);
+                                                    setScreen("fieldOptions");
+                                                }}
+                                            />
+                                        </Grid.Column>
                                     ))}
-                            </FbFormModelFieldList>
+                            </Grid>
                         </DialogContent>
                         <DialogActions>
                             <DialogCancel onClick={onClose}>{t`Cancel`}</DialogCancel>
@@ -147,7 +139,12 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
     }
 
     return (
-        <Dialog preventOutsideDismiss={true} open={!!current} onClose={onClose}>
+        <Dialog
+            preventOutsideDismiss={true}
+            open={!!current}
+            onClose={onClose}
+            style={{ width: "800px" }}
+        >
             <DialogTitle>{headerTitle}</DialogTitle>
             {render}
         </Dialog>
