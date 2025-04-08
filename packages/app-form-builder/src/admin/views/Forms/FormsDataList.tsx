@@ -183,7 +183,6 @@ const FormsDataList = (props: FormsDataListProps) => {
                     value={sort}
                     onChange={setSort}
                     label={t`Sort by`}
-                    description={"Sort forms by"}
                     options={SORTERS.map(({ label, sorter: value }) => ({
                         label,
                         value
@@ -223,7 +222,7 @@ const FormsDataList = (props: FormsDataListProps) => {
                 <OptionsMenu
                     items={[
                         {
-                            label: "Import Forms",
+                            label: "Import forms",
                             icon: <FileUploadIcon />,
                             onClick: showImportDialog,
                             "data-testid": "import-form-button"

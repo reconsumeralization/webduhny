@@ -1,18 +1,14 @@
 import * as React from "react";
 import { renderPlugins } from "@webiny/app/plugins";
-import { Tab } from "@webiny/ui/Tabs";
-import styled from "@emotion/styled";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { FbFormDetailsPluginType, FbFormDetailsSubmissionsPlugin } from "../../../../types";
 import { i18n } from "@webiny/app/i18n";
 import { FormSubmissionsOverview } from "./FormSubmissionsOverview";
 import { FormSubmissionsList } from "./FormSubmissionsList";
+import { OverlayLoader, Tabs } from "@webiny/admin-ui";
+import { ReactComponent as GradingIcon } from "@webiny/icons/grading.svg";
+import { SimpleForm } from "@webiny/app-admin/components/SimpleForm";
 
 const t = i18n.namespace("FormsApp.FormDetails.PreviewContent");
-
-const RenderBlock = styled("div")({
-    padding: 25
-});
 
 export default [
     {
@@ -40,21 +36,24 @@ export default [
             }
 
             return (
-                <Tab
-                    label={t`Submissions`}
+                <Tabs.Tab
+                    value={"submissions"}
+                    trigger={t`Submissions`}
+                    icon={<GradingIcon />}
+                    content={
+                        <div className={"wby-relative"}>
+                            {loading && <OverlayLoader />}
+                            <SimpleForm size={"full"} className={"wby-p-none"}>
+                                {form &&
+                                    renderPlugins("forms-form-details-submissions", {
+                                        form
+                                    })}
+                            </SimpleForm>
+                        </div>
+                    }
                     disabled={loading}
                     data-testid={"fb.form-details.tab.submissions"}
-                >
-                    <RenderBlock>
-                        <div style={{ position: "relative" }}>
-                            {loading && <CircularProgress />}
-                            {form &&
-                                renderPlugins("forms-form-details-submissions", {
-                                    form
-                                })}
-                        </div>
-                    </RenderBlock>
-                </Tab>
+                />
             );
         }
     } as FbFormDetailsPluginType,
