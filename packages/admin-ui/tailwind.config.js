@@ -5,24 +5,6 @@ const webinyPackagesGlob = `${project.root}/node_modules/@webiny/app*/**/*.{js,t
 const webinyAdminUiPackageGlob = `${project.root}/node_modules/@webiny/admin-ui/**/*.{js,ts,tsx}`;
 const webinyUiPackageGlob = `${project.root}/node_modules/@webiny/ui/**/*.{js,ts,tsx}`;
 const adminAppSourceGlob = `${project.root}/apps/admin`;
-const {
-    animation,
-    backgroundColor,
-    borderColor,
-    borderRadius,
-    borderWidth,
-    fill,
-    fontSize,
-    keyframes,
-    margin,
-    padding,
-    ringColor,
-    ringWidth,
-    shadow,
-    spacing,
-    textColor,
-    zIndex
-} = require("./tailwind.config.theme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -44,15 +26,7 @@ module.exports = {
             }
         },
 
-        backgroundColor,
-        borderColor,
-        borderWidth,
-        fill,
         fontSize,
-        ringColor,
-        ringWidth,
-        shadow,
-        textColor,
 
         fontFamily: {
             sans: ["var(--font-sans)", ...fontFamily.sans],
@@ -61,12 +35,8 @@ module.exports = {
         },
 
         extend: {
-            animation,
-            borderRadius,
-            keyframes,
             margin,
             padding,
-            spacing,
             zIndex
         }
     },
