@@ -29,7 +29,7 @@ const EmptyTemplateDetails = ({ onCreate, canCreate }: EmptyTemplateDetailsProps
     return (
         <EmptyView
             icon={<TableIcon />}
-            title={t`Click on the left side list to display page details {message} `({
+            title={t`Click on the left side list to display template details {message} `({
                 message: canCreate ? "or create a..." : ""
             })}
             action={
