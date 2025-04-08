@@ -26,6 +26,7 @@ import { getEnvVariableWebinyVariant } from "~/env/variant";
 import { getEnvVariableWebinyEnv } from "~/env/env";
 import { getEnvVariableWebinyProjectName } from "~/env/projectName";
 import { getEnvVariableAwsRegion } from "~/env/awsRegion";
+import { attachSyncSystem } from "../syncSystem/api/index.js";
 import { getAwsAccountId } from "~/apps/awsUtils";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
@@ -303,6 +304,14 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
                         usedUrl: "apiUrl"
                     }
                 });
+            });
+            /**
+             * We need to attach the Sync System if it exists.
+             */
+            attachSyncSystem({
+                app,
+                core,
+                env: app.params.run.env
             });
 
             tagResources({
