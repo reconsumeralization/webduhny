@@ -111,6 +111,10 @@ DrawerBase.displayName = "Drawer";
 
 const DecoratableDrawer = makeDecoratable("Drawer", DrawerBase);
 
+interface DrawerProps {
+    info?: false | JSX.Element;
+}
+
 const Drawer = withStaticProps(DecoratableDrawer, {
     ConfirmButton,
     CancelButton,

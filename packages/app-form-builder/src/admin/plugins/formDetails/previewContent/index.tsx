@@ -29,23 +29,25 @@ const PreviewContentTab = (props: FbFormDetailsPluginRenderParams) => {
     }
 
     return (
-        <div className={"wby-relative"}>
-            {props.loading && <OverlayLoader />}
-            <SimpleForm size={"full"} className={"wby-p-none "}>
-                <SimpleFormHeader title={revision.name}>
-                    <Header
-                        {...props}
-                        revision={revision}
-                        selectRevision={revision => setRevisionId(revision.id)}
-                    />
-                </SimpleFormHeader>
-                <SimpleFormContent
-                    className={"wby-p-0 wby-border-b-sm wby-rounded-b-3xl wby-overflow-hidden"}
-                >
-                    <FormPreview revision={revision} form={props.form} />
-                </SimpleFormContent>
-            </SimpleForm>
-        </div>
+        <SimpleForm size={"full"} className={"wby-p-none "}>
+            <SimpleFormHeader title={revision.name}>
+                <Header
+                    {...props}
+                    revision={revision}
+                    selectRevision={revision => setRevisionId(revision.id)}
+                />
+            </SimpleFormHeader>
+            <SimpleFormContent
+                className={"wby-p-0 wby-border-b-sm wby-rounded-b-3xl wby-overflow-hidden"}
+            >
+                {props.loading && (
+                    <div className={"wby-relative wby-w-full"}>
+                        <OverlayLoader text={"Loading preview..."} />
+                    </div>
+                )}
+                <FormPreview revision={revision} form={props.form} />
+            </SimpleFormContent>
+        </SimpleForm>
     );
 };
 

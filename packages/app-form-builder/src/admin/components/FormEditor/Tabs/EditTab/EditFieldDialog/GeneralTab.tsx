@@ -87,8 +87,8 @@ const GeneralTab = ({ field, form }: GeneralTabProps) => {
                         />
                     </Bind>
                 </Grid.Column>
+                <>{additionalSettings}</>
             </Grid>
-            {additionalSettings}
         </>
     );
 };

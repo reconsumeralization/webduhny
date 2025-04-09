@@ -14,9 +14,10 @@ export const RevisionsList = ({ form, revisions, loading }: RevisionsListProps) 
     if (!form) {
         return null;
     }
+
     return (
         <div className={"wby-relative"}>
-            {loading && <OverlayLoader />}
+            {loading && <OverlayLoader text="Loading revisions..." />}
             <SimpleForm size={"full"} className={"wby-p-none"}>
                 <List data-testid={"fb.form-details.tab.revisions.content-list"}>
                     {Array.isArray(revisions)

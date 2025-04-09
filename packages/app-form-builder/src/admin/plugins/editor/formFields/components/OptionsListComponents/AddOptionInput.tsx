@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "@webiny/ui/Input";
 import trim from "lodash/trim";
+import { Input } from "@webiny/admin-ui";
 import { BindComponentRenderPropValidation, Form } from "@webiny/form";
 import { FieldOption } from "~/admin/plugins/editor/formFields/components/types";
 
@@ -34,6 +34,7 @@ const AddOptionInput = ({ options, onAdd, validation: optionsValidation }: AddOp
                                 : optionsValidation;
                         return (
                             <Input
+                                size={"lg"}
                                 validation={validation}
                                 value={value}
                                 onChange={onChange}

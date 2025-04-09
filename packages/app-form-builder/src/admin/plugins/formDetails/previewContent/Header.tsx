@@ -12,7 +12,7 @@ const Header = (props: HeaderProps) => {
     return (
         <>
             {revision && (
-                <div className={"wby-flex wby-justify-end wby-items-center wby-gap-sm"}>
+                <div className={"wby-flex wby-justify-end wby-items-center wby-gap-sm wby-h-full"}>
                     <RevisionSelector {...props} />
                     <EditRevision {...props} />
                     <PublishRevision {...props} />
