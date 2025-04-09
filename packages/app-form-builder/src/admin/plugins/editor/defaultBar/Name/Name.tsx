@@ -88,7 +88,7 @@ export const Name = () => {
                         className={
                             "wby-p-xs wby-border-sm wby-border-neutral-base wby-rounded-md hover:wby-border-neutral-muted"
                         }
-                        data-testid="cms-editor-model-title"
+                        data-testid="fb-editor-form-title"
                         onClick={startEditing}
                     >
                         {state.data.name}

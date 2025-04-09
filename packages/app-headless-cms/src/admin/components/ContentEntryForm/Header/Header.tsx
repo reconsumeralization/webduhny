@@ -15,7 +15,7 @@ export const Header = makeDecoratable("ContentEntryFormHeader", () => {
     return (
         <div
             className={
-                "wby-flex wby-items-center wby-justify-between wby-border-b-sm wby-border-neutral-dimmed wby-pb-md wby-mb-md"
+                "wby-flex wby-items-center wby-justify-between wby-gap-sm wby-border-b-sm wby-border-neutral-dimmed wby-pb-md wby-mb-md"
             }
             id="headerToolbarGrid"
         >
