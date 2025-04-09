@@ -344,6 +344,7 @@ module.exports = {
     spacing: {
         "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
         "sidebar-expanded": "var(--spacing-sidebar-expanded)",
+        "headerbar": "var(--spacing-headerbar)",
         "3xl": "var(--spacing-3xl)",
         lg: "var(--spacing-lg)",
         md: "var(--spacing-md)",

@@ -12,18 +12,6 @@ const ToolbarDrawerContainer = styled("div")({
     zIndex: 2
 });
 
-const ToolbarContainer = styled("div")({
-    position: "fixed",
-    display: "inline-block",
-    padding: "2px 1px 2px 3px",
-    width: 50,
-    top: 64,
-    height: "calc(100vh - 68px)",
-    backgroundColor: "var(--mdc-theme-surface)",
-    boxShadow: "1px 0px 5px 0px var(--mdc-theme-on-background)",
-    zIndex: 3
-});
-
 const ToolbarActions = styled("div")({
     position: "relative",
     display: "flex",
@@ -44,16 +32,21 @@ export const Layout = () => {
                     </DrawerProvider>
                 ))}
             </ToolbarDrawerContainer>
-            <ToolbarContainer data-role={"toolbar-layout"}>
+            <div
+                data-role={"toolbar-layout"}
+                className={
+                    "wby-fixed wby-top-headerbar wby-left-0 wby-p-xs wby-h-[calc(100vh-theme(height.headerbar))] wby-bg-neutral-base"
+                }
+            >
                 <ToolbarActions data-role={"toolbar-actions"}>
-                    <div>
+                    <div className={"wby-flex wby-flex-col"}>
                         <Toolbar.Elements group={"top"} />
                     </div>
-                    <div>
+                    <div className={"wby-flex wby-flex-col"}>
                         <Toolbar.Elements group={"bottom"} />
                     </div>
                 </ToolbarActions>
-            </ToolbarContainer>
+            </div>
         </>
     );
 };

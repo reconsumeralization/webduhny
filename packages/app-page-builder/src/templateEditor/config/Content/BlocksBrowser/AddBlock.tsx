@@ -1,23 +1,16 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { ButtonFloating } from "@webiny/ui/Button";
+import { Button } from "@webiny/admin-ui";
 import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { useBlocksBrowser } from "./useBlocksBrowser";
-
-const SIDEBAR_WIDTH = 300;
-const BottomRight = styled("div")({
-    position: "fixed",
-    zIndex: 101,
-    bottom: 20,
-    right: 20 + SIDEBAR_WIDTH
-});
 
 export const AddBlock = () => {
     const { openBrowser } = useBlocksBrowser();
 
     return (
-        <BottomRight>
-            <ButtonFloating onClick={openBrowser} icon={<AddIcon />} />
-        </BottomRight>
+        <Button
+            className={"wby-fixed wby-z-101 wby-bottom-20 wby-right-[calc(320px)]"}
+            onClick={openBrowser}
+            icon={<AddIcon />}
+        />
     );
 };

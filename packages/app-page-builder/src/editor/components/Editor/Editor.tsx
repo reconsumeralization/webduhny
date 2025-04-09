@@ -74,6 +74,7 @@ export const Editor = () => {
     }, []);
 
     const classes = {
+        "wby-bg-neutral-dimmed": true,
         "pb-editor": true,
         "pb-editor-dragging": isDragging,
         "pb-editor-resizing": isResizing
