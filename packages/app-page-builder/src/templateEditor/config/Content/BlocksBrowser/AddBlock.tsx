@@ -8,7 +8,8 @@ export const AddBlock = () => {
 
     return (
         <Button
-            className={"wby-fixed wby-z-101 wby-bottom-20 wby-right-[calc(320px)]"}
+            size={"xl"}
+            className={"wby-fixed wby-z-101 wby-bottom-[20px] wby-right-[calc(340px)]"}
             onClick={openBrowser}
             icon={<AddIcon />}
         />
