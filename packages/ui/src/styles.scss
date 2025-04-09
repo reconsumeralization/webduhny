@@ -4,7 +4,7 @@
 // Refer to the updated design system and theming approach from @webiny/admin-ui for current styling practices.
 
 :root {
-  --mdc-theme-primary: var(hsl(--color-primary-500));
+  --mdc-theme-primary: hsl(var(--color-primary-500));
   --mdc-theme-on-primary: hsl(var(--color-neutral-0));
   --mdc-theme-secondary: hsl(var(--color-secondary-500));
   --mdc-theme-on-secondary: hsl(var(--color-neutral-0));
