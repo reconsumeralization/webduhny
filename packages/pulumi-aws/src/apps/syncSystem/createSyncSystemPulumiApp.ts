@@ -1,14 +1,12 @@
 import * as pulumi from "@pulumi/pulumi";
-import { Region } from "@pulumi/aws";
 import { createPulumiApp, PulumiAppParam } from "@webiny/pulumi";
 import { DEFAULT_PROD_ENV_NAMES } from "~/constants.js";
 import { SyncSystemSQS } from "./SyncSystemSQS.js";
 import { SyncSystemLambda } from "./SyncSystemLambda.js";
-import type { IDeployment, IGetSyncSystemOutputResult, PulumiOutput } from "./types.js";
-import { createRegionProvider } from "./createRegionProvider.js";
+import type { IGetSyncSystemOutputResult, PulumiOutput } from "./types.js";
 import { APPS_SYNC_SYSTEM_PATH } from "./constants.js";
 import { SyncSystemEventBus } from "./SyncSystemEventBus.js";
-import { appWithRegion } from "./appWithRegion.js";
+import { customApp } from "./customApp.js";
 import { SyncSystemDynamoDb } from "~/apps/syncSystem/SyncSystemDynamoDb.js";
 
 export type SyncSystemPulumiApp = ReturnType<typeof createSyncSystemPulumiApp>;
@@ -23,14 +21,6 @@ export interface OpenSearchConfig {
     domainName: string;
     indexPrefix: string;
     sharedIndexes: boolean;
-}
-
-export interface IDeploymentsCallableParams {
-    env: string;
-}
-
-export interface IDeploymentsCallable {
-    (params: IDeploymentsCallableParams): [IDeployment, IDeployment];
 }
 
 export interface CreateSyncSystemPulumiAppParams {
@@ -75,8 +65,6 @@ export interface CreateSyncSystemPulumiAppParams {
      * https://www.webiny.com/docs/architecture/deployment-modes/production
      */
     productionEnvironments?: PulumiAppParam<string[]>;
-
-    deployments: IDeploymentsCallable;
 }
 
 export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulumiAppParams) {
@@ -85,16 +73,22 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
         path: APPS_SYNC_SYSTEM_PATH,
         config: projectAppParams,
         program: async app => {
-            const region = createRegionProvider({
-                region: Region.USEast1
-            });
+            const pulumiResourceNamePrefix = app.getParam(
+                projectAppParams.pulumiResourceNamePrefix
+            );
+            if (pulumiResourceNamePrefix) {
+                app.onResource(resource => {
+                    if (!resource.name.startsWith(pulumiResourceNamePrefix)) {
+                        resource.name = `${pulumiResourceNamePrefix}${resource.name}`;
+                    }
+                });
+            }
             const productionEnvironments =
                 app.params.create.productionEnvironments || DEFAULT_PROD_ENV_NAMES;
             const isProduction = productionEnvironments.includes(app.params.run.env);
             const protect = app.getParam(projectAppParams.protect) ?? isProduction;
-            const regionApp = appWithRegion({
+            const regionApp = customApp({
                 app,
-                region,
                 protect
             });
             /**
@@ -111,7 +105,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
                 /**
                  * Region provider.
                  */
-                region: pulumi.output(region.name),
+                region: pulumi.output(process.env.AWS_REGION as string),
                 /**
                  * SyncSystemSQS
                  */
@@ -158,7 +152,6 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
             app.addOutputs(output);
 
             return {
-                region: region.provider,
                 sqs: sqs.output,
                 dynamoDb: dynamoDb.output,
                 eventBus: eventBus.output,

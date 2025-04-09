@@ -6,9 +6,10 @@ import type { PulumiApp } from "@webiny/pulumi";
 import type { IGetSyncSystemOutputResult } from "~/apps/syncSystem/types.js";
 import { createSyncResourceName } from "~/apps/syncSystem/createSyncResourceName.js";
 import type { CoreOutput } from "~/apps/common/CoreOutput.js";
+import type { WithServiceManifest } from "~/utils/withServiceManifest.js";
 
 export interface IAttachDynamoDbPermissionsParams {
-    app: PulumiApp;
+    app: PulumiApp & WithServiceManifest;
     syncSystem: IGetSyncSystemOutputResult;
     core: CoreOutput;
 }
@@ -28,6 +29,7 @@ export const attachDynamoDbPermissions = (params: IAttachDynamoDbPermissionsPara
                 Version: "2012-10-17",
                 Statement: [
                     {
+                        Sid: "PermissionForLambdaToDynamoDb",
                         Effect: "Allow",
                         Action: [
                             "dynamodb:BatchGetItem",
@@ -82,8 +84,8 @@ export const attachDynamoDbPermissions = (params: IAttachDynamoDbPermissionsPara
                             "dynamodb:UpdateTimeToLive"
                         ],
                         Resource: [
-                            `${core.primaryDynamodbTableArn}`,
-                            `${core.primaryDynamodbTableArn}/*`
+                            core.primaryDynamodbTableArn.apply(arn => arn),
+                            core.primaryDynamodbTableArn.apply(arn => `${arn}/*`)
                         ]
                     }
                 ]

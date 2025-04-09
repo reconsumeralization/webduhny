@@ -1,20 +1,5 @@
-import type { Provider } from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import type { IStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils/index.js";
-
-export interface IDeployment {
-    /**
-     * Name by this deployment will be accessible in the Pulumi program.
-     */
-    name: string;
-    env: string;
-    variant: string | undefined;
-}
-
-export interface IRegionProvider {
-    provider: Provider;
-    name: string;
-}
 
 export type PulumiOutput<T> = {
     [K in keyof T]: pulumi.Output<T[K]>;

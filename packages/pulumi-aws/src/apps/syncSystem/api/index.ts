@@ -5,9 +5,10 @@ import { attachS3Permissions } from "~/apps/syncSystem/api/attachS3Permissions.j
 import { addServiceManifest } from "~/apps/syncSystem/api/addServiceManifest.js";
 import type { PulumiApp } from "@webiny/pulumi/types";
 import type { CoreOutput } from "~/apps/common/CoreOutput.js";
+import type { WithServiceManifest } from "~/utils/withServiceManifest.js";
 
 export interface IAttachSyncSystemParams {
-    app: PulumiApp;
+    app: PulumiApp & WithServiceManifest;
     env: string;
     core: CoreOutput;
 }
@@ -23,6 +24,7 @@ export const attachSyncSystem = (params: IAttachSyncSystemParams) => {
      * At this point, if sync system was deployed, and it is not anymore, all resources after this check will disappear.
      */
     if (!syncSystem) {
+        console.log(`No Sync System deployed in env "${env}". Skipping...`);
         return;
     }
     /**
@@ -50,7 +52,6 @@ export const attachSyncSystem = (params: IAttachSyncSystemParams) => {
      */
     addServiceManifest({
         app,
-        syncSystem,
-        core
+        syncSystem
     });
 };

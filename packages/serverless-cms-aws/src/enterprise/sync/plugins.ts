@@ -22,17 +22,20 @@ const getStacks = async (params: IGetStacksParams) => {
             syncSystem: null
         };
     }
-    const api = getStackOutput({
+    const core = getStackOutput({
         env,
         variant,
-        folder: "apps/api"
+        folder: "apps/core"
     });
-    if (!api) {
-        throw new Error("Could not retrieve API stack output.");
+    if (!core) {
+        return {
+            syncSystem,
+            core: null
+        };
     }
     return {
         syncSystem,
-        api
+        core
     };
 };
 /**
@@ -45,8 +48,8 @@ export const createSyncSystemPlugins = (): Plugin[] => {
          * This way Sync System will know which deployments exist.
          */
         createAfterDeployPlugin(async ({ env, variant }) => {
-            const { syncSystem, api } = await getStacks({ env, variant });
-            if (!syncSystem) {
+            const { syncSystem, core } = await getStacks({ env, variant });
+            if (!syncSystem || !core) {
                 return;
             }
             const client = getDocumentClient({
@@ -57,20 +60,26 @@ export const createSyncSystemPlugins = (): Plugin[] => {
                 throw new Error("Sync System DynamoDB table name is not defined.");
             }
 
+            const item = {
+                region: core.region,
+                s3Id: core.fileManagerBucketId,
+                s3Arn: core.fileManagerBucketArn,
+                primaryDynamoDbArn: core.primaryDynamodbTableArn,
+                primaryDynamoDbName: core.primaryDynamodbTableName,
+                primaryDynamoDbHashKey: core.primaryDynamodbTableHashKey,
+                primaryDynamoDbRangeKey: core.primaryDynamodbTableRangeKey,
+                elasticsearchDynamodbTableArn: core.elasticsearchDynamodbTableArn,
+                elasticsearchDynamodbTableName: core.elasticsearchDynamodbTableName
+            };
+
             const cmd = new PutCommand({
                 TableName: tableName,
                 Item: {
-                    PK: "DEPLOYMENTS",
-                    SK: `${env}#${variant || "unknown"}`,
-                    item: {
-                        region: api.region,
-                        s3Id: api.fileManagerBucketId,
-                        s3Arn: api.fileManagerBucketArn,
-                        primaryDynamoDbArn: api.primaryDynamodbTableArn,
-                        primaryDynamoDbName: api.primaryDynamodbTableName,
-                        primaryDynamoDbHashKey: api.primaryDynamodbTableHashKey,
-                        primaryDynamoDbRangeKey: api.primaryDynamodbTableRangeKey
-                    }
+                    PK: `DEPLOYMENT#${env}#${variant || "unknown"}`,
+                    SK: `default`,
+                    GSI1_PK: "DEPLOYMENTS",
+                    GSI1_SK: `${env}#${variant || "unknown"}`,
+                    item
                 }
             });
             try {
@@ -85,8 +94,8 @@ export const createSyncSystemPlugins = (): Plugin[] => {
          * After destroy of the deployment, we need to delete the deployment information from the Sync System DynamoDB table.
          */
         createAfterDestroyPlugin(async ({ env, variant }) => {
-            const { syncSystem } = await getStacks({ env, variant });
-            if (!syncSystem) {
+            const { syncSystem, core } = await getStacks({ env, variant });
+            if (!syncSystem || !core) {
                 return;
             }
             const client = getDocumentClient({

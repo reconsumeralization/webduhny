@@ -3,9 +3,10 @@ import type { PulumiApp } from "@webiny/pulumi";
 import type { IGetSyncSystemOutputResult } from "~/apps/syncSystem/types.js";
 import type { CoreOutput } from "~/apps/common/CoreOutput.js";
 import { createSyncResourceName } from "~/apps/syncSystem/createSyncResourceName.js";
+import type { WithServiceManifest } from "~/utils/withServiceManifest.js";
 
 export interface IAttachS3PermissionsParams {
-    app: PulumiApp;
+    app: PulumiApp & WithServiceManifest;
     syncSystem: IGetSyncSystemOutputResult;
     core: CoreOutput;
 }
@@ -25,7 +26,7 @@ export const attachS3Permissions = (params: IAttachS3PermissionsParams) => {
                 Version: "2012-10-17",
                 Statement: [
                     {
-                        Sid: "PermissionForS3",
+                        Sid: "PermissionForLambdaToS3",
                         Effect: "Allow",
                         Action: [
                             "s3:DeleteObject",
@@ -33,7 +34,10 @@ export const attachS3Permissions = (params: IAttachS3PermissionsParams) => {
                             "s3:GetObject",
                             "s3:ListBucket"
                         ],
-                        Resource: [`${core.fileManagerBucketArn}`, `${core.fileManagerBucketArn}/*`]
+                        Resource: [
+                            core.fileManagerBucketArn.apply(arn => arn),
+                            core.fileManagerBucketArn.apply(arn => `${arn}/*`)
+                        ]
                     }
                 ]
             }

@@ -4,9 +4,10 @@ import type { IGetSyncSystemOutputResult } from "../types";
 import { createSyncResourceName } from "../createSyncResourceName";
 import { ApiGraphql } from "~/apps/api/ApiGraphql.js";
 import { ApiFileManager } from "~/apps/api/ApiFileManager.js";
+import type { WithServiceManifest } from "~/utils/withServiceManifest.js";
 
 export interface IAttachEventBusPermissionsParam {
-    app: PulumiApp;
+    app: PulumiApp & WithServiceManifest;
     syncSystem: IGetSyncSystemOutputResult;
 }
 
@@ -34,9 +35,10 @@ export const attachEventBusPermissions = (params: IAttachEventBusPermissionsPara
                 Version: "2012-10-17",
                 Statement: [
                     {
+                        Sid: "PermissionForLambdaToEventBridge",
                         Effect: "Allow",
                         Action: "events:PutEvents",
-                        Resource: eventBusArn
+                        Resource: [eventBusArn]
                     }
                 ]
             }
