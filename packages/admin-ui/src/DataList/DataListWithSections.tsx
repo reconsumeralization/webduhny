@@ -108,8 +108,9 @@ export const DataListWithSections = <TData,>(propsInput: DataListProps<TData>) =
             </div>
 
             <div
+                style={{ maxHeight: "calc(100vh - 165px)" }}
                 className={
-                    "wby-relative wby-h-full wby-overflow-auto wby-border-t-sm wby-border-t-neutral-dimmed webiny-data-list__content"
+                    "wby-relative wby-overflow-auto wby-border-t-sm wby-border-t-neutral-dimmed webiny-data-list__content"
                 }
             >
                 {props.subHeader}
