@@ -1,11 +1,12 @@
 import React from "react";
 import { css } from "emotion";
 import { PbEditorResponsiveModePlugin, DisplayMode } from "~/types";
+
 // Icons
-import { ReactComponent as DesktopIcon } from "./icons/laptop_mac.svg";
-import { ReactComponent as TabletIcon } from "./icons/tablet_mac.svg";
-import { ReactComponent as MobileIcon } from "./icons/phone_iphone.svg";
-import { ReactComponent as StarIcon } from "./icons/star_rate.svg";
+import { ReactComponent as DesktopIcon } from "@webiny/icons/laptop_mac.svg";
+import { ReactComponent as TabletIcon } from "@webiny/icons/tablet_mac.svg";
+import { ReactComponent as MobileIcon } from "@webiny/icons/phone_iphone.svg";
+import { ReactComponent as StarIcon } from "@webiny/icons/star_rate.svg";
 
 const rotateStyle = css({
     transform: "rotate(90deg)"
