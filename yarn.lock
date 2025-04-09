@@ -15850,6 +15850,7 @@ __metadata:
     "@emotion/react": "npm:11.10.8"
     "@emotion/styled": "npm:11.10.6"
     "@types/react": "npm:18.2.79"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-headless-cms": "npm:0.0.0"

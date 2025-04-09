@@ -234,7 +234,11 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
             { ...DEFAULTS.COLORS }
         ),
         zIndex: {
-            5: 5
+            5: 5,
+            15: 15,
+            25: 25,
+            35: 35,
+            45: 45
         }
     };
 };

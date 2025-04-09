@@ -122,25 +122,28 @@ const Revision = (props: RevisionProps) => {
                     </ConfirmationDialog>
                 )}
 
-                <DropdownMenu.Separator />
-
                 {canDelete(form) && (
-                    <ConfirmationDialog
-                        title="Confirmation required!"
-                        message={<span>Are you sure you want to delete this revision?</span>}
-                    >
-                        {({ showConfirmation }) => (
-                            <DropdownMenu.Item
-                                icon={<DeleteIcon />}
-                                text={"Delete"}
-                                onClick={() => showConfirmation(() => deleteRevision(revision.id))}
-                                data-testid={"fb.form-revisions.action-menu.delete"}
-                                className={
-                                    "!wby-text-destructive-primary [&_svg]:wby-fill-destructive"
-                                }
-                            />
-                        )}
-                    </ConfirmationDialog>
+                    <>
+                        <DropdownMenu.Separator />
+                        <ConfirmationDialog
+                            title="Confirmation required!"
+                            message={<span>Are you sure you want to delete this revision?</span>}
+                        >
+                            {({ showConfirmation }) => (
+                                <DropdownMenu.Item
+                                    icon={<DeleteIcon />}
+                                    text={"Delete"}
+                                    onClick={() =>
+                                        showConfirmation(() => deleteRevision(revision.id))
+                                    }
+                                    data-testid={"fb.form-revisions.action-menu.delete"}
+                                    className={
+                                        "!wby-text-destructive-primary [&_svg]:wby-fill-destructive"
+                                    }
+                                />
+                            )}
+                        </ConfirmationDialog>
+                    </>
                 )}
             </DropdownMenu>
         );

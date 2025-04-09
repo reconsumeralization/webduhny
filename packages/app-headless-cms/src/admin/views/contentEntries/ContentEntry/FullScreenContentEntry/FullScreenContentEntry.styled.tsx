@@ -1,45 +1,36 @@
 import styled from "@emotion/styled";
-import { css } from "@emotion/css";
+import { cn } from "@webiny/admin-ui";
+import React from "react";
 
-export const Container = styled.div`
-    background: var(--mdc-theme-background);
-    z-index: 4;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-
-    #headerToolbarGrid {
-        border: 0;
-        padding: 0;
-        margin: 0;
-    }
-
-    #cms-content-details-tabs > .webiny-ui-tabs__tab-bar {
+const Wrapper = styled.div`
+    #cms-content-details-tabs > [role="tablist"] {
         display: none;
     }
 `;
 
-/**
- * HEADER
- */
-export const Header = styled.div`
-    background: var(--mdc-theme-surface);
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    box-sizing: border-box;
-    width: 100%;
-    z-index: 4;
-`;
-
-export const HeaderContent = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-`;
+export const Container = ({
+    children,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <Wrapper>
+            <div
+                className={cn(
+                    [
+                        "wby-bg-neutral-base",
+                        "wby-fixed wby-z-15 wby-top-0 wby-left-0",
+                        "wby-w-full wby-h-screen"
+                    ],
+                    className
+                )}
+                {...props}
+            >
+                {children}
+            </div>
+        </Wrapper>
+    );
+};
 
 export const TitleWrapper = styled.div`
     display: flex;
@@ -95,23 +86,35 @@ export const EntryMeta = styled.div`
 /**
  * FORM
  */
-export const Content = styled.div`
-    overflow-y: scroll;
-    height: calc(100vh - 45px);
-    margin-top: 64px;
-`;
+export const Content = ({
+    children,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div
+            className={cn(["wby-overflow-y-scroll wby-h-[calc(100vh-65px)]", "wby-"], className)}
+            {...props}
+        >
+            {children}
+        </div>
+    );
+};
 
-export const ContentFormWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
+export const ContentFormWrapper = ({
+    children,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div className={cn("wby-flex wby-justify-center", className)} {...props}>
+            {children}
+        </div>
+    );
+};
 
 type ContentFormInnerProps = { width: string };
 
 export const ContentFormInner = styled.div<ContentFormInnerProps>`
     width: ${props => props.width};
-`;
-
-export const ContentFormInnerCss = css`
-    height: 100% !important;
 `;

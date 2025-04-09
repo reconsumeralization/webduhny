@@ -1,15 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import { useRouter } from "@webiny/react-router";
-import { Icon } from "@webiny/ui/Icon";
-import { Typography } from "@webiny/ui/Typography";
-import { MenuItem } from "@webiny/ui/Menu";
-import { ReactComponent as DownButton } from "@webiny/icons/arrow_drop_down.svg";
+import { Button, DropdownMenu, Text } from "@webiny/admin-ui";
+import { ReactComponent as DownButton } from "@webiny/icons/keyboard_arrow_down.svg";
 import { useContentEntry } from "~/admin/views/contentEntries/hooks/useContentEntry";
 import { statuses as statusLabels } from "~/admin/constants";
 import { CmsContentEntryRevision } from "~/types";
-
-import { Button, Menu } from "./RevisionSelector.styles";
 
 interface CmsEntryRevision extends Pick<CmsContentEntryRevision, "id"> {
     meta: Pick<CmsContentEntryRevision["meta"], "version" | "status">;
@@ -38,26 +34,36 @@ export const RevisionSelector = () => {
     const allRevisions = revisions.length ? revisions : defaultRevisions;
 
     return (
-        <Menu
-            handle={
-                <Button disabled={loading}>
-                    v{currentRevision.version} ({statusLabels[currentRevision.status]}){" "}
-                    <Icon icon={<DownButton />} />
-                </Button>
+        <DropdownMenu
+            trigger={
+                <Button
+                    variant={"secondary"}
+                    disabled={loading}
+                    icon={<DownButton />}
+                    iconPosition={"end"}
+                    text={
+                        <>
+                            v{currentRevision.version} ({statusLabels[currentRevision.status]})
+                        </>
+                    }
+                />
             }
         >
             {allRevisions.map(revision => (
-                <MenuItem
+                <DropdownMenu.Item
                     key={revision.id}
                     onClick={() => {
                         query.set("id", encodeURIComponent(revision.id));
                         history.push({ search: query.toString() });
                     }}
-                >
-                    <Typography use={"body2"}>v{revision.meta.version}</Typography>
-                    <Typography use={"caption"}>({statusLabels[revision.meta.status]})</Typography>
-                </MenuItem>
+                    text={
+                        <>
+                            <Text as={"div"}>v{revision.meta.version}</Text>
+                            <Text size={"sm"}>({statusLabels[revision.meta.status]})</Text>
+                        </>
+                    }
+                />
             ))}
-        </Menu>
+        </DropdownMenu>
     );
 };
