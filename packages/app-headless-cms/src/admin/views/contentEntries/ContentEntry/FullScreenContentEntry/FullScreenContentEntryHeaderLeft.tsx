@@ -12,7 +12,7 @@ export const ContentEntryFormMeta = makeDecoratable("ContentEntryFormMeta", () =
 
     return (
         <Tooltip
-            content={`Model: ${contentModel.name} ${status ? `(status: ${status})` : ""}`}
+            content={`Model: ${contentModel.name} ${status ? `- Status: ${status}` : ""}`}
             trigger={
                 <Icon icon={<InfoIcon />} label={"Info"} size={"sm"} color={"neutral-light"} />
             }
@@ -29,7 +29,7 @@ export const ContentEntryFormTitle = makeDecoratable("ContentEntryFormTitle", ()
     return (
         <Heading
             level={5}
-            className={cn("wby-text-neutral-strong wby-truncate", {
+            className={cn("wby-text-neutral-strong wby-max-w-lg wby-truncate", {
                 "wby-opacity-50": isNewEntry
             })}
         >
@@ -49,10 +49,8 @@ export const FullScreenContentEntryHeaderLeft = () => {
                 onClick={() => navigateToFolder(currentFolderId)}
                 icon={<BackIcon />}
             />
-            <div className={"wby-flex wby-items-center wby-gap-xs wby-w-1/2 wby-truncate"}>
-                <ContentEntryFormTitle />
-                <ContentEntryFormMeta />
-            </div>
+            <ContentEntryFormTitle />
+            <ContentEntryFormMeta />
         </div>
     );
 };
