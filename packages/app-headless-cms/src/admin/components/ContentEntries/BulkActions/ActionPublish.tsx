@@ -1,11 +1,12 @@
 import React from "react";
-import { ReactComponent as PublishIcon } from "@webiny/icons/publish.svg";
+import { ReactComponent as PublishIcon } from "@webiny/icons/visibility.svg";
 import { observer } from "mobx-react-lite";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { usePermission, useCms, useModel } from "~/admin/hooks";
 import { getEntriesLabel } from "~/admin/components/ContentEntries/BulkActions/BulkActions";
 import { useRecords } from "@webiny/app-aco";
 import { useSnackbar } from "@webiny/app-admin";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const ActionPublish = observer(() => {
     const { model } = useModel();
@@ -15,7 +16,7 @@ export const ActionPublish = observer(() => {
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = ContentEntryListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog } = useDialog();
 
@@ -84,11 +85,18 @@ export const ActionPublish = observer(() => {
     }
 
     return (
-        <IconButton
-            icon={<PublishIcon />}
-            onAction={openPublishEntriesDialog}
-            label={`Publish ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Publish ${entriesLabel}`}
+            trigger={
+                <ButtonDefault
+                    icon={<PublishIcon />}
+                    onAction={openPublishEntriesDialog}
+                    size={"sm"}
+                >
+                    {"Publish"}
+                </ButtonDefault>
+            }
         />
     );
 });

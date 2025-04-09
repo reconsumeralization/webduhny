@@ -48,7 +48,7 @@ export const Buttons = (props: ButtonsProps) => {
 export { ButtonContainer };
 
 export const ButtonDefault = ({ onAction, children, ...other }: ButtonProps) => {
-    return <Button variant={"secondary"} {...other} onClick={onAction} text={children} />;
+    return <Button variant={"ghost"} {...other} onClick={onAction} text={children} />;
 };
 
 export const ButtonPrimary = ({ onAction, children, ...other }: ButtonProps) => {
@@ -71,7 +71,7 @@ export const IconButton = ({
             <Tooltip
                 content={label}
                 side={tooltipPlacement}
-                trigger={<BaseIconButton {...other} onClick={onAction} />}
+                trigger={<BaseIconButton variant={"ghost"} {...other} onClick={onAction} />}
             />
         );
     }

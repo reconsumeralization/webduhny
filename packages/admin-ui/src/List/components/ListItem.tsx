@@ -78,12 +78,14 @@ const DecoratableListItem = ({
                 >
                     {icon && <div>{icon}</div>}
                     <div
-                        className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}
+                        className={
+                            "wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left wby-truncate"
+                        }
                     >
                         <Text
                             size={"md"}
                             as={"div"}
-                            className={"wby-font-semibold wby-text-neutral-primary"}
+                            className={"wby-font-semibold wby-text-neutral-primary wby-truncate"}
                         >
                             {title}
                         </Text>

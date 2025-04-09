@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as Publish } from "@webiny/icons/publish.svg";
-import { ReactComponent as Unpublish } from "@webiny/icons/settings_backup_restore.svg";
+import { ReactComponent as Publish } from "@webiny/icons/visibility.svg";
+import { ReactComponent as Unpublish } from "@webiny/icons/visibility_off.svg";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useContentEntry, useEntry, usePermission } from "~/admin/hooks";
 

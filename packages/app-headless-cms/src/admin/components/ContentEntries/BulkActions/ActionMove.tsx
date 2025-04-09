@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as MoveIcon } from "@webiny/icons/drive_file_move.svg";
+import { ReactComponent as MoveIcon } from "@webiny/icons/exit_to_app.svg";
 import { useRecords, useMoveToFolderDialog, useNavigateFolder } from "@webiny/app-aco";
 import { useSnackbar } from "@webiny/app-admin";
 import { FolderItem } from "@webiny/app-aco/types";
@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { ROOT_FOLDER } from "~/admin/constants";
 import { getEntriesLabel } from "~/admin/components/ContentEntries/BulkActions/BulkActions";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const ActionMove = observer(() => {
     const { moveRecord } = useRecords();
@@ -14,7 +15,7 @@ export const ActionMove = observer(() => {
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = ContentEntryListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog } = useDialog();
     const { showDialog: showMoveDialog } = useMoveToFolderDialog();
@@ -98,11 +99,14 @@ export const ActionMove = observer(() => {
         });
 
     return (
-        <IconButton
-            icon={<MoveIcon />}
-            onAction={openMoveEntriesDialog}
-            label={`Move ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Move ${entriesLabel}`}
+            trigger={
+                <ButtonDefault icon={<MoveIcon />} onAction={openMoveEntriesDialog} size={"sm"}>
+                    {"Move"}
+                </ButtonDefault>
+            }
         />
     );
 });

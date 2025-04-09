@@ -20,7 +20,7 @@ export const OptionsMenu = (props: OptionsMenuProps) => {
     const trigger = props.trigger || (
         <IconButton
             icon={<MoreVerticalIcon />}
-            size={"md"}
+            size={"sm"}
             iconSize={"lg"}
             variant={"ghost"}
             data-testid={props["data-testid"] || "more-options-icon"}
