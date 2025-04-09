@@ -9,7 +9,7 @@ const Filters = (props: DataListProps) => {
         return null;
     }
 
-    return <DropdownMenu trigger={<FilterIcon size={"lg"} />}>{filters}</DropdownMenu>;
+    return <DropdownMenu trigger={<FilterIcon size={"sm"} />}>{filters}</DropdownMenu>;
 };
 
 export { Filters };

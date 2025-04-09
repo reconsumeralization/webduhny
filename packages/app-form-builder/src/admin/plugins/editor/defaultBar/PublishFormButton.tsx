@@ -1,7 +1,6 @@
 import React from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { useRouter } from "@webiny/react-router";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import { ConfirmationDialog } from "@webiny/ui/ConfirmationDialog";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
@@ -12,6 +11,7 @@ import {
     PublishRevisionMutationVariables
 } from "~/admin/graphql";
 import { usePermission } from "~/hooks/usePermission";
+import { Button } from "@webiny/admin-ui";
 
 const t = i18n.namespace("FormEditor.PublishPageButton");
 
@@ -41,8 +41,10 @@ const PublishFormButton = () => {
             data-testid={"fb.editor.default-bar.publish-dialog"}
         >
             {({ showConfirmation }) => (
-                <ButtonPrimary
+                <Button
+                    className={"-wby-ml-sm"}
                     data-testid={"fb.editor.default-bar.publish"}
+                    text={data.version > 1 ? t`Publish changes` : t`Publish`}
                     onClick={() => {
                         showConfirmation(async () => {
                             await publish({
@@ -76,9 +78,7 @@ const PublishFormButton = () => {
                             });
                         });
                     }}
-                >
-                    {data.version > 1 ? t`Publish changes` : t`Publish`}
-                </ButtonPrimary>
+                />
             )}
         </ConfirmationDialog>
     );

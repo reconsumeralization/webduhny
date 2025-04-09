@@ -4,17 +4,6 @@ import get from "lodash/get";
 import { useRouter } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import {
-    ButtonDefault,
-    ButtonIcon,
-    ButtonPrimary,
-    CopyButton,
-    IconButton
-} from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { Permissions } from "@webiny/app-admin/components/Permissions";
 import { validation } from "@webiny/validation";
 import {
@@ -23,30 +12,29 @@ import {
     SimpleFormContent,
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
-import { Typography } from "@webiny/ui/Typography";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { pickDataForAPI } from "./utils";
 import * as GQL from "./graphql";
-import { SnackbarAction } from "@webiny/ui/Snackbar";
 import isEmpty from "lodash/isEmpty";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { ReactComponent as CopyIcon } from "@webiny/icons/content_copy.svg";
-import styled from "@emotion/styled";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { ApiKey } from "~/types";
-import { Tooltip } from "@webiny/ui/Tooltip";
+import {
+    Alert,
+    Button,
+    CopyButton,
+    Grid,
+    IconButton,
+    Input,
+    Label,
+    OverlayLoader,
+    Textarea,
+    Tooltip
+} from "@webiny/admin-ui";
 
 const t = i18n.ns("app-security-admin-users/admin/api-keys/form");
-
-const ButtonWrapper = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
-
-const PermissionsTitleCell = styled(Cell)`
-    display: flex;
-    align-items: center;
-`;
 
 export interface ApiKeyFormProps {
     // TODO @ts-refactor delete and go up the tree and sort it out
@@ -90,8 +78,7 @@ export const ApiKeyForm = () => {
             if (!formData.permissions || !formData.permissions.length) {
                 showSnackbar(t`You must configure permissions before saving!`, {
                     timeout: 60000,
-                    dismissesOnAction: true,
-                    action: <SnackbarAction label={"OK"} />
+                    dismissesOnAction: true
                 });
                 return;
             }
@@ -123,14 +110,15 @@ export const ApiKeyForm = () => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<SettingsIcon />}
                 title={t`Click on the left side list to display API key details or create a...`}
                 action={
-                    <ButtonDefault
+                    <Button
+                        icon={<AddIcon />}
+                        text={t`New API Key`}
                         data-testid="new-record-button"
                         onClick={() => history.push("/access-management/api-keys?new=true")}
-                    >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New API Key`}
-                    </ButtonDefault>
+                    />
                 }
             />
         );
@@ -140,113 +128,104 @@ export const ApiKeyForm = () => {
         <Form data={data} onSubmit={onSubmit}>
             {({ data, form, Bind }) => {
                 return (
-                    <SimpleForm>
-                        {loading && <CircularProgress />}
+                    <SimpleForm size={"lg"}>
+                        {loading && <OverlayLoader />}
                         <SimpleFormHeader title={data.name ? data.name : "Untitled"} />
                         <SimpleFormContent>
                             <Grid>
-                                <Cell span={12}>
+                                <Grid.Column span={12}>
                                     <Bind name="name" validators={validation.create("required")}>
                                         <Input
+                                            size={"lg"}
                                             label={t`Name`}
                                             data-testid="sam.key.new.form.name"
                                         />
                                     </Bind>
-                                </Cell>
-                            </Grid>
-                            <Grid>
-                                <Cell span={12}>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
                                     <Bind
                                         name="description"
                                         validators={validation.create("required")}
                                     >
-                                        <Input
+                                        <Textarea
+                                            size={"lg"}
                                             label={t`Description`}
                                             rows={4}
                                             data-testid="sam.key.new.form.description"
                                         />
                                     </Bind>
-                                </Cell>
-                            </Grid>
-                            <Grid>
-                                <Cell span={12}>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
                                     <div>
-                                        <Typography use={"subtitle1"}>{t`Token`}</Typography>
+                                        <Label text={t`Token`} />
                                         {data.token ? (
                                             <div
-                                                style={{
-                                                    background: "var(--mdc-theme-background)",
-                                                    padding: "8px",
-                                                    paddingLeft: "16px"
-                                                }}
+                                                className={
+                                                    "wby-py-sm wby-pl-sm-extra wby-pr-xs wby-rounded-md wby-mt-xs wby-bg-neutral-disabled wby-flex wby-justify-between wby-items-center"
+                                                }
                                             >
-                                                <span
-                                                    style={{
-                                                        lineHeight: "48px",
-                                                        verticalAlign: "middle"
-                                                    }}
-                                                >
-                                                    {data.token}
-                                                </span>
-                                                <span
-                                                    style={{ position: "absolute", right: "32px" }}
-                                                >
-                                                    <CopyButton
-                                                        value={data.token}
-                                                        onCopy={() =>
-                                                            showSnackbar("Successfully copied!")
-                                                        }
-                                                    />
-                                                </span>
+                                                <div>{data.token}</div>
+                                                <CopyButton
+                                                    variant={"ghost"}
+                                                    value={data.token}
+                                                    onCopy={() =>
+                                                        showSnackbar("Successfully copied!")
+                                                    }
+                                                />
                                             </div>
                                         ) : (
-                                            <FormElementMessage>
-                                                Your token will be shown once you submit the form.
-                                            </FormElementMessage>
+                                            <Alert className={"wby-mt-xs"}>
+                                                {
+                                                    "Your token will be shown once you submit the form."
+                                                }
+                                            </Alert>
                                         )}
                                     </div>
-                                </Cell>
+                                </Grid.Column>
                             </Grid>
+                        </SimpleFormContent>
+                        <SimpleFormHeader title={"Permissions"} rounded={false}>
+                            <div className={"wby-flex wby-justify-end"}>
+                                <Tooltip
+                                    content="Copy permissions as JSON"
+                                    trigger={
+                                        <IconButton
+                                            variant={"ghost"}
+                                            icon={<CopyIcon />}
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(
+                                                    JSON.stringify(data.permissions, null, 2)
+                                                );
+                                                showSnackbar("JSON data copied to clipboard.");
+                                            }}
+                                        />
+                                    }
+                                />
+                            </div>
+                        </SimpleFormHeader>
+                        <SimpleFormContent>
                             <Grid>
-                                <Cell span={12}>
-                                    <PermissionsTitleCell span={12}>
-                                        <Typography use={"subtitle1"}>{t`Permissions`}</Typography>
-                                        <Tooltip
-                                            content="Copy permissions as JSON"
-                                            placement={"top"}
-                                        >
-                                            <IconButton
-                                                icon={<CopyIcon />}
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(
-                                                        JSON.stringify(data.permissions, null, 2)
-                                                    );
-                                                    showSnackbar("JSON data copied to clipboard.");
-                                                }}
-                                            />
-                                        </Tooltip>
-                                    </PermissionsTitleCell>
-                                </Cell>
-                                <Cell span={12}>
+                                <Grid.Column span={12}>
                                     <Bind name={"permissions"} defaultValue={[]}>
                                         {bind => <Permissions id={data.id || "new"} {...bind} />}
                                     </Bind>
-                                </Cell>
+                                </Grid.Column>
                             </Grid>
                         </SimpleFormContent>
                         <SimpleFormFooter>
-                            <ButtonWrapper>
-                                <ButtonDefault
-                                    onClick={() => history.push("/access-management/api-keys")}
-                                    data-testid="sam.key.new.form.button.cancel"
-                                >{t`Cancel`}</ButtonDefault>
-                                <ButtonPrimary
-                                    onClick={ev => {
-                                        form.submit(ev);
-                                    }}
-                                    data-testid="sam.key.new.form.button.save"
-                                >{t`Save API key`}</ButtonPrimary>
-                            </ButtonWrapper>
+                            <Button
+                                variant={"secondary"}
+                                text={t`Cancel`}
+                                onClick={() => history.push("/access-management/api-keys")}
+                                data-testid="sam.key.new.form.button.cancel"
+                            />
+                            <Button
+                                text={t`Save`}
+                                data-testid="sam.key.new.form.button.save"
+                                onClick={ev => {
+                                    form.submit(ev);
+                                }}
+                            />
                         </SimpleFormFooter>
                     </SimpleForm>
                 );

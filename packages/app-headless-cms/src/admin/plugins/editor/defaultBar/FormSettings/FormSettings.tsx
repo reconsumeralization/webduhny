@@ -3,24 +3,23 @@ import { plugins } from "@webiny/plugins";
 import { OverlayLayout } from "@webiny/app-admin/components/OverlayLayout";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
 import { Form } from "@webiny/form";
-import { Icon } from "@webiny/ui/Icon";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import {
-    List,
-    ListItem,
-    ListItemGraphic,
-    ListItemText,
-    ListItemTextPrimary,
-    ListItemTextSecondary
-} from "@webiny/ui/List";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
 import * as SF from "@webiny/app-admin/components/SimpleForm";
 import { CmsEditorFormSettingsPlugin } from "~/types";
-import { listItem, listStyle, Title } from "./FormSettingsStyled";
 import { useModelEditor } from "~/admin/hooks";
+import { Button, Heading, Icon, List } from "@webiny/admin-ui";
 
 const t = i18n.namespace("FormsApp.Editor.FormSettings");
+
+const Title = () => {
+    return (
+        <Heading
+            level={5}
+            className={"wby-text-neutral-strong"}
+        >{t`Content model settings`}</Heading>
+    );
+};
 
 interface FormSettingsProps {
     onExited: () => void;
@@ -36,24 +35,18 @@ const FormSettings = ({ onExited }: FormSettingsProps) => {
     const [activePlugin, setActivePlugin] = useState(cmsEditorFormSettingsPlugins[0]);
 
     return (
-        <OverlayLayout barMiddle={Title} onExited={onExited}>
+        <OverlayLayout barMiddle={<Title />} onExited={onExited}>
             <SplitView>
                 <LeftPanel span={5}>
-                    <List twoLine className={listStyle}>
+                    <List>
                         {cmsEditorFormSettingsPlugins.map(pl => (
-                            <ListItem
+                            <List.Item
                                 key={pl.name}
-                                className={listItem}
                                 onClick={() => setActivePlugin(pl)}
-                            >
-                                <ListItemGraphic>
-                                    <Icon icon={pl.icon} />
-                                </ListItemGraphic>
-                                <ListItemText>
-                                    <ListItemTextPrimary>{pl.title}</ListItemTextPrimary>
-                                    <ListItemTextSecondary>{pl.description}</ListItemTextSecondary>
-                                </ListItemText>
-                            </ListItem>
+                                icon={<Icon label={pl.title} icon={pl.icon} />}
+                                title={pl.title}
+                                description={pl.description}
+                            />
                         ))}
                     </List>
                 </LeftPanel>
@@ -67,14 +60,16 @@ const FormSettings = ({ onExited }: FormSettingsProps) => {
                         }}
                     >
                         {({ Bind, submit, form, data: formData }) => (
-                            <SF.SimpleForm>
+                            <SF.SimpleForm size={"lg"}>
                                 <SF.SimpleFormHeader title={activePlugin.title}>
-                                    {typeof activePlugin.renderHeaderActions === "function" &&
-                                        activePlugin.renderHeaderActions({
-                                            Bind,
-                                            form,
-                                            formData
-                                        })}
+                                    <div className={"wby-flex wby-justify-end wby-items-center"}>
+                                        {typeof activePlugin.renderHeaderActions === "function" &&
+                                            activePlugin.renderHeaderActions({
+                                                Bind,
+                                                form,
+                                                formData
+                                            })}
+                                    </div>
                                 </SF.SimpleFormHeader>
                                 <SF.SimpleFormContent>
                                     {activePlugin
@@ -86,11 +81,12 @@ const FormSettings = ({ onExited }: FormSettingsProps) => {
                                         : null}
                                 </SF.SimpleFormContent>
                                 <SF.SimpleFormFooter>
-                                    <ButtonPrimary
+                                    <Button
+                                        text={t`Save`}
                                         onClick={ev => {
                                             submit(ev);
                                         }}
-                                    >{t`Save settings`}</ButtonPrimary>
+                                    />
                                 </SF.SimpleFormFooter>
                             </SF.SimpleForm>
                         )}

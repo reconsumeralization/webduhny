@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TimeAgo } from "@webiny/ui/TimeAgo";
-import { css } from "emotion";
 import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
 import * as ListComponents from "@webiny/ui/List";
@@ -8,19 +7,12 @@ import { Tooltip } from "@webiny/ui/Tooltip";
 import { Typography } from "@webiny/ui/Typography";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import FormSubmissionDialog from "./FormSubmissionDialog";
-import Block from "../Block";
 import { useSubmissions } from "./useSubmissions";
 import { FbFormSubmissionData } from "~/types";
 import { DownloadIcon } from "@webiny/ui/List";
+import { SimpleFormContent, SimpleFormHeader } from "@webiny/app-admin/components/SimpleForm";
 
 const t = i18n.namespace("FormsApp.FormsDataList");
-
-const TOP = 490;
-const blockWrapper = css({
-    "& .webiny-data-list__content": {
-        height: `calc(100vh - ${TOP}px)`
-    }
-});
 
 const InlineLoaderWrapper = styled.div`
     position: absolute;
@@ -80,7 +72,10 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
 
     return (
         <>
-            <Block title="Submissions" className={blockWrapper}>
+            <SimpleFormHeader title={"Submissions"} rounded={false} />
+            <SimpleFormContent
+                className={"wby-p-none wby-border-b-sm wby-border-neutral-smoked wby-rounded-b-3xl"}
+            >
                 <DataList
                     loading={loading}
                     refresh={refresh}
@@ -150,7 +145,7 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
                         </>
                     )}
                 </DataList>
-            </Block>
+            </SimpleFormContent>
             <FormSubmissionDialog
                 onClose={() => {
                     selectFormSubmission(null);

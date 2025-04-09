@@ -1,61 +1,24 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { useRouter } from "@webiny/react-router";
-import { ButtonDefault, ButtonIcon, IconButton } from "@webiny/ui/Button";
-import { Elevation } from "@webiny/ui/Elevation";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { Typography } from "@webiny/ui/Typography";
-import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { i18n } from "@webiny/app/i18n";
+import { Button, OverlayLoader, IconButton, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_chart.svg";
+import { useRouter } from "@webiny/react-router";
+import EmptyView from "@webiny/app-admin/components/EmptyView";
+import { i18n } from "@webiny/app/i18n";
 
 import { CreatableItem } from "./PageTemplates";
 import { PbPageTemplate } from "~/types";
 import { useListPageTemplates } from "~/features";
 import { PageTemplateContentPreview } from "~/admin/views/PageTemplates/PageTemplateContentPreview";
+import {
+    SimpleForm,
+    SimpleFormContent,
+    SimpleFormHeader
+} from "@webiny/app-admin/components/SimpleForm";
 
 const t = i18n.ns("app-page-builder/admin/views/page-templates/page-template-details");
-
-const DetailsContainer = styled.div`
-    height: calc(100% - 10px);
-    overflow: hidden;
-    position: relative;
-`;
-
-const RenderBlock = styled.div`
-    position: relative;
-    z-index: 0;
-    background-color: var(--mdc-theme-background);
-    height: 100%;
-    overflow: auto;
-    padding: 25px;
-`;
-
-const HeaderTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-    color: var(--mdc-theme-text-primary-on-background);
-    background: var(--mdc-theme-surface);
-    padding: 10px 24px 9px;
-`;
-
-const PageTemplateTitle = styled.div`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const HeaderActions = styled.div`
-    justify-content: flex-end;
-    margin-right: -15px;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-`;
 
 interface EmptyTemplateDetailsProps {
     onCreate: () => void;
@@ -65,17 +28,18 @@ interface EmptyTemplateDetailsProps {
 const EmptyTemplateDetails = ({ onCreate, canCreate }: EmptyTemplateDetailsProps) => {
     return (
         <EmptyView
-            title={t`Click on the left side list to display page details {message} `({
+            icon={<TableIcon />}
+            title={t`Click on the left side list to display template details {message} `({
                 message: canCreate ? "or create a..." : ""
             })}
             action={
                 canCreate ? (
-                    <ButtonDefault
-                        data-testid="pb-templates-form-new-template-btn"
+                    <Button
+                        text={t`New Template`}
+                        icon={<AddIcon />}
+                        data-testid="new-record-button"
                         onClick={onCreate}
-                    >
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Template`}
-                    </ButtonDefault>
+                    />
                 ) : (
                     <></>
                 )
@@ -111,18 +75,17 @@ export const PageTemplateDetails = ({
     }
 
     return (
-        <DetailsContainer>
-            <RenderBlock>
-                <Elevation z={2}>
-                    <div style={{ position: "relative" }} data-testid={"pb-page-templates-form"}>
-                        {loading && <CircularProgress />}
-                        <HeaderTitle>
-                            <PageTemplateTitle>
-                                <Typography use="headline5">{template.title}</Typography>
-                            </PageTemplateTitle>
-                            <HeaderActions>
-                                {canEdit(template) && (
+        <SimpleForm size={"lg"}>
+            <div style={{ position: "relative" }} data-testid={"pb-page-templates-form"}>
+                {loading && <OverlayLoader />}
+                <SimpleFormHeader title={template.title} data-testid={"pb-categories-form-title"}>
+                    <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
+                        {canEdit(template) && (
+                            <Tooltip
+                                content={t`Edit template`}
+                                trigger={
                                     <IconButton
+                                        variant={"ghost"}
                                         icon={<EditIcon />}
                                         onClick={() =>
                                             history.push(
@@ -130,19 +93,27 @@ export const PageTemplateDetails = ({
                                             )
                                         }
                                     />
-                                )}
-                                {canDelete(template) && (
+                                }
+                            />
+                        )}
+                        {canDelete(template) && (
+                            <Tooltip
+                                content={t`Delete template`}
+                                trigger={
                                     <IconButton
+                                        variant={"ghost"}
                                         icon={<DeleteIcon />}
                                         onClick={() => onDelete(template)}
                                     />
-                                )}
-                            </HeaderActions>
-                        </HeaderTitle>
-                        <PageTemplateContentPreview template={template} />
+                                }
+                            />
+                        )}
                     </div>
-                </Elevation>
-            </RenderBlock>
-        </DetailsContainer>
+                </SimpleFormHeader>
+                <SimpleFormContent className={"wby-p-0 wby-border-b-sm"}>
+                    <PageTemplateContentPreview template={template} />
+                </SimpleFormContent>
+            </div>
+        </SimpleForm>
     );
 };

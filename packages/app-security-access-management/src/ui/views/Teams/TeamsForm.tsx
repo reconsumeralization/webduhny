@@ -1,15 +1,10 @@
 import React, { useCallback } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import styled from "@emotion/styled";
 import pick from "lodash/pick";
 import get from "lodash/get";
 import { useRouter } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { validation } from "@webiny/validation";
 import {
     SimpleForm,
@@ -24,14 +19,10 @@ import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
 import { GroupsMultiAutocomplete } from "~/components/GroupsMultiAutocomplete";
 import { Team } from "~/types";
-import { Alert } from "@webiny/ui/Alert";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
+import { Alert, Button, Grid, Input, OverlayLoader, Textarea } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-security/admin/teams/form");
-
-const ButtonWrapper = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
 
 export interface TeamsFormProps {
     // TODO @ts-refactor delete and go up the tree and sort it out
@@ -116,15 +107,15 @@ export const TeamsForm = () => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<SettingsIcon />}
                 title={t`Click on the left side list to display team details or create a...`}
                 action={
-                    <ButtonDefault
+                    <Button
+                        text={t`New Team`}
+                        icon={<AddIcon />}
                         data-testid="new-record-button"
                         onClick={() => history.push("/access-management/teams?new=true")}
-                    >
-                        <ButtonIcon icon={<AddIcon />} />
-                        {t`New Team`}
-                    </ButtonDefault>
+                    />
                 }
             />
         );
@@ -135,72 +126,69 @@ export const TeamsForm = () => {
             {({ data, form, Bind }) => {
                 return (
                     <SimpleForm>
-                        {loading && <CircularProgress />}
+                        {loading && <OverlayLoader />}
                         <SimpleFormHeader title={data.name ? data.name : "Untitled"} />
                         <SimpleFormContent>
-                            {systemTeam && (
-                                <Grid>
-                                    <Cell span={12}>
-                                        <Alert type={"info"} title={"Permissions are locked"}>
-                                            This is a protected system team and you can&apos;t
-                                            modify its permissions.
-                                        </Alert>
-                                    </Cell>
-                                </Grid>
-                            )}
-                            {pluginTeam && (
-                                <Grid>
-                                    <Cell span={12}>
-                                        <Alert type={"info"} title={"Important"}>
-                                            This team is registered via an extension, and cannot be
-                                            modified.
-                                        </Alert>
-                                    </Cell>
-                                </Grid>
-                            )}
                             <Grid>
-                                <Cell span={6}>
+                                <>
+                                    {systemTeam && (
+                                        <Grid.Column span={12}>
+                                            <Alert type={"info"} title={"Permissions are locked"}>
+                                                This is a protected system team and you can&apos;t
+                                                modify its permissions.
+                                            </Alert>
+                                        </Grid.Column>
+                                    )}
+                                    {pluginTeam && (
+                                        <Grid.Column span={12}>
+                                            <Alert type={"info"} title={"Important"}>
+                                                This team is registered via an extension, and cannot
+                                                be modified.
+                                            </Alert>
+                                        </Grid.Column>
+                                    )}
+                                </>
+                                <Grid.Column span={6}>
                                     <Bind
                                         name="name"
                                         validators={validation.create("required,minLength:3")}
                                     >
                                         <Input
+                                            size={"lg"}
                                             disabled={!canModifyTeam}
                                             label={t`Name`}
                                             data-testid="admin.am.team.new.name"
                                         />
                                     </Bind>
-                                </Cell>
-                                <Cell span={6}>
+                                </Grid.Column>
+                                <Grid.Column span={6}>
                                     <Bind
                                         name="slug"
                                         validators={validation.create("required,minLength:3")}
                                     >
                                         <Input
+                                            size={"lg"}
                                             disabled={!canModifyTeam || !newTeam}
                                             label={t`Slug`}
                                             data-testid="admin.am.team.new.slug"
                                         />
                                     </Bind>
-                                </Cell>
-                            </Grid>
-                            <Grid>
-                                <Cell span={12}>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
                                     <Bind
                                         name="description"
                                         validators={validation.create("maxLength:500")}
                                     >
-                                        <Input
+                                        <Textarea
+                                            size={"lg"}
                                             disabled={!canModifyTeam}
                                             label={t`Description`}
                                             rows={3}
                                             data-testid="admin.am.team.new.description"
                                         />
                                     </Bind>
-                                </Cell>
-                            </Grid>
-                            <Grid>
-                                <Cell span={12}>
+                                </Grid.Column>
+                                <Grid.Column span={12}>
                                     <Bind name="groups" validators={validation.create("required")}>
                                         <GroupsMultiAutocomplete
                                             disabled={!canModifyTeam}
@@ -208,24 +196,25 @@ export const TeamsForm = () => {
                                             data-testid="admin.am.team.new.groups"
                                         />
                                     </Bind>
-                                </Cell>
+                                </Grid.Column>
                             </Grid>
                         </SimpleFormContent>
-                        {canModifyTeam && (
-                            <SimpleFormFooter>
-                                <ButtonWrapper>
-                                    <ButtonDefault
-                                        onClick={() => history.push("/access-management/teams")}
-                                    >{t`Cancel`}</ButtonDefault>
-                                    <ButtonPrimary
-                                        data-testid="admin.am.team.new.save"
-                                        onClick={ev => {
-                                            form.submit(ev);
-                                        }}
-                                    >{t`Save team`}</ButtonPrimary>
-                                </ButtonWrapper>
-                            </SimpleFormFooter>
-                        )}
+                        <SimpleFormFooter>
+                            <Button
+                                variant={"secondary"}
+                                text={t`Cancel`}
+                                onClick={() => history.push("/access-management/teams")}
+                            />
+                            {canModifyTeam && (
+                                <Button
+                                    text={t`Save`}
+                                    data-testid="admin.am.team.new.save"
+                                    onClick={ev => {
+                                        form.submit(ev);
+                                    }}
+                                />
+                            )}
+                        </SimpleFormFooter>
                     </SimpleForm>
                 );
             }}

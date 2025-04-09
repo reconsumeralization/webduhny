@@ -1,14 +1,12 @@
 import React, { useCallback, useMemo } from "react";
 import { FbFormModelField, FbFormStep } from "~/types";
 import Draggable, { BeginDragProps } from "~/admin/components/FormEditor/Draggable";
-import { RowHandle, Row, RowContainer } from "~/admin/components/FormEditor/Tabs/EditTab/Styled";
-
-import { Icon } from "@webiny/ui/Icon";
-import { ReactComponent as HandleIcon } from "~/admin/components/FormEditor/icons/round-drag_indicator-24px.svg";
+import { ReactComponent as DragIcon } from "@webiny/icons/drag_indicator.svg";
 import { Horizontal } from "~/admin/components/FormEditor/DropZone";
 import { useFormStep } from "~/admin/components/FormEditor/Tabs/EditTab/FormStep/useFormStep";
 import { DragObjectWithFieldInfo } from "~/admin/components/FormEditor/Droppable";
 import { FormStepRowField } from "./FormStepRowField";
+import { cn, Icon } from "@webiny/admin-ui";
 
 export interface FormStepRowProps {
     formStep: FbFormStep;
@@ -69,17 +67,42 @@ export const FormStepRow = (props: FormStepRowProps) => {
         <Draggable beginDrag={rowBeginDragParams} key={`step-row-${rowIndex}`}>
             {({ drag, isDragging }) => (
                 /* RowContainer start - includes drag handle, drop zones and the Row itself. */
-                <RowContainer isDragging={isDragging}>
-                    <RowHandle ref={drag}>
-                        <Icon icon={<HandleIcon />} />
-                    </RowHandle>
+                <div
+                    className={cn([
+                        "wby-flex wby-flex-column",
+                        "wby-relative",
+                        "wby-mt-md",
+                        "wby-border-sm wby-border-neutral-smoked wby-rounded-sm",
+                        isDragging ? "wby-opacity-30" : "wby-opacity-100"
+                    ])}
+                >
+                    <div
+                        className={cn([
+                            "wby-cursor-grab",
+                            "wby-absolute wby-left-sm-plus wby-top-sm-plus wby-z-10"
+                        ])}
+                        ref={drag}
+                    >
+                        <Icon
+                            icon={<DragIcon />}
+                            label={"Drag to move this row"}
+                            color={"neutral-light"}
+                            size={"sm"}
+                        />
+                    </div>
                     <Horizontal
                         onDrop={onRowHorizontalZoneDrop}
                         isVisible={item => item.ui !== "step"}
                     />
 
                     {/* Row start - includes field drop zones and fields */}
-                    <Row>
+                    <div
+                        className={cn([
+                            "wby-w-full wby-flex wby-justify-between",
+                            "wby-pl-xl wby-pr-sm wby-py-sm"
+                        ])}
+                        data-testid={"cms.editor.field-row"}
+                    >
                         {row.map((field, fieldIndex) => (
                             <FormStepRowField
                                 key={`field-${field._id}`}
@@ -90,7 +113,7 @@ export const FormStepRow = (props: FormStepRowProps) => {
                                 fieldIndex={fieldIndex}
                             />
                         ))}
-                    </Row>
+                    </div>
 
                     {/* Row end */}
                     {isLastRow && (
@@ -100,7 +123,7 @@ export const FormStepRow = (props: FormStepRowProps) => {
                             isVisible={item => item.ui !== "step"}
                         />
                     )}
-                </RowContainer>
+                </div>
             )}
         </Draggable>
     );

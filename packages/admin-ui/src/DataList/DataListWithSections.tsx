@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import isEmpty from "lodash/isEmpty";
 import { Loader } from "~/Loader";
 import {
-    DataListModal,
     Filters,
     MultiSelectActions,
     MultiSelectAll,
@@ -11,6 +10,7 @@ import {
     RefreshButton,
     Sorters
 } from "~/DataList/components";
+import { DataListModal } from "~/DataList/DataListModal";
 import { DataListProps } from "~/DataList/types";
 import { Heading } from "~/Heading";
 
@@ -80,9 +80,7 @@ export const DataListWithSections = <TData,>(propsInput: DataListProps<TData>) =
 
                 {Object.keys(showOptions).length > 0 && (
                     <div
-                        className={
-                            "wby-flex wby-items-center wby-justify-space-between wby-gap-sm-extra"
-                        }
+                        className={"wby-flex wby-items-center wby-justify-space-between wby-gap-sm"}
                     >
                         <div className={"wby-flex-1"}>
                             {props.search ? React.cloneElement(props.search, props) : null}
@@ -110,8 +108,9 @@ export const DataListWithSections = <TData,>(propsInput: DataListProps<TData>) =
             </div>
 
             <div
+                style={{ maxHeight: "calc(100vh - 165px)" }}
                 className={
-                    "wby-relative wby-h-full wby-overflow-auto wby-border-t-sm wby-border-t-neutral-dimmed webiny-data-list__content"
+                    "wby-relative wby-overflow-auto wby-border-t-sm wby-border-t-neutral-dimmed webiny-data-list__content"
                 }
             >
                 {props.subHeader}

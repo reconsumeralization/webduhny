@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, DataList as AdminDatalist, List } from "@webiny/admin-ui";
+import { DataList as AdminDatalist, List } from "@webiny/admin-ui";
 import { ListProps, ListItemProps } from "../List";
 import { DataListProps } from "@webiny/admin-ui/DataList/types";
 
@@ -20,12 +20,5 @@ export interface ScrollListProps extends ListProps {
  * Please use the `List` component from the `@webiny/admin-ui` package instead.
  */
 export const ScrollList = (props: ScrollListProps) => {
-    return (
-        <List
-            {...props}
-            className={cn("wby-overflow-auto wby-h-[calc(100vh-235px)]", props.className)}
-        >
-            {props.children}
-        </List>
-    );
+    return <List {...props} />;
 };

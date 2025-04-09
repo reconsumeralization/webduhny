@@ -1,18 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import styled from "@emotion/styled";
-import {
-    Dialog,
-    DialogActions,
-    DialogButton,
-    DialogCancel,
-    DialogAccept,
-    DialogContent,
-    DialogTitle
-} from "@webiny/ui/Dialog";
+import { Grid, Dialog, Drawer, Button, Tabs } from "@webiny/admin-ui";
 import { Form, FormOnSubmit } from "@webiny/form";
 import { plugins } from "@webiny/plugins";
-import { Tab, Tabs } from "@webiny/ui/Tabs";
 import GeneralTab from "./EditFieldDialog/GeneralTab";
 import ValidatorsTab from "./EditFieldDialog/ValidatorsTab";
 import FieldTypeSelector from "./EditFieldDialog/FieldTypeSelector";
@@ -22,14 +12,144 @@ import { FbBuilderFieldPlugin, FbFormModelField } from "~/types";
 
 const t = i18n.namespace("FormEditor.EditFieldDialog");
 
-const FbFormModelFieldList = styled("div")({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
-    paddingTop: 25,
-    backgroundColor: "var(--mdc-theme-background) !important"
-});
+interface SelectFieldDialogProps {
+    currentField: FbFormModelField | null;
+    open: boolean;
+    onClose: () => void;
+    onSelect: (field: FbFormModelField) => void;
+}
+
+const SelectFieldDialog = ({ currentField, open, onClose, onSelect }: SelectFieldDialogProps) => {
+    if (!currentField) {
+        return null;
+    }
+
+    return (
+        <Dialog
+            title={"Field settings"}
+            open={open}
+            onOpenChange={open => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+            actions={<Dialog.CancelButton />}
+        >
+            <Grid>
+                {plugins
+                    .byType<FbBuilderFieldPlugin>("form-editor-field-type")
+                    .filter(pl => !pl.field.group)
+                    .map(pl => (
+                        <Grid.Column span={6} key={pl.name}>
+                            <FieldTypeSelector
+                                fieldType={pl.field}
+                                onClick={() => {
+                                    const newCurrent = pl.field.createField();
+                                    if (currentField) {
+                                        // User edited existing field, that's why we still want to
+                                        // keep a couple of previous values.
+                                        const { _id, label, fieldId, helpText } = currentField;
+                                        newCurrent._id = _id;
+                                        newCurrent.label = label;
+                                        newCurrent.fieldId = fieldId;
+                                        newCurrent.helpText = helpText;
+                                    }
+                                    onSelect(newCurrent);
+                                }}
+                            />
+                        </Grid.Column>
+                    ))}
+            </Grid>
+        </Dialog>
+    );
+};
+
+interface EditFieldDrawerProps {
+    open: boolean;
+    onClose: () => void;
+    onSubmit: FormOnSubmit;
+    onBack: () => void;
+    field: FbFormModelField;
+    isNewField: boolean;
+}
+
+const EditFieldDrawer = ({
+    field,
+    isNewField,
+    onBack,
+    onClose,
+    onSubmit,
+    open
+}: EditFieldDrawerProps) => {
+    const { getFieldPlugin } = useFormEditor();
+
+    const fieldPlugin = getFieldPlugin({
+        name: field.name
+    });
+
+    let headerTitle = "Field Settings";
+    let fieldPluginFieldValidators: string[] = [];
+    if (fieldPlugin) {
+        headerTitle = t`Field Settings - {fieldTypeLabel}`({
+            fieldTypeLabel: fieldPlugin.field.label
+        });
+        fieldPluginFieldValidators = fieldPlugin.field.validators || [];
+    }
+
+    if (!field) {
+        return null;
+    }
+
+    return (
+        <Form data={field} onSubmit={onSubmit}>
+            {form => (
+                <Drawer
+                    title={headerTitle}
+                    open={open}
+                    modal={true}
+                    width={800}
+                    bodyPadding={false}
+                    footerSeparator={true}
+                    onOpenChange={open => {
+                        if (!open) {
+                            onClose();
+                        }
+                    }}
+                    actions={
+                        <>
+                            <Drawer.CancelButton />
+                            <Drawer.ConfirmButton onClick={form.submit} />
+                        </>
+                    }
+                    info={
+                        isNewField && <Button variant={"ghost"} text={"Go back"} onClick={onBack} />
+                    }
+                >
+                    <Tabs
+                        spacing={"lg"}
+                        size={"md"}
+                        separator={true}
+                        tabs={[
+                            <Tabs.Tab
+                                trigger={t`General`}
+                                value={"general"}
+                                key={"general"}
+                                content={<GeneralTab form={form} field={field} />}
+                            />,
+                            <Tabs.Tab
+                                trigger={t`Validators`}
+                                value={"validators"}
+                                key={"validators"}
+                                content={<ValidatorsTab form={form} field={field} />}
+                                disabled={!fieldPluginFieldValidators.length}
+                            />
+                        ]}
+                    />
+                </Drawer>
+            )}
+        </Form>
+    );
+};
 
 interface EditFieldDialogProps {
     field: FbFormModelField | null;
@@ -38,11 +158,11 @@ interface EditFieldDialogProps {
 }
 
 const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) => {
+    const [openFieldSelector, setOpenFieldSelector] = useState<boolean>(false);
+    const [openFieldEditor, setOpenFieldEditor] = useState<boolean>(false);
+
     const [current, setCurrent] = useState<FbFormModelField | null>(null);
     const [isNewField, setIsNewField] = useState<boolean>(false);
-    const [screen, setScreen] = useState<string>();
-
-    const { getFieldPlugin } = useFormEditor();
 
     useEffect(() => {
         if (!field) {
@@ -51,106 +171,54 @@ const EditFieldDialog = ({ field, onSubmit, ...props }: EditFieldDialogProps) =>
         }
         setCurrent(cloneDeep(field));
         setIsNewField(!field._id);
-        setScreen(field.type ? "fieldOptions" : "fieldType");
+
+        if (field.type) {
+            setOpenFieldEditor(true);
+        } else {
+            setOpenFieldSelector(true);
+        }
     }, [field]);
 
-    const onClose = useCallback(() => {
+    const onFieldSelectorClose = useCallback(() => {
         setCurrent(null);
         props.onClose();
-    }, []);
+        setOpenFieldSelector(false);
+    }, [setOpenFieldSelector]);
 
-    let render = null;
-    let headerTitle = t`Field Settings`;
+    const onFieldEditorClose = useCallback(() => {
+        setCurrent(null);
+        props.onClose();
+        setOpenFieldEditor(false);
+    }, [setOpenFieldEditor]);
 
-    if (current) {
-        const fieldPlugin = getFieldPlugin({
-            name: current.name
-        });
-        let fieldPluginFieldValidators: string[] = [];
-        if (fieldPlugin) {
-            headerTitle = t`Field Settings - {fieldTypeLabel}`({
-                fieldTypeLabel: fieldPlugin.field.label
-            });
-            fieldPluginFieldValidators = fieldPlugin.field.validators || [];
-        }
-
-        switch (screen) {
-            case "fieldOptions": {
-                render = (
-                    <Form data={current} onSubmit={onSubmit}>
-                        {form => (
-                            <>
-                                <DialogContent>
-                                    <Tabs>
-                                        <Tab label={t`General`}>
-                                            <GeneralTab form={form} field={current} />
-                                        </Tab>
-                                        {fieldPluginFieldValidators.length > 0 && (
-                                            <Tab label={"Validators"}>
-                                                <ValidatorsTab form={form} field={current} />
-                                            </Tab>
-                                        )}
-                                    </Tabs>
-                                </DialogContent>
-                                <DialogActions>
-                                    {isNewField && (
-                                        <DialogButton
-                                            onClick={() => setScreen("fieldType")}
-                                        >{t`Go back`}</DialogButton>
-                                    )}
-                                    <DialogButton onClick={onClose}>{t`Cancel`}</DialogButton>
-                                    <DialogAccept onClick={form.submit}>{t`Save`}</DialogAccept>
-                                </DialogActions>
-                            </>
-                        )}
-                    </Form>
-                );
-                break;
-            }
-            default:
-                render = (
-                    <>
-                        <DialogContent>
-                            <FbFormModelFieldList>
-                                {plugins
-                                    .byType<FbBuilderFieldPlugin>("form-editor-field-type")
-                                    .filter(pl => !pl.field.group)
-                                    .map(pl => (
-                                        <FieldTypeSelector
-                                            key={pl.name}
-                                            fieldType={pl.field}
-                                            onClick={() => {
-                                                const newCurrent = pl.field.createField();
-                                                if (current) {
-                                                    // User edited existing field, that's why we still want to
-                                                    // keep a couple of previous values.
-                                                    const { _id, label, fieldId, helpText } =
-                                                        current;
-                                                    newCurrent._id = _id;
-                                                    newCurrent.label = label;
-                                                    newCurrent.fieldId = fieldId;
-                                                    newCurrent.helpText = helpText;
-                                                }
-                                                setCurrent(newCurrent);
-                                                setScreen("fieldOptions");
-                                            }}
-                                        />
-                                    ))}
-                            </FbFormModelFieldList>
-                        </DialogContent>
-                        <DialogActions>
-                            <DialogCancel onClick={onClose}>{t`Cancel`}</DialogCancel>
-                        </DialogActions>
-                    </>
-                );
-        }
-    }
+    const onFieldEditorBack = useCallback(() => {
+        setOpenFieldEditor(false);
+        setOpenFieldSelector(true);
+    }, [setOpenFieldEditor, setOpenFieldSelector]);
 
     return (
-        <Dialog preventOutsideDismiss={true} open={!!current} onClose={onClose}>
-            <DialogTitle>{headerTitle}</DialogTitle>
-            {render}
-        </Dialog>
+        <>
+            <SelectFieldDialog
+                currentField={current}
+                open={openFieldSelector}
+                onClose={onFieldSelectorClose}
+                onSelect={field => {
+                    setCurrent(field);
+                    setOpenFieldSelector(false);
+                    setOpenFieldEditor(true);
+                }}
+            />
+            {current && (
+                <EditFieldDrawer
+                    isNewField={isNewField}
+                    open={openFieldEditor}
+                    field={current}
+                    onBack={onFieldEditorBack}
+                    onClose={onFieldEditorClose}
+                    onSubmit={onSubmit}
+                />
+            )}
+        </>
     );
 };
 

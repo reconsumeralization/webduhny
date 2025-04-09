@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Tab } from "@webiny/ui/Tabs";
-import styled from "@emotion/styled";
-import { Elevation } from "@webiny/ui/Elevation";
 import FormPreview from "./FormPreview";
 import Header from "./Header";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { i18n } from "@webiny/app/i18n";
 import { FbFormDetailsPluginRenderParams, FbFormDetailsPluginType } from "~/types";
+import { OverlayLoader, Tabs } from "@webiny/admin-ui";
+import { ReactComponent as FullscreenIcon } from "@webiny/icons/fullscreen.svg";
+import {
+    SimpleForm,
+    SimpleFormContent,
+    SimpleFormHeader
+} from "@webiny/app-admin/components/SimpleForm";
 
 const t = i18n.namespace("FormsApp.FormDetails.PreviewContent");
-
-const RenderBlock = styled("div")({
-    position: "relative",
-    zIndex: 0,
-    backgroundColor: "var(--mdc-theme-background)",
-    height: "100%",
-    overflow: "auto",
-    padding: 25
-});
 
 const PreviewContentTab = (props: FbFormDetailsPluginRenderParams) => {
     const [revisionId, setRevisionId] = useState<string>();
@@ -35,19 +29,25 @@ const PreviewContentTab = (props: FbFormDetailsPluginRenderParams) => {
     }
 
     return (
-        <RenderBlock>
-            <Elevation z={2}>
-                <div style={{ position: "relative" }}>
-                    {props.loading && <CircularProgress />}
-                    <Header
-                        {...props}
-                        revision={revision}
-                        selectRevision={revision => setRevisionId(revision.id)}
-                    />
-                    <FormPreview revision={revision} form={props.form} />
-                </div>
-            </Elevation>
-        </RenderBlock>
+        <SimpleForm size={"full"} className={"wby-p-none "}>
+            <SimpleFormHeader title={revision.name}>
+                <Header
+                    {...props}
+                    revision={revision}
+                    selectRevision={revision => setRevisionId(revision.id)}
+                />
+            </SimpleFormHeader>
+            <SimpleFormContent
+                className={"wby-p-0 wby-border-b-sm wby-rounded-b-3xl wby-overflow-hidden"}
+            >
+                {props.loading && (
+                    <div className={"wby-relative wby-w-full"}>
+                        <OverlayLoader text={"Loading preview..."} />
+                    </div>
+                )}
+                <FormPreview revision={revision} form={props.form} />
+            </SimpleFormContent>
+        </SimpleForm>
     );
 };
 
@@ -57,13 +57,14 @@ export default [
         type: "forms-form-details-revision-content",
         render(props) {
             return (
-                <Tab
-                    label={t`Form preview`}
+                <Tabs.Tab
+                    value={"preview"}
+                    trigger={t`Preview`}
+                    icon={<FullscreenIcon />}
+                    content={<PreviewContentTab {...props} />}
                     disabled={props.loading}
                     data-testid={"fb.form-details.tab.form-preview"}
-                >
-                    <PreviewContentTab {...props} />
-                </Tab>
+                />
             );
         }
     }

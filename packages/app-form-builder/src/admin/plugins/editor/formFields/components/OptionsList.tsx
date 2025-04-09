@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import camelCase from "lodash/camelCase";
 import cloneDeep from "lodash/cloneDeep";
 import { OptionsListItem, AddOptionInput, EditFieldOptionDialog } from "./OptionsListComponents";
-import { Icon } from "@webiny/ui/Icon";
-import { Typography } from "@webiny/ui/Typography";
-import { Switch } from "@webiny/ui/Switch";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ReactComponent as HandleIcon } from "../../../../icons/round-drag_indicator-24px.svg";
+import { ReactComponent as HandleIcon } from "@webiny/icons/drag_indicator.svg";
 import { validation } from "@webiny/validation";
 import { FormRenderPropParams } from "@webiny/form/types";
 import { FieldOption } from "./types";
@@ -18,37 +12,16 @@ import {
     SortableContainerContextProvider,
     FieldOptionWithId
 } from "./OptionsListComponents/OptionsListItem";
+import { Grid, Icon, Label, Switch } from "@webiny/admin-ui";
 
-const OptionListItem = styled("li")({
-    zIndex: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    borderBottom: "1px solid var(--mdc-theme-background)",
-    background: "var(--mdc-theme-surface)",
-    "&:hover": {
-        background: "var(--mdc-theme-background)"
-    },
-    "&:last-child": {
-        border: "none"
-    }
-});
-
-const switchWrapper = css`
-    align-self: end;
-    height: 100%;
-    display: flex;
-    align-items: center;
-
-    .switch-label {
-        margin-right: 12px;
-
-        strong {
-            font-weight: 600;
-        }
-    }
-`;
-
-const DragHandle = () => <Icon icon={<HandleIcon style={{ cursor: "pointer" }} />} />;
+const DragHandle = () => (
+    <Icon
+        icon={<HandleIcon />}
+        label={"Drag to reorder"}
+        color={"neutral-light"}
+        className={"wby-cursor-grab"}
+    />
+);
 
 interface SetEditOptionParams {
     index: number | null;
@@ -140,37 +113,38 @@ const OptionsList = ({ form, multiple, otherOption }: OptionsListProps) => {
 
                 return (
                     <>
-                        <div>Options</div>
+                        <Label text={"Options"} className={"wby-mb-sm"} />
                         <Grid>
-                            <Cell span={otherOption ? 9 : 12}>
-                                <AddOptionInput
-                                    options={optionsValue}
-                                    validation={optionsValidation}
-                                    onAdd={label => {
-                                        const newValue = Array.isArray(optionsValue)
-                                            ? [...optionsValue]
-                                            : [];
-                                        newValue.push({
-                                            value: camelCase(label),
-                                            label
-                                        });
-                                        setOptionsValue(newValue);
-                                    }}
-                                />
-                            </Cell>
-                            {otherOption && (
-                                <Cell span={3} className={switchWrapper}>
-                                    <Typography use={"button"} className="switch-label">
-                                        Allow &quot;<strong>Other</strong>&quot;
-                                    </Typography>
-                                    <Bind name={"settings.otherOption"}>
-                                        <Switch />
-                                    </Bind>
-                                </Cell>
-                            )}
+                            <>
+                                <Grid.Column span={otherOption ? 9 : 12}>
+                                    <AddOptionInput
+                                        options={optionsValue}
+                                        validation={optionsValidation}
+                                        onAdd={label => {
+                                            const newValue = Array.isArray(optionsValue)
+                                                ? [...optionsValue]
+                                                : [];
+                                            newValue.push({
+                                                value: camelCase(label),
+                                                label
+                                            });
+                                            setOptionsValue(newValue);
+                                        }}
+                                    />
+                                </Grid.Column>
+                                {otherOption && (
+                                    <Grid.Column span={3}>
+                                        <div className={"wby-h-full wby-flex wby-items-center"}>
+                                            <Bind name={"settings.otherOption"}>
+                                                <Switch label={`Allow "Other"`} />
+                                            </Bind>
+                                        </div>
+                                    </Grid.Column>
+                                )}
+                            </>
                         </Grid>
 
-                        <div style={{ position: "relative" }}>
+                        <div className={"wby-relative wby-mt-md"}>
                             {Array.isArray(optionsValueWithId) && optionsValueWithId.length > 0 ? (
                                 <>
                                     <SortableContainerContextProvider
@@ -178,7 +152,7 @@ const OptionsList = ({ form, multiple, otherOption }: OptionsListProps) => {
                                         onDragEnd={onDragEnd}
                                     >
                                         {optionsValueWithId.map((item, index) => (
-                                            <OptionListItem key={`item-${index}`}>
+                                            <div key={`item-${index}`}>
                                                 <OptionsListItem
                                                     dragHandle={<DragHandle />}
                                                     multiple={!!multiple}
@@ -191,14 +165,12 @@ const OptionsList = ({ form, multiple, otherOption }: OptionsListProps) => {
                                                         setOptionsValue(newValue);
                                                     }}
                                                 />
-                                            </OptionListItem>
+                                            </div>
                                         ))}
                                     </SortableContainerContextProvider>
                                 </>
                             ) : (
-                                <div style={{ padding: 40, textAlign: "center" }}>
-                                    No options added.
-                                </div>
+                                <div className={"wby-p-xl wby-text-center"}>No options added.</div>
                             )}
                         </div>
 

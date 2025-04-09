@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { UIView } from "@webiny/app-admin/ui/UIView";
 import { FormAPI, GenericFormData } from "@webiny/form";
 import { validation } from "@webiny/validation";
@@ -9,7 +8,7 @@ import {
     AccordionItemElement
 } from "@webiny/app-admin/ui/elements/AccordionElement";
 import { InputElement } from "@webiny/app-admin/ui/elements/form/InputElement";
-import { ReactComponent as SecurityIcon } from "@webiny/icons/security.svg";
+import { ReactComponent as SecurityIcon } from "@webiny/icons/gpp_maybe.svg";
 import { ReactComponent as SecurityTeamsIcon } from "@webiny/icons/admin_panel_settings.svg";
 import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { AvatarImage } from "../../components/AvatarImage";
@@ -19,14 +18,6 @@ import { UseUserForm, useUserForm } from "~/ui/views/Users/hooks/useUserForm";
 import { FormView } from "@webiny/app-admin/ui/views/FormView";
 import { FormElementRenderProps } from "@webiny/app-admin/ui/elements/form/FormElement";
 import { config as appConfig } from "@webiny/app/config";
-
-const FormWrapper = styled("div")({
-    margin: "0 100px"
-});
-
-const AvatarWrapper = styled("div")({
-    margin: "24px 100px 32px"
-});
 
 interface UsersFormViewParams {
     teams?: boolean;
@@ -90,11 +81,11 @@ export class UsersFormView extends UIView {
             const { Bind } = props.formProps;
 
             return (
-                <AvatarWrapper>
+                <div className={"wby-pt-xl"}>
                     <Bind name="avatar">
                         <AvatarImage round />
                     </Bind>
-                </AvatarWrapper>
+                </div>
             );
         });
 
@@ -207,6 +198,6 @@ export class UsersFormView extends UIView {
             );
         }
 
-        this.wrapWith(({ children }) => <FormWrapper>{children}</FormWrapper>);
+        this.wrapWith(({ children }) => <div>{children}</div>);
     }
 }

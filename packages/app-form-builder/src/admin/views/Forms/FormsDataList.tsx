@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as FileUploadIcon } from "@webiny/icons/file_upload.svg";
 import orderBy from "lodash/orderBy";
 import upperFirst from "lodash/upperFirst";
 import { useRouter } from "@webiny/react-router";
@@ -28,12 +29,7 @@ import {
 } from "@webiny/ui/List";
 import { i18n } from "@webiny/app/i18n";
 import { removeFormFromListCache, updateLatestRevisionInListCache } from "../cache";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { ReactComponent as FileUploadIcon } from "@webiny/icons/file_upload.svg";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
-import { Checkbox } from "@webiny/ui/Checkbox";
 import { useMultiSelect } from "./hooks/useMultiSelect";
 import { usePermission } from "~/hooks/usePermission";
 import useImportForm from "./hooks/useImportForm";
@@ -42,6 +38,7 @@ import { OptionsMenu } from "~/admin/components/OptionsMenu";
 import { useForms } from "./useForms";
 import { deserializeSorters } from "../utils";
 import { FbFormModel, FbRevisionModel } from "~/types";
+import { Button, Checkbox, Select, TimeAgo } from "@webiny/admin-ui";
 
 const t = i18n.namespace("FormsApp.FormsDataList");
 
@@ -182,24 +179,15 @@ const FormsDataList = (props: FormsDataListProps) => {
     const formsDataListModalOverlay = useMemo(
         () => (
             <DataListModalOverlay>
-                <Grid>
-                    <Cell span={12}>
-                        <Select
-                            value={sort}
-                            onChange={setSort}
-                            label={t`Sort by`}
-                            description={"Sort forms by"}
-                        >
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
-                </Grid>
+                <Select
+                    value={sort}
+                    onChange={setSort}
+                    label={t`Sort by`}
+                    options={SORTERS.map(({ label, sorter: value }) => ({
+                        label,
+                        value
+                    }))}
+                />
             </DataListModalOverlay>
         ),
         [sort]
@@ -223,13 +211,18 @@ const FormsDataList = (props: FormsDataListProps) => {
         }
         return (
             <>
-                <ButtonPrimary data-testid="new-record-button" onClick={props.onCreateForm}>
-                    {t`New Form`}
-                </ButtonPrimary>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    data-testid="new-record-button"
+                    onClick={props.onCreateForm}
+                />
                 <OptionsMenu
                     items={[
                         {
-                            label: "Import Forms",
+                            label: "Import forms",
                             icon: <FileUploadIcon />,
                             onClick: showImportDialog,
                             "data-testid": "import-form-button"
@@ -261,7 +254,11 @@ const FormsDataList = (props: FormsDataListProps) => {
             isAllMultiSelected={multiSelectProps.isAllMultiSelected}
             isNoneMultiSelected={multiSelectProps.isNoneMultiSelected}
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search forms`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search forms...`}
+                />
             }
             modalOverlay={formsDataListModalOverlay}
             modalOverlayAction={<DataListModalOverlayAction />}
@@ -279,7 +276,7 @@ const FormsDataList = (props: FormsDataListProps) => {
                                 <ListSelectBox>
                                     <Checkbox
                                         onChange={() => multiSelectProps.multiSelect(form)}
-                                        value={multiSelectProps.isMultiSelected(form)}
+                                        checked={multiSelectProps.isMultiSelected(form)}
                                     />
                                 </ListSelectBox>
                                 <ListItemText

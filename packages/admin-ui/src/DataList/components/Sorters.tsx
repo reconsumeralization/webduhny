@@ -10,7 +10,7 @@ const Sorters = (props: DataListProps) => {
     }
 
     return (
-        <DropdownMenu trigger={<SortIcon size={"lg"} />}>
+        <DropdownMenu trigger={<SortIcon size={"sm"} />}>
             {sorters.map(sorter => (
                 <DropdownMenu.Item
                     key={sorter.label}

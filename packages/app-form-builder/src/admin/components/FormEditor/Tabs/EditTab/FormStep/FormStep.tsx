@@ -1,8 +1,7 @@
 import React from "react";
 
 import { FbFormModelField, FbFormStep } from "~/types";
-import { StyledAccordion, StyledAccordionItem } from "../Styled";
-import { AccordionItem } from "@webiny/ui/Accordion";
+import { Accordion } from "@webiny/admin-ui";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { EmptyFormStep } from "./EmptyFormStep";
@@ -31,20 +30,20 @@ export const FormStep = (props: FormStepProps) => {
     const fields = getStepFields(formStep.id);
 
     return (
-        <StyledAccordion data-testid="form-step-element">
-            <StyledAccordionItem
+        <Accordion data-testid="form-step-element" background={"light"} variant={"container"}>
+            <Accordion.Item
                 title={title}
-                open={true}
-                handle={<AccordionItem.Handle />}
+                defaultOpen={true}
+                handle={<Accordion.Item.Handle />}
                 actions={
-                    <AccordionItem.Actions>
-                        <AccordionItem.Action icon={<EditIcon />} onClick={onEdit} />
-                        <AccordionItem.Action
+                    <>
+                        <Accordion.Item.Action icon={<EditIcon />} onClick={onEdit} />
+                        <Accordion.Item.Action
                             icon={<DeleteIcon />}
                             onClick={onDelete}
                             disabled={deleteStepDisabled}
                         />
-                    </AccordionItem.Actions>
+                    </>
                 }
             >
                 {fields.length === 0 ? (
@@ -72,7 +71,7 @@ export const FormStep = (props: FormStepProps) => {
                         editField(null);
                     }}
                 />
-            </StyledAccordionItem>
-        </StyledAccordion>
+            </Accordion.Item>
+        </Accordion>
     );
 };

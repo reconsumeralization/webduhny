@@ -1,111 +1,35 @@
 import React, { useCallback, useState, useEffect, useMemo } from "react";
-import styled from "@emotion/styled";
-import classNames from "classnames";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_chart.svg";
 import { OverlayLayout } from "@webiny/app-admin/components/OverlayLayout";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
-import { ScrollList, ListItem } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
-import { Typography } from "@webiny/ui/Typography";
-import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
-import { Elevation } from "@webiny/ui/Elevation";
-import { ButtonSecondary } from "@webiny/ui/Button";
-
 import { ReactComponent as SearchIcon } from "~/editor/assets/icons/search.svg";
 import { useKeyHandler } from "~/editor/hooks/useKeyHandler";
-import {
-    listItem,
-    activeListItem,
-    ListItemTitle,
-    listStyle,
-    TitleContent
-} from "./PageTemplatesDialogStyled";
-import * as Styled from "~/templateEditor/config/Content/BlocksBrowser/StyledComponents";
 import { PbPageTemplate, PbPageTemplateWithContent } from "~/types";
 import { useListPageTemplates } from "~/features";
 import { PageTemplateContentPreview } from "~/admin/views/PageTemplates/PageTemplateContentPreview";
-
-const ListContainer = styled.div`
-    width: 100%;
-    height: calc(100vh - 45px);
-    overflow: clip;
-    display: flex;
-    flex-direction: column;
-`;
-
-const DetailsContainer = styled.div`
-    height: calc(100% - 10px);
-    overflow: hidden;
-    position: relative;
-
-    .mdc-tab-bar {
-        background-color: var(--mdc-theme-surface);
-    }
-`;
-
-const RenderBlock = styled.div`
-    position: relative;
-    z-index: 0;
-    background-color: var(--mdc-theme-background);
-    height: 100%;
-    overflow: auto;
-    padding: 25px;
-`;
-
-const HeaderTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-    color: var(--mdc-theme-text-primary-on-background);
-    background: var(--mdc-theme-surface);
-    padding-top: 10px;
-    padding-bottom: 9px;
-    padding-left: 24px;
-    padding-right: 24px;
-`;
-
-const PageTemplateTitle = styled.div`
-    overflow: hidden;
-
-    span {
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-`;
-
-const HeaderActions = styled.div`
-    justify-content: flex-end;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-`;
-
-const ModalTitleStyled = styled.div`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--mdc-theme-text-primary-on-background);
-`;
-
-const SearchInputWrapper = styled.div`
-    padding: 16px;
-`;
-
-const BlankTemplateButtonWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    border-top: 1px solid var(--mdc-theme-on-background);
-`;
+import { Button, DelayedOnChange, Heading, Icon, Input, List, Separator } from "@webiny/admin-ui";
+import {
+    SimpleForm,
+    SimpleFormContent,
+    SimpleFormFooter,
+    SimpleFormHeader
+} from "@webiny/app-admin/components/SimpleForm";
+import EmptyView from "@webiny/app-admin/components/EmptyView";
 
 const ModalTitle = () => {
     return (
-        <ModalTitleStyled>
-            <Typography use="headline5">Pick a template for your new page</Typography>
-        </ModalTitleStyled>
+        <Heading level={5} className={"wby-truncate"}>
+            Pick a template for your new page
+        </Heading>
+    );
+};
+
+const EmptyTemplateDetails = () => {
+    return (
+        <EmptyView
+            icon={<TableIcon />}
+            title={"Click on the left side list to display template details"}
+        />
     );
 };
 
@@ -149,92 +73,78 @@ const PageTemplatesDialog = ({ onClose, onSelect, isLoading }: PageTemplatesDial
         <OverlayLayout barLeft={<ModalTitle />} onExited={onClose}>
             <SplitView>
                 <LeftPanel span={3}>
-                    <ListContainer>
-                        <SearchInputWrapper>
-                            <Styled.Input>
-                                <Icon className={Styled.searchIcon} icon={<SearchIcon />} />
-                                <DelayedOnChange value={search} onChange={setSearch}>
-                                    {({ value, onChange }) => (
-                                        <input
-                                            autoFocus
-                                            type={"text"}
-                                            placeholder="Search templates..."
-                                            value={value}
-                                            onChange={ev => onChange(ev.target.value)}
-                                        />
-                                    )}
-                                </DelayedOnChange>
-                            </Styled.Input>
-                        </SearchInputWrapper>
-                        <ScrollList
-                            className={listStyle}
-                            data-testid={"pb-new-page-dialog-templates-list"}
-                        >
-                            {filteredPageTemplates.map(template => (
-                                <ListItem
-                                    key={template.id}
-                                    className={classNames(
-                                        listItem,
-                                        activeTemplate?.id === template.id && activeListItem
-                                    )}
-                                    onClick={() => {
-                                        setActiveTemplate(template);
-                                    }}
-                                >
-                                    <TitleContent>
-                                        <ListItemTitle>{template.title}</ListItemTitle>
-                                        <Typography use={"body2"}>
-                                            {template.description}
-                                        </Typography>
-                                    </TitleContent>
-                                </ListItem>
-                            ))}
-                        </ScrollList>
-                        <BlankTemplateButtonWrapper>
-                            <ButtonSecondary
-                                disabled={isLoading}
-                                onClick={() => onSelect()}
-                                data-testid={"pb-new-page-dialog-use-blank-template-btn"}
-                            >
-                                Use a blank page template
-                            </ButtonSecondary>
-                        </BlankTemplateButtonWrapper>
-                    </ListContainer>
+                    <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>
+                        <div>
+                            <div>
+                                <div className={"wby-py-sm wby-px-md"}>
+                                    <DelayedOnChange value={search} onChange={setSearch}>
+                                        {({ value, onChange }) => (
+                                            <Input
+                                                value={value}
+                                                placeholder="Search templates..."
+                                                onChange={e => onChange(e.target.value)}
+                                                forwardEventOnChange={true}
+                                                startIcon={
+                                                    <Icon icon={<SearchIcon />} label="Search" />
+                                                }
+                                                variant={"ghost"}
+                                            />
+                                        )}
+                                    </DelayedOnChange>
+                                </div>
+                                <Separator variant={"subtle"} />
+                            </div>
+                            <List data-testid={"pb-new-page-dialog-templates-list"}>
+                                {filteredPageTemplates.map(template => (
+                                    <List.Item
+                                        key={template.id}
+                                        title={template.title}
+                                        description={template.description}
+                                        activated={activeTemplate?.id === template.id}
+                                        onClick={() => {
+                                            setActiveTemplate(template);
+                                        }}
+                                    />
+                                ))}
+                            </List>
+                        </div>
+                        <div>
+                            <Separator variant={"subtle"} />
+                            <div className={"wby-py-md wby-px-lg wby-flex"}>
+                                <Button
+                                    variant={"primary"}
+                                    size={"lg"}
+                                    text={"Use a blank page template"}
+                                    disabled={isLoading}
+                                    onClick={() => onSelect()}
+                                    data-testid={"pb-new-page-dialog-use-blank-template-btn"}
+                                    className={"wby-w-full"}
+                                    containerClassName={"wby-w-full"}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </LeftPanel>
                 <RightPanel span={9} data-testid={"pb-new-page-dialog-template-preview"}>
-                    {activeTemplate && (
-                        <DetailsContainer>
-                            <RenderBlock>
-                                <Elevation z={2}>
-                                    <div style={{ position: "relative" }}>
-                                        <HeaderTitle>
-                                            <PageTemplateTitle>
-                                                <Typography use="headline5">
-                                                    {activeTemplate.title}
-                                                </Typography>
-                                                <Typography use="body2">
-                                                    {activeTemplate.description}
-                                                </Typography>
-                                            </PageTemplateTitle>
-                                            <HeaderActions>
-                                                <ButtonSecondary
-                                                    disabled={isLoading}
-                                                    data-testid={
-                                                        "pb-new-page-dialog-use-template-btn"
-                                                    }
-                                                    onClick={() =>
-                                                        handleCreatePageFromTemplate(activeTemplate)
-                                                    }
-                                                >
-                                                    Use Template
-                                                </ButtonSecondary>
-                                            </HeaderActions>
-                                        </HeaderTitle>
-                                        <PageTemplateContentPreview template={activeTemplate} />
-                                    </div>
-                                </Elevation>
-                            </RenderBlock>
-                        </DetailsContainer>
+                    {activeTemplate ? (
+                        <SimpleForm size={"lg"}>
+                            <SimpleFormHeader title={activeTemplate.title}>
+                                <div className={"wby-flex wby-justify-end"}>
+                                    <Button
+                                        text={"Use Template"}
+                                        disabled={isLoading}
+                                        data-testid={"pb-new-page-dialog-use-template-btn"}
+                                        onClick={() => handleCreatePageFromTemplate(activeTemplate)}
+                                    />
+                                </div>
+                            </SimpleFormHeader>
+                            <SimpleFormContent>
+                                <PageTemplateContentPreview template={activeTemplate} />
+                            </SimpleFormContent>
+                            <SimpleFormFooter>{""}</SimpleFormFooter>
+                        </SimpleForm>
+                    ) : (
+                        <EmptyTemplateDetails />
                     )}
                 </RightPanel>
             </SplitView>

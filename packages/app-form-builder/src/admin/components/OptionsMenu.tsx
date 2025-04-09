@@ -1,18 +1,7 @@
 import React from "react";
-import { css } from "emotion";
 import { makeDecoratable } from "@webiny/app-admin";
-import { Menu, MenuItem } from "@webiny/ui/Menu";
-import { IconButton } from "@webiny/ui/Button";
 import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
-import { ListItemGraphic } from "@webiny/ui/List";
-import { Icon } from "@webiny/ui/Icon";
-
-const menuStyles = css({
-    ".disabled": {
-        opacity: 0.5,
-        pointerEvents: "none"
-    }
-});
+import { DropdownMenu, IconButton } from "@webiny/admin-ui";
 
 export interface OptionsMenuItem {
     label: string;
@@ -35,26 +24,27 @@ export const OptionsMenu = makeDecoratable(
         }
 
         return (
-            <Menu
-                className={menuStyles}
-                handle={<IconButton icon={<MoreVerticalIcon />} />}
-                anchor={"topLeft"}
-                {...props}
+            <DropdownMenu
+                trigger={
+                    <IconButton
+                        size={"sm"}
+                        variant={"ghost"}
+                        icon={<MoreVerticalIcon />}
+                        data-testid={props["data-testid"]}
+                    />
+                }
             >
                 {items.map(item => (
-                    <MenuItem
+                    <DropdownMenu.Item
                         key={item.label}
                         disabled={item.disabled ?? false}
                         onClick={item.onClick}
                         data-testid={item["data-testid"]}
-                    >
-                        <ListItemGraphic>
-                            <Icon icon={item.icon} />
-                        </ListItemGraphic>
-                        {item.label}
-                    </MenuItem>
+                        text={item.label}
+                        icon={<DropdownMenu.Item.Icon element={item.icon} label={item.label} />}
+                    />
                 ))}
-            </Menu>
+            </DropdownMenu>
         );
     }
 );

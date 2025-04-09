@@ -1,16 +1,10 @@
 import React, { useCallback } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import styled from "@emotion/styled";
 import pick from "lodash/pick";
 import get from "lodash/get";
 import { useRouter } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import { Alert } from "@webiny/ui/Alert";
-import { ButtonDefault, ButtonIcon, ButtonPrimary, IconButton } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { validation } from "@webiny/validation";
 import {
     SimpleForm,
@@ -18,29 +12,27 @@ import {
     SimpleFormContent,
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
-import { Typography } from "@webiny/ui/Typography";
 import { Permissions } from "@webiny/app-admin/components/Permissions";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { CREATE_GROUP, LIST_GROUPS, READ_GROUP, UPDATE_GROUP } from "./graphql";
-import { SnackbarAction } from "@webiny/ui/Snackbar";
 import isEmpty from "lodash/isEmpty";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { ReactComponent as CopyIcon } from "@webiny/icons/content_copy.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { Group } from "~/types";
+import {
+    Alert,
+    Button,
+    Grid,
+    IconButton,
+    Input,
+    OverlayLoader,
+    Textarea,
+    Tooltip
+} from "@webiny/admin-ui";
 
 const t = i18n.ns("app-security/admin/roles/form");
-
-const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const PermissionsTitleCell = styled(Cell)`
-    display: flex;
-    align-items: center;
-`;
 
 export interface GroupsFormProps {
     // TODO @ts-refactor delete and go up the tree and sort it out
@@ -84,8 +76,7 @@ export const GroupsForm = () => {
             if (!formData.permissions || !formData.permissions.length) {
                 showSnackbar(t`You must configure permissions before saving!`, {
                     timeout: 60000,
-                    dismissesOnAction: true,
-                    action: <SnackbarAction label={"OK"} />
+                    dismissesOnAction: true
                 });
                 return;
             }
@@ -134,15 +125,15 @@ export const GroupsForm = () => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<SettingsIcon />}
                 title={t`Click on the left side list to display role details or create a...`}
                 action={
-                    <ButtonDefault
+                    <Button
+                        icon={<AddIcon />}
+                        text={t`New Role`}
                         data-testid="new-record-button"
                         onClick={() => history.push("/access-management/roles?new=true")}
-                    >
-                        <ButtonIcon icon={<AddIcon />} />
-                        {t`New Role`}
-                    </ButtonDefault>
+                    />
                 }
             />
         );
@@ -152,115 +143,130 @@ export const GroupsForm = () => {
         <Form data={data} onSubmit={onSubmit}>
             {({ data, form, Bind }) => {
                 return (
-                    <SimpleForm>
-                        {loading && <CircularProgress />}
+                    <SimpleForm size={"lg"}>
+                        {loading && <OverlayLoader />}
                         <SimpleFormHeader title={data.name ? data.name : "Untitled"} />
                         <SimpleFormContent>
-                            {systemGroup && (
-                                <Grid>
-                                    <Cell span={12}>
-                                        <Alert type={"info"} title={"Permissions are locked"}>
-                                            This is a protected system role and you can&apos;t
-                                            modify its permissions.
-                                        </Alert>
-                                    </Cell>
-                                </Grid>
-                            )}
-                            {pluginGroup && (
-                                <Grid>
-                                    <Cell span={12}>
-                                        <Alert type={"info"} title={"Permissions are locked"}>
-                                            This role is registered via an extension, and cannot be
-                                            modified.
-                                        </Alert>
-                                    </Cell>
-                                </Grid>
-                            )}
                             <Grid>
-                                <Cell span={6}>
-                                    <Bind
-                                        name="name"
-                                        validators={validation.create("required,minLength:3")}
-                                    >
-                                        <Input
-                                            label={t`Name`}
-                                            disabled={!canModifyGroup}
-                                            data-testid="admin.am.group.new.name"
-                                        />
-                                    </Bind>
-                                </Cell>
-                                <Cell span={6}>
-                                    <Bind
-                                        name="slug"
-                                        validators={validation.create("required,minLength:3")}
-                                    >
-                                        <Input
-                                            disabled={!canModifyGroup || !newGroup}
-                                            label={t`Slug`}
-                                            data-testid="admin.am.group.new.slug"
-                                        />
-                                    </Bind>
-                                </Cell>
-                            </Grid>
-                            <Grid>
-                                <Cell span={12}>
-                                    <Bind
-                                        name="description"
-                                        validators={validation.create("maxLength:500")}
-                                    >
-                                        <Input
-                                            label={t`Description`}
-                                            rows={3}
-                                            disabled={!canModifyGroup}
-                                            data-testid="admin.am.group.new.description"
-                                        />
-                                    </Bind>
-                                </Cell>
-                            </Grid>
-                            {canModifyGroup && (
-                                <Grid>
-                                    <PermissionsTitleCell span={12}>
-                                        <Typography use={"subtitle1"}>{t`Permissions`}</Typography>
-                                        <Tooltip
-                                            content="Copy permissions as JSON"
-                                            placement={"top"}
+                                <>
+                                    {systemGroup && (
+                                        <Grid.Column span={12}>
+                                            <Alert
+                                                type={"warning"}
+                                                title={"Permissions are locked"}
+                                            >
+                                                This is a protected system role and you can&apos;t
+                                                modify its permissions.
+                                            </Alert>
+                                        </Grid.Column>
+                                    )}
+                                    {pluginGroup && (
+                                        <Grid.Column span={12}>
+                                            <Alert
+                                                type={"warning"}
+                                                title={"Permissions are locked"}
+                                            >
+                                                This role is registered via an extension, and cannot
+                                                be modified.
+                                            </Alert>
+                                        </Grid.Column>
+                                    )}
+                                    <Grid.Column span={6}>
+                                        <Bind
+                                            name="name"
+                                            validators={validation.create("required,minLength:3")}
                                         >
-                                            <IconButton
-                                                icon={<CopyIcon />}
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(
-                                                        JSON.stringify(data.permissions, null, 2)
-                                                    );
-                                                    showSnackbar("JSON data copied to clipboard.");
-                                                }}
+                                            <Input
+                                                size={"lg"}
+                                                label={t`Name`}
+                                                disabled={!canModifyGroup}
+                                                data-testid="admin.am.group.new.name"
                                             />
-                                        </Tooltip>
-                                    </PermissionsTitleCell>
-                                    <Cell span={12}>
-                                        <Bind name={"permissions"} defaultValue={[]}>
-                                            {bind => (
-                                                <Permissions id={data.id || "new"} {...bind} />
-                                            )}
                                         </Bind>
-                                    </Cell>
-                                </Grid>
-                            )}
+                                    </Grid.Column>
+                                    <Grid.Column span={6}>
+                                        <Bind
+                                            name="slug"
+                                            validators={validation.create("required,minLength:3")}
+                                        >
+                                            <Input
+                                                size={"lg"}
+                                                disabled={!canModifyGroup || !newGroup}
+                                                label={t`Slug`}
+                                                data-testid="admin.am.group.new.slug"
+                                            />
+                                        </Bind>
+                                    </Grid.Column>
+                                    <Grid.Column span={12}>
+                                        <Bind
+                                            name="description"
+                                            validators={validation.create("maxLength:500")}
+                                        >
+                                            <Textarea
+                                                size={"lg"}
+                                                label={t`Description`}
+                                                rows={3}
+                                                disabled={!canModifyGroup}
+                                                data-testid="admin.am.group.new.description"
+                                            />
+                                        </Bind>
+                                    </Grid.Column>
+                                </>
+                            </Grid>
                         </SimpleFormContent>
-                        {canModifyGroup && (
-                            <SimpleFormFooter>
-                                <ButtonWrapper>
-                                    <ButtonDefault
+                        <SimpleFormHeader title={"Permissions"} rounded={false}>
+                            <div className={"wby-flex wby-justify-end"}>
+                                <Tooltip
+                                    content="Copy permissions as JSON"
+                                    trigger={
+                                        <IconButton
+                                            variant={"ghost"}
+                                            icon={<CopyIcon />}
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(
+                                                    JSON.stringify(data.permissions, null, 2)
+                                                );
+                                                showSnackbar("JSON data copied to clipboard.");
+                                            }}
+                                        />
+                                    }
+                                />
+                            </div>
+                        </SimpleFormHeader>
+                        <SimpleFormContent>
+                            <Grid>
+                                <>
+                                    {canModifyGroup && (
+                                        <Grid.Column span={12}>
+                                            <Bind name={"permissions"} defaultValue={[]}>
+                                                {bind => (
+                                                    <Permissions id={data.id || "new"} {...bind} />
+                                                )}
+                                            </Bind>
+                                        </Grid.Column>
+                                    )}
+                                </>
+                            </Grid>
+                        </SimpleFormContent>
+                        <SimpleFormFooter>
+                            {canModifyGroup && (
+                                <>
+                                    <Button
+                                        variant={"secondary"}
+                                        text={t`Cancel`}
                                         onClick={() => history.push("/access-management/roles")}
-                                    >{t`Cancel`}</ButtonDefault>
-                                    <ButtonPrimary
+                                        data-testid="pb.category.new.form.button.cancel"
+                                    />
+                                    <Button
+                                        text={t`Save`}
                                         data-testid="admin.am.group.new.save"
                                         onClick={ev => {
                                             form.submit(ev);
                                         }}
-                                    >{t`Save role`}</ButtonPrimary>
-                                </ButtonWrapper>
-                            </SimpleFormFooter>
-                        )}
+                                    />
+                                </>
+                            )}
+                        </SimpleFormFooter>
                     </SimpleForm>
                 );
             }}

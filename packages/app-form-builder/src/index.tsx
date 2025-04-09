@@ -49,7 +49,7 @@ export const FormBuilder = () => {
                     }
                 />
                 <Route
-                    name={"fb.forms"}
+                    name={"fb.forms.editor"}
                     exact
                     path={"/form-builder/forms/:id"}
                     element={
@@ -59,7 +59,7 @@ export const FormBuilder = () => {
                     }
                 />
                 <Route
-                    name={"fb.forms"}
+                    name={"fb.forms.list"}
                     exact
                     path={"/form-builder/forms"}
                     element={

@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import orderBy from "lodash/orderBy";
+import { Button, Grid, Select, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataList,
@@ -19,10 +21,6 @@ import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import { LIST_TEAMS, DELETE_TEAM, ListTeamsResponse } from "./graphql";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { deserializeSorters } from "../utils";
 import { Team } from "~/types";
@@ -119,17 +117,19 @@ export const TeamsDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => {
+                                return {
+                                    label,
+                                    value
+                                };
                             })}
-                        </Select>
-                    </Cell>
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -143,17 +143,23 @@ export const TeamsDataList = () => {
         <DataList
             title={t`Teams`}
             actions={
-                <ButtonPrimary
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/teams?new=true")}
-                >
-                    {t`New Team`}
-                </ButtonPrimary>
+                />
             }
             data={teamList}
             loading={listLoading || deleteLoading}
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search Teams`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search teams...`}
+                />
             }
             modalOverlay={teamsDataListModalOverlay}
             modalOverlayAction={
@@ -177,7 +183,6 @@ export const TeamsDataList = () => {
                                 <ListActions>
                                     {item.system || item.plugin ? (
                                         <Tooltip
-                                            placement={"bottom"}
                                             content={
                                                 <span>
                                                     {item.system
@@ -185,9 +190,8 @@ export const TeamsDataList = () => {
                                                         : t`Cannot delete teams created via extensions.`}
                                                 </span>
                                             }
-                                        >
-                                            <DeleteIcon disabled />
-                                        </Tooltip>
+                                            trigger={<DeleteIcon disabled />}
+                                        />
                                     ) : (
                                         <DeleteIcon
                                             onClick={() => deleteItem(item)}

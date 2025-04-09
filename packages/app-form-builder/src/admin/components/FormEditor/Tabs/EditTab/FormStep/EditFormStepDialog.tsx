@@ -1,48 +1,7 @@
 import React from "react";
-import styled from "@emotion/styled";
-
-import { Dialog as BaseDialog } from "@webiny/ui/Dialog";
+import { Dialog, Input } from "@webiny/admin-ui";
 import { Form, FormOnSubmit } from "@webiny/form";
-import { Input } from "@webiny/ui/Input";
-import { ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
 import { validation } from "@webiny/validation";
-
-const EditStepDialog = styled(BaseDialog)`
-    font-size: 1.4rem;
-    color: #fff;
-    font-weight: 600;
-
-    & .mdc-dialog__surface {
-        width: 575px;
-    }
-`;
-
-const DialogHeader = styled.div`
-    height: 30px;
-    background-color: var(--mdc-theme-secondary);
-    padding: 20px 20px;
-
-    & span {
-        vertical-align: middle;
-    }
-`;
-
-const DialogBody = styled.div`
-    padding: 20px 20px;
-    min-height: 75px;
-`;
-
-const DialogActions = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 20px 20px;
-    border-top: 1px solid rgba(212, 212, 212, 0.5);
-
-    & .webiny-ui-button--primary {
-        margin-left: 20px;
-    }
-`;
 
 export interface DialogProps {
     isEditStep: {
@@ -68,38 +27,36 @@ export const EditFormStepDialog = ({
     };
     return (
         <>
-            <EditStepDialog
-                open={isEditStep.isOpened}
-                onClose={() =>
-                    setIsEditStep({
-                        isOpened: false,
-                        id: null
-                    })
-                }
-            >
-                <Form onSubmit={onSubmit} data={{ title: stepTitle }}>
-                    {({ Bind, submit }) => (
-                        <>
-                            <DialogHeader>
-                                <span>Change Step Title</span>
-                            </DialogHeader>
-                            <DialogBody>
-                                <Bind name={"title"} validators={[validation.create("required")]}>
-                                    <Input label={"Change Step Title"} />
-                                </Bind>
-                            </DialogBody>
-                            <DialogActions>
-                                <ButtonSecondary
+            <Form onSubmit={onSubmit} data={{ title: stepTitle }}>
+                {({ Bind, submit }) => (
+                    <Dialog
+                        open={isEditStep.isOpened}
+                        onOpenChange={open => {
+                            if (!open) {
+                                setIsEditStep({
+                                    isOpened: false,
+                                    id: null
+                                });
+                            }
+                        }}
+                        title={"Change step title"}
+                        actions={
+                            <>
+                                <Dialog.CancelButton
                                     onClick={() => setIsEditStep({ isOpened: false, id: null })}
-                                >
-                                    Cancel
-                                </ButtonSecondary>
-                                <ButtonPrimary onClick={submit}>Save</ButtonPrimary>
-                            </DialogActions>
+                                />
+                                <Dialog.ConfirmButton onClick={submit} />
+                            </>
+                        }
+                    >
+                        <>
+                            <Bind name={"title"} validators={[validation.create("required")]}>
+                                <Input size={"lg"} label={"Step title"} />
+                            </Bind>
                         </>
-                    )}
-                </Form>
-            </EditStepDialog>
+                    </Dialog>
+                )}
+            </Form>
         </>
     );
 };

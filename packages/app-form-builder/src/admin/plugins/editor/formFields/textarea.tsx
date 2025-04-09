@@ -1,7 +1,6 @@
 import React from "react";
-import { ReactComponent as TextIcon } from "./icons/round-text_fields-24px.svg";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
+import { ReactComponent as TextIcon } from "@webiny/icons/text_fields.svg";
+import { Grid, Input, Textarea } from "@webiny/admin-ui";
 import { FbBuilderFieldPlugin } from "../../../../types";
 
 const plugin: FbBuilderFieldPlugin = {
@@ -28,34 +27,37 @@ const plugin: FbBuilderFieldPlugin = {
         },
         renderSettings({ form: { Bind } }) {
             return (
-                <Grid>
-                    <Cell span={12}>
+                <>
+                    <Grid.Column span={12}>
                         <Bind name={"placeholderText"}>
                             <Input
+                                size={"lg"}
                                 label={"Placeholder text"}
                                 description={"Placeholder text (optional)"}
                             />
                         </Bind>
-                    </Cell>
-                    <Cell span={12}>
+                    </Grid.Column>
+                    <Grid.Column span={12}>
                         <Bind name={"settings.defaultValue"}>
-                            <Input
+                            <Textarea
+                                size={"lg"}
                                 rows={4}
                                 label={"Default value"}
                                 description={"Default value (optional)"}
                             />
                         </Bind>
-                    </Cell>
-                    <Cell span={12}>
+                    </Grid.Column>
+                    <Grid.Column span={12}>
                         <Bind name={"settings.rows"}>
                             <Input
+                                size={"lg"}
                                 type={"number"}
                                 label={"Text area rows"}
                                 description={"Default value (optional)"}
                             />
                         </Bind>
-                    </Cell>
-                </Grid>
+                    </Grid.Column>
+                </>
             );
         }
     }

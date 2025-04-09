@@ -1,9 +1,8 @@
 import React from "react";
 import { i18n } from "@webiny/app/i18n";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import { ReactComponent as DateIcon } from "@webiny/icons/calendar_month.svg";
 import { FbBuilderFieldPlugin } from "~/types";
+import { Grid, Select } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields");
 
@@ -33,22 +32,33 @@ const plugin: FbBuilderFieldPlugin = {
         renderSettings({ form }) {
             const { Bind } = form;
             return (
-                <Grid>
-                    <Cell span={12}>
-                        <Bind name={"settings.format"}>
-                            <Select label={t`Format`} description={t`Cannot be changed later`}>
-                                <option value={t`date`}>{t`Date only`}</option>
-                                <option value={t`time`}>{t`Time only`}</option>
-                                <option
-                                    value={t`dateTimeWithTimezone`}
-                                >{t`Date and time with timezone`}</option>
-                                <option
-                                    value={t`dateTimeWithoutTimezone`}
-                                >{t`Date and time without timezone`}</option>
-                            </Select>
-                        </Bind>
-                    </Cell>
-                </Grid>
+                <Grid.Column span={12}>
+                    <Bind name={"settings.format"}>
+                        <Select
+                            label={t`Format`}
+                            description={t`Cannot be changed later`}
+                            size={"lg"}
+                            options={[
+                                {
+                                    value: "date",
+                                    label: t`Date only`
+                                },
+                                {
+                                    value: "time",
+                                    label: t`Time only`
+                                },
+                                {
+                                    value: "dateTimeWithTimezone",
+                                    label: t`Date and time with timezone`
+                                },
+                                {
+                                    value: "dateTimeWithoutTimezone",
+                                    label: t`Date and time without timezone`
+                                }
+                            ]}
+                        />
+                    </Bind>
+                </Grid.Column>
             );
         }
     }

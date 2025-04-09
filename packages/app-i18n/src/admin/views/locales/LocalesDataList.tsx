@@ -1,4 +1,6 @@
 import React, { useMemo } from "react";
+import { Button, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataList,
@@ -13,8 +15,6 @@ import {
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { useLocalesList } from "./hooks/useLocalesList";
 import { I18NLocaleItem } from "~/types";
@@ -48,15 +48,15 @@ const LocalesDataList = () => {
 
     const localesDataListModalOverlay = useMemo(
         () => (
-            <Select value={sort || ""} onChange={setSort} label={t`Sort by`}>
-                {SORTERS.map(({ label, sorter }) => {
-                    return (
-                        <option key={label} value={sorter}>
-                            {label}
-                        </option>
-                    );
-                })}
-            </Select>
+            <Select
+                value={sort || ""}
+                onChange={setSort}
+                label={t`Sort by`}
+                options={SORTERS.map(({ label, sorter: value }) => ({
+                    label,
+                    value
+                }))}
+            />
         ),
         [sort]
     );
@@ -65,9 +65,14 @@ const LocalesDataList = () => {
         <DataList
             loading={loading}
             actions={
-                <ButtonPrimary data-testid="new-record-button" onClick={createLocale}>
-                    {t`New Locale`}
-                </ButtonPrimary>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    data-testid="new-record-button"
+                    onClick={createLocale}
+                />
             }
             data={locales}
             title={t`Locales`}
@@ -75,7 +80,7 @@ const LocalesDataList = () => {
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search locales`}
+                    inputPlaceholder={t`Search locales...`}
                 />
             }
             modalOverlay={localesDataListModalOverlay}

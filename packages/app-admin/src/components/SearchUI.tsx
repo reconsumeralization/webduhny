@@ -8,9 +8,16 @@ export interface SearchProps {
     onChange: (value: string) => void;
     onEnter?: () => any;
     inputPlaceholder?: string;
+    dataTestId?: string;
 }
 
-const Search = ({ value, onChange, onEnter, inputPlaceholder = "Search..." }: SearchProps) => {
+const Search = ({
+    value,
+    onChange,
+    onEnter,
+    dataTestId,
+    inputPlaceholder = "Search..."
+}: SearchProps) => {
     return (
         <InputPrimitive
             id={"search-input"}
@@ -20,8 +27,9 @@ const Search = ({ value, onChange, onEnter, inputPlaceholder = "Search..." }: Se
             onEnter={onEnter}
             autoComplete="off"
             startIcon={<Icon label={"Search"} icon={<SearchIcon />} />}
-            variant={"secondary"}
-            size={"lg"}
+            variant={"ghost"}
+            size={"md"}
+            data-testid={dataTestId}
         />
     );
 };

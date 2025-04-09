@@ -65,7 +65,7 @@ const WebsitePreviewURL = () => {
 export const GeneralSettings = () => {
     return (
         <WebsiteSettingsConfig>
-            <Group name={"website"} label={"Website Settings"}>
+            <Group name={"website"} label={"Website settings"}>
                 <Element
                     name={"name"}
                     element={

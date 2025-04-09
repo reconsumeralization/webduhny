@@ -1,117 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "@emotion/styled";
 import isEmpty from "lodash/isEmpty";
-
+import { ReactComponent as ExportIcon } from "@webiny/icons/file_download.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as CloneIcon } from "@webiny/icons/copy_all.svg";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_chart.svg";
+import { IconButton, OverlayLoader, Tooltip } from "@webiny/admin-ui";
 import { useRouter } from "@webiny/react-router";
-import { DeleteIcon, EditIcon } from "@webiny/ui/List/DataList/icons";
-import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as DuplicateIcon } from "~/editor/assets/icons/round-queue-24px.svg";
-import { ReactComponent as ExportIcon } from "@webiny/icons/download.svg";
-import { CircularProgress } from "@webiny/ui/Progress";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { Typography } from "@webiny/ui/Typography";
 import { i18n } from "@webiny/app/i18n";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import useExportBlockDialog from "~/editor/plugins/defaultBar/components/ExportBlockButton/useExportBlockDialog";
-
 import { PbPageBlock } from "~/types";
 import { CreatableItem } from "./PageBlocks";
 import { PreviewBlock } from "~/admin/components/PreviewBlock";
 import { ResponsiveElementsProvider } from "~/admin/components/ResponsiveElementsProvider";
 import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
+import {
+    SimpleForm,
+    SimpleFormContent,
+    SimpleFormHeader
+} from "@webiny/app-admin/components/SimpleForm";
 
 const t = i18n.ns("app-page-builder/admin/page-blocks/data-list");
-
-const List = styled("div")`
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    margin: 17px 50px;
-    background-color: white;
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%),
-        0px 1px 3px 0px rgb(0 0 0 / 12%);
-`;
-
-const ListItem = styled.div`
-    position: relative;
-    border: 1px solid rgba(212, 212, 212, 0.5);
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%),
-        0px 1px 3px 0px rgb(0 0 0 / 12%);
-    min-height: 70px;
-    padding: 15px;
-    margin-bottom: 10px;
-    :last-of-type {
-        margin-bottom: 0;
-    }
-`;
-
-const ListItemText = styled("div")({
-    textTransform: "uppercase",
-    alignSelf: "start",
-    marginTop: "15px"
-});
-
-const Controls = styled("div")({
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    opacity: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    transition: "opacity 0.2s ease-out",
-
-    "&:hover": {
-        opacity: 1
-    }
-});
-
-const DeleteButton = styled(DeleteIcon)({
-    position: "absolute",
-    top: "10px",
-    right: "10px",
-
-    "& svg": {
-        fill: "white"
-    }
-});
-
-const EditButton = styled(EditIcon)({
-    position: "absolute",
-    top: "10px",
-    right: "110px",
-
-    "& svg": {
-        fill: "white"
-    }
-});
-
-const DuplicateButton = styled(IconButton)({
-    position: "absolute",
-    top: "10px",
-    right: "60px",
-
-    "& svg": {
-        fill: "white"
-    }
-});
-
-const ExportButton = styled(IconButton)({
-    position: "absolute",
-    top: "10px",
-    right: "160px",
-
-    "& svg": {
-        fill: "white"
-    }
-});
-
-const NoRecordsWrapper = styled("div")({
-    textAlign: "center",
-    padding: 100,
-    color: "var(--mdc-theme-on-surface)"
-});
 
 type PageBlocksDataListProps = {
     filter: string;
@@ -192,6 +104,7 @@ const PageBlocksDataList = ({ filter, canCreate, canEdit, canDelete }: PageBlock
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<TableIcon />}
                 title={t`Click on the left side list to display list of page blocks for selected category`}
                 action={null}
             />
@@ -201,55 +114,86 @@ const PageBlocksDataList = ({ filter, canCreate, canEdit, canDelete }: PageBlock
     const showNoRecordsView = !pageBlocks.loading && isEmpty(filteredBlocksData);
     // Render "No records found" view.
     if (showNoRecordsView) {
-        return (
-            <NoRecordsWrapper>
-                <Typography use="overline">No records found.</Typography>
-            </NoRecordsWrapper>
-        );
+        return <EmptyView icon={<TableIcon />} title={t`No blocks found.`} />;
     }
 
     return (
-        <List>
+        <>
             {pageBlocks.loading && (
-                <CircularProgress label={loadingLabel || pageBlocks.loadingLabel || "Loading..."} />
+                <OverlayLoader text={loadingLabel || pageBlocks.loadingLabel || "Loading..."} />
             )}
             <ResponsiveElementsProvider>
                 {filteredBlocksData.map(pageBlock => (
-                    <ListItem key={pageBlock.id}>
-                        <PreviewBlock element={pageBlock} />
-                        <ListItemText>{pageBlock.name}</ListItemText>
-                        <Controls>
-                            <ExportButton
-                                data-testid={"pb-blocks-list-block-export-btn"}
-                                icon={<ExportIcon />}
-                                onClick={() => handleExportClick(pageBlock.id)}
-                            />
-                            {canEdit(pageBlock) && (
-                                <EditButton
-                                    data-testid={"pb-blocks-list-block-edit-btn"}
-                                    onClick={() =>
-                                        history.push(`/page-builder/block-editor/${pageBlock.id}`)
+                    <SimpleForm
+                        key={pageBlock.id}
+                        size={"lg"}
+                        className={"wby-pt-none first:wby-pt-lg"}
+                    >
+                        <SimpleFormHeader title={pageBlock.name}>
+                            <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
+                                <Tooltip
+                                    content={"Export block"}
+                                    trigger={
+                                        <IconButton
+                                            variant="ghost"
+                                            icon={<ExportIcon />}
+                                            data-testid={"pb-blocks-list-block-export-btn"}
+                                            onClick={() => handleExportClick(pageBlock.id)}
+                                        />
                                     }
                                 />
-                            )}
-                            {canCreate && (
-                                <DuplicateButton
-                                    data-testid={"pb-blocks-list-block-duplicate-btn"}
-                                    icon={<DuplicateIcon />}
-                                    onClick={() => duplicateItem(pageBlock)}
-                                />
-                            )}
-                            {canDelete(pageBlock) && (
-                                <DeleteButton
-                                    data-testid={"pb-blocks-list-block-delete-btn"}
-                                    onClick={() => deleteItem(pageBlock)}
-                                />
-                            )}
-                        </Controls>
-                    </ListItem>
+                                {canEdit(pageBlock) && (
+                                    <Tooltip
+                                        content={"Edit block"}
+                                        trigger={
+                                            <IconButton
+                                                variant="ghost"
+                                                icon={<EditIcon />}
+                                                data-testid={"pb-blocks-list-block-edit-btn"}
+                                                onClick={() =>
+                                                    history.push(
+                                                        `/page-builder/block-editor/${pageBlock.id}`
+                                                    )
+                                                }
+                                            />
+                                        }
+                                    />
+                                )}
+                                {canCreate && (
+                                    <Tooltip
+                                        content={"Clone block"}
+                                        trigger={
+                                            <IconButton
+                                                variant="ghost"
+                                                data-testid={"pb-blocks-list-block-duplicate-btn"}
+                                                icon={<CloneIcon />}
+                                                onClick={() => duplicateItem(pageBlock)}
+                                            />
+                                        }
+                                    />
+                                )}
+                                {canDelete(pageBlock) && (
+                                    <Tooltip
+                                        content={"Delete block"}
+                                        trigger={
+                                            <IconButton
+                                                variant="ghost"
+                                                data-testid={"pb-blocks-list-block-delete-btn"}
+                                                onClick={() => deleteItem(pageBlock)}
+                                                icon={<DeleteIcon />}
+                                            />
+                                        }
+                                    />
+                                )}
+                            </div>
+                        </SimpleFormHeader>
+                        <SimpleFormContent className={"wby-p-0 wby-border-b-sm"}>
+                            <PreviewBlock element={pageBlock} />
+                        </SimpleFormContent>
+                    </SimpleForm>
                 ))}
             </ResponsiveElementsProvider>
-        </List>
+        </>
     );
 };
 

@@ -1,30 +1,26 @@
 import React, { Fragment, useMemo } from "react";
-import { DynamicFieldset } from "@webiny/ui/DynamicFieldset";
-import { Input } from "@webiny/ui/Input";
-import styled from "@emotion/styled";
-import { Typography } from "@webiny/ui/Typography";
-import { ButtonSecondary, ButtonDefault } from "@webiny/ui/Button";
 import { validation } from "@webiny/validation";
 import { Bind } from "@webiny/form";
-import { Cell, Grid } from "@webiny/ui/Grid";
+import {
+    Button,
+    cn,
+    DynamicFieldset,
+    Grid,
+    IconButton,
+    Input,
+    Label,
+    Text
+} from "@webiny/admin-ui";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
-const Fieldset = styled("div")({
-    position: "relative",
-    width: "100%",
-    marginBottom: 15,
-    ".webiny-ui-button": {
-        position: "absolute",
-        display: "block",
-        right: 10,
-        top: 13
-    }
-});
-
-const Header = styled("div")({
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: 15
-});
+const Header = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div className={cn("wby-flex wby-justify-between", className)} {...props}>
+            {children}
+        </div>
+    );
+};
 
 interface Domain {
     fqdn: string;
@@ -68,44 +64,55 @@ export const DomainsFieldset = (props: DomainsProps) => {
             {({ actions, header, row, empty }) => (
                 <>
                     {row(({ index }) => (
-                        <Fieldset>
-                            <Bind
-                                validators={fqdnValidator}
-                                name={`settings.domains.${index}.fqdn`}
-                            >
-                                <Input
-                                    label={props.inputLabel}
-                                    description={
-                                        "Enter a fully qualified domain name to use for this tenant."
-                                    }
+                        <div className={"wby-mt-md"}>
+                            <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
+                                {"Enter a fully qualified domain name to use for this tenant."}
+                            </Text>
+                            <div className={"wby-flex wby-items-start wby-gap-sm"}>
+                                <Bind
+                                    validators={fqdnValidator}
+                                    name={`settings.domains.${index}.fqdn`}
+                                >
+                                    <Input size={"lg"} placeholder={props.inputLabel} />
+                                </Bind>
+                                <IconButton
+                                    variant={"ghost"}
+                                    size={"lg"}
+                                    icon={<DeleteIcon />}
+                                    onClick={actions.remove(index)}
                                 />
-                            </Bind>
-                            <ButtonSecondary small onClick={actions.remove(index)}>
-                                Remove
-                            </ButtonSecondary>
-                        </Fieldset>
+                            </div>
+                        </div>
                     ))}
                     {empty(() => (
-                        <Fragment>
+                        <>
                             <Header>
-                                <Typography use={"overline"}>{props.title}</Typography>
-                                <ButtonDefault onClick={addDomain}>
-                                    {props.addButtonLabel}
-                                </ButtonDefault>
+                                <Label text={props.title} />
+                                <Button
+                                    onClick={addDomain}
+                                    text={props.addButtonLabel}
+                                    icon={<AddIcon />}
+                                    variant={"secondary"}
+                                    size={"sm"}
+                                />
                             </Header>
-                            <Typography use={"body1"}>
+                            <Text size={"sm"} as={"div"} className={"wby-mt-sm"}>
                                 To make your tenant accessible via custom domains, you must define
                                 them here. Webiny will use these entries to route the incoming
                                 requests.
-                            </Typography>
-                        </Fragment>
+                            </Text>
+                        </>
                     ))}
                     {header(() => (
                         <Header>
-                            <Typography use={"overline"}>{props.title}</Typography>
-                            <ButtonDefault onClick={addDomain}>
-                                {props.addButtonLabel}
-                            </ButtonDefault>
+                            <Label text={props.title} />
+                            <Button
+                                onClick={addDomain}
+                                text={props.addButtonLabel}
+                                icon={<AddIcon />}
+                                variant={"secondary"}
+                                size={"sm"}
+                            />
                         </Header>
                     ))}
                 </>
@@ -116,16 +123,14 @@ export const DomainsFieldset = (props: DomainsProps) => {
 
 export const Domains = () => {
     return (
-        <Grid>
-            <Cell span={12}>
-                <Bind name={"settings.domains"} defaultValue={[]}>
-                    <DomainsFieldset
-                        title={"Custom Domains"}
-                        inputLabel={"FQDN"}
-                        addButtonLabel={"+ Add FQDN"}
-                    />
-                </Bind>
-            </Cell>
-        </Grid>
+        <Grid.Column span={12}>
+            <Bind name={"settings.domains"} defaultValue={[]}>
+                <DomainsFieldset
+                    title={"Custom Domains"}
+                    inputLabel={"FQDN"}
+                    addButtonLabel={"Add FQDN"}
+                />
+            </Bind>
+        </Grid.Column>
     );
 };

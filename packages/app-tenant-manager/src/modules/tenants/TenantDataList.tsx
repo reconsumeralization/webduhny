@@ -1,4 +1,6 @@
 import React, { useMemo } from "react";
+import { Button, Grid, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataList,
@@ -13,9 +15,6 @@ import {
     ListItemTextPrimary,
     LoginIcon
 } from "@webiny/ui/List";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
 import { useTenantsList } from "./hooks/useTenantsList";
 import { useTenancy } from "@webiny/app-tenancy";
@@ -57,17 +56,19 @@ const TenantDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort || ""} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort || ""}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => {
+                                return {
+                                    label,
+                                    value
+                                };
                             })}
-                        </Select>
-                    </Cell>
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -78,9 +79,14 @@ const TenantDataList = () => {
         <DataList
             loading={loading}
             actions={
-                <ButtonPrimary data-testid="new-record-button" onClick={createTenant}>
-                    {t`New Tenant`}
-                </ButtonPrimary>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    ata-testid="new-record-button"
+                    onClick={createTenant}
+                />
             }
             data={tenants}
             title={t`Tenants`}
@@ -89,7 +95,8 @@ const TenantDataList = () => {
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search tenants`}
+                    inputPlaceholder={t`Search tenants...`}
+                    dataTestId={"tenants.data-list.search-input"}
                 />
             }
             modalOverlay={tenantsDataListModalOverlay}

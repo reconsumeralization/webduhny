@@ -1,24 +1,15 @@
-import styled from "@emotion/styled";
 import React, { useCallback, useState } from "react";
 import type { CmsModel } from "@webiny/app-headless-cms-common/types";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import { i18n } from "@webiny/app/i18n";
 import { useConfirmationDialog } from "@webiny/app-admin";
 import { useCancelDelete } from "~/admin/views/contentModels/fullDelete/useCancelDelete";
+import { Button, Text } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/views/content-models/fully-delete-model");
 
 export interface IModelOverlayProps {
     model: CmsModel;
 }
-
-const Wrap = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-grow: 1;
-    min-width: 130px;
-`;
 
 const CancelDelete = ({ model }: IModelOverlayProps) => {
     const { cancel } = useCancelDelete({ model });
@@ -35,11 +26,7 @@ const CancelDelete = ({ model }: IModelOverlayProps) => {
         });
     }, [showConfirmation, model.modelId]);
 
-    return (
-        <>
-            <ButtonPrimary onClick={onClick}>{t`Cancel delete`}</ButtonPrimary>
-        </>
-    );
+    return <Button text={t`Cancel delete`} size={"sm"} onClick={onClick} />;
 };
 
 export const ModelIsBeingDeleted = ({
@@ -59,11 +46,21 @@ export const ModelIsBeingDeleted = ({
     if (!model.isBeingDeleted) {
         return <>{children}</>;
     }
+
     const message = model.plugin ? "Records are being deleted." : "Model is being deleted.";
     return (
-        <Wrap onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            {!over && <>{message}</>}
+        <div
+            style={{ width: "150px" }}
+            className={"wby-text-right"}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
+            {!over && (
+                <Text size={"sm"} as={"div"} className={"wby-text-destructive-primary"}>
+                    {message}
+                </Text>
+            )}
             {over && <CancelDelete model={model} />}
-        </Wrap>
+        </div>
     );
 };

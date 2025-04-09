@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import orderBy from "lodash/orderBy";
+import { Button, Grid, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -21,10 +23,7 @@ import {
 } from "@webiny/ui/List";
 
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
-import { ButtonPrimary } from "@webiny/ui/Button";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import { PbMenu } from "~/types";
 import { useMenusPermissions } from "~/hooks/permissions";
 
@@ -122,22 +121,17 @@ const PageBuilderMenusDataList = ({ canCreate }: PageBuilderMenusDataListProps) 
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Select
                             value={sort}
                             onChange={setSort}
                             label={t`Sort by`}
-                            description={"Sort menus by"}
-                        >
-                            {SORTERS.map(({ label, sort: value }) => {
-                                return (
-                                    <option key={label} value={value}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                            options={SORTERS.map(({ label, sort: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -156,16 +150,23 @@ const PageBuilderMenusDataList = ({ canCreate }: PageBuilderMenusDataListProps) 
             title={t`Menus`}
             actions={
                 canCreate ? (
-                    <ButtonPrimary
+                    <Button
+                        text={t`New`}
+                        icon={<AddIcon />}
+                        size={"sm"}
+                        className={"wby-ml-xs"}
                         data-testid="data-list-new-record-button"
                         onClick={() => history.push("/page-builder/menus?new=true")}
-                    >
-                        {t`New Menu`}
-                    </ButtonPrimary>
+                    />
                 ) : null
             }
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search menus`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search menus...`}
+                    dataTestId={"pb.menu.data-list.search-input"}
+                />
             }
             modalOverlay={menusDataListModalOverlay}
             modalOverlayAction={

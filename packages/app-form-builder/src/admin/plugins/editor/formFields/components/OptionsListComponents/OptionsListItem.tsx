@@ -1,10 +1,4 @@
 import React from "react";
-import { Typography } from "@webiny/ui/Typography";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { css } from "emotion";
-import { IconButton } from "@webiny/ui/Button";
-import styled from "@emotion/styled";
-
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
@@ -18,38 +12,11 @@ import {
     UniqueIdentifier
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates, SortableContext } from "@dnd-kit/sortable";
-
-import { Switch } from "@webiny/ui/Switch";
-import { ReactComponent as EditIcon } from "../../../../../icons/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../../../../icons/delete.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { BindComponent } from "@webiny/form/types";
 import { FieldOption } from "~/admin/plugins/editor/formFields/components/types";
-
-const OptionList = styled("ul")({
-    padding: 25,
-    border: "1px solid var(--mdc-theme-on-background)"
-});
-
-const optionsListItemLeft = css({
-    display: "flex",
-    justifyContent: "left",
-    alignItems: "center",
-    ">div": {
-        display: "flex",
-        flexDirection: "column",
-        marginLeft: 10,
-        color: "var(--mdc-theme-on-surface)",
-        span: {
-            lineHeight: "125%"
-        }
-    }
-});
-
-const optionsListItemRight = css({
-    display: "flex",
-    justifyContent: "right",
-    alignItems: "center"
-});
+import { IconButton, Switch, Text, Tooltip } from "@webiny/admin-ui";
 
 interface DefaultValueSwitchProps {
     multiple: boolean;
@@ -70,7 +37,8 @@ const DefaultValueSwitch = ({
 
         return (
             <Switch
-                value={selected}
+                label={""}
+                checked={selected}
                 onChange={() => {
                     if (selected) {
                         const value = Array.isArray(currentDefaultValue)
@@ -94,7 +62,8 @@ const DefaultValueSwitch = ({
     const selected = currentDefaultValue === option.value;
     return (
         <Switch
-            value={selected}
+            label={""}
+            checked={selected}
             onChange={() => {
                 const newValue = selected ? "" : option.value;
                 setDefaultValue(newValue);
@@ -133,7 +102,9 @@ export const SortableContainerContextProvider = ({
     return (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
             <SortableContext items={optionsValue as unknown as SortableContextItemsProp}>
-                <OptionList>{children}</OptionList>
+                <div className={"wby-p-sm wby-border-sm wby-border-neutral-muted wby-rounded-sm"}>
+                    {children}
+                </div>
             </SortableContext>
         </DndContext>
     );
@@ -157,38 +128,56 @@ export default function OptionsListItem(props: OptionsListItemProps) {
     };
 
     return (
-        <>
+        <div
+            className={
+                "wby-flex wby-justify-between wby-items-center wby-gap-lg wby-p-sm hover:wby-bg-neutral-dimmed"
+            }
+        >
             <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-                <div className={optionsListItemLeft}>
+                <div className={"wby-flex wby-justify-between wby-items-center wby-gap-sm"}>
                     <Tooltip
-                        placement={"bottom"}
-                        content={<span>Drag to rearrange the order</span>}
-                    >
-                        <span>{dragHandle}</span>
-                    </Tooltip>
+                        side={"bottom"}
+                        content={"Drag to rearrange the order"}
+                        trigger={dragHandle}
+                    />
                     <div>
-                        <Typography use={"subtitle1"}>{option.label}</Typography>
-                        <Typography use={"caption"}>{option.value}</Typography>
+                        <Text as={"div"}>{option.label}</Text>
+                        <Text size={"sm"} as={"div"}>
+                            {option.value}
+                        </Text>
                     </div>
                 </div>
             </div>
-            <div className={optionsListItemRight}>
-                <IconButton icon={<EditIcon />} onClick={editOption} />
-                <IconButton icon={<DeleteIcon />} onClick={deleteOption} />
-
+            <div className={"wby-flex wby-justify-start wby-items-center wby-gap-sm"}>
+                <IconButton
+                    size={"sm"}
+                    variant={"ghost"}
+                    icon={<EditIcon />}
+                    onClick={editOption}
+                />
+                <IconButton
+                    size={"sm"}
+                    variant={"ghost"}
+                    icon={<DeleteIcon />}
+                    onClick={deleteOption}
+                />
                 <Bind name={"settings.defaultValue"}>
                     {({ onChange, value }) => (
-                        <Tooltip placement={"bottom"} content={<span>Set as default value</span>}>
-                            <DefaultValueSwitch
-                                onChange={onChange}
-                                value={value}
-                                multiple={multiple}
-                                option={option}
-                            />
-                        </Tooltip>
+                        <Tooltip
+                            side={"bottom"}
+                            content={"Set as default value"}
+                            trigger={
+                                <DefaultValueSwitch
+                                    onChange={onChange}
+                                    value={value}
+                                    multiple={multiple}
+                                    option={option}
+                                />
+                            }
+                        />
                     )}
                 </Bind>
             </div>
-        </>
+        </div>
     );
 }
