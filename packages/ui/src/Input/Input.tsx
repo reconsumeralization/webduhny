@@ -75,7 +75,8 @@ const rmwcProps = [
     "inputRef",
     "className",
     "maxLength",
-    "characterCount"
+    "characterCount",
+    "autoComplete"
 ];
 
 export const Input = (props: InputProps) => {
