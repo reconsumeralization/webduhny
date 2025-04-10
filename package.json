@@ -171,6 +171,7 @@
     "webiny-versions": "node ./scripts/webinyVersions.js",
     "trigger-release": "node ./scripts/release/triggerRelease.js",
     "dispatch-github-event": "node ./scripts/dispatchGitHubEvent.js",
+    "link-workspaces": "node ./scripts/linkWorkspaces.js",
     "lint-staged": "lint-staged",
     "postinstall": "yarn node ./scripts/linkWorkspaces.js",
     "prepublishOnly": "node scripts/prepublishOnly",
@@ -209,6 +210,9 @@
     "**/*.{js,ts,tsx}": [
       "prettier --write",
       "eslint --max-warnings=0 --no-ignore"
+    ],
+    "**/package.json": [
+      "yarn webiny verify-dependencies"
     ]
   },
   "yargs": {
@@ -246,6 +250,7 @@
     ]
   },
   "resolutions": {
+    "@babel/runtime": "^7.26.7",
     "systeminformation": "^5.23.18",
     "@emotion/react": "11.10.8",
     "@octokit/rest": "^20.0.2",

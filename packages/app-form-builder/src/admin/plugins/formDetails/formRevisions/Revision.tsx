@@ -1,55 +1,36 @@
-import React from "react";
-import { css } from "emotion";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
-import {
-    ListItem,
-    ListItemText,
-    ListItemTextPrimary,
-    ListItemTextSecondary,
-    ListItemGraphic,
-    ListItemMeta
-} from "@webiny/ui/List";
-import { IconButton } from "@webiny/ui/Button";
-import { Icon } from "@webiny/ui/Icon";
-import { MenuItem, Menu, MenuDivider } from "@webiny/ui/Menu";
+import React, { useMemo } from "react";
 import { ConfirmationDialog } from "@webiny/ui/ConfirmationDialog";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { ReactComponent as AddIcon } from "../../../icons/add.svg";
-import { ReactComponent as BeenHereIcon } from "../../../icons/beenhere.svg";
-import { ReactComponent as DeleteIcon } from "../../../icons/delete.svg";
-import { ReactComponent as EditIcon } from "../../../icons/edit.svg";
-import { ReactComponent as GestureIcon } from "../../../icons/gesture.svg";
-import { ReactComponent as LockIcon } from "../../../icons/lock.svg";
-import { ReactComponent as MoreVerticalIcon } from "../../../icons/more_vert.svg";
-import { ReactComponent as PublishIcon } from "../../../icons/publish.svg";
-import { ReactComponent as UnpublishIcon } from "../../../icons/unpublish.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as BeenHereIcon } from "@webiny/icons/beenhere.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as GestureIcon } from "@webiny/icons/gesture.svg";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
+import { ReactComponent as PublishIcon } from "@webiny/icons/visibility.svg";
+import { ReactComponent as UnpublishIcon } from "@webiny/icons/visibility_off.svg";
 import { useRevision } from "./useRevision";
 import { FbFormModel, FbRevisionModel } from "~/types";
 import { usePermission } from "~/hooks/usePermission";
-
-const primaryColor = css({ color: "var(--mdc-theme-primary)" });
-
-const revisionsMenu = css({
-    width: 250,
-    right: -105,
-    left: "auto !important"
-});
+import { DropdownMenu, Icon, IconButton, List, TimeAgo, Tooltip } from "@webiny/admin-ui";
 
 const getIcon = (revision: Pick<FbFormModel, "status">) => {
     switch (revision.status) {
         case "locked":
             return {
-                icon: <Icon icon={<LockIcon />} />,
+                icon: <Icon label={"Locked revision"} icon={<LockIcon />} />,
                 text: "This revision is locked (it has already been published)"
             };
         case "published":
             return {
-                icon: <Icon icon={<BeenHereIcon />} className={primaryColor} />,
+                icon: (
+                    <Icon label={"Published revision"} icon={<BeenHereIcon />} color={"accent"} />
+                ),
                 text: "This revision is currently published!"
             };
         default:
             return {
-                icon: <Icon icon={<GestureIcon />} />,
+                icon: <Icon label={"Draft revision"} icon={<GestureIcon />} />,
                 text: "This is a draft"
             };
     }
@@ -72,113 +53,119 @@ const Revision = (props: RevisionProps) => {
 
     const showMenu = canUpdate(form) || canDelete(form) || canPublish() || canUnpublish();
 
-    return (
-        <ListItem>
-            <ListItemGraphic>
-                <Tooltip content={tooltipText} placement={"bottom"}>
-                    {icon}
-                </Tooltip>
-            </ListItemGraphic>
-            <ListItemText>
-                <ListItemTextPrimary>{revision.name}</ListItemTextPrimary>
-                <ListItemTextSecondary>
-                    Last modified <TimeAgo datetime={revision.savedOn} /> (#
-                    {revision.version})
-                </ListItemTextSecondary>
-            </ListItemText>
-            {showMenu && (
-                <ListItemMeta>
-                    <Menu
-                        handle={<IconButton icon={<MoreVerticalIcon />} />}
-                        className={revisionsMenu}
-                        data-testid={"fb.form-revisions.action-menu"}
+    const description = useMemo(() => {
+        return (
+            <>
+                Last modified <TimeAgo datetime={revision.savedOn} /> (#{revision.version})
+            </>
+        );
+    }, [revision]);
+
+    const actions = useMemo(() => {
+        if (!showMenu) {
+            return null;
+        }
+
+        return (
+            <DropdownMenu
+                trigger={
+                    <IconButton
+                        variant={"ghost"}
+                        size={"sm"}
+                        iconSize={"lg"}
+                        icon={<MoreVerticalIcon />}
+                    />
+                }
+            >
+                {canUpdate(form) && (
+                    <DropdownMenu.Item
+                        icon={<AddIcon />}
+                        text={"New from current"}
+                        onClick={() => createRevision()}
+                        data-testid={"fb.form-revisions.action-menu.create-revision"}
+                    />
+                )}
+
+                {revision.status === "draft" && canUpdate(form) && (
+                    <DropdownMenu.Item
+                        icon={<EditIcon />}
+                        text={"Edit"}
+                        onClick={() => editRevision(revision.id)}
+                        data-testid={"fb.form-revisions.action-menu.edit"}
+                    />
+                )}
+
+                {revision.status !== "published" && canPublish() && (
+                    <DropdownMenu.Item
+                        icon={<PublishIcon />}
+                        text={"Publish"}
+                        onClick={() => publishRevision(revision.id)}
+                        data-testid={"fb.form-revisions.action-menu.publish"}
+                    />
+                )}
+
+                {revision.status === "published" && canUnpublish() && (
+                    <ConfirmationDialog
+                        title="Confirmation required!"
+                        message={<span>Are you sure you want to unpublish this revision?</span>}
                     >
-                        {canUpdate(form) && (
-                            <MenuItem
-                                onClick={() => createRevision()}
-                                data-testid={"fb.form-revisions.action-menu.create-revision"}
-                            >
-                                <ListItemGraphic>
-                                    <Icon icon={<AddIcon />} />
-                                </ListItemGraphic>
-                                New from current
-                            </MenuItem>
-                        )}
-                        {revision.status === "draft" && canUpdate(form) && (
-                            <MenuItem
-                                onClick={() => editRevision(revision.id)}
-                                data-testid={"fb.form-revisions.action-menu.edit"}
-                            >
-                                <ListItemGraphic>
-                                    <Icon icon={<EditIcon />} />
-                                </ListItemGraphic>
-                                Edit
-                            </MenuItem>
-                        )}
-
-                        {revision.status !== "published" && canPublish() && (
-                            <MenuItem
-                                onClick={() => publishRevision(revision.id)}
-                                data-testid={"fb.form-revisions.action-menu.publish"}
-                            >
-                                <ListItemGraphic>
-                                    <Icon icon={<PublishIcon />} />
-                                </ListItemGraphic>
-                                Publish
-                            </MenuItem>
-                        )}
-
-                        {revision.status === "published" && canUnpublish() && (
-                            <ConfirmationDialog
-                                title="Confirmation required!"
-                                message={
-                                    <span>Are you sure you want to unpublish this revision?</span>
+                        {({ showConfirmation }) => (
+                            <DropdownMenu.Item
+                                icon={<UnpublishIcon />}
+                                text={"Unpublish"}
+                                onClick={() =>
+                                    showConfirmation(() => unpublishRevision(revision.id))
                                 }
-                            >
-                                {({ showConfirmation }) => (
-                                    <MenuItem
-                                        onClick={() =>
-                                            showConfirmation(() => unpublishRevision(revision.id))
-                                        }
-                                        data-testid={"fb.form-revisions.action-menu.unpublish"}
-                                    >
-                                        <ListItemGraphic>
-                                            <Icon icon={<UnpublishIcon />} />
-                                        </ListItemGraphic>
-                                        Unpublish
-                                    </MenuItem>
-                                )}
-                            </ConfirmationDialog>
+                                data-testid={"fb.form-revisions.action-menu.unpublish"}
+                            />
                         )}
+                    </ConfirmationDialog>
+                )}
 
-                        <MenuDivider />
+                <DropdownMenu.Separator />
 
-                        {canDelete(form) && (
-                            <ConfirmationDialog
-                                title="Confirmation required!"
-                                message={
-                                    <span>Are you sure you want to delete this revision?</span>
+                {canDelete(form) && (
+                    <ConfirmationDialog
+                        title="Confirmation required!"
+                        message={<span>Are you sure you want to delete this revision?</span>}
+                    >
+                        {({ showConfirmation }) => (
+                            <DropdownMenu.Item
+                                icon={<DeleteIcon />}
+                                text={"Delete"}
+                                onClick={() => showConfirmation(() => deleteRevision(revision.id))}
+                                data-testid={"fb.form-revisions.action-menu.delete"}
+                                className={
+                                    "!wby-text-destructive-primary [&_svg]:wby-fill-destructive"
                                 }
-                            >
-                                {({ showConfirmation }) => (
-                                    <MenuItem
-                                        onClick={() =>
-                                            showConfirmation(() => deleteRevision(revision.id))
-                                        }
-                                        data-testid={"fb.form-revisions.action-menu.delete"}
-                                    >
-                                        <ListItemGraphic>
-                                            <Icon icon={<DeleteIcon />} />
-                                        </ListItemGraphic>
-                                        Delete
-                                    </MenuItem>
-                                )}
-                            </ConfirmationDialog>
+                            />
                         )}
-                    </Menu>
-                </ListItemMeta>
-            )}
-        </ListItem>
+                    </ConfirmationDialog>
+                )}
+            </DropdownMenu>
+        );
+    }, [
+        showMenu,
+        canUpdate,
+        canDelete,
+        createRevision,
+        editRevision,
+        deleteRevision,
+        publishRevision,
+        unpublishRevision,
+        revision,
+        canPublish,
+        canUnpublish,
+        form
+    ]);
+
+    return (
+        <List.Item
+            icon={<Tooltip content={tooltipText} trigger={icon} />}
+            title={revision.name}
+            description={description}
+            actions={actions}
+        />
     );
 };
 

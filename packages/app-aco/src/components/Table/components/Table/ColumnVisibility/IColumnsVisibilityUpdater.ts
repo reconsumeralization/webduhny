@@ -1,5 +1,5 @@
-import { OnColumnVisibilityChange } from "@webiny/ui/DataTable";
+import type { OnDataTableColumnVisibilityChange } from "@webiny/admin-ui";
 
 export interface IColumnsVisibilityUpdater {
-    update: OnColumnVisibilityChange;
+    update: OnDataTableColumnVisibilityChange;
 }

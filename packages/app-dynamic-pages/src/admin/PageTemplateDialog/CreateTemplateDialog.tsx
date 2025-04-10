@@ -12,10 +12,10 @@ import { CircularProgress } from "@webiny/ui/Progress";
 import { useModels } from "@webiny/app-headless-cms";
 import { CmsModel } from "@webiny/app-headless-cms/types";
 
-import { ReactComponent as ArrowRightIcon } from "@material-design-icons/svg/round/keyboard_arrow_right.svg";
-import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
-import { ReactComponent as ArticleIcon } from "@material-design-icons/svg/outlined/article.svg";
-import { ReactComponent as DatabaseIcon } from "@material-design-icons/svg/outlined/dashboard.svg";
+import { ReactComponent as ArrowRightIcon } from "@webiny/icons/keyboard_arrow_right.svg";
+import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
+import { ReactComponent as ArticleIcon } from "@webiny/icons/article.svg";
+import { ReactComponent as DatabaseIcon } from "@webiny/icons/dashboard.svg";
 
 const dialogStyles = css`
     .mdc-dialog__surface {

@@ -5,8 +5,17 @@ import { useRangeSlider } from "./useRangeSlider";
 
 interface RangeSliderPrimitiveRootProps
     extends Omit<SliderPrimitives.SliderProps, "min" | "max" | "value"> {
+    /**
+     * Array of numbers representing the current values of the range slider.
+     */
     values: number[];
+    /**
+     * Minimum value of the range slider.
+     */
     min: number;
+    /**
+     * Maximum value of the range slider.
+     */
     max: number;
 }
 

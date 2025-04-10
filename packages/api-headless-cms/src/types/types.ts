@@ -733,7 +733,7 @@ export interface CmsModelManager<T = CmsEntryValues> {
     /**
      * Delete an entry.
      */
-    delete(id: string): Promise<void>;
+    delete(id: string, options?: CmsDeleteEntryOptions): Promise<void>;
 }
 
 export type ICmsEntryManager<T = GenericRecord> = CmsModelManager<T>;

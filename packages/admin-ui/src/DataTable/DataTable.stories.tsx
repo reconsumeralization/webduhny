@@ -149,16 +149,16 @@ export const WithCustomCellRenderer: Story<Entry> = {
                             />
                             <div>
                                 <Text
-                                    text={entry.name}
                                     className={"wby-text-neutral-primary wby-font-semibold"}
                                     as={"div"}
-                                />
+                                >
+                                    {entry.name}
+                                </Text>
                                 <Text
-                                    text={`Last updated: ${entry.lastModified}`}
                                     size={"sm"}
                                     className={"wby-text-neutral-strong"}
                                     as={"div"}
-                                />
+                                >{`Last updated: ${entry.lastModified}`}</Text>
                             </div>
                         </div>
                     );

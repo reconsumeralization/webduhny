@@ -1,18 +1,16 @@
 import React from "react";
-import { ReactComponent as File } from "@material-design-icons/svg/outlined/description.svg";
-import { RowIcon, RowText, RowTitle } from "./CellTitle.styled";
+import { ReactComponent as File } from "@webiny/icons/description.svg";
 import { TrashBinListConfig } from "~/Presentation/configs";
+import { Icon, Text } from "@webiny/admin-ui";
 
 export const CellTitle = () => {
     const { useTableRow } = TrashBinListConfig.Browser.Table.Column;
     const { row } = useTableRow();
 
     return (
-        <RowTitle>
-            <RowIcon>
-                <File />
-            </RowIcon>
-            <RowText use={"subtitle2"}>{row.title}</RowText>
-        </RowTitle>
+        <div className={"wby-flex wby-items-center wby-gap-sm wby-truncate"}>
+            <Icon size={"sm"} color={"neutral-strong"} icon={<File />} label={"Item"} />
+            <Text className={"wby-truncate wby-min-w-0 wby-flex-shrink"}>{row.title}</Text>
+        </div>
     );
 };

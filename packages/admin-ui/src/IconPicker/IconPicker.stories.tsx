@@ -9,7 +9,11 @@ const meta: Meta<typeof IconPicker> = {
     component: IconPicker,
     tags: ["autodocs"],
     argTypes: {
-        onChange: { action: "onChange" }
+        onChange: { action: "onChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

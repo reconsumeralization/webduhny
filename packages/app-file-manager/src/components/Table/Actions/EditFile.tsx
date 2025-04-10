@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Edit } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as Edit } from "@webiny/icons/edit.svg";
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 import { useFileManagerView } from "~/modules/FileManagerRenderer/FileManagerViewProvider";
 import { useFile } from "~/hooks/useFile";

@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
+import { Icon, Text } from "@webiny/admin-ui";
 import { i18n } from "@webiny/app/i18n";
 import { useDialog } from "@webiny/app-admin/hooks/useDialog";
-import { Typography } from "@webiny/ui/Typography";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
+import { ReactComponent as SuccessIcon } from "@webiny/icons/check_circle_outline.svg";
+import { ReactComponent as ErrorIcon } from "@webiny/icons/error_outline.svg";
 import ProgressBar from "../ProgressBar";
 import { LoadingDialog } from "../styledComponents";
 import {
@@ -124,39 +126,45 @@ const ImportPageLoadingDialogContent = ({ taskId }: ImportPageLoadingDialogConte
             <LoadingDialog.WrapperRight>
                 {error ? (
                     <LoadingDialog.TitleContainer>
-                        <LoadingDialog.CancelIcon />
-                        <Typography use={"subtitle1"}>{errorMessage}</Typography>
+                        <Icon
+                            icon={<ErrorIcon />}
+                            label="Error"
+                            size={"md"}
+                            className={"wby-fill-danger wby-mr-sm"}
+                        />
+                        <Text size={"md"}>{errorMessage}</Text>
                     </LoadingDialog.TitleContainer>
                 ) : status === PbTaskStatus.success ? (
                     <LoadingDialog.TitleContainer>
-                        <LoadingDialog.CheckMarkIcon />
-                        <Typography use={"subtitle1"}>{MESSAGES[status]}</Typography>
+                        <Icon
+                            icon={<SuccessIcon />}
+                            label="Success"
+                            size={"md"}
+                            className={"wby-fill-success wby-mr-sm"}
+                        />
+                        <Text size={"md"}>{MESSAGES[status]}</Text>
                     </LoadingDialog.TitleContainer>
                 ) : (
                     <LoadingDialog.TitleContainer>
                         <LoadingDialog.Pulse>
                             <div className="inner" />
                         </LoadingDialog.Pulse>
-                        <Typography use={"subtitle1"}>{MESSAGES[status]}</Typography>
+                        <Text size={"md"}>{MESSAGES[status]}</Text>
                     </LoadingDialog.TitleContainer>
                 )}
 
                 <LoadingDialog.StatsContainer>
                     {error && (
                         <LoadingDialog.StatusContainer>
-                            <LoadingDialog.StatusTitle use={"body2"}>
-                                {t`Error`}
-                            </LoadingDialog.StatusTitle>
-                            <LoadingDialog.StatusBody use={"body2"}>
-                                {error.message}
-                            </LoadingDialog.StatusBody>
+                            <Text size={"md"}>{t`Error`}</Text>
+                            <Text size={"sm"}> {error.message}</Text>
                         </LoadingDialog.StatusContainer>
                     )}
                     {stats && (
                         <LoadingDialog.ProgressContainer>
-                            <LoadingDialog.StatusTitle use={"body2"}>
+                            <Text size={"sm"}>
                                 <LoadingDialogStats stats={stats} />
-                            </LoadingDialog.StatusTitle>
+                            </Text>
                             <ProgressBar
                                 value={stats.completed}
                                 max={stats.total}

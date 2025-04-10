@@ -1,28 +1,7 @@
-import * as React from "react";
-import { Image } from "@webiny/app/components/Image";
-import * as Ui from "@webiny/ui/ImageUpload";
+import React, { useCallback } from "react";
 import { FileManager, FileManagerFileItem } from "~/index";
 import { FormComponentProps } from "@webiny/ui/types";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
-import styled from "@emotion/styled";
-import { useCallback } from "react";
-
-const ImageUploadWrapper = styled("div")({
-    position: "relative",
-    ".disabled": {
-        opacity: 0.75,
-        pointerEvents: "none"
-    },
-    ".mdc-floating-label--float-above": {
-        transform: "scale(0.75)",
-        top: 10,
-        left: 10,
-        color: "var(--mdc-theme-text-secondary-on-background)"
-    },
-    ".mdc-text-field-helper-text": {
-        color: "var(--mdc-theme-text-secondary-on-background)"
-    }
-});
+import { FileItem, FilePicker, type FilePickerProps } from "@webiny/admin-ui";
 
 export interface SingleImageUploadProps extends FormComponentProps {
     /**
@@ -75,6 +54,7 @@ export interface SingleImageUploadProps extends FormComponentProps {
 
     /**
      * Is the wrapper round?
+     * @deprecated Provide a custom `renderImagePreview` instead.
      */
     round?: boolean;
 
@@ -83,23 +63,44 @@ export interface SingleImageUploadProps extends FormComponentProps {
      * @deprecated Pick the desired file attributes in the `onChange` callback, or `beforeChange` on the `<Bind>` element.
      */
     onChangePick?: string[];
+
+    /**
+     * Render the image preview.
+     */
+    renderFilePreview?: FilePickerProps["renderFilePreview"];
+
+    /**
+     * Render the trigger button.
+     */
+    renderTrigger?: FilePickerProps["renderTrigger"];
+
+    /**
+     * Component type.
+     */
+    type?: FilePickerProps["type"];
+
+    /**
+     * Component variant.
+     */
+    variant?: FilePickerProps["variant"];
 }
 
 const SingleImageUpload = (props: SingleImageUploadProps) => {
     const {
-        className,
-        value,
-        validation,
-        label,
-        description,
         accept,
+        className,
+        description,
+        disabled,
         includeFileMeta = false,
+        label,
         maxSize,
-        imagePreviewProps,
-        round
+        renderFilePreview,
+        renderTrigger,
+        validation,
+        value,
+        variant,
+        type
     } = props;
-
-    const { isValid: validationIsValid, message: validationMessage } = validation || {};
 
     const onChange = useCallback(
         (value: FileManagerFileItem | null) => {
@@ -123,37 +124,30 @@ const SingleImageUpload = (props: SingleImageUploadProps) => {
     );
 
     return (
-        <ImageUploadWrapper className={className}>
-            {label && (
-                <div className="mdc-floating-label mdc-floating-label--float-above">{label}</div>
-            )}
-
-            <FileManager
-                onChange={onChange}
-                accept={accept}
-                images={!accept}
-                maxSize={maxSize}
-                render={({ showFileManager }) => (
-                    <Ui.Image
-                        renderImagePreview={renderImageProps => (
-                            <Image {...renderImageProps} {...imagePreviewProps} />
-                        )}
-                        style={{ width: "100%", height: "auto" }}
-                        value={value}
-                        uploadImage={showFileManager}
-                        removeImage={() => onChange(null)}
-                        round={round}
+        <FileManager
+            onChange={onChange}
+            accept={accept}
+            images={!accept}
+            maxSize={maxSize}
+            render={({ showFileManager }) => (
+                <>
+                    <FilePicker
+                        label={label}
+                        description={description}
+                        validation={validation}
+                        className={className}
+                        disabled={disabled}
+                        value={value ? FileItem.createFromUrl(value.src) : null}
+                        onSelectItem={showFileManager}
+                        onRemoveItem={() => onChange(null)}
+                        renderFilePreview={renderFilePreview}
+                        renderTrigger={renderTrigger}
+                        variant={variant}
+                        type={type}
                     />
-                )}
-            />
-
-            {validationIsValid === false && (
-                <FormElementMessage error>{validationMessage}</FormElementMessage>
+                </>
             )}
-            {validationIsValid !== false && description && (
-                <FormElementMessage>{description}</FormElementMessage>
-            )}
-        </ImageUploadWrapper>
+        />
     );
 };
 

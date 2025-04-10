@@ -3,7 +3,6 @@ import { createRenderer } from "~/createRenderer";
 import { useRenderer } from "~/hooks/useRenderer";
 import { ElementInput } from "~/inputs/ElementInput";
 import { isJson } from "~/renderers/isJson";
-import { isHtml } from "~/renderers/isHtml";
 
 export const elementInputs = {
     text: ElementInput.create<string>({
@@ -33,7 +32,7 @@ export const HeadingRenderer = createRenderer<unknown, typeof elementInputs>(
         const content = inputs.text || "";
         const tag = inputs.tag || "h1";
 
-        if (isJson(content) || !isHtml(content)) {
+        if (isJson(content)) {
             return null;
         }
 

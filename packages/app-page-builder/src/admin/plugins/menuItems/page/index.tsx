@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as PageIcon } from "@material-design-icons/svg/outlined/article.svg";
+import { ReactComponent as PageIcon } from "@webiny/icons/article.svg";
 
 import PageForm from "./PageForm";
 import { PbMenuItemPlugin } from "../../../../types";

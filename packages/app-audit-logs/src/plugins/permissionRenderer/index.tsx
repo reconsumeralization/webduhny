@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ReactComponent as Icon } from "@material-symbols/svg-400/outlined/quick_reference_all.svg";
+import { ReactComponent as Icon } from "@webiny/icons/manage_search.svg";
 
 import { i18n } from "@webiny/app/i18n";
 import { plugins } from "@webiny/plugins";

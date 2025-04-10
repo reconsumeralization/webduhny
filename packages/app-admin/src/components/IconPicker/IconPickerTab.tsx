@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { List } from "react-virtualized";
 import groupBy from "lodash/groupBy";
 
@@ -86,9 +86,10 @@ const RowRenderer = ({ row, style, cellDecorator, onIconClick }: RenderRowProps)
             <IconPickerRow style={style}>
                 <Text
                     size={"sm"}
-                    text={row.name}
                     className={"wby-uppercase wby-self-end wby-text-neutral-muted wby-mb-sm"}
-                />
+                >
+                    {row.name}
+                </Text>
             </IconPickerRow>
         );
     }
@@ -169,7 +170,7 @@ export const IconPickerTab = ({
                     <div className={"wby-relative"}>
                         {isEmpty ? (
                             <div className={"wby-pt-md wby-text-neutral-strong"}>
-                                <Text text={"No results found."} />
+                                <Text>{"No results found."}</Text>
                             </div>
                         ) : (
                             <List

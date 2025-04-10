@@ -1,6 +1,7 @@
 import React from "react";
 import { FbFormDetailsPluginType } from "~/types";
-import { Tab } from "@webiny/ui/Tabs";
+import { Tabs } from "@webiny/admin-ui";
+import { ReactComponent as RestoreIcon } from "@webiny/icons/restore.svg";
 import { RevisionsList } from "./RevisionsList";
 
 const plugin: FbFormDetailsPluginType = {
@@ -8,13 +9,14 @@ const plugin: FbFormDetailsPluginType = {
     type: "forms-form-details-revision-content",
     render({ form, revisions, loading }) {
         return (
-            <Tab
-                label={"Revisions"}
+            <Tabs.Tab
+                value={"revisions"}
+                trigger={"Revisions"}
+                icon={<RestoreIcon />}
+                content={<RevisionsList form={form} revisions={revisions} loading={loading} />}
                 disabled={loading}
                 data-testid={"fb.form-details.tab.revisions"}
-            >
-                <RevisionsList form={form} revisions={revisions} loading={loading} />
-            </Tab>
+            />
         );
     }
 };

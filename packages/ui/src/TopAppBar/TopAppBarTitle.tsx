@@ -1,19 +1,19 @@
 import React from "react";
-import {
-    TopAppBarTitle as RmwcTopAppBarTitle,
-    TopAppBarTitleProps as RmwcTopAppBarTitleProps
-} from "@rmwc/top-app-bar";
+import { Text } from "@webiny/admin-ui";
 
-export type TopAppBarTitleProps = RmwcTopAppBarTitleProps & {
+export type TopAppBarTitleProps = {
     /**
      * Element children
      */
-    children: React.ReactNode[] | React.ReactNode;
+    children: React.ReactNode;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `HeaderBar` component from the `@webiny/admin-ui` package instead.
+ */
 const TopAppBarTitle = (props: TopAppBarTitleProps) => {
-    const { children, ...rest } = props;
-    return <RmwcTopAppBarTitle {...rest}>{children}</RmwcTopAppBarTitle>;
+    return <Text {...props} />;
 };
 
 export { TopAppBarTitle };

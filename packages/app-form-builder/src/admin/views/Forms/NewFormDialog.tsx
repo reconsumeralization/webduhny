@@ -1,40 +1,23 @@
 import React from "react";
-import { css } from "emotion";
 import { useRouter } from "@webiny/react-router";
 import { useMutation } from "@apollo/react-hooks";
 import { Form } from "@webiny/form";
-import { Input } from "@webiny/ui/Input";
 import {
     CREATE_FORM,
     CreateFormMutationResponse,
     CreateFormMutationVariables
 } from "../../graphql";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
-import { CircularProgress } from "@webiny/ui/Progress";
-
-import { i18n } from "@webiny/app/i18n";
-const t = i18n.namespace("Forms.NewFormDialog");
-
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    DialogOnClose
-} from "@webiny/ui/Dialog";
-import { ButtonDefault } from "@webiny/ui/Button";
+import { Dialog, Input, OverlayLoader } from "@webiny/admin-ui";
 import { addFormToListCache } from "../cache";
+import { i18n } from "@webiny/app/i18n";
+import { validation } from "@webiny/validation";
 
-const narrowDialog = css({
-    ".mdc-dialog__surface": {
-        width: 400,
-        minWidth: 400
-    }
-});
+const t = i18n.namespace("Forms.NewFormDialog");
 
 export interface NewFormDialogProps {
     open: boolean;
-    onClose: DialogOnClose;
+    onClose: () => void;
 }
 
 const NewFormDialog = ({ open, onClose }: NewFormDialogProps) => {
@@ -47,67 +30,71 @@ const NewFormDialog = ({ open, onClose }: NewFormDialogProps) => {
     );
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            className={narrowDialog}
-            data-testid="fb-new-form-modal"
-        >
-            <Form
-                onSubmit={formData => {
-                    setLoading(true);
+        <Form
+            onSubmit={formData => {
+                setLoading(true);
 
-                    create({
-                        /**
-                         * We know that formData is CreateFormMutationVariables.
-                         */
-                        variables: formData as unknown as CreateFormMutationVariables,
-                        update(cache, result) {
-                            if (!result.data) {
-                                return;
-                            }
-                            const { data } = result;
-                            const { data: revision, error } = data.formBuilder.form;
-
-                            setLoading(false);
-                            if (error) {
-                                showSnackbar(error.message);
-                                return;
-                            } else if (!revision) {
-                                showSnackbar(`Missing revision data in Create Form Mutation.`);
-                                return;
-                            }
-
-                            addFormToListCache(cache, revision);
-
-                            history.push(`/form-builder/forms/${encodeURIComponent(revision.id)}`);
+                create({
+                    /**
+                     * We know that formData is CreateFormMutationVariables.
+                     */
+                    variables: formData as unknown as CreateFormMutationVariables,
+                    update(cache, result) {
+                        if (!result.data) {
+                            return;
                         }
-                    });
-                }}
-            >
-                {({ Bind, submit }) => (
-                    <>
-                        {loading && <CircularProgress label={"Creating form..."} />}
-                        <DialogTitle>{t`New form`}</DialogTitle>
-                        <DialogContent>
-                            <Bind name={"name"}>
-                                <Input placeholder={"Enter a name for your new form"} />
-                            </Bind>
-                        </DialogContent>
-                        <DialogActions>
-                            <ButtonDefault
+                        const { data } = result;
+                        const { data: revision, error } = data.formBuilder.form;
+
+                        setLoading(false);
+                        if (error) {
+                            showSnackbar(error.message);
+                            return;
+                        } else if (!revision) {
+                            showSnackbar(`Missing revision data in Create Form Mutation.`);
+                            return;
+                        }
+
+                        addFormToListCache(cache, revision);
+                        console.log("push before");
+                        history.push(`/form-builder/forms/${encodeURIComponent(revision.id)}`);
+                        console.log("push after");
+                    }
+                });
+            }}
+        >
+            {({ Bind, submit }) => (
+                <Dialog
+                    open={open}
+                    onOpenChange={open => !open && onClose()}
+                    title={t`New form`}
+                    data-testid="fb-new-form-modal"
+                    actions={
+                        <>
+                            <Dialog.CancelButton />
+                            <Dialog.ConfirmButton
                                 data-testid="fb.form.create"
+                                text={"Create"}
                                 onClick={ev => {
                                     submit(ev);
                                 }}
-                            >
-                                + {t`Create`}
-                            </ButtonDefault>
-                        </DialogActions>
+                            />
+                        </>
+                    }
+                >
+                    <>
+                        {loading && <OverlayLoader text={"Creating form..."} />}
+                        <Bind name={"name"} validators={validation.create("required")}>
+                            <Input
+                                size={"lg"}
+                                label={t`Name`}
+                                placeholder={"Enter a name for your new form"}
+                            />
+                        </Bind>
                     </>
-                )}
-            </Form>
-        </Dialog>
+                </Dialog>
+            )}
+        </Form>
     );
 };
 

@@ -28,7 +28,7 @@ interface AccordionProps {
  * Please use the `Accordion` component from the `@webiny/admin-ui` package instead.
  */
 const Accordion = (props: AccordionProps) => {
-    return <AdminUiAccordion type={"single"}>{props.children}</AdminUiAccordion>;
+    return <AdminUiAccordion>{props.children}</AdminUiAccordion>;
 };
 
 export { Accordion, type AccordionProps };

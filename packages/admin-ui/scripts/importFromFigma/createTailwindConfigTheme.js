@@ -11,6 +11,8 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
         animation: {
             "accordion-down": "accordion-down 0.2s ease-out",
             "accordion-up": "accordion-up 0.2s ease-out",
+            "collapsible-down": "collapsible-down 0.2s ease-out",
+            "collapsible-up": "collapsible-up 0.2s ease-out",
             "skeleton-pulse": "skeleton-pulse 1400ms ease-in-out infinite"
         },
         backgroundColor: normalizedFigmaExport.reduce(
@@ -140,6 +142,14 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
                 from: { height: "var(--radix-accordion-content-height)" },
                 to: { height: "0" }
             },
+            "collapsible-down": {
+                from: { height: "0" },
+                to: { height: "var(--radix-collapsible-content-height)" }
+            },
+            "collapsible-up": {
+                from: { height: "var(--radix-collapsible-content-height)" },
+                to: { height: "0" }
+            },
             "skeleton-pulse": {
                 "0%, 100%": { backgroundColor: "hsl(var(--bg-neutral-dimmed))" },
                 "50%": { backgroundColor: "hsl(var(--bg-neutral-muted))" }
@@ -189,12 +199,19 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
             }
             return acc;
         }, {}),
-        spacing: normalizedFigmaExport.reduce((acc, { type, variantName }) => {
-            if (type === "spacing") {
-                acc[variantName] = `var(--spacing-${variantName})`;
+        spacing: normalizedFigmaExport.reduce(
+            (acc, { type, variantName }) => {
+                if (type === "spacing") {
+                    acc[variantName] = `var(--spacing-${variantName})`;
+                }
+                return acc;
+            },
+            {
+                // Custom sidebar-related variables.
+                "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
+                "sidebar-expanded": "var(--spacing-sidebar-expanded)"
             }
-            return acc;
-        }, {}),
+        ),
         textColor: normalizedFigmaExport.reduce(
             (acc, { type, variantName }) => {
                 if (type === "textColor") {
@@ -215,7 +232,10 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
                 return acc;
             },
             { ...DEFAULTS.COLORS }
-        )
+        ),
+        zIndex: {
+            5: 5
+        }
     };
 };
 module.exports = { createTailwindConfigTheme };

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
+import type { OnDataTableColumnVisibilityChange } from "@webiny/admin-ui";
 import { IColumnsVisibilityRepository } from "./IColumnsVisibilityRepository";
 import { IColumnsVisibilityUpdater } from "./IColumnsVisibilityUpdater";
-import { OnColumnVisibilityChange } from "@webiny/ui/DataTable";
 
 export class ColumnsVisibilityUpdater implements IColumnsVisibilityUpdater {
     private repository: IColumnsVisibilityRepository;
@@ -11,7 +11,7 @@ export class ColumnsVisibilityUpdater implements IColumnsVisibilityUpdater {
         makeAutoObservable(this);
     }
 
-    public update: OnColumnVisibilityChange = async updaterOrValue => {
+    public update: OnDataTableColumnVisibilityChange = async updaterOrValue => {
         const currentVisibility = this.repository.getVisibility();
         let newVisibility = currentVisibility;
 

@@ -8,7 +8,11 @@ const meta: Meta<typeof RangeSlider> = {
     tags: ["autodocs"],
     argTypes: {
         onValuesChange: { action: "onValuesChange" },
-        onValuesCommit: { action: "onValuesCommit" }
+        onValuesCommit: { action: "onValuesCommit" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

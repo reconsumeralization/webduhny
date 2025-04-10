@@ -1,7 +1,10 @@
 import { Authentication } from "@webiny/api-authentication/types";
 import { SecurityPermission, Team } from "@webiny/api-security/types";
-import { Folder } from "~/folder/folder.types";
+import { Folder, ListFoldersParams } from "~/folder/folder.types";
 import { NotAuthorizedError } from "@webiny/api-security";
+import { ListFoldersRepository } from "~/utils/ListFoldersRepository";
+import { ListMeta } from "~/types";
+import { folderCacheFactory } from "~/utils/FoldersCacheFactory";
 
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
 
@@ -47,7 +50,7 @@ export interface FolderLevelPermissionsParams {
     getIdentity: Authentication["getIdentity"];
     listIdentityTeams: () => Promise<Team[]>;
     listPermissions: () => Promise<SecurityPermission[]>;
-    listAllFolders: (folderType: string) => Promise<Folder[]>;
+    listAllFolders: (params: ListFoldersParams) => Promise<[Folder[], ListMeta]>;
     canUseTeams: () => boolean;
     canUseFolderLevelPermissions: () => boolean;
     isAuthorizationEnabled: () => boolean;
@@ -59,17 +62,15 @@ export class FolderLevelPermissions {
     private readonly getIdentity: Authentication["getIdentity"];
     private readonly listIdentityTeams: () => Promise<Team[]>;
     private readonly listPermissions: () => Promise<SecurityPermission[]>;
-    private readonly listAllFoldersCallback: (folderType: string) => Promise<Folder[]>;
     private readonly canUseTeams: () => boolean;
     private readonly isAuthorizationEnabled: () => boolean;
-    private allFolders: Record<string, Folder[]> = {};
     private foldersPermissionsLists: Record<string, Promise<FolderPermissionsList> | null> = {};
+    private foldersLoader: ListFoldersRepository;
 
     constructor(params: FolderLevelPermissionsParams) {
         this.getIdentity = params.getIdentity;
         this.listIdentityTeams = params.listIdentityTeams;
         this.listPermissions = params.listPermissions;
-        this.listAllFoldersCallback = params.listAllFolders;
         this.canUseTeams = params.canUseTeams;
         this.canUseFolderLevelPermissions = () => {
             const identity = this.getIdentity();
@@ -90,15 +91,17 @@ export class FolderLevelPermissions {
         };
 
         this.isAuthorizationEnabled = params.isAuthorizationEnabled;
+
+        // Delete the cache on constructor to avoid duplicated permissions lists,
+        // especially when calculating permissions based on folder parents.
+        folderCacheFactory.deleteCache();
+        this.foldersLoader = new ListFoldersRepository({
+            gateway: params.listAllFolders
+        });
     }
 
     async listAllFolders(folderType: string): Promise<Folder[]> {
-        if (folderType in this.allFolders) {
-            return structuredClone(this.allFolders[folderType]);
-        }
-
-        this.allFolders[folderType] = await this.listAllFoldersCallback(folderType);
-        return structuredClone(this.allFolders[folderType]);
+        return await this.foldersLoader.execute(folderType);
     }
 
     async listAllFoldersWithPermissions(folderType: string) {
@@ -117,11 +120,9 @@ export class FolderLevelPermissions {
 
     invalidateFoldersCache(folderType?: string) {
         if (folderType) {
-            if (folderType in this.allFolders) {
-                delete this.allFolders[folderType];
-            }
+            folderCacheFactory.getCache(folderType).clear();
         } else {
-            this.allFolders = {};
+            folderCacheFactory.deleteCache();
         }
     }
 
@@ -131,13 +132,16 @@ export class FolderLevelPermissions {
                 delete this.foldersPermissionsLists[folderType];
             }
         } else {
-            this.allFolders = {};
+            folderCacheFactory.deleteCache();
         }
     }
 
-    updateFoldersCache(folderType: string, modifier: (folders: Folder[]) => Folder[]) {
-        const foldersClone = structuredClone(this.allFolders[folderType]) || [];
-        this.allFolders[folderType] = modifier(foldersClone);
+    addFolderToCache(folderType: string, folder: Folder) {
+        folderCacheFactory.getCache(folderType).addItems([folder]);
+    }
+
+    updateFoldersCache(folderType: string, modifier: (folder: Folder) => Folder) {
+        folderCacheFactory.getCache(folderType).updateItems(modifier);
     }
 
     async listFoldersPermissions(

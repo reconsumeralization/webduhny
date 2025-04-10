@@ -7,8 +7,16 @@ declare global {
 }
 
 export const getTenantId = (): string | null => {
+    const urlSearchParams = new URLSearchParams(location.search);
+
     // 1. Get tenant via the `__tenant` query param. Useful when doing page previews.
-    let tenant = new URLSearchParams(location.search).get("__tenant");
+    let tenant = urlSearchParams.get("__tenant");
+    if (tenant) {
+        return tenant;
+    }
+
+    // 1. Get tenant via the `tenantId` query param. Useful within the Admin app.
+    tenant = urlSearchParams.get("tenantId");
     if (tenant) {
         return tenant;
     }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as PersonIcon } from "@material-design-icons/svg/outlined/person.svg";
-import { ReactComponent as LockIcon } from "@material-design-icons/svg/outlined/lock.svg";
+import { ReactComponent as PersonIcon } from "@webiny/icons/person.svg";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
 import { Tabs } from "./Tabs";
 
 const meta: Meta<typeof Tabs> = {

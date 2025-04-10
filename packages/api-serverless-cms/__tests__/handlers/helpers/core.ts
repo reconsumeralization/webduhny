@@ -38,20 +38,19 @@ import { createHcmsTasks } from "@webiny/api-headless-cms-tasks";
 import { createApwGraphQL, createApwPageBuilderContext } from "@webiny/api-apw";
 import { ApwScheduleActionStorageOperations } from "@webiny/api-apw/scheduler/types";
 import { createBackgroundTaskContext, createBackgroundTaskGraphQL } from "@webiny/tasks";
-import { ContextPlugin } from "@webiny/api";
 import pageBuilderImportExportPlugins from "@webiny/api-page-builder-import-export/graphql";
 import { createStorageOperations as createPageBuilderImportExportStorageOperations } from "@webiny/api-page-builder-import-export-so-ddb";
-import { Context } from "~/index";
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 import { createLogger } from "@webiny/api-log";
 import { createCmsPlugins } from "../cms";
+import { createTestWcpLicense } from "@webiny/wcp/testing/createTestWcpLicense";
 
 export interface ICreateCoreParams {
     plugins?: Plugin[];
     path: PathType;
     permissions?: Permission[];
     tenant?: Pick<Tenant, "id" | "name" | "parent">;
-    features?: boolean | string[];
+    features?: boolean;
 }
 
 export interface ICreateCoreResult {
@@ -103,49 +102,10 @@ export const createCore = (params: ICreateCoreParams): ICreateCoreResult => {
         logout: security.logout,
         plugins: [
             enableBenchmarkOnEnvironmentVariable(),
-            createWcpContext(),
-            createWcpGraphQL(),
-            new ContextPlugin<Context>(async context => {
-                if (!features) {
-                    return;
-                }
-
-                const canUse = (name: string): boolean => {
-                    if (features === true) {
-                        return true;
-                    } else if (!Array.isArray(features) || !features.includes(name)) {
-                        return false;
-                    }
-                    return true;
-                };
-
-                context.wcp = {
-                    ensureCanUseFeature: () => void 0,
-                    canUseFolderLevelPermissions: () => {
-                        if (!canUse("advancedAccessControlLayer")) {
-                            return false;
-                        }
-                        // @ts-expect-error
-                        return !!context.project?.package?.features?.advancedAccessControlLayer
-                            ?.options?.folderLevelPermissions;
-                    },
-                    canUseAacl: () => {
-                        return canUse("advancedAccessControlLayer");
-                    },
-                    canUsePrivateFiles: () => true,
-                    canUseTeams: () => true,
-                    decrementSeats: async () => void 0,
-                    incrementSeats: async () => void 0,
-                    decrementTenants: async () => void 0,
-                    incrementTenants: async () => void 0,
-                    getProjectEnvironment: () => null,
-                    getProjectLicense: () => null,
-                    canUseFeature: canUse,
-                    canUseRecordLocking: () => {
-                        return canUse("recordLocking");
-                    }
-                };
+            createWcpContext({
+                testProjectLicense: features ? createTestWcpLicense() : undefined
             }),
+            createWcpGraphQL(),
             ...cmsStorage.plugins,
             ...pageBuilderStorage.plugins,
             ...fileManagerStorage.plugins,

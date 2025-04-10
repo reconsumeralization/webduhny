@@ -37,7 +37,7 @@ export const createSecurityContext = ({ storageOperations }: SecurityConfig) => 
     return new ContextPlugin<Context>(async context => {
         context.plugins.register(gqlInterfaces);
 
-        const license = context.wcp.getProjectLicense();
+        const license = context.wcp.getProjectLicense().getRawLicense();
 
         context.security = await createSecurity({
             advancedAccessControlLayer: license?.package?.features?.advancedAccessControlLayer,

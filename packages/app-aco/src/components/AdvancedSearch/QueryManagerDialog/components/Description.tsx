@@ -1,6 +1,6 @@
 import React from "react";
-import { ListItemTextSecondary } from "@webiny/ui/List";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
+import { Text } from "@webiny/admin-ui";
+import { TimeAgo } from "@webiny/admin-ui";
 
 export interface DescriptionProps {
     children?: string;
@@ -9,9 +9,9 @@ export interface DescriptionProps {
 
 export const Description = (props: DescriptionProps) => {
     return (
-        <ListItemTextSecondary>
+        <Text size={"sm"}>
             {"Created"} <TimeAgo datetime={props.createdOn} />
             {props.children && ` - ${props.children}`}
-        </ListItemTextSecondary>
+        </Text>
     );
 };

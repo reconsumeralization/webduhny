@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ReactComponent as CloseIcon } from "@material-design-icons/svg/outlined/highlight_off.svg";
+import { ReactComponent as CloseIcon } from "@webiny/icons/highlight_off.svg";
 import { DecoratableComponent, makeDecoratable, withDecoratorFactory } from "@webiny/app-admin";
 import { IconButton } from "@webiny/ui/Button";
 import { CmsDynamicZoneTemplate } from "~/types";

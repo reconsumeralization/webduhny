@@ -1,25 +1,12 @@
 import React from "react";
-import { css } from "emotion";
 import { i18n } from "@webiny/app/i18n";
+import { Alert, Grid, RadioGroup, Text } from "@webiny/admin-ui";
 import { useDialog } from "@webiny/app-admin/hooks/useDialog";
-import { Typography } from "@webiny/ui/Typography";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Radio, RadioGroup } from "@webiny/ui/Radio";
 import { Form } from "@webiny/form";
-import { Alert } from "@webiny/ui/Alert";
 import { usePageBuilder } from "@webiny/app-page-builder/hooks/usePageBuilder";
 
 const t = i18n.ns("app-form-builder/editor/plugins/defaultBar/exportFormButton");
 
-const confirmationMessageStyles = css`
-    width: 600px;
-`;
-
-const gridStyles = css`
-    &.mdc-layout-grid {
-        padding-top: 0;
-    }
-`;
 interface ExportFormDialogMessageProps {
     selected: string[];
 }
@@ -29,14 +16,14 @@ const ExportFormDialogMessage = ({ selected }: ExportFormDialogMessageProps) => 
     const { revisionType: value, setRevisionType: setValue } = exportPageData;
 
     return (
-        <div className={confirmationMessageStyles}>
-            <Grid className={gridStyles}>
-                <Cell span={12}>
-                    <Typography
-                        use={"subtitle1"}
-                    >{t`Choose which revision of the form(s) you want to export:`}</Typography>
-                </Cell>
-                <Cell span={12}>
+        <>
+            <Grid>
+                <Grid.Column span={12}>
+                    <Text
+                        size={"md"}
+                    >{t`Choose which revision of the form(s) you want to export:`}</Text>
+                </Grid.Column>
+                <Grid.Column span={12}>
                     <Form
                         data={{ revision: value }}
                         onChange={data => {
@@ -47,44 +34,32 @@ const ExportFormDialogMessage = ({ selected }: ExportFormDialogMessageProps) => 
                             <Bind name="revision">
                                 <RadioGroup
                                     label="Revision selection"
-                                    description={
+                                    note={
                                         "Note: If there is no published revision of a form the latest revision will be exported."
                                     }
-                                >
-                                    {({ onChange, getValue }) => (
-                                        <React.Fragment>
-                                            {[
-                                                { id: "published", name: "Published" },
-                                                {
-                                                    id: "latest",
-                                                    name: "Latest"
-                                                }
-                                            ].map(({ id, name }) => (
-                                                <Radio
-                                                    key={id}
-                                                    label={name}
-                                                    value={getValue(id)}
-                                                    onChange={onChange(id)}
-                                                />
-                                            ))}
-                                        </React.Fragment>
-                                    )}
-                                </RadioGroup>
+                                    items={[
+                                        { value: "published", label: "Published" },
+                                        {
+                                            value: "latest",
+                                            label: "Latest"
+                                        }
+                                    ]}
+                                />
                             </Bind>
                         )}
                     </Form>
-                </Cell>
+                </Grid.Column>
+                <>
+                    {selected.length === 0 && (
+                        <Grid.Column span={12}>
+                            <Alert title={t`Note`} type={"info"}>
+                                {t`You're about to export all forms. This operation might take a few minutes to complete.`}
+                            </Alert>
+                        </Grid.Column>
+                    )}
+                </>
             </Grid>
-            {selected.length === 0 && (
-                <Grid className={gridStyles}>
-                    <Cell span={12}>
-                        <Alert title={t`Note:`} type={"info"}>
-                            {t`You're about to export all forms. This operation might take a few minutes to complete.`}
-                        </Alert>
-                    </Cell>
-                </Grid>
-            )}
-        </div>
+        </>
     );
 };
 
@@ -104,7 +79,7 @@ const useExportFormRevisionSelectorDialog = (): UseExportFormRevisionSelectorDia
     return {
         showExportFormRevisionSelectorDialog: ({ onAccept, selected }) => {
             showDialog(<ExportFormDialogMessage selected={selected} />, {
-                title: t`Select Form Revision`,
+                title: t`Select form revision`,
                 actions: {
                     cancel: { label: t`Cancel` },
                     accept: {

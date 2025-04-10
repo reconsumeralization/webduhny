@@ -9,16 +9,22 @@ export const useSelect = (props: SelectPrimitiveProps) => {
             options: props.options,
             value: props.value,
             placeholder: props.placeholder,
-            onValueChange: props.onValueChange,
+            displayResetAction: props.displayResetAction,
+            onValueChange: props.onChange,
             onValueReset: props.onValueReset
         }),
-        [props.options, props.value, props.placeholder, props.onValueChange, props.onValueReset]
+        [
+            props.options,
+            props.value,
+            props.placeholder,
+            props.displayResetAction,
+            props.onChange,
+            props.onValueReset
+        ]
     );
 
     const presenter = useMemo(() => {
-        const presenter = new SelectPresenter();
-        presenter.init(params);
-        return presenter;
+        return new SelectPresenter();
     }, []);
 
     const [vm, setVm] = useState(presenter.vm);

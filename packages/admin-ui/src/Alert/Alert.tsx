@@ -1,10 +1,10 @@
 import * as React from "react";
 import { cva, type VariantProps, cn, makeDecoratable, withStaticProps } from "~/utils";
 import { Button, type ButtonProps, IconButton } from "~/Button";
-import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
-import { ReactComponent as WarningIcon } from "@material-design-icons/svg/outlined/warning_amber.svg";
-import { ReactComponent as SuccessIcon } from "@material-design-icons/svg/outlined/check_circle.svg";
-import { ReactComponent as XIcon } from "@material-design-icons/svg/filled/close.svg";
+import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
+import { ReactComponent as WarningIcon } from "@webiny/icons/warning_amber.svg";
+import { ReactComponent as SuccessIcon } from "@webiny/icons/check_circle.svg";
+import { ReactComponent as XIcon } from "@webiny/icons/close.svg";
 import { Icon } from "~/Icon";
 
 const VARIANT_ICON_MAP = {

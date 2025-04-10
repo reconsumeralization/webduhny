@@ -4,13 +4,14 @@ import {
     SelectTriggerVm,
     SelectOption as SelectOptionParams
 } from "../SelectPrimitive";
-import { SelectOption, SelectOptionMapper } from "../domains";
+import { SelectOption, SelectOptionMapper } from "../../domains";
 
 interface SelectPresenterParams {
     options?: SelectOptionParams[];
     value?: string;
     placeholder?: string;
-    onValueChange: (value: string) => void;
+    displayResetAction?: boolean;
+    onValueChange?: (value: string) => void;
     onValueReset?: () => void;
 }
 
@@ -27,6 +28,7 @@ interface ISelectPresenter<TParams extends SelectPresenterParams = SelectPresent
 class SelectPresenter implements ISelectPresenter {
     private params?: SelectPresenterParams;
     private options?: SelectOption[];
+    private displayResetAction = true;
 
     constructor() {
         this.params = undefined;
@@ -36,13 +38,15 @@ class SelectPresenter implements ISelectPresenter {
     init(params: SelectPresenterParams) {
         this.params = params;
         this.options = this.transformOptions(params.options);
+        this.displayResetAction = params?.displayResetAction ?? true;
     }
 
     get vm() {
         return {
             selectTrigger: {
                 placeholder: this.params?.placeholder || "Select an option",
-                hasValue: !!this.params?.value
+                hasValue: !!this.params?.value,
+                displayResetAction: this.displayResetAction
             },
             selectOptions: {
                 options: this.options?.map(option => SelectOptionMapper.toFormatted(option)) ?? []
@@ -51,7 +55,7 @@ class SelectPresenter implements ISelectPresenter {
     }
 
     public changeValue = (value: string) => {
-        this.params?.onValueChange(value);
+        this.params?.onValueChange?.(value);
     };
 
     public resetValue = () => {

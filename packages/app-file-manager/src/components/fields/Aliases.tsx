@@ -1,40 +1,16 @@
 import React, { Fragment, useMemo } from "react";
-import styled from "@emotion/styled";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
-import { DynamicFieldset } from "@webiny/ui/DynamicFieldset";
-import { Input } from "@webiny/ui/Input";
-import { Typography } from "@webiny/ui/Typography";
-import { ButtonDefault, IconButton } from "@webiny/ui/Button";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { validation } from "@webiny/validation";
 import { Bind, useBind } from "@webiny/form";
+import { Button, cn, DynamicFieldset, IconButton, Input, Label, Text } from "@webiny/admin-ui";
 
-const Fieldset = styled("div")({
-    position: "relative",
-    width: "100%",
-    marginBottom: 15,
-    ".webiny-ui-button": {
-        position: "absolute",
-        display: "block",
-        right: 10,
-        top: 13
-    }
-});
-
-const Header = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
-
-const DeleteAliasButton = styled(IconButton)`
-    position: absolute;
-    top: 5px;
-    right: 5px;
-`;
-
-const FileAliasMessage = styled("span")`
-    color: var(--mdc-theme-text-secondary-on-background);
-    font-size: 12px;
-`;
+const Header = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div className={cn("wby-flex wby-justify-between", className)} {...props}>
+            {children}
+        </div>
+    );
+};
 
 const PATHNAME_REGEX = /^\/[/.a-zA-Z0-9-_]+$/;
 
@@ -66,39 +42,49 @@ export const Aliases = () => {
             {({ actions, header, row, empty }) => (
                 <>
                     {row(({ index }) => (
-                        <Fieldset>
-                            <Bind validators={aliasValidator} name={`aliases.${index}`}>
-                                <Input
-                                    placeholder={"Alias"}
-                                    description={
-                                        "Enter a file path, e.g., /my/custom/file/path.png"
-                                    }
+                        <div className={"wby-mt-md"}>
+                            <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
+                                {"Enter a file path, e.g., /my/custom/file/path.png"}
+                            </Text>
+                            <div className={"wby-flex wby-items-start wby-gap-sm"}>
+                                <Bind validators={aliasValidator} name={`aliases.${index}`}>
+                                    <Input placeholder={"Alias"} size={"lg"} />
+                                </Bind>
+                                <IconButton
+                                    variant={"ghost"}
+                                    size={"lg"}
+                                    icon={<DeleteIcon />}
+                                    onClick={actions.remove(index)}
                                 />
-                            </Bind>
-                            <DeleteAliasButton
-                                icon={<DeleteIcon />}
-                                onClick={actions.remove(index)}
-                            />
-                        </Fieldset>
+                            </div>
+                        </div>
                     ))}
                     {empty(() => (
                         <Fragment>
                             <Header>
-                                <Typography use={"overline"}>File Aliases</Typography>
-                                <ButtonDefault onClick={addAlias}>+ Add Alias</ButtonDefault>
+                                <Label text={"File Aliases"} />
+                                <Button
+                                    onClick={addAlias}
+                                    text="Add alias"
+                                    variant={"secondary"}
+                                    size={"sm"}
+                                />
                             </Header>
-                            <Typography use={"caption"}>
-                                <FileAliasMessage>
-                                    To make your file accessible via custom paths, add one or more
-                                    aliases.
-                                </FileAliasMessage>
-                            </Typography>
+                            <Text size={"sm"} as={"div"} className={"wby-mt-sm"}>
+                                To make your file accessible via custom paths, add one or more
+                                aliases.
+                            </Text>
                         </Fragment>
                     ))}
                     {header(() => (
                         <Header>
-                            <Typography use={"overline"}>File Aliases</Typography>
-                            <ButtonDefault onClick={addAlias}>+ Add Alias</ButtonDefault>
+                            <Label text={"File Aliases"} />
+                            <Button
+                                onClick={addAlias}
+                                text="Add alias"
+                                variant={"secondary"}
+                                size={"sm"}
+                            />
                         </Header>
                     ))}
                 </>

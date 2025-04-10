@@ -1,6 +1,6 @@
 import React from "react";
 import { makeDecoratable } from "@webiny/app-admin";
-import { ReactComponent as Delete } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as Delete } from "@webiny/icons/delete.svg";
 import { PageListConfig } from "~/admin/config/pages";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";
 import { useDeletePage } from "~/admin/views/Pages/hooks/useDeletePage";

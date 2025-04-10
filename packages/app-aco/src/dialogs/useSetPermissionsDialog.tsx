@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { useSnackbar } from "@webiny/app-admin";
+import { Grid } from "@webiny/admin-ui";
+import { useDialogs, useSnackbar } from "@webiny/app-admin";
 import { GenericFormData, useBind } from "@webiny/form";
-import { Cell, Grid } from "@webiny/ui/Grid";
-
 import { UsersTeamsMultiAutocomplete } from "./DialogSetPermissions/UsersTeamsMultiAutocomplete";
 import { UsersTeamsSelection } from "./DialogSetPermissions/UsersTeamsSelection";
 import { LIST_FOLDER_LEVEL_PERMISSIONS_TARGETS } from "./DialogSetPermissions/graphql";
-
-import { useDialogs } from "@webiny/app-admin";
-import { useFolders } from "~/hooks";
+import { useUpdateFolder } from "~/features";
 import { FolderItem, FolderLevelPermissionsTarget, FolderPermission } from "~/types";
 
 interface ShowDialogParams {
@@ -55,10 +52,10 @@ const FormComponent = ({ folder }: FormComponentProps) => {
     }, [permissions]);
 
     const addPermission = useCallback(
-        (value: FolderPermission[]) => {
+        (value: FolderPermission["target"][]) => {
             const selectedUserOrTeam = value[value.length - 1];
             const newPermission: FolderPermission = {
-                target: selectedUserOrTeam.target,
+                target: selectedUserOrTeam,
                 level: "editor"
             };
 
@@ -94,35 +91,35 @@ const FormComponent = ({ folder }: FormComponentProps) => {
 
     return (
         <Grid>
-            <Cell span={12}>
+            <Grid.Column span={12}>
                 <UsersTeamsMultiAutocomplete
                     options={targetsList}
-                    value={permissions}
+                    value={permissions.map(permission => permission.target)}
                     onChange={addPermission}
                 />
-            </Cell>
-            <Cell span={12}>
+            </Grid.Column>
+            <Grid.Column span={12}>
                 <UsersTeamsSelection
                     permissions={permissions}
                     targetsList={targetsList}
                     onRemoveAccess={removeUserTeam}
                     onUpdatePermission={updatePermission}
                 />
-            </Cell>
+            </Grid.Column>
         </Grid>
     );
 };
 
 export const useSetPermissionsDialog = (): UseSetPermissionsDialogResponse => {
     const dialogs = useDialogs();
-    const { updateFolder } = useFolders();
+    const { updateFolder } = useUpdateFolder();
     const { showSnackbar } = useSnackbar();
 
     const onAccept = useCallback(async (folder: FolderItem, data: Partial<FolderItem>) => {
         const updateData = { ...folder, ...data };
 
         try {
-            await updateFolder(updateData, { refetchFoldersList: true });
+            await updateFolder(updateData);
             showSnackbar("Folder permissions updated successfully!");
         } catch (error) {
             showSnackbar(error.message);

@@ -1,12 +1,27 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getUniqueId, toObject } from "./utils";
 
+const PropertiesTargetContext = createContext<string | undefined>(undefined);
+
+export interface ConnectToPropertiesProps {
+    name: string;
+    children: React.ReactNode;
+}
+
+export const ConnectToProperties = ({ name, children }: ConnectToPropertiesProps) => {
+    return (
+        <PropertiesTargetContext.Provider value={name}>{children}</PropertiesTargetContext.Provider>
+    );
+};
+
 export interface Property {
     id: string;
     parent: string;
     name: string;
     value?: unknown;
     array?: boolean;
+    $isFirst?: boolean;
+    $isLast?: boolean;
 }
 
 function removeByParent(id: string, properties: Property[]): Property[] {
@@ -26,7 +41,9 @@ interface AddPropertyOptions {
 }
 
 interface PropertiesContext {
+    name?: string;
     properties: Property[];
+    getAncestor(name: string): PropertiesContext | undefined;
     getObject<T = unknown>(): T;
     addProperty(property: Property, options?: AddPropertyOptions): void;
     removeProperty(id: string): void;
@@ -92,12 +109,20 @@ function mergeProperty(properties: Property[], property: Property) {
 const PropertiesContext = createContext<PropertiesContext | undefined>(undefined);
 
 interface PropertiesProps {
+    name?: string;
     onChange?(properties: Property[]): void;
     children: React.ReactNode;
 }
 
-export const Properties = ({ onChange, children }: PropertiesProps) => {
+export const Properties = ({ name, onChange, children }: PropertiesProps) => {
     const [properties, setProperties] = useState<Property[]>([]);
+    let parent: PropertiesContext;
+
+    try {
+        parent = useProperties();
+    } catch {
+        // Do nothing, if there's no parent.
+    }
 
     useEffect(() => {
         if (onChange) {
@@ -107,7 +132,17 @@ export const Properties = ({ onChange, children }: PropertiesProps) => {
 
     const context: PropertiesContext = useMemo(
         () => ({
+            name,
             properties,
+            getAncestor(ancestorName: string) {
+                if (!parent) {
+                    return undefined;
+                }
+
+                return parent && parent.name === ancestorName
+                    ? parent
+                    : parent.getAncestor(ancestorName);
+            },
             getObject<T>() {
                 return toObject(properties) as T;
             },
@@ -177,6 +212,22 @@ export function useProperties() {
     return properties;
 }
 
+export function useAncestorByName(name: string | undefined) {
+    const parent = useProperties();
+
+    return useMemo(() => {
+        if (!name) {
+            return undefined;
+        }
+
+        if (parent.name === name) {
+            return parent;
+        }
+
+        return parent.getAncestor(name);
+    }, [name]);
+}
+
 interface PropertyProps {
     id?: string;
     name: string;
@@ -240,9 +291,13 @@ export const Property = ({
     root = false,
     parent = undefined
 }: PropertyProps) => {
+    const targetName = useContext(PropertiesTargetContext);
     const uniqueId = useMemo(() => id || getUniqueId(), []);
     const parentProperty = useParentProperty();
-    const properties = useProperties();
+    const immediateProperties = useProperties();
+    const ancestorByName = useAncestorByName(targetName);
+
+    const properties = targetName ? ancestorByName : immediateProperties;
 
     if (!properties) {
         throw Error("<Properties> provider is missing higher in the hierarchy!");
@@ -263,7 +318,10 @@ export const Property = ({
             return;
         }
 
-        addProperty(property, { after, before });
+        const $isFirst = before === "$first";
+        const $isLast = after === "$last";
+
+        addProperty({ ...property, $isFirst, $isLast }, { after, before });
 
         return () => {
             removeProperty(uniqueId);

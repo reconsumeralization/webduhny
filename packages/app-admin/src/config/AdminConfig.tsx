@@ -1,34 +1,78 @@
 import React from "react";
-import { createConfigurableComponent } from "@webiny/react-properties";
+import { AppContainer, Plugin } from "@webiny/app";
+import { Menu, type MenuConfig } from "./AdminConfig/Menu";
+import { Tenant, TenantConfig } from "./AdminConfig/Tenant";
+import type { SupportMenuConfig } from "./AdminConfig/Menu/SupportMenu";
+import type { UserMenuConfig } from "./AdminConfig/Menu/UserMenu";
+import { Route } from "./AdminConfig/Route";
 import { Theme } from "./AdminConfig/Theme";
-import { createProvider } from "@webiny/app";
+import { createAdminConfig } from "./createAdminConfig";
 
-const base = createConfigurableComponent<AdminConfig>("AdminConfig");
+const base = createAdminConfig<AdminConfig>();
 
 export const AdminWithConfig = Object.assign(base.WithConfig, {
     displayName: "AdminWithConfig"
 });
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AdminConfig {
-    // Add properties here. At the moment, we don't have any.
+    menus: MenuConfig[];
+    supportMenus: SupportMenuConfig[];
+    userMenus: UserMenuConfig[];
+    tenant: TenantConfig;
 }
 
-function useAdminConfig() {
-    return base.useConfig();
-}
-
-export const AdminConfigProvider = createProvider(Original => {
+export const AdminConfigProvider = AppContainer.createDecorator(Original => {
     return function AdminConfigProvider({ children }) {
         return (
-            <AdminWithConfig>
-                <Original>{children}</Original>
-            </AdminWithConfig>
+            <>
+                {/* Wrap the entire app with an AdminConfig provider, and apply all public configs. */}
+                <Original>
+                    <AdminWithConfig>
+                        <base.ApplyPublicConfig />
+                        {children}
+                    </AdminWithConfig>
+                </Original>
+                {/* Once the app fully renders (after the LoginScreen), apply protected configs. */}
+                <Plugin>
+                    <base.ApplyProtectedConfig />
+                </Plugin>
+            </>
         );
     };
 });
 
-export const AdminConfig = Object.assign(base.Config, {
+export const useAdminConfig = () => {
+    const baseConfig = base.useConfig();
+
+    return {
+        menus: baseConfig.menus ?? [],
+        userMenus: baseConfig.userMenus ?? [],
+        supportMenus: baseConfig.supportMenus ?? [],
+        tenant: baseConfig.tenant || {}
+    };
+};
+
+export interface PublicProps {
+    children: React.ReactNode;
+}
+
+export const Public = ({ children }: PublicProps) => {
+    return <base.PublicConfig>{children}</base.PublicConfig>;
+};
+
+export interface PrivateProps {
+    children: React.ReactNode;
+}
+
+export const Private = ({ children }: PrivateProps) => {
+    return <base.PrivateConfig>{children}</base.PrivateConfig>;
+};
+
+export const AdminConfig = Object.assign(Private, {
+    Public,
     Theme,
-    use: useAdminConfig
+    Menu,
+    Route,
+    Tenant,
+    useAdminConfig
 });

@@ -1,17 +1,16 @@
-/**
- * If number of indexes or names start to
- */
 import { useHandler } from "~tests/context/useHandler";
 import { createMockModels } from "./mocks/models";
 import { CreateElasticsearchIndexTaskPlugin } from "@webiny/api-elasticsearch-tasks";
 import { createIndexesTaskDefinition } from "@webiny/api-elasticsearch-tasks/tasks";
 import { ResponseDoneResult } from "@webiny/tasks";
-import { Context as TasksContext } from "@webiny/tasks/types";
-import { CmsContext } from "~/types";
+import type { Context as TasksContext } from "@webiny/tasks/types";
+import type { CmsContext } from "~/types";
 import { createRunner } from "@webiny/project-utils/testing/tasks";
-import { IElasticsearchCreateIndexesTaskInput } from "@webiny/api-elasticsearch-tasks/tasks/createIndexes/types";
+import type { IElasticsearchCreateIndexesTaskInput } from "@webiny/api-elasticsearch-tasks/tasks/createIndexes/types";
 import { configurations } from "~/configurations";
-import { CmsModel } from "@webiny/api-headless-cms/types";
+import type { CmsModel } from "@webiny/api-headless-cms/types";
+import type { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
+import type { Context as LoggerContext } from "@webiny/api-log/types";
 
 const createIndexName = (model: Pick<CmsModel, "tenant" | "locale" | "modelId">): string => {
     const { index } = configurations.es({
@@ -20,7 +19,7 @@ const createIndexName = (model: Pick<CmsModel, "tenant" | "locale" | "modelId">)
     return index;
 };
 
-interface Context extends TasksContext, CmsContext {}
+interface Context extends TasksContext, CmsContext, ElasticsearchContext, LoggerContext {}
 
 describe("create index task", () => {
     it("should create an index configuration for each of the models defined", async () => {
@@ -206,6 +205,17 @@ describe("create index task", () => {
         const runner = createRunner({
             context,
             task: createIndexesTask
+        });
+
+        await createIndexesTask.onBeforeTrigger!({
+            context,
+            data: {
+                input: {
+                    matching: "-en-us-car"
+                },
+                name: createIndexesTask.title,
+                definitionId: createIndexesTask.id
+            }
         });
 
         const result = await runner({

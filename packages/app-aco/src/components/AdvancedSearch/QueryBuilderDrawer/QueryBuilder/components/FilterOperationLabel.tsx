@@ -1,8 +1,5 @@
 import React from "react";
-
-import { Typography } from "@webiny/ui/Typography";
-
-import { FilterOperationLabelContainer } from "../Querybuilder.styled";
+import { Text } from "@webiny/admin-ui";
 
 interface FilterOperationLabelProps {
     operation: string;
@@ -14,8 +11,8 @@ export const FilterOperationLabel = ({ operation, show }: FilterOperationLabelPr
     }
 
     return (
-        <FilterOperationLabelContainer>
-            <Typography use={"caption"}>{operation}</Typography>
-        </FilterOperationLabelContainer>
+        <div className={"wby-pt-sm-plus wby-text-center"}>
+            <Text size={"sm"}>{operation}</Text>
+        </div>
     );
 };

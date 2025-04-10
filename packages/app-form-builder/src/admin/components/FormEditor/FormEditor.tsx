@@ -28,7 +28,7 @@ const FormEditor = () => {
     }
 
     return (
-        <div className={"form-editor"}>
+        <div className={"form-editor wby-flex-1"}>
             <EditorBar />
             <EditorContent />
             <DragPreview />

@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Bind } from "@webiny/form";
-import { Radio, RadioGroup } from "@webiny/ui/Radio";
 import { useInputField } from "~/components";
+import { RadioGroup } from "@webiny/admin-ui";
 
 export const Boolean = () => {
     const { name } = useInputField();
@@ -10,28 +10,23 @@ export const Boolean = () => {
     return (
         <Bind name={name}>
             {({ value, onChange, validation }) => (
-                <RadioGroup validation={validation}>
-                    {() => {
-                        return (
-                            <>
-                                <Radio
-                                    label="True"
-                                    value={value === "true"}
-                                    onChange={() => {
-                                        onChange("true");
-                                    }}
-                                />
-                                <Radio
-                                    label="False"
-                                    value={value === "false"}
-                                    onChange={() => {
-                                        onChange("false");
-                                    }}
-                                />
-                            </>
-                        );
-                    }}
-                </RadioGroup>
+                <div className="wby-w-full wby-mt-lg">
+                    <RadioGroup
+                        validation={validation}
+                        onChange={onChange}
+                        value={value}
+                        items={[
+                            {
+                                label: "True",
+                                value: "true"
+                            },
+                            {
+                                label: "False",
+                                value: "false"
+                            }
+                        ]}
+                    />
+                </div>
             )}
         </Bind>
     );

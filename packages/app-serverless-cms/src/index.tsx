@@ -3,15 +3,7 @@ export type { AdminProps } from "./Admin";
 export {
     useApp,
     useWcp,
-    useUserMenuItem,
-    useUserMenu,
-    useMenuItem,
-    useNavigation,
     useTags,
-    AddLogo,
-    AddMenu,
-    AddRoute,
-    AddUserMenuItem,
     Dashboard,
     DashboardRenderer,
     Layout,
@@ -34,16 +26,12 @@ export {
     createProviderPlugin,
     createDecorator,
     createProvider,
-    MenuItem,
-    MenuItemRenderer,
-    MenuItems,
     Navigation,
     NavigationRenderer,
     Tags,
     UserMenu,
     UserMenuHandle,
     UserMenuHandleRenderer,
-    UserMenuItems,
     UserMenuItem,
     UserMenuItemRenderer,
     AddGraphQLQuerySelection
@@ -54,14 +42,7 @@ export type {
     Decorator,
     ProviderProps,
     LayoutProps,
-    LoginScreenProps,
-    MenuContext,
-    MenuData,
-    MenuItemsProps,
-    MenuProps,
-    UserMenuItemsProps,
-    UserMenuItemProps,
-    UserMenuItemData
+    LoginScreenProps
 } from "@webiny/app-admin";
 
 export { HasPermission, useSecurity, usePermission } from "@webiny/app-security";

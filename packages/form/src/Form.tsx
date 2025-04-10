@@ -111,7 +111,8 @@ function FormInner<T extends GenericFormData = GenericFormData>(
         return {
             ...formApi,
             isPristine: vm.isPristine,
-            data: vm.data
+            data: vm.data,
+            invalidFields: vm.invalidFields
         };
     }, [vm.data, vm.invalidFields]);
 

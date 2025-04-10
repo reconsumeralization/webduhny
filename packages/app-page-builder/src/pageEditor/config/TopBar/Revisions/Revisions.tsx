@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "emotion";
-import { ReactComponent as DownButton } from "@material-design-icons/svg/round/arrow_drop_down.svg";
+import { ReactComponent as DownButton } from "@webiny/icons/arrow_drop_down.svg";
 import { Menu, MenuItem } from "@webiny/ui/Menu";
 import { ButtonDefault } from "@webiny/ui/Button";
 import { Icon } from "@webiny/ui/Icon";

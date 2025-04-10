@@ -2,6 +2,8 @@ module.exports = {
     animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "collapsible-down": "collapsible-down 0.2s ease-out",
+        "collapsible-up": "collapsible-up 0.2s ease-out",
         "skeleton-pulse": "skeleton-pulse 1400ms ease-in-out infinite"
     },
     backgroundColor: {
@@ -86,6 +88,7 @@ module.exports = {
             dark: "hsl(var(--border-neutral-dark))",
             dimmed: "hsl(var(--border-neutral-dimmed))",
             muted: "hsl(var(--border-neutral-muted))",
+            smoked: "hsl(var(--border-neutral-smoked))",
             strong: "hsl(var(--border-neutral-strong))",
             subtle: "hsl(var(--border-neutral-subtle))"
         },
@@ -242,16 +245,44 @@ module.exports = {
     },
     keyframes: {
         "accordion-down": {
-            from: { height: "0" },
-            to: { height: "var(--radix-accordion-content-height)" }
+            from: {
+                height: "0"
+            },
+            to: {
+                height: "var(--radix-accordion-content-height)"
+            }
         },
         "accordion-up": {
-            from: { height: "var(--radix-accordion-content-height)" },
-            to: { height: "0" }
+            from: {
+                height: "var(--radix-accordion-content-height)"
+            },
+            to: {
+                height: "0"
+            }
+        },
+        "collapsible-down": {
+            from: {
+                height: "0"
+            },
+            to: {
+                height: "var(--radix-collapsible-content-height)"
+            }
+        },
+        "collapsible-up": {
+            from: {
+                height: "var(--radix-collapsible-content-height)"
+            },
+            to: {
+                height: "0"
+            }
         },
         "skeleton-pulse": {
-            "0%, 100%": { backgroundColor: "hsl(var(--bg-neutral-dimmed))" },
-            "50%": { backgroundColor: "hsl(var(--bg-neutral-muted))" }
+            "0%, 100%": {
+                backgroundColor: "hsl(var(--bg-neutral-dimmed))"
+            },
+            "50%": {
+                backgroundColor: "hsl(var(--bg-neutral-muted))"
+            }
         }
     },
     margin: {
@@ -312,6 +343,8 @@ module.exports = {
         xxl: "var(--shadow-xxl)"
     },
     spacing: {
+        "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
+        "sidebar-expanded": "var(--spacing-sidebar-expanded)",
         "3xl": "var(--spacing-3xl)",
         lg: "var(--spacing-lg)",
         md: "var(--spacing-md)",
@@ -356,5 +389,8 @@ module.exports = {
             primary: "hsl(var(--text-success-primary))",
             subtle: "hsl(var(--text-success-subtle))"
         }
+    },
+    zIndex: {
+        5: 5
     }
 };

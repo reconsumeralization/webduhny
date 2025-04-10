@@ -13,7 +13,10 @@ import {
     ElasticsearchClient
 } from "@webiny/project-utils/testing/elasticsearch/createClient";
 
+import { timerFactory } from "@webiny/handler-aws";
+
 describe("create indexes task runner", () => {
+    const timer = timerFactory();
     let elasticsearchClient: ElasticsearchClient;
 
     beforeEach(async () => {
@@ -36,7 +39,8 @@ describe("create indexes task runner", () => {
             },
             isAborted: () => {
                 return false;
-            }
+            },
+            timer
         });
         const indexManager = createIndexManagerMock();
         const runner = new CreateIndexesTaskRunner(manager, indexManager);
@@ -79,7 +83,8 @@ describe("create indexes task runner", () => {
             },
             isAborted: () => {
                 return false;
-            }
+            },
+            timer
         });
         const indexManager = createIndexManagerMock({
             client: elasticsearchClient

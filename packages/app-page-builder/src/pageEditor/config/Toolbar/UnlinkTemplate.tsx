@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { css } from "emotion";
 import { IconButton, ButtonPrimary } from "@webiny/ui/Button";
 import { Dialog, DialogCancel, DialogTitle, DialogActions, DialogContent } from "@webiny/ui/Dialog";
-import { ReactComponent as LockIcon } from "@material-design-icons/svg/outlined/lock.svg";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
 import { useTemplateMode } from "~/pageEditor/hooks/useTemplateMode";
 import { usePage } from "~/pageEditor/hooks/usePage";
 import { PageEditorConfig } from "~/pageEditor/editorConfig/PageEditorConfig";

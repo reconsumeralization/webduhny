@@ -1,46 +1,58 @@
 import * as React from "react";
-import Block from "./Block";
-import { Typography } from "@webiny/ui/Typography";
-import styled from "@emotion/styled";
+import { cn, Heading, Text } from "@webiny/admin-ui";
+import { SimpleFormContent, SimpleFormHeader } from "@webiny/app-admin/components/SimpleForm";
 import { FbFormModel } from "~/types";
 
 interface FormSubmissionsOverviewProps {
     form: FbFormModel;
 }
 
-const StatBox = styled("div")({
-    width: "33.33%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    color: "var(--mdc-theme-on-surface)"
-});
+const ContentWrapper = ({
+    children,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div className={cn("wby-flex wby-items-center wby-justify-center", className)} {...props}>
+            {children}
+        </div>
+    );
+};
 
-const ContentWrapper = styled("div")({
-    flexDirection: "row",
-    display: "flex",
-    width: "100%",
-    boxSizing: "border-box"
-});
+const StatBox = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div
+            className={cn(
+                "wby-flex wby-items-center wby-justify-center wby-flex-col wby-w-1/3",
+                className
+            )}
+            {...props}
+        >
+            {children}
+        </div>
+    );
+};
 
 export const FormSubmissionsOverview = ({ form }: FormSubmissionsOverviewProps) => {
     return (
-        <Block title="Overview">
-            <ContentWrapper>
-                <StatBox>
-                    <Typography use="headline2">{form.overallStats.submissions}</Typography>
-                    <Typography use="overline">Submissions</Typography>
-                </StatBox>
-                <StatBox>
-                    <Typography use="headline2">{form.overallStats.views}</Typography>
-                    <Typography use="overline">Views</Typography>
-                </StatBox>
-                <StatBox>
-                    <Typography use="headline2">{form.overallStats.conversionRate}%</Typography>
-                    <Typography use="overline">Conversion Rate</Typography>
-                </StatBox>
-            </ContentWrapper>
-        </Block>
+        <>
+            <SimpleFormHeader title={"Overview"} />
+            <SimpleFormContent>
+                <ContentWrapper>
+                    <StatBox>
+                        <Heading level={2}>{form.overallStats.submissions}</Heading>
+                        <Text>Submissions</Text>
+                    </StatBox>
+                    <StatBox>
+                        <Heading level={2}>{form.overallStats.views}</Heading>
+                        <Text>Views</Text>
+                    </StatBox>
+                    <StatBox>
+                        <Heading level={2}>{form.overallStats.conversionRate}%</Heading>
+                        <Text>Conversion Rate</Text>
+                    </StatBox>
+                </ContentWrapper>
+            </SimpleFormContent>
+        </>
     );
 };

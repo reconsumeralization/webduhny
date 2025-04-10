@@ -1,7 +1,7 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as NotificationsIcon } from "@material-design-icons/svg/outlined/notifications.svg";
-import { ReactComponent as CalendarIcon } from "@material-design-icons/svg/outlined/calendar_month.svg";
+import { ReactComponent as NotificationsIcon } from "@webiny/icons/notifications.svg";
+import { ReactComponent as CalendarIcon } from "@webiny/icons/calendar_month.svg";
 
 import { InputPrimitive } from "./InputPrimitive";
 import { Icon } from "~/Icon";

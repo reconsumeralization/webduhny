@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Accordion, type AccordionItemProps as BaseAccordionItemProps } from "./Accordion";
 
-import { ReactComponent as WarningIcon } from "@material-design-icons/svg/outlined/insert_chart.svg";
-import { ReactComponent as ArrowUp } from "@material-design-icons/svg/outlined/arrow_upward.svg";
-import { ReactComponent as ArrowDown } from "@material-design-icons/svg/outlined/arrow_downward.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { ReactComponent as TrashIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as WarningIcon } from "@webiny/icons/insert_chart.svg";
+import { ReactComponent as ArrowUp } from "@webiny/icons/arrow_upward.svg";
+import { ReactComponent as ArrowDown } from "@webiny/icons/arrow_downward.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as TrashIcon } from "@webiny/icons/delete.svg";
+import { Button } from "~/Button";
 
 const meta: Meta<typeof Accordion> = {
     title: "Components/Accordion",
     component: Accordion,
     tags: ["autodocs"],
-    argTypes: {}
+    argTypes: {},
+    decorators: [
+        Story => (
+            <div className="wby-w-[750px] wby-p-[50px] wby-min-h-[500px] wby-bg-[#f6f7f8]">
+                <Story />
+            </div>
+        )
+    ],
+    render: args => {
+        return <Accordion {...args} />;
+    }
 };
 
 export default meta;
@@ -25,11 +36,7 @@ interface AccordionItemProps extends Omit<BaseAccordionItemProps, "value" | "tit
 
 const AccordionItem = (props: AccordionItemProps) => {
     return (
-        <Accordion.Item
-            value={`Accordion item ${props.index}`}
-            title={`Accordion item ${props.index}`}
-            {...props}
-        >
+        <Accordion.Item title={`Accordion item ${props.index}`} {...props}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit sem, pretium sit amet
             convallis nec, consequat non nulla. Nunc sit amet sagittis tellus. Etiam venenatis, odio
             sed consectetur consectetur, quam quam blandit ante, semper maximus lorem est vel dolor.
@@ -39,13 +46,6 @@ const AccordionItem = (props: AccordionItemProps) => {
 };
 
 export const Default: Story = {
-    decorators: [
-        Story => (
-            <div className="wby-w-[750px] wby-p-[50px] wby-min-h-[500px] wby-bg-[#f6f7f8]">
-                <Story />
-            </div>
-        )
-    ],
     args: {
         children: (
             <>
@@ -159,10 +159,22 @@ export const WithHandleIcon: Story = {
     }
 };
 
-export const WithMultipleOpenedItems: Story = {
+export const WithNotInteractiveItem: Story = {
     ...Default,
     args: {
-        type: "multiple",
+        children: (
+            <>
+                <AccordionItem index={1} description="Not interactive item." interactive={false} />
+                <AccordionItem index={2} />
+                <AccordionItem index={3} />
+            </>
+        )
+    }
+};
+
+export const WithDefaultOpenedItem: Story = {
+    ...Default,
+    args: {
         children: (
             <>
                 <AccordionItem
@@ -172,9 +184,80 @@ export const WithMultipleOpenedItems: Story = {
                 <AccordionItem
                     index={2}
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    defaultOpen={true}
                 />
             </>
         )
+    }
+};
+
+export const WithDisabledItem: Story = {
+    ...Default,
+    args: {
+        children: (
+            <>
+                <AccordionItem
+                    index={1}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                />
+                <AccordionItem
+                    index={2}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    disabled={true}
+                />
+                <AccordionItem
+                    index={3}
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    defaultOpen={true}
+                    disabled={true}
+                />
+            </>
+        )
+    }
+};
+
+export const WithControlledOpenedItem: Story = {
+    ...Default,
+    render: args => {
+        const [openFirstItem, setOpenFirstItem] = useState<boolean>();
+        const [openSecondItem, setOpenSecondItem] = useState<boolean>();
+        const [openThirdItem, setOpenThirdItem] = useState<boolean>();
+
+        return (
+            <>
+                <Accordion {...args}>
+                    <AccordionItem
+                        index={1}
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        defaultOpen={openFirstItem}
+                    />
+                    <AccordionItem
+                        index={2}
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        defaultOpen={openSecondItem}
+                    />
+                    <AccordionItem
+                        index={3}
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        defaultOpen={openThirdItem}
+                    />
+                </Accordion>
+                <div className={"wby-flex wby-justify-center wby-mt-lg wby-gap-md"}>
+                    <Button
+                        onClick={() => setOpenFirstItem(!openFirstItem)}
+                        text={"Trigger First Item"}
+                    />
+                    <Button
+                        onClick={() => setOpenSecondItem(!openSecondItem)}
+                        text={"Trigger Second Item"}
+                    />
+                    <Button
+                        onClick={() => setOpenThirdItem(!openThirdItem)}
+                        text={"Trigger Third Item"}
+                    />
+                </div>
+            </>
+        );
     }
 };
 

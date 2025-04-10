@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { Button, Icon, OverlayLoader, Tabs } from "@webiny/admin-ui";
 import { IconTypeProvider } from "~/components/IconPicker/config/IconType";
 import { IconPickerTabRenderer } from "~/components/IconPicker/IconPickerTab";

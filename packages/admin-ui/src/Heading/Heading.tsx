@@ -14,7 +14,7 @@ const TAG_MAP: Record<HeadingLevels, HeadingTags> = {
     6: "h6"
 };
 
-const headingVariants = cva("font-sans", {
+const headingVariants = cva("wby-font-sans", {
     variants: {
         level: {
             1: "wby-text-h1",
@@ -34,17 +34,20 @@ interface HeadingProps
     extends React.HTMLAttributes<HTMLHeadingElement>,
         VariantProps<typeof headingVariants> {
     as?: HeadingTags;
-    text: React.ReactNode;
 }
 
-const HeadingBase = ({ level, text, className, as }: HeadingProps) => {
+const HeadingBase = ({ children, level, className, as, ...props }: HeadingProps) => {
     // Ensure `level` is a valid number, or fallback to a default value 1
     const validatedLevel = level && level in TAG_MAP ? level : 1;
 
     // Choose the tag: prefer `as`, otherwise use `TAG_MAP[validatedLevel]`
     const Tag = as || TAG_MAP[validatedLevel];
 
-    return <Tag className={cn(headingVariants({ level }), className)}>{text}</Tag>;
+    return (
+        <Tag {...props} className={cn(headingVariants({ level }), className)}>
+            {children}
+        </Tag>
+    );
 };
 
 const Heading = makeDecoratable("Heading", HeadingBase);

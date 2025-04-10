@@ -1,27 +1,58 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { cn, makeDecoratable } from "~/utils";
-import { DropdownMenuSubRoot } from "~/DropdownMenu/components/DropdownMenuSubRoot";
-import { DropdownMenuSubTrigger } from "~/DropdownMenu/components/DropdownMenuSubTrigger";
-import { DropdownMenuPortal } from "~/DropdownMenu/components/DropdownMenuPortal";
-import { DropdownMenuSubContent } from "~/DropdownMenu/components/DropdownMenuSubContent";
+import { cn, cva, makeDecoratable } from "~/utils";
+import { DropdownMenuSubRoot } from "./DropdownMenuSubRoot";
+import { DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
+import { DropdownMenuPortal } from "./DropdownMenuPortal";
+import { DropdownMenuSubContent } from "./DropdownMenuSubContent";
+import { DropdownMenuItemIcon, type DropdownMenuItemIconProps } from "./DropdownMenuItemIcon";
+import { Link, LinkProps, To } from "@webiny/react-router";
 
-export interface DropdownMenuItemProps
-    extends Omit<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>, "content"> {
+interface DropdownMenuItemBaseProps {
     icon?: React.ReactNode;
-    content?: React.ReactNode;
+    readOnly?: boolean;
+    text?: React.ReactNode;
+    disabled?: boolean;
+    onClick?: React.MouseEventHandler;
 }
+
+type DropdownMenuItemButtonProps = (DropdownMenuItemBaseProps &
+    React.HTMLAttributes<HTMLDivElement>) & { to?: never };
+type DropdownMenuItemLinkProps = (DropdownMenuItemBaseProps & LinkProps) & { to: To };
+
+type DropdownMenuItemProps = DropdownMenuItemButtonProps | DropdownMenuItemLinkProps;
+
+const variants = cva(
+    [
+        "wby-group wby-relative wby-cursor-default wby-select-none wby-items-center wby-rounded-sm",
+        "wby-text-md wby-text-neutral-primary !wby-no-underline",
+        "wby-px-xs-plus wby-outline-none wby-transition-colors",
+        "[&_svg]:wby-fill-neutral-xstrong [&_svg]:wby-pointer-events-none [&_svg]:wby-size-md [&_svg]:wby-shrink-0",
+        "data-[disabled]:wby-pointer-events-none data-[disabled]:wby-text-neutral-disabled",
+        "[&_a]:!wby-no-underline [&_a]:!wby-text-neutral-primary"
+    ],
+    {
+        variants: {
+            readOnly: {
+                true: "wby-pointer-events-none"
+            }
+        },
+        defaultVariants: {
+            readOnly: false
+        }
+    }
+);
 
 const DropdownMenuItemBase = React.forwardRef<
     React.ElementRef<typeof DropdownMenuPrimitive.Item>,
     DropdownMenuItemProps
->(({ className, icon, content, children, ...props }, ref) => {
+>(({ className, icon, text, readOnly, disabled, onClick, children, ...linkProps }, ref) => {
     if (children) {
         return (
             <DropdownMenuSubRoot>
                 <DropdownMenuSubTrigger>
                     {icon}
-                    <span>{content}</span>
+                    <span>{text}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>{children}</DropdownMenuSubContent>
@@ -29,31 +60,50 @@ const DropdownMenuItemBase = React.forwardRef<
             </DropdownMenuSubRoot>
         );
     }
+    const sharedProps = {
+        className: cn(
+            "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm wby-transition-colors group-focus:wby-bg-neutral-dimmed",
+            {
+                "[&_svg]:!wby-fill-neutral-disabled": disabled
+            }
+        )
+    };
+
+    const content = linkProps.to ? (
+        <Link {...sharedProps} {...linkProps}>
+            {icon}
+            <span>{text}</span>
+        </Link>
+    ) : (
+        <div {...sharedProps} onClick={onClick}>
+            {icon}
+            <span>{text}</span>
+        </div>
+    );
 
     return (
         <DropdownMenuPrimitive.Item
+            disabled={disabled}
             ref={ref}
-            className={cn(
-                "wby-group wby-relative wby-cursor-default wby-select-none wby-items-center wby-rounded-sm wby-px-xs-plus wby-outline-none wby-transition-colors",
-                "[&_svg]:wby-fill-neutral-xstrong [&_svg]:wby-pointer-events-none [&_svg]:wby-size-md [&_svg]:wby-shrink-0",
-                "data-[disabled]:wby-pointer-events-none data-[disabled]:wby-text-neutral-disabled",
-                className
-            )}
-            {...props}
+            className={cn(variants({ readOnly }), className)}
         >
-            <div
-                className={cn(
-                    "wby-flex wby-px-sm wby-py-xs-plus wby-gap-sm-extra wby-items-center wby-text-md wby-rounded-sm group-focus:wby-bg-neutral-dimmed wby-transition-colors",
-                    { "[&_svg]:wby-fill-neutral-disabled": props.disabled }
-                )}
-            >
-                {icon}
-                <span>{content}</span>
-            </div>
+            {content}
         </DropdownMenuPrimitive.Item>
     );
 });
 
 DropdownMenuItemBase.displayName = DropdownMenuPrimitive.Item.displayName;
 
-export const DropdownMenuItem = makeDecoratable("DropdownMenuItem", DropdownMenuItemBase);
+const DecoratableDropdownMenuItem = makeDecoratable("DropdownMenuItem", DropdownMenuItemBase);
+
+const DropdownMenuItem = Object.assign(DecoratableDropdownMenuItem, {
+    Icon: DropdownMenuItemIcon
+});
+
+export {
+    DropdownMenuItem,
+    type DropdownMenuItemProps,
+    type DropdownMenuItemButtonProps,
+    type DropdownMenuItemLinkProps,
+    type DropdownMenuItemIconProps
+};

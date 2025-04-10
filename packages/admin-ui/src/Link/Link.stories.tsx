@@ -72,22 +72,13 @@ export const InheritedSize: Story = {
     name: "Link with inherited size",
     render: linkProps => {
         return (
-            <Text
-                text={
-                    <>
-                        <Text
-                            size="lg"
-                            text={
-                                <>
-                                    Size of this text is set to large, so,&nbsp;
-                                    <Link {...linkProps}>this link&apos;s</Link> size is also
-                                    automatically set to large.
-                                </>
-                            }
-                        />
-                    </>
-                }
-            />
+            <Text>
+                <Text size="lg">
+                    Size of this text is set to large, so,&nbsp;
+                    <Link {...linkProps}>this link&apos;s</Link> size is also automatically set to
+                    large.
+                </Text>
+            </Text>
         );
     },
     args: {
@@ -116,14 +107,10 @@ export const PrimaryNegative: Story = {
     ],
     render: args => {
         return (
-            <Text
-                text={
-                    <>
-                        Lorem <Link {...args}>ipsum dolor sit amet</Link>, consectetur adipiscing
-                        elit. Fusce tempus tortor eu sapien interdum rhoncus.
-                    </>
-                }
-            />
+            <Text>
+                Lorem <Link {...args}>ipsum dolor sit amet</Link>, consectetur adipiscing elit.
+                Fusce tempus tortor eu sapien interdum rhoncus.
+            </Text>
         );
     },
     args: {
@@ -142,14 +129,10 @@ export const SecondaryNegative: Story = {
     ],
     render: args => {
         return (
-            <Text
-                text={
-                    <>
-                        Lorem <Link {...args}>ipsum dolor sit amet</Link>, consectetur adipiscing
-                        elit. Fusce tempus tortor eu sapien interdum rhoncus.
-                    </>
-                }
-            />
+            <Text>
+                Lorem <Link {...args}>ipsum dolor sit amet</Link>, consectetur adipiscing elit.
+                Fusce tempus tortor eu sapien interdum rhoncus.
+            </Text>
         );
     },
     args: {

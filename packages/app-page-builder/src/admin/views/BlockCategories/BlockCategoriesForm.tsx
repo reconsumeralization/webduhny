@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo } from "react";
-import styled from "@emotion/styled";
+import { Button, Grid, Input, OverlayLoader, Textarea } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_chart.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import {
     SimpleForm,
@@ -29,22 +28,15 @@ import {
 } from "./graphql";
 import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
-import { Input } from "@webiny/ui/Input";
 import { PbBlockCategory } from "~/types";
 import pick from "lodash/pick";
 import get from "lodash/get";
 import set from "lodash/set";
 import isEmpty from "lodash/isEmpty";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
 import { usePagesPermissions } from "~/hooks/permissions";
 
 const t = i18n.ns("app-page-builder/admin/block-categories/form");
-
-const ButtonWrapper = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
 
 interface CategoriesFormProps {
     canCreate: boolean;
@@ -164,17 +156,18 @@ const CategoriesForm = ({ canCreate }: CategoriesFormProps) => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<TableIcon />}
                 title={t`Click on the left side list to display block category details {message}`({
                     message: canCreate ? "or create a..." : ""
                 })}
                 action={
                     canCreate ? (
-                        <ButtonDefault
+                        <Button
+                            text={t`New Category`}
+                            icon={<AddIcon />}
                             data-testid="new-record-button"
                             onClick={() => history.push("/page-builder/block-categories?new=true")}
-                        >
-                            <ButtonIcon icon={<AddIcon />} /> {t`New Block Category`}
-                        </ButtonDefault>
+                        />
                     ) : (
                         <></>
                     )
@@ -187,16 +180,16 @@ const CategoriesForm = ({ canCreate }: CategoriesFormProps) => {
         <Form data={data} onSubmit={onSubmit}>
             {({ data, form, Bind }) => (
                 <SimpleForm>
-                    {loading && <CircularProgress />}
+                    {loading && <OverlayLoader />}
                     <SimpleFormHeader title={data.name || t`New block category`} />
                     <SimpleFormContent>
                         <Grid>
-                            <Cell span={6}>
+                            <Grid.Column span={6}>
                                 <Bind name="name" validators={validation.create("required")}>
-                                    <Input label={t`Name`} />
+                                    <Input size={"lg"} label={t`Name`} />
                                 </Bind>
-                            </Cell>
-                            <Cell span={6}>
+                            </Grid.Column>
+                            <Grid.Column span={6}>
                                 <Bind
                                     name="slug"
                                     validators={[
@@ -204,10 +197,14 @@ const CategoriesForm = ({ canCreate }: CategoriesFormProps) => {
                                         blockCategorySlugValidator
                                     ]}
                                 >
-                                    <Input disabled={Boolean(data.createdOn)} label={t`Slug`} />
+                                    <Input
+                                        size={"lg"}
+                                        disabled={Boolean(data.createdOn)}
+                                        label={t`Slug`}
+                                    />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind
                                     name="icon"
                                     validators={validation.create("required")}
@@ -218,8 +215,8 @@ const CategoriesForm = ({ canCreate }: CategoriesFormProps) => {
                                         description={t`Icon that will be displayed in the page builder.`}
                                     />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind
                                     name="description"
                                     validators={[
@@ -227,25 +224,26 @@ const CategoriesForm = ({ canCreate }: CategoriesFormProps) => {
                                         blockCategoryDescriptionValidator
                                     ]}
                                 >
-                                    <Input label={t`Description`} />
+                                    <Textarea size={"lg"} label={t`Description`} />
                                 </Bind>
-                            </Cell>
+                            </Grid.Column>
                         </Grid>
                     </SimpleFormContent>
                     <SimpleFormFooter>
-                        <ButtonWrapper>
-                            <ButtonDefault
-                                onClick={() => history.push("/page-builder/block-categories")}
-                            >{t`Cancel`}</ButtonDefault>
-                            {canSave && (
-                                <ButtonPrimary
-                                    data-testid={"pb-block-categories-form-save-block-category-btn"}
-                                    onClick={ev => {
-                                        form.submit(ev);
-                                    }}
-                                >{t`Save block category`}</ButtonPrimary>
-                            )}
-                        </ButtonWrapper>
+                        <Button
+                            variant={"secondary"}
+                            text={t`Cancel`}
+                            onClick={() => history.push("/page-builder/block-categories")}
+                        />
+                        {canSave && (
+                            <Button
+                                text={t`Save`}
+                                data-testid={"pb-block-categories-form-save-block-category-btn"}
+                                onClick={ev => {
+                                    form.submit(ev);
+                                }}
+                            />
+                        )}
                     </SimpleFormFooter>
                 </SimpleForm>
             )}

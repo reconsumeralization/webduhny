@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as TouchIcon } from "@material-design-icons/svg/round/touch_app.svg";
+import { ReactComponent as TouchIcon } from "@webiny/icons/touch_app.svg";
 import { DisplayModeSelector } from "./TopBar/DisplayModeSelector";
 import { Breadcrumbs } from "./Content/Breadcrumbs";
 import { Background } from "./Content/Background";

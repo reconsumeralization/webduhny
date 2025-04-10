@@ -1,51 +1,9 @@
 import React, { useCallback } from "react";
-import styled from "@emotion/styled";
-import { IconButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
-import { Switch } from "@webiny/ui/Switch";
-import { ReactComponent as EditIcon } from "../../icons/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../icons/delete.svg";
+import { Heading, IconButton, Separator, Switch, Text } from "@webiny/admin-ui";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { useFormEditor } from "../../Context";
 import { FbFormModelField } from "~/types";
-
-const FieldContainer = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-});
-
-const Info = styled("div")({
-    display: "flex",
-    flexDirection: "column",
-    "> *": {
-        flex: "1 100%",
-        lineHeight: "150%"
-    }
-});
-
-const Actions = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "right",
-    "> *": {
-        flex: "1 100%"
-    },
-    ".switch-wrapper": {
-        display: "flex",
-        alignItems: "center",
-        color: "var(--mdc-theme-text-secondary-on-background)",
-        ".webiny-ui-switch": {
-            margin: "0 16px"
-        }
-    }
-});
-
-const StyledDivider = styled("div")({
-    width: 2,
-    margin: 5,
-    backgroundColor: "var(--mdc-theme-on-background)"
-});
 
 interface FieldProps {
     field: FbFormModelField;
@@ -81,21 +39,36 @@ const Field = (props: FieldProps) => {
     }, [isRequired, field]);
 
     return (
-        <FieldContainer>
-            <Info>
-                <Typography use={"subtitle1"}>{field.label}</Typography>
-                <Typography use={"caption"}>{fieldPlugin && fieldPlugin.field.label}</Typography>
-            </Info>
-            <Actions>
-                <div className="switch-wrapper">
-                    <Typography use={"body2"}>Required</Typography>
-                    <Switch value={isRequired} onChange={toggleRequiredValidator} />
+        <div className={"wby-flex wby-justify-between wby-align-center"}>
+            <div>
+                <Heading level={6}>{field.label}</Heading>
+                <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                    {fieldPlugin && fieldPlugin.field.label}
+                </Text>
+            </div>
+            <div className={"wby-flex wby-items-center wby-justify-end wby-gap-md"}>
+                <Switch
+                    label={"Required"}
+                    checked={isRequired}
+                    onChange={toggleRequiredValidator}
+                />
+                <Separator orientation={"vertical"} />
+                <div className={"wby-flex wby-items-center wby-justify-end wby-gap-sm"}>
+                    <IconButton
+                        icon={<EditIcon />}
+                        onClick={() => onEdit(field)}
+                        variant={"ghost"}
+                        size={"sm"}
+                    />
+                    <IconButton
+                        icon={<DeleteIcon />}
+                        onClick={() => onDelete(field)}
+                        variant={"ghost"}
+                        size={"sm"}
+                    />
                 </div>
-                <StyledDivider />
-                <IconButton icon={<EditIcon />} onClick={() => onEdit(field)} />
-                <IconButton icon={<DeleteIcon />} onClick={() => onDelete(field)} />
-            </Actions>
-        </FieldContainer>
+            </div>
+        </div>
     );
 };
 

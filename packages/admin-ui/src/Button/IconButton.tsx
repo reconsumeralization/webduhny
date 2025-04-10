@@ -2,9 +2,20 @@ import React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn, cva, type VariantProps, makeDecoratable } from "~/utils";
 
+const iconButtonWrapperVariants = cva("wby-inline-block", {
+    variants: {
+        disabled: {
+            true: "wby-cursor-not-allowed",
+            false: "wby-cursor-pointer"
+        }
+    }
+});
+
 const iconButtonVariants = cva(
     [
-        "wby-border-transparent wby-rounded wby-flex wby-items-center wby-justify-center wby-ring-offset-background wby-cursor-pointer wby-transition-colors [&_svg]:wby-pointer-events-none [&_svg]:wby-shrink-0",
+        "wby-border-transparent wby-rounded wby-flex wby-flex-shrink-0 wby-items-center wby-justify-center wby-ring-offset-background wby-transition-colors",
+        "[&_svg]:wby-pointer-events-none [&_svg]:wby-shrink-0",
+        "[&_img]:wby-pointer-events-none [&_img]:wby-shrink-0",
         "aria-disabled:wby-pointer-events-none",
         "focus-visible:wby-outline-none focus-visible:wby-border-accent-default"
     ],
@@ -47,12 +58,12 @@ const iconButtonVariants = cva(
                 ]
             },
             size: {
-                xxs: "wby-border-sm wby-rounded-xs wby-size-sm-extra [&_svg]:wby-size-md",
-                xs: "wby-border-sm wby-rounded-xs wby-size-md [&_svg]:wby-size-md",
+                xxs: "wby-border-sm wby-rounded-xs wby-size-sm-extra [&_svg]:wby-size-md [&_img]:wby-size-md",
+                xs: "wby-border-sm wby-rounded-xs wby-size-md [&_svg]:wby-size-md [&_img]:wby-size-md",
                 sm: "wby-border-sm wby-rounded-sm",
                 md: "wby-border-sm wby-rounded-md",
                 lg: "wby-border-sm wby-rounded-md",
-                xl: "wby-border-md wby-rounded-lg wby-p-[calc(theme(padding.md)-theme(borderWidth.md))] [&_svg]:wby-size-lg"
+                xl: "wby-border-md wby-rounded-lg wby-p-[calc(theme(padding.md)-theme(borderWidth.md))] [&_svg]:wby-size-lg [&_img]:wby-size-lg"
             },
             iconSize: {
                 default: "",
@@ -69,37 +80,37 @@ const iconButtonVariants = cva(
                 size: "sm",
                 iconSize: "default",
                 className:
-                    "wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&_svg]:wby-size-md"
+                    "wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&_svg]:wby-size-md [&_img]:wby-size-md"
             },
             {
                 size: "sm",
                 iconSize: "lg",
                 className:
-                    "wby-p-[calc(theme(padding.xxs)-theme(borderWidth.sm))] [&_svg]:wby-size-md-plus"
+                    "wby-p-[calc(theme(padding.xxs)-theme(borderWidth.sm))] [&_svg]:wby-size-md-plus [&_img]:wby-size-md-plus"
             },
             {
                 size: "md",
                 iconSize: "default",
                 className:
-                    "wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&_svg]:wby-size-md"
+                    "wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&_svg]:wby-size-md [&_img]:wby-size-md"
             },
             {
                 size: "md",
                 iconSize: "lg",
                 className:
-                    "wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&_svg]:wby-size-lg"
+                    "wby-p-[calc(theme(padding.xs)-theme(borderWidth.sm))] [&_svg]:wby-size-lg [&_img]:wby-size-lg"
             },
             {
                 size: "lg",
                 iconSize: "default",
                 className:
-                    "wby-p-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] [&_svg]:wby-size-md-plus"
+                    "wby-p-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] [&_svg]:wby-size-md-plus [&_img]:wby-size-md-plus"
             },
             {
                 size: "lg",
                 iconSize: "lg",
                 className:
-                    "wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&_svg]:wby-size-lg"
+                    "wby-p-[calc(theme(padding.sm)-theme(borderWidth.sm))] [&_svg]:wby-size-lg [&_img]:wby-size-lg"
             }
         ],
         defaultVariants: {
@@ -129,14 +140,16 @@ const DecoratableIconButton = ({
 }: IconButtonProps) => {
     const Comp = asChild ? Slot : "button";
     return (
-        <Comp
-            {...props}
-            className={cn(iconButtonVariants({ variant, size, iconSize }), className)}
-            disabled={disabled}
-            aria-disabled={disabled}
-        >
-            {icon}
-        </Comp>
+        <span className={cn(iconButtonWrapperVariants({ disabled }))}>
+            <Comp
+                {...props}
+                className={cn(iconButtonVariants({ variant, size, iconSize }), className)}
+                disabled={disabled}
+                aria-disabled={disabled}
+            >
+                {icon}
+            </Comp>
+        </span>
     );
 };
 

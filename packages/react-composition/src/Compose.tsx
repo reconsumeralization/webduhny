@@ -16,6 +16,9 @@ export const Compose = (props: ComposeProps) => {
     const targetFn = (props.function ?? props.component) as Decoratable;
 
     useEffect(() => {
+        if (!targetFn) {
+            console.warn("You must provide a function or a component to compose with!", props);
+        }
         if (typeof targetFn.original === "undefined") {
             console.warn(
                 `You must make your function "${
@@ -27,7 +30,11 @@ export const Compose = (props: ComposeProps) => {
         }
 
         const decorators = Array.isArray(props.with) ? props.with : [props.with];
-        return composeComponent(targetFn.original, decorators as Enumerable<ComposeWith>, scope);
+        return composeComponent(
+            targetFn.original,
+            decorators as Enumerable<ComposeWith>,
+            scope[scope.length - 1]
+        );
     }, [props.with]);
 
     return null;

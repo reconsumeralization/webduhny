@@ -45,19 +45,16 @@ export const FormSettingsModel = zod.object({
             renderer: "default"
         }),
     submitButtonLabel: zod.string().optional().default("").nullable(),
-    fullWidthSubmitButton: zod.boolean().optional().default(false),
-    successMessage: zod.object({}).passthrough().optional().nullable(),
+    fullWidthSubmitButton: zod.boolean().optional().default(false).nullable(),
+    successMessage: zod.array(zod.object({}).passthrough()).optional().nullable().default(null),
     termsOfServiceMessage: zod
         .object({
-            message: zod.object({}).optional().default({}),
+            message: zod.array(zod.object({}).passthrough()).optional().nullable().default(null),
             errorMessage: zod.string().optional().default("").nullable(),
             enabled: zod.boolean().optional().nullish().default(null)
         })
-        .default({
-            message: {},
-            errorMessage: "",
-            enabled: null
-        }),
+        .nullable()
+        .default(null),
     reCaptcha: zod
         .object({
             enabled: zod.boolean().optional().nullish().default(null),

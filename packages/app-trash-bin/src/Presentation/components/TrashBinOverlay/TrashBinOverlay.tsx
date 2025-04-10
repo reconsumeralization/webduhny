@@ -1,13 +1,12 @@
 import React from "react";
 import debounce from "lodash/debounce";
 import { OverlayLayout } from "@webiny/app-admin";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
+import { Scrollbar } from "@webiny/admin-ui";
 import { Title } from "~/Presentation/components/Title";
 import { SearchInput } from "~/Presentation/components/SearchInput";
 import { BulkActions } from "~/Presentation/components/BulkActions";
 import { Empty } from "~/Presentation/components/Empty";
 import { Table } from "~/Presentation/components/Table";
-import { SelectAll } from "~/Presentation/components/SelectAll";
 import { BottomInfoBar } from "~/Presentation/components/BottomInfoBar";
 import { useTrashBin } from "~/Presentation/hooks";
 
@@ -32,7 +31,6 @@ export const TrashBinOverlay = (props: TrashBinOverlayProps) => {
             barMiddle={<SearchInput />}
         >
             <BulkActions />
-            <SelectAll />
             <Scrollbar onScrollFrame={scrollFrame => onTableScroll({ scrollFrame })}>
                 {vm.isEmptyView ? <Empty /> : <Table />}
             </Scrollbar>

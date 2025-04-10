@@ -207,39 +207,40 @@ const inputVariants = cva(
     }
 );
 
-interface InputPrimitiveProps
-    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
-        VariantProps<typeof inputVariants> {
-    /**
-     * Icon to be displayed at the start of the input field.
-     */
-    startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
-
-    /**
-     * Icon to be displayed at the end of the input field.
-     */
-    endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
-
-    /**
-     * Maximum length of the input field.
-     */
-    maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
-
-    /**
-     * Reference to the input element.
-     */
-    inputRef?: React.Ref<HTMLInputElement>;
-
-    /**
-     * If true, it will pass the native `event` to the `onChange` callback
-     */
-    forwardEventOnChange?: boolean;
-
-    /**
-     * Callback function to be called when the Enter key is pressed.
-     */
-    onEnter?: () => void;
-}
+type InputPrimitiveProps<TValue = any> = Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "size" | "onChange"
+> &
+    VariantProps<typeof inputVariants> & {
+        /**
+         * Icon to be displayed at the start of the input field.
+         */
+        startIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+        /**
+         * Icon to be displayed at the end of the input field.
+         */
+        endIcon?: React.ReactElement<typeof BaseIcon> | React.ReactElement;
+        /**
+         * Maximum length of the input field.
+         */
+        maxLength?: React.InputHTMLAttributes<HTMLInputElement>["size"];
+        /**
+         * Reference to the input element.
+         */
+        inputRef?: React.Ref<HTMLInputElement>;
+        /**
+         * If true, it will pass the native `event` to the `onChange` callback
+         */
+        forwardEventOnChange?: boolean;
+        /**
+         * Callback function to be called when the Enter key is pressed.
+         */
+        onEnter?: () => void;
+        /**
+         * A callback that is executed each time a value is changed.
+         */
+        onChange?: (value: TValue) => void;
+    };
 
 const getIconPosition = (
     startIcon?: InputPrimitiveProps["startIcon"],
@@ -270,6 +271,7 @@ const DecoratableInputPrimitive = ({
     onKeyDown: originalOnKeyDown,
     size,
     startIcon,
+    value,
     variant,
     ...props
 }: InputPrimitiveProps) => {
@@ -311,13 +313,14 @@ const DecoratableInputPrimitive = ({
                 />
             )}
             <input
+                {...props}
                 ref={inputRef}
                 className={cn(inputVariants({ variant, size, iconPosition, invalid }))}
                 disabled={disabled}
                 size={maxLength}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
-                {...props}
+                value={value ?? ""}
             />
             {endIcon && (
                 <InputIcon disabled={disabled} icon={endIcon} inputSize={size} position={"end"} />

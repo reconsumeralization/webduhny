@@ -7,3 +7,7 @@ export * from "./createReactAppConfig";
 export * from "./createWebsiteApp";
 export * from "./react/plugins";
 export * from "./createWebsiteAppConfig";
+
+//
+
+export * from "./createBlueGreenApp";

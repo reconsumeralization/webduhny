@@ -17,27 +17,31 @@ type Story = StoryObj<typeof Text>;
 export const TextXl: Story = {
     args: {
         size: "xl",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+        children:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
 };
 
 export const TextLg: Story = {
     args: {
         size: "lg",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+        children:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
 };
 
 export const TextMd: Story = {
     args: {
         size: "md",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+        children:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
 };
 
 export const TextSm: Story = {
     args: {
         size: "sm",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+        children:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
 };

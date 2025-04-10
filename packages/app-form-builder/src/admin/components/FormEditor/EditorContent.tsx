@@ -1,82 +1,84 @@
 import React, { useCallback, useState } from "react";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import { SplitView, LeftPanel, RightPanel } from "@webiny/app-admin/components/SplitView";
-import { Typography } from "@webiny/ui/Typography";
-import { Tabs, Tab } from "@webiny/ui/Tabs";
-import { Icon } from "@webiny/ui/Icon";
 import { EditTab } from "./Tabs/EditTab";
 import { TriggersTab } from "./Tabs/TriggersTab";
 import { PreviewTab } from "./Tabs/PreviewTab";
 import { Fields } from "./Fields";
+import { Heading, Separator, Tabs, Text, TimeAgo } from "@webiny/admin-ui";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as PreviewIcon } from "@webiny/icons/fullscreen.svg";
+import { ReactComponent as TriggerIcon } from "@webiny/icons/share.svg";
+import { useFormEditor } from "~/admin/components/FormEditor/Context";
 
-import { ReactComponent as FormIcon } from "./icons/round-assignment-24px.svg";
-
-const ContentContainer = styled("div")({
-    paddingTop: 65
-});
-
-const LeftBarTitle = styled("div")({
-    borderBottom: "1px solid var(--mdc-theme-on-background)",
-    display: "flex",
-    alignItems: "center",
-    padding: 25,
-    color: "var(--mdc-theme-on-surface)"
-});
-
-const titleIcon = css({
-    height: 24,
-    marginRight: 15,
-    color: "var(--mdc-theme-primary)"
-});
-
-const LeftBarFieldList = styled("div")({
-    padding: 40,
-    overflow: "auto",
-    height: "calc(100vh - 250px)"
-});
-
-const formTabs = css({
-    "&.webiny-ui-tabs": {
-        ".webiny-ui-tabs__tab-bar": {
-            backgroundColor: "var(--mdc-theme-surface)"
-        }
-    }
-});
 const EditorContent = () => {
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState<string>("edit");
+    const { state } = useFormEditor();
 
     const onFieldDragStart = useCallback(() => {
-        setActiveTab(0);
+        setActiveTab("edit");
     }, []);
 
     return (
-        <ContentContainer>
-            <SplitView>
-                <LeftPanel span={4}>
-                    <LeftBarTitle>
-                        <Icon className={titleIcon} icon={<FormIcon />} />
-                        <Typography use={"headline6"}>Form Elements</Typography>
-                    </LeftBarTitle>
-                    <LeftBarFieldList>
-                        <Fields onFieldDragStart={onFieldDragStart} />
-                    </LeftBarFieldList>
-                </LeftPanel>
-                <RightPanel span={8}>
-                    <Tabs className={formTabs} value={activeTab} onActivate={setActiveTab}>
-                        <Tab label={"Edit"}>
-                            <EditTab />
-                        </Tab>
-                        <Tab label={"Preview"}>
-                            <PreviewTab />
-                        </Tab>
-                        <Tab label={"Triggers"}>
-                            <TriggersTab />
-                        </Tab>
-                    </Tabs>
-                </RightPanel>
-            </SplitView>
-        </ContentContainer>
+        <SplitView>
+            <LeftPanel span={4} className={"wby-bg-neutral-light"}>
+                <div className={"wby-px-lg wby-py-md"}>
+                    <Text
+                        as={"div"}
+                        className={"wby-uppercase wby-font-semibold wby-text-neutral-xstrong"}
+                    >
+                        {"Form elements"}
+                    </Text>
+                </div>
+                <Separator />
+                <div
+                    className={"wby-px-lg wby-py-md wby-h-[calc(100vh-120px)] wby-overflow-y-auto"}
+                >
+                    <Fields onFieldDragStart={onFieldDragStart} />
+                </div>
+            </LeftPanel>
+            <RightPanel span={8} className={"wby-bg-neutral-base"}>
+                {state.data && (
+                    <div className={"wby-px-xl wby-pt-lg wby-pb-md-extra"}>
+                        <Heading level={4}>{state.data.name}</Heading>
+                        <Text size={"sm"} className={"wby-text-neutral-muted"}>
+                            {`Created by ${state.data?.createdBy?.displayName}. Last modified: `}
+                            <TimeAgo datetime={state.data.savedOn} />.
+                        </Text>
+                    </div>
+                )}
+
+                <Tabs
+                    size={"md"}
+                    spacing={"xl"}
+                    separator={true}
+                    value={activeTab}
+                    onValueChange={setActiveTab}
+                    tabs={[
+                        <Tabs.Tab
+                            key={"edit"}
+                            value={"edit"}
+                            trigger={"Edit"}
+                            icon={<EditIcon />}
+                            content={<EditTab />}
+                        />,
+                        <Tabs.Tab
+                            key={"preview"}
+                            value={"preview"}
+                            trigger={"Preview"}
+                            icon={<PreviewIcon />}
+                            content={<PreviewTab />}
+                        />,
+                        <Tabs.Tab
+                            key={"triggers"}
+                            value={"triggers"}
+                            trigger={"Triggers"}
+                            icon={<TriggerIcon />}
+                            content={<TriggersTab />}
+                        />
+                    ]}
+                />
+            </RightPanel>
+        </SplitView>
     );
 };
 

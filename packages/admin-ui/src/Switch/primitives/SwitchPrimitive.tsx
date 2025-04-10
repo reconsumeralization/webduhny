@@ -3,7 +3,7 @@ import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
 import { Label } from "~/Label";
 import { useSwitch } from "./useSwitch";
-import { SwitchItemDto, SwitchItemFormatted } from "./domains";
+import { SwitchItemDto, SwitchItemFormatted } from "../domains";
 
 /**
  * Switch Renderer
@@ -23,11 +23,11 @@ const switchVariants = cva("wby-inline-flex wby-items-start wby-space-x-sm", {
 
 type SwitchPrimitiveProps = Omit<
     SwitchPrimitives.SwitchProps,
-    "defaultChecked" | "onCheckedChange"
+    "defaultChecked" | "onCheckedChange" | "onChange"
 > &
     VariantProps<typeof switchVariants> &
     SwitchItemDto & {
-        onCheckedChange: (checked: boolean) => void;
+        onChange?: (checked: boolean) => void;
     };
 
 type SwitchPrimitivVm = {
@@ -37,17 +37,19 @@ type SwitchPrimitivVm = {
 type SwitchRendererProps = Omit<SwitchPrimitiveProps, "onCheckedChange"> &
     NonNullable<SwitchPrimitivVm["item"]> & {
         changeChecked: (checked: boolean) => void;
+        description?: React.ReactNode;
     };
 
 const SwitchRenderer = ({
     id,
     label,
     changeChecked,
+    description,
     className,
     labelPosition,
     disabled,
     required,
-    ...props
+    checked
 }: SwitchRendererProps) => {
     return (
         <div className={cn(switchVariants({ labelPosition }), className)}>
@@ -56,12 +58,13 @@ const SwitchRenderer = ({
                 text={label}
                 disabled={disabled}
                 required={required}
+                hint={description}
                 weight={"light"}
                 className={"wby-text-md"}
             />
             <SwitchPrimitives.Root
-                {...props}
                 id={id}
+                checked={checked}
                 className={cn([
                     "wby-peer wby-inline-flex wby-h-md wby-w-[26px] wby-mt-xxs wby-shrink-0 wby-cursor-pointer wby-items-center wby-rounded-xxl wby-border-sm wby-transition-colors",
                     "wby-border-transparent data-[state=checked]:wby-bg-secondary-default data-[state=unchecked]:wby-bg-neutral-strong",
@@ -86,6 +89,7 @@ const SwitchRenderer = ({
  */
 const DecoratableSwitchPrimitive = (props: SwitchPrimitiveProps) => {
     const { vm, changeChecked } = useSwitch(props);
+
     if (!vm.item) {
         return null;
     }

@@ -1,7 +1,6 @@
 import React from "react";
-import { Typography } from "@webiny/ui/Typography";
+import { Text, Scrollbar } from "@webiny/admin-ui";
 import { i18n } from "@webiny/app/i18n";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { Link } from "@webiny/react-router";
 import { ShowDetails } from "../styledComponents";
 import { ListImportedPagesResponse } from "~/admin/graphql/pageImportExport.gql";
@@ -15,7 +14,7 @@ interface ImportPagesDetailsProps {
 
 const ImportPagesDetails = ({ loading, result }: ImportPagesDetailsProps) => {
     if (loading || !result) {
-        return <Typography use={"caption"}> {t`Loading details...`} </Typography>;
+        return <Text size={"sm"}>{t`Loading details...`}</Text>;
     }
 
     const { data: pages, error } = result.pageBuilder.listImportedPages;
@@ -36,21 +35,17 @@ const ImportPagesDetails = ({ loading, result }: ImportPagesDetailsProps) => {
                         height: 160
                     }}
                 >
-                    <ShowDetails.Label use={"body2"}>{t`Pages imported:`}</ShowDetails.Label>
+                    <ShowDetails.Label size={"sm"}>{t`Pages imported:`}</ShowDetails.Label>
                     <ShowDetails.List data-testid={"import-pages-dialog.show-detail-list"}>
                         {pages.map(page => {
                             return (
                                 <ShowDetails.ListItem key={page.id}>
-                                    <Typography use={"body2"}>
-                                        {`${page.title} (v${page.version})`}
-                                    </Typography>
+                                    <Text size={"sm"}>{`${page.title} (v${page.version})`}</Text>
                                     <Link
                                         to={`/page-builder/editor/${encodeURIComponent(page.id)}`}
                                         target={"_blank"}
                                     >
-                                        <ShowDetails.LinkText use={"body2"}>
-                                            {t`view`}
-                                        </ShowDetails.LinkText>
+                                        <Text size={"sm"}>{t`view`}</Text>
                                     </Link>
                                 </ShowDetails.ListItem>
                             );

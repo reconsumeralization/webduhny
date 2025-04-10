@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as FolderIcon } from "@material-design-icons/svg/filled/folder.svg";
+import { ReactComponent as FolderIcon } from "@webiny/icons/folder.svg";
 
 import FolderForm from "./FolderForm";
 import { PbMenuItemPlugin } from "../../../../types";

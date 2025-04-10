@@ -15,6 +15,7 @@ export interface Tenant {
     id: string;
     name: string;
     description: string;
+    image?: string;
     tags: string[];
     status: string;
     settings: TenantSettings;
@@ -67,6 +68,7 @@ export interface CreateTenantInput {
     id?: string;
     name: string;
     description: string;
+    image?: string;
     tags: string[];
     status?: string;
     settings?: TenantSettings;

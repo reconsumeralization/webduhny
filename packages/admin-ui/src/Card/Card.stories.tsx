@@ -1,6 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as MoreVertical } from "@material-design-icons/svg/filled/more_vert.svg";
+import { ReactComponent as MoreVertical } from "@webiny/icons/more_vert.svg";
 import { Card } from "./Card";
 import { Button, IconButton } from "~/Button";
 import { Icon } from "~/Icon";

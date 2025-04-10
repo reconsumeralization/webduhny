@@ -1,26 +1,39 @@
 import React from "react";
-import { MultiAutoComplete } from "@webiny/ui/AutoComplete";
+import { MultiAutoComplete } from "@webiny/admin-ui";
+import type { FolderLevelPermissionsTarget, FolderPermission } from "~/types";
 
 interface UsersTeamsMultiAutocompleteProps {
-    options: any;
-    value: any;
-    onChange: (value: any) => void;
+    options: FolderLevelPermissionsTarget[];
+    value: FolderPermission["target"][];
+    onChange: (value: FolderPermission["target"][]) => void;
 }
 
-export const UsersTeamsMultiAutocomplete = (props: UsersTeamsMultiAutocompleteProps) => {
+export const UsersTeamsMultiAutocomplete = ({
+    options = [],
+    onChange,
+    value = []
+}: UsersTeamsMultiAutocompleteProps) => {
     return (
         <>
             {/* A hack that ensures the autocomplete is not being auto-focused. */}
-            <input style={{ position: "fixed", left: 10000 }} type="text" />
+            <input type="text" style={{ opacity: 0, position: "absolute" }} />
             <MultiAutoComplete
                 label={"Add user or a team"}
-                renderMultipleSelection={null}
-                options={props.options}
-                valueProp={"target"}
-                unique={true}
-                onChange={props.onChange}
-                value={props.value || []}
+                selectedOptionRenderer={() => null}
+                options={options.map(option => {
+                    return {
+                        id: option.id,
+                        label: option.name,
+                        value: option.target
+                    };
+                })}
+                uniqueValues={true}
+                onValuesChange={values =>
+                    onChange && onChange(values as Array<`admin:${string}` | `team:${string}`>)
+                }
+                values={value || []}
                 displayResetAction={false}
+                size={"lg"}
             />
         </>
     );

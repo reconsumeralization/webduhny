@@ -26,10 +26,19 @@ const DecoratableRadioGroup = ({
     return (
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
-            <FormComponentDescription text={description} />
+            <FormComponentDescription
+                text={description}
+                disabled={disabled}
+                className={"wby-mb-xs-plus"}
+            />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={disabled}
+                className={"wby-mt-none wby-mb-xs-plus"}
+            />
             <RadioGroupPrimitive {...props} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentNote text={note} disabled={disabled} />
         </div>
     );
 };

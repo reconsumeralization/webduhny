@@ -1,3 +1,7 @@
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 
-export const AccordionRoot = AccordionPrimitive.Root;
+type AccordionRootProps = CollapsiblePrimitive.CollapsibleProps;
+
+const AccordionRoot = CollapsiblePrimitive.Root;
+
+export { AccordionRoot, type AccordionRootProps };

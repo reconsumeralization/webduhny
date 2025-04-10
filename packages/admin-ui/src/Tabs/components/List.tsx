@@ -19,7 +19,7 @@ const tabListVariants = cva("wby-w-full wby-inline-flex wby-items-center wby-jus
             xxl: "wby-px-xxl"
         },
         separator: {
-            true: "wby-border-solid wby-border-b-sm wby-border-neutral-muted"
+            true: "wby-border-solid wby-border-b-sm wby-border-neutral-dimmed"
         }
     },
     defaultVariants: {

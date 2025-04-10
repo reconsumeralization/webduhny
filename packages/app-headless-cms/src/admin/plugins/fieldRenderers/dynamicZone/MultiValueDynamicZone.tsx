@@ -2,10 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 import cloneDeep from "lodash/cloneDeep";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
-import { ReactComponent as CloneIcon } from "@material-design-icons/svg/outlined/library_add.svg";
-import { ReactComponent as ArrowUpIcon } from "@material-design-icons/svg/round/expand_less.svg";
-import { ReactComponent as ArrowDownIcon } from "@material-design-icons/svg/round/expand_more.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
+import { ReactComponent as CloneIcon } from "@webiny/icons/library_add.svg";
+import { ReactComponent as ArrowUpIcon } from "@webiny/icons/expand_less.svg";
+import { ReactComponent as ArrowDownIcon } from "@webiny/icons/expand_more.svg";
 import { AddTemplateButton, AddTemplateIcon } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";
 import { ParentFieldProvider, useModelField } from "~/admin/hooks";
@@ -226,17 +226,23 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
 
                             return (
                                 <ParentValueIndexProvider key={index} index={index}>
-                                    <TemplateValueForm
-                                        value={value}
-                                        contentModel={contentModel}
-                                        Bind={Bind}
-                                        isFirst={index === 0}
-                                        isLast={index === values.length - 1}
-                                        onMoveUp={() => bind.moveValueUp(index)}
-                                        onMoveDown={() => bind.moveValueDown(index)}
-                                        onDelete={onDelete}
-                                        onClone={value => cloneValue(value, index)}
-                                    />
+                                    <Bind>
+                                        {() => (
+                                            <Bind.ValidationContainer>
+                                                <TemplateValueForm
+                                                    value={value}
+                                                    contentModel={contentModel}
+                                                    Bind={Bind}
+                                                    isFirst={index === 0}
+                                                    isLast={index === values.length - 1}
+                                                    onMoveUp={() => bind.moveValueUp(index)}
+                                                    onMoveDown={() => bind.moveValueDown(index)}
+                                                    onDelete={onDelete}
+                                                    onClone={value => cloneValue(value, index)}
+                                                />
+                                            </Bind.ValidationContainer>
+                                        )}
+                                    </Bind>
                                 </ParentValueIndexProvider>
                             );
                         })}

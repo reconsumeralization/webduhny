@@ -9,6 +9,7 @@ const listUserFields = /* GraphQL */ `
         avatar
         gravatar
         createdOn
+        external
     }
 `;
 
@@ -20,6 +21,7 @@ const userFormFields = (params: { teams: boolean }) => {
             firstName
             lastName
             avatar
+            external
             groups {
                 id
                 slug

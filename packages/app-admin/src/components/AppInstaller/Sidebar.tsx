@@ -4,13 +4,8 @@ import styled from "@emotion/styled";
 import { Typography } from "@webiny/ui/Typography";
 import signInDivider from "./assets/sign-in-divider.svg";
 import { Installer } from "./useInstaller";
-import { Brand } from "~/base/ui/Brand";
 import { Tags } from "~/base/ui/Tags";
-
-const Logo = styled("div")({
-    padding: 15,
-    borderBottom: "1px solid var(--mdc-theme-background)"
-});
+import { Logo } from "~/base/ui/Logo";
 
 const List = styled("ul")({
     li: {
@@ -127,9 +122,7 @@ const Sidebar = ({ allInstallers, installer, showLogin }: SidebarProps) => {
 
     return (
         <Tags tags={{ location: "installer" }}>
-            <Logo>
-                <Brand />
-            </Logo>
+            <Logo />
             {installations.length > 0 && (
                 <Installations
                     title={"The following apps will be installed and configured:"}

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { css } from "emotion";
 import { Menu } from "@webiny/ui/Menu";
 import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as MoreVerticalIcon } from "@material-design-icons/svg/round/more_vert.svg";
+import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { TopBar } from "~/editor/config/TopBar/TopBar";
 import { useEditorConfig } from "~/editor/config";
 

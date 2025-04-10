@@ -7,7 +7,7 @@ import {
 } from "@webiny/admin-ui";
 import { DialogHeader as AdminUiDialogHeader } from "@webiny/admin-ui/Dialog/components/DialogHeader";
 import { DialogFooter as AdminUiDialogFooter } from "@webiny/admin-ui/Dialog/components/DialogFooter";
-import { DialogClose as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
+import { DialogClosePrimitive as AdminUiDialogClose } from "@webiny/admin-ui/Dialog/components/DialogClose";
 import { DialogBody } from "@webiny/admin-ui/Dialog/components/DialogBody";
 
 export interface DialogActionsProps {

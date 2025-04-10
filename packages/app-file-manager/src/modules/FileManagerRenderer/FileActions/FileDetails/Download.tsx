@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DownloadIcon } from "@material-design-icons/svg/outlined/download.svg";
+import { ReactComponent as DownloadIcon } from "@webiny/icons/file_download.svg";
 import { FileManagerViewConfig, useFile } from "~/index";
 
 const { FileDetails } = FileManagerViewConfig;
@@ -11,7 +11,7 @@ export const Download = () => {
         <a rel="noreferrer" target={"_blank"} href={`${file.src}?original`}>
             <FileDetails.Action.IconButton
                 label={"Download"}
-                icon={<DownloadIcon style={{ margin: "0 8px 0 0" }} />}
+                icon={<DownloadIcon />}
                 onAction={() => {
                     /* Do nothing. */
                 }}

@@ -2,15 +2,9 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
-    {
-      "path": "../react-composition"
-    },
-    {
-      "path": "../react-router"
-    },
-    {
-      "path": "../utils"
-    }
+    { "path": "../react-composition" },
+    { "path": "../react-router" },
+    { "path": "../utils" }
   ],
   "compilerOptions": {
     "rootDirs": ["./src", "./__tests__"],

@@ -22,7 +22,9 @@ interface LabelValueProps extends VariantProps<typeof labelValueVariants> {
 }
 
 const LabelValue = ({ value, weight, disabled }: LabelValueProps) => (
-    <Text text={value} size="sm" className={cn(labelValueVariants({ weight, disabled }))} />
+    <Text size="sm" className={cn(labelValueVariants({ weight, disabled }))}>
+        {value}
+    </Text>
 );
 
 export { LabelValue, type LabelValueProps };

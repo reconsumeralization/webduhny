@@ -8,7 +8,15 @@ const baseValidation = zod.object({
 
 export const createMenuCreateValidation = () => {
     return baseValidation.extend({
-        slug: zod.string().min(1).max(100)
+        slug: zod.string().min(1).max(100),
+        createdOn: zod.date().optional(),
+        createdBy: zod
+            .object({
+                id: zod.string(),
+                type: zod.string(),
+                displayName: zod.string().nullable()
+            })
+            .optional()
     });
 };
 

@@ -1,10 +1,6 @@
 import { PluginCollection, PluginsContainer } from "@webiny/plugins/types";
-import fastify, {
-    FastifyInstance,
-    FastifyServerOptions as ServerOptions,
-    preSerializationAsyncHookHandler
-} from "fastify";
-import { getWebinyVersionHeaders, middleware, MiddlewareCallable } from "@webiny/utils";
+import fastify, { FastifyInstance, FastifyServerOptions as ServerOptions } from "fastify";
+import { middleware, MiddlewareCallable } from "@webiny/utils";
 import {
     ContextRoutes,
     DefinedContextRoutes,
@@ -25,81 +21,25 @@ import { HandlerResultPlugin } from "./plugins/HandlerResultPlugin";
 import { HandlerErrorPlugin } from "./plugins/HandlerErrorPlugin";
 import { ModifyFastifyPlugin } from "~/plugins/ModifyFastifyPlugin";
 import { HandlerOnRequestPlugin } from "~/plugins/HandlerOnRequestPlugin";
-import { ResponseHeaders } from "~/ResponseHeaders";
+import { ResponseHeaders, StandardHeaders } from "~/ResponseHeaders";
 import { ModifyResponseHeadersPlugin } from "~/plugins/ModifyResponseHeadersPlugin";
-
-function createDefaultHeaders() {
-    return ResponseHeaders.create({
-        "content-type": "application/json; charset=utf-8",
-        "cache-control": "no-store",
-        "access-control-allow-origin": "*",
-        "access-control-allow-headers": "*",
-        "access-control-allow-methods": "OPTIONS,POST,GET,DELETE,PUT,PATCH",
-        ...getWebinyVersionHeaders()
-    });
-}
-
-const getDefaultOptionsHeaders = () => {
-    return ResponseHeaders.create({
-        "access-control-max-age": "86400",
-        "cache-control": "public, max-age=86400"
-    });
-};
-
-const getDefaultHeaders = (routes: DefinedContextRoutes): ResponseHeaders => {
-    const headers = createDefaultHeaders();
-
-    /**
-     * If we are accepting all headers, just output that one.
-     */
-    const keys = Object.keys(routes) as Uppercase<HTTPMethods>[];
-    const all = keys.every(key => routes[key].length > 0);
-    if (all) {
-        headers.set("access-control-allow-methods", "*");
-    } else {
-        const allowedMethods = keys
-            .filter(type => {
-                if (!routes[type] || !Array.isArray(routes[type])) {
-                    return false;
-                }
-                return routes[type].length > 0;
-            })
-            .sort()
-            .join(",");
-
-        headers.set("access-control-allow-methods", allowedMethods);
-    }
-
-    return headers;
-};
-
-interface CustomError extends Error {
-    code?: string;
-    data?: Record<string, any>;
-}
-
-const stringifyError = (error: CustomError) => {
-    const { name, message, code, stack, data } = error;
-    return JSON.stringify({
-        ...error,
-        constructorName: error.constructor?.name || "UnknownError",
-        name: name || "No error name",
-        message: message || "No error message",
-        code: code || "NO_CODE",
-        data,
-        stack: process.env.DEBUG === "true" ? stack : "Turn on the debug flag to see the stack."
-    });
-};
+import { SetDefaultHeaders } from "./PreHandler/SetDefaultHeaders";
+import { PreHandler } from "./PreHandler/PreHandler";
+import { stringifyError } from "./stringifyError";
+import { ProcessHandlerOnRequestPlugins } from "./PreHandler/ProcessHandlerOnRequestPlugins";
+import { ProcessContextPlugins } from "./PreHandler/ProcessContextPlugins";
+import { IfNotOptionsRequest } from "./PreHandler/IfNotOptionsRequest";
+import { ProcessBeforeHandlerPlugins } from "./PreHandler/ProcessBeforeHandlerPlugins";
+import { IfOptionsRequest } from "./PreHandler/IfOptionsRequest";
+import { SendEarlyOptionsResponse } from "./PreHandler/SendEarlyOptionsResponse";
 
 const modifyResponseHeaders = (app: FastifyInstance, request: Request, reply: Reply) => {
     const modifyHeaders = app.webiny.plugins.byType<ModifyResponseHeadersPlugin>(
         ModifyResponseHeadersPlugin.type
     );
-    /**
-     * We will use ts-expect-error to suppress the error, as we are sure that headers will be ok.
-     */
-    // @ts-expect-error
-    const headers = ResponseHeaders.create(reply.getHeaders());
+
+    const replyHeaders = reply.getHeaders() as StandardHeaders;
+    const headers = ResponseHeaders.create(replyHeaders);
 
     modifyHeaders.forEach(plugin => {
         plugin.modify(request, headers);
@@ -137,13 +77,13 @@ export const createHandler = (params: CreateHandlerParams) => {
     };
 
     const throwOnDefinedRoute = (
-        type: Uppercase<HTTPMethods> | "ALL",
+        type: HTTPMethods | "ALL",
         path: string,
         options?: RouteMethodOptions
     ): void => {
         if (type === "ALL") {
             const all = Object.keys(definedRoutes).find(k => {
-                const key = k.toUpperCase() as Uppercase<HTTPMethods>;
+                const key = k.toUpperCase() as HTTPMethods;
                 const routes = definedRoutes[key];
                 return routes.includes(path);
             });
@@ -179,7 +119,7 @@ export const createHandler = (params: CreateHandlerParams) => {
     };
 
     const addDefinedRoute = (input: HTTPMethods, path: string): void => {
-        const type = input.toUpperCase() as Uppercase<HTTPMethods>;
+        const type = input.toUpperCase() as HTTPMethods;
         if (!definedRoutes[type]) {
             return;
         } else if (definedRoutes[type].includes(path)) {
@@ -198,10 +138,10 @@ export const createHandler = (params: CreateHandlerParams) => {
     });
 
     /**
-     * We need to register routes in our system so we can output headers later on and dissallow overriding routes.
+     * We need to register routes in our system to output headers later on, and disallow route overriding.
      */
     app.addHook("onRoute", route => {
-        const method = route.method as Uppercase<HTTPMethods> | Uppercase<HTTPMethods>[];
+        const method = route.method as HTTPMethods | HTTPMethods[];
         if (Array.isArray(method)) {
             for (const m of method) {
                 addDefinedRoute(m, route.path);
@@ -306,124 +246,57 @@ export const createHandler = (params: CreateHandlerParams) => {
     app.decorate("webiny", context);
 
     /**
-     * On every request we add default headers, which can be changed later.
-     * Also, if it is an options request, we skip everything after this hook and output options headers.
+     * With this we ensure that an undefined request body is not parsed on OPTIONS requests,
+     * in case there's a `content-type` header set for whatever reason.
+     *
+     * @see https://fastify.dev/docs/latest/Reference/ContentTypeParser/#content-type-parser
      */
-    app.addHook("onRequest", async (request, reply) => {
-        const isOptionsRequest = request.method === "OPTIONS";
-        /**
-         * Our default headers are always set. Users can override them.
-         */
-        const defaultHeaders = getDefaultHeaders(definedRoutes);
+    app.addHook("onRequest", async request => {
+        if (request.method === "OPTIONS" && request.body === undefined) {
+            request.headers["content-type"] = undefined;
+        }
+    });
 
-        const initialHeaders = isOptionsRequest
-            ? defaultHeaders.merge(getDefaultOptionsHeaders())
-            : defaultHeaders;
+    /**
+     * At this point, request body is properly parsed, and we can execute Webiny business logic.
+     * - set default headers
+     * - process `HandlerOnRequestPlugin`
+     * - if OPTIONS request, exit early
+     * - process `ContextPlugin`
+     * - process `BeforeHandlerPlugin`
+     */
+    app.addHook("preHandler", async (request, reply) => {
+        app.webiny.request = request;
+        app.webiny.reply = reply;
 
-        /**
-         * We will use ts-expect-error to suppress the error, as we are sure that headers will be ok.
-         */
-
-        reply.headers(initialHeaders.getHeaders());
-        /**
-         * Users can define their own custom handlers for the onRequest event - so let's run them first.
-         */
-        const plugins = app.webiny.plugins.byType<HandlerOnRequestPlugin>(
+        const handlerOnRequestPlugins = app.webiny.plugins.byType<HandlerOnRequestPlugin>(
             HandlerOnRequestPlugin.type
         );
 
-        let name: string | undefined;
-        try {
-            for (const plugin of plugins) {
-                name = plugin.name;
-                const result = await plugin.exec(request, reply);
-                if (result === false) {
-                    return;
-                }
-            }
-        } catch (ex) {
-            console.error(
-                `Error while running the "HandlerOnRequestPlugin" ${
-                    name ? `(${name})` : ""
-                } plugin in the onRequest hook.`
-            );
-            console.error(stringifyError(ex));
-            throw ex;
-        }
-        /**
-         * When we receive the OPTIONS request, we end it before it goes any further as there is no need for anything to run after this - at least for our use cases.
-         *
-         * Users can prevent this by creating their own HandlerOnRequestPlugin and returning false as the result of the callable.
-         */
-        if (!isOptionsRequest) {
-            return;
-        }
+        const contextPlugins = app.webiny.plugins.byType<ContextPlugin>(ContextPlugin.type);
 
-        if (reply.sent) {
-            /**
-             * At this point throwing an exception will not do anything with the response. So just log it.
-             */
-            console.error(
-                JSON.stringify({
-                    message: `Output was already sent. Please check custom plugins of type "HandlerOnRequestPlugin".`,
-                    explanation:
-                        "This error can happen if the user plugin ended the reply, but did not return false as response."
-                })
-            );
-            return;
-        }
+        const beforeHandlerPlugins = app.webiny.plugins.byType<BeforeHandlerPlugin>(
+            BeforeHandlerPlugin.type
+        );
 
-        modifyResponseHeaders(app, request, reply);
+        const modifyHeadersPlugins = app.webiny.plugins.byType<ModifyResponseHeadersPlugin>(
+            ModifyResponseHeadersPlugin.type
+        );
 
-        reply.code(204).send("").hijack();
+        const preHandler = new PreHandler([
+            new SetDefaultHeaders(definedRoutes),
+            new ProcessHandlerOnRequestPlugins(handlerOnRequestPlugins),
+            new IfNotOptionsRequest([
+                new ProcessContextPlugins(app.webiny, contextPlugins),
+                new ProcessBeforeHandlerPlugins(app.webiny, beforeHandlerPlugins)
+            ]),
+            new IfOptionsRequest([new SendEarlyOptionsResponse(modifyHeadersPlugins)])
+        ]);
+
+        await preHandler.execute(request, reply);
     });
 
-    app.addHook("preParsing", async (request, reply) => {
-        app.webiny.request = request;
-        app.webiny.reply = reply;
-        const plugins = app.webiny.plugins.byType<ContextPlugin>(ContextPlugin.type);
-        let name: string | undefined;
-        try {
-            for (const plugin of plugins) {
-                name = plugin.name;
-                await plugin.apply(app.webiny);
-            }
-        } catch (ex) {
-            console.error(
-                `Error while running the "ContextPlugin" ${
-                    name ? `(${name})` : ""
-                } plugin in the preParsing hook.`
-            );
-            console.error(stringifyError(ex));
-            throw ex;
-        }
-    });
-    /**
-     *
-     */
-    app.addHook("preHandler", async () => {
-        const plugins = app.webiny.plugins.byType<BeforeHandlerPlugin>(BeforeHandlerPlugin.type);
-        let name: string | undefined;
-        try {
-            for (const plugin of plugins) {
-                name = plugin.name;
-                await plugin.apply(app.webiny);
-            }
-        } catch (ex) {
-            console.error(
-                `Error while running the "BeforeHandlerPlugin" ${
-                    name ? `(${name})` : ""
-                } plugin in the preHandler hook.`
-            );
-            console.error(stringifyError(ex));
-            throw ex;
-        }
-    });
-
-    /**
-     *
-     */
-    const preSerialization: preSerializationAsyncHookHandler<any> = async (_, __, payload) => {
+    app.addHook("preSerialization", async (_, __, payload) => {
         const plugins = app.webiny.plugins.byType<HandlerResultPlugin>(HandlerResultPlugin.type);
         let name: string | undefined;
         try {
@@ -441,11 +314,9 @@ export const createHandler = (params: CreateHandlerParams) => {
             throw ex;
         }
         return payload;
-    };
+    });
 
-    app.addHook("preSerialization", preSerialization);
-
-    app.setErrorHandler<WebinyError>(async (error, request, reply) => {
+    app.setErrorHandler<WebinyError>(async (error, _, reply) => {
         return reply
             .status(500)
             .headers({

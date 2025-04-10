@@ -3,7 +3,6 @@ import get from "lodash/get";
 import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
-import { CircularProgress } from "@webiny/ui/Progress";
 import {
     GET_CONTENT_MODEL,
     GetCmsModelQueryResponse,
@@ -12,6 +11,7 @@ import {
 import { useQuery } from "../../hooks";
 import { CmsModel } from "~/types";
 import { ModelProvider } from "~/admin/components/ModelProvider";
+import { LoadingContentModel } from "~/admin/components/ContentEntries/LoadingContentModel";
 
 const t = i18n.ns("app-headless-cms/admin/content-entries");
 
@@ -50,7 +50,7 @@ export const ContentEntriesContainer = ({ children }: ContentEntriesContainerPro
     );
 
     if (!contentModel || loading) {
-        return <CircularProgress label={t`Loading content model...`} />;
+        return <LoadingContentModel />;
     } else if (error) {
         showSnackbar(error.message);
         return null;

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Accordion as AdminUiAccordion } from "@webiny/admin-ui";
 import { withStaticProps } from "@webiny/admin-ui/utils";
 
@@ -27,9 +27,6 @@ export interface AccordionItemProps {
 
     open?: boolean;
 
-    /**
-     * @deprecated This prop no longer has any effect.
-     */
     interactive?: boolean;
 
     handle?: React.ReactNode;
@@ -45,9 +42,11 @@ export interface AccordionItemProps {
 }
 
 const AccordionItemBase = (props: AccordionItemProps) => {
-    const value = useMemo(() => {
-        return props.value || new Date().toISOString();
-    }, [props.value]);
+    const [open, setOpen] = useState<boolean>(props.open ?? false);
+
+    useEffect(() => {
+        setOpen(!!props.open);
+    }, [props.open]);
 
     const icon = useMemo(() => {
         return props.icon ? (
@@ -59,7 +58,13 @@ const AccordionItemBase = (props: AccordionItemProps) => {
     }, [props.icon]);
 
     return (
-        <AdminUiAccordion.Item {...props} value={value} icon={icon} title={props.title || ""}>
+        <AdminUiAccordion.Item
+            {...props}
+            open={open}
+            onOpenChange={open => setOpen(open)}
+            icon={icon}
+            title={props.title || ""}
+        >
             {props.children as React.ReactElement}
         </AdminUiAccordion.Item>
     );

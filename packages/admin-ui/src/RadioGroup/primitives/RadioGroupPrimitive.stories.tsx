@@ -13,9 +13,7 @@ const meta: Meta<typeof RadioGroupPrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return (
-            <RadioGroupPrimitive {...args} value={value} onValueChange={value => setValue(value)} />
-        );
+        return <RadioGroupPrimitive {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 
@@ -145,7 +143,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 1"}</div>
-                        <Text text={"Option description 1"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 1"}</Text>
                     </div>
                 )
             },
@@ -155,7 +153,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 2"}</div>
-                        <Text text={"Option description 2"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 2"}</Text>
                     </div>
                 )
             },
@@ -165,7 +163,7 @@ export const WithComplexOptions: Story = {
                 label: (
                     <div>
                         <div>{"Value 3"}</div>
-                        <Text text={"Option description 3"} size={"sm"} />
+                        <Text size={"sm"}>{"Option description 3"}</Text>
                     </div>
                 )
             }
@@ -199,7 +197,7 @@ export const WithExternalValueControl: Story = {
                     <RadioGroupPrimitive
                         {...args}
                         value={value}
-                        onValueChange={value => setValue(value)}
+                        onChange={value => setValue(value)}
                     />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>

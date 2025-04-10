@@ -13,7 +13,7 @@ import { I18NContent } from "@webiny/app-i18n-content";
 import { PageBuilder } from "@webiny/app-page-builder";
 import { FormBuilder } from "@webiny/app-form-builder";
 import { HeadlessCMS } from "@webiny/app-headless-cms";
-import { RMWC } from "@webiny/app-admin-rmwc";
+import { AdminUI } from "@webiny/app-admin-ui";
 import { FileManager } from "@webiny/app-file-manager/app";
 import { GraphQLPlayground } from "@webiny/app-graphql-playground";
 import { AccessManagement } from "@webiny/app-security-access-management";
@@ -28,11 +28,11 @@ import { AuditLogs } from "@webiny/app-audit-logs";
 import { LexicalEditorPlugin } from "@webiny/lexical-editor-pb-element";
 import { LexicalEditorActions } from "@webiny/lexical-editor-actions";
 import { Module as MailerSettings } from "@webiny/app-mailer";
-import { Folders } from "@webiny/app-aco";
 import { Websockets } from "@webiny/app-websockets";
 import { RecordLocking } from "@webiny/app-record-locking";
 import { TrashBinConfigs } from "@webiny/app-trash-bin";
 import { DynamicPages } from "@webiny/app-dynamic-pages/admin";
+import { AdvancedContentOrganisation } from "@webiny/app-aco";
 
 export interface AdminProps extends Omit<BaseAdminProps, "createApolloClient"> {
     createApolloClient?: BaseAdminProps["createApolloClient"];
@@ -47,12 +47,11 @@ const App = (props: AdminProps) => {
 
     return (
         <BaseAdmin createApolloClient={createApolloClient}>
-            <RMWC />
+            <AdminUI />
             <Tenancy />
             <Security />
             <AccessManagement />
             <AppInstaller />
-            <Folders />
             <FileManager />
             <GraphQLPlayground createApolloClient={createApolloClient} />
             <I18N />
@@ -71,6 +70,7 @@ const App = (props: AdminProps) => {
             <MailerSettings />
             <TrashBinConfigs />
             <DynamicPages />
+            <AdvancedContentOrganisation />
             {props.children}
         </BaseAdmin>
     );

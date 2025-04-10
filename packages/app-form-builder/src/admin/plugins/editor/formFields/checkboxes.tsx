@@ -1,6 +1,6 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ReactComponent as Icon } from "./icons/round-check_box-24px.svg";
+import { Grid } from "@webiny/admin-ui";
+import { ReactComponent as Icon } from "@webiny/icons/check_box.svg";
 import OptionsList from "./components/OptionsList";
 import { FbBuilderFieldPlugin } from "~/types";
 
@@ -29,11 +29,9 @@ const plugin: FbBuilderFieldPlugin = {
         },
         renderSettings({ form }) {
             return (
-                <Grid>
-                    <Cell span={12}>
-                        <OptionsList form={form} multiple otherOption />
-                    </Cell>
-                </Grid>
+                <Grid.Column span={12}>
+                    <OptionsList form={form} multiple otherOption />
+                </Grid.Column>
             );
         }
     }

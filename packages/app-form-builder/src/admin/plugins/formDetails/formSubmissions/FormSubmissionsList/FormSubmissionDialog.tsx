@@ -7,8 +7,8 @@ import { Tooltip } from "@webiny/ui/Tooltip";
 import { Dialog, DialogContent, DialogTitle, DialogCancel, DialogActions } from "@webiny/ui/Dialog";
 import { i18n } from "@webiny/app/i18n";
 import { useSnackbar } from "@webiny/app-admin";
-import { ReactComponent as ObjectIcon } from "@material-design-icons/svg/outlined/data_object.svg";
-import { ReactComponent as TableIcon } from "@material-design-icons/svg/outlined/table_rows.svg";
+import { ReactComponent as ObjectIcon } from "@webiny/icons/data_object.svg";
+import { ReactComponent as TableIcon } from "@webiny/icons/table_rows.svg";
 import { FbFormModelField, FbFormSubmissionData } from "~/types";
 
 const t = i18n.namespace("FormEditor.FormSubmissionDialog");

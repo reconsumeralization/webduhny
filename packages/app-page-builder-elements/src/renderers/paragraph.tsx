@@ -3,7 +3,6 @@ import { createRenderer } from "~/createRenderer";
 import { useRenderer } from "~/hooks/useRenderer";
 import { ElementInput } from "~/inputs/ElementInput";
 import { isJson } from "~/renderers/isJson";
-import { isHtml } from "~/renderers/isHtml";
 
 export const elementInputs = {
     text: ElementInput.create<string>({
@@ -26,7 +25,7 @@ export const ParagraphRenderer = createRenderer<unknown, typeof elementInputs>(
         const inputs = getInputValues<typeof elementInputs>();
         const content = inputs.text || "";
 
-        if (isJson(content) || !isHtml(content)) {
+        if (isJson(content)) {
             return null;
         }
 

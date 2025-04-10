@@ -1,6 +1,6 @@
 import React from "react";
 import mime from "mime";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { FileItem } from "@webiny/app-admin/types";
 import { FileManagerViewConfig, useFile, useFileDetails, useFileManagerApi } from "~/index";
 import { useDeleteFile } from "~/hooks/useDeleteFile";
@@ -34,7 +34,7 @@ export const DeleteImage = () => {
         <FileDetails.Action.IconButton
             label={isImage(file) ? "Delete image" : "Delete file"}
             onAction={openDialogDeleteFile}
-            icon={<DeleteIcon style={{ margin: "0 8px 0 0" }} />}
+            icon={<DeleteIcon />}
             data-testid={"fm-delete-file-button"}
         />
     );

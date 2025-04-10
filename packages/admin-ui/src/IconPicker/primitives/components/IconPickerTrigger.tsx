@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import { ReactComponent as ChevronDown } from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg";
+import { ReactComponent as ChevronDown } from "@webiny/icons/keyboard_arrow_down.svg";
 import { Icon as IconComponent } from "~/Icon";
 import { cn, cva, type VariantProps } from "~/utils";
 import { IconPickerIcon as IconPickerIconComponent } from "./IconPickerIcon";
-import { IconPickerIcon, IconFormatter } from "../../domains";
+import { IconPickerIcon, IconPickerIconFormatter } from "../../domains";
 
 const iconPickerTriggerVariants = cva("wby-flex wby-items-center", {
     variants: {
@@ -25,7 +25,7 @@ interface IconPickerTriggerProps extends VariantProps<typeof iconPickerTriggerVa
 const IconPickerTrigger = ({ value, size }: IconPickerTriggerProps) => {
     const icon = useMemo(() => {
         const icon = IconPickerIcon.createFromString(value);
-        return IconFormatter.formatFontAwesome(icon);
+        return IconPickerIconFormatter.formatFontAwesome(icon);
     }, [value]);
 
     return (

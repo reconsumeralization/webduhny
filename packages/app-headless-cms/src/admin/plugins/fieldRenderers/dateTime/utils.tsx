@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { Cell } from "@webiny/ui/Grid";
 import { IconButton } from "@webiny/ui/Button";
 import { CmsModelField } from "~/types";

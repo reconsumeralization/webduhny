@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Grid, GridCellProps } from "react-virtualized";
 import { Text } from "~/Text";
 import { cn } from "~/utils";
-import { IconPickerFontAwesome, IconFormatter } from "../../domains";
+import { IconPickerFontAwesome, IconPickerIconFormatter } from "../../domains";
 import { IconPickerIcon } from "./IconPickerIcon";
 
 const COLUMN_COUNT = 5;
@@ -43,7 +43,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                     ])}
                     onClick={() => {
                         if (props.onIconSelect) {
-                            props.onIconSelect(IconFormatter.formatStringValue(item));
+                            props.onIconSelect(IconPickerIconFormatter.formatStringValue(item));
                         }
                     }}
                 >
@@ -55,9 +55,10 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
                     <Text
                         as={"div"}
                         size={"sm"}
-                        text={item.name}
                         className={"wby-w-full wby-truncate wby-text-center wby-text-neutral-muted"}
-                    />
+                    >
+                        {item.name}
+                    </Text>
                 </div>
             );
         };
@@ -67,7 +68,7 @@ const IconPickerGrid = (props: IconPickerGridProps) => {
         <div>
             {props.iconsLength === 0 ? (
                 <div className={`wby-px-sm-extra wby-py-md wby-text-neutral-strong`}>
-                    <Text text={"No results found."} />
+                    <Text>{"No results found."}</Text>
                 </div>
             ) : (
                 <Grid

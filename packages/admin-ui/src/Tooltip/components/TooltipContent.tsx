@@ -35,6 +35,7 @@ type TooltipContentProps = TooltipPrimitive.TooltipContentProps &
 const TooltipContent = ({ className, variant, hiddenArrow, ...props }: TooltipContentProps) => (
     <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content
+            collisionPadding={8}
             sideOffset={4}
             className={cn(tooltipContentVariants({ variant, hiddenArrow }), className)}
             {...props}

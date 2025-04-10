@@ -1,6 +1,5 @@
 import React from "react";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { IconButton } from "@webiny/ui/Button";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 export interface ActionButtonProps {
     label: string;
@@ -12,13 +11,18 @@ export interface ActionButtonProps {
 
 export const ActionButton = ({ label, icon, onAction, disabled, ...props }: ActionButtonProps) => {
     return (
-        <Tooltip content={<span>{label}</span>} placement={"bottom"}>
-            <IconButton
-                icon={icon}
-                onClick={onAction}
-                disabled={disabled}
-                data-testid={props["data-testid"]}
-            />
-        </Tooltip>
+        <Tooltip
+            side={"bottom"}
+            content={label}
+            trigger={
+                <IconButton
+                    icon={icon}
+                    onClick={onAction}
+                    disabled={disabled}
+                    data-testid={props["data-testid"]}
+                    variant={"ghost"}
+                />
+            }
+        ></Tooltip>
     );
 };

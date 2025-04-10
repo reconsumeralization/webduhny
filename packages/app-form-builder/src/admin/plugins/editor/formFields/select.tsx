@@ -1,9 +1,8 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ReactComponent as Icon } from "./icons/dropdown-icon.svg";
+import { ReactComponent as Icon } from "@webiny/icons/list.svg";
 import OptionsList from "./components/OptionsList";
-import { Input } from "@webiny/ui/Input";
 import { FbBuilderFieldPlugin } from "~/types";
+import { Grid, Input } from "@webiny/admin-ui";
 
 const plugin: FbBuilderFieldPlugin = {
     type: "form-editor-field-type",
@@ -31,19 +30,20 @@ const plugin: FbBuilderFieldPlugin = {
             const { Bind } = form;
             // TODO: @ts-adrian: spread Bind komponente na donju komponentu
             return (
-                <Grid>
-                    <Cell span={12}>
+                <>
+                    <Grid.Column span={12}>
                         <Bind name={"placeholderText"}>
                             <Input
+                                size={"lg"}
                                 label={"Placeholder text"}
                                 description={"Placeholder text (optional)"}
                             />
                         </Bind>
-                    </Cell>
-                    <Cell span={12}>
+                    </Grid.Column>
+                    <Grid.Column span={12}>
                         <OptionsList form={form} />
-                    </Cell>
-                </Grid>
+                    </Grid.Column>
+                </>
             );
         }
     }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import classSet from "classnames";
 import { CellProps } from "@webiny/ui/Grid";
-import { cn } from "@webiny/admin-ui";
+import { cn, Separator } from "@webiny/admin-ui";
 import { css } from "emotion";
 import styled from "@emotion/styled";
 import {
@@ -16,7 +16,6 @@ const grid = css({
     "&.mdc-layout-grid": {
         padding: 0,
         margin: "-3px auto 0 auto",
-        backgroundColor: "var(--mdc-theme-background)",
         ">.mdc-layout-grid__inner": {
             gridGap: 0
         }
@@ -24,9 +23,8 @@ const grid = css({
 });
 
 const RightPanelWrapper = styled("div")({
-    backgroundColor: "var(--mdc-theme-background)",
     overflow: "auto",
-    height: "calc(100vh - 64px)"
+    height: "calc(100vh - 45px)"
 });
 
 export const leftPanel = css({
@@ -42,7 +40,7 @@ export const leftPanel = css({
     ">.mdc-deprecated-list": {
         display: "flex",
         flexDirection: "column",
-        maxHeight: "calc(100vh - 64px)",
+        maxHeight: "calc(100vh - 45px)",
         overflow: "auto"
     }
 });
@@ -57,6 +55,7 @@ const SplitView = ({ children, className, layoutId, ...props }: SplitViewProps) 
             direction="horizontal"
             id="splitView"
             autoSaveId={layoutId}
+            style={{ height: "auto" }}
             className={classSet(grid, className, "webiny-split-view")}
             {...props}
         >
@@ -81,12 +80,14 @@ const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
                 defaultSize={defaultSize}
                 minSize={10}
                 id="leftPanel"
-                className={cn(leftPanel, "webiny-split-view__right-panel", className)}
+                className={cn("webiny-split-view__right-panel", className)}
                 {...props}
             >
                 {children}
             </Panel>
-            <PanelResizeHandle />
+            <PanelResizeHandle>
+                <Separator variant={"subtle"} orientation={"vertical"} margin={"none"} />
+            </PanelResizeHandle>
         </>
     );
 };

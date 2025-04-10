@@ -1,10 +1,10 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSecurity } from "@webiny/app-security";
-import { ReactComponent as TenantIcon } from "~/assets/business_black_24dp.svg";
 import { SettingsDialog } from "./CurrentTenant/SettingsDialog";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
+import { Button } from "@webiny/admin-ui";
+import { makeDecoratable } from "@webiny/app-admin";
 
-export const CurrentTenant = () => {
+export const CurrentTenant = makeDecoratable("CurrentTenantWidget", () => {
     const { identity } = useSecurity();
     const [settingsShown, showSettings] = useState(false);
 
@@ -20,24 +20,29 @@ export const CurrentTenant = () => {
 
     if (currentTenantId === "root") {
         return (
-            <Fragment>
+            <>
                 <SettingsDialog open={settingsShown} onClose={closeDialog} />
-                <ButtonPrimary flat onClick={() => showSettings(true)}>
-                    <ButtonIcon icon={<TenantIcon />} />
-                    Root Tenant
-                </ButtonPrimary>
-            </Fragment>
+                <Button
+                    variant={"ghost"}
+                    size={"md"}
+                    text={"Root tenant"}
+                    onClick={() => showSettings(true)}
+                />
+            </>
         );
     }
 
     if (currentTenantId !== "root" && currentTenantId !== defaultTenantId) {
         return (
-            <ButtonDefault flat disabled style={{ color: "white" }}>
-                <ButtonIcon icon={<TenantIcon />} />
-                {currentTenant.name}
-            </ButtonDefault>
+            <Button
+                disabled
+                variant={"ghost"}
+                size={"md"}
+                text={currentTenant.name}
+                onClick={() => showSettings(true)}
+            />
         );
     }
 
     return null;
-};
+});

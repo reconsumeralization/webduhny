@@ -39,7 +39,7 @@ const separatorVariants = cva("wby-shrink-0", {
     defaultVariants: {
         orientation: "horizontal",
         variant: "dimmed",
-        margin: "md"
+        margin: "none"
     }
 });
 

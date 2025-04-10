@@ -4,8 +4,8 @@ import { CmsDynamicZoneTemplate } from "~/types";
 import { ButtonSecondary, IconButton } from "@webiny/ui/Button";
 import { TemplateDialog } from "./TemplateDialog";
 import { Typography } from "@webiny/ui/Typography";
-import { ReactComponent as InfoIcon } from "@material-design-icons/svg/outlined/info.svg";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add_circle_outline.svg";
+import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add_circle_outline.svg";
 import { Elevation } from "@webiny/ui/Elevation";
 
 const AddTemplateButtonContainer = styled(Elevation)`

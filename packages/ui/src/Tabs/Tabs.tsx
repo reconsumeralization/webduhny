@@ -113,6 +113,9 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
                 value={`${VALUE_PREFIX}${activeIndex}`}
                 onValueChange={onValueChange}
                 tabs={newTabs}
+                size={"md"}
+                separator={true}
+                spacing={"lg"}
             />
             <DeprecatedTabsContext.Provider value={context}>
                 {props.children}

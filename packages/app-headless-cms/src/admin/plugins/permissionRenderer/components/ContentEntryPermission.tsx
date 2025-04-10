@@ -99,9 +99,10 @@ export const ContentEntryPermission = ({
                             <Bind name={`${entity}RWD`}>
                                 <Select
                                     label={t`Primary Actions`}
+                                    placeholder={"Read-only"}
                                     disabled={disabled || disabledPrimaryActions}
                                 >
-                                    <option value={"r"}>{t`Read`}</option>
+                                    <option value={"r"}>{t`Read-only`}</option>
                                     {endpoints.includes("manage") ? (
                                         <option value={"rw"}>{t`Read, write`}</option>
                                     ) : (

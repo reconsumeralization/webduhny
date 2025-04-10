@@ -83,7 +83,7 @@ export const ImageRenderer = createRenderer<ImageRendererProps, typeof elementIn
         if (imageSrc) {
             const {
                 title = "",
-                width = "100%",
+                width,
                 height = "auto",
                 htmlTag = "auto"
             } = element.data.image || {};

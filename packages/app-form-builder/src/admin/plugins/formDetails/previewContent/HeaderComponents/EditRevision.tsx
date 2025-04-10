@@ -1,11 +1,10 @@
 import React from "react";
 import { useRouter } from "@webiny/react-router";
-import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { ReactComponent as EditIcon } from "../../../../icons/edit.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { useRevision } from "../../formRevisions/useRevision";
 import { usePermission } from "~/hooks/usePermission";
 import { FbRevisionModel } from "~/types";
+import { Button, Tooltip } from "@webiny/admin-ui";
 
 interface EditRevisionProps {
     revision: FbRevisionModel;
@@ -23,26 +22,38 @@ const EditRevision = ({ revision, form }: EditRevisionProps) => {
 
     if (revision.status === "draft") {
         return (
-            <Tooltip content={"Edit"} placement={"top"}>
-                <IconButton
-                    data-testid={"fb.form-preview.header.edit-revision"}
-                    icon={<EditIcon />}
-                    onClick={() =>
-                        history.push(`/form-builder/forms/${encodeURIComponent(revision.id)}`)
-                    }
-                />
-            </Tooltip>
+            <Tooltip
+                content={`Edit revision ${revision.version}`}
+                trigger={
+                    <Button
+                        variant={"ghost"}
+                        size={"sm"}
+                        data-testid={"fb.form-preview.header.edit-revision"}
+                        icon={<EditIcon />}
+                        text={"Edit"}
+                        onClick={() =>
+                            history.push(`/form-builder/forms/${encodeURIComponent(revision.id)}`)
+                        }
+                    />
+                }
+            />
         );
     }
 
     return (
-        <Tooltip content={"New draft based on this version..."} placement={"top"}>
-            <IconButton
-                data-testid={"fb.form-preview.header.create-revision"}
-                icon={<EditIcon />}
-                onClick={() => createRevision(revision.id)}
-            />
-        </Tooltip>
+        <Tooltip
+            content={`Create new revision from v${revision.version}`}
+            trigger={
+                <Button
+                    variant={"ghost"}
+                    size={"sm"}
+                    text={"New revision"}
+                    data-testid={"fb.form-preview.header.create-revision"}
+                    icon={<EditIcon />}
+                    onClick={() => createRevision(revision.id)}
+                />
+            }
+        />
     );
 };
 

@@ -1,9 +1,2 @@
-// OLD - Will probably be removed.
+// Import main styles
 @import "~@webiny/app-serverless-cms/styles.scss";
-
-// NEW
-// Base styles.
-@import "~@webiny/admin-ui/styles.scss";
-
-// The default theme. Learn more: https://webiny.link/admin-themes.
-@import "~@webiny/admin-ui/theme.scss";

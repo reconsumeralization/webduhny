@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 
 import { AcoConfig } from "~/config";
 import { useDeleteDialog } from "~/dialogs";
@@ -26,6 +26,7 @@ export const DeleteFolder = () => {
             label={"Delete"}
             onAction={onAction}
             data-testid={"aco.actions.folder.delete"}
+            className={"!wby-text-destructive-primary [&_svg]:wby-fill-destructive"}
         />
     );
 };

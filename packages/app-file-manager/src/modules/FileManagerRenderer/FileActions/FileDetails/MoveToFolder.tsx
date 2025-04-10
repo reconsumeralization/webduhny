@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as MoveFileIcon } from "@material-design-icons/svg/outlined/drive_file_move.svg";
+import { ReactComponent as MoveFileIcon } from "@webiny/icons/drive_file_move.svg";
 import { FileManagerViewConfig, useFile, useMoveFileToFolder } from "~/index";
 
 const { FileDetails } = FileManagerViewConfig;
@@ -10,8 +10,8 @@ export const MoveToFolder = () => {
 
     return (
         <FileDetails.Action.IconButton
-            label={"Move To Folder"}
-            icon={<MoveFileIcon style={{ margin: "0 8px 0 0" }} />}
+            label={"Move to Folder"}
+            icon={<MoveFileIcon />}
             onAction={moveToFolder}
         />
     );

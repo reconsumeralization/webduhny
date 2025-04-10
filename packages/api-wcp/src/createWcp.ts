@@ -1,14 +1,22 @@
-import { getWcpProjectLicense, getWcpAppUrl, getWcpApiUrl, WCP_FEATURE_LABEL } from "@webiny/wcp";
+import {
+    getWcpProjectLicense,
+    getWcpAppUrl,
+    getWcpApiUrl,
+    getWcpProjectEnvironment,
+    WCP_FEATURE_LABEL
+} from "@webiny/wcp";
 import WError from "@webiny/error";
+import type { DecryptedWcpProjectLicense } from "@webiny/wcp/types";
+import { License, NullLicense } from "@webiny/wcp";
 import { WcpContextObject, CachedWcpProjectLicense } from "./types";
-import { getWcpProjectLicenseCacheKey, getWcpProjectEnvironment, wcpFetch } from "./utils";
-import { DecryptedWcpProjectLicense } from "@webiny/wcp/types";
+import { getWcpProjectLicenseCacheKey, wcpFetch } from "./utils";
 
 const wcpProjectEnvironment = getWcpProjectEnvironment();
 
 const cachedWcpProjectLicense: CachedWcpProjectLicense = {
     cacheKey: null,
-    license: null
+    project: null,
+    license: new NullLicense()
 };
 
 export interface WcpFetchParams {
@@ -24,18 +32,29 @@ export interface CreateWcpParams {
 
 export const createWcp = async (params: CreateWcpParams = {}): Promise<WcpContextObject> => {
     if (params.testProjectLicense) {
-        cachedWcpProjectLicense.license = params.testProjectLicense;
+        cachedWcpProjectLicense.license = License.fromLicenseDto(params.testProjectLicense);
     } else if (wcpProjectEnvironment) {
         const currentCacheKey = getWcpProjectLicenseCacheKey();
         if (cachedWcpProjectLicense.cacheKey !== currentCacheKey) {
             cachedWcpProjectLicense.cacheKey = currentCacheKey;
-            // Will pull the project license from the WCP API.
-            cachedWcpProjectLicense.license = await getWcpProjectLicense({
+            // Pull the project license from the WCP API.
+            const decryptedLicenseDto = await getWcpProjectLicense({
                 orgId: wcpProjectEnvironment.org.id,
                 projectId: wcpProjectEnvironment.project.id,
                 projectEnvironmentApiKey: wcpProjectEnvironment.apiKey
             });
+
+            if (decryptedLicenseDto) {
+                cachedWcpProjectLicense.project = {
+                    orgId: decryptedLicenseDto.orgId,
+                    projectId: decryptedLicenseDto.projectId,
+                    package: decryptedLicenseDto.package
+                };
+            }
+
+            cachedWcpProjectLicense.license = License.fromLicenseDto(decryptedLicenseDto);
         }
+    } else if (process.env.WCP_PROJECT_LICENSE) {
     }
 
     // Returns the dedicated Webiny Control Panel (WCP) REST API URL for given org and project.
@@ -97,6 +116,13 @@ export const createWcp = async (params: CreateWcpParams = {}): Promise<WcpContex
     };
 
     return {
+        getRawLicense: () => {
+            return cachedWcpProjectLicense.license.getRawLicense();
+        },
+        getProject: () => {
+            return cachedWcpProjectLicense.project;
+        },
+
         getProjectEnvironment: () => {
             return wcpProjectEnvironment;
         },
@@ -106,57 +132,39 @@ export const createWcp = async (params: CreateWcpParams = {}): Promise<WcpContex
         },
 
         canUseFeature(wcpFeatureId: keyof typeof WCP_FEATURE_LABEL) {
-            const projectLicense = this.getProjectLicense();
-
-            // For backwards compatibility, we need to check the legacy ENV variable `WEBINY_MULTI_TENANCY`.
-            if (!projectLicense && wcpFeatureId === "multiTenancy") {
-                return process.env.WEBINY_MULTI_TENANCY === "true";
-            }
-            return projectLicense?.package?.features?.[wcpFeatureId]?.enabled === true;
+            return cachedWcpProjectLicense.license.canUseFeature(wcpFeatureId);
         },
 
         canUseAacl() {
-            return this.canUseFeature("advancedAccessControlLayer");
+            return cachedWcpProjectLicense.license.canUseAacl();
         },
 
         canUseTeams() {
-            if (!this.canUseAacl()) {
-                return false;
-            }
-
-            const license = this.getProjectLicense();
-            return license!.package.features.advancedAccessControlLayer.options.teams;
+            return cachedWcpProjectLicense.license.canUseTeams();
         },
 
         canUseFolderLevelPermissions() {
-            if (!this.canUseAacl()) {
-                return false;
-            }
-
-            const license = this.getProjectLicense();
-            return license!.package.features.advancedAccessControlLayer.options
-                .folderLevelPermissions;
+            return cachedWcpProjectLicense.license.canUseFolderLevelPermissions();
         },
 
         canUsePrivateFiles() {
-            if (!this.canUseAacl()) {
-                return false;
-            }
-
-            const license = this.getProjectLicense();
-            return license!.package.features.advancedAccessControlLayer.options.privateFiles;
+            return cachedWcpProjectLicense.license.canUsePrivateFiles();
         },
 
         canUseAuditLogs() {
-            return this.canUseFeature("auditLogs");
+            return cachedWcpProjectLicense.license.canUseAuditLogs();
         },
 
         canUseRecordLocking() {
-            return this.canUseFeature("recordLocking");
+            return cachedWcpProjectLicense.license.canUseRecordLocking();
+        },
+
+        canUseFileManagerThreatDetection() {
+            return cachedWcpProjectLicense.license.canUseFileManagerThreatDetection();
         },
 
         ensureCanUseFeature(wcpFeatureId: keyof typeof WCP_FEATURE_LABEL) {
-            if (this.canUseFeature(wcpFeatureId)) {
+            if (cachedWcpProjectLicense.license.canUseFeature(wcpFeatureId)) {
                 return;
             }
 
@@ -185,5 +193,5 @@ export const createWcp = async (params: CreateWcpParams = {}): Promise<WcpContex
         async decrementTenants() {
             await updateTenants("decrement");
         }
-    } as WcpContextObject;
+    };
 };

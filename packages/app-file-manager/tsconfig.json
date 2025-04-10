@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
+    { "path": "../admin-ui" },
     { "path": "../app" },
     { "path": "../app-aco" },
     { "path": "../app-admin" },
@@ -10,6 +11,7 @@
     { "path": "../app-i18n" },
     { "path": "../app-security" },
     { "path": "../app-tenancy" },
+    { "path": "../app-websockets" },
     { "path": "../error" },
     { "path": "../form" },
     { "path": "../plugins" },
@@ -26,6 +28,8 @@
     "paths": {
       "~/*": ["./src/*"],
       "~tests/*": ["./__tests__/*"],
+      "@webiny/admin-ui/*": ["../admin-ui/src/*"],
+      "@webiny/admin-ui": ["../admin-ui/src"],
       "@webiny/app/*": ["../app/src/*"],
       "@webiny/app": ["../app/src"],
       "@webiny/app-aco/*": ["../app-aco/src/*"],
@@ -42,6 +46,8 @@
       "@webiny/app-security": ["../app-security/src"],
       "@webiny/app-tenancy/*": ["../app-tenancy/src/*"],
       "@webiny/app-tenancy": ["../app-tenancy/src"],
+      "@webiny/app-websockets/*": ["../app-websockets/src/*"],
+      "@webiny/app-websockets": ["../app-websockets/src"],
       "@webiny/error/*": ["../error/src/*"],
       "@webiny/error": ["../error/src"],
       "@webiny/form/*": ["../form/src/*"],

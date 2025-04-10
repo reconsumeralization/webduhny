@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { Input } from "~/Input";
 import { Icon } from "~/Icon";
 import { DelayedOnChange, OnChangeCallable } from "~/DelayedOnChange";

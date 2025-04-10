@@ -16,7 +16,7 @@ import {
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
 
-import { ReactComponent as AllIcon } from "@material-design-icons/svg/round/clear_all.svg";
+import { ReactComponent as AllIcon } from "@webiny/icons/clear_all.svg";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { BlocksList } from "./BlocksList";
 import EditBlockDialog from "./EditBlockDialog";

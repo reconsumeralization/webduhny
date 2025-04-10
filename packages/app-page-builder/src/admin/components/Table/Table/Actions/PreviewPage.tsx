@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Visibility } from "@material-design-icons/svg/outlined/visibility.svg";
+import { ReactComponent as Visibility } from "@webiny/icons/visibility.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { PageListConfig } from "~/admin/config/pages";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";

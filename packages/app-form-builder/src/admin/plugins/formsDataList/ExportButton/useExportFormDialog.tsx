@@ -1,47 +1,14 @@
 import React, { useEffect } from "react";
-import { css } from "emotion";
 import { i18n } from "@webiny/app/i18n";
+import { CopyButton, Button, Text, OverlayLoader, Grid, Heading, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as FileDownloadIcon } from "@webiny/icons/file_download.svg";
 import { useDialog } from "@webiny/app-admin/hooks/useDialog";
-import { ButtonIcon, ButtonSecondary, CopyButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
-import { Cell, Grid } from "@webiny/ui/Grid";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
-import { CircularProgress } from "@webiny/ui/Progress";
-
 import { usePageBuilder } from "@webiny/app-page-builder/hooks/usePageBuilder";
-import { ReactComponent as FileDownloadIcon } from "@material-design-icons/svg/round/download.svg";
 import ExportFormLoadingDialogContent from "./ExportFormLoadingDialogContent";
 import useExportForm from "./useExportForm";
 
 const t = i18n.ns("app-form-builder/editor/plugins/defaultBar/exportFormButton");
-
-const confirmationMessageStyles = css`
-    width: 600px;
-`;
-
-const linkWrapper = css`
-    display: flex;
-    background-color: var(--mdc-theme-background);
-
-    & .link-text {
-        padding: 8px 0 8px 16px;
-        width: 100%;
-        overflow: hidden;
-    }
-`;
-
-const gridClass = css`
-    &.mdc-layout-grid {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-`;
-
-const spinnerWrapper = css`
-    position: relative;
-    width: 100%;
-    height: 180px;
-`;
 
 export interface ExportFormsDialogProps {
     ids?: string[];
@@ -66,10 +33,8 @@ const ExportFormLoadingDialogMessage = (props: ExportFormsDialogProps) => {
     }, []);
 
     return (
-        <div className={confirmationMessageStyles}>
-            <div className={spinnerWrapper}>
-                <CircularProgress label={t`Preparing your export...`} />
-            </div>
+        <div className={"wby-relative wby-h-[180px]"}>
+            <OverlayLoader text={t`Preparing your export...`} />
         </div>
     );
 };
@@ -82,45 +47,50 @@ const ExportFormDialogMessage = ({ exportUrl }: ExportFormDialogProps) => {
     const { showSnackbar } = useSnackbar();
 
     return (
-        <div className={confirmationMessageStyles}>
-            <Grid style={{ paddingTop: 0 }}>
-                <Cell span={12}>
-                    <Typography use={"subtitle1"}>{t`Copy the export URL:`}</Typography>
-                </Cell>
-                <Cell span={12}>
-                    <div className={linkWrapper}>
-                        <Typography
-                            use={"body2"}
-                            className={"link-text"}
-                            data-testid={"fb-forms-export-dialog-export-url"}
-                        >
+        <div className={"wby-pb-lg"}>
+            <Grid>
+                <Grid.Column span={12}>
+                    <Heading level={6} className={"wby-mb-md"}>{t`Copy the export URL:`}</Heading>
+                    <div
+                        className={
+                            "wby-rounded-lg wby-bg-neutral-dimmed wby-p-sm wby-overflow-hidden wby-relative"
+                        }
+                    >
+                        <Text size={"sm"} data-testid={"fb-forms-export-dialog-export-url"}>
                             {exportUrl}
-                        </Typography>
-                        <span>
-                            <CopyButton
-                                data-testid={"export-forms.export-ready-dialog.copy-button"}
-                                value={exportUrl}
-                                onCopy={() => showSnackbar("Successfully copied!")}
+                        </Text>
+                        <span className={"wby-absolute wby-top-0 wby-right-0"}>
+                            <Tooltip
+                                trigger={
+                                    <CopyButton
+                                        variant={"ghost"}
+                                        data-testid={"export-forms.export-ready-dialog.copy-button"}
+                                        value={exportUrl}
+                                        onCopy={() => showSnackbar("Successfully copied!")}
+                                    />
+                                }
+                                content={"Copy the export URL"}
                             />
                         </span>
                     </div>
-                </Cell>
+                </Grid.Column>
             </Grid>
-            <Grid className={gridClass}>
-                <Cell span={12}>
-                    <Typography use={"subtitle1"}>{t`Or download the ZIP archive:`}</Typography>
-                </Cell>
-                <Cell span={12}>
-                    <ButtonSecondary
+            <Grid className={"wby-mt-lg"}>
+                <Grid.Column span={12}>
+                    <Heading
+                        level={6}
+                        className={"wby-mb-md"}
+                    >{t`Or download the ZIP archive:`}</Heading>
+                    <Button
+                        variant={"primary"}
+                        text={"Download"}
+                        icon={<FileDownloadIcon />}
                         onClick={() => {
                             // Download the ZIP
                             window.open(exportUrl, "_blank", "noopener");
                         }}
-                    >
-                        <ButtonIcon icon={<FileDownloadIcon />} />
-                        Download
-                    </ButtonSecondary>
-                </Cell>
+                    />
+                </Grid.Column>
             </Grid>
         </div>
     );
@@ -140,27 +110,21 @@ const useExportFormDialog = (): UseExportFormDialog => {
         showExportFormContentDialog: props => {
             showDialog(<ExportFormDialogMessage {...props} />, {
                 title: t`Your export is now ready!`,
-                actions: {
-                    cancel: { label: t`Close` }
-                },
+                actions: {},
                 dataTestId: "export-forms.export-ready-dialog"
             });
         },
         showExportFormLoadingDialog: taskId => {
             showDialog(<ExportFormLoadingDialogContent taskId={taskId} />, {
                 title: t`Preparing your export...`,
-                actions: {
-                    cancel: { label: t`Cancel` }
-                },
+                actions: {},
                 dataTestId: "export-forms.loading-dialog"
             });
         },
         showExportFormInitializeDialog: props => {
             showDialog(<ExportFormLoadingDialogMessage {...props} />, {
                 title: t`Preparing your export...`,
-                actions: {
-                    cancel: { label: t`Cancel` }
-                },
+                actions: {},
                 dataTestId: "export-forms.initial-dialog"
             });
         },

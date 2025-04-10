@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/outlined/settings.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { Column } from "@tanstack/react-table";
 import { IconButton } from "~/Button";
 import { Checkbox } from "~/Checkbox";
@@ -58,15 +58,15 @@ export const ColumnsVisibility = <T,>(props: ColumnsVisibilityProps<T>) => {
         <DropdownMenu
             trigger={<IconButton icon={<SettingsIcon />} variant={"ghost"} size={"xs"} />}
         >
-            <DropdownMenu.Label content={"Display columns"} />
+            <DropdownMenu.Label text={"Display columns"} />
             {options.map(option => {
                 return (
                     <DropdownMenu.Item
                         key={option.id}
-                        content={
+                        text={
                             <Checkbox
                                 label={option.header}
-                                onCheckedChange={option.onChange}
+                                onChange={option.onChange}
                                 checked={option.getValue()}
                             />
                         }

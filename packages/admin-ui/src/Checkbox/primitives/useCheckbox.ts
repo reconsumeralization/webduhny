@@ -12,7 +12,7 @@ export const useCheckbox = (props: CheckboxPrimitiveProps) => {
             checked: props.checked,
             indeterminate: props.indeterminate,
             disabled: props.disabled,
-            onCheckedChange: props.onCheckedChange
+            onCheckedChange: props.onChange
         }),
         [
             props.id,
@@ -21,7 +21,7 @@ export const useCheckbox = (props: CheckboxPrimitiveProps) => {
             props.checked,
             props.indeterminate,
             props.disabled,
-            props.onCheckedChange
+            props.onChange
         ]
     );
     const presenter = useMemo(() => {

@@ -2,7 +2,6 @@ import React, { ForwardRefRenderFunction, useMemo } from "react";
 import { Table as AcoTable } from "@webiny/app-aco";
 import { useContentEntriesList, useModel } from "~/admin/hooks";
 import { TableItem } from "~/types";
-import { TableContainer } from "./styled";
 
 const BaseTable: ForwardRefRenderFunction<HTMLDivElement> = (_, ref) => {
     const { model } = useModel();
@@ -13,7 +12,7 @@ const BaseTable: ForwardRefRenderFunction<HTMLDivElement> = (_, ref) => {
     }, [list.folders, list.records]);
 
     return (
-        <TableContainer ref={ref}>
+        <div className={"wby-mb-xl"} ref={ref}>
             <AcoTable<TableItem>
                 data={data}
                 nameColumnId={model.titleFieldId || "id"}
@@ -24,7 +23,7 @@ const BaseTable: ForwardRefRenderFunction<HTMLDivElement> = (_, ref) => {
                 onSelectRow={list.onSelectRow}
                 selected={list.selected}
             />
-        </TableContainer>
+        </div>
     );
 };
 

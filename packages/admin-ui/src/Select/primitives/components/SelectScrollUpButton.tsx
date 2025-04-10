@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactComponent as ChevronUp } from "@material-design-icons/svg/outlined/keyboard_arrow_up.svg";
+import { ReactComponent as ChevronUp } from "@webiny/icons/keyboard_arrow_up.svg";
 import * as SelectPrimitives from "@radix-ui/react-select";
 import { cn } from "~/utils";
 

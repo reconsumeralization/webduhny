@@ -128,6 +128,7 @@
     --border-neutral-dark: var(--color-neutral-600);
     --border-neutral-dimmed: var(--color-neutral-200);
     --border-neutral-muted: var(--color-neutral-400);
+    --border-neutral-smoked: var(--color-neutral-300);
     --border-neutral-strong: var(--color-neutral-500);
     --border-neutral-subtle: var(--color-neutral-100);
 
@@ -234,6 +235,8 @@
     --spacing-xs-plus: 6px;
     --spacing-xxl: 48px;
     --spacing-xxs: 2px;
+    --spacing-sidebar-collapsed: 44px;
+    --spacing-sidebar-expanded: 256px;
 
     // Text color.
     --text-accent-muted: var(--color-primary-300);

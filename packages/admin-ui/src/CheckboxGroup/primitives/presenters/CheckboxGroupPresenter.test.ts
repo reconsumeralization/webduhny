@@ -1,5 +1,5 @@
 import { CheckboxGroupPresenter } from "./CheckboxGroupPresenter";
-import { CheckboxItemDto } from "~/Checkbox";
+import type { CheckboxItemDto } from "~/Checkbox/domains/CheckboxItemDto";
 
 describe("CheckboxGroupPresenter", () => {
     let presenter: CheckboxGroupPresenter;
@@ -27,7 +27,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 1",
                 checked: true,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             },
             {
                 id: expect.any(String),
@@ -35,7 +36,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 2",
                 checked: false,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             }
         ]);
     });
@@ -60,7 +62,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 1",
                 checked: true,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             },
             {
                 id: expect.any(String),
@@ -68,7 +71,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 2",
                 checked: true,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             }
         ]);
         expect(mockProps.onCheckedChange).toHaveBeenCalledWith(["item1", "item2"]);
@@ -83,7 +87,8 @@ describe("CheckboxGroupPresenter", () => {
                     label: "Item 1",
                     checked: true,
                     indeterminate: false,
-                    disabled: false
+                    disabled: false,
+                    hasLabel: true
                 },
                 {
                     id: expect.any(String),
@@ -91,7 +96,8 @@ describe("CheckboxGroupPresenter", () => {
                     label: "Item 2",
                     checked: true,
                     indeterminate: false,
-                    disabled: false
+                    disabled: false,
+                    hasLabel: true
                 }
             ],
             values: ["item1", "item2"],
@@ -108,7 +114,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 1",
                 checked: true,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             },
             {
                 id: expect.any(String),
@@ -116,7 +123,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 2",
                 checked: false,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             }
         ]);
         expect(mockProps.onCheckedChange).toHaveBeenCalledWith(["item1"]);
@@ -140,7 +148,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 1",
                 checked: true,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             },
             {
                 id: expect.any(String),
@@ -148,7 +157,8 @@ describe("CheckboxGroupPresenter", () => {
                 label: "Item 2",
                 checked: false,
                 indeterminate: false,
-                disabled: false
+                disabled: false,
+                hasLabel: true
             }
         ]);
     });

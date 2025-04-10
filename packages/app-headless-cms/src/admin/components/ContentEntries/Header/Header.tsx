@@ -1,11 +1,12 @@
 import React from "react";
+import { Separator } from "@webiny/admin-ui";
 import { Search } from "@webiny/app-aco";
 import { ButtonFilters } from "./ButtonFilters";
 import { ButtonsCreate } from "./ButtonsCreate";
 import { Title } from "./Title";
-import { ActionsColumn, Container, TitleColumn, WrapperActions } from "./styled";
 
 interface HeaderProps {
+    isRoot: boolean;
     title?: string;
     canCreateFolder: boolean;
     canCreateContent: boolean;
@@ -27,22 +28,33 @@ export const Header = (props: HeaderProps) => {
     } = props;
 
     return (
-        <Container>
-            <TitleColumn>
-                <Title title={title} />
-            </TitleColumn>
-            <ActionsColumn>
-                <WrapperActions>
-                    <Search value={searchValue} onChange={onSearchChange} />
-                    <ButtonFilters />
-                    <ButtonsCreate
-                        canCreateFolder={canCreateFolder}
-                        canCreateContent={canCreateContent}
-                        onCreateFolder={onCreateFolder}
-                        onCreateEntry={onCreateEntry}
-                    />
-                </WrapperActions>
-            </ActionsColumn>
-        </Container>
+        <>
+            <div className={"wby-flex wby-flex-col wby-gap-md"}>
+                <Title title={title} isRoot={props.isRoot} />
+                <div className={"wby-px-md wby-pb-sm"}>
+                    <div className={"wby-flex wby-items-center wby-gap-sm wby-w-full"}>
+                        <div className={"wby-flex-1"}>
+                            <Search
+                                value={searchValue}
+                                onChange={onSearchChange}
+                                placeholder={"Search..."}
+                            />
+                        </div>
+                        <div>
+                            <div className={"wby-flex wby-gap-sm"}>
+                                <ButtonFilters />
+                                <ButtonsCreate
+                                    canCreateFolder={canCreateFolder}
+                                    canCreateContent={canCreateContent}
+                                    onCreateFolder={onCreateFolder}
+                                    onCreateEntry={onCreateEntry}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Separator variant={"dimmed"} margin={"none"} />
+        </>
     );
 };

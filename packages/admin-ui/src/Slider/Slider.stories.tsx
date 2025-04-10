@@ -8,7 +8,11 @@ const meta: Meta<typeof Slider> = {
     tags: ["autodocs"],
     argTypes: {
         onValueChange: { action: "onValueChange" },
-        onValueCommit: { action: "onValueCommit" }
+        onValueCommit: { action: "onValueCommit" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
     },
     parameters: {
         layout: "padded"

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
+import { Button, Drawer } from "@webiny/admin-ui";
 import { FormAPI } from "@webiny/form";
-import { DrawerRight } from "@webiny/ui/Drawer";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
 import { QueryBuilder } from "./QueryBuilder";
@@ -9,7 +9,6 @@ import { QueryBuilder } from "./QueryBuilder";
 import { FieldDTOWithElement, FilterDTO } from "~/components/AdvancedSearch/domain";
 
 import { QueryBuilderDrawerPresenter, QueryBuilderFormData } from "./QueryBuilderDrawerPresenter";
-import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 
 interface QueryBuilderDrawerProps {
     fields: FieldDTOWithElement[];
@@ -69,22 +68,29 @@ export const QueryBuilderDrawer = observer(({ filter, ...props }: QueryBuilderDr
     const ref = useRef<FormAPI | null>(null);
 
     return (
-        <DrawerRight
+        <Drawer
             open={props.vm.isOpen}
-            onClose={props.onClose}
+            onOpenChange={open => {
+                if (!open) {
+                    props.onClose();
+                }
+            }}
             modal={true}
             width={1000}
             title={"Advanced search filter"}
             description={"Create a filter to search for specific content."}
-            info={<ButtonDefault onClick={onSave}>Save filter</ButtonDefault>}
+            info={<Button onClick={onSave} text={"Save filter"} variant={"secondary"} />}
             actions={
                 <>
-                    <ButtonDefault onClick={props.onClose}>Cancel</ButtonDefault>
-                    <ButtonPrimary onClick={() => ref.current?.submit()}>
-                        Apply filter
-                    </ButtonPrimary>
+                    <Drawer.CancelButton text={"Cancel"} />
+                    <Drawer.ConfirmButton
+                        onClick={() => ref.current?.submit()}
+                        text={"Apply filter"}
+                    />
                 </>
             }
+            headerSeparator={true}
+            footerSeparator={true}
         >
             <QueryBuilder
                 onForm={form => (ref.current = form)}
@@ -102,6 +108,6 @@ export const QueryBuilderDrawer = observer(({ filter, ...props }: QueryBuilderDr
                 fields={props.fields}
                 vm={presenter.vm}
             />
-        </DrawerRight>
+        </Drawer>
     );
 });

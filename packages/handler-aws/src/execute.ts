@@ -69,6 +69,7 @@ export const execute = (params: ExecuteParams): Promise<any> => {
     const headers = getPayloadProperty(payload, "headers", {
         ["content-type"]: "application/json"
     });
+
     const cookies = getPayloadProperty(payload, "cookies", {});
 
     return new Promise(resolve => {
@@ -77,6 +78,7 @@ export const execute = (params: ExecuteParams): Promise<any> => {
                 method: "POST",
                 url,
                 payload: payload || {},
+                body: payload || {},
                 query,
                 headers,
                 cookies

@@ -3,29 +3,19 @@ import ReactDOM from "react-dom";
 import noop from "lodash/noop";
 // @ts-expect-error This package has no types.
 import { useHotkeys } from "react-hotkeyz";
-import styled from "@emotion/styled";
+import { Drawer, Grid, OverlayLoader, Tabs } from "@webiny/admin-ui";
 import { FileItem } from "@webiny/app-admin/types";
 import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { prepareFormData } from "@webiny/app-headless-cms-common";
-import { DrawerRight } from "@webiny/ui/Drawer";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { FileDetailsProvider } from "~/components/FileDetails/FileDetailsProvider";
 import { Preview } from "./components/Preview";
 import { PreviewMeta } from "./components/PreviewMeta";
 import { Actions } from "./components/Actions";
 import { Content } from "./components/Content";
-import { SimpleForm } from "@webiny/app-admin/components/SimpleForm";
 import { Extensions } from "./components/Extensions";
 import { useFileModel } from "~/hooks/useFileModel";
 import { useFileManagerViewConfig } from "~/index";
 import { FileProvider } from "~/contexts/FileProvider";
-import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
-
-const FormContainer = styled(SimpleForm)`
-    margin: 0;
-`;
 
 interface FileDetailsInnerProps {
     file: FileItem;
@@ -64,9 +54,9 @@ const FileDetailsInner = ({ file, onForm, ...props }: FileDetailsInnerProps) => 
     const basicFieldsElement = (
         <Grid>
             {fileDetails.fields.map(field => (
-                <Cell span={12} key={field.name}>
+                <Grid.Column span={12} key={field.name}>
                     {field.element}
-                </Cell>
+                </Grid.Column>
             ))}
         </Grid>
     );
@@ -77,28 +67,43 @@ const FileDetailsInner = ({ file, onForm, ...props }: FileDetailsInnerProps) => 
     return (
         <Form data={file} onSubmit={onSubmit} ref={formRef}>
             {() => (
-                <FormContainer>
-                    <Content>
-                        <Content.Panel flex={parseFloat(leftPanel)}>
+                <Content>
+                    <Content.Panel flex={parseFloat(leftPanel)}>
+                        <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>
                             <Actions />
                             <Preview />
                             <PreviewMeta />
-                        </Content.Panel>
-                        <Content.Panel flex={parseFloat(rightPanel)}>
-                            {fileDetails.groupFields ? (
-                                <Tabs>
-                                    <Tab label={"Basic Details"}>{basicFieldsElement}</Tab>
-                                    <Tab label={"Advanced Details"}>{extensionFieldsElement}</Tab>
-                                </Tabs>
-                            ) : (
-                                <>
-                                    {basicFieldsElement}
-                                    {extensionFieldsElement}
-                                </>
-                            )}
-                        </Content.Panel>
-                    </Content>
-                </FormContainer>
+                        </div>
+                    </Content.Panel>
+                    <Content.Panel flex={parseFloat(rightPanel)}>
+                        {fileDetails.groupFields ? (
+                            <Tabs
+                                size={"md"}
+                                spacing={"lg"}
+                                separator={true}
+                                tabs={[
+                                    <Tabs.Tab
+                                        key={"basic-details"}
+                                        value={"basic-details"}
+                                        trigger={"Basic Details"}
+                                        content={basicFieldsElement}
+                                    />,
+                                    <Tabs.Tab
+                                        key={"advanced-details"}
+                                        value={"advanced-details"}
+                                        trigger={"Advanced Details"}
+                                        content={extensionFieldsElement}
+                                    />
+                                ]}
+                            />
+                        ) : (
+                            <div className={"wby-p-lg"}>
+                                {basicFieldsElement}
+                                <div className={"wby-mt-lg"}>{extensionFieldsElement}</div>
+                            </div>
+                        )}
+                    </Content.Panel>
+                </Content>
             )}
         </Form>
     );
@@ -157,23 +162,31 @@ export const FileDetails = ({
 
     return (
         <FileDetailsPortal>
-            <DrawerRight
+            <Drawer
                 title={"File Details"}
                 width={drawerWidth}
                 open={open}
+                bodyPadding={false}
                 className={"z-50"}
-                onClose={onClose}
+                headerSeparator={true}
+                footerSeparator={true}
+                onOpenChange={open => {
+                    if (!open) {
+                        onClose();
+                    }
+                }}
                 data-testid={"fm.file-details.drawer"}
                 actions={
                     <>
-                        <ButtonDefault onClick={onClose}>Cancel</ButtonDefault>
-                        <ButtonPrimary onClick={() => formRef.current?.submit()}>
-                            Save File
-                        </ButtonPrimary>
+                        <Drawer.CancelButton text={"Cancel"} />
+                        <Drawer.ConfirmButton
+                            text={"Save File"}
+                            onClick={() => formRef.current?.submit()}
+                        />
                     </>
                 }
             >
-                {loading && <CircularProgress label={loading} />}
+                {loading && <OverlayLoader text={loading} />}
                 {file && (
                     <FileProvider file={file}>
                         <FileDetailsProvider hideFileDetails={onClose} onSetFile={onSetFile}>
@@ -188,7 +201,7 @@ export const FileDetails = ({
                         </FileDetailsProvider>
                     </FileProvider>
                 )}
-            </DrawerRight>
+            </Drawer>
         </FileDetailsPortal>
     );
 };

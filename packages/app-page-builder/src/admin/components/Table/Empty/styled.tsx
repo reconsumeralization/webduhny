@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ReactComponent as Add } from "@material-design-icons/svg/filled/add.svg";
+import { ReactComponent as Add } from "@webiny/icons/add.svg";
 
 export const Buttons = styled.div``;
 

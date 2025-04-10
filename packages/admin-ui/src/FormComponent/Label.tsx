@@ -1,16 +1,22 @@
 import React, { useMemo } from "react";
-import { makeDecoratable } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 import { Label, LabelProps } from "~/Label";
 
-interface FormComponentLabelProps {
+interface FormComponentLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     text?: React.ReactElement<typeof Label> | React.ReactNode;
     required?: boolean;
     disabled?: boolean;
+    hint?: React.ReactNode;
 }
 
-const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
-    const { text, required, disabled } = props;
-
+const DecoratableFormComponentLabel = ({
+    text,
+    required,
+    disabled,
+    hint,
+    className,
+    ...props
+}: FormComponentLabelProps) => {
     // UseMemo correctly to memoize the rendered label
     const renderLabel = useMemo(() => {
         if (!text) {
@@ -19,19 +25,25 @@ const DecoratableFormComponentLabel = (props: FormComponentLabelProps) => {
 
         if (React.isValidElement(text) && text.type === Label) {
             return React.cloneElement(text as React.ReactElement<LabelProps>, {
-                required,
-                disabled
+                ...text.props,
+                required: text.props.required ?? required,
+                disabled: text.props.disabled ?? disabled,
+                hint: text.props.hint ?? hint
             });
         }
 
-        return <Label text={text} required={required} disabled={disabled} />;
-    }, [text, required, disabled]);
+        return <Label text={text} required={required} disabled={disabled} hint={hint} />;
+    }, [text, required, disabled, hint]);
 
     if (!renderLabel) {
         return null;
     }
 
-    return <div className={"wby-mb-xs"}>{renderLabel}</div>;
+    return (
+        <div {...props} className={cn("wby-mb-xs", className)}>
+            {renderLabel}
+        </div>
+    );
 };
 
 const FormComponentLabel = makeDecoratable("FormComponentLabel", DecoratableFormComponentLabel);

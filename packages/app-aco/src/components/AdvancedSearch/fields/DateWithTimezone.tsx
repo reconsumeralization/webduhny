@@ -1,24 +1,8 @@
 import React, { useEffect, useState } from "react";
-
-import styled from "@emotion/styled";
 import { useBind } from "@webiny/form";
-import { Input } from "@webiny/ui/Input";
-import { Select } from "@webiny/ui/Select";
 import { UTC_TIMEZONES } from "@webiny/utils";
 import { useInputField } from "~/components";
-
-const DateWithTimezoneContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const DateTimeInputContainer = styled.div`
-    width: 50%;
-`;
-
-const TimeZoneSelectContainer = styled.div`
-    width: 45%;
-`;
+import { Input, Select } from "@webiny/admin-ui";
 
 export const DateWithTimezone = () => {
     const { name } = useInputField();
@@ -48,16 +32,17 @@ export const DateWithTimezone = () => {
     };
 
     return (
-        <DateWithTimezoneContainer>
-            <DateTimeInputContainer>
+        <div className={"wby-flex wby-justify-between"}>
+            <div className={"wby-w-1/2"}>
                 <Input
                     label={"Value"}
                     type={"datetime-local"}
                     value={dateTime}
                     onChange={handleDateTimeChange}
+                    size={"lg"}
                 />
-            </DateTimeInputContainer>
-            <TimeZoneSelectContainer>
+            </div>
+            <div className={"wby-w-2/5"}>
                 <Select
                     label={"Time Zone"}
                     value={timeZone}
@@ -66,8 +51,9 @@ export const DateWithTimezone = () => {
                         value
                     }))}
                     onChange={handleTimeZoneChange}
+                    size={"lg"}
                 />
-            </TimeZoneSelectContainer>
-        </DateWithTimezoneContainer>
+            </div>
+        </div>
     );
 };

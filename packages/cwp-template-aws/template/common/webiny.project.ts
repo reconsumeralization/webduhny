@@ -31,6 +31,7 @@ export default {
         ]
     },
     appAliases: {
+        blueGreen: "apps/blueGreen",
         core: "apps/core",
         api: "apps/api",
         admin: "apps/admin",

@@ -5,12 +5,18 @@ import { RadioGroup } from "./RadioGroup";
 const meta: Meta<typeof RadioGroup> = {
     title: "Components/Form/RadioGroup",
     component: RadioGroup,
+    argTypes: {
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
     parameters: {
         layout: "padded"
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <RadioGroup {...args} value={value} onValueChange={value => setValue(value)} />;
+        return <RadioGroup {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 
@@ -103,13 +109,14 @@ export const Disabled: Story = {
 export const FullExample: Story = {
     args: {
         ...Default.args,
-        label: "Any field label",
+        label: "Select which deploy option do you prefer",
         required: true,
-        description: "Provide the required information for processing your request.",
+        description:
+            "Deployment option is simply a way of parsing the data based on your database settings.",
         note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
-            message: "This field is required."
+            message: "You must select at least one option!"
         }
     }
 };

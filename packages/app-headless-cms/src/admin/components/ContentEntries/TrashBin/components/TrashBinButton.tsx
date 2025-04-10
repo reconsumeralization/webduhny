@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography } from "@webiny/ui/Typography";
-import { Button, Icon, IconContainer } from "./TrashBin.styled";
+import { Sidebar } from "@webiny/admin-ui";
+import { ReactComponent as Delete } from "@webiny/icons/delete.svg";
 
 export interface TrashBinButtonProps {
     onClick: () => void;
@@ -8,11 +8,12 @@ export interface TrashBinButtonProps {
 
 export const TrashBinButton = (props: TrashBinButtonProps) => {
     return (
-        <Button onClick={props.onClick}>
-            <IconContainer>
-                <Icon />
-            </IconContainer>
-            <Typography use={"subtitle2"}>{"Trash"}</Typography>
-        </Button>
+        <div className={"wby-list-none"}>
+            <Sidebar.Item
+                onClick={props.onClick}
+                text={"Trash"}
+                icon={<Sidebar.Item.Icon element={<Delete />} label={"Delete"} />}
+            />
+        </div>
     );
 };

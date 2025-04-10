@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from "react";
 import { makeDecoratable } from "~/utils";
-import { InputPrimitive, InputPrimitiveProps } from "./InputPrimitive";
+import { InputPrimitive, type InputPrimitiveProps } from "./InputPrimitive";
 import {
     FormComponentDescription,
     FormComponentErrorMessage,
     FormComponentLabel,
     FormComponentNote,
-    FormComponentProps
+    type FormComponentProps
 } from "~/FormComponent";
 
 type InputProps = InputPrimitiveProps & FormComponentProps;
@@ -41,13 +41,17 @@ const DecoratableInput = ({
     return (
         <div className={"wby-w-full"}>
             <FormComponentLabel text={label} required={required} disabled={disabled} />
-            <FormComponentDescription text={description} />
+            <FormComponentDescription text={description} disabled={disabled} />
             <InputPrimitive {...props} disabled={disabled} invalid={invalid} onBlur={onBlur} />
-            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
-            <FormComponentNote text={note} />
+            <FormComponentErrorMessage
+                text={validationMessage}
+                invalid={invalid}
+                disabled={disabled}
+            />
+            <FormComponentNote text={note} disabled={disabled} />
         </div>
     );
 };
 const Input = makeDecoratable("Input", DecoratableInput);
 
-export { Input };
+export { Input, type InputProps };

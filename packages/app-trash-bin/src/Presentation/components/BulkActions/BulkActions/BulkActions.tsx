@@ -1,11 +1,9 @@
 import React, { useMemo } from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
+import { Text, IconButton, Button } from "@webiny/admin-ui";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { Buttons } from "@webiny/app-admin";
-import { IconButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
 import { useTrashBinListConfig } from "~/Presentation/configs";
 import { useTrashBin } from "~/Presentation/hooks";
-import { BulkActionsContainer, BulkActionsInner, ButtonsContainer } from "./BulkActions.styled";
 
 export const getEntriesLabel = (count: number, isSelectedAll: boolean): string => {
     if (isSelectedAll) {
@@ -17,14 +15,14 @@ export const getEntriesLabel = (count: number, isSelectedAll: boolean): string =
 
 export const BulkActions = () => {
     const { browser } = useTrashBinListConfig();
-    const { vm, selectItems } = useTrashBin();
+    const { vm, selectItems, selectAllItems, unselectAllItems } = useTrashBin();
 
     const headline = useMemo((): string => {
         if (vm.isSelectedAll) {
-            return "All entries selected:";
+            return "All items selected";
         }
 
-        return getEntriesLabel(vm.selectedItems.length, vm.isSelectedAll) + ` selected:`;
+        return getEntriesLabel(vm.selectedItems.length, vm.isSelectedAll) + ` selected`;
     }, [vm.selectedItems, vm.isSelectedAll]);
 
     if (!vm.selectedItems.length) {
@@ -32,14 +30,39 @@ export const BulkActions = () => {
     }
 
     return (
-        <BulkActionsContainer>
-            <BulkActionsInner>
-                <ButtonsContainer>
-                    <Typography use={"headline6"}>{headline}</Typography>
+        <div className={"wby-w-full wby-bg-neutral-disabled wby-px-md wby-py-sm"}>
+            <div className={"wby-flex wby-items-center wby-justify-between wby-gap-sm"}>
+                <div className={"wby-flex wby-items-center wby-gap-sm"}>
+                    <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                        {headline}
+                    </Text>
+                    {vm.isSelectedAll ? (
+                        <Button
+                            text={"Clear selection"}
+                            onClick={unselectAllItems}
+                            size={"sm"}
+                            variant={"ghost"}
+                        />
+                    ) : (
+                        <Button
+                            text={"Select all remaining items"}
+                            onClick={selectAllItems}
+                            size={"sm"}
+                            variant={"secondary"}
+                        />
+                    )}
+                </div>
+
+                <div className={"wby-flex wby-items-center wby-gap-sm"}>
                     <Buttons actions={browser.bulkActions} />
-                </ButtonsContainer>
-                <IconButton icon={<Close />} onClick={() => selectItems([])} />
-            </BulkActionsInner>
-        </BulkActionsContainer>
+                    <IconButton
+                        variant={"ghost"}
+                        size={"sm"}
+                        icon={<Close />}
+                        onClick={() => selectItems([])}
+                    />
+                </div>
+            </div>
+        </div>
     );
 };

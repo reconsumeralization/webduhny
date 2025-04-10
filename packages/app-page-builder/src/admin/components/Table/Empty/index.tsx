@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-import { ReactComponent as SearchIcon } from "@material-design-icons/svg/outlined/search.svg";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 import { i18n } from "@webiny/app/i18n";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
 import { ButtonDefault } from "@webiny/ui/Button";

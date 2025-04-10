@@ -1,8 +1,5 @@
 import React from "react";
-
-import { Typography } from "@webiny/ui/Typography";
-
-import { GroupOperationLabelContainer } from "../Querybuilder.styled";
+import { cn, Text } from "@webiny/admin-ui";
 
 interface GroupOperationLabelProps {
     operation: string;
@@ -14,10 +11,14 @@ export const GroupOperationLabel = ({ operation, show }: GroupOperationLabelProp
     }
 
     return (
-        <GroupOperationLabelContainer>
-            <Typography use={"subtitle2"} tag={"span"}>
-                {operation}
-            </Typography>
-        </GroupOperationLabelContainer>
+        <span
+            className={cn([
+                "wby-bg-neutral-base wby-rounded-xxl wby-px-md wby-py-xs",
+                "wby-w-[56px] wby-h-[28px]",
+                "wby-absolute -wby-bottom-[15px] wby-left-1/2 -wby-ml-[46px] wby-z-50"
+            ])}
+        >
+            <Text size={"sm"}>{operation}</Text>
+        </span>
     );
 };

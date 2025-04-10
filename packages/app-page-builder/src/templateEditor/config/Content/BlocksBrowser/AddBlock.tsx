@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { ButtonFloating } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { useBlocksBrowser } from "./useBlocksBrowser";
 
 const SIDEBAR_WIDTH = 300;

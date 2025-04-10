@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ReactComponent as StormIcon } from "@material-design-icons/svg/filled/storm.svg";
+import { ReactComponent as StormIcon } from "@webiny/icons/storm.svg";
 import { Avatar } from "./Avatar";
 
 const meta: Meta<typeof Avatar> = {
