@@ -77,7 +77,7 @@ const richTextEditorVariants = cva(
         ],
         defaultVariants: {
             variant: "primary",
-            size: "md"
+            size: "lg"
         }
     }
 );

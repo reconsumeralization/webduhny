@@ -18,7 +18,7 @@ const iconPickerVariants = cva("wby-cursor-pointer wby-text-neutral-strong", {
         }
     },
     defaultVariants: {
-        size: "md"
+        size: "lg"
     }
 });
 

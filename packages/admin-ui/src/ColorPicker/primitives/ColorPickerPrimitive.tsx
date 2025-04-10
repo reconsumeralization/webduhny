@@ -17,7 +17,7 @@ const colorPickerVariants = cva("wby-cursor-pointer", {
         }
     },
     defaultVariants: {
-        size: "md"
+        size: "lg"
     }
 });
 

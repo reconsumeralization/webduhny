@@ -22,7 +22,7 @@ const inputIconVariants = cva("wby-absolute wby-fill-neutral-xstrong", {
         }
     },
     defaultVariants: {
-        inputSize: "md",
+        inputSize: "lg",
         position: "start"
     },
     compoundVariants: [
@@ -201,7 +201,7 @@ const inputVariants = cva(
             }
         ],
         defaultVariants: {
-            size: "md",
+            size: "lg",
             variant: "primary"
         }
     }

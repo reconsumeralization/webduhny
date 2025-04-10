@@ -14,7 +14,7 @@ const iconPickerTriggerVariants = cva("wby-flex wby-items-center", {
         }
     },
     defaultVariants: {
-        size: "md"
+        size: "lg"
     }
 });
 

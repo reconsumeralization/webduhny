@@ -33,7 +33,7 @@ const skeletonVariants = cva("wby-animate-skeleton-pulse wby-rounded-sm", {
     ],
     defaultVariants: {
         type: "area",
-        size: "md"
+        size: "lg"
     }
 });
 
