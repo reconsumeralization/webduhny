@@ -21,6 +21,7 @@ export class PasswordElement extends InputElement {
             >
                 <Input
                     type={"password"}
+                    autoComplete={"off"}
                     label={this.getLabel(props)}
                     placeholder={this.getPlaceholder(props)}
                     disabled={this.getIsDisabled(props)}
