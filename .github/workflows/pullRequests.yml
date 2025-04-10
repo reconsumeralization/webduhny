@@ -242,9 +242,6 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
         working-directory: ${{ github.base_ref }}
-      - name: Build packages (full)
-        run: yarn build
-        working-directory: ${{ github.base_ref }}
       - name: Check types for Cypress tests
         run: yarn cy:ts
         working-directory: ${{ github.base_ref }}
@@ -348,7 +345,8 @@ jobs:
           --storage=ddb","storage":"ddb","packageName":"api-aco","id":"5595b4f3460fb2a019066177bd6489f3"},{"cmd":"packages/api-apw
           --storage=ddb","storage":"ddb","packageName":"api-apw","id":"04462239e1f3509b08f511de460971ec"},{"cmd":"packages/api-audit-logs
           --storage=ddb","storage":"ddb","packageName":"api-audit-logs","id":"47680aa68a1a3951f1117c736e150e45"},{"cmd":"packages/api-file-manager
-          --storage=ddb","storage":"ddb","packageName":"api-file-manager","id":"9b6eee1ff7cbf9a3d367818705cc4189"},{"cmd":"packages/api-form-builder
+          --storage=ddb","storage":"ddb","packageName":"api-file-manager","id":"9b6eee1ff7cbf9a3d367818705cc4189"},{"cmd":"packages/api-file-manager-aco
+          --storage=ddb","storage":"ddb","packageName":"api-file-manager-aco","id":"2798f617996100a5494909a394335e98"},{"cmd":"packages/api-form-builder
           --storage=ddb","storage":"ddb","packageName":"api-form-builder","id":"980a9aebb5ec0cab057422364a60493b"},{"cmd":"packages/api-headless-cms
           --storage=ddb
           --shard=1/6","storage":"ddb","packageName":"api-headless-cms","id":"70476469f4407a455237133406a37a4b"},{"cmd":"packages/api-headless-cms
@@ -468,7 +466,8 @@ jobs:
           --storage=ddb-es,ddb","storage":["ddb-es"],"packageName":"api-dynamodb-to-elasticsearch","id":"e2c325f0940ba5fb5a891a8cf74fca61"},{"cmd":"packages/api-elasticsearch
           --storage=ddb-es,ddb","storage":["ddb-es"],"packageName":"api-elasticsearch","id":"5963079c60b96202bbaf2a802ad14383"},{"cmd":"packages/api-elasticsearch-tasks
           --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-elasticsearch-tasks","id":"d81ad1d024a8746cc440e2e548770f8f"},{"cmd":"packages/api-file-manager
-          --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-file-manager","id":"d6f293add4a252b96cbd770ab6e80557"},{"cmd":"packages/api-form-builder
+          --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-file-manager","id":"d6f293add4a252b96cbd770ab6e80557"},{"cmd":"packages/api-file-manager-aco
+          --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-file-manager-aco","id":"41bae3570bd9f1090c32049c4e7e327b"},{"cmd":"packages/api-form-builder
           --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-form-builder","id":"3753bde0144d808eb15c755b7176386c"},{"cmd":"packages/api-form-builder-so-ddb-es
           --storage=ddb-es,ddb","storage":"ddb-es","packageName":"api-form-builder-so-ddb-es","id":"be1748722ce53a7383696bdc9aecb36e"},{"cmd":"packages/api-headless-cms
           --storage=ddb-es,ddb
@@ -598,7 +597,8 @@ jobs:
           --storage=ddb-os,ddb","storage":["ddb-os"],"packageName":"api-dynamodb-to-elasticsearch","id":"6e0b282c3d135703e52b2c55822d4fb0"},{"cmd":"packages/api-elasticsearch
           --storage=ddb-os,ddb","storage":["ddb-os"],"packageName":"api-elasticsearch","id":"b0f477d6b209f654714809b318be888e"},{"cmd":"packages/api-elasticsearch-tasks
           --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-elasticsearch-tasks","id":"580a9577fdbd4a241034a42e1a47dee5"},{"cmd":"packages/api-file-manager
-          --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-file-manager","id":"346430a79981d3e214c87254a08e31b2"},{"cmd":"packages/api-form-builder
+          --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-file-manager","id":"346430a79981d3e214c87254a08e31b2"},{"cmd":"packages/api-file-manager-aco
+          --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-file-manager-aco","id":"7f0fc2925264603db145f99b41162da1"},{"cmd":"packages/api-form-builder
           --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-form-builder","id":"d386cddfd3c366ad9955193dcfe74363"},{"cmd":"packages/api-form-builder-so-ddb-es
           --storage=ddb-os,ddb","storage":"ddb-os","packageName":"api-form-builder-so-ddb-es","id":"6086ced9d7b4412cc438b9e1aefbb976"},{"cmd":"packages/api-headless-cms
           --storage=ddb-os,ddb

@@ -3,9 +3,9 @@ import { DndFolderItemData, FolderItem } from "~/types";
 import { ROOT_FOLDER } from "~/constants";
 
 /**
- * Transform an array of folders returned by useFolders hook into an array of elements for the tree component.
+ * Transform an array of folders returned by folders cache into an array of elements for the tree component.
  *
- * @param folders list of folders returned by useFolders hook.
+ * @param folders list of folders returned by folders cache.
  * @param focusedNodeId id of the current folder selected/focused.
  * @param hiddenFolderIds list ids of the folder you don't want to show within the list.
  * @return array of elements to render the tree component.
@@ -37,7 +37,7 @@ export const createTreeData = (
  * Return an array of ids of open folders, based on the current focused folder id, its parent folders and the folders
  * opened by user interaction.
  *
- * @param folders list of folders returned by useFolders hook.
+ * @param folders list of folders returned by folders cache.
  * @param openIds list of open folders ids.
  * @param focusedId id of the current folder selected/focused.
  * @return array of ids of open folders.

@@ -1,12 +1,13 @@
-import {
-    CmsModelManager,
-    CmsModel,
+import type {
     CmsContext,
+    CmsDeleteEntryOptions,
     CmsEntryListParams,
+    CmsModel,
+    CmsModelManager,
     CreateCmsEntryInput,
+    CreateCmsEntryOptionsInput,
     UpdateCmsEntryInput,
-    UpdateCmsEntryOptionsInput,
-    CreateCmsEntryOptionsInput
+    UpdateCmsEntryOptionsInput
 } from "~/types";
 import { parseIdentifier } from "@webiny/utils";
 
@@ -23,13 +24,13 @@ export class DefaultCmsModelManager implements CmsModelManager {
         return this._context.cms.createEntry(this.model, data, options);
     }
 
-    public async delete(id: string) {
+    public async delete(id: string, options?: CmsDeleteEntryOptions) {
         const { version } = parseIdentifier(id);
         if (version) {
             return this._context.cms.deleteEntryRevision(this.model, id);
         }
 
-        return this._context.cms.deleteEntry(this.model, id);
+        return this._context.cms.deleteEntry(this.model, id, options);
     }
 
     public async get(id: string) {

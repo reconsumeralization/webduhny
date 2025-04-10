@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { useRecordLocking } from "~/hooks";
-import { IIsRecordLockedParams, IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
-import {
-    IncomingGenericData,
-    IWebsocketsSubscription,
-    useWebsockets
-} from "@webiny/app-websockets";
+import type { IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
+import type { IncomingGenericData } from "@webiny/app-websockets";
+import { useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
 import styled from "@emotion/styled";
 import { CmsContentEntry, CmsModel } from "@webiny/app-headless-cms/types";
+
+const autoUpdateTimeout = 20;
 
 const Bold = styled.span`
     font-weight: 600;
@@ -49,33 +48,27 @@ export const ContentEntryLocker = ({
     model,
     children
 }: IContentEntryLockerProps) => {
-    const { updateEntryLock, unlockEntry, fetchLockedEntryLockRecord, removeEntryLock } =
-        useRecordLocking();
-
-    const subscription = useRef<IWebsocketsSubscription<any>>();
-
+    const { updateEntryLock, removeEntryLock } = useRecordLocking();
     const websockets = useWebsockets();
-
     const { showDialog } = useDialogs();
+
+    const entryLockerTimeout = useRef<number | null>(null);
 
     useEffect(() => {
         if (!entry.id) {
             return;
-        } else if (subscription.current) {
-            subscription.current.off();
         }
         const { id: entryId } = parseIdentifier(entry.id);
 
-        subscription.current = websockets.onMessage<IKickOutWebsocketsMessage>(
+        let onMessageSub = websockets.onMessage<IKickOutWebsocketsMessage>(
             `recordLocking.entry.kickOut.${entryId}`,
             async incoming => {
                 const { user } = incoming.data;
-                const record: IIsRecordLockedParams = {
+                onDisablePrompt(true);
+                removeEntryLock({
                     id: entryId,
                     $lockingType: model.modelId
-                };
-                removeEntryLock(record);
-                onDisablePrompt(true);
+                });
                 showDialog({
                     title: "Entry was forcefully unlocked!",
                     content: <ForceUnlocked user={user} />,
@@ -88,10 +81,12 @@ export const ContentEntryLocker = ({
         );
 
         return () => {
-            if (!subscription.current) {
-                return;
-            }
-            subscription.current.off();
+            onMessageSub.off();
+            /**
+             * Lets null subscriptions, just in case it...
+             */
+            // @ts-expect-error
+            onMessageSub = null;
         };
     }, [entry.id, onEntryUnlocked, model.modelId]);
 
@@ -100,22 +95,44 @@ export const ContentEntryLocker = ({
             return;
         }
 
-        const record: IIsRecordLockedParams = {
-            id: entry.id,
-            $lockingType: model.modelId
-        };
-        updateEntryLock(record);
+        if (entryLockerTimeout.current) {
+            return;
+        }
 
-        return () => {
-            (async () => {
-                const result = await fetchLockedEntryLockRecord(record);
-                if (result) {
-                    return;
-                }
-                unlockEntry(record);
-            })();
+        const updateLock = async () => {
+            const result = await updateEntryLock({
+                id: entry.id,
+                $lockingType: model.modelId
+            });
+            if (result.error) {
+                showDialog({
+                    title: "There was an error while updating the entry lock.",
+                    content: result.error.message,
+                    acceptLabel: "Ok",
+                    onClose: undefined,
+                    cancelLabel: undefined
+                });
+                onEntryUnlocked();
+                return;
+            }
+            createTimeout();
         };
-    }, [entry.id]);
+
+        const createTimeout = () => {
+            entryLockerTimeout.current = window.setTimeout(() => {
+                updateLock();
+            }, autoUpdateTimeout * 1000);
+        };
+
+        updateLock();
+        return () => {
+            if (!entryLockerTimeout.current) {
+                return;
+            }
+            clearTimeout(entryLockerTimeout.current);
+            entryLockerTimeout.current = null;
+        };
+    }, [entry.id, onEntryUnlocked]);
 
     return <>{children}</>;
 };

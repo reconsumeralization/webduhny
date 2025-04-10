@@ -23,7 +23,13 @@ export const ResultDialogMessage = ({ results, message }: ResultDialogMessagePro
                         </ListItemGraphic>
                         <ListItemText>
                             <ListItemTextPrimary>{result.title}</ListItemTextPrimary>
-                            <ListItemTextSecondary>{result.message}</ListItemTextSecondary>
+                            <ListItemTextSecondary>
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: `${result.message}`
+                                    }}
+                                ></span>
+                            </ListItemTextSecondary>
                         </ListItemText>
                     </ListItem>
                 ))}

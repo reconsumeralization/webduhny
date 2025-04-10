@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "babel-plugin-named-asset-import": "^1.0.0-next.3e165448",
     "rimraf": "^6.0.1",
@@ -57,8 +56,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "svgo": {
     "plugins": {

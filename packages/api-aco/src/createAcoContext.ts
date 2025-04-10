@@ -5,7 +5,13 @@ import { Tenant } from "@webiny/api-tenancy/types";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { createAcoHooks } from "~/createAcoHooks";
 import { createAcoStorageOperations } from "~/createAcoStorageOperations";
-import { AcoContext, CreateAcoParams, Folder, IAcoAppRegisterParams } from "~/types";
+import {
+    AcoContext,
+    CreateAcoParams,
+    Folder,
+    IAcoAppRegisterParams,
+    ListFoldersParams
+} from "~/types";
 import { createFolderCrudMethods } from "~/folder/folder.crud";
 import { createSearchRecordCrudMethods } from "~/record/record.crud";
 import { AcoApps } from "./apps";
@@ -44,7 +50,7 @@ const setupAcoContext = async (
         return tenancy.getCurrentTenant();
     };
 
-    const storageOperations = createAcoStorageOperations({
+    const storageOperations = await createAcoStorageOperations({
         /**
          * TODO: We need to figure out a way to pass "cms" from outside (e.g. apps/api/graphql)
          */
@@ -79,7 +85,7 @@ const setupAcoContext = async (
             });
         },
         listPermissions: () => security.listPermissions(),
-        listAllFolders: type => {
+        listAllFolders: (params: ListFoldersParams) => {
             // When retrieving a list of all folders, we want to do it in the
             // fastest way and that is by directly using CMS's storage operations.
             const { withModel } = createOperationsWrapper({
@@ -91,18 +97,26 @@ const setupAcoContext = async (
 
             return withModel(async model => {
                 try {
-                    const results = await context.cms.storageOperations.entries.list(model, {
-                        limit: 100_000,
+                    const response = await context.cms.storageOperations.entries.list(model, {
+                        limit: 10_000,
                         where: {
-                            type,
+                            ...params.where,
 
                             // Folders always work with latest entries. We never publish them.
                             latest: true
                         },
+                        after: params.after,
                         sort: ["title_ASC"]
                     });
 
-                    return results.items.map(pickEntryFieldValues<Folder>);
+                    return [
+                        response.items.map(pickEntryFieldValues<Folder>),
+                        {
+                            cursor: response.cursor,
+                            totalCount: response.totalCount,
+                            hasMoreItems: response.hasMoreItems
+                        }
+                    ];
                 } catch (ex) {
                     /**
                      * Skip throwing an error if the error is related to the search phase execution.
@@ -111,7 +125,14 @@ const setupAcoContext = async (
                      * TODO: figure out better way to handle this.
                      */
                     if (ex.message === "search_phase_execution_exception") {
-                        return [];
+                        return [
+                            [],
+                            {
+                                cursor: null,
+                                totalCount: 0,
+                                hasMoreItems: false
+                            }
+                        ];
                     }
                     throw ex;
                 }

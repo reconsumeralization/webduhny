@@ -80,90 +80,98 @@ const FieldRenderer = ({ getBind, Label, field }: CmsModelFieldRendererProps) =>
                 ).filter(Boolean);
 
                 return (
-                    <EditFileUsingUrl onSetFile={onSetFile(bind)}>
-                        {({ editFile }) => (
-                            <FileUploadWrapper className={imageWrapperStyles}>
-                                <FileManager
-                                    multiple
-                                    images={imagesOnly}
-                                    render={({ showFileManager }) => {
-                                        const selectFiles = (index = -1) => {
-                                            showFileManager(files => {
-                                                const urls = files.map(f => f.src);
-                                                if (index === -1) {
-                                                    onChange([...value, ...urls]);
-                                                } else {
-                                                    onChange([
-                                                        ...value.slice(0, index),
-                                                        ...urls,
-                                                        ...value.slice(index + 1)
-                                                    ]);
-                                                }
-                                            });
-                                        };
-                                        return (
-                                            <>
-                                                <Label>{field.label}</Label>
+                    <Bind.ValidationContainer>
+                        <EditFileUsingUrl onSetFile={onSetFile(bind)}>
+                            {({ editFile }) => (
+                                <FileUploadWrapper className={imageWrapperStyles}>
+                                    <FileManager
+                                        multiple
+                                        images={imagesOnly}
+                                        render={({ showFileManager }) => {
+                                            const selectFiles = (index = -1) => {
+                                                showFileManager(files => {
+                                                    const urls = files.map(f => f.src);
+                                                    if (index === -1) {
+                                                        onChange([...value, ...urls]);
+                                                    } else {
+                                                        onChange([
+                                                            ...value.slice(0, index),
+                                                            ...urls,
+                                                            ...value.slice(index + 1)
+                                                        ]);
+                                                    }
+                                                });
+                                            };
+                                            return (
+                                                <>
+                                                    <Label>{field.label}</Label>
 
-                                                <Gallery>
-                                                    {value.map((url: string, index: number) => (
-                                                        <InnerImageFieldWrapper
-                                                            key={url + "-" + index}
-                                                        >
+                                                    <Gallery>
+                                                        {value.map((url: string, index: number) => (
+                                                            <InnerImageFieldWrapper
+                                                                key={url + "-" + index}
+                                                            >
+                                                                <File
+                                                                    url={url}
+                                                                    showFileManager={() =>
+                                                                        selectFiles(index)
+                                                                    }
+                                                                    onEdit={() => {
+                                                                        editFileRef.current = {
+                                                                            index,
+                                                                            url
+                                                                        };
+
+                                                                        editFile(url);
+                                                                    }}
+                                                                    onRemove={() =>
+                                                                        onChange(
+                                                                            dotProp.delete(
+                                                                                value,
+                                                                                index
+                                                                            )
+                                                                        )
+                                                                    }
+                                                                    placeholder={t`Select a file`}
+                                                                    data-testid={`fr.input.file.${field.label}.${index}`}
+                                                                />
+                                                            </InnerImageFieldWrapper>
+                                                        ))}
+                                                        <InnerImageFieldWrapper>
                                                             <File
-                                                                url={url}
-                                                                showFileManager={() =>
-                                                                    selectFiles(index)
-                                                                }
-                                                                onEdit={() => {
-                                                                    editFileRef.current = {
-                                                                        index,
-                                                                        url
-                                                                    };
-
-                                                                    editFile(url);
+                                                                url={""}
+                                                                onRemove={() => {
+                                                                    return void 0;
                                                                 }}
-                                                                onRemove={() =>
-                                                                    onChange(
-                                                                        dotProp.delete(value, index)
-                                                                    )
+                                                                {...bind}
+                                                                showFileManager={() =>
+                                                                    selectFiles()
                                                                 }
                                                                 placeholder={t`Select a file`}
-                                                                data-testid={`fr.input.file.${field.label}.${index}`}
+                                                                data-testid={`fr.input.file.${field.label}`}
                                                             />
                                                         </InnerImageFieldWrapper>
-                                                    ))}
-                                                    <InnerImageFieldWrapper>
-                                                        <File
-                                                            url={""}
-                                                            onRemove={() => {
-                                                                return void 0;
-                                                            }}
-                                                            {...bind}
-                                                            showFileManager={() => selectFiles()}
-                                                            placeholder={t`Select a file`}
-                                                            data-testid={`fr.input.file.${field.label}`}
-                                                        />
-                                                    </InnerImageFieldWrapper>
-                                                </Gallery>
+                                                    </Gallery>
 
-                                                {validation.isValid === false && (
-                                                    <FormElementMessage error>
-                                                        {validation.message || "Invalid value."}
-                                                    </FormElementMessage>
-                                                )}
-                                                {validation.isValid !== false && field.helpText && (
-                                                    <FormElementMessage>
-                                                        {field.helpText}
-                                                    </FormElementMessage>
-                                                )}
-                                            </>
-                                        );
-                                    }}
-                                />
-                            </FileUploadWrapper>
-                        )}
-                    </EditFileUsingUrl>
+                                                    {validation.isValid === false && (
+                                                        <FormElementMessage error>
+                                                            {validation.message || "Invalid value."}
+                                                        </FormElementMessage>
+                                                    )}
+                                                    {validation.isValid !== false &&
+                                                        field.helpText && (
+                                                            <FormElementMessage>
+                                                                {field.helpText}
+                                                            </FormElementMessage>
+                                                        )}
+                                                </>
+                                            );
+                                        }}
+                                    />
+                                </FileUploadWrapper>
+                            )}
+                        </EditFileUsingUrl>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

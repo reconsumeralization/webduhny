@@ -15,3 +15,5 @@ export const createAcoHcmsContext = () => {
 
     return plugin;
 };
+
+export * from "./plugins";

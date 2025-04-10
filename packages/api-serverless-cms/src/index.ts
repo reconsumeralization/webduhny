@@ -50,3 +50,17 @@ export const createGraphQLSchemaPlugin = <T extends Context = Context>(
 export { createSecurityRolePlugin, createSecurityTeamPlugin };
 
 export * from "./tenancy/InstallTenant";
+
+export {
+    // Model groups.
+    createModelGroupPlugin,
+
+    // Models.
+    createModelPlugin,
+    createSingleEntryModelPlugin,
+    createPrivateModelPlugin,
+    createPrivateSingleEntryModelPlugin,
+
+    // Other.
+    createStorageTransformPlugin
+} from "@webiny/api-headless-cms";

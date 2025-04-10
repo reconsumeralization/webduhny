@@ -2,8 +2,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import orderBy from "lodash/orderBy";
 import { i18n } from "@webiny/app/i18n";
-import { useSecurity } from "@webiny/app-security";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { Image } from "@webiny/app/components";
 import {
     DataList,
@@ -18,7 +16,6 @@ import {
     DataListModalOverlay
 } from "@webiny/ui/List";
 import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { Avatar } from "@webiny/ui/Avatar";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
@@ -31,6 +28,7 @@ import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/fil
 import { DELETE_USER, LIST_USERS } from "./graphql";
 import { deserializeSorters } from "../utils";
 import { UserItem } from "~/UserItem";
+import { DeleteAction } from "./components/DeleteAction";
 
 const t = i18n.ns("app-identity/admin/users/data-list");
 
@@ -60,7 +58,6 @@ interface FilterUsersCallable {
 const UsersDataList = () => {
     const [filter, setFilter] = useState("");
     const [sort, setSort] = useState<string>(SORTERS[0].sorter);
-    const { identity } = useSecurity();
     const { history } = useRouter();
     const { showSnackbar } = useSnackbar();
     const { showConfirmation } = useConfirmationDialog({
@@ -196,21 +193,7 @@ const UsersDataList = () => {
 
                             <ListItemMeta>
                                 <ListActions>
-                                    {identity && identity.id !== item.id ? (
-                                        <DeleteIcon
-                                            onClick={() => deleteItem(item)}
-                                            data-testid={"default-data-list.delete"}
-                                        />
-                                    ) : (
-                                        <Tooltip
-                                            placement={"bottom"}
-                                            content={
-                                                <span>{t`You can't delete your own user account.`}</span>
-                                            }
-                                        >
-                                            <DeleteIcon disabled />
-                                        </Tooltip>
-                                    )}
+                                    <DeleteAction item={item} onClick={() => deleteItem(item)} />
                                 </ListActions>
                             </ListItemMeta>
                         </ListItem>

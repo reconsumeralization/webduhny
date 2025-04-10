@@ -23,10 +23,22 @@ const fetchWcpProjectLicense = async ({
             headers: { authorization: projectEnvironmentApiKey }
         }
     )
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+
+            console.warn(
+                `An error occurred while trying to retrieve the license for project "${orgId}/${projectId}": invalid response status (${response.status}, ${response.statusText})`,
+                response
+            );
+
+            return null;
+        })
         .catch(e => {
             console.warn(
-                `An error occurred while trying to retrieve the license for project "${orgId}/${projectId}": ${e.message}`
+                `An error occurred while trying to retrieve the license for project "${orgId}/${projectId}": ${e.message}`,
+                e
             );
             return null;
         });

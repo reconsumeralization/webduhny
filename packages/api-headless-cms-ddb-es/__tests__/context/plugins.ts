@@ -4,7 +4,7 @@ import i18nContext from "@webiny/api-i18n/graphql/context";
 import graphQLHandlerPlugins from "@webiny/handler-graphql";
 import { createHeadlessCmsContext, createHeadlessCmsGraphQL } from "@webiny/api-headless-cms";
 import { createWcpContext } from "@webiny/api-wcp";
-import { createTenancyAndSecurity } from "./tenancySecurity";
+import { createTenancyAndSecurity, tenants } from "./tenancySecurity";
 import { createDummyLocales, createPermissions, PermissionsArg } from "./helpers";
 import { ApiKey, SecurityIdentity } from "@webiny/api-security/types";
 import { ContextPlugin } from "@webiny/api";
@@ -87,7 +87,9 @@ export const createHandlerCore = (params: CreateHandlerCoreParams) => {
             apiKeyAuthorization({ identityType: "api-key" }),
             i18nContext(),
             i18nStorage.storageOperations,
-            createDummyLocales(),
+            createDummyLocales({
+                tenants
+            }),
             mockLocalesPlugins(),
             createHeadlessCmsContext({
                 storageOperations: cmsStorage.storageOperations

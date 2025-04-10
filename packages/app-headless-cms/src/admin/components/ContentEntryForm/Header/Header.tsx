@@ -6,6 +6,8 @@ import { useContentEntryEditorConfig } from "~/admin/config/contentEntries";
 import { ContentFormOptionsMenu } from "./ContentFormOptionsMenu";
 import { RevisionSelector } from "~/admin/components/ContentEntryForm/Header/RevisionSelector";
 import styled from "@emotion/styled";
+import { Helmet } from "react-helmet";
+import { useContentEntry } from "~/admin/views/contentEntries/hooks";
 
 const ToolbarGrid = styled.div`
     padding: 15px;
@@ -22,9 +24,11 @@ const Actions = styled.div`
 
 export const Header = makeDecoratable("ContentEntryFormHeader", () => {
     const { buttonActions } = useContentEntryEditorConfig();
+    const { entry } = useContentEntry();
 
     return (
         <ToolbarGrid id="headerToolbarGrid">
+            {entry.meta?.title ? <Helmet title={entry.meta.title} /> : null}
             <div>
                 <RevisionSelector />
             </div>

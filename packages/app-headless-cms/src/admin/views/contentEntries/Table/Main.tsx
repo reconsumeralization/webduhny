@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
-import { useCreateDialog, useFolders } from "@webiny/app-aco";
+import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { Empty } from "~/admin/components/ContentEntries/Empty";
 import { Filters } from "~/admin/components/ContentEntries/Filters";
@@ -30,15 +30,24 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
 
     // We check permissions on two layers - security and folder level permissions.
     const { canCreate, contentModel } = useContentEntry();
-    const { folderLevelPermissions: flp } = useFolders();
+    const { getFolderLevelPermission: canManageContent } =
+        useGetFolderLevelPermission("canManageContent");
+    const { getFolderLevelPermission: canManageStructure } =
+        useGetFolderLevelPermission("canManageStructure");
 
-    const canCreateFolder = useMemo(() => {
-        return flp.canManageStructure(folderId);
-    }, [flp, folderId]);
+    const canCreateFolder = useCallback(
+        (folderId: string) => {
+            return canManageStructure(folderId);
+        },
+        [canManageStructure]
+    );
 
-    const canCreateContent = useMemo(() => {
-        return canCreate && flp.canManageContent(folderId);
-    }, [flp, folderId]);
+    const canCreateContent = useCallback(
+        (folderId: string) => {
+            return canCreate && canManageContent(folderId);
+        },
+        [canManageContent, canCreate]
+    );
 
     const createEntry = useCallback(() => {
         const folder = folderId ? `&folderId=${encodeURIComponent(folderId)}` : "";
@@ -78,8 +87,8 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
             <MainContainer>
                 <Header
                     title={!list.isListLoading ? list.listTitle : undefined}
-                    canCreateFolder={canCreateFolder}
-                    canCreateContent={canCreateContent}
+                    canCreateFolder={canCreateFolder(folderId)}
+                    canCreateContent={canCreateContent(folderId)}
                     onCreateEntry={createEntry}
                     onCreateFolder={onCreateFolder}
                     searchValue={list.search}
@@ -94,8 +103,8 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
                     !list.isListLoading ? (
                         <Empty
                             isSearch={list.isSearch}
-                            canCreateFolder={canCreateFolder}
-                            canCreateContent={canCreateContent}
+                            canCreateFolder={canCreateFolder(folderId)}
+                            canCreateContent={canCreateContent(folderId)}
                             onCreateEntry={createEntry}
                             onCreateFolder={onCreateFolder}
                         />

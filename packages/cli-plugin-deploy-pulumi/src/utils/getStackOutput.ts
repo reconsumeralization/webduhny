@@ -17,7 +17,7 @@ const getOutputJson = ({ folder, env, cwd, variant }: IGetOutputJsonParams) => {
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
 
     if (cache[cacheKey]) {
-        return cache[cacheKey];
+        return structuredClone(cache[cacheKey]);
     }
 
     try {
@@ -45,7 +45,7 @@ const getOutputJson = ({ folder, env, cwd, variant }: IGetOutputJsonParams) => {
             return null;
         }
         cache[cacheKey] = parsed;
-        return parsed;
+        return structuredClone(cache[cacheKey]);
     } catch (e) {
         return null;
     }
@@ -60,6 +60,13 @@ export interface IGetStackOutputParams {
 }
 
 export interface IStackOutput {
+    /**
+     * There is a possibility for a user to add stuff to the stack output.
+     */
+    [key: string]: string | string[] | undefined | number | number[] | boolean;
+}
+
+export interface IDefaultStackOutput extends IStackOutput {
     deploymentId: string;
     region: string;
     dynamoDbTable: string;
@@ -97,13 +104,11 @@ export interface IStackOutput {
     elasticsearchDynamodbTableName: string | undefined;
     appStorage: string;
     websiteRouterOriginRequestFunction?: string;
-    /**
-     * There is a possibility for a user to add stuff to the stack output.
-     */
-    [key: string]: string | string[] | undefined | number | number[] | boolean;
+    appDomain?: string;
+    deliveryDomain?: string;
 }
 
-export const getStackOutput = <T extends IStackOutput = IStackOutput>(
+export const getStackOutput = <T extends IStackOutput = IDefaultStackOutput>(
     folderOrArgs: IGetStackOutputParams | string,
     env?: string,
     map?: Record<string, any>

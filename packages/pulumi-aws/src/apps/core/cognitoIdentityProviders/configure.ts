@@ -70,19 +70,34 @@ export const configureAdminCognitoFederation = (
         pulumi.interpolate`${userPoolDomain.output.domain}.auth.${region}.amazoncognito.com`
     );
 
-    const providers = [];
+    const idpConfigs: aws.cognito.IdentityProviderArgs[] = [];
+
     for (const idp of config.identityProviders) {
-        providers.push(
-            app.addResource(aws.cognito.IdentityProvider, {
-                name: idp.type,
-                config: getIdpConfig(idp.type, userPool.output.id, idp)
-            })
-        );
+        const config = getIdpConfig(idp.type, userPool.output.id, idp);
+
+        // The idea to lowercase the provider name emerged while working on backwards compatibility issue.
+        // Basically, in cases where a user used the OIDC provider and did not specify a name, instead of
+        // using `OIDC` as the name, we wanted to ensure `oidc` is used. But, what I soon realized is that
+        // by simply lowercasing the name, we can avoid the need to check for the provider type and name.
+        // And although this will now happen for all providers, it's not a problem since Pulumi requires
+        // names to be all lowercase anyway.
+        const name = config.providerName.toString().toLowerCase();
+
+        app.addResource(aws.cognito.IdentityProvider, { name, config });
+
+        idpConfigs.push(config);
     }
 
     appClient.config.supportedIdentityProviders([
         "COGNITO",
-        ...providers.map(p => p.output.providerType)
+        ...idpConfigs.map(config => {
+            // For built-in identity providers, we use the type as the name. Only for OIDC,
+            // we allow the user to provide a custom name, and we only use the type as a fallback.
+            if (config.providerType === "OIDC") {
+                return config.providerName;
+            }
+            return config.providerType;
+        })
     ]);
 
     appClient.config.allowedOauthScopes(["profile", "email", "openid"]);

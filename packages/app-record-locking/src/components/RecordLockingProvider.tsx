@@ -64,15 +64,19 @@ export const RecordLockingProvider = (props: IRecordLockingProviderProps) => {
             const result = await recordLocking.updateEntryLock(params);
             if (result.error) {
                 setError(result.error);
-                return;
+                return result;
             }
             const target = result.data;
             if (!target?.id) {
-                setError({
+                const error = {
                     message: "No data returned from server.",
                     code: "NO_DATA"
-                });
-                return;
+                };
+                setError(error);
+                return {
+                    error,
+                    data: null
+                };
             }
 
             setRecords(prev => {
@@ -86,6 +90,7 @@ export const RecordLockingProvider = (props: IRecordLockingProviderProps) => {
                     return item;
                 });
             });
+            return result;
         },
         async unlockEntry(params: IUnlockEntryParams) {
             return await recordLocking.unlockEntry(params);

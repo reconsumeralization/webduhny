@@ -43,7 +43,9 @@ export const pulumiLoginSelectStack = async ({
      */
     const region = inputs.region || process.env.AWS_REGION;
 
-    if (projectApplication.id !== "core") {
+    const skip = ["core", "blueGreen"].includes(projectApplication.id);
+
+    if (!skip) {
         const coreStack = getStackOutput({
             ...inputs,
             folder: "apps/core"

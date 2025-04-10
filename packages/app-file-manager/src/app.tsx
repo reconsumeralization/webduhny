@@ -3,6 +3,7 @@ import { SettingsModule } from "~/modules/Settings";
 import { FileManagerApiProviderModule } from "~/modules/FileManagerApiProvider";
 import { FileManagerRendererModule } from "~/modules/FileManagerRenderer";
 import { HeadlessCmsModule } from "~/modules/HeadlessCms";
+import { EnterpriseModule } from "~/modules/Enterprise";
 
 export const FileManager = () => {
     return (
@@ -11,6 +12,7 @@ export const FileManager = () => {
             <FileManagerApiProviderModule />
             <FileManagerRendererModule />
             <HeadlessCmsModule />
+            <EnterpriseModule />
         </>
     );
 };

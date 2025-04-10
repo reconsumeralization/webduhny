@@ -1,12 +1,11 @@
-import { Manager } from "~/tasks/Manager";
-import { IndexManager } from "~/settings";
-import { ITaskResponseResult } from "@webiny/tasks";
-import {
-    CreateElasticsearchIndexTaskPlugin,
-    CreateElasticsearchIndexTaskPluginIndex
-} from "./CreateElasticsearchIndexTaskPlugin";
-import { Context } from "~/types";
-import { IElasticsearchCreateIndexesTaskInput } from "~/tasks/createIndexes/types";
+import type { Manager } from "~/tasks/Manager";
+import type { IndexManager } from "~/settings";
+import type { ITaskResponseResult } from "@webiny/tasks";
+import type { IElasticsearchCreateIndexesTaskInput } from "./types";
+import { listIndexes } from "./listIndexes";
+import { createIndexFactory } from "./createIndex";
+import type { Context } from "~/types";
+import { listCreateElasticsearchIndexTaskPlugin } from "./listCreateElasticsearchIndexTaskPlugin";
 
 export class CreateIndexesTaskRunner {
     private readonly manager: Manager<IElasticsearchCreateIndexesTaskInput>;
@@ -25,34 +24,18 @@ export class CreateIndexesTaskRunner {
         matching: string | undefined,
         done: string[]
     ): Promise<ITaskResponseResult> {
-        const plugins = this.manager.context.plugins.byType<
-            CreateElasticsearchIndexTaskPlugin<Context>
-        >(CreateElasticsearchIndexTaskPlugin.type);
+        const plugins = listCreateElasticsearchIndexTaskPlugin<Context>(
+            this.manager.context.plugins
+        );
         if (plugins.length === 0) {
             return this.manager.response.done("No index plugins found.");
         }
-        const indexes: CreateElasticsearchIndexTaskPluginIndex[] = [];
 
-        const tenants = await this.manager.context.tenancy.listTenants();
+        const indexes = await listIndexes({
+            context: this.manager.context,
+            plugins
+        });
 
-        for (const tenant of tenants) {
-            const locales = await this.manager.context.i18n.getLocales();
-            for (const locale of locales) {
-                for (const plugin of plugins) {
-                    const results = await plugin.getIndexList({
-                        context: this.manager.context,
-                        tenant: tenant.id,
-                        locale: locale.code
-                    });
-                    for (const result of results) {
-                        if (indexes.some(i => i.index === result.index)) {
-                            continue;
-                        }
-                        indexes.push(result);
-                    }
-                }
-            }
-        }
         if (indexes.length === 0) {
             return this.manager.response.done("No indexes found.");
         }
@@ -63,6 +46,8 @@ export class CreateIndexesTaskRunner {
             }
             return index.includes(matching);
         };
+
+        const createIndex = createIndexFactory(this.indexManager);
 
         for (const { index, settings } of indexes) {
             if (this.manager.isAborted()) {
@@ -83,7 +68,7 @@ export class CreateIndexesTaskRunner {
                     continue;
                 }
                 done.push(index);
-                await this.indexManager.createIndex(index, settings);
+                await createIndex.create(index, settings);
                 await this.manager.store.addInfoLog({
                     message: `Index "${index}" created.`,
                     data: {

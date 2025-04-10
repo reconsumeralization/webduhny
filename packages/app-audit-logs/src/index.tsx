@@ -14,13 +14,13 @@ import { LOCAL_STORAGE_LATEST_VISITED_FOLDER } from "~/constants";
 
 export const AuditLogs = () => {
     const client = useApolloClient();
+    const wcp = useWcp();
 
     const createNavigateFolderStorageKey = useCallback(() => {
         return LOCAL_STORAGE_LATEST_VISITED_FOLDER;
     }, []);
 
-    const { canUseFeature } = useWcp();
-    if (!canUseFeature("auditLogs")) {
+    if (!wcp.canUseAuditLogs()) {
         return null;
     }
 
@@ -32,7 +32,7 @@ export const AuditLogs = () => {
                     <AddMenu name="auditLogs" label={`Audit Logs`} icon={<Icon />}>
                         <AddMenu name={"auditLogs.logs"} label={`Logs`} path="/audit-logs" />
                     </AddMenu>
-                    <AddRoute exact path={"/audit-logs"}>
+                    <AddRoute path={"/audit-logs"}>
                         <Layout title={"Audit Logs - Logs"}>
                             <AuditLogsListWithConfig>
                                 <AcoProvider

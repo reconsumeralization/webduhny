@@ -43,6 +43,7 @@ export interface CMSPermissionsProps {
     value: CmsSecurityPermission[];
     onChange: (value: CmsSecurityPermission[]) => void;
 }
+
 export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
     const { getPermission } = useSecurity();
 
@@ -177,7 +178,7 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
         [value]
     );
 
-    const formData = useMemo(() => {
+    const initialFormData = useMemo(() => {
         // This function only runs once on Form mount
         if (!Array.isArray(value)) {
             return {
@@ -262,114 +263,98 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
     }, []);
 
     return (
-        <Form<CmsSecurityPermission> data={formData} onChange={onFormChange}>
-            {({ data, Bind, setValue }) => {
-                const endpoints = data.endpoints || [];
-                const graphQLEndpointAccess =
-                    endpoints.includes("read") ||
-                    endpoints.includes("manage") ||
-                    endpoints.includes("preview");
+        <Form<CmsSecurityPermission> data={initialFormData} onChange={onFormChange}>
+            {({ data, Bind, setValue }) => (
+                <>
+                    <Grid className={gridNoPaddingClass}>
+                        <Cell span={12}>
+                            {data.accessLevel === "custom" && cannotUseAAcl && (
+                                <CannotUseAaclAlert />
+                            )}
+                        </Cell>
+                    </Grid>
 
-                return (
-                    <Fragment>
-                        <Grid className={gridNoPaddingClass}>
-                            <Cell span={12}>
-                                {data.accessLevel === "custom" && cannotUseAAcl && (
-                                    <CannotUseAaclAlert />
-                                )}
-                            </Cell>
-                        </Grid>
-
-                        <Grid className={gridNoPaddingClass}>
-                            <Cell span={6}>
-                                <PermissionInfo title={t`Access Level`} />
-                            </Cell>
-                            <Cell span={6}>
-                                <Bind name={"accessLevel"}>
-                                    <Select label={t`Access Level`}>
-                                        <option value={NO_ACCESS}>{t`No access`}</option>
-                                        <option value={FULL_ACCESS}>{t`Full access`}</option>
-                                        <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>
-                                    </Select>
-                                </Bind>
-                            </Cell>
-                        </Grid>
-                        {data.accessLevel === CUSTOM_ACCESS && (
-                            <>
-                                <Grid>
-                                    <Cell span={12}>
-                                        <Bind name={"endpoints"}>
-                                            <CheckboxGroup
-                                                label={t`GraphQL API types`}
-                                                description={t`Each type has a separate URL and a specific purpose.
+                    <Grid className={gridNoPaddingClass}>
+                        <Cell span={6}>
+                            <PermissionInfo title={t`Access Level`} />
+                        </Cell>
+                        <Cell span={6}>
+                            <Bind name={"accessLevel"}>
+                                <Select label={t`Access Level`}>
+                                    <option value={NO_ACCESS}>{t`No access`}</option>
+                                    <option value={FULL_ACCESS}>{t`Full access`}</option>
+                                    <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>
+                                </Select>
+                            </Bind>
+                        </Cell>
+                    </Grid>
+                    {data.accessLevel === CUSTOM_ACCESS && (
+                        <>
+                            <Grid>
+                                <Cell span={12}>
+                                    <Bind name={"endpoints"}>
+                                        <CheckboxGroup
+                                            label={t`GraphQL API types`}
+                                            description={t`Each type has a separate URL and a specific purpose.
                                                  Check out the {link} key topic to learn more.`({
-                                                    link: (
-                                                        <Link
-                                                            to={GRAPHQL_API_TYPES_LINK}
-                                                            target={"_blank"}
-                                                        >
-                                                            Headless CMS GraphQL API
-                                                        </Link>
-                                                    )
-                                                })}
-                                            >
-                                                {({ getValue, onChange }) =>
-                                                    API_ENDPOINTS.map(({ id, name }) => (
-                                                        <Checkbox
-                                                            key={id}
-                                                            label={name}
-                                                            value={getValue(id)}
-                                                            onChange={onChange(id)}
-                                                            disabled={cannotUseAAcl}
-                                                        />
-                                                    ))
-                                                }
-                                            </CheckboxGroup>
-                                        </Bind>
-                                    </Cell>
-                                </Grid>
-                                {graphQLEndpointAccess && (
-                                    <ContentModelGroupPermission
-                                        data={data}
-                                        Bind={Bind}
-                                        disabled={cannotUseAAcl}
-                                        entity={"contentModelGroup"}
-                                        title={"Content Model Groups"}
-                                        locales={locales}
-                                    />
-                                )}
+                                                link: (
+                                                    <Link
+                                                        to={GRAPHQL_API_TYPES_LINK}
+                                                        target={"_blank"}
+                                                    >
+                                                        Headless CMS GraphQL API
+                                                    </Link>
+                                                )
+                                            })}
+                                        >
+                                            {({ getValue, onChange }) =>
+                                                API_ENDPOINTS.map(({ id, name }) => (
+                                                    <Checkbox
+                                                        key={id}
+                                                        label={name}
+                                                        value={getValue(id)}
+                                                        onChange={onChange(id)}
+                                                        disabled={cannotUseAAcl}
+                                                    />
+                                                ))
+                                            }
+                                        </CheckboxGroup>
+                                    </Bind>
+                                </Cell>
+                            </Grid>
 
-                                {graphQLEndpointAccess &&
-                                    canRead(value, "cms.contentModelGroup") && (
-                                        <ContentModelPermission
-                                            locales={locales}
-                                            data={data}
-                                            setValue={setValue}
-                                            Bind={Bind}
-                                            disabled={cannotUseAAcl}
-                                            entity={"contentModel"}
-                                            title={"Content Models"}
-                                            selectedContentModelGroups={getSelectedContentModelGroups(
-                                                data
-                                            )}
-                                        />
-                                    )}
+                            <ContentModelGroupPermission
+                                data={data}
+                                Bind={Bind}
+                                disabled={cannotUseAAcl}
+                                entity={"contentModelGroup"}
+                                title={"Content Model Groups"}
+                                locales={locales}
+                            />
 
-                                {graphQLEndpointAccess && canRead(value, "cms.contentModel") && (
-                                    <ContentEntryPermission
-                                        data={data}
-                                        Bind={Bind}
-                                        disabled={cannotUseAAcl}
-                                        setValue={setValue}
-                                        entity={"contentEntry"}
-                                        title={"Content Entries"}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </Fragment>
-                );
-            }}
+                            <ContentModelPermission
+                                locales={locales}
+                                data={data}
+                                setValue={setValue}
+                                Bind={Bind}
+                                disabled={cannotUseAAcl}
+                                entity={"contentModel"}
+                                title={"Content Models"}
+                                selectedContentModelGroups={getSelectedContentModelGroups(data)}
+                            />
+
+                            <ContentEntryPermission
+                                data={data}
+                                Bind={Bind}
+                                disabled={cannotUseAAcl}
+                                setValue={setValue}
+                                entity={"contentEntry"}
+                                title={"Content Entries"}
+                            />
+                        </>
+                    )}
+                </>
+            )}
         </Form>
     );
 };

@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@types/react-color": "^2.17.11",
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0"
   },
   "publishConfig": {
@@ -22,7 +21,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   }
 }

@@ -81,6 +81,7 @@ export interface CreatePageStorageOperationsParams {
     entity: Entity<any>;
     plugins: PluginsContainer;
 }
+
 export const createPageStorageOperations = (
     params: CreatePageStorageOperationsParams
 ): PageStorageOperations => {
@@ -96,6 +97,11 @@ export const createPageStorageOperations = (
         const latestKeys = {
             PK: createLatestPartitionKey(page),
             SK: createLatestSortKey(page)
+        };
+
+        const publishedKeys = {
+            PK: createPublishedPartitionKey(page),
+            SK: createPublishedSortKey(page)
         };
 
         const titleLC = page.title.toLowerCase();
@@ -121,6 +127,16 @@ export const createPageStorageOperations = (
                 }
             ]
         });
+
+        if (page.status === "published") {
+            entityBatch.put({
+                ...page,
+                ...publishedKeys,
+                GSI1_PK: createPathPartitionKey(page),
+                GSI1_SK: page.path,
+                TYPE: createPublishedType()
+            });
+        }
 
         try {
             await entityBatch.execute();

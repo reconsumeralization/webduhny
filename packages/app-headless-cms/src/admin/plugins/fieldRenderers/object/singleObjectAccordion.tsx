@@ -39,24 +39,26 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <Bind>
                     {bindProps => (
-                        <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
-                            <ParentValueIndexProvider index={-1}>
-                                <Accordion>
-                                    <AccordionItem
-                                        title={field.label}
-                                        description={field.helpText}
-                                        open={open}
-                                    >
-                                        <Fields
-                                            Bind={Bind}
-                                            contentModel={contentModel}
-                                            fields={settings.fields || []}
-                                            layout={settings.layout || []}
-                                        />
-                                    </AccordionItem>
-                                </Accordion>
-                            </ParentValueIndexProvider>
-                        </ParentFieldProvider>
+                        <Bind.ValidationContainer>
+                            <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
+                                <ParentValueIndexProvider index={-1}>
+                                    <Accordion>
+                                        <AccordionItem
+                                            title={field.label}
+                                            description={field.helpText}
+                                            open={open}
+                                        >
+                                            <Fields
+                                                Bind={Bind}
+                                                contentModel={contentModel}
+                                                fields={settings.fields || []}
+                                                layout={settings.layout || []}
+                                            />
+                                        </AccordionItem>
+                                    </Accordion>
+                                </ParentValueIndexProvider>
+                            </ParentFieldProvider>
+                        </Bind.ValidationContainer>
                     )}
                 </Bind>
             );

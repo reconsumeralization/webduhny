@@ -38,24 +38,32 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind defaultValue={defaultValue}>
-                    <CheckboxGroup label={field.label} description={field.helpText}>
-                        {({ onChange, getValue }) => (
-                            <React.Fragment>
-                                {options.map((option, index) => {
-                                    return (
-                                        <div key={String(option.value) + index}>
-                                            <Checkbox
-                                                label={option.label}
-                                                value={getValue(option.value)}
-                                                onChange={onChange(option.value)}
-                                                data-testid={`fr.input.${field.label}`}
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </React.Fragment>
-                        )}
-                    </CheckboxGroup>
+                    {bind => (
+                        <Bind.ValidationContainer>
+                            <CheckboxGroup
+                                {...bind}
+                                label={field.label}
+                                description={field.helpText}
+                            >
+                                {({ onChange, getValue }) => (
+                                    <React.Fragment>
+                                        {options.map((option, index) => {
+                                            return (
+                                                <div key={String(option.value) + index}>
+                                                    <Checkbox
+                                                        label={option.label}
+                                                        value={getValue(option.value)}
+                                                        onChange={onChange(option.value)}
+                                                        data-testid={`fr.input.${field.label}`}
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                    </React.Fragment>
+                                )}
+                            </CheckboxGroup>
+                        </Bind.ValidationContainer>
+                    )}
                 </Bind>
             );
         }

@@ -1,6 +1,10 @@
 import createGraphQLHandler from "@webiny/handler-graphql";
 import { createI18NContext } from "@webiny/api-i18n";
-import { CmsParametersPlugin, createHeadlessCmsContext } from "@webiny/api-headless-cms";
+import {
+    CmsParametersPlugin,
+    createHeadlessCmsContext,
+    createHeadlessCmsGraphQL
+} from "@webiny/api-headless-cms";
 import { mockLocalesPlugins } from "@webiny/api-i18n/graphql/testing";
 import { SecurityIdentity, SecurityPermission } from "@webiny/api-security/types";
 import { createHandler } from "@webiny/handler-aws";
@@ -97,6 +101,7 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
                 };
             }),
             createHeadlessCmsContext({ storageOperations: cmsStorage.storageOperations }),
+            createHeadlessCmsGraphQL(),
             createPageBuilderContext({ storageOperations: pageBuilderStorage.storageOperations }),
             createPageBuilderGraphQL(),
             createAco(),
@@ -167,20 +172,20 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     };
 
     const folders = {
-        async createFolder(variables = {}) {
-            return invoke({ body: { query: CREATE_FOLDER, variables } });
+        async createFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: CREATE_FOLDER(fields), variables } });
         },
-        async updateFolder(variables = {}) {
-            return invoke({ body: { query: UPDATE_FOLDER, variables } });
+        async updateFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: UPDATE_FOLDER(fields), variables } });
         },
         async deleteFolder(variables = {}) {
             return invoke({ body: { query: DELETE_FOLDER, variables } });
         },
-        async listFolders(variables = {}) {
-            return invoke({ body: { query: LIST_FOLDERS, variables } });
+        async listFolders(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: LIST_FOLDERS(fields), variables } });
         },
-        async getFolder(variables = {}) {
-            return invoke({ body: { query: GET_FOLDER, variables } });
+        async getFolder(variables = {}, fields: string[] = []) {
+            return invoke({ body: { query: GET_FOLDER(fields), variables } });
         }
     };
 

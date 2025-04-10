@@ -27,6 +27,7 @@
     "@webiny/app": "0.0.0",
     "@webiny/app-aco": "0.0.0",
     "@webiny/app-admin": "0.0.0",
+    "@webiny/app-headless-cms-common": "0.0.0",
     "@webiny/app-i18n": "0.0.0",
     "@webiny/app-page-builder-elements": "0.0.0",
     "@webiny/app-plugin-admin-welcome-screen": "0.0.0",
@@ -94,7 +95,6 @@
     "@types/react-virtualized": "^9.21.16",
     "@types/resize-observer-browser": "^0.1.4",
     "@types/store": "^2.0.2",
-    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "execa": "^5.1.1",
     "rimraf": "^6.0.1",
@@ -105,8 +105,8 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "yarn webiny run build",
-    "watch": "yarn webiny run watch"
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
   },
   "gitHead": "8476da73b653c89cc1474d968baf55c1b0ae0e5f",
   "adio": {

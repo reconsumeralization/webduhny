@@ -18,7 +18,15 @@ const plugin: CmsModelFieldRendererPlugin = {
         render(props) {
             const Bind = props.getBind();
 
-            return <Bind>{bind => <ContentEntriesAutocomplete {...props} bind={bind} />}</Bind>;
+            return (
+                <Bind>
+                    {bind => (
+                        <Bind.ValidationContainer>
+                            <ContentEntriesAutocomplete {...props} bind={bind} />
+                        </Bind.ValidationContainer>
+                    )}
+                </Bind>
+            );
         }
     }
 };

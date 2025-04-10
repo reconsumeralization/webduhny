@@ -37,11 +37,11 @@ jobs:
     steps:
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 20
 
       - uses: actions/checkout@v2
 
-      # 1. Install and cache dependencies.
+      # Install and cache dependencies.
       - uses: actions/cache@v2
         id: yarn-cache
         with:
@@ -51,15 +51,6 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
 
-      # 2. Destroy short-lived environment.
-      - name: Destroy Website project application
-        run: yarn webiny destroy apps/website --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy Admin Area project application
-        run: yarn webiny destroy apps/admin --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy API project application
-        run: yarn webiny destroy apps/api --env pr${{ github.event.pull_request.number }}
-
-      - name: Destroy Core project application
-        run: yarn webiny destroy apps/core --env pr${{ github.event.pull_request.number }}
+      # Destroy short-lived environment.
+      - name: Destroy
+        run: yarn webiny destroy --env pr${{ github.event.pull_request.number }} --confirm-destroy-env pr${{ github.event.pull_request.number }}

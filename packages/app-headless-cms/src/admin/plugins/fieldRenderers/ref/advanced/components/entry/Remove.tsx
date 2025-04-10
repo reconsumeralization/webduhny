@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import React, { useCallback } from "react";
 import { CmsReferenceContentEntry } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { ReactComponent as RemoveIcon } from "./assets/remove.svg";
+import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
 import { useConfirmationDialog } from "@webiny/app-admin";
 import { ButtonLink } from "./elements/ButtonLink";
+import { useForm } from "@webiny/form";
 
 const Text = styled("span")({
     fontFamily: "Source Sans Pro",
@@ -20,6 +21,7 @@ interface RemoveProps {
 }
 
 export const Remove = ({ entry, onRemove }: RemoveProps) => {
+    const {} = useForm();
     const { showConfirmation } = useConfirmationDialog({
         title: "Remove referenced entry",
         message: `Are you sure you want to remove the referenced entry "${entry.title}"?`,
@@ -34,7 +36,7 @@ export const Remove = ({ entry, onRemove }: RemoveProps) => {
 
     return (
         <ButtonLink onClick={onRemoveClick} maxWidth={"100px"}>
-            <RemoveIcon />
+            <DeleteIcon />
             <Text>Remove</Text>
         </ButtonLink>
     );

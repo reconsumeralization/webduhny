@@ -1,5 +1,4 @@
-import { getWcpProjectEnvironment } from "~/utils";
-import { encrypt } from "@webiny/wcp";
+import { encrypt, getWcpProjectEnvironment } from "@webiny/wcp";
 
 const dummyEnvironment = {
     apiKey: "0fc47574-ce3c-49ea-a34b-905ba3e0b242",

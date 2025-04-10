@@ -13,6 +13,7 @@ export * from "~/utcTimezones";
 export * from "./cacheKey";
 export * from "./getObjectProperties";
 export * from "./middleware";
+export type { GenericRecord } from "./GenericRecord";
 
 import { AsyncProcessor, composeAsync, NextAsyncProcessor } from "~/compose";
 
