@@ -4,10 +4,15 @@ import { generateId } from "~/utils";
 export class RadioItem {
     private readonly _id: string;
     private readonly _label: any;
-    private readonly _value: string;
+    private readonly _value: string | number;
     private readonly _disabled: boolean;
 
-    protected constructor(data: { id: string; label: any; value: string; disabled: boolean }) {
+    protected constructor(data: {
+        id: string;
+        label: any;
+        value: string | number;
+        disabled: boolean;
+    }) {
         this._id = data.id;
         this._label = data.label;
         this._value = data.value;
