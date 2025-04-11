@@ -1,21 +1,11 @@
 import React from "react";
 import { ContentEntryListConfig, useModel } from "@webiny/app-headless-cms";
 import { ReactComponent as LockedIcon } from "@webiny/icons/lock.svg";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { useRecordLocking } from "~/hooks";
 import { UseContentEntriesListHookDecorator } from "./decorators/UseContentEntriesListHookDecorator";
-import styled from "@emotion/styled";
 import { UseSaveEntryDecorator } from "~/components/decorators/UseSaveEntryDecorator";
 import { UseRecordsDecorator } from "./decorators/UseRecordsDecorator";
-
-const CenterAlignment = styled.div`
-    display: block;
-    margin: 0 auto;
-    width: 28px;
-    svg {
-        fill: var(--mdc-theme-text-secondary-on-background);
-    }
-`;
+import { Icon, Tooltip } from "@webiny/admin-ui";
 
 const { Browser } = ContentEntryListConfig;
 
@@ -40,14 +30,11 @@ const ActionsCell = ({ children }: ActionsCellProps) => {
         return <>{children}</>;
     }
     return (
-        <CenterAlignment>
-            <Tooltip
-                placement={"left"}
-                content={`This ${model.name} is currently locked by ${entry.$locked.lockedBy.displayName}.`}
-            >
-                <LockedIcon />
-            </Tooltip>
-        </CenterAlignment>
+        <Tooltip
+            side={"left"}
+            content={`This ${model.name} is currently locked by ${entry.$locked.lockedBy.displayName}.`}
+            trigger={<Icon icon={<LockedIcon />} label={"Locked entry"} color={"neutral-light"} />}
+        />
     );
 };
 

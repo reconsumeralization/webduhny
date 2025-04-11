@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRecordLocking } from "~/hooks";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { LockedRecord } from "../LockedRecord";
 import { IRecordLockingLockRecord } from "~/types";
 import { CmsContentEntry, CmsModel } from "@webiny/app-headless-cms/types";
+import { OverlayLoader } from "@webiny/admin-ui";
 
 export interface IContentEntryGuardProps {
     loading: boolean;
@@ -34,7 +34,7 @@ export const ContentEntryGuard = (props: IContentEntryGuardProps) => {
     if (locked === undefined) {
         return (
             <div className={"wby-h-screen wby-w-screen wby-fixed wby-top-0 wby-left-0 wby-z-20"}>
-                <CircularProgress />
+                <OverlayLoader />
             </div>
         );
     } else if (locked) {

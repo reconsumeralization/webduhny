@@ -1,22 +1,20 @@
 import React from "react";
 import { css } from "emotion";
-import { Typography } from "@webiny/ui/Typography";
-
-export const flexClass = css({
-    display: "flex",
-    alignItems: "center",
-    height: "100%"
-});
+import { Label } from "@webiny/admin-ui";
 
 export const gridNoPaddingClass = css({
     padding: "0px !important"
+});
+
+export const gridWithPaddingClass = css({
+    paddingTop: "var(--padding-md)"
 });
 
 interface PermissionInfoProps {
     title: string;
 }
 export const PermissionInfo = ({ title }: PermissionInfoProps) => (
-    <div className={flexClass}>
-        <Typography use={"body2"}>{title}</Typography>
+    <div className={"wby-flex wby-items-center wby-h-full"}>
+        <Label text={title} />
     </div>
 );
