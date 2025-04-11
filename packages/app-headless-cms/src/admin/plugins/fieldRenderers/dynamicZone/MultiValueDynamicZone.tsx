@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "@emotion/styled";
 import cloneDeep from "lodash/cloneDeep";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { ReactComponent as CloneIcon } from "@webiny/icons/library_add.svg";
@@ -23,10 +22,6 @@ import { TemplateProvider } from "~/admin/plugins/fieldRenderers/dynamicZone/Tem
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { useConfirmationDialog } from "@webiny/app-admin";
 import { Accordion } from "@webiny/admin-ui";
-
-const BottomMargin = styled.div`
-    margin-bottom: 20px;
-`;
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -252,9 +247,7 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
             {hasValues ? (
                 <AddTemplateIcon onTemplate={onTemplate} />
             ) : (
-                <BottomMargin>
-                    <AddTemplateButton onTemplate={onTemplate} />
-                </BottomMargin>
+                <AddTemplateButton onTemplate={onTemplate} />
             )}
         </>
     );
