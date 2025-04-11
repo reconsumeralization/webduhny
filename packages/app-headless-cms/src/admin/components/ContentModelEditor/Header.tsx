@@ -12,7 +12,7 @@ const EditorBar = () => {
                 </div>
             }
             end={
-                <div className={"wby-flex wby-items-center wby-justify-end wby-gap-sm"}>
+                <div className={"wby-flex wby-items-center wby-justify-end wby-gap-xs"}>
                     {renderPlugins("content-model-editor-default-bar-right")}
                 </div>
             }

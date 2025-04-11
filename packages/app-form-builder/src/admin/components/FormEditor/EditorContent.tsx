@@ -30,9 +30,7 @@ const EditorContent = () => {
                     </Text>
                 </div>
                 <Separator />
-                <div
-                    className={"wby-px-lg wby-py-md wby-h-[calc(100vh-120px)] wby-overflow-y-auto"}
-                >
+                <div className={"wby-px-lg wby-py-md wby-h-[calc(100vh-98px)] wby-overflow-y-auto"}>
                     <Fields onFieldDragStart={onFieldDragStart} />
                 </div>
             </LeftPanel>

@@ -29,7 +29,7 @@ export const ContentEntryFormTitle = makeDecoratable("ContentEntryFormTitle", ()
     return (
         <Heading
             level={5}
-            className={cn("wby-text-neutral-strong wby-max-w-lg wby-truncate", {
+            className={cn("wby-text-neutral-primary wby-max-w-lg wby-truncate", {
                 "wby-opacity-50": isNewEntry
             })}
         >
@@ -42,9 +42,8 @@ export const FullScreenContentEntryHeaderLeft = () => {
     const { navigateToFolder, currentFolderId } = useNavigateFolder();
 
     return (
-        <div className={"wby-flex wby-items-center wby-gap-xs"}>
+        <div className={"wby-flex wby-items-center wby-gap-sm"}>
             <IconButton
-                iconSize={"lg"}
                 variant={"ghost"}
                 onClick={() => navigateToFolder(currentFolderId)}
                 icon={<BackIcon />}

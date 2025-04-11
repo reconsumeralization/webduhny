@@ -27,6 +27,7 @@ import { useModelExport } from "./exporting/useModelExport";
 import { ModelIsBeingDeleted } from "./fullDelete/ModelIsBeingDeleted";
 import { FullyDeleteModelDialog } from "~/admin/views/contentModels/fullDelete/FullyDeleteModelDialog";
 import { Button, DropdownMenu, Icon, IconButton, Select, Tooltip } from "@webiny/admin-ui";
+import { CMS_MODEL_SINGLETON_TAG } from "@webiny/app-headless-cms-common";
 
 const t = i18n.namespace("FormsApp.ContentModelsDataList");
 
@@ -208,9 +209,17 @@ const ContentModelsDataList = ({
                     <UIL.List data-testid="default-data-list">
                         {data.map(contentModel => {
                             const disableViewContent = contentModel.fields.length === 0;
-                            const message = disableViewContent
-                                ? "To view the entries, you first need to add a field and save the model"
-                                : "View entries";
+                            const getMessage = () => {
+                                if (disableViewContent) {
+                                    return "To view the entries, you first need to add a field and save the model";
+                                }
+
+                                if (contentModel.tags.includes(CMS_MODEL_SINGLETON_TAG)) {
+                                    return "View";
+                                }
+
+                                return "View entries";
+                            };
 
                             return (
                                 <UIL.ListItem
@@ -242,7 +251,7 @@ const ContentModelsDataList = ({
                                                 >
                                                     <Tooltip
                                                         side={"top"}
-                                                        content={message}
+                                                        content={getMessage()}
                                                         trigger={
                                                             <Button
                                                                 text={"View"}

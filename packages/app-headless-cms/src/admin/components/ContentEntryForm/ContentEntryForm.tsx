@@ -85,7 +85,13 @@ export const ContentEntryForm = makeDecoratable(
             >
                 <ModelProvider model={model}>
                     {header ? header : null}
-                    <div {...props} data-testid={"cms-content-form"} ref={formElementRef}>
+                    <div
+                        {...props}
+                        id={"cms-content-form"}
+                        data-element={"cms-content-form"}
+                        data-testid={"cms-content-form"}
+                        ref={formElementRef}
+                    >
                         {formRenderer ? (
                             <CustomLayout model={model} formRenderer={formRenderer} />
                         ) : (

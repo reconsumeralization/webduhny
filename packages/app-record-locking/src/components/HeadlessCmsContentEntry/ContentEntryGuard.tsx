@@ -32,7 +32,11 @@ export const ContentEntryGuard = (props: IContentEntryGuardProps) => {
     }, [entry.id, loading]);
 
     if (locked === undefined) {
-        return <CircularProgress />;
+        return (
+            <div className={"wby-h-screen wby-w-screen wby-fixed wby-top-0 wby-left-0 wby-z-20"}>
+                <CircularProgress />
+            </div>
+        );
     } else if (locked) {
         return <LockedRecord record={locked} />;
     }
