@@ -78,6 +78,7 @@ export const SetNewPassword = () => {
                                         ]}
                                     >
                                         <Input
+                                            autoComplete={"off"}
                                             type={"password"}
                                             label={"Retype password"}
                                             outlined={true}

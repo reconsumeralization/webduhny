@@ -27,6 +27,7 @@
     { "path": "../app-websockets/tsconfig.build.json" },
     { "path": "../lexical-editor-actions/tsconfig.build.json" },
     { "path": "../lexical-editor-pb-element/tsconfig.build.json" },
+    { "path": "../lexical-theme/tsconfig.build.json" },
     { "path": "../plugins/tsconfig.build.json" }
   ],
   "compilerOptions": {
