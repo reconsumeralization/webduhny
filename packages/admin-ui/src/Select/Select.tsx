@@ -9,7 +9,7 @@ import {
     FormComponentProps
 } from "~/FormComponent";
 
-type SelectGroupProps = SelectPrimitiveProps & FormComponentProps;
+type SelectProps = SelectPrimitiveProps & FormComponentProps;
 
 const DecoratableSelect = ({
     label,
@@ -19,7 +19,7 @@ const DecoratableSelect = ({
     disabled,
     validation,
     ...props
-}: SelectGroupProps) => {
+}: SelectProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
     const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
@@ -39,4 +39,4 @@ const DecoratableSelect = ({
 };
 const Select = makeDecoratable("Select", DecoratableSelect);
 
-export { Select };
+export { Select, type SelectProps };
