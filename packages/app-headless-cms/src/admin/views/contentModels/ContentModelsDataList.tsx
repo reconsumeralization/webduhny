@@ -70,14 +70,16 @@ const DisplayIcon = ({ model }: IconProps) => {
         return null;
     }
     return (
-        <div className={"wby-text-neutral-muted"}>
-            <Icon
-                size={"lg"}
-                color={"inherit"}
-                label={"Content model icon"}
-                icon={<FontAwesomeIcon icon={(model.icon || "").split("/") as IconProp} />}
-            />
-        </div>
+        <UIL.ListItemGraphic>
+            <div className={"wby-text-neutral-muted"}>
+                <Icon
+                    size={"lg"}
+                    color={"inherit"}
+                    label={"Content model icon"}
+                    icon={<FontAwesomeIcon icon={(model.icon || "").split("/") as IconProp} />}
+                />
+            </div>
+        </UIL.ListItemGraphic>
     );
 };
 
@@ -216,9 +218,7 @@ const ContentModelsDataList = ({
                                     className={"wby-group/item"}
                                 >
                                     <UIL.ListItemText>
-                                        <UIL.ListItemGraphic>
-                                            <DisplayIcon model={contentModel} />
-                                        </UIL.ListItemGraphic>
+                                        <DisplayIcon model={contentModel} />
                                         <UIL.ListItemTextPrimary>
                                             {contentModel.name}
                                         </UIL.ListItemTextPrimary>
