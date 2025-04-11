@@ -9,7 +9,7 @@ export interface SingletonHeaderProps {
 
 export const SingletonHeader = ({ title }: SingletonHeaderProps) => {
     return (
-        <div className={"wby-p-md wby-pl-lg wby-border-b-sm wby-border-neutral-smoked"}>
+        <div className={"wby-p-md wby-pl-lg wby-border-b-sm wby-border-neutral-dimmed-darker"}>
             <Grid>
                 <Grid.Column span={9}>
                     <Heading level={4} className={"wby-truncate"}>

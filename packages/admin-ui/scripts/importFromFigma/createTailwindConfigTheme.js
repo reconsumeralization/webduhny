@@ -39,14 +39,16 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
         borderColor: normalizedFigmaExport.reduce(
             (acc, { type, variantName }) => {
                 if (type === "borderColor") {
-                    const [color, variant] = variantName.split("-");
+                    const [color, ...variantParts] = variantName.split("-");
+                    const variantKey = variantParts.join("-") || "DEFAULT";
+
                     if (!acc[color]) {
                         acc[color] = {
                             DEFAULT: `hsl(var(--border-${color}-default))`
                         };
                     }
 
-                    acc[color][variant] = `hsl(var(--border-${variantName}))`;
+                    acc[color][variantKey] = `hsl(var(--border-${variantName}))`;
                 }
                 return acc;
             },

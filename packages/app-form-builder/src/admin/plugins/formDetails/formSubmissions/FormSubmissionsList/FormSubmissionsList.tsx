@@ -74,7 +74,9 @@ export const FormSubmissionsList = ({ form }: FormSubmissionsListProps) => {
         <>
             <SimpleFormHeader title={"Submissions"} rounded={false} />
             <SimpleFormContent
-                className={"wby-p-none wby-border-b-sm wby-border-neutral-smoked wby-rounded-b-3xl"}
+                className={
+                    "wby-p-none wby-border-b-sm wby-border-neutral-dimmed-darker wby-rounded-b-3xl"
+                }
             >
                 <DataList
                     loading={loading}
