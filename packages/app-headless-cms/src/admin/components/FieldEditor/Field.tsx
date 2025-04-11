@@ -277,6 +277,7 @@ const Field = (props: FieldProps) => {
                                     label={t`Delete`}
                                 />
                             }
+                            className={"!wby-text-destructive-primary [&_svg]:wby-fill-destructive"}
                         />
                     </DropdownMenu>
                 </div>
