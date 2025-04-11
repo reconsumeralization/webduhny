@@ -16468,7 +16468,7 @@ __metadata:
   resolution: "@webiny/app-record-locking@workspace:packages/app-record-locking"
   dependencies:
     "@apollo/react-hooks": "npm:^3.1.5"
-    "@emotion/styled": "npm:11.10.6"
+    "@webiny/admin-ui": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-aco": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
@@ -16482,7 +16482,6 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
-    "@webiny/ui": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     apollo-client: "npm:^2.6.10"
     apollo-link: "npm:^1.2.14"
