@@ -75,6 +75,7 @@ const DecoratableCheckboxPrimitiveRenderer = ({
     hasLabel,
     indeterminate,
     changeChecked,
+    checked,
     className,
     ...props
 }: CheckboxPrimitiveRendererProps) => {
@@ -85,6 +86,7 @@ const DecoratableCheckboxPrimitiveRenderer = ({
                 id={id}
                 className={cn(checkboxVariants({ indeterminate, hasLabel }), className)}
                 onCheckedChange={changeChecked}
+                checked={indeterminate ? "indeterminate" : checked}
             >
                 <span className={cn("wby-flex wby-items-center wby-justify-center")}>
                     {indeterminate ? (
