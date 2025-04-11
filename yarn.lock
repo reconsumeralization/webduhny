@@ -14852,6 +14852,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/api-sync-system@npm:0.0.0, @webiny/api-sync-system@workspace:packages/api-sync-system":
+  version: 0.0.0-use.local
+  resolution: "@webiny/api-sync-system@workspace:packages/api-sync-system"
+  dependencies:
+    "@webiny/api": "npm:0.0.0"
+    "@webiny/aws-sdk": "npm:0.0.0"
+    "@webiny/handler": "npm:0.0.0"
+    "@webiny/plugins": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
+    "@webiny/utils": "npm:0.0.0"
+    jest: "npm:^29.7.0"
+    jest-dynalite: "npm:^3.6.1"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
+    zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/api-tenancy-so-ddb@npm:0.0.0, @webiny/api-tenancy-so-ddb@workspace:packages/api-tenancy-so-ddb":
   version: 0.0.0-use.local
   resolution: "@webiny/api-tenancy-so-ddb@workspace:packages/api-tenancy-so-ddb"
@@ -18364,6 +18382,7 @@ __metadata:
     "@webiny/api-security-cognito": "npm:0.0.0"
     "@webiny/api-security-so-ddb": "npm:0.0.0"
     "@webiny/api-serverless-cms": "npm:0.0.0"
+    "@webiny/api-sync-system": "npm:0.0.0"
     "@webiny/api-tenancy": "npm:0.0.0"
     "@webiny/api-tenancy-so-ddb": "npm:0.0.0"
     "@webiny/api-tenant-manager": "npm:0.0.0"

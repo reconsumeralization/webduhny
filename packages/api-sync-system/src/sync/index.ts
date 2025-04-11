@@ -1,0 +1,107 @@
+import { attachToDynamoDbDocument } from "./attachToDynamoDbDocument.js";
+import type { Plugin } from "@webiny/plugins";
+import { createHandlerOnRequest } from "@webiny/handler";
+import { createSendDataToEventBridgeOnRequestEnd } from "./createSendDataToEventBridgeOnRequestEnd.js";
+import { createNullCommand } from "./handler/commands/NullCommand.js";
+import type { ISystem } from "./types.js";
+import { validateSystemInput } from "./utils/validateSystemInput.js";
+import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
+import { ServiceDiscovery } from "@webiny/api";
+import zod from "zod";
+import { convertException, createZodError } from "@webiny/utils";
+import { createBatchWriteCommandConverter } from "./handler/converter/BatchWriteCommandConverter.js";
+import { createHandlerConverter } from "./handler/HandlerConverter.js";
+import { createPutCommandConverter } from "./handler/converter/PutCommandConverter.js";
+import { createDeleteCommandConverter } from "./handler/converter/DeleteCommandConverter.js";
+import { createSyncHandler } from "./handler/Handler.js";
+
+export interface ICreateSyncSystemParams {
+    system: Partial<ISystem>;
+}
+
+export interface ICreateSyncSystemResponse {
+    plugins(): Plugin[];
+}
+
+const emptyResponse: ICreateSyncSystemResponse = {
+    plugins() {
+        return [];
+    }
+};
+
+const validateManifest = zod.object({
+    sync: zod.object({
+        eventBusArn: zod.string(),
+        eventBusName: zod.string(),
+        region: zod.string()
+    })
+});
+
+const getManifest = async () => {
+    try {
+        const manifest = await ServiceDiscovery.load();
+        const { data, error } = validateManifest.safeParse(manifest);
+        if (error) {
+            console.error("Sync System: Failed to validate manifest.");
+            console.info(convertException(createZodError(error)));
+            return null;
+        }
+        return data;
+    } catch (ex) {
+        console.error("Sync System: Failed to load manifest.");
+        console.info(convertException(ex));
+    }
+    return null;
+};
+
+const createSyncSystemHandlerOnRequestPlugin = (system: ISystem) => {
+    return createHandlerOnRequest(async (_, __, context) => {
+        const manifest = await getManifest();
+        if (!manifest?.sync) {
+            return;
+        }
+        const converter = createHandlerConverter(createNullCommand());
+        converter.register(createPutCommandConverter());
+        converter.register(createDeleteCommandConverter());
+        converter.register(createBatchWriteCommandConverter());
+        const handler = createSyncHandler({
+            system,
+            client: createEventBridgeClient({
+                region: manifest.sync.region
+            }),
+            eventBus: {
+                arn: manifest.sync.eventBusArn,
+                name: manifest.sync.eventBusName
+            },
+            converter
+        });
+        attachToDynamoDbDocument({
+            handler
+        });
+        context.plugins.register([
+            /**
+             * When request ends, send the data to the EventBridge.
+             */
+            createSendDataToEventBridgeOnRequestEnd(handler)
+        ]);
+    });
+};
+
+/**
+ * A factory to hook into the Webiny system.
+ *
+ * This will need to be run just before the first getDocumentClient() call in the index.ts file in apps/api/src folder of the user project.
+ *
+ */
+export const createSyncSystem = (params: ICreateSyncSystemParams): ICreateSyncSystemResponse => {
+    const { system, error } = validateSystemInput(params.system);
+    if (error) {
+        return emptyResponse;
+    }
+
+    return {
+        plugins: () => {
+            return [createSyncSystemHandlerOnRequestPlugin(system)];
+        }
+    };
+};

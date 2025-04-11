@@ -50,8 +50,25 @@ import { extensions } from "./extensions";
 const debug = process.env.DEBUG === "true";
 const documentClient = getDocumentClient();
 
+/**
+ * #### TESTING sync system
+ */
+import { createSyncSystem } from "@webiny/api-sync-system";
+const syncSystem = createSyncSystem({
+    system: {
+        env: process.env.WEBINY_ENV,
+        variant: process.env.WEBINY_ENV_VARIANT,
+        name: process.env.WEBINY_ENV_NAME,
+        region: process.env.AWS_REGION
+    }
+});
+/**
+ * ####
+ */
+
 export const handler = createHandler({
     plugins: [
+        syncSystem.plugins(),
         createBenchmarkEnablePlugin(),
         createWcpContext(),
         createWcpGraphQL(),

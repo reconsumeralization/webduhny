@@ -2,6 +2,12 @@ import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument, TranslateConfig } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
 
+export interface IEnableEnrichDocumentClientCallable {
+    (client: DynamoDBDocument): DynamoDBDocument;
+}
+
+let enrichDocumentClientCallable: IEnableEnrichDocumentClientCallable | undefined = undefined;
+
 const DEFAULT_CONFIG = {
     region: process.env.AWS_REGION
 };
@@ -35,6 +41,26 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
 
     const documentClient = DynamoDBDocument.from(client, documentClientConfig);
 
-    documentClients[key] = documentClient;
-    return documentClient;
+    return (documentClients[key] = applyEnrichment(documentClient));
+};
+
+const applyEnrichment = (client: DynamoDBDocument): DynamoDBDocument => {
+    if (!enrichDocumentClientCallable) {
+        return client;
+    }
+    return enrichDocumentClientCallable(client);
+};
+
+export const disableEnrichDocumentClient = (): void => {
+    enrichDocumentClientCallable = undefined;
+};
+
+export const enableEnrichDocumentClient = (cb: IEnableEnrichDocumentClientCallable): void => {
+    /**
+     * This will probably show during the development phase.
+     */
+    if (enrichDocumentClientCallable) {
+        throw new Error("EnrichDocumentClient is already enabled.");
+    }
+    enrichDocumentClientCallable = cb;
 };

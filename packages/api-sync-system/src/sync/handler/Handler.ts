@@ -1,0 +1,101 @@
+import type {
+    IHandler,
+    IDynamoDbCommand,
+    IHandlerConverter,
+    ICommandValue,
+    ISystem
+} from "../types.js";
+import type {
+    EventBridgeClient,
+    PutEventsCommandInput,
+    PutEventsRequestEntry
+} from "@webiny/aws-sdk/client-eventbridge";
+import { PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
+import { convertException } from "@webiny/utils";
+
+export interface IHandlerEventBus {
+    name: string;
+    arn: string;
+}
+
+export interface IHandlerParams {
+    client: Pick<EventBridgeClient, "send">;
+    converter: IHandlerConverter;
+    eventBus: IHandlerEventBus;
+    system: ISystem;
+}
+
+export class Handler implements IHandler {
+    public readonly system: ISystem;
+    private readonly client: Pick<EventBridgeClient, "send">;
+    private commands: ICommandValue[] = [];
+    private readonly converter: IHandlerConverter;
+    private readonly eventBus: IHandlerEventBus;
+
+    public constructor(params: IHandlerParams) {
+        this.client = params.client;
+        this.system = params.system;
+        this.converter = params.converter;
+        this.eventBus = params.eventBus;
+    }
+
+    public add(input: IDynamoDbCommand): void {
+        const cmd = this.converter.convert(input);
+        this.commands.push(cmd);
+    }
+
+    public async flush(): Promise<void> {
+        const entries = this.createEventBusEntries();
+        if (entries.length === 0) {
+            return;
+        }
+
+        const input: PutEventsCommandInput = {
+            Entries: entries,
+            /**
+             * If we get to the global event bus usage, we will need to set the EndpointId
+             */
+            EndpointId: undefined
+        };
+        const command = new PutEventsCommand(input);
+
+        try {
+            await this.client.send(command);
+        } catch (ex) {
+            console.log("Could not send events to Sync System EventBridge.");
+            console.error(ex.message);
+            console.error(convertException(ex, ["message"]));
+            console.log(
+                JSON.stringify({
+                    entries: entries.map(entry => entry.Detail)
+                })
+            );
+        }
+    }
+
+    private createEventBusEntries(): PutEventsRequestEntry[] {
+        const result = this.commands
+            .map((cmd): PutEventsRequestEntry | null => {
+                const value = cmd.toString();
+                if (!value) {
+                    return null;
+                }
+                return {
+                    DetailType: "synchronization-input",
+                    Detail: value,
+                    Source: JSON.stringify(this.system),
+                    EventBusName: this.eventBus.arn
+                };
+            })
+            .filter((item): item is PutEventsRequestEntry => !!item);
+        /**
+         * Remove all existing commands so we can start fresh.
+         */
+        this.commands = [];
+        return result;
+    }
+}
+
+export const createSyncHandler = (params: IHandlerParams): IHandler => {
+    return new Handler(params);
+};
