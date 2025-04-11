@@ -1,6 +1,5 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import {
     BindComponent,
     BindComponentRenderProp,
@@ -12,8 +11,8 @@ import {
 import { SingleValueDynamicZone } from "./SingleValueDynamicZone";
 import { MultiValueDynamicZone } from "./MultiValueDynamicZone";
 import { AccordionRenderSettings, getAccordionRenderSettings } from "../AccordionRenderSettings";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { makeDecoratable } from "@webiny/react-composition";
+import { Accordion, FormComponentErrorMessage } from "@webiny/admin-ui";
 
 const noBottomPadding = css`
     > .webiny-ui-accordion-item__content {
@@ -52,18 +51,16 @@ export const DynamicZoneContainer = makeDecoratable(
         return (
             <>
                 <Accordion>
-                    <AccordionItem
+                    <Accordion.Item
                         title={title}
                         description={description}
                         className={className || defaultClassName}
-                        open={open}
+                        defaultOpen={open}
                     >
                         {children}
-                    </AccordionItem>
+                    </Accordion.Item>
                 </Accordion>
-                {isValid === false && (
-                    <FormElementMessage error={true}>{message}</FormElementMessage>
-                )}
+                {isValid === false && <FormComponentErrorMessage text={message} />}
             </>
         );
     }

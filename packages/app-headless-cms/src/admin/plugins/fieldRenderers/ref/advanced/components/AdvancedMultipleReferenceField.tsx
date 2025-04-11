@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import styled from "@emotion/styled";
 import * as GQL from "~/admin/viewsGraphql";
 import { ListCmsModelsQueryResponse, withoutBeingDeletedModels } from "~/admin/viewsGraphql";
 import {
@@ -19,66 +18,7 @@ import { AbsoluteLoader as Loader } from "./Loader";
 import { parseIdentifier } from "@webiny/utils";
 import { Entries } from "./Entries";
 import { NewReferencedEntryDialog } from "~/admin/plugins/fieldRenderers/ref/components/NewReferencedEntryDialog";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
-
-const FieldLabel = styled("h3")({
-    fontSize: 24,
-    fontWeight: "normal",
-    borderBottom: "1px solid var(--mdc-theme-background)",
-    marginBottom: "20px",
-    paddingBottom: "5px",
-    display: "flex",
-    justifyContent: "space-between"
-});
-
-const OptionsContainer: any = styled("div")({
-    borderTop: "1px solid var(--mdc-theme-on-background)",
-    borderRight: "1px solid var(--mdc-theme-surface)",
-    backgroundColor: "var(--mdc-theme-surface)",
-    marginLeft: "-21px",
-    marginBottom: "-21px",
-    marginRight: "-1px"
-});
-/**
- * Error is on the `position: "relative !important"` style.
- */
-// @ts-expect-error
-const Container = styled("div")({
-    border: "1px solid var(--mdc-theme-on-background)",
-    paddingLeft: "10px",
-    width: "100%",
-    boxSizing: "border-box",
-    position: "relative",
-    padding: "20px 0 20px 20px",
-    backgroundColor: "var(--mdc-theme-background)",
-    "&.no-entries": {
-        backgroundColor: "var(--mdc-theme-surface)",
-        border: "none",
-        borderLeft: "3px solid var(--mdc-theme-background)",
-        padding: 0,
-        paddingLeft: 10,
-        [OptionsContainer]: {
-            border: "none",
-            margin: 0
-        }
-    },
-    "&.single-entry": {
-        "> .entries": {
-            height: "auto",
-            " > div > div": {
-                position: "relative !important"
-            }
-        }
-    }
-});
-
-const FieldName = styled("span")({});
-const RecordCount = styled("span")({
-    color: "var(--mdc-theme-text-secondary-on-background)",
-    fontSize: "0.6em",
-    lineHeight: "100%",
-    alignSelf: "center"
-});
+import { FormComponentErrorMessage, FormComponentLabel, Text } from "@webiny/admin-ui";
 
 const getRecordCountMessage = (count: number) => {
     switch (count) {
@@ -274,17 +214,14 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
 
     return (
         <>
-            <FieldLabel>
-                <FieldName>{field.label}</FieldName>
-                <RecordCount>({message})</RecordCount>
-            </FieldLabel>
-            {validationIsValid === false && (
-                <FormElementMessage error>{validationMessage}</FormElementMessage>
-            )}
-            <Container
+            <div className={"wby-flex wby-items-center wby-justify-between wby-mb-xs"}>
+                <FormComponentLabel text={field.label} required={field.settings?.required} />
+                <Text size={"sm"}>({message})</Text>
+            </div>
+            {validationIsValid === false && <FormComponentErrorMessage text={validationMessage} />}
+            <div
                 className={
-                    (entries.length < 1 ? "no-entries" : "has-entries") +
-                    (entries.length == 1 ? " single-entry" : "")
+                    "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mb-md"
                 }
             >
                 {loading && <Loader />}
@@ -312,35 +249,32 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
                         );
                     }}
                 </Entries>
+            </div>
+            <Options
+                models={models}
+                onNewRecord={onNewRecord}
+                onLinkExistingRecord={onExistingRecord}
+            />
 
-                <OptionsContainer>
-                    <Options
-                        models={models}
-                        onNewRecord={onNewRecord}
-                        onLinkExistingRecord={onExistingRecord}
-                    />
+            {newEntryDialogModel && (
+                <NewReferencedEntryDialog
+                    model={newEntryDialogModel}
+                    onClose={onNewEntryDialogClose}
+                    onChange={onNewEntryCreate}
+                />
+            )}
 
-                    {newEntryDialogModel && (
-                        <NewReferencedEntryDialog
-                            model={newEntryDialogModel}
-                            onClose={onNewEntryDialogClose}
-                            onChange={onNewEntryCreate}
-                        />
-                    )}
-
-                    {linkEntryDialogModel && (
-                        <ReferencesDialog
-                            {...props}
-                            field={field}
-                            multiple={true}
-                            values={values}
-                            contentModel={linkEntryDialogModel}
-                            storeValues={storeValues}
-                            onDialogClose={onLinkEntryDialogClose}
-                        />
-                    )}
-                </OptionsContainer>
-            </Container>
+            {linkEntryDialogModel && (
+                <ReferencesDialog
+                    {...props}
+                    field={field}
+                    multiple={true}
+                    values={values}
+                    contentModel={linkEntryDialogModel}
+                    storeValues={storeValues}
+                    onDialogClose={onLinkEntryDialogClose}
+                />
+            )}
         </>
     );
 };

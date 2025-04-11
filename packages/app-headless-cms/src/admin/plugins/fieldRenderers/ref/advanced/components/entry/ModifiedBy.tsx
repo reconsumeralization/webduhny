@@ -19,8 +19,7 @@ export const ModifiedBy = ({ modifiedBy, savedOn }: ModifiedByProps) => {
         <Box icon={null} name={"Modified By"}>
             {showInformation && (
                 <>
-                    {modifiedBy?.displayName} <br />
-                    <TimeAgo datetime={savedOn} />
+                    {modifiedBy?.displayName} <TimeAgo datetime={savedOn} />
                 </>
             )}
         </Box>

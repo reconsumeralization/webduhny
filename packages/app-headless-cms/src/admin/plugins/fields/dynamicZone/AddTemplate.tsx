@@ -1,42 +1,10 @@
 import React, { useState } from "react";
-import styled from "@emotion/styled";
 import { CmsDynamicZoneTemplate } from "~/types";
-import { ButtonSecondary, IconButton } from "@webiny/ui/Button";
 import { TemplateDialog } from "./TemplateDialog";
-import { Typography } from "@webiny/ui/Typography";
 import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
-import { ReactComponent as AddIcon } from "@webiny/icons/add_circle_outline.svg";
-import { Elevation } from "@webiny/ui/Elevation";
-
-const AddTemplateButtonContainer = styled(Elevation)`
-    padding: 25px 0 20px;
-    text-align: center;
-`;
-
-/**
- * This hacking is needed to position the button exactly in the middle of available area and not stretch the parent element.
- */
-const AddTemplateIconContainer = styled.div`
-    text-align: center;
-    height: 36px;
-
-    > button {
-        margin-left: -24px;
-        position: absolute;
-    }
-`;
-
-const Info = styled.div`
-    margin-top: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    > svg {
-        width: 20px;
-        margin-right: 5px;
-    }
-`;
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as AddCircleIcon } from "@webiny/icons/add_circle_outline.svg";
+import { Button, Icon, Text, IconButton, Link } from "@webiny/admin-ui";
 
 interface AddTemplateProps {
     onTemplate: UseAddTemplateParams["onTemplate"];
@@ -75,18 +43,30 @@ export const AddTemplateButton = (props: AddTemplateProps) => {
     });
 
     return (
-        <AddTemplateButtonContainer z={2}>
-            {showTemplateDialog ? (
-                <TemplateDialog onTemplate={onTemplate} onClose={onDialogClose} />
-            ) : null}
-            <ButtonSecondary onClick={addTemplate}>+ Add a template</ButtonSecondary>
-            <Info>
-                <InfoIcon />
-                <Typography use={"caption"}>
-                    Click here to learn how templates and dynamic zones work
-                </Typography>
-            </Info>
-        </AddTemplateButtonContainer>
+        <div
+            className={
+                "wby-flex wby-flex-col wby-gap-sm-extra wby-p-xl wby-pb-lg wby-border-sm wby-border-neutral-dimmed wby-rounded"
+            }
+        >
+            <div className={"wby-w-full wby-text-center"}>
+                {showTemplateDialog ? (
+                    <TemplateDialog onTemplate={onTemplate} onClose={onDialogClose} />
+                ) : null}
+                <Button
+                    variant={"secondary"}
+                    onClick={addTemplate}
+                    text={"Add a template"}
+                    icon={<AddIcon />}
+                />
+            </div>
+            <div className={"wby-flex wby-items-center wby-justify-center wby-gap-xs"}>
+                <Icon icon={<InfoIcon />} label={"Info"} size={"sm"} color={"neutral-light"} />
+                <Text size={"sm"}>
+                    <Link to={"http://webiny.link/admin/how-to-use/dynamic-zones"}>Click here</Link>{" "}
+                    to learn how templates and dynamic zones work
+                </Text>
+            </div>
+        </div>
     );
 };
 
@@ -96,11 +76,16 @@ export const AddTemplateIcon = (props: AddTemplateProps) => {
     });
 
     return (
-        <AddTemplateIconContainer>
+        <div className={"wby-w-full wby-text-center wby-mt-md"}>
             {showTemplateDialog ? (
                 <TemplateDialog onTemplate={onTemplate} onClose={onDialogClose} />
             ) : null}
-            <IconButton onClick={addTemplate} icon={<AddIcon />} />
-        </AddTemplateIconContainer>
+            <IconButton
+                onClick={addTemplate}
+                icon={<AddCircleIcon />}
+                size={"lg"}
+                variant={"ghost"}
+            />
+        </div>
     );
 };

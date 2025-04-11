@@ -53,7 +53,7 @@ const Gallery = makeDecoratable("TemplateGallery", (props: TemplateGalleryProps)
 
     return (
         <GalleryContainer>
-            <GalleryList>
+            <div className={"wby-flex wby-p-md wby-rounded-sm wby-bg-neutral-dimmed"}>
                 {templates.map(template => (
                     <TemplateItem
                         key={template.id}
@@ -61,7 +61,7 @@ const Gallery = makeDecoratable("TemplateGallery", (props: TemplateGalleryProps)
                         onTemplate={props.onTemplate}
                     />
                 ))}
-            </GalleryList>
+            </div>
             <CloseGallery onClose={props.onClose} />
         </GalleryContainer>
     );

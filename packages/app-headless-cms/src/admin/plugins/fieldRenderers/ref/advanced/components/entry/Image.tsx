@@ -1,36 +1,7 @@
-import styled from "@emotion/styled";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-
-const Container = styled("div")({
-    width: "100%",
-    backgroundColor: "var(--mdc-theme-on-background)",
-    borderRight: "1px solid var(--mdc-theme-on-background)",
-    borderBottom: "1px solid var(--mdc-theme-on-background)",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
-    backgroundOrigin: "content-box",
-    backgroundPosition: "center",
-    padding: 5,
-    minHeight: 140,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    boxSizing: "border-box"
-});
-
-const Icon = styled("div")({
-    flex: "0 0 100px",
-    svg: {
-        color: "var(--mdc-theme-text-icon-on-light)",
-        width: "100%",
-        height: "auto",
-        maxWidth: 100,
-        maxHeight: 100,
-        opacity: 0.3
-    }
-});
+import { Icon } from "@webiny/admin-ui";
 
 interface IconProps {
     icon: string | undefined;
@@ -47,18 +18,26 @@ const DisplayIcon = ({ icon }: IconProps) => {
     if (!icon) {
         return null;
     }
-    return <FontAwesomeIcon icon={(icon || "").split("/") as IconProp} />;
+    return (
+        <Icon
+            icon={<FontAwesomeIcon icon={(icon || "").split("/") as IconProp} />}
+            label={"Model icon"}
+            size={"lg"}
+            className={"wby-text-neutral-muted"}
+        />
+    );
 };
 
-export const Image = ({ src, icon, width = 166 }: ImageProps) => {
-    if (!src) {
-        return (
-            <Container>
-                <Icon>
-                    <DisplayIcon icon={icon} />
-                </Icon>
-            </Container>
-        );
-    }
-    return <Container style={{ backgroundImage: "url(" + src + "?width=" + width + ")" }} />;
+export const Image = ({ src, icon, width }: ImageProps) => {
+    return (
+        <div className={"wby-size-[56px] wby-m-xs wby-rounded-sm wby-overflow-hidden wby-relative"}>
+            <div
+                className={
+                    "wby-size-full wby-flex wby-justify-center wby-items-center wby-bg-neutral-base"
+                }
+            >
+                {src ? <img src={src} width={width} /> : <DisplayIcon icon={icon} />}
+            </div>
+        </div>
+    );
 };

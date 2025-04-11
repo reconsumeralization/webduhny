@@ -1,7 +1,6 @@
 import React from "react";
-import { ButtonLink } from "./elements/ButtonLink";
-import { ReactComponent as MoveDownIcon } from "./assets/move-down.svg";
-import { Tooltip } from "@webiny/ui/Tooltip";
+import { ReactComponent as MoveDownIcon } from "@webiny/icons/keyboard_arrow_down.svg";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 interface MoveDownProps {
     onClick: (ev: React.MouseEvent) => void;
@@ -10,10 +9,19 @@ interface MoveDownProps {
 
 export const MoveDown = ({ onClick, className }: MoveDownProps) => {
     return (
-        <ButtonLink className={"has-tooltip " + className} onClick={onClick} maxWidth={"100px"}>
-            <Tooltip content={"Shift+Click to move to bottom"} placement={"top"}>
-                <MoveDownIcon /> <span>Move Down</span>
-            </Tooltip>
-        </ButtonLink>
+        <Tooltip
+            content={"Shift+Click to move to bottom"}
+            side={"top"}
+            trigger={
+                <IconButton
+                    variant={"ghost"}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={onClick}
+                    className={className}
+                    icon={<MoveDownIcon />}
+                />
+            }
+        />
     );
 };
