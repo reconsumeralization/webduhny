@@ -32,6 +32,6 @@ export interface ICommandConverter<Result extends ICommandValue = ICommandValue>
 }
 
 export interface IHandlerConverter {
-    register(command: ICommand): void;
+    register(input: ICommandConverter | ICommandConverter[]): void;
     convert(input: IDynamoDbCommand): ICommandValue;
 }

@@ -3,7 +3,7 @@ import type { Plugin } from "@webiny/plugins";
 import { createHandlerOnRequest } from "@webiny/handler";
 import { createSendDataToEventBridgeOnRequestEnd } from "./createSendDataToEventBridgeOnRequestEnd.js";
 import { createNullCommand } from "./handler/commands/NullCommand.js";
-import type { ISystem } from "./types.js";
+import type { ICommandConverter, ISystem } from "./types.js";
 import { validateSystemInput } from "./utils/validateSystemInput.js";
 import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
 import { ServiceDiscovery } from "@webiny/api";
@@ -54,7 +54,14 @@ const getManifest = async () => {
     return null;
 };
 
-const createSyncSystemHandlerOnRequestPlugin = (system: ISystem) => {
+interface ICreateSyncSystemHandlerOnRequestPluginParams {
+    system: ISystem;
+    commandConverters?: ICommandConverter[];
+}
+
+const createSyncSystemHandlerOnRequestPlugin = (
+    params: ICreateSyncSystemHandlerOnRequestPluginParams
+) => {
     return createHandlerOnRequest(async (_, __, context) => {
         const manifest = await getManifest();
         if (!manifest?.sync) {
@@ -64,8 +71,10 @@ const createSyncSystemHandlerOnRequestPlugin = (system: ISystem) => {
         converter.register(createPutCommandConverter());
         converter.register(createDeleteCommandConverter());
         converter.register(createBatchWriteCommandConverter());
+        converter.register(params.commandConverters || []);
+
         const handler = createSyncHandler({
-            system,
+            system: params.system,
             client: createEventBridgeClient({
                 region: manifest.sync.region
             }),
@@ -87,21 +96,22 @@ const createSyncSystemHandlerOnRequestPlugin = (system: ISystem) => {
     });
 };
 
-/**
- * A factory to hook into the Webiny system.
- *
- * This will need to be run just before the first getDocumentClient() call in the index.ts file in apps/api/src folder of the user project.
- *
- */
 export const createSyncSystem = (params: ICreateSyncSystemParams): ICreateSyncSystemResponse => {
     const { system, error } = validateSystemInput(params.system);
+    /**
+     * We do not want to throw any errors. We will log them and just return a function which returns empty array as plugins.
+     */
     if (error) {
         return emptyResponse;
     }
 
     return {
         plugins: () => {
-            return [createSyncSystemHandlerOnRequestPlugin(system)];
+            return [
+                createSyncSystemHandlerOnRequestPlugin({
+                    system
+                })
+            ];
         }
     };
 };

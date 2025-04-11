@@ -1,4 +1,10 @@
-import type { ICommand, ICommandValue, IDynamoDbCommand, IHandlerConverter } from "../types.js";
+import type {
+    ICommand,
+    ICommandConverter,
+    ICommandValue,
+    IDynamoDbCommand,
+    IHandlerConverter
+} from "../types.js";
 
 export class HandlerConverter implements IHandlerConverter {
     private readonly def: ICommand;
@@ -8,8 +14,14 @@ export class HandlerConverter implements IHandlerConverter {
         this.def = def;
     }
 
-    public register(command: ICommand) {
-        this.commands.push(command);
+    public register(input: ICommandConverter | ICommandConverter[]): void {
+        if (!input) {
+            return;
+        } else if (Array.isArray(input)) {
+            this.commands.push(...input);
+            return;
+        }
+        this.commands.push(input);
     }
 
     public convert(input: IDynamoDbCommand): ICommandValue {
