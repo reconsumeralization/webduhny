@@ -6,7 +6,7 @@ import {
     IMultipartUploadHandlerGetBufferResult,
     ITag
 } from "~/tasks/utils/upload";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 
 export const createMockMultipartUpload = async (
     params?: Partial<IMultipartUploadHandler>

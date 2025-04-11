@@ -1,5 +1,5 @@
 import { createGraphQLSchema } from "~/graphql/schema";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { Context } from "~/types";
 import { createRecordLockingCrud } from "~/crud/crud";
 import { createLockingModel } from "~/crud/model";

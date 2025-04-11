@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { MailerContext } from "./types";
 import { createTransporterCrud } from "~/crud/transporter.crud";
 import { createSettingsCrud } from "~/crud/settings.crud";

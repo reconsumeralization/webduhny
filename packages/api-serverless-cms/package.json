@@ -9,8 +9,8 @@
   "description": "Core package for all of our API packages.",
   "license": "MIT",
   "dependencies": {
-    "@webiny/api": "0.0.0",
     "@webiny/api-aco": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/api-file-manager": "0.0.0",
     "@webiny/api-form-builder": "0.0.0",
     "@webiny/api-headless-cms": "0.0.0",

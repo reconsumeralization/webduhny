@@ -1,4 +1,4 @@
-import { ServiceDiscovery } from "@webiny/api";
+import { ServiceDiscovery } from "@webiny/api-core";
 import { CloudFront } from "@webiny/aws-sdk/client-cloudfront";
 import { ITaskRunParams } from "@webiny/tasks/types";
 import { FileManagerContext } from "@webiny/api-file-manager/types";

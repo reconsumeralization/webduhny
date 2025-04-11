@@ -1,5 +1,5 @@
 import { ILogger, ILoggerLog, ILoggerLogCallableOptions, LogType } from "~/types";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { mdbid } from "@webiny/utils";
 
 interface IDynamoDbLoggerAddParams<T = GenericRecord> {

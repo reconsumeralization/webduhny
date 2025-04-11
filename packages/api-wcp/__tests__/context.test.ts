@@ -1,5 +1,5 @@
-import { ContextPlugin } from "@webiny/api";
-import { Context } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
+import { Context } from "@webiny/api-core";
 import { createWcpContext } from "~/context";
 import { WcpContext } from "~/types";
 

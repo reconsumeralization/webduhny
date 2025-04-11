@@ -1,4 +1,4 @@
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 import { generateAlphaNumericId } from "@webiny/utils";
 
 interface IImageData {

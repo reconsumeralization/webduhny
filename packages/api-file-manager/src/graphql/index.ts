@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { CmsModel } from "@webiny/api-headless-cms/types";
 import { createFieldTypePluginRecords } from "@webiny/api-headless-cms/graphql/schema/createFieldTypePluginRecords";

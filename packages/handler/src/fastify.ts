@@ -15,7 +15,7 @@ import { RoutePlugin } from "./plugins/RoutePlugin";
 import { createHandlerClient } from "@webiny/handler-client";
 import fastifyCookie from "@fastify/cookie";
 import fastifyCompress from "@fastify/compress";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { BeforeHandlerPlugin } from "./plugins/BeforeHandlerPlugin";
 import { HandlerResultPlugin } from "./plugins/HandlerResultPlugin";
 import { HandlerErrorPlugin } from "./plugins/HandlerErrorPlugin";

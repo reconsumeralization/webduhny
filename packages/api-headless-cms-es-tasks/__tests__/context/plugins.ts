@@ -7,7 +7,7 @@ import { createWcpContext } from "@webiny/api-wcp";
 import { createTenancyAndSecurity } from "./tenancySecurity";
 import { createDummyLocales, createPermissions, PermissionsArg } from "./helpers";
 import { ApiKey, SecurityIdentity } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { Context } from "~/types";
 import { mockLocalesPlugins } from "@webiny/api-i18n/graphql/testing";
 import { Plugin, PluginCollection } from "@webiny/plugins/types";

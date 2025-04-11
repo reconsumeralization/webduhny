@@ -1,5 +1,5 @@
 import { Plugin } from "@webiny/plugins";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { Context } from "~/types";
 import { createTaskModel } from "./crud/model";
 import { createDefinitionCrud } from "./crud/definition.tasks";

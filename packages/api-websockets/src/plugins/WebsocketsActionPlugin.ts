@@ -1,5 +1,5 @@
 import { Plugin } from "@webiny/plugins";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import {
     IWebsocketsActionPluginCallable,
     IWebsocketsActionPluginCallableParams,

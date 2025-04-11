@@ -11,7 +11,7 @@
   "author": "Webiny Ltd",
   "license": "MIT",
   "dependencies": {
-    "@webiny/api": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/api-log": "0.0.0",
     "@webiny/api-prerendering-service": "0.0.0",
     "@webiny/aws-sdk": "0.0.0",

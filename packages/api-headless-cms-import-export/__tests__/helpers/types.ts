@@ -1,4 +1,4 @@
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export interface InvokeParams {
     httpMethod?: "POST" | "GET" | "OPTIONS";

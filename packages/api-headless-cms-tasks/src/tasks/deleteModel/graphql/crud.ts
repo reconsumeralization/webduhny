@@ -5,8 +5,8 @@ import { getDeleteModelProgress as getDeleteModelProgressMethod } from "./getDel
 import { createCacheKey, createMemoryCache } from "@webiny/api-headless-cms/utils";
 import type { IStoreValue, ListStoreKeysResult } from "../types";
 import { createStoreNamespace } from "~/tasks/deleteModel/helpers/store";
-import type { GenericRecord } from "@webiny/api/types";
-import { ContextPlugin } from "@webiny/api";
+import type { GenericRecord } from "@webiny/api-core/types";
+import { ContextPlugin } from "@webiny/api-core";
 import { attachLifecycleEvents } from "./attachLifecycleEvents";
 
 export const createDeleteModelCrud = () => {

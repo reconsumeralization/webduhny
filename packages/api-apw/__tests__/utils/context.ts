@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { ApwContext } from "~/types";
 import { ApiKey, SecurityIdentity } from "@webiny/api-security/types";
 import { WcpContextObject } from "@webiny/api-wcp/types";

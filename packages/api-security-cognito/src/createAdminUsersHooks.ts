@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { AdminUsersContext } from "@webiny/api-admin-users/types";
 import { PermissionsTenantLink, PermissionsTenantLinkTeam } from "@webiny/api-security/types";
 

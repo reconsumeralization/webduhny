@@ -4,7 +4,7 @@ import { CmsModel, CmsModelField } from "~/types";
 import { PluginsContainer } from "@webiny/plugins";
 import { StorageTransformPlugin } from "~/plugins/StorageTransformPlugin";
 import { getBaseFieldType } from "~/utils/getBaseFieldType";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 interface ProcessValueParams {
     fields: CmsModelField[];

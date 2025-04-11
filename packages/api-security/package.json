@@ -9,8 +9,8 @@
   "description": "Security layer for the Webiny GraphQL API.",
   "license": "MIT",
   "dependencies": {
-    "@webiny/api": "0.0.0",
     "@webiny/api-authentication": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/api-tenancy": "0.0.0",
     "@webiny/aws-sdk": "0.0.0",
     "@webiny/error": "0.0.0",

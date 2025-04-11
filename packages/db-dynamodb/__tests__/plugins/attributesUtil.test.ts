@@ -1,4 +1,4 @@
-import { Context } from "@webiny/api";
+import { Context } from "@webiny/api-core";
 import { getExtraAttributes } from "~/utils/attributes";
 import { AttributePlugin, AttributePluginParams } from "~/plugins/definitions/AttributePlugin";
 

@@ -15,7 +15,7 @@ import {
 } from "~/response/abstractions";
 import { IIsCloseToTimeoutCallable, ITaskManagerStore } from "./runner/abstractions";
 import { SecurityPermission } from "@webiny/api-security/types";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { IStepFunctionServiceFetchResult } from "~/service/StepFunctionServicePlugin";
 import { ITimer } from "@webiny/handler-aws";
 

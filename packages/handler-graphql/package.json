@@ -18,7 +18,7 @@
     "@graphql-tools/resolvers-composition": "^7.0.1",
     "@graphql-tools/schema": "^10.0.6",
     "@graphql-tools/utils": "^10.3.1",
-    "@webiny/api": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/handler": "0.0.0",
     "@webiny/plugins": "0.0.0",

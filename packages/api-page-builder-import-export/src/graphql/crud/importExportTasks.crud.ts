@@ -1,6 +1,6 @@
 import zod from "zod";
 import { createZodError, mdbid } from "@webiny/utils";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { NotFoundError } from "@webiny/handler-graphql";
 import {
     ImportExportPluginsParams,

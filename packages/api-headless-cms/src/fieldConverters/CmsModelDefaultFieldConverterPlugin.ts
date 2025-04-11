@@ -2,7 +2,7 @@ import {
     CmsModelFieldConverterPlugin,
     ConvertParams
 } from "~/plugins/CmsModelFieldConverterPlugin";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export class CmsModelDefaultFieldConverterPlugin extends CmsModelFieldConverterPlugin {
     public override name = "cms.field.converter.default";

@@ -1,5 +1,5 @@
 import { Plugin } from "@webiny/plugins";
-import { Context } from "@webiny/api/types";
+import { Context } from "@webiny/api-core/types";
 import { ElasticsearchIndexRequestBody } from "@webiny/api-elasticsearch/types";
 
 export interface CreateElasticsearchIndexTaskPluginIndex {

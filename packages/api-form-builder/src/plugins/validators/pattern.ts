@@ -3,7 +3,7 @@
  * registers the actual validation plugin with access to the request context.
  */
 import { FbFormFieldPatternValidatorPlugin, FbFormFieldValidatorPlugin } from "~/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 
 const plugin = new ContextPlugin(async context => {
     const validatorPlugin: FbFormFieldValidatorPlugin = {

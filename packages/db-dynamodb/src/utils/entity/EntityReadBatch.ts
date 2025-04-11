@@ -8,7 +8,7 @@ import type {
 import type { TableDef } from "~/toolbox";
 import type { Entity as ToolboxEntity } from "~/toolbox";
 import { batchReadAll } from "~/utils/batch/batchRead";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { createEntityReadBatchBuilder } from "./EntityReadBatchBuilder";
 import type { EntityOption } from "./getEntity";
 import { getEntity } from "./getEntity";

@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { CreateApwContextParams } from "~/scheduler/types";
 import { decodeToken, TOKEN_PREFIX } from "~/scheduler/handlers/utils";
 import { ApwContext } from "~/types";

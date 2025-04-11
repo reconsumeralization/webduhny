@@ -1,6 +1,6 @@
 import { IDecompressor } from "./types";
 import { decompress } from "@webiny/api-elasticsearch";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { PluginsContainer } from "@webiny/plugins";
 
 export interface IDecompressorParams {

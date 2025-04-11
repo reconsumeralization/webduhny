@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { createContextPlugin } from "@webiny/api";
+import { createContextPlugin } from "@webiny/api-core";
 import { createBeforeHandlerPlugin } from "@webiny/handler";
 import { SecurityContext } from "~/types";
 

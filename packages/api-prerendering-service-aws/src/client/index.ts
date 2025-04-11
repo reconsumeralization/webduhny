@@ -5,7 +5,7 @@ import {
 } from "@webiny/aws-sdk/client-eventbridge";
 import WebinyError from "@webiny/error";
 import { ClientContext } from "@webiny/handler-client/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { PrerenderingServiceClientContext } from "@webiny/api-prerendering-service/client/types";
 import { FlushJob, RenderJob } from "@webiny/api-prerendering-service/types";
 

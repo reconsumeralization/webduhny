@@ -3,7 +3,7 @@ import { useHandler } from "~tests/helpers/useHandler";
 import { CmsImportExportFileType, Context, ICmsImportExportFile } from "~/types";
 import { createValidateImportFromUrlTask } from "~/tasks";
 import { ResponseDoneResult, ResponseErrorResult } from "@webiny/tasks";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 import { IValidateImportFromUrlInput } from "~/tasks/domain/abstractions/ValidateImportFromUrl";
 import { HeadObjectCommand, S3Client } from "@webiny/aws-sdk/client-s3";
 import { mockClient } from "aws-sdk-client-mock";

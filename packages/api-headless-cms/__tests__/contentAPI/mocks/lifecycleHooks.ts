@@ -1,5 +1,5 @@
 import { CmsContext } from "~/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 
 class PubSubTracker {
     private _tracked: Record<string, number> = {};

@@ -1,4 +1,4 @@
-import { Context } from "@webiny/api/types";
+import { Context } from "@webiny/api-core/types";
 import { Plugin } from "@webiny/plugins";
 import { GraphQLSchemaDefinition, ResolverDecorators, Resolvers, TypeDefs } from "~/types";
 

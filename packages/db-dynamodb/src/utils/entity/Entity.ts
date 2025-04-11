@@ -23,7 +23,7 @@ import { createEntityReadBatch } from "./EntityReadBatch";
 import { createEntityWriteBatch } from "./EntityWriteBatch";
 import { createTableWriteBatch } from "~/utils/table/TableWriteBatch";
 import { queryAllClean, queryOneClean } from "../query";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export type EntityConstructor<
     T extends Readonly<AttributeDefinitions> = Readonly<AttributeDefinitions>

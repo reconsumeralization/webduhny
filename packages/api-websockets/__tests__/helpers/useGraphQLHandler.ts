@@ -18,7 +18,7 @@ import {
     LIST_CONNECTIONS
 } from "./graphql/connections";
 import { getIntrospectionQuery } from "graphql";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export type UseHandlerParams = CreatePluginsParams;
 

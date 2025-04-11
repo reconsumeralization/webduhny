@@ -10,7 +10,7 @@
   "author": "Webiny LTD",
   "license": "MIT",
   "dependencies": {
-    "@webiny/api": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/api-wcp": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/handler": "0.0.0",

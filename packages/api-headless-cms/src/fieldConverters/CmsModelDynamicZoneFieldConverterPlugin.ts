@@ -5,7 +5,7 @@ import {
 } from "~/plugins/CmsModelFieldConverterPlugin";
 import { CmsDynamicZoneTemplate, CmsEntryValues, CmsModelDynamicZoneField } from "~/types";
 import { ConverterCollection } from "~/utils/converters/ConverterCollection";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 type DynamicZoneValue = GenericRecord<string>;
 

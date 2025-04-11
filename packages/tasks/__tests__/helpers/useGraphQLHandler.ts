@@ -13,7 +13,7 @@ import { PluginCollection } from "@webiny/plugins/types";
 import { createBackgroundTaskContext, createBackgroundTaskGraphQL } from "~/index";
 import { createListDefinitionsQuery } from "./graphql/definitions";
 import { ApiKey } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import apiKeyAuthentication from "@webiny/api-security/plugins/apiKeyAuthentication";
 import apiKeyAuthorization from "@webiny/api-security/plugins/apiKeyAuthorization";
 import { Context } from "~tests/types";

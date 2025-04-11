@@ -1,6 +1,6 @@
 import { ApiEndpoint, CmsContext, HeadlessCmsStorageOperations } from "~/types";
 import WebinyError from "@webiny/error";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { GraphQLRequestBody } from "@webiny/handler-graphql/types";
 import { processRequestBody } from "@webiny/handler-graphql";
 import { CmsParametersPlugin, CmsParametersPluginResponse } from "~/plugins/CmsParametersPlugin";

@@ -9,7 +9,7 @@ import {
     TaskResponseStatus
 } from "@webiny/tasks";
 import { categoryModel } from "~tests/helpers/models";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 
 jest.setTimeout(60000);
 

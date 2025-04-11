@@ -4,7 +4,7 @@ import type {
     IValidateImportFromUrlInput,
     IValidateImportFromUrlOutput
 } from "~/tasks/domain/abstractions/ValidateImportFromUrl";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import type { ICmsImportExportValidatedFile } from "~/types";
 
 export const convertTaskToValidateImportFromUrlRecord = (

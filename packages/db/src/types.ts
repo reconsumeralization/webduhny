@@ -1,4 +1,4 @@
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 
 export interface IRegistryRegisterParams<T = unknown> {
     item: T;

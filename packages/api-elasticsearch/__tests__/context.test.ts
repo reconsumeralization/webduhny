@@ -1,5 +1,5 @@
 import elasticsearchContext from "~/index";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { PluginsContainer } from "@webiny/plugins";
 import { ElasticsearchQueryBuilderOperatorPlugin } from "~/plugins/definition/ElasticsearchQueryBuilderOperatorPlugin";
 import { Client } from "@elastic/elasticsearch";

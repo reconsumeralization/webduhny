@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { createEntryHooks } from "~/hooks/entry";
 import { HcmsAcoContext } from "~/types";
 

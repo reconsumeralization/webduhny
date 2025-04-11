@@ -1,5 +1,5 @@
 import { StorageTransformPlugin, ToStorageParams } from "~/plugins";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { CmsModel, CmsModelDynamicZoneField, CmsModelField } from "~/types";
 import { PluginsContainer } from "@webiny/plugins";
 import pReduce from "p-reduce";

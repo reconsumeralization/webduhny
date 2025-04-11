@@ -25,8 +25,8 @@
     "@webiny/api-aco": "0.0.0"
   },
   "devDependencies": {
-    "@webiny/api": "0.0.0",
     "@webiny/api-admin-users": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/api-headless-cms": "0.0.0",
     "@webiny/api-i18n": "0.0.0",
     "@webiny/api-security": "0.0.0",

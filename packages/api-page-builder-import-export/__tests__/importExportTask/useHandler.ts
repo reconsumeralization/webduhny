@@ -1,7 +1,7 @@
 import { createWcpContext } from "@webiny/api-wcp";
 import { createHandler } from "@webiny/handler-aws/raw";
 import graphqlHandler from "@webiny/handler-graphql";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { EventPlugin } from "@webiny/handler";
 import { getStorageOps } from "@webiny/project-utils/testing/environment";
 import importExportTaskPlugins from "~/graphql/crud/importExportTasks.crud";

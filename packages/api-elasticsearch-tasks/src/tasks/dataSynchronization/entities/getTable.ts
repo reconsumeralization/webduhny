@@ -1,6 +1,6 @@
 import { Entity, TableDef } from "@webiny/db-dynamodb/toolbox";
 import { Context } from "~/types";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 import { IRegistryItem } from "@webiny/db";
 
 export interface IGetTableParams {

@@ -14,7 +14,7 @@
   "dependencies": {
     "@fastify/compress": "7.0.3",
     "@fastify/cookie": "9.4.0",
-    "@webiny/api": "0.0.0",
+    "@webiny/api-core": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/handler-client": "0.0.0",
     "@webiny/plugins": "0.0.0",

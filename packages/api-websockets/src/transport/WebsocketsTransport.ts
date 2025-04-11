@@ -9,7 +9,7 @@ import {
     IWebsocketsTransportSendConnection,
     IWebsocketsTransportSendData
 } from "./abstractions/IWebsocketsTransport";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export class WebsocketsTransport implements IWebsocketsTransport {
     private readonly clients = new Map<string, ApiGatewayManagementApiClient>();

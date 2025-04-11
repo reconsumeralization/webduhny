@@ -1,5 +1,5 @@
 import type { SecurityIdentity } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import type { Context } from "~/types";
 
 export interface PermissionsArg {

@@ -5,7 +5,7 @@ import { sleep, until } from "./context/helpers";
 /**
  * Unfortunately at we need to import the api-i18n-ddb package manually
  */
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { MailerContext } from "~/types";
 import { Tenant } from "@webiny/api-tenancy/types";
 import { GET_SETTINGS_QUERY, SAVE_SETTINGS_MUTATION } from "./graphql/settings";

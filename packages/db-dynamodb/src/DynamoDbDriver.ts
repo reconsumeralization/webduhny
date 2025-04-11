@@ -13,7 +13,7 @@ import {
 } from "@webiny/db";
 import { Entity } from "dynamodb-toolbox";
 import { createTable, Table } from "~/utils/createTable";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { createEntity } from "~/store/entity";
 import { batchReadAll, batchWriteAll, get, put, queryAll } from "~/utils";
 import { createPartitionKey, createSortKey, createType } from "~/store/keys";

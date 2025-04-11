@@ -13,7 +13,7 @@ import {
     OnPageBeforePublishTopicParams,
     PageSettings
 } from "@webiny/api-page-builder/types";
-import { Context } from "@webiny/api/types";
+import { Context } from "@webiny/api-core/types";
 import { PageBuilderContextObject } from "@webiny/api-page-builder/graphql/types";
 import { SecurityIdentity, SecurityPermission } from "@webiny/api-security/types";
 import { I18NLocale } from "@webiny/api-i18n/types";

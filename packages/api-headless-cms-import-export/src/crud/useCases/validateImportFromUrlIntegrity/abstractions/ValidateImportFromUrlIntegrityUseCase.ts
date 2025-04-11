@@ -1,4 +1,4 @@
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import type { ICmsImportExportFile } from "~/types";
 import type { TaskDataStatus } from "@webiny/tasks";
 import type { CmsModel } from "@webiny/api-headless-cms/types";
