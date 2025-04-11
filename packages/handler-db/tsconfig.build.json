@@ -1,12 +1,28 @@
 {
   "extends": "../../tsconfig.build.json",
-  "include": ["src"],
-  "references": [{ "path": "../api-core/tsconfig.build.json" }, { "path": "../db/tsconfig.build.json" }],
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../api-core/tsconfig.build.json"
+    },
+    {
+      "path": "../db/tsconfig.build.json"
+    }
+  ],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
     "declarationDir": "./dist",
-    "paths": { "~/*": ["./src/*"], "~tests/*": ["./__tests__/*"] },
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ],
+      "~tests/*": [
+        "./__tests__/*"
+      ]
+    },
     "baseUrl": "."
   }
 }
