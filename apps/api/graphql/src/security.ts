@@ -1,16 +1,15 @@
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { createTenancyContext, createTenancyGraphQL } from "@webiny/api-tenancy";
 import { createStorageOperations as tenancyStorageOperations } from "@webiny/api-tenancy-so-ddb";
-import { createSecurityContext, createSecurityGraphQL } from "@webiny/api-security";
+import { createSecurityContext } from "@webiny/api-security";
 import { createStorageOperations as securityStorageOperations } from "@webiny/api-security-so-ddb";
 import { authenticateUsingHttpHeader } from "@webiny/api-security/plugins/authenticateUsingHttpHeader";
 import apiKeyAuthentication from "@webiny/api-security/plugins/apiKeyAuthentication";
 import apiKeyAuthorization from "@webiny/api-security/plugins/apiKeyAuthorization";
-import cognitoAuthentication, { syncWithCognito } from "@webiny/api-security-cognito";
 import anonymousAuthorization from "@webiny/api-security/plugins/anonymousAuthorization";
-import tenantLinkAuthorization from "@webiny/api-security/plugins/tenantLinkAuthorization";
 import createAdminUsersApp from "@webiny/api-admin-users";
 import { createStorageOperations as createAdminUsersStorageOperations } from "@webiny/api-admin-users-so-ddb";
+import { createSecurityGraphQL, myIdpAuthentication } from "my-idp/src/api";
 
 export default ({ documentClient }: { documentClient: DynamoDBDocument }) => [
     /**
@@ -45,14 +44,6 @@ export default ({ documentClient }: { documentClient: DynamoDBDocument }) => [
     }),
 
     /**
-     * Sync Admin Users with Cognito User Pool.
-     */
-    syncWithCognito({
-        region: String(process.env.COGNITO_REGION),
-        userPoolId: String(process.env.COGNITO_USER_POOL_ID)
-    }),
-
-    /**
      * Perform authentication using the common "Authorization" HTTP header.
      * This will fetch the value of the header, and execute the authentication process.
      */
@@ -67,30 +58,15 @@ export default ({ documentClient }: { documentClient: DynamoDBDocument }) => [
     apiKeyAuthentication({ identityType: "api-key" }),
 
     /**
-     * Cognito authentication plugin.
-     * This plugin will verify the JWT token against the provided User Pool.
+     * Our custom authentication plugin.
      */
-    cognitoAuthentication({
-        region: String(process.env.COGNITO_REGION),
-        userPoolId: String(process.env.COGNITO_USER_POOL_ID),
-        identityType: "admin"
-    }),
+    myIdpAuthentication(),
 
     /**
      * Authorization plugin to fetch permissions for a verified API key.
      * The "identityType" must match the authentication plugin used to load the identity.
      */
     apiKeyAuthorization({ identityType: "api-key" }),
-
-    /**
-     * Authorization plugin to fetch permissions from a security role or team associated with the identity.
-     */
-    tenantLinkAuthorization({ identityType: "admin" }),
-
-    /**
-     * Authorization plugin to fetch permissions from the parent tenant.
-     */
-    tenantLinkAuthorization({ identityType: "admin", parent: true }),
 
     /**
      * Authorization plugin to load permissions for anonymous requests.

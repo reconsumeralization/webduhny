@@ -73,6 +73,7 @@ export class ListFoldersCompressedGqlGateway implements IListFoldersGateway {
         const value = pako.inflate(Buffer.from(data.value, "base64"), { to: "string" });
         const folders = JSON.parse(value);
 
+        console.log('ffff', folders)
         return [this.getRootFolder(), ...(folders || [])];
     }
 

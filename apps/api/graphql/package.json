@@ -33,7 +33,6 @@
     "@webiny/api-prerendering-service-aws": "0.0.0",
     "@webiny/api-record-locking": "0.0.0",
     "@webiny/api-security": "0.0.0",
-    "@webiny/api-security-cognito": "0.0.0",
     "@webiny/api-security-so-ddb": "0.0.0",
     "@webiny/api-serverless-cms": "0.0.0",
     "@webiny/api-tenancy": "0.0.0",
@@ -49,7 +48,8 @@
     "@webiny/handler-graphql": "0.0.0",
     "@webiny/handler-logs": "0.0.0",
     "@webiny/project-utils": "0.0.0",
-    "@webiny/tasks": "0.0.0"
+    "@webiny/tasks": "0.0.0",
+    "my-idp": "workspace:^"
   },
   "devDependencies": {
     "@webiny/cli-plugin-deploy-pulumi": "0.0.0",

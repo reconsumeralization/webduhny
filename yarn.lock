@@ -13438,7 +13438,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/api-security-cognito@npm:0.0.0, @webiny/api-security-cognito@workspace:packages/api-security-cognito":
+"@webiny/api-security-cognito@workspace:packages/api-security-cognito":
   version: 0.0.0-use.local
   resolution: "@webiny/api-security-cognito@workspace:packages/api-security-cognito"
   dependencies:
@@ -16744,6 +16744,7 @@ __metadata:
     core-js: "npm:3.39.0"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.1.5"
+    my-idp: "workspace:^"
     prop-types: "npm:^15.8.1"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -17182,7 +17183,6 @@ __metadata:
     "@webiny/api-prerendering-service-aws": "npm:0.0.0"
     "@webiny/api-record-locking": "npm:0.0.0"
     "@webiny/api-security": "npm:0.0.0"
-    "@webiny/api-security-cognito": "npm:0.0.0"
     "@webiny/api-security-so-ddb": "npm:0.0.0"
     "@webiny/api-serverless-cms": "npm:0.0.0"
     "@webiny/api-tenancy": "npm:0.0.0"
@@ -17201,6 +17201,7 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     graphql-request: "npm:^3.7.0"
+    my-idp: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -30425,6 +30426,28 @@ __metadata:
   checksum: 10/36fc968b0e9c9c63029d4f9dc63911950a3bdf55c9a87f58d3a266289b67180201cade911e7699f8b2fa596b34c9db43dad37649e3f7fdd13c3bb9edb0017ee7
   languageName: node
   linkType: hard
+
+"my-idp@workspace:^, my-idp@workspace:extensions/myIdp":
+  version: 0.0.0-use.local
+  resolution: "my-idp@workspace:extensions/myIdp"
+  dependencies:
+    "@apollo/react-hooks": "npm:^3.1.5"
+    "@emotion/styled": "npm:11.10.6"
+    "@types/react": "npm:18.2.79"
+    "@webiny/api-admin-users": "npm:0.0.0"
+    "@webiny/api-security": "npm:0.0.0"
+    "@webiny/api-serverless-cms": "npm:0.0.0"
+    "@webiny/app-admin": "npm:0.0.0"
+    "@webiny/app-security": "npm:0.0.0"
+    "@webiny/app-serverless-cms": "npm:0.0.0"
+    "@webiny/error": "npm:0.0.0"
+    "@webiny/plugins": "npm:0.0.0"
+    "@webiny/ui": "npm:0.0.0"
+    apollo-link-context: "npm:^1.0.20"
+    graphql-tag: "npm:^2.12.6"
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
 
 "nanoid-dictionary@npm:^4.3.0":
   version: 4.3.0
