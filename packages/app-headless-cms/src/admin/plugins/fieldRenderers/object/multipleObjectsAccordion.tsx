@@ -32,7 +32,11 @@ const ObjectsRenderer = (props: CmsModelFieldRendererProps) => {
                 return (
                     <Bind.ValidationContainer>
                         <Accordion>
-                            <Accordion.Item title={label} description={field.helpText} open={open}>
+                            <Accordion.Item
+                                title={label}
+                                description={field.helpText}
+                                defaultOpen={open}
+                            >
                                 <MultiValueContainer
                                     bind={bind}
                                     getBind={getBind}

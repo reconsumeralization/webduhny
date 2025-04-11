@@ -138,10 +138,7 @@ const DynamicSection = ({
                                 <Grid.Column span={12}>
                                     <div
                                         className={cn(
-                                            "wby-border-neutral-dimmed",
-                                            bindFieldValue.length > 0
-                                                ? "wby-pt-lg wby-border-t-sm"
-                                                : "wby-pt-none"
+                                            bindFieldValue.length > 0 ? "wby-pt-none" : "wby-pt-sm"
                                         )}
                                     >
                                         <Button
