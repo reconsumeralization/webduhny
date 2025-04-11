@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Cell } from "@webiny/ui/Grid";
 import { Input } from "@webiny/ui/Input";
 import { Select } from "@webiny/ui/Select";
 import { plugins } from "@webiny/plugins";
@@ -25,7 +25,7 @@ const PatternSettings = () => {
     ));
 
     return (
-        <Grid>
+        <>
             <Cell span={3}>
                 <Bind
                     name={"settings.preset"}
@@ -70,7 +70,7 @@ const PatternSettings = () => {
                     <Input disabled={inputsDisabled} label={"Flags"} description={"Regex flags"} />
                 </Bind>
             </Cell>
-        </Grid>
+        </>
     );
 };
 
