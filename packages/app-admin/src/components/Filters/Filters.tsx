@@ -43,7 +43,7 @@ export const Filters = <T extends GenericFiltersData = GenericFiltersData>(
                     )}
                 </Form>
             </div>
-            <Separator variant={"dimmed"} margin={"none"} />
+            <Separator variant={"subtle"} margin={"none"} />
         </>
     );
 };
