@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { AccordionItem } from "@webiny/ui/Accordion";
 import { AdminAppPermissionRendererPlugin } from "@webiny/app-admin/types";
-import { ReactComponent as ApwIcon } from "~/assets/icons/account_tree_24dp.svg";
+import { ReactComponent as ApwIcon } from "@webiny/icons/account_tree.svg";
 import { ApwPermissions as ApwPermissionsComponent } from "./ApwPermissions";
 import { plugins } from "@webiny/plugins";
 

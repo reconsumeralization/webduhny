@@ -10,7 +10,7 @@ const PermissionsGroup = ({ className, children, title, ...props }: PermissionsG
         <div
             {...props}
             className={cn(
-                "wby-mb-lg wby-py-md wby-px-md-extra wby-border-sm wby-border-neutral-dimmed wby-rounded-lg",
+                "wby-mb-lg wby-p-md-extra wby-border-sm wby-border-neutral-dimmed wby-rounded-lg",
                 className
             )}
         >

@@ -1,7 +1,7 @@
 import React from "react";
 import { AccordionItem } from "@webiny/ui/Accordion";
 import { AdminAppPermissionRendererPlugin } from "@webiny/app-admin/types";
-import { ReactComponent as Icon } from "../../../assets/table_chart-24px.svg";
+import { ReactComponent as Icon } from "@webiny/icons/table_chart.svg";
 import { PageBuilderPermissions } from "./PageBuilderPermissions";
 import { i18n } from "@webiny/app/i18n";
 

@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useMemo } from "react";
 import { Grid, Cell } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import { i18n } from "@webiny/app/i18n";
-import { PermissionInfo, gridNoPaddingClass } from "@webiny/app-admin/components/Permissions";
+import { PermissionInfo, gridWithPaddingClass } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
 import { ApwSecurityPermission } from "~/types";
 
@@ -80,7 +80,7 @@ export const ApwPermissions = ({ value, onChange }: ApwPermissionsProps) => {
             {({ Bind }) => {
                 return (
                     <Fragment>
-                        <Grid className={gridNoPaddingClass}>
+                        <Grid className={gridWithPaddingClass}>
                             <Cell span={6}>
                                 <PermissionInfo title={t`Manage Workflows`} />
                             </Cell>
@@ -89,7 +89,6 @@ export const ApwPermissions = ({ value, onChange }: ApwPermissionsProps) => {
                                     <Select label={t`Manage Workflows`}>
                                         <option value={NO_STATEMENT}>{t`No`}</option>
                                         <option value={YES_STATEMENT}>{t`Yes`}</option>
-                                        {/*<option value={CUSTOM_ACCESS}>{t`Custom access`}</option>*/}
                                     </Select>
                                 </Bind>
                             </Cell>
