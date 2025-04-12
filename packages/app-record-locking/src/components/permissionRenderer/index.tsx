@@ -13,7 +13,7 @@ export const recordLockingPermissionRenderer: AdminAppPermissionRendererPlugin =
             <Accordion.Item
                 icon={<Icon />}
                 title={"Record Locking"}
-                description={"Manage Record Locking Permissions."}
+                description={"Manage Record Locking permissions."}
                 data-testid={"permission.recordLocking"}
             >
                 <RecordLockingPermissions {...props} />
