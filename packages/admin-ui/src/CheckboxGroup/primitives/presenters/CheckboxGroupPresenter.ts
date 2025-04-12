@@ -7,7 +7,7 @@ import type { CheckboxItemDto } from "~/Checkbox/domains/CheckboxItemDto";
 interface CheckboxGroupPresenterParams<TValue = string | number> {
     items: CheckboxItemDto[];
     values: TValue[];
-    onCheckedChange: (values: TValue[]) => void;
+    onCheckedChange?: (values: TValue[]) => void;
 }
 
 interface ICheckboxGroupPresenter<TValue = string | number> {
@@ -43,7 +43,7 @@ class CheckboxGroupPresenter<TValue = string | number> implements ICheckboxGroup
         const currentValues = [...this.params.values];
         const newValues = this.getUpdatedValues(currentValues, value);
         this.items = this.getItems(this.params.items, newValues);
-        this.params.onCheckedChange(newValues);
+        this.params.onCheckedChange?.(newValues);
     };
 
     private getUpdatedValues(currentValues: TValue[], value: TValue): TValue[] {

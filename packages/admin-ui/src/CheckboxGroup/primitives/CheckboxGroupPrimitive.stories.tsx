@@ -125,7 +125,7 @@ export const WithExternalValueControl: Story = {
                     <Button text={"Reset"} onClick={() => setValues([])} />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>
-                    Current selected value: <pre>{values.join()}</pre>
+                    Current selected value: <pre>{values && values.join()}</pre>
                 </div>
             </div>
         );

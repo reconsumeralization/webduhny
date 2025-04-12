@@ -7,7 +7,7 @@ export const useCheckboxGroup = (props: CheckboxGroupPrimitiveProps) => {
     const params: CheckboxGroupPresenterParams = useMemo(
         () => ({
             items: props.items,
-            values: props.value,
+            values: props.value || [],
             onCheckedChange: props.onChange
         }),
         [props.items, props.value, props.onChange]
