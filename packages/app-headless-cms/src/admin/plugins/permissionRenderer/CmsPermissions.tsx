@@ -4,23 +4,21 @@
  */
 import React, { Fragment, useCallback, useMemo } from "react";
 import ContentModelGroupPermission from "./components/ContentModelGroupPermission";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import { i18n } from "@webiny/app/i18n";
 import {
     CannotUseAaclAlert,
     PermissionInfo,
-    gridNoPaddingClass
+    gridWithPaddingClass
 } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
 import { ContentModelPermission } from "./components/ContentModelPermission";
 import { ContentEntryPermission } from "./components/ContentEntryPermission";
-import { Checkbox, CheckboxGroup } from "@webiny/ui/Checkbox";
 import { useI18N } from "@webiny/app-i18n/hooks/useI18N";
 import { Link } from "@webiny/react-router";
 import { CmsSecurityPermission } from "~/types";
 import { useSecurity } from "@webiny/app-security";
 import { AaclPermission } from "@webiny/app-admin";
+import { CheckboxGroup, Grid, Select } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/plugins/permissionRenderer");
 
@@ -266,62 +264,71 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
         <Form<CmsSecurityPermission> data={initialFormData} onChange={onFormChange}>
             {({ data, Bind, setValue }) => (
                 <>
-                    <Grid className={gridNoPaddingClass}>
-                        <Cell span={12}>
+                    <Grid className={gridWithPaddingClass}>
+                        <Grid.Column span={12}>
                             {data.accessLevel === "custom" && cannotUseAAcl && (
                                 <CannotUseAaclAlert />
                             )}
-                        </Cell>
+                        </Grid.Column>
                     </Grid>
 
-                    <Grid className={gridNoPaddingClass}>
-                        <Cell span={6}>
+                    <Grid className={gridWithPaddingClass}>
+                        <Grid.Column span={6}>
                             <PermissionInfo title={t`Access Level`} />
-                        </Cell>
-                        <Cell span={6}>
+                        </Grid.Column>
+                        <Grid.Column span={6}>
                             <Bind name={"accessLevel"}>
-                                <Select label={t`Access Level`}>
-                                    <option value={NO_ACCESS}>{t`No access`}</option>
-                                    <option value={FULL_ACCESS}>{t`Full access`}</option>
-                                    <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>
-                                </Select>
+                                <Select
+                                    options={[
+                                        {
+                                            value: NO_ACCESS,
+                                            label: t`No access`
+                                        },
+                                        {
+                                            value: FULL_ACCESS,
+                                            label: t`Full access`
+                                        },
+                                        {
+                                            value: CUSTOM_ACCESS,
+                                            label: t`Custom access`
+                                        }
+                                    ]}
+                                />
                             </Bind>
-                        </Cell>
+                        </Grid.Column>
                     </Grid>
                     {data.accessLevel === CUSTOM_ACCESS && (
-                        <>
-                            <Grid>
-                                <Cell span={12}>
-                                    <Bind name={"endpoints"}>
-                                        <CheckboxGroup
-                                            label={t`GraphQL API types`}
-                                            description={t`Each type has a separate URL and a specific purpose.
+                        <div className={"wby-mt-lg"}>
+                            <div className={"wby-mb-md"}>
+                                <Grid>
+                                    <Grid.Column span={12}>
+                                        <Bind name={"endpoints"}>
+                                            {bind => (
+                                                <CheckboxGroup
+                                                    {...bind}
+                                                    label={t`GraphQL API types`}
+                                                    description={t`Each type has a separate URL and a specific purpose.
                                                  Check out the {link} key topic to learn more.`({
-                                                link: (
-                                                    <Link
-                                                        to={GRAPHQL_API_TYPES_LINK}
-                                                        target={"_blank"}
-                                                    >
-                                                        Headless CMS GraphQL API
-                                                    </Link>
-                                                )
-                                            })}
-                                        >
-                                            {({ getValue, onChange }) =>
-                                                API_ENDPOINTS.map(({ id, name }) => (
-                                                    <Checkbox
-                                                        key={id}
-                                                        label={name}
-                                                        value={getValue(id)}
-                                                        onChange={onChange(id)}
-                                                        disabled={cannotUseAAcl}
-                                                    />
-                                                ))
-                                            }
-                                        </CheckboxGroup>
-                                    </Bind>
-                                </Cell>
-                            </Grid>
+                                                        link: (
+                                                            <Link
+                                                                to={GRAPHQL_API_TYPES_LINK}
+                                                                target={"_blank"}
+                                                            >
+                                                                Headless CMS GraphQL API
+                                                            </Link>
+                                                        )
+                                                    })}
+                                                    items={API_ENDPOINTS.map(({ id, name }) => ({
+                                                        id,
+                                                        label: name,
+                                                        value: id
+                                                    }))}
+                                                />
+                                            )}
+                                        </Bind>
+                                    </Grid.Column>
+                                </Grid>
+                            </div>
 
                             <ContentModelGroupPermission
                                 data={data}
@@ -351,7 +358,7 @@ export const CMSPermissions = ({ value, onChange }: CMSPermissionsProps) => {
                                 entity={"contentEntry"}
                                 title={"Content Entries"}
                             />
-                        </>
+                        </div>
                     )}
                 </>
             )}

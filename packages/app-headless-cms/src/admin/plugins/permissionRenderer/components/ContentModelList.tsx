@@ -1,20 +1,8 @@
 import React from "react";
-import { css } from "@emotion/css";
 import groupBy from "lodash/groupBy";
 import get from "lodash/get";
-import { Typography } from "@webiny/ui/Typography";
-import { Checkbox } from "@webiny/ui/Checkbox";
-import { GetValueCallable, OnChangeCallable, PermissionSelectorCmsGroup } from "./types";
-
-const groupStyles = css({
-    marginLeft: 20
-});
-
-const labelStyles = css({
-    display: "block",
-    color: "var(--mdc-theme-text-secondary-on-light)",
-    fontWeight: "bold"
-});
+import { PermissionSelectorCmsGroup } from "./types";
+import { CheckboxGroup, Text } from "@webiny/admin-ui";
 
 interface GroupItem extends PermissionSelectorCmsGroup {
     groupName: string;
@@ -22,10 +10,12 @@ interface GroupItem extends PermissionSelectorCmsGroup {
 
 interface ContentModelListProps {
     items: PermissionSelectorCmsGroup[];
-    onChange: OnChangeCallable;
-    getValue: GetValueCallable;
+    label: string;
+    disabled?: boolean;
+    value?: string[];
+    onChange?: (values: string[]) => void;
 }
-const ContentModelList = ({ items, onChange, getValue }: ContentModelListProps) => {
+const ContentModelList = ({ items, label, disabled, value, onChange }: ContentModelListProps) => {
     const list: [string, GroupItem[]][] = Object.entries(
         groupBy(
             items.map((item): GroupItem => {
@@ -39,27 +29,27 @@ const ContentModelList = ({ items, onChange, getValue }: ContentModelListProps) 
     );
 
     return (
-        <React.Fragment>
-            {list.map(([key, value]) => {
+        <>
+            <Text className={"wby-font-semibold"}>{label}</Text>
+            {list.map(([key, items]) => {
                 return (
-                    <div key={key} className={groupStyles}>
-                        <Typography use={"caption"} className={labelStyles}>
-                            {key}
-                        </Typography>
-                        {value.map(({ id, label }) => (
-                            <div key={id}>
-                                <Checkbox
-                                    key={id}
-                                    label={label}
-                                    value={getValue(id)}
-                                    onChange={onChange(id)}
-                                />
-                            </div>
-                        ))}
+                    <div key={key} className={"wby-ml-md wby-mt-sm"}>
+                        <CheckboxGroup
+                            label={key}
+                            value={value}
+                            onChange={onChange}
+                            items={items.map(item => {
+                                return {
+                                    value: item.id,
+                                    label: item.label,
+                                    disabled
+                                };
+                            })}
+                        />
                     </div>
                 );
             })}
-        </React.Fragment>
+        </>
     );
 };
 
