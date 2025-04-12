@@ -11,11 +11,11 @@ const meta: Meta<typeof CheckboxGroupPrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.value);
         return (
             <CheckboxGroupPrimitive
                 {...args}
-                values={values}
+                value={values}
                 onChange={values => setValues(values)}
             />
         );
@@ -41,7 +41,7 @@ export const Default: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     }
 };
 
@@ -61,7 +61,7 @@ export const WithLongLabels: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     }
 };
 
@@ -81,7 +81,7 @@ export const WithSelectedValues: Story = {
                 value: "value-3"
             }
         ],
-        values: ["value-2"]
+        value: ["value-2"]
     }
 };
 
@@ -102,7 +102,7 @@ export const WithDisabledValue: Story = {
                 value: "value-3"
             }
         ],
-        values: ["value-2"]
+        value: ["value-2"]
     }
 };
 
@@ -111,13 +111,13 @@ export const WithExternalValueControl: Story = {
         ...Default.args
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.value);
         return (
             <div className={"wby-w-full"}>
                 <div>
                     <CheckboxGroupPrimitive
                         {...args}
-                        values={values}
+                        value={values}
                         onChange={values => setValues(values)}
                     />
                 </div>

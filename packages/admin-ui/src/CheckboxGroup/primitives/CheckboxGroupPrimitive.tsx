@@ -15,7 +15,7 @@ interface CheckboxGroupPrimitiveProps<TValue = any> {
     /**
      * Array of selected checkbox values.
      */
-    values: TValue[];
+    value: TValue[];
 }
 
 interface CheckboxGroupPrimitiveVm {
