@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
-import { ReactComponent as CmsIcon } from "@webiny/icons/wysiwyg.svg";
+import { ReactComponent as CmsIcon } from "@webiny/icons/devices_other.svg";
 
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
 
