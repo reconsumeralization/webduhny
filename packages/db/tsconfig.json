@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
-  "references": [{ "path": "../api" }],
+  "references": [{ "path": "../api-core" }],
   "compilerOptions": {
     "rootDirs": ["./src", "./__tests__"],
     "outDir": "./dist",
@@ -10,7 +10,7 @@
       "~/*": ["./src/*"],
       "~tests/*": ["./__tests__/*"],
       "@webiny/api-core/*": ["../api-core/src/*"],
-      "@webiny/api-core": ["../api/src"]
+      "@webiny/api-core": ["../api-core/src"]
     },
     "baseUrl": "."
   }

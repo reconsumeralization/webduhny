@@ -3,7 +3,7 @@
   "include": ["src", "__tests__"],
   "references": [
     { "path": "../api-aco" },
-    { "path": "../api" },
+    { "path": "../api-core" },
     { "path": "../api-admin-users" },
     { "path": "../api-headless-cms" },
     { "path": "../api-i18n" },
