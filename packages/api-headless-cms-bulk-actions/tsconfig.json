@@ -7,7 +7,7 @@
     { "path": "../handler-aws" },
     { "path": "../tasks" },
     { "path": "../utils" },
-    { "path": "../api" },
+    { "path": "../api-core" },
     { "path": "../api-admin-users" },
     { "path": "../api-i18n" },
     { "path": "../api-security" },

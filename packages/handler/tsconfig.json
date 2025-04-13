@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
-    { "path": "../api" },
+    { "path": "../api-core" },
     { "path": "../error" },
     { "path": "../handler-client" },
     { "path": "../plugins" },

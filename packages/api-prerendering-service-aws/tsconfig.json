@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
-    { "path": "../api" },
+    { "path": "../api-core" },
     { "path": "../api-log" },
     { "path": "../api-prerendering-service" },
     { "path": "../aws-sdk" },
