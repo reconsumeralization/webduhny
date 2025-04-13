@@ -8,6 +8,9 @@ import { PartialCmsContentEntryWithId } from "~/admin/contexts/Cms";
 import { SingletonHeader } from "~/admin/components/ContentEntryForm/SingletonHeader";
 
 const Container = styled.div`
+    height: calc(100vh - 45px);
+    overflow-y: scroll;
+    
     // This is a workaround for the fact that the ContentEntryForm component is used by many views.
     // It has no padding, so we need to override it here.
     #cms-content-form {
@@ -20,9 +23,12 @@ export const SingletonContentEntry = makeDecoratable("SingletonContentEntry", ()
     return (
         <Container>
             <div className={"wby-container wby-pt-lg"}>
-                <Grid className="wby-h-full">
+                <Grid>
                     <Grid.Column span={10} offset={1}>
-                        <div className="wby-h-full wby-border-sm wby-border-neutral-dimmed-darker wby-rounded-t-3xl">
+                        <div
+                            style={{ minHeight: "calc(100vh - 70px)" }}
+                            className="wby-border-sm wby-border-b-none wby-border-neutral-dimmed-darker wby-rounded-t-3xl"
+                        >
                             {loading && <OverlayLoader />}
                             <ContentEntryForm
                                 header={<SingletonHeader title={contentModel.name} />}
