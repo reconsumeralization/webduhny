@@ -4,4 +4,4 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-An implementation of core UI components for @webiny/app-serverless-cms using RMWC UI library. 
+An implementation of core UI components for @webiny/admin using RMWC UI library. 

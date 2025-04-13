@@ -8,7 +8,7 @@ import { OktaAuth, AuthStateManager } from "@okta/okta-auth-js";
 import OktaSignIn from "@okta/okta-signin-widget";
 import { plugins } from "@webiny/plugins";
 import { CircularProgress } from "@webiny/ui/Progress";
-import { useSecurity } from "@webiny/app-serverless-cms";
+import { useSecurity } from "@webiny/admin";
 import { ApolloLinkPlugin } from "@webiny/app/plugins/ApolloLinkPlugin";
 import { useTenancy, withTenant } from "@webiny/app-tenancy";
 import OktaSignInWidget from "./OktaSignInWidget";

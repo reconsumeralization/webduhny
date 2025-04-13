@@ -12,4 +12,4 @@ This package provides actions plugins for Lexical editor.
 
 ## Where is it used?
 
-Currently, this packaged is used in [@webiny/app-serverless-cms](../app-serverless-cms).
+Currently, this packaged is used in [@webiny/admin](../admin).
