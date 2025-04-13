@@ -14,7 +14,7 @@ import {
 } from "@auth0/auth0-react";
 import { plugins } from "@webiny/plugins";
 import { ApolloLinkPlugin } from "@webiny/app/plugins/ApolloLinkPlugin";
-import { useSecurity } from "@webiny/app-serverless-cms";
+import { useSecurity } from "@webiny/admin";
 import { useTenancy, withTenant } from "@webiny/app-tenancy";
 import { SecurityPermission } from "@webiny/app-security/types";
 import { useRouter, UseHistory } from "@webiny/react-router";

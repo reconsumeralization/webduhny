@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from "react
 import gql from "graphql-tag";
 import { useApolloClient } from "@apollo/react-hooks";
 import get from "lodash/get";
-import { LoginScreenRenderer, useTenancy, useTags } from "@webiny/app-serverless-cms";
+import { LoginScreenRenderer, useTenancy, useTags } from "@webiny/admin";
 import { createAuthentication, CreateAuthenticationConfig } from "./createAuthentication";
 import { UserMenuModule } from "~/modules/userMenu";
 import { AppClientModule } from "~/modules/appClient";

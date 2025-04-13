@@ -4,7 +4,7 @@ import {
     UserMenuHandleRenderer,
     Compose,
     Plugins
-} from "@webiny/app-serverless-cms";
+} from "@webiny/admin";
 import { UserInfo } from "~/modules/userMenu/userInfo";
 import { SignOut } from "~/modules/userMenu/signOut";
 import { UserImage } from "~/modules/userMenu/userImage";

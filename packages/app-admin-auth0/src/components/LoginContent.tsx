@@ -1,5 +1,5 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/app-serverless-cms";
+import { makeDecoratable } from "@webiny/admin";
 import { CircularProgress } from "@webiny/ui/Progress";
 import { alignCenter, Title } from "~/components/StyledComponents";
 import { Typography } from "@webiny/ui/Typography";
