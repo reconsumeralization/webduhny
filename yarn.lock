@@ -12341,7 +12341,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@webiny/admin@workspace:packages/admin":
+"@webiny/admin@npm:0.0.0, @webiny/admin@workspace:packages/admin":
   version: 0.0.0-use.local
   resolution: "@webiny/admin@workspace:packages/admin"
   dependencies:
@@ -13967,10 +13967,10 @@ __metadata:
     "@apollo/react-hooks": "npm:^3.1.5"
     "@auth0/auth0-react": "npm:^2.2.4"
     "@emotion/styled": "npm:11.10.6"
+    "@webiny/admin": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
-    "@webiny/app-serverless-cms": "npm:0.0.0"
     "@webiny/app-tenancy": "npm:0.0.0"
     "@webiny/app-tenant-manager": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
@@ -14029,10 +14029,10 @@ __metadata:
     "@okta/okta-auth-js": "npm:^5.3.1"
     "@okta/okta-react": "npm:^6.1.0"
     "@okta/okta-signin-widget": "npm:^5.9.4"
+    "@webiny/admin": "npm:0.0.0"
     "@webiny/app": "npm:0.0.0"
     "@webiny/app-admin": "npm:0.0.0"
     "@webiny/app-security": "npm:0.0.0"
-    "@webiny/app-serverless-cms": "npm:0.0.0"
     "@webiny/app-tenancy": "npm:0.0.0"
     "@webiny/app-tenant-manager": "npm:0.0.0"
     "@webiny/form": "npm:0.0.0"
