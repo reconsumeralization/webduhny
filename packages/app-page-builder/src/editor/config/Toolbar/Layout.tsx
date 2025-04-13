@@ -35,7 +35,7 @@ export const Layout = () => {
             <div
                 data-role={"toolbar-layout"}
                 className={
-                    "wby-fixed wby-top-headerbar wby-left-0 wby-p-xs wby-h-[calc(100vh-theme(height.headerbar))] wby-bg-neutral-base"
+                    "wby-fixed wby-top-headerbar wby-left-0 wby-p-sm wby-h-[calc(100vh-theme(height.headerbar))] wby-bg-neutral-base"
                 }
             >
                 <ToolbarActions data-role={"toolbar-actions"}>

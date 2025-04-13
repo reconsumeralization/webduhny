@@ -1,14 +1,9 @@
 import React, { useCallback } from "react";
-import { css } from "emotion";
 import { useLocation, useNavigate } from "@webiny/react-router";
-import { IconButton } from "@webiny/ui/Button";
+import { IconButton } from "@webiny/admin-ui";
 import { ReactComponent as BackIcon } from "./round-arrow_back-24px.svg";
 import { useBlock } from "~/blockEditor/hooks/useBlock";
 import { BlockEditorConfig } from "~/blockEditor/editorConfig/BlockEditorConfig";
-
-const backStyles = css({
-    marginLeft: -10
-});
 
 export function BackButton() {
     const { key } = useLocation();
@@ -27,8 +22,8 @@ export function BackButton() {
     return (
         <>
             <IconButton
+                className={"mr-sm-plus"}
                 data-testid="pb-editor-back-button"
-                className={backStyles}
                 onClick={onClick}
                 icon={<BackIcon />}
             />

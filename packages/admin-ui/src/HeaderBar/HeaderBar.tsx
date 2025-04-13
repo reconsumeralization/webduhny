@@ -10,11 +10,14 @@ interface HeaderBarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const HeaderBarBase = ({ start, middle, end, className, ...props }: HeaderBarProps) => {
     return (
-        <header className={cn("wby-relative wby-w-full", className)} {...props}>
-            <div
-                className={
-                    "wby-grid wby-grid-cols-[1fr_auto_1fr] wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
-                }
+        <>
+            <header
+                className={cn(
+                    "wby-relative wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base",
+                    "wby-grid wby-grid-cols-[1fr_auto_1fr]",
+                    className
+                )}
+                {...props}
             >
                 <div className="wby-h-full wby-flex wby-items-center wby-justify-self-start">
                     {start}
@@ -23,9 +26,9 @@ const HeaderBarBase = ({ start, middle, end, className, ...props }: HeaderBarPro
                 <div className="wby-h-full wby-flex wby-items-center wby-justify-self-end">
                     {end}
                 </div>
-            </div>
+            </header>
             <Separator margin={"none"} variant={"subtle"} />
-        </header>
+        </>
     );
 };
 

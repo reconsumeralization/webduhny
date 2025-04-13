@@ -10,7 +10,7 @@ export interface TopBarLayoutProps {
 export const Layout = makeDecoratable("TopBarLayout", ({className}: TopBarLayoutProps) => {
     return (
         <HeaderBar
-            className={cn("wby-fixed wby-top-0 wby-z-[100] wby-pl-lg wby-pr-sm", className)}
+            className={cn("wby-fixed wby-top-0 wby-z-[100] wby-px-sm", className)}
             data-role={"top-bar-layout"}
             start={<TopBar.Elements group={"left"} />}
             middle={<TopBar.Elements group={"center"} />}
