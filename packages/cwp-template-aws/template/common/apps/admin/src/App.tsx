@@ -1,5 +1,5 @@
 import React from "react";
-import { Admin } from "@webiny/app-serverless-cms";
+import { Admin } from "@webiny/admin";
 import { Cognito } from "@webiny/app-admin-users-cognito";
 import { Extensions } from "./Extensions";
 
