@@ -20,7 +20,7 @@ export const Layout = makeDecoratable("SidebarLayout", ({ className }: LayoutPro
             )}
             data-role={"sidebar-layout"}
         >
-            <Tabs value={activeGroup} onActivate={setActiveGroup} spacing={'md'}>
+            <Tabs value={activeGroup} onActivate={setActiveGroup} spacing={"sm"}>
                 <Sidebar.Elements group="groups" />
             </Tabs>
             <SidebarHighlight />

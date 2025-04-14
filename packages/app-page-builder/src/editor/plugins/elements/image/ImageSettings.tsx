@@ -9,7 +9,7 @@ import Wrapper from "~/editor/plugins/elementSettings/components/Wrapper";
 import InputField from "~/editor/plugins/elementSettings/components/InputField";
 import SpacingPicker from "~/editor/plugins/elementSettings/components/SpacingPicker";
 import useUpdateHandlers from "~/editor/plugins/elementSettings/useUpdateHandlers";
-import { justifySelfEndStyle } from "~/editor/plugins/elementSettings/components/StyledComponents";
+import {ContentWrapper, justifySelfEndStyle} from "~/editor/plugins/elementSettings/components/StyledComponents";
 import {
     WIDTH_UNIT_OPTIONS,
     HEIGHT_UNIT_OPTIONS
@@ -53,7 +53,7 @@ const ImageSettings = ({
 
     return (
         <Accordion title={"Image"} defaultValue={defaultAccordionValue}>
-            <>
+            <ContentWrapper direction={"column"}>
                 <Wrapper containerClassName={classes.grid} label={"Title"}>
                     <InputField value={image?.title || ""} onChange={updateTitle} />
                 </Wrapper>
@@ -95,7 +95,7 @@ const ImageSettings = ({
                         <option value={"object"}>{"<object>"} (for SVGs)</option>
                     </SelectField>
                 </Wrapper>
-            </>
+            </ContentWrapper>
         </Accordion>
     );
 };

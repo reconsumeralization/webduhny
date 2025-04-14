@@ -1,12 +1,11 @@
 import React, { ReactElement } from "react";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Typography } from "@webiny/ui/Typography";
+import { Grid, ColumnProps, cn } from "@webiny/admin-ui";
 
 interface WrapperPropsType {
     label: string;
     containerClassName?: string;
-    leftCellSpan?: number;
-    rightCellSpan?: number;
+    leftCellSpan?: ColumnProps["span"];
+    rightCellSpan?: ColumnProps["span"];
     leftCellClassName?: string;
     rightCellClassName?: string;
     children: ReactElement;
@@ -22,13 +21,19 @@ const Wrapper = ({
     children
 }: WrapperPropsType) => {
     return (
-        <Grid className={containerClassName}>
-            <Cell span={leftCellSpan} className={leftCellClassName}>
-                <Typography use={"body2"}>{label}</Typography>
-            </Cell>
-            <Cell span={rightCellSpan} className={rightCellClassName}>
+        <Grid className={cn(containerClassName, "wby-min-h-xl")} gap={"none"}>
+            <Grid.Column
+                span={leftCellSpan}
+                className={cn("wby-flex wby-items-center", leftCellClassName)}
+            >
+                {label}
+            </Grid.Column>
+            <Grid.Column
+                span={rightCellSpan}
+                className={cn("wby-flex wby-items-center", rightCellClassName)}
+            >
                 {children}
-            </Cell>
+            </Grid.Column>
         </Grid>
     );
 };
