@@ -13,11 +13,16 @@ const meta: Meta<typeof CheckboxGroupPrimitive> = {
     render: args => {
         const [values, setValues] = useState(args.value);
         return (
-            <CheckboxGroupPrimitive
-                {...args}
-                value={values}
-                onChange={values => setValues(values)}
-            />
+            <div className={"wby-w-full"}>
+                <CheckboxGroupPrimitive
+                    {...args}
+                    value={values}
+                    onChange={values => setValues(values)}
+                />
+                <div className={"wby-mt-4 wby-text-center"}>
+                    Current selected value: <pre>{values && values.join()}</pre>
+                </div>
+            </div>
         );
     }
 };
@@ -129,5 +134,34 @@ export const WithExternalValueControl: Story = {
                 </div>
             </div>
         );
+    }
+};
+
+export const WithNumericValues: Story = {
+    args: {
+        ...Default.args,
+        value: [3, 4],
+        items: [
+            {
+                label: "Number 1",
+                value: 1
+            },
+            {
+                label: "Number 2",
+                value: 2
+            },
+            {
+                label: "Number 3",
+                value: 3
+            },
+            {
+                label: "Number 4",
+                value: 4
+            },
+            {
+                label: "Number 5",
+                value: 5
+            }
+        ]
     }
 };

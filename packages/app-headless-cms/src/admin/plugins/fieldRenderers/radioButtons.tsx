@@ -27,7 +27,7 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind defaultValue={defaultOption ? defaultOption.value : undefined}>
-                    {bind => (
+                    {({ onChange, value, ...bind }) => (
                         <Bind.ValidationContainer>
                             <RadioGroup
                                 {...bind}
@@ -35,33 +35,18 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 description={field.helpText}
                                 items={options.map(option => ({
                                     label: option.label,
-                                    value:
-                                        field.type === "number"
-                                            ? Number(option.value)
-                                            : String(option.value),
+                                    value: String(option.value),
                                     selected: option.selected
                                 }))}
+                                value={String(value)}
+                                onChange={value => {
+                                    if (field.type === "number") {
+                                        onChange(Number(value));
+                                    } else {
+                                        onChange(String(value));
+                                    }
+                                }}
                             />
-                            {/*{({ onChange, getValue }) => (*/}
-                            {/*    <React.Fragment>*/}
-                            {/*        {options.map((option, index) => {*/}
-                            {/*            const value =*/}
-                            {/*                field.type === "number"*/}
-                            {/*                    ? Number(option.value)*/}
-                            {/*                    : option.value;*/}
-                            {/*            return (*/}
-                            {/*                <div key={String(option.value) + index}>*/}
-                            {/*                    <Radio*/}
-                            {/*                        label={option.label}*/}
-                            {/*                        value={getValue(value)}*/}
-                            {/*                        onChange={onChange(value)}*/}
-                            {/*                        data-testid={`fr.input.${field.label}.${option.label}`}*/}
-                            {/*                    />*/}
-                            {/*                </div>*/}
-                            {/*            );*/}
-                            {/*        })}*/}
-                            {/*    </React.Fragment>*/}
-                            {/*)}*/}
                         </Bind.ValidationContainer>
                     )}
                 </Bind>

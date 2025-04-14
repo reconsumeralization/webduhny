@@ -47,7 +47,7 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 value={bind.value}
                                 items={options.map(opt => ({
                                     label: opt.label,
-                                    value: String(opt.value),
+                                    value: opt.value,
                                     selected: opt.selected
                                 }))}
                             />
