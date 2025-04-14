@@ -1,6 +1,19 @@
-import type { BatchWriteCommand, DeleteCommand, PutCommand } from "@webiny/aws-sdk/client-dynamodb";
+import {
+    type GetCommand,
+    type BatchGetCommand,
+    type BatchWriteCommand,
+    type DeleteCommand,
+    type PutCommand,
+    type UpdateCommand
+} from "@webiny/aws-sdk/client-dynamodb";
 
-export type IDynamoDbCommand = PutCommand | DeleteCommand | BatchWriteCommand;
+export type IDynamoDbCommand =
+    | PutCommand
+    | DeleteCommand
+    | BatchWriteCommand
+    | BatchGetCommand
+    | GetCommand
+    | UpdateCommand;
 
 export interface ICommandValue {
     toString(): string | null;

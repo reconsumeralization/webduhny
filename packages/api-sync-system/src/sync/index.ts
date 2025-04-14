@@ -11,9 +11,12 @@ import zod from "zod";
 import { convertException, createZodError } from "@webiny/utils";
 import { createBatchWriteCommandConverter } from "./handler/converter/BatchWriteCommandConverter.js";
 import { createHandlerConverter } from "./handler/HandlerConverter.js";
+import { createSyncHandler } from "./handler/Handler.js";
 import { createPutCommandConverter } from "./handler/converter/PutCommandConverter.js";
 import { createDeleteCommandConverter } from "./handler/converter/DeleteCommandConverter.js";
-import { createSyncHandler } from "./handler/Handler.js";
+import { createBatchGetCommandConverter } from "./handler/converter/BatchGetCommandConverter.js";
+import { createGetCommandConverter } from "./handler/converter/GetCommandConverter.js";
+import { createUpdateCommandConverter } from "./handler/converter/UpdateCommandConverter.js";
 
 export interface ICreateSyncSystemParams {
     system: Partial<ISystem>;
@@ -67,11 +70,20 @@ const createSyncSystemHandlerOnRequestPlugin = (
         if (!manifest?.sync) {
             return;
         }
-        const converter = createHandlerConverter(createNullCommand());
+        const converter = createHandlerConverter({
+            default: createNullCommand()
+        });
+        /**
+         * We register users command converters because those are tested out first.
+         * Our converters are in some order I got from my head - the most used commands are first.
+         */
+        converter.register(params.commandConverters || []);
+        converter.register(createBatchGetCommandConverter());
+        converter.register(createGetCommandConverter());
+        converter.register(createBatchWriteCommandConverter());
         converter.register(createPutCommandConverter());
         converter.register(createDeleteCommandConverter());
-        converter.register(createBatchWriteCommandConverter());
-        converter.register(params.commandConverters || []);
+        converter.register(createUpdateCommandConverter());
 
         const handler = createSyncHandler({
             system: params.system,

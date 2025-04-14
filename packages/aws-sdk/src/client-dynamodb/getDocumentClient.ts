@@ -35,7 +35,7 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
     const config = input || DEFAULT_CONFIG;
     const key = createKey(config);
     if (documentClients[key]) {
-        return documentClients[key];
+        return applyEnrichment(documentClients[key]);
     }
     const client = new DynamoDBClient(config);
 
@@ -43,16 +43,23 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
 
     return (documentClients[key] = applyEnrichment(documentClient));
 };
-
+/**
+ * Client will not be enriched more than once.
+ */
 const applyEnrichment = (client: DynamoDBDocument): DynamoDBDocument => {
     if (!enrichDocumentClientCallable) {
         return client;
     }
+    /**
+     * If client is already enriched, let's skip enrichment.
+     */
+    // @ts-expect-error
+    else if (client.__enrichedByWebiny) {
+        return client;
+    }
+    // @ts-expect-error
+    client.__enrichedByWebiny = true;
     return enrichDocumentClientCallable(client);
-};
-
-export const disableEnrichDocumentClient = (): void => {
-    enrichDocumentClientCallable = undefined;
 };
 
 export const enableEnrichDocumentClient = (cb: IEnableEnrichDocumentClientCallable): void => {
