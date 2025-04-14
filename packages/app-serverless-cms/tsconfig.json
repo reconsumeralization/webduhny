@@ -27,6 +27,7 @@
     { "path": "../app-websockets" },
     { "path": "../lexical-editor-actions" },
     { "path": "../lexical-editor-pb-element" },
+    { "path": "../lexical-theme" },
     { "path": "../plugins" }
   ],
   "compilerOptions": {
@@ -86,6 +87,8 @@
       "@webiny/lexical-editor-actions": ["../lexical-editor-actions/src"],
       "@webiny/lexical-editor-pb-element/*": ["../lexical-editor-pb-element/src/*"],
       "@webiny/lexical-editor-pb-element": ["../lexical-editor-pb-element/src"],
+      "@webiny/lexical-theme/*": ["../lexical-theme/src/*"],
+      "@webiny/lexical-theme": ["../lexical-theme/src"],
       "@webiny/plugins/*": ["../plugins/src/*"],
       "@webiny/plugins": ["../plugins/src"]
     },
