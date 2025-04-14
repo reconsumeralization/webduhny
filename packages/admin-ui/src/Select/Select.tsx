@@ -25,7 +25,12 @@ const DecoratableSelect = ({
 
     return (
         <div className={"wby-w-full"}>
-            <FormComponentLabel text={label} required={required} disabled={disabled} />
+            <FormComponentLabel
+                text={label}
+                required={required}
+                disabled={disabled}
+                invalid={invalid}
+            />
             <FormComponentDescription text={description} disabled={disabled} />
             <SelectPrimitive {...props} disabled={disabled} invalid={invalid} />
             <FormComponentErrorMessage

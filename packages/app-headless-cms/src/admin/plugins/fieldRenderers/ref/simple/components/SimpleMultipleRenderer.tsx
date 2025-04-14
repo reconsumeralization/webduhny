@@ -43,6 +43,7 @@ export const SimpleMultipleRenderer = (props: SimpleMultipleRendererProps) => {
 
     return (
         <CheckboxGroup
+            {...bind}
             label={field.label}
             description={field.helpText}
             value={values}

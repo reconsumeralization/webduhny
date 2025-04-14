@@ -8,7 +8,7 @@ const Container = ({ children, className, ...props }: ContainerProps) => {
         <div
             {...props}
             className={cn(
-                "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mt-xs wby-mb-md wby-relative",
+                "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mt-xs wby-relative",
                 className
             )}
         >

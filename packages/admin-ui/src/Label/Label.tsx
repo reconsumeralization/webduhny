@@ -17,6 +17,9 @@ const labelVariants = cva(
             },
             disabled: {
                 true: "wby-text-neutral-disabled wby-cursor-not-allowed"
+            },
+            invalid: {
+                true: "webiny_label-invalid"
             }
         },
         defaultVariants: {
@@ -45,6 +48,7 @@ const LabelBase = ({
     value,
     text,
     weight,
+    invalid,
     id,
     ...props
 }: LabelProps) => {
@@ -54,13 +58,13 @@ const LabelBase = ({
 
     return (
         <LabelPrimitive.Root
-            className={cn(labelVariants({ weight, disabled }), className)}
+            className={cn(labelVariants({ weight, disabled, invalid }), className)}
             htmlFor={id}
             {...props}
         >
             <span>
                 <span className={"wby-flex wby-items-center wby-gap-xxs"}>
-                    {text}
+                    <span className={"webiny_label-text"}>{text}</span>
                     {description && <LabelDescription content={description} disabled={disabled} />}
                     {hint && <LabelHint content={hint} />}
                     {required && <LabelRequired disabled={disabled} />}

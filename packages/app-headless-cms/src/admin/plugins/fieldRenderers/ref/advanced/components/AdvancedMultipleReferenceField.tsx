@@ -216,15 +216,15 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
 
     const { validation } = bind;
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
         <>
             <div className={"wby-flex wby-items-center wby-justify-between"}>
-                <FormComponentLabel text={field.label} />
+                <FormComponentLabel text={field.label} invalid={invalid} />
                 <Text size={"sm"}>({message})</Text>
             </div>
-            {validationIsValid === false && <FormComponentErrorMessage text={validationMessage} />}
-            <Container>
+            <Container className={"webiny_ref-field-container"}>
                 {loading && <OverlayLoader size={"md"} />}
                 <Entries entries={entries} loadMore={loadMore}>
                     {(entry, index) => {
@@ -251,6 +251,7 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
                     }}
                 </Entries>
             </Container>
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <Options
                 models={models}
                 onNewRecord={onNewRecord}

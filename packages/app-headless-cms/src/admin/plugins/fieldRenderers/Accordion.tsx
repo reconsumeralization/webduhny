@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useRef } from "react";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import classNames from "classnames";
-import { Typography } from "@webiny/ui/Typography";
+import { Text } from "@webiny/admin-ui";
 
 const classes = {
     accordionWrapper: css({
@@ -138,9 +138,9 @@ const Accordion = ({
             >
                 <div className="accordion-header--left">
                     <div className={"accordion-title"}>
-                        <Typography use={"subtitle1"} tag={"span"}>
+                        <Text size={"md"} as={"span"} className={"webiny_accordion-title-text"}>
                             {title}
-                        </Typography>
+                        </Text>
                     </div>
                 </div>
                 <div className="accordion-header--right">

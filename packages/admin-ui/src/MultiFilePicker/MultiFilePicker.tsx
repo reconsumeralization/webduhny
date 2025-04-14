@@ -51,6 +51,7 @@ const BaseMultiFilePicker = ({
                     required={required}
                     disabled={disabled}
                     description={description}
+                    invalid={invalid}
                 />
             )}
             <MultiFilePickerPrimitive
@@ -61,6 +62,7 @@ const BaseMultiFilePicker = ({
                         required={required}
                         disabled={disabled}
                         description={description}
+                        invalid={invalid}
                         className={"wby-m-0"}
                     />
                 }

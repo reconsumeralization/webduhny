@@ -43,6 +43,7 @@ export const SimpleSingleRenderer = (props: SimpleSingleRendererProps) => {
 
     return (
         <RadioGroup
+            {...bind}
             label={field.label}
             description={field.helpText}
             value={value}

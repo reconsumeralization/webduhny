@@ -1,24 +1,14 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { CmsModelFieldRendererPlugin } from "~/types";
 import { Fields } from "~/admin/components/ContentEntryForm/Fields";
 import { FieldSettings } from "./FieldSettings";
 import { ParentFieldProvider } from "~/admin/components/ContentEntryForm/ParentValue";
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { fieldsGridStyle } from "./StyledComponents";
-import { Typography } from "@webiny/ui/Typography";
+import { FormComponentDescription, Heading } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
-
-const FieldLabel = styled.div`
-    font-size: 24px;
-    font-weight: normal;
-    border-bottom: 1px solid var(--mdc-theme-background);
-    margin-bottom: 20px;
-    padding-bottom: 5px;
-`;
 
 const plugin: CmsModelFieldRendererPlugin = {
     type: "cms-editor-field-renderer",
@@ -48,21 +38,29 @@ const plugin: CmsModelFieldRendererPlugin = {
                         <Bind.ValidationContainer>
                             <ParentFieldProvider value={bindProps.value} path={Bind.parentName}>
                                 <ParentValueIndexProvider index={-1}>
-                                    <FieldLabel>
-                                        <Typography use={"headline5"}>{field.label}</Typography>
+                                    <div className={"wby-pb-sm"}>
+                                        <Heading level={6} className={"webiny_group-label-text"}>
+                                            {field.label}
+                                        </Heading>
                                         {field.helpText && (
-                                            <FormElementMessage>
+                                            <FormComponentDescription>
                                                 {field.helpText}
-                                            </FormElementMessage>
+                                            </FormComponentDescription>
                                         )}
-                                    </FieldLabel>
-                                    <Fields
-                                        gridClassName={fieldsGridStyle}
-                                        Bind={Bind}
-                                        contentModel={contentModel}
-                                        fields={settings.fields}
-                                        layout={settings.layout}
-                                    />
+                                    </div>
+                                    <div
+                                        className={
+                                            "wby-p-md wby-border-sm wby-border-neutral-dimmed-darker wby-rounded-md"
+                                        }
+                                    >
+                                        <Fields
+                                            gridClassName={fieldsGridStyle}
+                                            Bind={Bind}
+                                            contentModel={contentModel}
+                                            fields={settings.fields}
+                                            layout={settings.layout}
+                                        />
+                                    </div>
                                 </ParentValueIndexProvider>
                             </ParentFieldProvider>
                         </Bind.ValidationContainer>

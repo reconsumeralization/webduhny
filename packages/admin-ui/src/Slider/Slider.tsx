@@ -21,6 +21,7 @@ import {
  */
 interface SliderRendererWithSideValueProps extends SliderPrimitiveRendererProps {
     label?: React.ReactNode;
+    invalid?: boolean;
     required?: boolean;
 }
 
@@ -32,6 +33,7 @@ const SliderRendererWithSideValue = (props: SliderRendererWithSideValueProps) =>
                     text={props.label}
                     required={props.required}
                     disabled={props.disabled}
+                    invalid={props.invalid}
                     weight={"light"}
                 />
             </div>
@@ -61,7 +63,7 @@ const DecoratableSlider = ({
     ...props
 }: SliderProps) => {
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
-    const invalid = React.useMemo(() => validationIsValid === false, [validationIsValid]);
+    const invalid = validationIsValid === false;
 
     const { vm, changeValue, commitValue } = useSlider(props);
 
@@ -72,6 +74,7 @@ const DecoratableSlider = ({
                 <SliderRendererWithSideValue
                     {...props}
                     {...vm}
+                    invalid={invalid}
                     onValueChange={changeValue}
                     onValueCommit={commitValue}
                 />
@@ -91,6 +94,7 @@ const DecoratableSlider = ({
                 text={<Label text={props.label} value={vm.textValue} />}
                 disabled={props.disabled}
                 required={props.required}
+                invalid={invalid}
             />
             <FormComponentDescription text={description} disabled={props.disabled} />
             <SliderPrimitiveRenderer

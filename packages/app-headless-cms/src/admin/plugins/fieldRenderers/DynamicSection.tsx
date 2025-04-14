@@ -87,7 +87,7 @@ const DynamicSection = ({
                                         "wby-pb-md wby-mb-md wby-border-b-sm wby-border-neutral-dimmed"
                                     }
                                 >
-                                    <Heading level={6}>
+                                    <Heading level={6} className={"webiny_group-label-text"}>
                                         {`${field.label} ${
                                             bindFieldValue.length
                                                 ? `(${bindFieldValue.length})`
@@ -130,6 +130,7 @@ const DynamicSection = ({
                                     {bindField.validation.isValid === false && (
                                         <Grid.Column span={12}>
                                             <FormComponentErrorMessage
+                                                invalid
                                                 text={bindField.validation.message}
                                             />
                                         </Grid.Column>

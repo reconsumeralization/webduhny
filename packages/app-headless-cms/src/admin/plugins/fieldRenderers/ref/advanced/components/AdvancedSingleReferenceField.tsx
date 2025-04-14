@@ -167,12 +167,12 @@ export const AdvancedSingleReferenceField = (props: AdvancedSingleReferenceField
 
     const { validation } = bind;
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
         <>
-            <FormComponentLabel text={field.label} />
-            {validationIsValid === false && <FormComponentErrorMessage text={validationMessage} />}
-            <Container>
+            <FormComponentLabel text={field.label} invalid={invalid} />
+            <Container className={"webiny_ref-field-container"}>
                 {loading && <OverlayLoader size={"md"} />}
                 {initialValue ? (
                     <Entry
@@ -186,6 +186,7 @@ export const AdvancedSingleReferenceField = (props: AdvancedSingleReferenceField
                     <NoEntries text={"No record found"} />
                 )}
             </Container>
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
             <Options
                 models={models}
                 onNewRecord={onNewRecord}
