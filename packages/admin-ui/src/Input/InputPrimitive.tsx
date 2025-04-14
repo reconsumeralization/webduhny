@@ -95,14 +95,17 @@ const inputVariants = cva(
         variants: {
             size: {
                 md: [
+                    "wby-h-8",
                     "wby-rounded-md",
                     "wby-py-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 lg: [
+                    "wby-h-10",
                     "wby-rounded-md",
                     "wby-py-[calc(theme(padding.sm-plus)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.sm-extra)-theme(borderWidth.sm))]"
                 ],
                 xl: [
+                    "wby-h-14",
                     "wby-rounded-lg wby-leading-6",
                     "wby-py-[calc(theme(padding.md)-theme(borderWidth.sm))] wby-px-[calc(theme(padding.md)-theme(borderWidth.sm))]"
                 ]
