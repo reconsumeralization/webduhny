@@ -6,34 +6,28 @@ export interface IValidResponse {
 }
 
 export interface IErrorResponse {
-    error: true;
+    error: string;
     system?: never;
 }
 
 export type ValidateSystemInputResponse = IValidResponse | IErrorResponse;
 
-export const validateSystemInput = (system: Partial<ISystem>): ValidateSystemInputResponse => {
-    const { env, name, region, variant } = system;
+export const validateSystemInput = (input: Partial<ISystem>): ValidateSystemInputResponse => {
+    const { env, name, region, variant } = input;
     if (!env) {
-        console.error(
-            "Sync System: No environment variable provided. Sync System will not be attached."
-        );
         return {
-            error: true
+            error: "Sync System: No environment variable provided. Sync System will not be attached."
         };
     } else if (!name) {
-        console.error("Sync System: No name variable provided. Sync System will not be attached.");
         return {
-            error: true
+            error: "Sync System: No name variable provided. Sync System will not be attached."
         };
     } else if (!region) {
-        console.error(
-            "Sync System: No region variable provided. Sync System will not be attached."
-        );
         return {
-            error: true
+            error: "Sync System: No region variable provided. Sync System will not be attached."
         };
     }
+
     return {
         system: {
             env,

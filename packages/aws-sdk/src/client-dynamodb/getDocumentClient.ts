@@ -2,11 +2,11 @@ import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument, TranslateConfig } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
 
-export interface IEnableEnrichDocumentClientCallable {
+export interface IDecorateDocumentClientCallable {
     (client: DynamoDBDocument): DynamoDBDocument;
 }
 
-let enrichDocumentClientCallable: IEnableEnrichDocumentClientCallable | undefined = undefined;
+let decorateDocumentClientCallable: IDecorateDocumentClientCallable | undefined = undefined;
 
 const DEFAULT_CONFIG = {
     region: process.env.AWS_REGION
@@ -35,39 +35,41 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
     const config = input || DEFAULT_CONFIG;
     const key = createKey(config);
     if (documentClients[key]) {
-        return applyEnrichment(documentClients[key]);
+        return applyDecoration(documentClients[key]);
     }
     const client = new DynamoDBClient(config);
 
     const documentClient = DynamoDBDocument.from(client, documentClientConfig);
 
-    return (documentClients[key] = applyEnrichment(documentClient));
+    return (documentClients[key] = applyDecoration(documentClient));
 };
 /**
- * Client will not be enriched more than once.
+ * Client will not be decorated more than once.
  */
-const applyEnrichment = (client: DynamoDBDocument): DynamoDBDocument => {
-    if (!enrichDocumentClientCallable) {
+const applyDecoration = (client: DynamoDBDocument): DynamoDBDocument => {
+    if (!decorateDocumentClientCallable) {
         return client;
     }
     /**
-     * If client is already enriched, let's skip enrichment.
+     * If client is already decorated, let's skip decoration.
      */
     // @ts-expect-error
-    else if (client.__enrichedByWebiny) {
+    else if (client.__decoratedByWebiny) {
         return client;
     }
     // @ts-expect-error
-    client.__enrichedByWebiny = true;
-    return enrichDocumentClientCallable(client);
+    client.__decoratedByWebiny = true;
+    return decorateDocumentClientCallable(client);
 };
 
-export const enableEnrichDocumentClient = (cb: IEnableEnrichDocumentClientCallable): void => {
+export const decorateDocumentClient = (cb: IDecorateDocumentClientCallable): void => {
     /**
      * This will probably show during the development phase.
      */
-    if (enrichDocumentClientCallable) {
-        throw new Error("EnrichDocumentClient is already enabled.");
+    if (decorateDocumentClientCallable) {
+        throw new Error(
+            "Cannot add more than one decoration of the document client. This is internal Webiny method, please do not use it."
+        );
     }
-    enrichDocumentClientCallable = cb;
+    decorateDocumentClientCallable = cb;
 };

@@ -55,6 +55,7 @@ const documentClient = getDocumentClient();
  */
 import { createSyncSystem } from "@webiny/api-sync-system";
 const syncSystem = createSyncSystem({
+    documentClient,
     system: {
         env: process.env.WEBINY_ENV,
         variant: process.env.WEBINY_ENV_VARIANT,

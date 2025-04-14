@@ -7,7 +7,7 @@ export interface IUpdateCommandValueKeys {
 }
 
 export class UpdateCommandValue implements ICommandValue {
-    public readonly command = "put";
+    public readonly command = "update";
     public readonly keys: IUpdateCommandValueKeys;
 
     public constructor(input: UpdateCommand) {

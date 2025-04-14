@@ -1,4 +1,4 @@
-import { enableEnrichDocumentClient } from "@webiny/aws-sdk/client-dynamodb/getDocumentClient";
+import { decorateDocumentClient } from "@webiny/aws-sdk/client-dynamodb/getDocumentClient";
 import type { IHandler } from "~/sync/types.js";
 import {
     BatchWriteCommand,
@@ -11,7 +11,7 @@ export interface IAttachToDynamoDbDocumentParams {
 }
 
 export const attachToDynamoDbDocument = ({ handler }: IAttachToDynamoDbDocumentParams) => {
-    enableEnrichDocumentClient(client => {
+    decorateDocumentClient(client => {
         /**
          * Is there a possibility that this is already attached?
          * Let's check for the handler and then skip attaching.
