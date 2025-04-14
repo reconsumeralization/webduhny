@@ -4,7 +4,7 @@ import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 import { ListItem, ListItemGraphic } from "@webiny/ui/List";
 import { Typography } from "@webiny/ui/Typography";
 import { Avatar } from "@webiny/ui/Avatar";
-import { makeDecoratable } from "@webiny/app-serverless-cms";
+import { makeDecoratable } from "@webiny/admin";
 
 const avatarImage = css({
     height: "40px !important",

@@ -1,10 +1,5 @@
 import React, { Fragment } from "react";
-import {
-    AddUserMenuItem,
-    UserMenuHandleRenderer,
-    Compose,
-    Plugins
-} from "@webiny/app-serverless-cms";
+import { AddUserMenuItem, UserMenuHandleRenderer, Compose, Plugins } from "@webiny/admin";
 import { UserInfo } from "~/modules/userMenu/userInfo";
 import { SignOut } from "~/modules/userMenu/signOut";
 import { UserImage } from "~/modules/userMenu/userImage";

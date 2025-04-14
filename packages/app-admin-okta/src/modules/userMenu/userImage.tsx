@@ -1,5 +1,5 @@
 import React from "react";
-import { makeDecoratable } from "@webiny/app-serverless-cms";
+import { makeDecoratable } from "@webiny/admin";
 import { Avatar } from "@webiny/ui/Avatar";
 import { useSecurity } from "@webiny/app-security/hooks/useSecurity";
 

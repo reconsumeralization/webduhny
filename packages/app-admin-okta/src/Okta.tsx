@@ -4,7 +4,7 @@ import OktaSignIn from "@okta/okta-signin-widget";
 import get from "lodash/get";
 import { useApolloClient } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Compose, LoginScreenRenderer, useTags, useTenancy } from "@webiny/app-serverless-cms";
+import { Compose, LoginScreenRenderer, useTags, useTenancy } from "@webiny/admin";
 import { createAuthentication, Config } from "./createAuthentication";
 import { UserMenuModule } from "~/modules/userMenu";
 import { AppClientModule } from "~/modules/appClient";
