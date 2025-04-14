@@ -97,7 +97,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                                     icon={<EditIcon />}
                                     data-testid={"cms.editor.tab.edit"}
                                     content={
-                                        <div className={"wby-relative"}>
+                                        <div className={"wby-relative wby-mb-lg"}>
                                             <FieldEditor
                                                 fields={data.fields}
                                                 layout={data.layout || []}

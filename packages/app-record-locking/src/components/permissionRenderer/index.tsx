@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AdminAppPermissionRendererPlugin } from "@webiny/app-admin/types";
-import { ReactComponent as Icon } from "@webiny/icons/lock.svg";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
 import { RecordLockingPermissions } from "./RecordLockingPermissions";
 import { Accordion } from "@webiny/admin-ui";
 
@@ -11,7 +11,7 @@ export const recordLockingPermissionRenderer: AdminAppPermissionRendererPlugin =
     render(props) {
         return (
             <Accordion.Item
-                icon={<Icon />}
+                icon={<Accordion.Item.Icon label={"Record Locking"} icon={<LockIcon />} />}
                 title={"Record Locking"}
                 description={"Manage Record Locking permissions."}
                 data-testid={"permission.recordLocking"}

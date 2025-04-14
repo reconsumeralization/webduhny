@@ -14,7 +14,6 @@
     { "path": "../form" },
     { "path": "../plugins" },
     { "path": "../react-router" },
-    { "path": "../ui" },
     { "path": "../utils" }
   ],
   "compilerOptions": {
