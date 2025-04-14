@@ -93,8 +93,8 @@ const VerticalAlignSettings = ({
             title={"Vertical align"}
             defaultValue={defaultAccordionValue}
             icon={
-                <Tooltip content={`Changes will apply for ${config.displayMode}`}>
-                    {config.icon}
+                <Tooltip content={`Changes will apply for ${activeEditorModeConfig.displayMode}`}>
+                    <Accordion.Icon icon={activeEditorModeConfig.icon} label={"Vertical align"} />
                 </Tooltip>
             }
         >

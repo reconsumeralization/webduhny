@@ -77,6 +77,7 @@ interface UseVisibilitySettingResult {
     element: PbEditorElement;
     updateVisibility: (value: boolean) => void;
 }
+
 export const useVisibilitySetting = (elementId: string): UseVisibilitySettingResult => {
     const { displayMode } = useRecoilValue(uiAtom);
     const element = useRecoilValue(elementWithChildrenByIdSelector(elementId)) as PbEditorElement;
@@ -164,7 +165,7 @@ const PropertySettings = ({ defaultAccordionValue }: PropertySettingsProps) => {
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Property"}/>
                 </Tooltip>
             }
         >

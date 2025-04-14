@@ -180,7 +180,7 @@ const TextSettings = ({ defaultAccordionValue, options }: TextSettingsProps) => 
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Text"} />
                 </Tooltip>
             }
         >

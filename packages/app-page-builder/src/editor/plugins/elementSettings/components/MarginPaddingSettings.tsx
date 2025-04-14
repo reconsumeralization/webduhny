@@ -279,7 +279,7 @@ const MarginPaddingSettings = ({
             }
             icon={
                 <Tooltip content={`Changes will apply for ${activeEditorModeConfig.displayMode}`}>
-                    {activeEditorModeConfig.icon}
+                    <Accordion.Icon icon={activeEditorModeConfig.icon} label={startCase(styleAttribute)} />
                 </Tooltip>
             }
         >
