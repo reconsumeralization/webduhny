@@ -19,7 +19,7 @@ export const Layout = LayoutRenderer.createDecorator(() => {
                 <Navigation />
                 <div
                     className={cn(
-                        "wby-ml-auto wby-bg-white wby-transition-[max-width,min-width] wby-ease-linear wby-w-full",
+                        "wby-ml-auto wby-bg-neutral-base wby-transition-[max-width,min-width] wby-ease-linear wby-w-full",
                         {
                             "wby-max-w-[calc(100%-theme(spacing.sidebar-expanded))] ": pinned,
                             "wby-max-w-[calc(100%-theme(spacing.sidebar-collapsed))] ": !pinned
@@ -35,7 +35,12 @@ export const Layout = LayoutRenderer.createDecorator(() => {
                             </div>
                         }
                     />
-                    <main className={"wby-relative"}>{children}</main>
+                    <main
+                        style={{ height: "calc(100vh - 45px)" }}
+                        className={"wby-relative wby-overflow-y-scroll"}
+                    >
+                        {children}
+                    </main>
                 </div>
             </>
         );
