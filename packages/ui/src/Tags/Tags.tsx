@@ -1,18 +1,15 @@
 import React, { SyntheticEvent, useCallback, useState } from "react";
-import { css } from "emotion";
 import keycode from "keycode";
 import minimatch from "minimatch";
 import { Input, InputProps } from "~/Input";
 import { Chips, Chip } from "~/Chips";
 import { FormComponentProps } from "~/types";
-import { ReactComponent as BaselineCloseIcon } from "./icons/baseline-close-24px.svg";
-import { FormElementMessage } from "~/FormElementMessage";
 
 interface TagsProps extends FormComponentProps {
     /**
      * Component label.
      */
-    label?: string;
+    label?: React.ReactNode;
 
     /**
      * Are input and chosen tags disabled?
@@ -60,40 +57,10 @@ interface TagsProps extends FormComponentProps {
     protectedTags?: string[];
 }
 
-const tagsStyle = css({
-    position: "relative",
-    ".mdc-elevation--z1": {
-        position: "absolute",
-        width: "calc(100% - 2px)",
-        left: 1,
-        top: 56,
-        zIndex: 10,
-        maxHeight: 200,
-        overflowY: "scroll",
-        backgroundColor: "var(--mdc-theme-surface)"
-    },
-    ul: {
-        listStyle: "none",
-        width: "100%",
-        padding: 0,
-        li: {
-            padding: 10
-        }
-    }
-});
-
 export const Tags = (props: TagsProps) => {
     const [inputValue, setInputValue] = useState("");
 
-    const {
-        validation,
-        value,
-        disabled,
-        onChange,
-        description,
-        protectedTags = [],
-        ...otherInputProps
-    } = props;
+    const { value, disabled, onChange, protectedTags = [], ...otherInputProps } = props;
 
     const isProtected = useCallback(
         (tag: string) => protectedTags.some(pattern => minimatch(tag, pattern)),
@@ -134,42 +101,33 @@ export const Tags = (props: TagsProps) => {
         }
     };
 
-    const { isValid: validationIsValid, message: validationMessage } = validation || {};
-
     return (
-        <div className={tagsStyle}>
-            <div>
-                <Input {...inputProps} />
-
-                {validationIsValid === false && (
-                    <FormElementMessage error>{validationMessage}</FormElementMessage>
-                )}
-                {validationIsValid !== false && description && (
-                    <FormElementMessage>{description}</FormElementMessage>
-                )}
-
-                {Array.isArray(value) && value.length ? (
-                    <Chips disabled={disabled}>
-                        {value.map((item, index) => {
-                            return (
-                                <Chip
-                                    label={item}
-                                    trailingIcon={isProtected(item) ? null : <BaselineCloseIcon />}
-                                    key={`${item}-${index}`}
-                                    onRemove={() => {
-                                        // On removal, let's update the value and call "onChange" callback.
-                                        if (onChange) {
-                                            const newValue = [...value];
-                                            newValue.splice(index, 1);
-                                            onChange(newValue);
-                                        }
-                                    }}
-                                />
-                            );
-                        })}
-                    </Chips>
-                ) : null}
-            </div>
+        <div>
+            <Input {...inputProps} />
+            {Array.isArray(value) && value.length ? (
+                <Chips disabled={disabled}>
+                    {value.map((item, index) => {
+                        return (
+                            <Chip
+                                label={item}
+                                key={`${item}-${index}`}
+                                onRemove={
+                                    !isProtected(item)
+                                        ? () => {
+                                              // On removal, let's update the value and call "onChange" callback.
+                                              if (onChange) {
+                                                  const newValue = [...value];
+                                                  newValue.splice(index, 1);
+                                                  onChange(newValue);
+                                              }
+                                          }
+                                        : undefined
+                                }
+                            />
+                        );
+                    })}
+                </Chips>
+            ) : null}
         </div>
     );
 };

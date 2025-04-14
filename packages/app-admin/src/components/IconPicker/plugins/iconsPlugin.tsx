@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import styled from "@emotion/styled";
-
-import { ColorPicker } from "@webiny/ui/ColorPicker";
-import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
+import { DelayedOnChange, ColorPicker } from "@webiny/admin-ui";
 
 import { useIcon } from "..";
 import { IconPickerTab } from "../IconPickerTab";
 import { useIconPicker } from "../IconPickerPresenterProvider";
 import { IconPickerConfig } from "../config";
 import { Icon } from "../types";
-
-const StyledColorPicker = styled.div`
-    [data-role="color-picker-swatch"] {
-        width: 30px;
-        height: 30px;
-        > div {
-            width: inherit;
-        }
-    }
-`;
 
 /**
  * NOTE: Avoid using `@emotion/styled` in icon renderer components across all plugins.
@@ -43,7 +30,9 @@ const IconSvg = () => {
             color={icon?.color || "inherit"}
             dangerouslySetInnerHTML={{ __html: icon.value || "" }}
             style={{
-                verticalAlign: "middle"
+                verticalAlign: "middle",
+                width: "100%",
+                height: "100%"
             }}
         />
     );
@@ -58,17 +47,11 @@ const IconColorPicker = ({ color, onChange }: IconColorPickerProps) => {
     return (
         <DelayedOnChange value={color} onChange={onChange}>
             {({ value, onChange }) => (
-                <StyledColorPicker>
-                    <ColorPicker align={"right"} value={value} onChange={onChange} />
-                </StyledColorPicker>
+                <ColorPicker align={"end"} value={value} onChange={onChange} />
             )}
         </DelayedOnChange>
     );
 };
-
-const Color = styled.span<{ color: string }>`
-    color: ${({ color }) => color};
-`;
 
 /**
  * @see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
@@ -108,9 +91,10 @@ const IconTab = observer(() => {
 
     return (
         <IconPickerTab
+            value={"icon"}
             label={"Icons"}
             onChange={onIconSelect}
-            cellDecorator={cell => <Color color={color}>{cell}</Color>}
+            cellDecorator={cell => <span style={{ color }}>{cell}</span>}
             actions={<IconColorPicker color={color} onChange={onColorChange} />}
         />
     );

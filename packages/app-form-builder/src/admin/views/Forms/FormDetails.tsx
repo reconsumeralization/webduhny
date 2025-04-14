@@ -2,7 +2,6 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { renderPlugins } from "@webiny/app/plugins";
 import { useRouter } from "@webiny/react-router";
-import styled from "@emotion/styled";
 import {
     GET_FORM,
     GET_FORM_REVISIONS,
@@ -12,25 +11,16 @@ import {
     GetFormRevisionsQueryVariables
 } from "../../graphql";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
-import { Tabs } from "@webiny/ui/Tabs";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { ButtonDefault, ButtonIcon } from "@webiny/ui/Button";
 import { useSecurity } from "@webiny/app-security";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as CheckboxIcon } from "@webiny/icons/check_box.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useForms } from "./useForms";
+import { Button, OverlayLoader, Tabs } from "@webiny/admin-ui";
+import { TabProps } from "@webiny/admin-ui/Tabs/components";
 
 const t = i18n.ns("app-form-builder/admin/views/forms/form-details");
-
-const DetailsContainer = styled("div")({
-    height: "100%",
-    overflow: "hidden",
-    position: "relative",
-    ".mdc-tab-bar": {
-        backgroundColor: "var(--mdc-theme-surface)"
-    }
-});
 
 interface EmptyFormDetailsProps {
     onCreateForm: () => void;
@@ -39,14 +29,18 @@ interface EmptyFormDetailsProps {
 const EmptyFormDetails = ({ canCreate, onCreateForm }: EmptyFormDetailsProps) => {
     return (
         <EmptyView
+            icon={<CheckboxIcon />}
             title={t`Click on the left side list to display form details {message}`({
                 message: canCreate() ? " or create a..." : ""
             })}
             action={
                 canCreate() ? (
-                    <ButtonDefault data-testid="new-record-button" onClick={onCreateForm}>
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Form`}
-                    </ButtonDefault>
+                    <Button
+                        text={t`New Form`}
+                        icon={<AddIcon />}
+                        data-testid="new-record-button"
+                        onClick={onCreateForm}
+                    />
                 ) : null
             }
         />
@@ -116,18 +110,29 @@ const FormDetails = ({ onCreateForm }: FormDetailsProps) => {
             : getRevisions.data.formBuilder.revisions.data;
 
     return (
-        <DetailsContainer>
-            {getForm.loading && <CircularProgress label={"Loading details..."} />}
+        <div style={{ height: "calc(100vh - 45px)" }} className={"wby-relative"}>
+            {getForm.loading && <OverlayLoader text={"Loading details..."} />}
             {form && (
-                <Tabs>
-                    {renderPlugins(
-                        "forms-form-details-revision-content",
-                        { security, refreshForms, form, revisions, loading: getForm.loading },
-                        { wrapper: false }
-                    )}
-                </Tabs>
+                <Tabs
+                    size={"md"}
+                    spacing={"lg"}
+                    separator={true}
+                    tabs={
+                        renderPlugins(
+                            "forms-form-details-revision-content",
+                            {
+                                security,
+                                refreshForms,
+                                form,
+                                revisions,
+                                loading: getForm.loading
+                            },
+                            { wrapper: false }
+                        ) as React.ReactElement<TabProps>[]
+                    }
+                />
             )}
-        </DetailsContainer>
+        </div>
     );
 };
 

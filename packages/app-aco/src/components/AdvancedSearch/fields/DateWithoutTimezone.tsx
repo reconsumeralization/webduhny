@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { useBind } from "@webiny/form";
-import { Input } from "@webiny/ui/Input";
 import { useInputField } from "~/components";
+import { Input } from "@webiny/admin-ui";
 
 export const DateWithoutTimezone = () => {
     const { name } = useInputField();
@@ -28,6 +28,12 @@ export const DateWithoutTimezone = () => {
     };
 
     return (
-        <Input label={"Value"} type={"datetime-local"} onChange={handleOnChange} value={dateTime} />
+        <Input
+            label={"Value"}
+            type={"datetime-local"}
+            onChange={handleOnChange}
+            value={dateTime}
+            size={"lg"}
+        />
     );
 };

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { CoreOptions } from "medium-editor";
-import { ReactComponent as ExpandIcon } from "@material-design-icons/svg/filled/fullscreen.svg";
+import { ReactComponent as ExpandIcon } from "@webiny/icons/fullscreen.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Dialog, DialogActions, DialogContent } from "@webiny/ui/Dialog";
 import { ButtonPrimary, IconButton } from "@webiny/ui/Button";

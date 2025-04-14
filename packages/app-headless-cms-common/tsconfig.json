@@ -9,7 +9,8 @@
     { "path": "../plugins" },
     { "path": "../react-composition" },
     { "path": "../ui" },
-    { "path": "../validation" }
+    { "path": "../validation" },
+    { "path": "../admin-ui" }
   ],
   "compilerOptions": {
     "rootDirs": ["./src", "./__tests__"],
@@ -33,7 +34,9 @@
       "@webiny/ui/*": ["../ui/src/*"],
       "@webiny/ui": ["../ui/src"],
       "@webiny/validation/*": ["../validation/src/*"],
-      "@webiny/validation": ["../validation/src"]
+      "@webiny/validation": ["../validation/src"],
+      "@webiny/admin-ui/*": ["../admin-ui/src/*"],
+      "@webiny/admin-ui": ["../admin-ui/src"]
     },
     "baseUrl": "."
   }

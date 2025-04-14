@@ -1,28 +1,7 @@
 import React from "react";
-import { css } from "emotion";
-import { ButtonDefault } from "@webiny/ui/Button";
-import { Icon } from "@webiny/ui/Icon";
-import { ReactComponent as DownButton } from "../../../../icons/round-arrow_drop_down-24px.svg";
-
-import { MenuItem } from "@webiny/ui/Menu";
-import { Typography } from "@webiny/ui/Typography";
-import { Menu } from "@webiny/ui/Menu";
+import { ReactComponent as ArrowDownIcon } from "@webiny/icons/expand_more.svg";
+import { Button, DropdownMenu, Text } from "@webiny/admin-ui";
 import { FbRevisionModel } from "~/types";
-
-const buttonStyle = css({
-    "&.mdc-button": {
-        color: "var(--mdc-theme-text-primary-on-background) !important"
-    }
-});
-
-const menuList = css({
-    ".mdc-deprecated-list-item": {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "baseline",
-        textAlign: "left"
-    }
-});
 
 interface RevisionSelectorProps {
     revisions: FbRevisionModel[];
@@ -31,26 +10,34 @@ interface RevisionSelectorProps {
 }
 const RevisionSelector = ({ revisions, revision, selectRevision }: RevisionSelectorProps) => {
     return (
-        <Menu
+        <DropdownMenu
             data-testid={"fb.form-preview.header.revision-selector"}
-            className={menuList}
-            onSelect={evt => selectRevision(revisions[evt.detail.index])}
-            handle={
-                <ButtonDefault className={buttonStyle}>
-                    v{revision.version} <Icon icon={<DownButton />} />
-                </ButtonDefault>
+            trigger={
+                <Button
+                    text={`v${revision.version}`}
+                    icon={<ArrowDownIcon />}
+                    variant={"tertiary"}
+                    size={"sm"}
+                    iconPosition={"end"}
+                />
             }
         >
             {(revisions || []).map(rev => (
-                <MenuItem
+                <DropdownMenu.Item
                     key={rev.id}
                     data-testid={`fb.form-preview.header.revision-v${rev.version}`}
-                >
-                    <Typography use={"body2"}>v{rev.version}</Typography>
-                    <Typography use={"caption"}>({rev.status})</Typography>
-                </MenuItem>
+                    text={
+                        <div>
+                            <Text as={"div"}>v{rev.version}</Text>
+                            <Text size={"sm"} as={"div"}>
+                                ({rev.status})
+                            </Text>
+                        </div>
+                    }
+                    onClick={() => selectRevision(rev)}
+                />
             ))}
-        </Menu>
+        </DropdownMenu>
     );
 };
 

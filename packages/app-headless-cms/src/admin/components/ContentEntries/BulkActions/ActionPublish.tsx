@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as PublishIcon } from "@material-design-icons/svg/outlined/publish.svg";
+import { ReactComponent as PublishIcon } from "@webiny/icons/publish.svg";
 import { observer } from "mobx-react-lite";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { usePermission, useCms, useModel } from "~/admin/hooks";

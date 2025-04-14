@@ -1,20 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import { useCreateDialog, useGetFolderLevelPermission } from "@webiny/app-aco";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
+import { Scrollbar } from "@webiny/admin-ui";
 import { Empty } from "~/admin/components/ContentEntries/Empty";
 import { Filters } from "~/admin/components/ContentEntries/Filters";
 import { Header } from "~/admin/components/ContentEntries/Header";
-import { LoadingMore } from "~/admin/components/ContentEntries/LoadingMore";
 import { LoadMoreButton } from "~/admin/components/ContentEntries/LoadMoreButton";
 import { Table } from "~/admin/components/ContentEntries/Table";
-import { MainContainer, Wrapper } from "./styled";
 import { useContentEntriesList, useContentEntry } from "~/admin/views/contentEntries/hooks";
 import { ContentEntry } from "~/admin/views/contentEntries/ContentEntry";
 import { useRouter } from "@webiny/react-router";
 import { ROOT_FOLDER } from "~/admin/constants";
 import { BulkActions } from "~/admin/components/ContentEntries/BulkActions";
-import { SelectAll } from "~/admin/components/ContentEntries/SelectAll";
 import { BottomInfoBar } from "~/admin/components/ContentEntries/BottomInfoBar";
 
 interface MainProps {
@@ -23,6 +20,7 @@ interface MainProps {
 
 export const Main = ({ folderId: initialFolderId }: MainProps) => {
     const folderId = initialFolderId === undefined ? ROOT_FOLDER : initialFolderId;
+    const isRoot = initialFolderId === ROOT_FOLDER;
     const list = useContentEntriesList();
     const { showDialog: showCreateFolderDialog } = useCreateDialog();
 
@@ -84,8 +82,9 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
 
     return (
         <>
-            <MainContainer>
+            <div className={"wby-h-full wby-relative wby-overflow-hidden"}>
                 <Header
+                    isRoot={isRoot}
                     title={!list.isListLoading ? list.listTitle : undefined}
                     canCreateFolder={canCreateFolder(folderId)}
                     canCreateContent={canCreateContent(folderId)}
@@ -94,9 +93,13 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
                     searchValue={list.search}
                     onSearchChange={list.setSearch}
                 />
-                <BulkActions />
-                <Wrapper>
-                    <SelectAll />
+                <div
+                    className={
+                        "wby-w-full wby-overflow-hidden wby-absolute wby-top-0 wby-bottom-0 wby-left-0"
+                    }
+                    style={{ top: "105px" }}
+                >
+                    <BulkActions />
                     <Filters />
                     {list.records.length === 0 &&
                     list.folders.length === 0 &&
@@ -125,14 +128,14 @@ export const Main = ({ folderId: initialFolderId }: MainProps) => {
                             </Scrollbar>
                             <BottomInfoBar
                                 loading={list.isListLoading}
+                                loadingMore={list.isListLoadingMore}
                                 totalCount={list.meta.totalCount}
                                 currentCount={list.records.length}
                             />
-                            <LoadingMore show={list.isListLoadingMore} />
                         </>
                     )}
-                </Wrapper>
-            </MainContainer>
+                </div>
+            </div>
         </>
     );
 };

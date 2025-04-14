@@ -2,7 +2,6 @@ import React from "react";
 
 import { FolderProvider } from "~/contexts/folder";
 import { Folder } from "~/components/FolderGrid/Folder";
-import { Grid } from "~/components/FolderGrid/styled";
 import { AcoWithConfig } from "~/config";
 import { FolderItem } from "~/types";
 
@@ -18,13 +17,17 @@ export const FolderGrid = ({ folders, onFolderClick }: FolderGridProps) => {
 
     return (
         <AcoWithConfig>
-            <Grid>
+            <div
+                className={
+                    "wby-w-full wby-grid wby-grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] wby-gap-md"
+                }
+            >
                 {folders.map(folder => (
-                    <FolderProvider key={folder.id} folder={folder}>
+                    <FolderProvider folder={folder} key={folder.id}>
                         <Folder onClick={onFolderClick} />
                     </FolderProvider>
                 ))}
-            </Grid>
+            </div>
         </AcoWithConfig>
     );
 };

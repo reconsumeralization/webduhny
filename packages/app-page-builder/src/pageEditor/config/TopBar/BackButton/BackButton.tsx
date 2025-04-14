@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as BackIcon } from "@material-design-icons/svg/round/arrow_back.svg";
+import { ReactComponent as BackIcon } from "@webiny/icons/arrow_back.svg";
 import styled from "@emotion/styled";
 import { IconButton } from "@webiny/ui/Button";
 import { useNavigatePage } from "~/admin/hooks/useNavigatePage";

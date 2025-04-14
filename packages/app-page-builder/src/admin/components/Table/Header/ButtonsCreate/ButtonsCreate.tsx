@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-import { ReactComponent as Add } from "@material-design-icons/svg/filled/add.svg";
+import { ReactComponent as Add } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { ButtonIcon, ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button";
 
@@ -27,7 +27,6 @@ export const ButtonsCreate = ({
             disabled={!canCreateFolder}
             data-testid="new-folder-button"
             onClick={onCreateFolder}
-            small={true}
         >
             <ButtonIcon icon={<Add />} />
             {t`New Folder`}
@@ -48,7 +47,6 @@ export const ButtonsCreate = ({
             data-testid="new-page-button"
             onClick={onCreatePage}
             flat={true}
-            small={true}
         >
             <ButtonIcon icon={<Add />} />
             {t`New Page`}

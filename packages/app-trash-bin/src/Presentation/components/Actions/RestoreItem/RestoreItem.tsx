@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Restore } from "@material-design-icons/svg/outlined/restore.svg";
+import { ReactComponent as Restore } from "@webiny/icons/restore.svg";
 import { useRestoreTrashBinItem, useTrashBinItem } from "~/Presentation/hooks";
 import { TrashBinListConfig } from "~/Presentation/configs";
 

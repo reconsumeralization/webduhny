@@ -1,40 +1,19 @@
 import React, { useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import styled from "@emotion/styled";
-import { Dialog, DialogContent, DialogTitle, DialogActions } from "~/admin/components/Dialog";
+import { Dialog, Drawer, Tabs } from "@webiny/admin-ui";
 import { Form, FormOnSubmit } from "@webiny/form";
-import { Tabs, Tab } from "@webiny/ui/Tabs";
 import { i18n } from "@webiny/app/i18n";
 import { CmsEditorContentModel, CmsModelField } from "~/types";
 import GeneralTab from "./EditFieldDialog/GeneralTab";
 import AppearanceTab from "./EditFieldDialog/AppearanceTab";
 import PredefinedValues from "./EditFieldDialog/PredefinedValues";
-import { ValidatorsList } from "./EditFieldDialog/ValidatorsList";
-import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
+import { ValidationTab } from "./EditFieldDialog/ValidationTab";
 import { useModelField, useModelEditor } from "~/admin/hooks";
 import { ModelFieldProvider } from "~/admin/components/ModelFieldProvider";
-import { ValidationsSection } from "~/admin/components/FieldEditor/EditFieldDialog/ValidationsSection";
-import { getFieldValidators, getListValidators } from "./EditFieldDialog/getValidators";
 import { useRendererPlugins } from "~/admin/components/FieldEditor/EditFieldDialog/useRendererPlugins";
+import { getFieldValidators } from "~/admin/components/FieldEditor/EditFieldDialog/getValidators";
 
 const t = i18n.namespace("app-headless-cms/admin/components/editor");
-
-const FullScreenDialog = styled(Dialog)`
-    width: 100vw;
-    height: 100vh;
-    .mdc-dialog__surface {
-        width: 100%;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        .webiny-ui-dialog__content {
-            max-width: 100% !important;
-            max-height: 100% !important;
-            width: 100vw;
-            height: calc(100vh - 155px);
-            overflow: scroll !important;
-        }
-    }
-`;
 
 function setupState(field: CmsModelField, contentModel: CmsEditorContentModel): EditFieldState {
     const clonedField = cloneDeep(field);
@@ -89,110 +68,88 @@ const EditFieldDialog = (props: EditFieldDialogProps) => {
     };
 
     return (
-        <FullScreenDialog
-            preventOutsideDismiss
-            open={true}
-            onClose={props.onClose}
-            data-testid={"cms-editor-edit-fields-dialog"}
-        >
-            <DialogTitle>{headerTitle}</DialogTitle>
-            <Form<CmsModelField> data={shadowField} onSubmit={onSubmit}>
-                {({ data: shadowField, submit }) => {
-                    const individualValidation = getFieldValidators(shadowField, fieldPlugin);
+        /**
+         * We're using the `shadowField` as the new context, because we want all changes by form inputs
+         * to immediately be propagated to all dialog components.
+         */
+        <Form<CmsModelField> data={shadowField} onSubmit={onSubmit}>
+            {({ data: shadowField, submit }) => {
+                const predefinedValuesTabEnabled =
+                    fieldPlugin.field.allowPredefinedValues &&
+                    shadowField.predefinedValues &&
+                    shadowField.predefinedValues.enabled;
 
-                    const hasValidators = individualValidation.validators.length > 0;
+                const individualValidation = getFieldValidators(shadowField, fieldPlugin);
+                const showValidatorsTab =
+                    shadowField.multipleValues || individualValidation.validators.length > 0;
 
-                    const showValidatorsTab =
-                        shadowField.multipleValues || individualValidation.validators.length > 0;
-
-                    const predefinedValuesTabEnabled =
-                        fieldPlugin.field.allowPredefinedValues &&
-                        shadowField.predefinedValues &&
-                        shadowField.predefinedValues.enabled;
-
-                    const listValidation = getListValidators(shadowField, fieldPlugin);
-
-                    return (
-                        /**
-                         * We're using the `shadowField` as the new context, because we want all changes by form inputs
-                         * to immediately be propagated to all dialog components.
-                         */
-                        <ModelFieldProvider field={shadowField}>
-                            <DialogContent>
-                                <Tabs>
-                                    <Tab label={t`General`}>
-                                        <GeneralTab />
-                                    </Tab>
-                                    <Tab
-                                        label={t`Predefined Values`}
-                                        disabled={!predefinedValuesTabEnabled}
-                                    >
-                                        {predefinedValuesTabEnabled && <PredefinedValues />}
-                                    </Tab>
-
-                                    <Tab
-                                        visible={showValidatorsTab}
-                                        label={"Validators"}
-                                        data-testid={"cms.editor.field.tabs.validators"}
-                                    >
-                                        {shadowField.multipleValues ? (
-                                            <>
-                                                <ValidationsSection
-                                                    validators={listValidation.validators}
-                                                    fieldKey={"listValidators"}
-                                                    title={
-                                                        listValidation.title || "List validators"
-                                                    }
-                                                    description={
-                                                        listValidation.description ||
-                                                        "These validators are applied to the entire list of values."
-                                                    }
-                                                />
-
-                                                {hasValidators ? (
-                                                    <ValidationsSection
-                                                        fieldKey={"validators"}
-                                                        validators={individualValidation.validators}
-                                                        title={
-                                                            individualValidation.title ||
-                                                            "Individual value validators"
-                                                        }
-                                                        description={
-                                                            individualValidation.description ||
-                                                            "These validators are applied to each value in the list."
-                                                        }
-                                                    />
-                                                ) : null}
-                                            </>
-                                        ) : null}
-
-                                        {!shadowField.multipleValues && hasValidators ? (
-                                            <ValidatorsList
-                                                name={"validation"}
-                                                validators={individualValidation.validators}
-                                            />
-                                        ) : null}
-                                    </Tab>
-                                    <Tab label={t`Appearance`}>
-                                        <AppearanceTab />
-                                    </Tab>
-                                </Tabs>
-                            </DialogContent>
-                            <DialogActions>
-                                <ButtonDefault
-                                    data-testid="cms.editor.field.settings.cancel"
+                return (
+                    <Drawer
+                        width={800}
+                        title={headerTitle}
+                        open={true}
+                        modal={true}
+                        onOpenChange={open => {
+                            if (!open) {
+                                props.onClose();
+                            }
+                        }}
+                        bodyPadding={false}
+                        actions={
+                            <>
+                                <Dialog.CancelButton
+                                    text={t`Cancel`}
                                     onClick={props.onClose}
-                                >{t`Cancel`}</ButtonDefault>
-                                <ButtonPrimary
-                                    data-testid="cms.editor.field.settings.save"
+                                    data-testid="cms.editor.field.settings.cancel"
+                                />
+                                <Dialog.ConfirmButton
+                                    text={t`Save Field`}
                                     onClick={submit}
-                                >{t`Save Field`}</ButtonPrimary>
-                            </DialogActions>
+                                    data-testid="cms.editor.field.settings.save"
+                                />
+                            </>
+                        }
+                        data-testid={"cms-editor-edit-fields-dialog"}
+                    >
+                        <ModelFieldProvider field={shadowField}>
+                            <Tabs
+                                spacing={"lg"}
+                                size={"md"}
+                                separator
+                                tabs={[
+                                    <Tabs.Tab
+                                        key={"general"}
+                                        trigger={t`General`}
+                                        value={"general"}
+                                        content={<GeneralTab />}
+                                    />,
+                                    <Tabs.Tab
+                                        key={"predefined"}
+                                        trigger={t`Predefined values`}
+                                        value={"predefined"}
+                                        disabled={!predefinedValuesTabEnabled}
+                                        content={<PredefinedValues />}
+                                    />,
+                                    <Tabs.Tab
+                                        key={"validations"}
+                                        trigger={t`Validations`}
+                                        value={"validations"}
+                                        content={<ValidationTab field={shadowField} />}
+                                        visible={showValidatorsTab}
+                                    />,
+                                    <Tabs.Tab
+                                        key={"appearance"}
+                                        trigger={t`Appearance`}
+                                        value={"Appearance"}
+                                        content={<AppearanceTab />}
+                                    />
+                                ]}
+                            />
                         </ModelFieldProvider>
-                    );
-                }}
-            </Form>
-        </FullScreenDialog>
+                    </Drawer>
+                );
+            }}
+        </Form>
     );
 };
 

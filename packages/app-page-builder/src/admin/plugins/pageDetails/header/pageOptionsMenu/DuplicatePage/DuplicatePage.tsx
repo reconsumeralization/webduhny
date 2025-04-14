@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DuplicateIcon } from "@material-design-icons/svg/filled/library_add.svg";
+import { ReactComponent as DuplicateIcon } from "@webiny/icons/library_add.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { DefaultDuplicatePage } from "./DefaultDuplicatePage";
 import { DuplicatePageMenuItem } from "./DuplicatePageMenuItem";

@@ -10,7 +10,7 @@ const drawerClassName = css({
         maxWidth: "280px !important"
     },
     "&.mdc-drawer": {
-        height: "calc(100% - 64px)"
+        height: "calc(100% - 45px)"
     }
 });
 

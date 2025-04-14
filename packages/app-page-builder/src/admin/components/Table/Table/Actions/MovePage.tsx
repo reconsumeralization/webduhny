@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Move } from "@material-design-icons/svg/outlined/drive_file_move.svg";
+import { ReactComponent as Move } from "@webiny/icons/drive_file_move.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { PageListConfig } from "~/admin/config/pages";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";

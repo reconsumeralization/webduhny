@@ -1,6 +1,5 @@
 import React from "react";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { CircularProgressHolder, StatusWrapper, UploadingLabel } from "./BottomInfoBar.styled";
+import { Loader, Text } from "@webiny/admin-ui";
 
 export interface ListStatusProps {
     loading: boolean;
@@ -12,11 +11,11 @@ export const ListStatus = ({ loading }: ListStatusProps) => {
     }
 
     return (
-        <StatusWrapper>
-            <UploadingLabel>{"Loading more items..."}</UploadingLabel>
-            <CircularProgressHolder>
-                <CircularProgress size={10} spinnerWidth={1} />
-            </CircularProgressHolder>
-        </StatusWrapper>
+        <div className="wby-flex wby-items-center wby-gap-sm">
+            <Text size={"sm"} as={"div"} className={"wby-text-neutral-strong"}>
+                {"Loading more items..."}
+            </Text>
+            <Loader size={"xs"} />
+        </div>
     );
 };

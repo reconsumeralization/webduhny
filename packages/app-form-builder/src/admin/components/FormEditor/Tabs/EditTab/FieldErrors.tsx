@@ -1,11 +1,6 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Alert } from "@webiny/ui/Alert";
 import { FormEditorFieldError } from "~/admin/components/FormEditor/Context";
-
-const Block = styled("span")`
-    display: block;
-`;
+import { Alert, Text } from "@webiny/admin-ui";
 
 const keyNames: Record<string, string> = {
     label: "Label",
@@ -25,14 +20,14 @@ interface FieldErrorProps {
 export const FieldError = ({ error }: FieldErrorProps) => {
     return (
         <>
-            <Block>
-                <strong>{error.label}</strong>
-            </Block>
+            <div>
+                <Text className={"wby-font-semibold"}>{error.label}</Text>
+            </div>
             {Object.keys(error.errors).map(key => {
                 return (
-                    <Block key={key}>
+                    <div key={key}>
                         {keyNames[key] || "unknown"}: {error.errors[key]}
-                    </Block>
+                    </div>
                 );
             })}
         </>

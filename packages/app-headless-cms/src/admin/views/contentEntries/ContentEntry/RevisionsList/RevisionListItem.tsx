@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { Date } from "@webiny/ui/DateTime";
 import {
     ListItem,

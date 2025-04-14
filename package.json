@@ -77,7 +77,7 @@
     "adio": "^1.0.1",
     "axios": "^1.7.9",
     "babel-jest": "29.7.0",
-    "babel-loader": "^9.2.1",
+    "babel-loader": "9.2.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "3.1.0",
     "babel-plugin-module-resolver": "^5.0.2",
@@ -171,6 +171,7 @@
     "webiny-versions": "node ./scripts/webinyVersions.js",
     "trigger-release": "node ./scripts/release/triggerRelease.js",
     "dispatch-github-event": "node ./scripts/dispatchGitHubEvent.js",
+    "link-workspaces": "node ./scripts/linkWorkspaces.js",
     "lint-staged": "lint-staged",
     "postinstall": "yarn node ./scripts/linkWorkspaces.js",
     "prepublishOnly": "node scripts/prepublishOnly",
@@ -194,7 +195,10 @@
     "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn webiny verify-dependencies",
     "system:build": "yarn && yarn ghawac build && yarn webiny sync-dependencies && yarn build",
     "wby": "./node_modules/.bin/wby",
-    "webiny-ui-build-storybook": "cd packages/ui && cross-env OUT=../../netlify-static yarn build-storybook"
+    "webiny-admin-storybook": "cd packages/admin-ui && yarn storybook",
+    "webiny-admin-storybook-docs": "cd packages/admin-ui && yarn storybook-docs",
+    "webiny-admin-build-storybook": "cd packages/admin-ui && cross-env OUT=../../netlify-static yarn build-storybook",
+    "webiny-admin-import-from-figma": "node packages/admin-ui/scripts/importFromFigma.js"
   },
   "husky": {
     "hooks": {
@@ -246,7 +250,7 @@
     ]
   },
   "resolutions": {
-    "@babel/runtime": "^7.26.0",
+    "@babel/runtime": "^7.26.7",
     "systeminformation": "^5.23.18",
     "@emotion/react": "11.10.8",
     "@octokit/rest": "^20.0.2",

@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { ImageEditor } from "~/ImageEditor";
-import { Tooltip } from "~/Tooltip";
-import { css } from "emotion";
-import { Dialog, DialogCancel, DialogActions, DialogContent, DialogOnClose } from "../Dialog";
-import { ButtonPrimary } from "~/Button";
+import React from "react";
+import { DialogOnClose } from "../Dialog";
+import { Alert } from "@webiny/admin-ui";
 
 interface ImageEditorDialogProps {
     dialogZIndex?: number;
@@ -19,74 +16,16 @@ interface ImageEditorDialogProps {
     "data-testid"?: string;
 }
 
-const imageEditorDialog = css({
-    width: "100vw",
-    height: "100vh",
-    ".mdc-dialog__surface": {
-        maxWidth: "100% !important",
-        maxHeight: "100% !important",
-        ".webiny-ui-dialog__content": {
-            maxWidth: "100% !important",
-            maxHeight: "100% !important",
-            width: "100vw",
-            height: "100vh",
-            paddingTop: "0 !important"
-        }
-    }
-});
-
-export const ImageEditorDialog = (props: ImageEditorDialogProps) => {
-    const { src, options, onAccept, open, dialogZIndex, ...dialogProps } = props;
-    const imageEditor = React.createRef<ImageEditor>();
-    const [isSaving, setIsSaving] = useState(false);
-
-    const onSave = async () => {
-        try {
-            setIsSaving(true);
-            const url = imageEditor.current ? imageEditor.current.getCanvasDataUrl() : "";
-            await onAccept(url);
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setIsSaving(false);
-        }
-    };
-
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please check the `ImageEditorDialog` component inside the `@webiny/app-file-manager` package instead.
+ */
+export const ImageEditorDialog = ({}: ImageEditorDialogProps) => {
     return (
-        <Dialog
-            className={imageEditorDialog}
-            style={{ zIndex: dialogZIndex }}
-            open={open}
-            {...dialogProps}
-        >
-            {open && (
-                <ImageEditor ref={imageEditor} src={src} options={options}>
-                    {({ render, activeTool }) => (
-                        <>
-                            <DialogContent>{render()}</DialogContent>
-                            <DialogActions>
-                                <DialogCancel>Cancel</DialogCancel>
-                                {activeTool ? (
-                                    <Tooltip
-                                        content={"Please close currently active tool."}
-                                        placement={"top"}
-                                    >
-                                        <ButtonPrimary disabled>Save</ButtonPrimary>
-                                    </Tooltip>
-                                ) : (
-                                    <ButtonPrimary
-                                        data-testid="dialog-accept"
-                                        onClick={onSave}
-                                        disabled={isSaving}
-                                    >
-                                        {isSaving ? "Saving..." : "Save"}
-                                    </ButtonPrimary>
-                                )}
-                            </DialogActions>
-                        </>
-                    )}
-                </ImageEditor>
-            )}
-        </Dialog>
+        <Alert type="danger" variant={"strong"}>
+            {
+                "Deprecated component! The original code has been moved to `@webiny/app-file-manager` package."
+            }
+        </Alert>
     );
 };

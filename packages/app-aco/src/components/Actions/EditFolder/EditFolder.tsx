@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as Edit } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as Edit } from "@webiny/icons/edit.svg";
 
 import { AcoConfig } from "~/config";
 import { useEditDialog } from "~/dialogs";

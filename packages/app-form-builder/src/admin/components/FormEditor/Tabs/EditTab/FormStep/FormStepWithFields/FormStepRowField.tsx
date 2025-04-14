@@ -2,12 +2,11 @@ import React, { useCallback, useMemo } from "react";
 import { FbFormModelField, FbFormStep } from "~/types";
 import Draggable, { BeginDragProps } from "~/admin/components/FormEditor/Draggable";
 import Field from "~/admin/components/FormEditor/Tabs/EditTab/Field";
-import { FieldHandle, FieldContainer } from "~/admin/components/FormEditor/Tabs/EditTab/Styled";
-
 import { Vertical } from "~/admin/components/FormEditor/DropZone";
 import { useFormStep } from "~/admin/components/FormEditor/Tabs/EditTab/FormStep/useFormStep";
 import { DragObjectWithFieldInfo } from "~/admin/components/FormEditor/Droppable";
 import { useFormEditor } from "~/admin/components/FormEditor";
+import { cn } from "@webiny/admin-ui";
 
 export interface FormStepFieldRowFieldProps {
     formStep: FbFormStep;
@@ -75,7 +74,10 @@ export const FormStepRowField = (props: FormStepFieldRowFieldProps) => {
     return (
         <Draggable key={`step-field-${fieldIndex}`} beginDrag={fieldBeginDragParams}>
             {({ drag }) => (
-                <FieldContainer ref={drag}>
+                <div
+                    className={cn(["wby-relative", "wby-flex-1 wby-basis-full", "wby-mx-sm"])}
+                    ref={drag}
+                >
                     <Vertical
                         onDrop={onFieldVerticalZoneDrop}
                         isVisible={item =>
@@ -83,13 +85,17 @@ export const FormStepRowField = (props: FormStepFieldRowFieldProps) => {
                         }
                     />
 
-                    <FieldHandle>
+                    <div
+                        className={
+                            "wby-cursor-grab wby-bg-neutral-base wby-p-md wby-shadow-sm wby-rounded-xs"
+                        }
+                    >
                         <Field
                             field={field}
                             onEdit={editField}
                             onDelete={() => deleteField(field, formStep.id)}
                         />
-                    </FieldHandle>
+                    </div>
 
                     {isLastField && (
                         <Vertical
@@ -101,7 +107,7 @@ export const FormStepRowField = (props: FormStepFieldRowFieldProps) => {
                             onDrop={onLastFieldVerticalZoneDrop}
                         />
                     )}
-                </FieldContainer>
+                </div>
             )}
         </Draggable>
     );

@@ -1,7 +1,10 @@
 import React from "react";
-import { FormComponentProps } from "./../types";
-import { webinyCheckboxTitle } from "./Checkbox.styles";
-import { FormElementMessage } from "../FormElementMessage";
+import { FormComponentProps } from "~/types";
+import {
+    FormComponentDescription,
+    FormComponentErrorMessage,
+    FormComponentLabel
+} from "@webiny/admin-ui";
 
 export interface ChildrenRenderProp {
     onChange: (id: string | number) => () => void;
@@ -19,23 +22,19 @@ type Props = FormComponentProps & {
     children: (props: ChildrenRenderProp) => React.ReactNode;
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `CheckboxGroup` component from the `@webiny/admin-ui` package instead.
+ */
 class CheckboxGroup extends React.Component<Props> {
     public override render() {
-        const { description, label, validation = { isValid: null, message: null } } = this.props;
+        const { description, label, validation } = this.props;
+        const { isValid: validationIsValid, message: validationMessage } = validation || {};
 
         return (
-            <React.Fragment>
-                {label && (
-                    <div
-                        className={
-                            "mdc-text-field-helper-text mdc-text-field-helper-text--persistent " +
-                            webinyCheckboxTitle
-                        }
-                    >
-                        {label}
-                    </div>
-                )}
-
+            <div className={"w-full"}>
+                <FormComponentLabel text={label} />
+                <FormComponentDescription text={description} />
                 {this.props.children({
                     onChange: value => {
                         return () => {
@@ -57,15 +56,11 @@ class CheckboxGroup extends React.Component<Props> {
                         return values.includes(id);
                     }
                 })}
-
-                {validation.isValid === false && (
-                    <FormElementMessage error>{validation.message}</FormElementMessage>
-                )}
-
-                {validation.isValid !== false && description && (
-                    <FormElementMessage>{description}</FormElementMessage>
-                )}
-            </React.Fragment>
+                <FormComponentErrorMessage
+                    invalid={Boolean(validationIsValid === false)}
+                    text={validationMessage}
+                />
+            </div>
         );
     }
 }

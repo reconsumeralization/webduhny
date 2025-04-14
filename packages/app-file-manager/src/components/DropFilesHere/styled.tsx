@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ReactComponent as UploadIcon } from "@material-design-icons/svg/filled/cloud_upload.svg";
+import { ReactComponent as UploadIcon } from "@webiny/icons/cloud_upload.svg";
 
 type DropFilesHereWrapperProps = {
     empty?: boolean;

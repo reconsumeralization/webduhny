@@ -5,65 +5,77 @@
 import React, { forwardRef } from "react";
 // import { TreeItemComponentProps } from "dnd-kit-sortable-tree";
 import classnames from "classnames";
-import { IconButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
-import { Icon } from "@webiny/ui/Icon";
-import { rowHandle, fieldContainer, Row, RowContainer, FolderTreeItemWrapper } from "./Styled";
-import { ReactComponent as EditIcon } from "./icons/round-edit-24px.svg";
-import { ReactComponent as DeleteIcon } from "./icons/round-delete-24px.svg";
-import { ReactComponent as HandleIcon } from "./icons/round-drag_indicator-24px.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as HandleIcon } from "@webiny/icons/drag_indicator.svg";
+import { FolderTreeItemWrapper } from "./Styled";
 import { TreeItemComponentProps, MenuTreeItem } from "~/admin/views/Menus/types";
+import { cn, Icon, IconButton, Text } from "@webiny/admin-ui";
 export interface NodeRendererDefaultProps {
     editItem: (item: MenuTreeItem) => void;
     deleteItem: (item: MenuTreeItem) => void;
 }
 const NodeRendererDefault = forwardRef<HTMLDivElement, TreeItemComponentProps>((props, ref) => {
-    const { item, deleteItem, editItem, onRemove, collapsed, depth } = props;
+    const { item, deleteItem, editItem, onRemove, collapsed, depth, ...rest } = props;
     const handle = (
-        <div className={rowHandle}>
-            <Icon icon={<HandleIcon />} />
-        </div>
+        <Icon icon={<HandleIcon />} label={"Drag and drop indicator"} color={"neutral-strong"} />
     );
     return (
         <FolderTreeItemWrapper
-            {...props}
+            {...rest}
+            item={item}
             ref={ref}
             depth={depth}
             collapsed={collapsed}
             data-testid={`pb-menu-item-render-${item.title}`}
         >
-            <RowContainer className={"rst__rowWrapper"}>
+            <div
+                className={cn([
+                    "rst__rowWrapper",
+                    "wby-flex wby-items-center wby-gap-sm",
+                    "wby-pl-sm-extra wby-pr-sm wby-py-sm",
+                    "wby-border-sm wby-border-neutral-muted wby-rounded-md",
+                    "hover:wby-border-neutral-strong"
+                ])}
+            >
                 {handle}
                 <div>
-                    <Row className={classnames("rst__row")}>
-                        <div className={classnames(fieldContainer)}>
-                            <div className={classnames("rst__rowLabel")}>
-                                <span className={classnames("rst__rowTitle")}>
-                                    <Typography use={"overline"}>{item.title}</Typography>
-                                </span>
-                            </div>
-                            <div className="rst__rowToolbar">
-                                <IconButton
-                                    data-testid={"pb-edit-icon-button"}
-                                    icon={<EditIcon />}
-                                    onClick={() => editItem(item)}
-                                />
-                                <IconButton
-                                    data-testid={"pb-delete-icon-button"}
-                                    icon={<DeleteIcon />}
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        if (onRemove) {
-                                            onRemove();
-                                            deleteItem(item);
-                                        }
-                                    }}
-                                />
-                            </div>
+                    <div className={cn(["rst__row", "wby-flex wby-items-center wby-gap-md"])}>
+                        <div className={classnames("rst__rowLabel")}>
+                            <span className={classnames("rst__rowTitle")}>
+                                <Text>{item.title}</Text>
+                            </span>
                         </div>
-                    </Row>
+                        <div
+                            className={cn([
+                                "rst__rowToolbar",
+                                "wby-flex wby-items-center wby-gap-xs"
+                            ])}
+                        >
+                            <IconButton
+                                variant={"ghost"}
+                                size={"sm"}
+                                data-testid={"pb-edit-icon-button"}
+                                icon={<EditIcon />}
+                                onClick={() => editItem(item)}
+                            />
+                            <IconButton
+                                variant={"ghost"}
+                                size={"sm"}
+                                data-testid={"pb-delete-icon-button"}
+                                icon={<DeleteIcon />}
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    if (onRemove) {
+                                        onRemove();
+                                        deleteItem(item);
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
                 </div>
-            </RowContainer>
+            </div>
         </FolderTreeItemWrapper>
     );
 });

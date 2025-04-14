@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { css } from "emotion";
 import isEqual from "lodash/isEqual";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { Typography } from "@webiny/ui/Typography";
 import { useSnackbar } from "@webiny/app-admin";
 import { ButtonFloating } from "@webiny/ui/Button";

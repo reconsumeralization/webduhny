@@ -1,16 +1,9 @@
 import React from "react";
-
-import { ReactComponent as SavedSearchIcon } from "@material-design-icons/svg/outlined/saved_search.svg";
-import { ReactComponent as MoreIcon } from "@material-design-icons/svg/outlined/more_vert.svg";
-
-import { IconButton } from "@webiny/ui/Button";
-import { List, ListItem, ListItemMeta, ListItemText, ListItemTextPrimary } from "@webiny/ui/List";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { Menu, MenuItem } from "@webiny/ui/Menu";
-
-import { ListActions } from "../QueryManagerDialog.styled";
+import { List, IconButton, Tooltip, DropdownMenu } from "@webiny/admin-ui";
+import { ReactComponent as SavedSearchIcon } from "@webiny/icons/saved_search.svg";
+import { ReactComponent as MoreIcon } from "@webiny/icons/more_vert.svg";
 import { QueryManagerFilter } from "../QueryManagerDialog";
-import { Description } from "~/components/AdvancedSearch/QueryManagerDialog/components/Description";
+import { Description } from "./Description";
 
 type filterCallback = (filterId: string) => void;
 
@@ -25,35 +18,54 @@ interface FilterListProps {
 
 export const FilterList = (props: FilterListProps) => {
     return (
-        <List twoLine nonInteractive>
+        <List>
             {props.filters.map(filter => (
-                <ListItem key={filter.id}>
-                    <ListItemText>
-                        <ListItemTextPrimary>{filter.name}</ListItemTextPrimary>
+                <List.Item
+                    key={filter.id}
+                    onClick={() => props.onSelect(filter.id)}
+                    title={filter.name}
+                    description={
                         <Description createdOn={filter.createdOn}>{filter.description}</Description>
-                    </ListItemText>
-                    <ListItemMeta>
-                        <ListActions>
-                            <Tooltip content={"Apply filter"} placement={"left"}>
-                                <IconButton
-                                    icon={<SavedSearchIcon />}
-                                    label={"Apply filter"}
-                                    onClick={() => props.onSelect(filter.id)}
+                    }
+                    actions={
+                        <>
+                            <Tooltip
+                                trigger={
+                                    <IconButton
+                                        icon={<SavedSearchIcon />}
+                                        onClick={() => props.onSelect(filter.id)}
+                                        size={"sm"}
+                                        variant={"ghost"}
+                                    />
+                                }
+                                content={"Apply filter"}
+                                side={"left"}
+                            />
+                            <DropdownMenu
+                                trigger={
+                                    <IconButton icon={<MoreIcon />} size={"sm"} variant={"ghost"} />
+                                }
+                            >
+                                <DropdownMenu.Item
+                                    onClick={() => props.onEdit(filter.id)}
+                                    text={"Edit"}
                                 />
-                            </Tooltip>
-                            <Menu handle={<IconButton icon={<MoreIcon />} label={"Open menu"} />}>
-                                <MenuItem onClick={() => props.onEdit(filter.id)}>Edit</MenuItem>
-                                <MenuItem onClick={() => props.onRename(filter.id)}>
-                                    Rename
-                                </MenuItem>
-                                <MenuItem onClick={() => props.onClone(filter.id)}>Clone</MenuItem>
-                                <MenuItem onClick={() => props.onDelete(filter.id)}>
-                                    Delete
-                                </MenuItem>
-                            </Menu>
-                        </ListActions>
-                    </ListItemMeta>
-                </ListItem>
+                                <DropdownMenu.Item
+                                    onClick={() => props.onRename(filter.id)}
+                                    text={"Rename"}
+                                />
+                                <DropdownMenu.Item
+                                    onClick={() => props.onClone(filter.id)}
+                                    text={"Clone"}
+                                />
+                                <DropdownMenu.Item
+                                    onClick={() => props.onDelete(filter.id)}
+                                    text={"Delete"}
+                                />
+                            </DropdownMenu>
+                        </>
+                    }
+                />
             ))}
         </List>
     );

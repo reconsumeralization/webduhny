@@ -4,7 +4,7 @@ import { useRouter } from "@webiny/react-router";
 import { Icon } from "@webiny/ui/Icon";
 import { Typography } from "@webiny/ui/Typography";
 import { MenuItem } from "@webiny/ui/Menu";
-import { ReactComponent as DownButton } from "@material-design-icons/svg/round/arrow_drop_down.svg";
+import { ReactComponent as DownButton } from "@webiny/icons/arrow_drop_down.svg";
 import { useContentEntry } from "~/admin/views/contentEntries/hooks/useContentEntry";
 import { statuses as statusLabels } from "~/admin/constants";
 import { CmsContentEntryRevision } from "~/types";

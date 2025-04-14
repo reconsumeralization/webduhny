@@ -1,44 +1,11 @@
 import React, { useMemo } from "react";
-import styled from "@emotion/styled";
-
+import { Button, cn } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import Draggable, { BeginDragProps } from "~/admin/components/FormEditor/Draggable";
 import { FbFormStep } from "~/types";
-import { RowContainer } from "./Styled";
 import { Horizontal } from "~/admin/components/FormEditor/DropZone";
 import { useEditTab } from "./EditFieldDialog/useEditTab";
-
-import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add_circle_outline.svg";
 import { EditTabStepRow } from "./EditTabStepRow";
-
-const AddStepBtn = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25px;
-    text-transform: uppercase;
-    cursor: pointer;
-`;
-
-const RowContainerWrapper = styled.div`
-    & .css-1uf2zda-RowContainer {
-        &:last-child {
-            margin-bottom: 25px !important;
-        }
-    }
-`;
-
-const StyledRowContainer = styled(RowContainer)<{ isDragging: boolean }>`
-    opacity: ${({ isDragging }) => (isDragging ? 0.3 : 1)};
-    border: none;
-    box-shadow: none;
-    margin-bottom: 20px;
-    padding: 10px;
-
-    &:last-child {
-        margin-bottom: 25px !important;
-    }
-`;
 
 interface EditTabStepProps {
     setIsEditStep: (params: { isOpened: boolean; id: string }) => void;
@@ -54,10 +21,16 @@ const AddStepButton = ({
     addStep: () => void;
 }) => {
     return addStepButtonVisible ? (
-        <AddStepBtn onClick={addStep} data-testid="add-step-action">
-            <IconButton icon={<AddIcon />} />
-            Add new step
-        </AddStepBtn>
+        <div className={"wby-flex wby-justify-center wby-items-center wby-mt-xl"}>
+            <Button
+                variant={"tertiary"}
+                size={"lg"}
+                text={"Add new step"}
+                icon={<AddIcon />}
+                onClick={addStep}
+                data-testid="add-step-action"
+            />
+        </div>
     ) : null;
 };
 
@@ -82,8 +55,15 @@ export const EditTabStep = ({ setIsEditStep, formStep, index }: EditTabStepProps
     return (
         <Draggable beginDrag={beginDragStepProps}>
             {({ drag, isDragging }) => (
-                <RowContainerWrapper>
-                    <StyledRowContainer isDragging={isDragging}>
+                <>
+                    <div
+                        className={cn([
+                            "wby-w-full",
+                            "wby-relative",
+                            "wby-mb-md last-of-type:wby-mb-none",
+                            isDragging ? "wby-opacity-30" : "wby-opacity-100"
+                        ])}
+                    >
                         <EditTabStepRow
                             dragRef={drag}
                             setIsEditStep={setIsEditStep}
@@ -99,9 +79,9 @@ export const EditTabStep = ({ setIsEditStep, formStep, index }: EditTabStepProps
                             onDrop={item => handleStepMove(item, formStep)}
                             isVisible={item => renderBottomDropZone(item, formStep.id)}
                         />
-                    </StyledRowContainer>
+                    </div>
                     <AddStepButton addStep={addStep} addStepButtonVisible={addStepButtonVisible} />
-                </RowContainerWrapper>
+                </>
             )}
         </Draggable>
     );

@@ -4,7 +4,7 @@ import { Input } from "@webiny/ui/Input";
 import { ButtonPrimary } from "@webiny/ui/Button";
 import { Typography } from "@webiny/ui/Typography";
 import { i18n } from "@webiny/app/i18n";
-import { ReactComponent as InsightsIcon } from "@material-symbols/svg-400/outlined/insights.svg";
+import { ReactComponent as InsightsIcon } from "@webiny/icons/insights.svg";
 import GoogleAnalyticsEventDynamicFieldset from "./components/GoogleAnalyticsEventDynamicFieldset";
 import { FbEditorTrigger } from "~/types";
 

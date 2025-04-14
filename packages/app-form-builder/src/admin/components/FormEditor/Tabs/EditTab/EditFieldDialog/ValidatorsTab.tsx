@@ -1,23 +1,16 @@
 import React, { useMemo } from "react";
 import { plugins } from "@webiny/plugins";
-import { Switch } from "@webiny/ui/Switch";
-import {
-    SimpleForm,
-    SimpleFormContent,
-    SimpleFormHeader
-} from "@webiny/app-admin/components/SimpleForm";
 import { useFormEditor } from "../../../Context";
 import { BindComponentRenderPropOnChange, Form, FormRenderPropParams } from "@webiny/form";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
 import { validation } from "@webiny/validation";
 import {
     FbBuilderFormFieldValidatorPlugin,
     FbBuilderFormFieldValidatorPluginValidator,
     FbFormModelField
 } from "~/types";
+import { Accordion, Grid, Input, Switch } from "@webiny/admin-ui";
 
 interface OnEnabledChangeParams {
     data: Record<string, string>;
@@ -117,7 +110,7 @@ const ValidatorsTab = (props: ValidatorsTabProps) => {
         <Bind name={"validation"}>
             {({ value: validationValue, onChange: onChangeValidation }) => {
                 return (
-                    <>
+                    <Accordion>
                         {validators.map(({ optional, validator }) => {
                             const validatorIndex = validationValue.findIndex(
                                 /**
@@ -129,24 +122,31 @@ const ValidatorsTab = (props: ValidatorsTabProps) => {
                             const data = validationValue[validatorIndex];
 
                             return (
-                                <SimpleForm key={validator.name}>
-                                    {/*TODO: @ts-adrian nema descriptiona?*/}
-                                    <SimpleFormHeader title={validator.label}>
-                                        {optional && (
-                                            <Switch
-                                                label="Enabled"
-                                                value={validatorIndex >= 0}
-                                                onChange={() =>
-                                                    onEnabledChange({
-                                                        data,
-                                                        validationValue,
-                                                        onChangeValidation,
-                                                        validator
-                                                    })
-                                                }
-                                            />
-                                        )}
-                                    </SimpleFormHeader>
+                                <Accordion.Item
+                                    key={validator.name}
+                                    title={validator.label}
+                                    description={validator.description}
+                                    interactive={false}
+                                    open={!!data}
+                                    actions={
+                                        <>
+                                            {optional && (
+                                                <Switch
+                                                    label="Enabled"
+                                                    checked={validatorIndex >= 0}
+                                                    onChange={() =>
+                                                        onEnabledChange({
+                                                            data,
+                                                            validationValue,
+                                                            onChangeValidation,
+                                                            validator
+                                                        })
+                                                    }
+                                                />
+                                            )}
+                                        </>
+                                    }
+                                >
                                     {data && (
                                         <Form
                                             data={data}
@@ -160,45 +160,45 @@ const ValidatorsTab = (props: ValidatorsTabProps) => {
                                             }
                                         >
                                             {({ Bind, setValue }) => (
-                                                <SimpleFormContent>
-                                                    <Grid>
-                                                        <Cell span={12}>
-                                                            {/*TODO: @ts-adrian kako ovo?*/}
-                                                            <Bind
-                                                                name={"message"}
-                                                                validators={validation.create(
-                                                                    "required"
-                                                                )}
-                                                            >
-                                                                <Input
-                                                                    label={"Message"}
-                                                                    description={
-                                                                        "This message will be displayed to the user"
-                                                                    }
-                                                                />
-                                                            </Bind>
-                                                        </Cell>
-                                                    </Grid>
-
-                                                    {typeof validator.renderSettings ===
-                                                        "function" &&
-                                                        validator.renderSettings({
-                                                            setValue,
-                                                            setMessage: message => {
-                                                                setValue("message", message);
-                                                            },
-                                                            data,
-                                                            Bind,
-                                                            formFieldData
-                                                        })}
-                                                </SimpleFormContent>
+                                                <Grid>
+                                                    <Grid.Column span={12}>
+                                                        {/*TODO: @ts-adrian kako ovo?*/}
+                                                        <Bind
+                                                            name={"message"}
+                                                            validators={validation.create(
+                                                                "required"
+                                                            )}
+                                                        >
+                                                            <Input
+                                                                size={"lg"}
+                                                                label={"Message"}
+                                                                description={
+                                                                    "This message will be displayed to the user"
+                                                                }
+                                                            />
+                                                        </Bind>
+                                                    </Grid.Column>
+                                                    <>
+                                                        {typeof validator.renderSettings ===
+                                                            "function" &&
+                                                            validator.renderSettings({
+                                                                setValue,
+                                                                setMessage: message => {
+                                                                    setValue("message", message);
+                                                                },
+                                                                data,
+                                                                Bind,
+                                                                formFieldData
+                                                            })}
+                                                    </>
+                                                </Grid>
                                             )}
                                         </Form>
                                     )}
-                                </SimpleForm>
+                                </Accordion.Item>
                             );
                         })}
-                    </>
+                    </Accordion>
                 );
             }}
         </Bind>

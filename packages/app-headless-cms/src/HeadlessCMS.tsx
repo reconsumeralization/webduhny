@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react";
 import { ApolloClient } from "apollo-client";
 import { plugins } from "@webiny/plugins";
-import { Plugins, Provider } from "@webiny/app-admin";
+import { AdminConfig, Provider } from "@webiny/app-admin";
 import { ApolloCacheObjectIdPlugin } from "@webiny/app";
 import { CmsProvider } from "~/admin/contexts/Cms";
 import { CmsMenuLoader } from "~/admin/menus/CmsMenuLoader";
@@ -30,6 +30,7 @@ const createHeadlessCMSProvider =
 interface CreateApolloClientParams {
     uri: string;
 }
+
 interface CreateApolloClient {
     (params: CreateApolloClientParams): ApolloClient<any>;
 }
@@ -66,9 +67,9 @@ const HeadlessCMSExtension = ({ createApolloClient }: HeadlessCMSProps) => {
             <ContentEntriesModule />
             <SingletonContentEntryModule />
             <Provider hoc={createHeadlessCMSProvider(createApolloClient)} />
-            <Plugins>
+            <AdminConfig>
                 <CmsMenuLoader />
-            </Plugins>
+            </AdminConfig>
             <LexicalEditorCmsPlugin />
         </Fragment>
     );

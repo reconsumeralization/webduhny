@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 
 export const Container = styled.div`
     background: var(--mdc-theme-background);
@@ -97,7 +97,7 @@ export const EntryMeta = styled.div`
  */
 export const Content = styled.div`
     overflow-y: scroll;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 45px);
     margin-top: 64px;
 `;
 

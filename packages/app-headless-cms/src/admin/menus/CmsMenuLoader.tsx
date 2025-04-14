@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
-import { AddMenu as Menu } from "@webiny/app-admin";
+import React from "react";
 import { ReactComponent as HeadlessCmsIcon } from "~/admin/icons/devices_other-black-24px.svg";
-import GlobalSearchPlugins from "./GlobalSearchPlugins";
 import usePermission from "~/admin/hooks/usePermission";
 import { ContentGroupsMenuItems } from "./ContentGroupsMenuItems";
+import { AdminConfig } from "@webiny/app-admin";
+
+const { Menu } = AdminConfig;
 
 interface ChildMenuProps {
     canAccess: boolean;
@@ -13,11 +14,12 @@ const CmsContentModelsMenu = ({ canAccess }: ChildMenuProps) => {
     if (!canAccess) {
         return null;
     }
+
     return (
         <Menu
             name={"headlessCMS.contentModels.models"}
-            label={"Models"}
-            path={"/cms/content-models"}
+            parent={"headlessCMS"}
+            element={<Menu.Link text={"Models"} to={"/cms/content-models"} />}
         />
     );
 };
@@ -29,8 +31,8 @@ const CmsContentGroupsMenu = ({ canAccess }: ChildMenuProps) => {
     return (
         <Menu
             name={"headlessCMS.contentModels.groups"}
-            label={"Groups"}
-            path={"/cms/content-model-groups"}
+            parent={"headlessCMS"}
+            element={<Menu.Link text={"Groups"} to={"/cms/content-model-groups"} />}
         />
     );
 };
@@ -52,18 +54,34 @@ const CmsMenuLoaderComponent = () => {
     }
 
     return (
-        <Fragment>
-            <Menu name={"headlessCMS"} label={"Headless CMS"} icon={<HeadlessCmsIcon />}>
-                {(canCreateContentModels || canCreateContentModelGroups) && (
-                    <Menu name={"headlessCMS.contentModels"} label={"Content Models"} pin={"first"}>
-                        <CmsContentModelsMenu canAccess={canCreateContentModels} />
-                        <CmsContentGroupsMenu canAccess={canCreateContentModelGroups} />
-                    </Menu>
-                )}
-                <ContentGroupsMenuItems />
-            </Menu>
-            <GlobalSearchPlugins />
-        </Fragment>
+        <>
+            <Menu
+                name={"headlessCMS"}
+                after={"home"}
+                element={
+                    <Menu.Item
+                        text={"Headless CMS"}
+                        icon={
+                            <Menu.Link.Icon label={"Headless CMS"} element={<HeadlessCmsIcon />} />
+                        }
+                    />
+                }
+            />
+
+            {(canCreateContentModels || canCreateContentModelGroups) && (
+                <>
+                    <Menu
+                        name={"headlessCMS.contentModels"}
+                        parent={"headlessCMS"}
+                        element={<Menu.Group text={"Content Models"} />}
+                    />
+
+                    <CmsContentModelsMenu canAccess={canCreateContentModels} />
+                    <CmsContentGroupsMenu canAccess={canCreateContentModelGroups} />
+                </>
+            )}
+            <ContentGroupsMenuItems />
+        </>
     );
 };
 

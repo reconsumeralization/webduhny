@@ -1,8 +1,7 @@
 import React from "react";
-import { Input } from "@webiny/ui/Input";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ReactComponent as HiddenIcon } from "./icons/round-visibility_off-24px.svg";
+import { ReactComponent as HiddenIcon } from "@webiny/icons/visibility_off.svg";
 import { FbBuilderFieldPlugin } from "../../../../types";
+import { Grid, Input } from "@webiny/admin-ui";
 
 const plugin: FbBuilderFieldPlugin = {
     type: "form-editor-field-type",
@@ -27,16 +26,15 @@ const plugin: FbBuilderFieldPlugin = {
         },
         renderSettings({ form: { Bind } }) {
             return (
-                <Grid>
-                    <Cell span={12}>
-                        <Bind name={"settings.defaultValue"}>
-                            <Input
-                                label={"Default value"}
-                                description={"Default value (optional)"}
-                            />
-                        </Bind>
-                    </Cell>
-                </Grid>
+                <Grid.Column span={12}>
+                    <Bind name={"settings.defaultValue"}>
+                        <Input
+                            size={"lg"}
+                            label={"Default value"}
+                            description={"Default value (optional)"}
+                        />
+                    </Bind>
+                </Grid.Column>
             );
         }
     }

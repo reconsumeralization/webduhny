@@ -1,89 +1,83 @@
 import * as React from "react";
-import styled from "@emotion/styled";
-import { css } from "emotion";
-import classNames from "classnames";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Typography } from "@webiny/ui/Typography";
-import { Elevation } from "@webiny/ui/Elevation";
-import { Icon } from "@webiny/ui/Icon";
+import { cn, cva, Grid, Heading, Icon, type VariantProps } from "@webiny/admin-ui";
 
-const SimpleFormContainer = styled("div")({
-    position: "relative",
-    margin: "17px 50px"
-});
-
-const header = css({
-    borderBottom: "1px solid var(--mdc-theme-on-background)",
-    color: "var(--mdc-theme-text-primary-on-background)"
-});
-
-const title = css({
-    display: "flex",
-    alignItems: "center"
-});
-
-const actions = css({
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center"
-});
-
-const icon = css({
-    marginRight: 15,
-    color: "var(--mdc-theme-text-primary-on-background)"
-});
-
-const footer = css`
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    border-top: 1px solid var(--mdc-theme-on-background);
-    padding: 24px;
-    box-sizing: border-box;
-    min-height: 52px;
-    button:last-of-type {
-        margin-left: 8px;
+const simpleFormInnerVariants = cva("wby-mx-auto", {
+    variants: {
+        size: {
+            md: "wby-max-w-[640px]",
+            lg: "wby-max-w-[800px]",
+            full: "wby-max-w-full"
+        }
+    },
+    defaultVariants: {
+        size: "md"
     }
-`;
+});
 
-interface SimpleFormProps {
+interface SimpleFormProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof simpleFormInnerVariants> {
     children: React.ReactNode;
-    "data-testid"?: string;
     noElevation?: boolean;
     className?: string;
 }
-export const SimpleForm = (props: SimpleFormProps) => {
+
+export const SimpleForm = ({ children, className, size, ...props }: SimpleFormProps) => {
     return (
-        <SimpleFormContainer
-            className={classNames("webiny-data-list", props.className)}
-            data-testid={props["data-testid"]}
+        <div
+            {...props}
+            className={cn(["webiny-data-list", "wby-mx-auto wby-p-lg", "wby-relative"], className)}
         >
-            {props.noElevation ? props.children : <Elevation z={1}>{props.children}</Elevation>}
-        </SimpleFormContainer>
+            <div className={cn(simpleFormInnerVariants({ size }))}>{children}</div>
+        </div>
     );
 };
 
-interface SimpleFormHeaderProps {
+const simpleFormHeaderVariants = cva("wby-p-md wby-pl-lg wby-border-sm wby-border-neutral-smoked", {
+    variants: {
+        rounded: {
+            true: "wby-rounded-t-3xl"
+        }
+    },
+    defaultVariants: {
+        rounded: true
+    }
+});
+
+interface SimpleFormHeaderProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
+        VariantProps<typeof simpleFormHeaderVariants> {
     title: React.ReactNode;
     icon?: React.ReactElement<any>;
     children?: React.ReactNode;
     ["data-testid"]?: string;
 }
-export const SimpleFormHeader = (props: SimpleFormHeaderProps) => {
+
+export const SimpleFormHeader = ({
+    children,
+    icon,
+    title,
+    className,
+    rounded,
+    ...props
+}: SimpleFormHeaderProps) => {
     return (
-        <Grid className={header} data-testid={props["data-testid"]}>
-            <Cell span={props.children ? 6 : 12} className={title}>
-                <React.Fragment>
-                    {props.icon && <Icon className={icon} icon={props.icon} />}
-                    <Typography use="headline5">{props.title}</Typography>
-                </React.Fragment>
-            </Cell>
-            {props.children && (
-                <Cell span={6} className={actions}>
-                    {props.children}
-                </Cell>
-            )}
-        </Grid>
+        <div
+            className={cn(simpleFormHeaderVariants({ rounded }), className)}
+            data-testid={props["data-testid"]}
+        >
+            <Grid>
+                <Grid.Column span={children ? 6 : 12}>
+                    <>
+                        {icon && <Icon label={title as string} icon={icon} />}
+                        <Heading level={4} className={"wby-truncate"}>
+                            {title}
+                        </Heading>
+                    </>
+                </Grid.Column>
+                <>{children ? <Grid.Column span={6}>{children}</Grid.Column> : null}</>
+            </Grid>
+        </div>
     );
 };
 
@@ -91,14 +85,35 @@ export interface SimpleFormFooterProps {
     children: React.ReactNode;
     className?: string;
 }
-export const SimpleFormFooter = (props: SimpleFormFooterProps) => {
-    return <div className={classNames(footer, props.className)}>{props.children}</div>;
+
+export const SimpleFormFooter = ({ children, className }: SimpleFormFooterProps) => {
+    return (
+        <div
+            className={cn(
+                "wby-p-lg wby-pt-none wby-border-sm wby-border-t-none wby-border-neutral-smoked wby-rounded-b-3xl",
+                "wby-flex wby-justify-end wby-gap-sm",
+                className
+            )}
+        >
+            {children}
+        </div>
+    );
 };
 
 interface SimpleFormContentProps {
     children: React.ReactNode;
+    className?: string;
 }
 
-export const SimpleFormContent = (props: SimpleFormContentProps) => {
-    return props.children as unknown as React.ReactElement;
+export const SimpleFormContent = ({ children, className }: SimpleFormContentProps) => {
+    return (
+        <div
+            className={cn(
+                "wby-p-lg wby-border-sm wby-border-y-none wby-border-neutral-smoked",
+                className
+            )}
+        >
+            {children}
+        </div>
+    );
 };

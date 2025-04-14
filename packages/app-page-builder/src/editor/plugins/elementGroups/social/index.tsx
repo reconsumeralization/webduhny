@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as SocialIcon } from "@material-design-icons/svg/outlined/people.svg";
+import { ReactComponent as SocialIcon } from "@webiny/icons/people.svg";
 import { PbEditorPageElementGroupPlugin } from "~/types";
 
 export default {

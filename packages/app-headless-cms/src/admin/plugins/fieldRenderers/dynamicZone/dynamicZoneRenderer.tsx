@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import {
     BindComponent,

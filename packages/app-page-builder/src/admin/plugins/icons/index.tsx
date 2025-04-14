@@ -1,20 +1,12 @@
-import React from "react";
 import { IconName, library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
-import { PbIcon, PbIconsPlugin } from "~/types";
 import { IconPrefix } from "@fortawesome/fontawesome-common-types";
+import { IconPickerIconDto } from "@webiny/admin-ui";
+import { PbIconsPlugin } from "~/types";
 
-const createSvg = (icon: string[]): React.ReactElement => {
-    return (
-        <svg width={24} viewBox={`0 0 ${icon[0]} ${icon[1]}`}>
-            <path d={icon[4]} fill="currentColor" />
-        </svg>
-    );
-};
-
-const icons: PbIcon[] = [];
+const icons: IconPickerIconDto[] = [];
 
 interface Icons {
     definitions: Record<IconPrefix, Record<IconName, string[]>>;
@@ -39,9 +31,8 @@ const plugin: PbIconsPlugin = {
             // @ts-expect-error
             Object.keys(defs).forEach((icon: IconName) => {
                 icons.push({
-                    id: [pack, icon],
-                    name: icon,
-                    svg: createSvg(defs[icon])
+                    prefix: pack,
+                    name: icon
                 });
             });
         });

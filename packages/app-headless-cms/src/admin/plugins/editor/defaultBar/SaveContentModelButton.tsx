@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { ButtonPrimary } from "@webiny/ui/Button";
+import { Button } from "@webiny/admin-ui";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
 import { useModelEditor } from "~/admin/hooks";
@@ -25,15 +25,14 @@ const SaveContentModelButton = () => {
     }, [saveContentModel]);
 
     return (
-        <ButtonPrimary
+        <Button
             data-testid="cms.editor.defaultbar.save"
             disabled={loading}
             onClick={() => {
                 onClick();
             }}
-        >
-            {t`Save`}
-        </ButtonPrimary>
+            text={t`Save`}
+        />
     );
 };
 

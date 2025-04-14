@@ -1,6 +1,12 @@
 import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { Columns, DataTable, DefaultData, OnSortingChange, Sorting } from "@webiny/ui/DataTable";
+import {
+    DataTable,
+    type DataTableColumns,
+    type DataTableDefaultData,
+    type DataTableSorting,
+    OnDataTableSortingChange
+} from "@webiny/admin-ui";
 import { ColumnMapper, ColumnsPresenter } from "./Columns";
 import { ColumnsVisibilityPresenter, ColumnsVisibilityUpdater } from "./ColumnVisibility";
 import { TablePresenter } from "./TablePresenter";
@@ -14,15 +20,15 @@ export interface TableInnerProps<T> {
     loading?: boolean;
     nameColumnId?: string;
     onSelectRow?: (rows: T[] | []) => void;
-    onSortingChange: OnSortingChange;
+    onSortingChange: OnDataTableSortingChange;
     onToggleRow?: (row: T) => void;
-    selected: DefaultData[];
-    sorting: Sorting;
+    selected: DataTableDefaultData[];
+    sorting: DataTableSorting;
     tablePresenter: TablePresenter;
 }
 
 export const TableInner = observer(
-    <T extends Record<string, any> & DefaultData>(props: TableInnerProps<T>) => {
+    <T extends Record<string, any> & DataTableDefaultData>(props: TableInnerProps<T>) => {
         const cellRenderer = useCallback(
             (row: T, cell: string | React.ReactElement): string | number | JSX.Element | null => {
                 if (typeof cell === "string") {
@@ -42,10 +48,13 @@ export const TableInner = observer(
                 // Determine the column name, using the provided `nameColumnId` if the default is 'name'
                 const name = defaultName === "name" ? nameColumnId : defaultName;
 
-                result[name as keyof Columns<T>] = ColumnMapper.toDataTable(column, cellRenderer);
+                result[name as keyof DataTableColumns<T>] = ColumnMapper.toDataTable(
+                    column,
+                    cellRenderer
+                );
 
                 return result;
-            }, {} as Columns<T>);
+            }, {} as DataTableColumns<T>);
         }, [props.columnsPresenter.vm.columns]);
 
         return (
@@ -56,7 +65,7 @@ export const TableInner = observer(
                 data={props.data}
                 initialSorting={props.tablePresenter.vm.initialSorting}
                 isRowSelectable={row => row.original.$selectable ?? false}
-                loadingInitial={props.loading}
+                loading={props.loading}
                 onSelectRow={props.onSelectRow}
                 onSortingChange={props.onSortingChange}
                 onToggleRow={props.onToggleRow}
@@ -64,7 +73,7 @@ export const TableInner = observer(
                     props.selected.find(item => row.id === item.id)
                 )}
                 sorting={props.sorting}
-                stickyRows={1}
+                stickyHeader={true}
             />
         );
     }

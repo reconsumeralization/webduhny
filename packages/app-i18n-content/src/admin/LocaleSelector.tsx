@@ -1,75 +1,58 @@
 import React, { useMemo } from "react";
 import { useI18N } from "@webiny/app-i18n/hooks/useI18N";
-import { Menu, MenuItem } from "@webiny/ui/Menu";
-import { ButtonPrimary, ButtonIcon } from "@webiny/ui/Button";
-import { css } from "emotion";
+import { Select } from "@webiny/admin-ui";
+import { LocaleSelector as BaseLocaleSelector } from "@webiny/app-admin";
 import { useSecurity } from "@webiny/app-security";
-import { ReactComponent as DoneIcon } from "./assets/done-24px.svg";
-import { ReactComponent as TranslateIcon } from "./assets/round-translate-24px.svg";
 import { I18NSecurityPermission } from "@webiny/app-i18n/types";
 
-const menuList = css({
-    width: 160,
-    right: 80,
-    left: "auto !important"
-});
+export const LocaleSelector = BaseLocaleSelector.createDecorator(() => {
+    return function LocaleSelector() {
+        const { setCurrentLocale, getCurrentLocale, getLocales } = useI18N();
+        const { identity, getPermission } = useSecurity();
 
-const buttonStyles = css({
-    marginRight: 10
-});
+        const contentI18NPermission = useMemo((): I18NSecurityPermission | null => {
+            return getPermission("content.i18n");
+        }, [identity]);
 
-export const LocaleSelector = () => {
-    const { setCurrentLocale, getCurrentLocale, getLocales } = useI18N();
-    const { identity, getPermission } = useSecurity();
-
-    const contentI18NPermission = useMemo((): I18NSecurityPermission | null => {
-        return getPermission("content.i18n");
-    }, [identity]);
-
-    const locales = getLocales();
-    const localeList = locales.filter(locale => {
-        if (!contentI18NPermission || !Array.isArray(contentI18NPermission.locales)) {
-            return true;
-        }
-        return contentI18NPermission.locales.includes(locale.code);
-    });
-
-    if (localeList.length === 1) {
-        return null;
-    }
-
-    const currentLocale = getCurrentLocale("content");
-    return (
-        <Menu
-            anchor={"bottomLeft"}
-            className={menuList}
-            handle={
-                <ButtonPrimary className={buttonStyles} flat data-testid={"app-i18n-content.menu"}>
-                    <ButtonIcon icon={<TranslateIcon />} />
-                    Locale: {currentLocale}
-                </ButtonPrimary>
+        const locales = getLocales();
+        const localeList = locales.filter(locale => {
+            if (!contentI18NPermission || !Array.isArray(contentI18NPermission.locales)) {
+                return true;
             }
-        >
-            {localeList.map(locale => (
-                <MenuItem
-                    key={locale.code}
-                    onClick={() => {
-                        setCurrentLocale(locale.code, "content");
-                        window.location.reload();
-                    }}
-                    data-testid={`app-i18n-content.menu-item.${locale.code}`}
-                >
-                    <span style={{ minWidth: 35 }}>
-                        {currentLocale === locale.code && (
-                            <ButtonIcon
-                                icon={<DoneIcon style={{ color: "var(--mdc-theme-primary)" }} />}
-                            />
-                        )}
-                    </span>
+            return contentI18NPermission.locales.includes(locale.code);
+        });
 
-                    {locale.code}
-                </MenuItem>
-            ))}
-        </Menu>
-    );
-};
+        if (localeList.length === 1) {
+            return null;
+        }
+
+        const currentLocale = getCurrentLocale("content");
+        if (!currentLocale) {
+            return null;
+        }
+
+        return (
+            <Select
+                displayResetAction={false}
+                value={currentLocale}
+                onChange={value => {
+                    setCurrentLocale(value, "content");
+                    window.location.reload();
+                }}
+                size={"md"}
+                variant={"ghost"}
+                options={[
+                    {
+                        label: "Locale",
+                        options: [
+                            ...localeList.map(locale => ({
+                                value: locale.code,
+                                label: locale.code
+                            }))
+                        ]
+                    }
+                ]}
+            />
+        );
+    };
+});

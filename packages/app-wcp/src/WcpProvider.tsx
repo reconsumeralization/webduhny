@@ -3,9 +3,11 @@ import { WcpContextProvider } from "./contexts";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { GetWcpProjectGqlResponse } from "~/types";
-import { ILicense } from "@webiny/wcp/types";
+import { DecryptedWcpProjectLicense, ILicense } from "@webiny/wcp/types";
 import { License, NullLicense } from "@webiny/wcp";
 import { ReactLicense } from "./ReactLicense";
+
+const LOCAL_STORAGE_KEY = `webiny_wcp_project`;
 
 export const GET_WCP_PROJECT = gql`
     query GetWcpProject {
@@ -59,6 +61,19 @@ interface WcpProviderProps {
     children: React.ReactNode;
 }
 
+const projectFromLocalStorage = () => {
+    try {
+        const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (localData) {
+            const parsedData = JSON.parse(localData) as DecryptedWcpProjectLicense;
+            return new ReactLicense(License.fromLicenseDto(parsedData));
+        }
+    } catch {}
+
+    // Do nothing.
+    return undefined;
+};
+
 export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
     // If `REACT_APP_WCP_PROJECT_ID` environment variable is missing, we can immediately exit.
     if (!process.env.REACT_APP_WCP_PROJECT_ID) {
@@ -69,9 +84,9 @@ export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
         );
     }
 
-    const [project, setProject] = useState<ILicense | undefined>(undefined);
+    const [project, setProject] = useState<ILicense | undefined>(projectFromLocalStorage);
+
     useQuery<GetWcpProjectGqlResponse>(GET_WCP_PROJECT, {
-        skip: project !== undefined,
         context: {
             headers: {
                 "x-tenant": "root"
@@ -79,6 +94,7 @@ export const WcpProvider = ({ children, loader }: WcpProviderProps) => {
         },
         onCompleted: response => {
             setProject(new ReactLicense(License.fromLicenseDto(response.wcp.getProject.data)));
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response.wcp.getProject.data));
         }
     });
 

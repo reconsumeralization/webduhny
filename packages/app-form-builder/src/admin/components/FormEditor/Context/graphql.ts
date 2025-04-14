@@ -87,7 +87,12 @@ export const GET_FORM = gql`
                     triggers
                     published
                     locked
-                    status
+                    status,
+                    createdBy {
+                        id
+                        displayName
+                    }
+                    savedOn
                 }
                 error ${ERROR_FIELDS}
             }

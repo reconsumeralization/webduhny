@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 
 export const fieldsWrapperStyle = css`
     border-left: 2px solid var(--mdc-theme-on-background);

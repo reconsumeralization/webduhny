@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
-import { Input } from "@webiny/ui/Input";
-import { Grid, Cell } from "@webiny/ui/Grid";
 import camelCase from "lodash/camelCase";
 import { useFormEditor } from "../../../Context";
 import { validation } from "@webiny/validation";
 import { Validator } from "@webiny/validation/types";
 import { FbFormModelField } from "~/types";
 import { FormRenderPropParams } from "@webiny/form/types";
+import { Grid, Input } from "@webiny/admin-ui";
 
 interface GeneralTabProps {
     field: FbFormModelField;
@@ -58,16 +57,16 @@ const GeneralTab = ({ field, form }: GeneralTabProps) => {
     return (
         <>
             <Grid>
-                <Cell span={6}>
+                <Grid.Column span={6}>
                     <Bind
                         name={"label"}
                         validators={validation.create("required")}
                         afterChange={afterChangeLabel}
                     >
-                        <Input label={"Label"} autoFocus={true} />
+                        <Input size={"lg"} label={"Label"} autoFocus={true} />
                     </Bind>
-                </Cell>
-                <Cell span={6}>
+                </Grid.Column>
+                <Grid.Column span={6}>
                     <Bind
                         name={"fieldId"}
                         validators={[
@@ -76,16 +75,20 @@ const GeneralTab = ({ field, form }: GeneralTabProps) => {
                             fieldIdValidator
                         ]}
                     >
-                        <Input label={"Field ID"} />
+                        <Input size={"lg"} label={"Field ID"} />
                     </Bind>
-                </Cell>
-                <Cell span={12}>
+                </Grid.Column>
+                <Grid.Column span={12}>
                     <Bind name={"helpText"}>
-                        <Input label={"Help text"} description={"Help text (optional)"} />
+                        <Input
+                            size={"lg"}
+                            label={"Help text"}
+                            description={"Help text (optional)"}
+                        />
                     </Bind>
-                </Cell>
+                </Grid.Column>
+                <>{additionalSettings}</>
             </Grid>
-            {additionalSettings}
         </>
     );
 };

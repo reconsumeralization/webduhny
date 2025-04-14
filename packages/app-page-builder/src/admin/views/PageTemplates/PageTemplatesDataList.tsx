@@ -1,49 +1,35 @@
 import React, { useCallback, useMemo, useState } from "react";
-import styled from "@emotion/styled";
+import { Button, CheckboxPrimitive, Grid, Select, TimeAgo } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import { useRouter } from "@webiny/react-router";
 import orderBy from "lodash/orderBy";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
-
 import {
     DataList,
     DataListModalOverlay,
     DataListModalOverlayAction,
+    DeleteIcon,
+    EditIcon,
     ListActions,
     ListItem,
     ListItemMeta,
     ListItemText,
+    ListItemTextPrimary,
     ListItemTextSecondary,
     ListSelectBox,
-    ListTextOverline,
-    ScrollList
+    ScrollList,
+    UploadIcon
 } from "@webiny/ui/List";
-import { Checkbox } from "@webiny/ui/Checkbox";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/filled/add.svg";
-import { ReactComponent as FilterIcon } from "@material-design-icons/svg/round/filter_alt.svg";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/round/edit.svg";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/round/delete.svg";
 import { CreatableItem } from "./PageTemplates";
 import { useMultiSelect } from "~/admin/views/Pages/hooks/useMultiSelect";
 import { ExportTemplatesButton } from "~/editor/plugins/defaultBar/components/ExportTemplateButton";
-import { ReactComponent as FileUploadIcon } from "@webiny/app-admin/assets/icons/file_upload.svg";
 import useImportTemplate from "~/admin/views/PageTemplates/hooks/useImportTemplate";
 import { OptionsMenu } from "~/admin/components/OptionsMenu";
-
 import { PbPageTemplate } from "~/types";
 import { useListPageTemplates } from "~/features";
 
 const t = i18n.ns("app-page-builder/admin/views/page-templates/page-templates-details");
-
-const DataListActionsWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
 
 interface Sorter {
     label: string;
@@ -117,22 +103,17 @@ const PageTemplatesDataList = ({
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Select
                             value={sort}
                             onChange={setSort}
                             label={t`Sort by`}
-                            description={"Sort templates by"}
-                        >
-                            {SORTERS.map(({ label, sort: value }) => {
-                                return (
-                                    <option key={label} value={value}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                            options={SORTERS.map(({ label, sort: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -146,25 +127,27 @@ const PageTemplatesDataList = ({
             return null;
         }
         return (
-            <DataListActionsWrapper>
-                <ButtonSecondary
-                    data-testid="pb-templates-list-new-template-btn"
+            <>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    data-testid="data-list-new-record-button"
                     onClick={onCreate}
-                >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Template`}
-                </ButtonSecondary>
+                />
                 <OptionsMenu
                     data-testid={"pb-templates-list-options-btn"}
                     items={[
                         {
-                            label: "Import Templates",
-                            icon: <FileUploadIcon />,
+                            label: "Import templates",
+                            icon: <UploadIcon />,
                             onClick: showImportDialog,
                             "data-testid": "pb-templates-list-options-import-template-btn"
                         }
                     ]}
                 />
-            </DataListActionsWrapper>
+            </>
         );
     }, [canCreate, showImportDialog]);
 
@@ -185,10 +168,7 @@ const PageTemplatesDataList = ({
             actions={listActions}
             modalOverlay={templatesDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
             multiSelectActions={
                 <ExportTemplatesButton
@@ -206,7 +186,8 @@ const PageTemplatesDataList = ({
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search templates`}
+                    inputPlaceholder={t`Search templates...`}
+                    dataTestId={"pb.template.data-list.search-input"}
                 />
             }
         >
@@ -220,9 +201,9 @@ const PageTemplatesDataList = ({
                                     selected={template.id === selectedTemplate}
                                 >
                                     <ListSelectBox>
-                                        <Checkbox
+                                        <CheckboxPrimitive
                                             onChange={() => multiSelectProps.multiSelect(template)}
-                                            value={multiSelectProps.isMultiSelected(template)}
+                                            checked={multiSelectProps.isMultiSelected(template)}
                                         />
                                     </ListSelectBox>
                                     <ListItemText
@@ -232,25 +213,26 @@ const PageTemplatesDataList = ({
                                             )
                                         }
                                     >
-                                        {template.title}
-                                        <ListTextOverline>{template.description}</ListTextOverline>
-                                        {template.createdBy && (
-                                            <ListItemTextSecondary>
-                                                {`Created by:
+                                        <ListItemTextPrimary>{template.title}</ListItemTextPrimary>
+                                        <ListItemTextSecondary>
+                                            <div>{template.description}</div>
+                                            {template.createdBy && (
+                                                <div>
+                                                    {`Created by:
                                                 ${template.createdBy.displayName || "N/A"}. `}
-                                                {`Last modified: `}
-                                                <TimeAgo datetime={template.savedOn} />.
-                                            </ListItemTextSecondary>
-                                        )}
+                                                    {`Last modified: `}
+                                                    <TimeAgo datetime={template.savedOn} />.
+                                                </div>
+                                            )}
+                                        </ListItemTextSecondary>
                                     </ListItemText>
                                     <ListItemMeta>
                                         <ListActions>
                                             {canEdit(template) && (
-                                                <IconButton
+                                                <EditIcon
                                                     data-testid={
                                                         "pb-templates-list-edit-template-btn"
                                                     }
-                                                    icon={<EditIcon />}
                                                     onClick={() =>
                                                         history.push(
                                                             `/page-builder/template-editor/${template.id}`
@@ -259,11 +241,10 @@ const PageTemplatesDataList = ({
                                                 />
                                             )}
                                             {canDelete(template) && (
-                                                <IconButton
+                                                <DeleteIcon
                                                     data-testid={
                                                         "pb-templates-list-delete-template-btn"
                                                     }
-                                                    icon={<DeleteIcon />}
                                                     onClick={() => onDelete(template)}
                                                 />
                                             )}

@@ -1,7 +1,5 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import { Select } from "@webiny/ui/Select";
+import { Grid, Input, Label, Select } from "@webiny/admin-ui";
 import { plugins } from "@webiny/plugins";
 import { validation } from "@webiny/validation";
 import {
@@ -26,15 +24,14 @@ const plugin: FbBuilderFormFieldValidatorPlugin = {
                 "form-editor-field-validator-pattern"
             );
 
-            const selectOptions: any = presetPlugins.map(item => (
-                <option key={item.pattern.name} value={item.pattern.name}>
-                    {item.pattern.label}
-                </option>
-            ));
+            const selectOptions: any = presetPlugins.map(item => ({
+                label: item.pattern.label,
+                value: item.pattern.name
+            }));
 
             return (
-                <Grid>
-                    <Cell span={3}>
+                <>
+                    <Grid.Column span={3}>
                         <Bind
                             name={"settings.preset"}
                             validators={validation.create("required")}
@@ -57,31 +54,32 @@ const plugin: FbBuilderFormFieldValidatorPlugin = {
                                 setMessage(selectedPatternPlugin.pattern.message);
                             }}
                         >
-                            <Select label={"Preset"}>
-                                <option value={"custom"}>Custom</option>
-                                {selectOptions}
-                            </Select>
+                            <Select
+                                size={"lg"}
+                                label={"Preset"}
+                                options={[{ value: "custom", label: "Custom" }, ...selectOptions]}
+                            />
                         </Bind>
-                    </Cell>
-                    <Cell span={7}>
+                    </Grid.Column>
+                    <Grid.Column span={7}>
                         <Bind name={"settings.regex"} validators={validation.create("required")}>
                             <Input
+                                size={"lg"}
                                 disabled={inputsDisabled}
-                                label={"Regex"}
-                                description={"Regex to test the value"}
+                                label={<Label text={"Regex"} hint={"Regex to test the value"} />}
                             />
                         </Bind>
-                    </Cell>
-                    <Cell span={2}>
+                    </Grid.Column>
+                    <Grid.Column span={2}>
                         <Bind name={"settings.flags"} validators={validation.create("required")}>
                             <Input
+                                size={"lg"}
                                 disabled={inputsDisabled}
-                                label={"Flags"}
-                                description={"Regex flags"}
+                                label={<Label text={"Flags"} hint={"Regex flags"} />}
                             />
                         </Bind>
-                    </Cell>
-                </Grid>
+                    </Grid.Column>
+                </>
             );
         }
     }

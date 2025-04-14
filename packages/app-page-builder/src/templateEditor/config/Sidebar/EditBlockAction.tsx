@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/round/edit.svg";
+import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { TemplateEditorConfig } from "~/templateEditor/editorConfig/TemplateEditorConfig";
 import { useBlockReference } from "./useBlockReference";
 

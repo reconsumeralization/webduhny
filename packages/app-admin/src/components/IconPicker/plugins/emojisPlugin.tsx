@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import styled from "@emotion/styled";
-
-import { Menu } from "@webiny/ui/Menu";
-
+import { cn, PopoverPrimitive } from "@webiny/admin-ui";
 import { useIcon } from "..";
 import { IconPickerTab } from "../IconPickerTab";
 import { IconProvider } from "../IconRenderer";
@@ -13,26 +10,17 @@ import { Icon } from "../types";
 
 const SKIN_TONES = ["", "\u{1f3fb}", "\u{1f3fc}", "\u{1f3fd}", "\u{1f3fe}", "\u{1f3ff}"];
 
-const SkinToneSelectWrapper = styled.div`
-    padding: 4px;
-    width: 32px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 1px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    cursor: pointer;
-`;
-
-const SkinTonesGrid = styled.div`
-    display: grid;
-    gap: 4px;
-    padding: 4px;
-`;
-
-const SkinTone = styled.div`
-    cursor: pointer;
-`;
+const SkinToneSelectWrapper = (props: React.HTMLAttributes<HTMLDivElement>) => {
+    return (
+        <div
+            className={cn(
+                "wby-size-xl wby-rounded-sm wby-pointer wby-border-solid wby-border-sm wby-border-neutral-muted wby-flex wby-justify-center wby-items-center wby-text-center"
+            )}
+        >
+            {props.children}
+        </div>
+    );
+};
 
 /**
  * NOTE: Avoid using `@emotion/styled` in icon renderer components across all plugins.
@@ -72,6 +60,8 @@ interface SkinToneSelectProps {
 }
 
 const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectProps) => {
+    const [open, setOpen] = useState(false);
+
     if (!icon || !isEmoji(icon)) {
         return <SkinToneSelectWrapper />;
     }
@@ -79,7 +69,7 @@ const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectPr
     if (!hasSkinToneSupport) {
         return (
             <SkinToneSelectWrapper>
-                <IconProvider icon={icon}>
+                <IconProvider icon={icon} size={24}>
                     <Emoji />
                 </IconProvider>
             </SkinToneSelectWrapper>
@@ -87,32 +77,32 @@ const SkinToneSelect = ({ icon, hasSkinToneSupport, onChange }: SkinToneSelectPr
     }
 
     return (
-        <Menu
-            handle={
+        <PopoverPrimitive open={open} onOpenChange={open => setOpen(open)}>
+            <PopoverPrimitive.Trigger className={"wby-outline-none"}>
                 <SkinToneSelectWrapper>
-                    <IconProvider icon={icon}>
+                    <IconProvider icon={icon} size={24}>
                         <Emoji />
                     </IconProvider>
                 </SkinToneSelectWrapper>
-            }
-            render={({ closeMenu }) => (
-                <SkinTonesGrid>
+            </PopoverPrimitive.Trigger>
+            <PopoverPrimitive.Content>
+                <div className={"wby-bg-neutral-base wby-grid wby-gap-xs wby-p-xs wby-text-center"}>
                     {SKIN_TONES.map((skinTone, index) => (
-                        <SkinTone
+                        <div
                             key={index}
                             onClick={() => {
                                 onChange(skinTone);
-                                closeMenu();
                             }}
+                            className={"wby-cursor-pointer"}
                         >
-                            <IconProvider icon={{ ...icon, skinTone }}>
+                            <IconProvider icon={{ ...icon, skinTone }} size={24}>
                                 <Emoji />
                             </IconProvider>
-                        </SkinTone>
+                        </div>
                     ))}
-                </SkinTonesGrid>
-            )}
-        />
+                </div>
+            </PopoverPrimitive.Content>
+        </PopoverPrimitive>
     );
 };
 
@@ -145,6 +135,7 @@ const EmojiTab = observer(() => {
 
     return (
         <IconPickerTab
+            value={"emoji"}
             label={"Emojis"}
             onChange={onIconSelect}
             actions={

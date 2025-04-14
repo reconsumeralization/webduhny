@@ -1,0 +1,95 @@
+import React, { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Textarea } from "~/Textarea";
+
+const meta: Meta<typeof Textarea> = {
+    title: "Components/Form/Textarea",
+    component: Textarea,
+    argTypes: {
+        onChange: { action: "onChange" },
+        disabled: {
+            control: "boolean",
+            defaultValue: false
+        }
+    },
+    parameters: {
+        layout: "padded"
+    }
+};
+
+export default meta;
+type Story = StoryObj<typeof Textarea>;
+
+export const Default: Story = {};
+
+export const WithLabel: Story = {
+    args: {
+        label: "Any field label"
+    }
+};
+
+export const WithLabelRequired: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        required: true
+    }
+};
+
+export const WithDescription: Story = {
+    args: {
+        ...Default.args,
+        description: "Provide the required information for processing your request."
+    }
+};
+
+export const WithNotes: Story = {
+    args: {
+        ...Default.args,
+        note: "Note: Ensure your selection or input is accurate before proceeding."
+    }
+};
+
+export const WithErrors: Story = {
+    args: {
+        ...Default.args,
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        }
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        disabled: true
+    }
+};
+
+export const WithValidateFunction: Story = {
+    render: args => {
+        const [validation, setValidation] = useState<any>({ isValid: true, message: undefined });
+
+        const validate = async () => {
+            setValidation({ isValid: false, message: "Any custom error message." });
+        };
+
+        return <Textarea {...args} validate={validate} validation={validation} />;
+    }
+};
+
+export const FullExample: Story = {
+    args: {
+        ...Default.args,
+        label: "Any field label",
+        required: true,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        }
+    }
+};

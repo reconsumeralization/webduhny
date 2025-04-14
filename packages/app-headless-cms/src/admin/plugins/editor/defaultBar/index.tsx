@@ -1,6 +1,5 @@
 import React from "react";
 import BackButton from "./BackButton";
-import Divider from "./Divider";
 import SaveContentModelButton from "./SaveContentModelButton";
 import CreateContentButton from "./CreateContentButton";
 import { Name } from "./Name";
@@ -12,13 +11,6 @@ export default [
         type: "content-model-editor-default-bar-right",
         render() {
             return <CreateContentButton />;
-        }
-    },
-    {
-        name: "content-model-editor-default-bar-left-divider",
-        type: "content-model-editor-default-bar-right",
-        render() {
-            return <Divider />;
         }
     },
     {

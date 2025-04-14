@@ -1,0 +1,34 @@
+import React from "react";
+import { makeDecoratable } from "~/utils";
+import { Separator } from "~/Separator";
+
+interface HeaderBarProps {
+    start?: React.ReactNode;
+    middle?: React.ReactNode;
+    end?: React.ReactNode;
+}
+
+const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
+    return (
+        <header>
+            <div
+                className={
+                    "wby-grid wby-grid-cols-[1fr_auto_1fr] wby-w-full wby-py-xs-plus wby-px-sm wby-bg-neutral-base"
+                }
+            >
+                <div className="wby-h-full wby-flex wby-items-center wby-justify-self-start">
+                    {start}
+                </div>
+                <div className="wby-h-full wby-flex wby-items-center">{middle}</div>
+                <div className="wby-h-full wby-flex wby-items-center wby-justify-self-end">
+                    {end}
+                </div>
+            </div>
+            <Separator margin={"none"} variant={"subtle"} />
+        </header>
+    );
+};
+
+const HeaderBar = makeDecoratable("HeaderBar", HeaderBarBase);
+
+export { HeaderBar, type HeaderBarProps };

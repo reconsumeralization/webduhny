@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 
@@ -11,7 +11,6 @@ import {
     BatchEditorDialogViewModel,
     BatchEditorFormData
 } from "~/components/BulkActions/ActionEdit/BatchEditorDialog/BatchEditorDialogPresenter";
-import { BatchEditorContainer } from "~/components/BulkActions/ActionEdit/ActionEdit.styled";
 
 export interface BatchEditorProps {
     onForm: (form: FormAPI) => void;
@@ -43,7 +42,7 @@ export const BatchEditor = observer((props: BatchEditorProps) => {
             invalidFields={props.vm.invalidFields}
         >
             {() => (
-                <BatchEditorContainer>
+                <>
                     <Accordion elevation={1}>
                         {props.vm.data.operations.map((operation, operationIndex) => (
                             <AccordionItem
@@ -75,7 +74,7 @@ export const BatchEditor = observer((props: BatchEditorProps) => {
                         disabled={!props.vm.canAddOperation}
                         onClick={() => props.onAdd()}
                     />
-                </BatchEditorContainer>
+                </>
             )}
         </Form>
     );

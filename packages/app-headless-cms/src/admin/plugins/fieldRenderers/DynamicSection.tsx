@@ -1,6 +1,6 @@
 import React from "react";
 import classSet from "classnames";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
 import { Cell, Grid } from "@webiny/ui/Grid";

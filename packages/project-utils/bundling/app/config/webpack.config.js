@@ -21,12 +21,7 @@ const WebpackBar = require("webpackbar");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { getProjectApplication } = require("@webiny/cli/utils");
 
-const materialNodeModules = require.resolve("@material/base/package.json").split("@material")[0];
-const sassIncludePaths = [
-    path.resolve("./src"),
-    path.resolve("./node_modules"),
-    materialNodeModules
-];
+const sassIncludePaths = [path.resolve("./src"), path.resolve("./node_modules")];
 
 // Generates a unique static folder name, for example "static-mi7aan0cqpo".
 const STATIC_FOLDER = "static";

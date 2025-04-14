@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ReactComponent as GridIcon } from "@material-design-icons/svg/outlined/view_module.svg";
-import { ReactComponent as TableIcon } from "@material-design-icons/svg/outlined/view_list.svg";
+import { ReactComponent as GridIcon } from "@webiny/icons/view_module.svg";
+import { ReactComponent as TableIcon } from "@webiny/icons/view_list.svg";
 import { i18n } from "@webiny/app/i18n";
 import { IconButton } from "@webiny/ui/Button";
 import { Tooltip } from "@webiny/ui/Tooltip";

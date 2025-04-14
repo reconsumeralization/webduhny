@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { EditContainer } from "./Styled";
 import { useFormEditor } from "~/admin/components/FormEditor";
 import { FbFormStep } from "~/types";
 
@@ -19,7 +18,7 @@ export const EditTab = () => {
     const stepTitle = data.steps.find(step => step.id === isEditStep.id)?.title || "";
 
     return (
-        <EditContainer>
+        <div className={"wby-relative"}>
             <FieldErrors errors={errors} />
             {(data.steps || []).map((formStep: FbFormStep, index: number) => (
                 <EditTabStep
@@ -35,6 +34,6 @@ export const EditTab = () => {
                 updateStep={updateStep}
                 stepTitle={stepTitle}
             />
-        </EditContainer>
+        </div>
     );
 };

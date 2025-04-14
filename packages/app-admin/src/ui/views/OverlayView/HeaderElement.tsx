@@ -3,7 +3,7 @@ import { css } from "emotion";
 import { UIElement, UIElementConfig, UiElementRenderProps } from "~/ui/UIElement";
 import { TopAppBarSecondary, TopAppBarSection } from "@webiny/ui/TopAppBar";
 import { IconButton } from "@webiny/ui/Button";
-import { ReactComponent as CloseIcon } from "@material-design-icons/svg/outlined/close.svg";
+import { ReactComponent as CloseIcon } from "@webiny/icons/close.svg";
 import { PlaceholderElement } from "~/ui/elements/PlaceholderElement";
 import { HeaderTitleElement } from "./HeaderTitleElement";
 
@@ -79,11 +79,7 @@ export class HeaderElement extends UIElement<HeaderElementConfig> {
                 </TopAppBarSection>
                 <TopAppBarSection className={width} alignEnd>
                     {this.getRightSectionElement().render(props)}
-                    <IconButton
-                        ripple={false}
-                        onClick={this.config.onClose}
-                        icon={<CloseIcon style={{ width: 24, height: 24 }} />}
-                    />
+                    <IconButton ripple={false} onClick={this.config.onClose} icon={<CloseIcon />} />
                 </TopAppBarSection>
             </TopAppBarSecondary>
         );

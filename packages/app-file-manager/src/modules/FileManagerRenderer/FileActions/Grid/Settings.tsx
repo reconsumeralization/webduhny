@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ReactComponent as SettingsIcon } from "@material-design-icons/svg/filled/settings.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import { FileManagerViewConfig, useFile, useFileManagerView } from "~/index";
 
 const { Browser } = FileManagerViewConfig;

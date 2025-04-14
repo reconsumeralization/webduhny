@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 import { NavigationMenuElement } from "@webiny/app-admin/ui/elements/NavigationMenuElement";
 import { UIElementConfig } from "@webiny/app-admin/ui/UIElement";
 import { List, ListItem } from "@webiny/ui/List";

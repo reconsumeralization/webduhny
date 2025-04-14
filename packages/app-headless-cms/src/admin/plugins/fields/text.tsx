@@ -1,11 +1,10 @@
 import React from "react";
-import { ReactComponent as TextIcon } from "./icons/round-text_fields-24px.svg";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { ReactComponent as TextIcon } from "@webiny/icons/text_fields.svg";
 import { CmsModelFieldTypePlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
-import { Input } from "@webiny/ui/Input";
 import PredefinedValuesDynamicFieldset from "./PredefinedValuesDynamicFieldset";
 import { Bind } from "@webiny/form";
+import { Grid, Input, Label } from "@webiny/admin-ui";
 const t = i18n.ns("app-headless-cms/admin/fields");
 
 const plugin: CmsModelFieldTypePlugin = {
@@ -32,14 +31,16 @@ const plugin: CmsModelFieldTypePlugin = {
         renderSettings() {
             return (
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Bind name={"placeholderText"}>
                             <Input
-                                label={t`Placeholder text`}
-                                description={t`Placeholder text (optional)`}
+                                label={
+                                    <Label text={t`Placeholder text`} description={t`(optional)`} />
+                                }
+                                size={"lg"}
                             />
                         </Bind>
-                    </Cell>
+                    </Grid.Column>
                 </Grid>
             );
         },

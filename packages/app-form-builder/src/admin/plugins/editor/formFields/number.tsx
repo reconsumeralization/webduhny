@@ -1,7 +1,6 @@
 import React from "react";
-import { ReactComponent as NumberIcon } from "./icons/round-looks_3-24px.svg";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
+import { ReactComponent as NumberIcon } from "@webiny/icons/looks_3.svg";
+import { Grid, Input } from "@webiny/admin-ui";
 import { FbBuilderFieldPlugin } from "../../../../types";
 
 const plugin: FbBuilderFieldPlugin = {
@@ -29,16 +28,15 @@ const plugin: FbBuilderFieldPlugin = {
         renderSettings({ form: { Bind } }) {
             // TODO: @ts-adrian: spread Bind komponente na donju komponentu
             return (
-                <Grid>
-                    <Cell span={12}>
-                        <Bind name={"placeholderText"}>
-                            <Input
-                                label={"Placeholder text"}
-                                description={"Placeholder text (optional)"}
-                            />
-                        </Bind>
-                    </Cell>
-                </Grid>
+                <Grid.Column span={12}>
+                    <Bind name={"placeholderText"}>
+                        <Input
+                            size={"lg"}
+                            label={"Placeholder text"}
+                            description={"Placeholder text (optional)"}
+                        />
+                    </Bind>
+                </Grid.Column>
             );
         }
     }
