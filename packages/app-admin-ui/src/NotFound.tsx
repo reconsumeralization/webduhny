@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Link } from "@webiny/react-router";
 import { NotFound as NotFoundBase } from "@webiny/app-admin";
 import notFoundImage from "./NotFound/notFound.svg";
+import { Link, Text } from "@webiny/admin-ui";
 
 export const NotFound = NotFoundBase.createDecorator(() => {
     return function NotFound() {
         return (
             <div
                 className={
-                    "wby-flex wby-flex-col wby-items-center wby-justify-center wby-text-center wby-gap-xs wby-pt-[128px]"
+                    "wby-h-full wby-flex wby-flex-col wby-items-center wby-justify-center wby-text-center wby-gap-xs"
                 }
             >
                 <img
@@ -18,8 +18,8 @@ export const NotFound = NotFoundBase.createDecorator(() => {
                     alt="Not Accessible"
                     className={"wby-mb-xl"}
                 />
-                <div>The route is either missing, or you&apos;re not authorized to view it.</div>
-                <div>Please contact your administrator to report the issue.</div>
+                <Text>The route is either missing, or you&apos;re not authorized to view it.</Text>
+                <Text>Please contact your administrator to report the issue.</Text>
                 <Link to="/">Take me back.</Link>
             </div>
         );
