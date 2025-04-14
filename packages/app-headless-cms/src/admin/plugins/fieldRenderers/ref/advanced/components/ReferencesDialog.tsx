@@ -5,11 +5,10 @@ import { CmsModelField, CmsModelFieldRendererProps } from "~/types";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
 import { useSnackbar } from "@webiny/app-admin";
 import { parseIdentifier } from "@webiny/utils";
-import { AbsoluteLoader } from "~/admin/plugins/fieldRenderers/ref/advanced/components/Loader";
 import { useEntries } from "~/admin/plugins/fieldRenderers/ref/advanced/hooks/useEntries";
 import { Entries } from "./Entries";
 import { MultiRefFieldSettings } from "~/admin/plugins/fieldRenderers/ref/advanced/components/AdvancedMultipleReferenceSettings";
-import { Dialog } from "@webiny/admin-ui";
+import { Dialog, OverlayLoader } from "@webiny/admin-ui";
 
 const isSelected = (entryId: string, values: CmsReferenceValue[]) => {
     if (!entryId) {
@@ -145,7 +144,7 @@ export const ReferencesDialog = (props: ReferencesDialogProps) => {
                 }
             >
                 <>
-                    {loading && <AbsoluteLoader />}
+                    {loading && <OverlayLoader />}
                     <Search onChange={onInput} value={searchValue} />
                     <Entries entries={entries} loadMore={loadMore}>
                         {entry => {

@@ -10,15 +10,20 @@ import {
 import { Options } from "./Options";
 import { useReferences } from "../hooks/useReferences";
 import { Entry } from "./Entry";
+import { Container } from "./Container";
 import { ReferencesDialog } from "./ReferencesDialog";
 import { useModelFieldGraphqlContext, useQuery } from "~/admin/hooks";
 import { useSnackbar } from "@webiny/app-admin";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { AbsoluteLoader as Loader } from "./Loader";
 import { parseIdentifier } from "@webiny/utils";
 import { Entries } from "./Entries";
 import { NewReferencedEntryDialog } from "~/admin/plugins/fieldRenderers/ref/components/NewReferencedEntryDialog";
-import { FormComponentErrorMessage, FormComponentLabel, Text } from "@webiny/admin-ui";
+import {
+    FormComponentErrorMessage,
+    FormComponentLabel,
+    OverlayLoader,
+    Text
+} from "@webiny/admin-ui";
 
 const getRecordCountMessage = (count: number) => {
     switch (count) {
@@ -214,17 +219,13 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
 
     return (
         <>
-            <div className={"wby-flex wby-items-center wby-justify-between wby-mb-xs"}>
-                <FormComponentLabel text={field.label} required={field.settings?.required} />
+            <div className={"wby-flex wby-items-center wby-justify-between"}>
+                <FormComponentLabel text={field.label} />
                 <Text size={"sm"}>({message})</Text>
             </div>
             {validationIsValid === false && <FormComponentErrorMessage text={validationMessage} />}
-            <div
-                className={
-                    "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mb-md"
-                }
-            >
-                {loading && <Loader />}
+            <Container>
+                {loading && <OverlayLoader size={"md"} />}
                 <Entries entries={entries} loadMore={loadMore}>
                     {(entry, index) => {
                         const isFirst = index === 0;
@@ -249,7 +250,7 @@ export const AdvancedMultipleReferenceField = (props: AdvancedMultipleReferenceF
                         );
                     }}
                 </Entries>
-            </div>
+            </Container>
             <Options
                 models={models}
                 onNewRecord={onNewRecord}

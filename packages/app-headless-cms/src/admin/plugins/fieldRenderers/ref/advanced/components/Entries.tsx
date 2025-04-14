@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import debounce from "lodash/debounce";
 import { CmsReferenceContentEntry } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { Scrollbar, Text } from "@webiny/admin-ui";
+import { Scrollbar } from "@webiny/admin-ui";
 import { positionValues as PositionValues } from "react-custom-scrollbars";
+import { NoEntries } from "~/admin/plugins/fieldRenderers/ref/advanced/components/NoEntries";
 
 interface EntriesProps {
     entries: CmsReferenceContentEntry[];
@@ -24,15 +25,7 @@ export const Entries = (props: EntriesProps) => {
     );
 
     if (entries.length === 0) {
-        return (
-            <div
-                className={
-                    "wby-flex wby-justify-center wby-px-xl wby-py-md-extra wby-bg-neutral-subtle"
-                }
-            >
-                <Text size={"sm"}>No records found.</Text>
-            </div>
-        );
+        return <NoEntries text={"No records found"} />;
     }
 
     return (
