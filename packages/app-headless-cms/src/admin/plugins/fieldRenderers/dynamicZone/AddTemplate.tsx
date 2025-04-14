@@ -4,7 +4,7 @@ import { ReactComponent as AddCircleIcon } from "@webiny/icons/add_circle_outlin
 import { CmsDynamicZoneTemplate, CmsDynamicZoneTemplateWithTypename } from "~/types";
 import { TemplateGallery } from "./TemplateGallery";
 import { useTemplateTypename } from "~/admin/plugins/fieldRenderers/dynamicZone/useTemplateTypename";
-import { Button, IconButton, Link, Text, Tooltip } from "@webiny/admin-ui";
+import { Button, cn, IconButton, Link, Text, Tooltip } from "@webiny/admin-ui";
 
 interface UseAddTemplateParams {
     onTemplate: (template: CmsDynamicZoneTemplateWithTypename) => void;
@@ -46,18 +46,23 @@ export const AddTemplateButton = (props: AddTemplateProps) => {
     });
 
     return (
-        <>
+        <div
+            className={
+                "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mt-xs wby-mb-md wby-relative"
+            }
+        >
             {showGallery ? (
                 <TemplateGallery onTemplate={onTemplate} onClose={onGalleryClose} />
             ) : (
                 <div
-                    className={
-                        "wby-w-full wby-text-center wby-flex wby-flex-col wby-px-xl wby-pt-xl wby-pb-lg wby-gap-sm-extra wby-bg-neutral-subtle wby-rounded"
-                    }
+                    className={cn([
+                        "wby-w-full wby-flex wby-flex-col wby-gap-sm-extra wby-px-xl wby-pt-xl wby-pb-lg wby-bg-neutral-subtle wby-rounded wby-text-center",
+                        "hover:wby-bg-neutral-light"
+                    ])}
                 >
                     <Button
                         size={"sm"}
-                        variant={"tertiary"}
+                        variant={"ghost"}
                         onClick={browseTemplates}
                         text={"Pick a template"}
                         icon={<AddIcon />}
@@ -79,7 +84,7 @@ export const AddTemplateButton = (props: AddTemplateProps) => {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
