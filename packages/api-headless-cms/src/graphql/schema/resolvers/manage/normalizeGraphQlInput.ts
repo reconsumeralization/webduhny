@@ -1,5 +1,5 @@
 import set from "lodash/set";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { CmsEntryResolverFactory, CmsFieldTypePlugins, CmsModel } from "~/types";
 import { ContentEntryTraverser } from "~/utils/contentEntryTraverser/ContentEntryTraverser";
 

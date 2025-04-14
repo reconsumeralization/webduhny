@@ -5,7 +5,7 @@ import type {
     IDeleteBatchItem,
     IPutBatchItem
 } from "~/utils/batch/types";
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 import type { TableDef } from "~/toolbox";
 import type { ITableWriteBatch } from "~/utils/table/types";
 import type { IPutParamsItem, put } from "~/utils/put";

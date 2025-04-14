@@ -1,4 +1,4 @@
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import { CmsModel } from "@webiny/api-headless-cms/types";
 import { CMS_MODEL_SINGLETON_TAG } from "@webiny/api-headless-cms/constants";
 

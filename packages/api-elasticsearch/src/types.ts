@@ -1,6 +1,6 @@
 import { ApiResponse, Client } from "@elastic/elasticsearch";
 import { BoolQueryConfig, PrimitiveValue, Query as esQuery } from "elastic-ts";
-import { Context, GenericRecord } from "@webiny/api/types";
+import { Context, GenericRecord } from "@webiny/api-core/types";
 /**
  * Re-export some dep lib types.
  */

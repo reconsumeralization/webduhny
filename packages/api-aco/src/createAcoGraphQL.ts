@@ -3,7 +3,7 @@ import { filterSchema } from "~/filter/filter.gql";
 import { createFoldersSchema } from "~/folder/folder.gql";
 import { appGql } from "~/apps/app.gql";
 import { AcoContext } from "~/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import type { CmsModel } from "@webiny/api-headless-cms/types";
 import { createFieldTypePluginRecords } from "@webiny/api-headless-cms/graphql/schema/createFieldTypePluginRecords";

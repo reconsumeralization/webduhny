@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "__tests__"],
   "references": [
-    { "path": "../api" },
+    { "path": "../api-core" },
     { "path": "../api-authentication" },
     { "path": "../api-headless-cms" },
     { "path": "../api-i18n" },
@@ -31,8 +31,8 @@
     "paths": {
       "~/*": ["./src/*"],
       "~tests/*": ["./__tests__/*"],
-      "@webiny/api/*": ["../api/src/*"],
-      "@webiny/api": ["../api/src"],
+      "@webiny/api-core/*": ["../api-core/src/*"],
+      "@webiny/api-core": ["../api-core/src"],
       "@webiny/api-authentication/*": ["../api-authentication/src/*"],
       "@webiny/api-authentication": ["../api-authentication/src"],
       "@webiny/api-headless-cms/*": ["../api-headless-cms/src/*"],

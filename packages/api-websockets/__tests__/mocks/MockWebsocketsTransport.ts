@@ -3,7 +3,7 @@ import {
     IWebsocketsTransportSendConnection,
     IWebsocketsTransportSendData
 } from "~/transport/abstractions/IWebsocketsTransport";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export class MockWebsocketsTransport implements IWebsocketsTransport {
     public messages = new Map<string, IWebsocketsTransportSendData<any>>();

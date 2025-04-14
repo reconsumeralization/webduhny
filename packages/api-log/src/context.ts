@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api/plugins/ContextPlugin";
+import { ContextPlugin } from "@webiny/api-core/plugins/ContextPlugin";
 import { Context } from "~/types";
 import { loggerFactory } from "~/logger/factory";
 import { createCrud } from "~/crud";

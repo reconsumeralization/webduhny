@@ -1,5 +1,5 @@
 import { WebsocketsTransport } from "~/transport/WebsocketsTransport";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 jest.mock("@webiny/aws-sdk/client-apigatewaymanagementapi", () => {
     return {

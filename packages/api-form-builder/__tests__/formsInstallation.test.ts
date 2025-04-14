@@ -1,5 +1,5 @@
 import useGqlHandler from "./useGqlHandler";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { TenancyContext } from "@webiny/api-tenancy/types";
 import { FormBuilderContext } from "~/types";
 

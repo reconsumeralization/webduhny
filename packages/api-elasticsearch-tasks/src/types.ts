@@ -11,7 +11,7 @@ import type { Client } from "@webiny/api-elasticsearch";
 import { createTable } from "~/definitions";
 import type { BatchReadItem, IEntity } from "@webiny/db-dynamodb";
 import type { ITimer } from "@webiny/handler-aws";
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 import type { Context as LoggerContext } from "@webiny/api-log/types";
 
 export interface Context extends ElasticsearchContext, TasksContext, LoggerContext {}

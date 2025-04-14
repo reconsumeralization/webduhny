@@ -2,7 +2,7 @@ import { I18NContext } from "@webiny/api-i18n/types";
 import { FileStorage } from "./storage/FileStorage";
 import { TenancyContext } from "@webiny/api-tenancy/types";
 import { SecurityContext, SecurityPermission } from "@webiny/api-security/types";
-import { Context } from "@webiny/api/types";
+import { Context } from "@webiny/api-core/types";
 import { FileLifecycleEvents } from "./types/file.lifecycle";
 import { CreatedBy, File } from "./types/file";
 import { Topic } from "@webiny/pubsub/types";

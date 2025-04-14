@@ -4,7 +4,7 @@ import { usePageManageHandler } from "../testHelpers/usePageManageHandler";
 import { usePageReadHandler } from "../testHelpers/usePageReadHandler";
 import { useAuthorManageHandler } from "~tests/testHelpers/useAuthorManageHandler";
 import { CmsModel } from "~tests/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { CmsContext, CmsEntry } from "~/types";
 
 const singularPageApiName = pageModel.singularApiName;

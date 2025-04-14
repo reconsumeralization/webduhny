@@ -6,7 +6,7 @@ import { createHeadlessCmsContext, createHeadlessCmsGraphQL } from "@webiny/api-
 import { createWcpContext } from "@webiny/api-wcp";
 import { createTenancyAndSecurity } from "./tenancySecurity";
 import { ApiKey, SecurityIdentity } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { mockLocalesPlugins } from "@webiny/api-i18n/graphql/testing";
 import { Plugin, PluginCollection } from "@webiny/plugins/types";
 import { HeadlessCmsStorageOperations } from "@webiny/api-headless-cms/types";

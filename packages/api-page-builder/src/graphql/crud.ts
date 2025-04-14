@@ -8,7 +8,7 @@ import { createPageValidation } from "./crud/pages.validation";
 import { createPageElementsCrud } from "./crud/pageElements.crud";
 import { createSettingsCrud } from "./crud/settings.crud";
 import { createSystemCrud } from "./crud/system.crud";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { PbContext, PrerenderingHandlers } from "~/graphql/types";
 import { createTopic } from "@webiny/pubsub";
 import { PageBuilderStorageOperations } from "~/types";

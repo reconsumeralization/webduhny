@@ -19,7 +19,7 @@ import type {
     IImportFromUrlControllerInput,
     IImportFromUrlControllerOutput
 } from "~/tasks/domain/abstractions/ImportFromUrlController";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import type {
     ICmsImportExportValidatedAssetsFile,
     ICmsImportExportValidatedContentEntriesFile

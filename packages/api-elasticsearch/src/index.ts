@@ -3,7 +3,7 @@
  */
 import WebinyError from "@webiny/error";
 import { ElasticsearchContext } from "~/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { createElasticsearchClient, ElasticsearchClientOptions } from "~/client";
 import { getElasticsearchOperators } from "~/operators";
 import { Client } from "@elastic/elasticsearch";

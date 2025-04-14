@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { AdminUsersContext } from "~/types";
 
 export const createExternalIdpAdminUserHooks = (context: AdminUsersContext) => {

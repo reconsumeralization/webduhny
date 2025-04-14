@@ -1,4 +1,4 @@
-import { createContextPlugin } from "@webiny/api";
+import { createContextPlugin } from "@webiny/api-core";
 import type { PbContext } from "~/graphql/types";
 import { DataSourcesContext } from "./DataSourcesContext";
 import { CmsEntryDataSource } from "~/dataSources/cmsDataSources/CmsEntryDataSource";

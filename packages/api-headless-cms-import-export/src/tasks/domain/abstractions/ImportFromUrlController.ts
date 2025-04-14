@@ -8,7 +8,7 @@ import type {
     ITaskResponseResult,
     ITaskRunParams
 } from "@webiny/tasks";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 
 export enum IImportFromUrlControllerInputStep {
     DOWNLOAD = "download",

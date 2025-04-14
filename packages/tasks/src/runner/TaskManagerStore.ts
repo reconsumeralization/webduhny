@@ -26,7 +26,7 @@ import {
 import deepEqual from "deep-equal";
 import { getObjectProperties } from "~/utils/getObjectProperties";
 import { ObjectUpdater } from "~/utils/ObjectUpdater";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 const getInput = <T extends ITaskDataInput = ITaskDataInput>(
     originalInput: T,

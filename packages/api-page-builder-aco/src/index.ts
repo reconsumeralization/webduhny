@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { getAncestorFoldersByPage } from "~/page/getAncestorFoldersByPage";
 import { createImportExportPageHooks, createPageHooks } from "~/page/hooks";
 import { createPageProcessors } from "~/page/processors";

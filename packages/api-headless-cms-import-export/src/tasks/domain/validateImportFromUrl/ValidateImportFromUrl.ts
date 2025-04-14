@@ -7,7 +7,7 @@ import type { IExternalFileFetcher } from "~/tasks/utils/externalFileFetcher";
 import type { ITaskResponseResult, ITaskRunParams } from "@webiny/tasks";
 import type { Context, ICmsImportExportValidatedFile } from "~/types";
 import { getImportExportFileType } from "~/tasks/utils/helpers/getImportExportFileType";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import { prependImportPath } from "~/tasks/utils/helpers/importPath";
 
 export interface IFileExists {

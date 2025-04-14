@@ -4,7 +4,7 @@ import {
     ContextPlugin as BaseContextPlugin,
     ContextPluginCallable as BaseContextPluginCallable,
     createContextPlugin as baseCreateContextPlugin
-} from "@webiny/api";
+} from "@webiny/api-core";
 import { Context as ContextInterface } from "~/types";
 
 export interface ContextParams extends BaseContextParams {

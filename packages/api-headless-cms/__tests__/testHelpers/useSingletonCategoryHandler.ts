@@ -1,7 +1,7 @@
 import { GraphQLHandlerParams, useGraphQLHandler } from "./useGraphQLHandler";
 import { CmsModel } from "~/types";
 import { getCmsModel } from "~tests/contentAPI/mocks/contentModels";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 const identityFields = /* GraphQL */ `
     {

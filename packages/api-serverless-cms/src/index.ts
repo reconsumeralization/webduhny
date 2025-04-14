@@ -10,7 +10,10 @@ import { FormBuilderContext } from "@webiny/api-form-builder/types";
 import { CmsContext } from "@webiny/api-headless-cms/types";
 import { AcoContext } from "@webiny/api-aco/types";
 import { PbAcoContext } from "@webiny/api-page-builder-aco/types";
-import { ContextPluginCallable, createContextPlugin as baseCreateContextPlugin } from "@webiny/api";
+import {
+    ContextPluginCallable,
+    createContextPlugin as baseCreateContextPlugin
+} from "@webiny/api-core";
 import {
     createGraphQLSchemaPlugin as baseCreateGraphQLSchemaPlugin,
     GraphQLSchemaPluginConfig

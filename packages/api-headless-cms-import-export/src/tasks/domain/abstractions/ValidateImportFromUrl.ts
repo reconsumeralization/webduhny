@@ -4,7 +4,7 @@ import type {
     ITaskResponseResult,
     ITaskRunParams
 } from "@webiny/tasks";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import type { IExportedCmsModel } from "~/tasks/domain/abstractions/ExportContentEntriesController";
 
 export interface IValidateImportFromUrlInput {

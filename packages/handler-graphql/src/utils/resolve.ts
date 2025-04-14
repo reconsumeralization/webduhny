@@ -1,5 +1,5 @@
 import { ErrorResponse, ListErrorResponse, ListResponse, Response } from "~/responses";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export interface Meta {
     totalCount: number;

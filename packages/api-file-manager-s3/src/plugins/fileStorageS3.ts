@@ -2,7 +2,7 @@ import { S3 } from "@webiny/aws-sdk/client-s3";
 import { FilePhysicalStoragePlugin } from "@webiny/api-file-manager/plugins/FilePhysicalStoragePlugin";
 import { getPresignedPostPayload } from "~/utils/getPresignedPostPayload";
 import uploadFileToS3 from "../utils/uploadFileToS3";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { createFileNormalizerFromContext } from "~/utils/createFileNormalizerFromContext";
 import { PresignedPostPayloadData } from "~/types";
 

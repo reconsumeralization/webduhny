@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { PbContext } from "@webiny/api-page-builder/types";
 import { FormBuilderContext } from "~/types";
 

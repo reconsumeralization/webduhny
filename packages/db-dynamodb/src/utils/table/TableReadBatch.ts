@@ -5,7 +5,7 @@ import type {
 } from "~/utils/entity/types";
 import { batchReadAll } from "~/utils/batch/batchRead";
 import { createEntityReadBatchBuilder } from "~/utils/entity/EntityReadBatchBuilder";
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 import { WebinyError } from "@webiny/error";
 import type { ITableReadBatch, ITableReadBatchKey } from "./types";
 

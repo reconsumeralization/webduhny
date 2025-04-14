@@ -1,7 +1,7 @@
 const dbPlugins = require("@webiny/handler-db").default;
 const { DynamoDbDriver } = require("@webiny/db-dynamodb");
 const { getDocumentClient } = require("@webiny/project-utils/testing/dynamodb");
-const { ContextPlugin } = require("@webiny/api");
+const { ContextPlugin } = require("@webiny/api-core");
 const {
     createStorageOperations,
     createCmsEntryElasticsearchBodyModifierPlugin

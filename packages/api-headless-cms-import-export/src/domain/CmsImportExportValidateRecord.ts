@@ -1,6 +1,6 @@
 import type { ICmsImportExportValidateRecord } from "~/domain/abstractions/CmsImportExportValidateRecord";
 import type { ICmsImportExportValidatedFile } from "~/types";
-import type { GenericRecord, NonEmptyArray } from "@webiny/api/types";
+import type { GenericRecord, NonEmptyArray } from "@webiny/api-core/types";
 import type { TaskDataStatus } from "@webiny/tasks";
 
 export class CmsImportExportValidateRecord implements ICmsImportExportValidateRecord {

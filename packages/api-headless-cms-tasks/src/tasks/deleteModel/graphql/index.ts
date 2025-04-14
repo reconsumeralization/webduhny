@@ -1,5 +1,5 @@
 import zod from "zod";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { CmsGraphQLSchemaPlugin, isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { validateConfirmation } from "../helpers/confirmation";
 import type { HcmsTasksContext } from "~/types";

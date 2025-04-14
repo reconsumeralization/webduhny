@@ -7,7 +7,7 @@ import type {
 } from "~/utils/batch/types";
 import type { BaseScanParams, ScanResponse } from "../scan";
 import type { Entity } from "~/toolbox";
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 
 export type ITableScanParams = BaseScanParams;
 

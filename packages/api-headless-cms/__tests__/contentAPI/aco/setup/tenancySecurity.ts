@@ -6,7 +6,7 @@ import {
     SecurityPermission,
     SecurityStorageOperations
 } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { BeforeHandlerPlugin } from "@webiny/handler";
 import { getStorageOps } from "@webiny/project-utils/testing/environment";
 import { TenancyStorageOperations, Tenant } from "@webiny/api-tenancy/types";

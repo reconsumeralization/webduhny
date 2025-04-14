@@ -5,7 +5,7 @@ import type {
 } from "./abstractions/ValidateImportFromUrlUseCase";
 import { CmsImportExportFileType } from "~/types";
 import type { ICmsImportExportFile } from "~/types";
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api-core/types";
 import { WebinyError } from "@webiny/error";
 import { getImportExportFileType } from "~/tasks/utils/helpers/getImportExportFileType";
 import { parseImportUrlData } from "~/crud/utils/parseImportUrlData";

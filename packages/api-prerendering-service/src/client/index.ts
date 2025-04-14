@@ -1,5 +1,5 @@
 import { ClientContext } from "@webiny/handler-client/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import WebinyError from "@webiny/error";
 import { PrerenderingServiceClientArgs, PrerenderingServiceClientContext } from "./types";
 import { HandlerPayload as RenderHandlerEvent } from "../render/types";

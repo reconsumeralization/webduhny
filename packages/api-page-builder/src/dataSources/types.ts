@@ -1,5 +1,5 @@
 import zod from "zod";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import type { DataLoaderRequest } from "./DataLoaderRequest";
 
 export type DataLoaderResult = GenericRecord | GenericRecord[] | undefined;

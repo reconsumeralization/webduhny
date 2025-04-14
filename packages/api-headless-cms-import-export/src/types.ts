@@ -1,7 +1,7 @@
 import type { FileManagerContext } from "@webiny/api-file-manager/types";
 import type { Context as TasksContext, TaskDataStatus } from "@webiny/tasks/types";
 import type { ICmsImportExportRecord } from "./domain/abstractions/CmsImportExportRecord";
-import type { GenericRecord, NonEmptyArray } from "@webiny/api/types";
+import type { GenericRecord, NonEmptyArray } from "@webiny/api-core/types";
 import type {
     CmsEntryListSort,
     CmsEntryListWhere,

@@ -3,7 +3,7 @@ import { PluginsContainer } from "@webiny/plugins";
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import { CmsContext } from "~/types";
-import { Context } from "@webiny/api";
+import { Context } from "@webiny/api-core";
 
 export interface ICreateStorageOperationsContextParams {
     plugins?: PluginsContainer;

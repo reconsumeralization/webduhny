@@ -1,5 +1,5 @@
 import { I18NContentContext } from "~/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 
 /**
  * DEPRECATION NOTICE!

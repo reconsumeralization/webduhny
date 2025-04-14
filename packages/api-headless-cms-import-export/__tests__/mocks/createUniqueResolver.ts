@@ -1,4 +1,4 @@
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 import { UniqueResolver } from "~/tasks/utils/uniqueResolver/UniqueResolver";
 
 export const createUniqueResolver = <T extends GenericRecord>() => {

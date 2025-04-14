@@ -1,6 +1,6 @@
 import { TaskResponseStatus } from "~/types";
 import { IResponseBaseResult } from "./ResponseBaseResult";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export interface IResponseError {
     message: string;

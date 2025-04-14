@@ -1,6 +1,6 @@
 import type { IAsset, IResolvedAsset } from "./entryAssets";
 import type { SanitizedCmsModel } from "@webiny/api-headless-cms/export/types";
-import type { GenericRecord, NonEmptyArray } from "@webiny/api/types";
+import type { GenericRecord, NonEmptyArray } from "@webiny/api-core/types";
 import type { CmsEntryMeta } from "@webiny/api-headless-cms/types";
 
 export interface IFileMeta {

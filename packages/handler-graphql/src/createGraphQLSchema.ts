@@ -3,7 +3,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { mergeResolvers } from "@graphql-tools/merge";
 import { GraphQLScalarType } from "graphql/type/definition";
 import { GraphQLScalarPlugin, Resolvers, TypeDefs } from "./types";
-import { Context } from "@webiny/api/types";
+import { Context } from "@webiny/api-core/types";
 import {
     RefInputScalar,
     NumberScalar,

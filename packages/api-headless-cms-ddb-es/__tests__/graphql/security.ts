@@ -1,6 +1,6 @@
 import apiKeyAuthentication from "@webiny/api-security/plugins/apiKeyAuthentication";
 import apiKeyAuthorization from "@webiny/api-security/plugins/apiKeyAuthorization";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { createTenancyContext } from "@webiny/api-tenancy";
 import { TenancyStorageOperations, Tenant } from "@webiny/api-tenancy/types";
 import { createSecurityContext } from "@webiny/api-security";

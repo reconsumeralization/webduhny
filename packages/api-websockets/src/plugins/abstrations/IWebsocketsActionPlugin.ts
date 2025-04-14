@@ -1,4 +1,4 @@
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { Context } from "~/types";
 
 export interface IWebsocketsActionPluginCallableParamsSend {

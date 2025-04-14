@@ -12,7 +12,7 @@ import {
 } from "@webiny/aws-sdk/client-sfn";
 import { ITaskEventInput } from "~/handler/types";
 import { generateAlphaNumericId } from "@webiny/utils";
-import { ServiceDiscovery } from "@webiny/api";
+import { ServiceDiscovery } from "@webiny/api-core";
 import { ITask } from "~/types";
 
 export type IStepFunctionServiceFetchResult = DescribeExecutionCommandOutput;

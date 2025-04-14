@@ -1,5 +1,5 @@
 import { AuthenticationContext, Identity } from "@webiny/api-authentication/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { createAuthenticator, Config as CognitoConfig } from "@webiny/api-cognito-authenticator";
 
 export type GetIdentity<TIdentity extends Identity = Identity> = (params: {

@@ -1,4 +1,4 @@
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { CmsContext } from "@webiny/api-headless-cms/types";
 
 export const createDummyLocales = () => {

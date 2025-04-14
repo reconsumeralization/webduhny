@@ -5,7 +5,7 @@ import {
     SecurityIdentity,
     SecurityStorageOperations
 } from "@webiny/api-security/types";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { BeforeHandlerPlugin } from "@webiny/handler";
 import { TenancyContext, TenancyStorageOperations } from "@webiny/api-tenancy/types";
 import { AdminUsersContext } from "@webiny/api-admin-users/types";

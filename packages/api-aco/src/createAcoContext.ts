@@ -1,5 +1,5 @@
 import WebinyError from "@webiny/error";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { I18NLocale } from "@webiny/api-i18n/types";
 import { Tenant } from "@webiny/api-tenancy/types";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";

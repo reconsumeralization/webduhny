@@ -19,7 +19,7 @@ import {
     getClean,
     queryPerPageClean
 } from "@webiny/db-dynamodb";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { compress, decompress } from "@webiny/utils/compression/gzip";
 import { convertAfterToStartKey, convertLastEvaluatedKeyToAfterKey } from "./convertKeys";
 

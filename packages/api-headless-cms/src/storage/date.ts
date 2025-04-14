@@ -3,7 +3,7 @@
  */
 import WebinyError from "@webiny/error";
 import { CmsModelField } from "~/types";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 import { StorageTransformPlugin } from "~/plugins";
 
 const excludeTypes = ["time", "dateTimeWithTimezone"];

@@ -1,7 +1,7 @@
 import WebinyError from "@webiny/error";
 import { createTopic } from "@webiny/pubsub";
 import { NotFoundError } from "@webiny/handler-graphql";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import {
     ExportPagesParams,
     OnPagesAfterExportTopicParams,

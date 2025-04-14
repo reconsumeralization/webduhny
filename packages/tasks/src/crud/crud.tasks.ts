@@ -28,7 +28,7 @@ import { createTopic } from "@webiny/pubsub";
 import { remapWhere } from "./where";
 import { createZodError, parseIdentifier } from "@webiny/utils";
 import zod from "zod";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 const createRevisionId = (id: string) => {
     const { id: entryId } = parseIdentifier(id);

@@ -1,5 +1,5 @@
 import { ConstructorArgs, Db } from "@webiny/db";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { DbContext } from "./types";
 
 export default <T = unknown>(args: ConstructorArgs<T>) => {

@@ -6,7 +6,7 @@ import {
     ISynchronizationRunResult
 } from "../types";
 import { IIndexManager } from "~/settings/types";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 import { IElasticsearchSynchronize } from "./abstractions/ElasticsearchSynchronize";
 import { IElasticsearchFetcher } from "./abstractions/ElasticsearchFetcher";
 

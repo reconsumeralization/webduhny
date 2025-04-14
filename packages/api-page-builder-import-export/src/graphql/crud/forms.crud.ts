@@ -1,6 +1,6 @@
 import WebinyError from "@webiny/error";
 import { createTopic } from "@webiny/pubsub";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import {
     ImportExportTaskStatus,
     FormsImportExportCrud,

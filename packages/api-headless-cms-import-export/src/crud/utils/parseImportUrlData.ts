@@ -4,7 +4,7 @@ import zod from "zod";
 import { WebinyError } from "@webiny/error";
 import { createZodError } from "@webiny/utils";
 import type { IExportedCmsModel } from "~/tasks/domain/abstractions/ExportContentEntriesController";
-import type { GenericRecord } from "@webiny/api/types";
+import type { GenericRecord } from "@webiny/api-core/types";
 
 const validateData = zod.object({
     /**

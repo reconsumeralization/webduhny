@@ -1,5 +1,5 @@
 import { DefaultSettingsCrudOptions, PbContext } from "~/graphql/types";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export * from "./graphql/types";
 

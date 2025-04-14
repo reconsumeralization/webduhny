@@ -4,7 +4,7 @@ import {
     GraphQLSchema
 } from "graphql";
 import { Plugin } from "@webiny/plugins/types";
-import { Context, GenericRecord } from "@webiny/api/types";
+import { Context, GenericRecord } from "@webiny/api-core/types";
 import { RouteMethodPath } from "@webiny/handler/types";
 import { ResolversComposition } from "@graphql-tools/resolvers-composition";
 import { IResolvers, TypeSource } from "@graphql-tools/utils";

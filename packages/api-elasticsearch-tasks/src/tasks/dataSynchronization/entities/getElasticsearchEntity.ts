@@ -1,5 +1,5 @@
 import { Entity } from "@webiny/db-dynamodb/toolbox";
-import { NonEmptyArray } from "@webiny/api/types";
+import { NonEmptyArray } from "@webiny/api-core/types";
 import { IRegistryItem } from "@webiny/db";
 import { EntityType } from "./getElasticsearchEntityType";
 import { Context } from "~/types";

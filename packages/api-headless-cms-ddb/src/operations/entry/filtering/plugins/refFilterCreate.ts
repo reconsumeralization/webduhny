@@ -5,7 +5,7 @@ import {
 } from "~/plugins/CmsEntryFieldFilterPlugin";
 import { extractWhereParams } from "~/operations/entry/filtering/where";
 import { transformValue } from "~/operations/entry/filtering/transform";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export const createRefFilterCreate = () => {
     const plugin = new CmsEntryFieldFilterPlugin<GenericRecord | null | undefined>({

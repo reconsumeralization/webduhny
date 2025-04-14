@@ -1,7 +1,7 @@
 import { IWebsocketsConnectionRegistry, IWebsocketsConnectionRegistryData } from "~/registry";
 import { IWebsocketsTransportSendConnection, IWebsocketsTransportSendData } from "~/transport";
 import { SecurityIdentity } from "@webiny/api-security/types";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export type IWebsocketsIdentity = Pick<SecurityIdentity, "id" | "displayName" | "type">;
 

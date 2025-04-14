@@ -1,7 +1,7 @@
 import { ApwScheduleActionData, ApwScheduleActionStorageOperations } from "~/scheduler/types";
 import { getIsoStringTillMinutes, encodeToken, basePlugins } from "~/scheduler/handlers/utils";
 import { getApwSettings } from "~/scheduler/handlers/utils";
-import { ContextPlugin } from "@webiny/api";
+import { ContextPlugin } from "@webiny/api-core";
 import { PageBuilderGraphQL } from "./plugins/PageBuilderGraphQL";
 import { HeadlessCMSGraphQL } from "./plugins/HeadlessCMSGraphQL";
 import { ApplicationGraphQL } from "./plugins/ApplicationGraphQL";

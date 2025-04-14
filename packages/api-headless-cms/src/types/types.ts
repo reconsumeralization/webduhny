@@ -1,6 +1,6 @@
 import { Plugin } from "@webiny/plugins/types";
 import { I18NContext, I18NLocale } from "@webiny/api-i18n/types";
-import { Context, GenericRecord } from "@webiny/api/types";
+import { Context, GenericRecord } from "@webiny/api-core/types";
 import { GraphQLFieldResolver, GraphQLRequestBody, Resolvers } from "@webiny/handler-graphql/types";
 import { processRequestBody } from "@webiny/handler-graphql";
 import { SecurityPermission } from "@webiny/api-security/types";

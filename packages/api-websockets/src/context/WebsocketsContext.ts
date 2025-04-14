@@ -11,7 +11,7 @@ import {
     IWebsocketsTransportSendConnection,
     IWebsocketsTransportSendData
 } from "~/transport";
-import { GenericRecord } from "@webiny/api/types";
+import { GenericRecord } from "@webiny/api-core/types";
 
 export class WebsocketsContext implements IWebsocketsContextObject {
     public readonly registry: IWebsocketsConnectionRegistry;
