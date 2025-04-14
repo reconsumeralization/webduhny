@@ -6,7 +6,6 @@ import set from "lodash/set";
 import merge from "lodash/merge";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { plugins } from "@webiny/plugins";
-import { Cell, Grid } from "@webiny/ui/Grid";
 import SingleImageUpload from "@webiny/app-admin/components/SingleImageUpload";
 import { FileManagerFileItem } from "@webiny/app-admin";
 import {
@@ -49,6 +48,7 @@ interface SettingsPropsType extends PbEditorPageElementSettingsRenderComponentPr
         [key: string]: any;
     };
 }
+
 const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsType) => {
     const { displayMode } = useDisplayMode();
     const [element] = useActiveElement();
@@ -125,18 +125,16 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
             }
         >
             <ContentWrapper direction={"column"}>
-                <Grid className={classes.simpleGrid}>
-                    <Cell span={12}>
-                        <ColorPicker
-                            label={"Color"}
-                            value={backgroundColor}
-                            updatePreview={onColorChange}
-                            updateValue={setColor}
-                        />
-                    </Cell>
-                </Grid>
+                <Wrapper label={"Color"}>
+                    <ColorPicker
+                        value={backgroundColor}
+                        updatePreview={onColorChange}
+                        updateValue={setColor}
+                    />
+                </Wrapper>
+
                 {options.image !== false && (
-                    <React.Fragment>
+                    <>
                         <Wrapper label={"Image"} containerClassName={classes.simpleGrid}>
                             <SingleImageUpload
                                 className={imageSelect}
@@ -171,7 +169,7 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
                                 ))}
                             </SelectField>
                         </Wrapper>
-                    </React.Fragment>
+                    </>
                 )}
             </ContentWrapper>
         </Accordion>

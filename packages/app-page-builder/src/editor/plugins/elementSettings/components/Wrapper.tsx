@@ -30,7 +30,7 @@ const Wrapper = ({
             </Grid.Column>
             <Grid.Column
                 span={rightCellSpan}
-                className={cn("wby-flex wby-items-center", rightCellClassName)}
+                className={cn("wby-flex wby-items-center wby-justify-self-end", rightCellClassName)}
             >
                 {children}
             </Grid.Column>

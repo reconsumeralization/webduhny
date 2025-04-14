@@ -1,53 +1,8 @@
-import React, { useMemo, useCallback } from "react";
-import { css } from "emotion";
-import classNames from "classnames";
+import React, { useCallback, useMemo } from "react";
 import { FormElementMessage } from "@webiny/ui/FormElementMessage";
 import { BindComponentRenderPropValidation, Form, FormOnSubmit } from "@webiny/form";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
-
-const defaultWrapperStyle = css({
-    width: 60,
-    "& .inner-wrapper": {
-        display: "flex"
-    }
-});
-
-const defaultInputStyle = css({
-    appearance: "none",
-    background: "transparent",
-    border: "none",
-    margin: 0,
-    fontSize: 11,
-    padding: 0,
-    width: 24,
-    textAlign: "right",
-
-    transition: "all 200ms ease-in",
-
-    "&:focus": {
-        padding: "0px 4px",
-        width: 36,
-        textAlign: "center",
-        outlineColor: "lightblue"
-    }
-});
-
-const defaultSelectStyle = css({
-    appearance: "none",
-    background: "transparent",
-    border: "none",
-    padding: "0px 0px 0px 4px",
-    margin: 0,
-    fontSize: 12,
-    width: 28,
-    backgroundImage: "none",
-    "&:focus": {
-        outlineWidth: 2,
-        outlineStyle: "solid",
-        outlineColor: "lightblue"
-    }
-});
 
 interface SpacingPickerProps {
     value: string;
@@ -72,10 +27,7 @@ const SpacingPicker = ({
     disabled,
     options = [],
     validation,
-    className,
-    inputClassName,
-    selectClassName,
-    useDefaultStyle = true
+    className
 }: SpacingPickerProps) => {
     const formData = useMemo(() => {
         const parsedValue = parseFloat(value);
@@ -112,44 +64,35 @@ const SpacingPicker = ({
             {({ data, Bind }) => {
                 const unitValue = data.unit || defaultUnitValue;
                 return (
-                    <div
-                        className={classNames(className, {
-                            [defaultWrapperStyle]: useDefaultStyle
-                        })}
-                    >
-                        <div className={"inner-wrapper"}>
-                            <Bind name={"value"}>
-                                <InputField
-                                    className={classNames(inputClassName, {
-                                        [defaultInputStyle]: useDefaultStyle
-                                    })}
-                                    disabled={data.unit === "auto" || disabled}
-                                    type={"number"}
-                                    onFocus={(event: React.FocusEvent<HTMLInputElement>) =>
-                                        event.target.select()
-                                    }
-                                    onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-                                        if (event.target.value === "") {
-                                            onChange("0" + (formData.unit || defaultUnitValue));
+                    <div className={className}>
+                        <div className={"wby-flex"}>
+                            <div className={"wby-w-[68px]"}>
+                                <Bind name={"value"}>
+                                    <InputField
+                                        disabled={data.unit === "auto" || disabled}
+                                        type={"number"}
+                                        onFocus={(event: React.FocusEvent<HTMLInputElement>) =>
+                                            event.target.select()
                                         }
-                                    }}
-                                />
-                            </Bind>
-                            <Bind name={"unit"}>
-                                <SelectField
-                                    className={classNames(selectClassName, {
-                                        [defaultSelectStyle]: useDefaultStyle
-                                    })}
-                                    disabled={disabled}
-                                    value={unitValue}
-                                >
-                                    {options.map(item => (
-                                        <option key={item.value} value={item.value}>
-                                            {item.label}
-                                        </option>
-                                    ))}
-                                </SelectField>
-                            </Bind>
+                                        onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                                            if (event.target.value === "") {
+                                                onChange("0" + (formData.unit || defaultUnitValue));
+                                            }
+                                        }}
+                                    />
+                                </Bind>
+                            </div>
+                            &nbsp;
+                            <div className={"wby-w-[70px]"}>
+                                <Bind name={"unit"}>
+                                    <SelectField
+                                        displayResetAction={false}
+                                        disabled={disabled}
+                                        value={unitValue}
+                                        options={options}
+                                    />
+                                </Bind>
+                            </div>
                         </div>
                         {validation && validation.isValid === false && (
                             <FormElementMessage error>{validation.message}</FormElementMessage>

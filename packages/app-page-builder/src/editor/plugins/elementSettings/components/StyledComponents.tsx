@@ -52,7 +52,7 @@ interface ContentWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const ContentWrapper = ({
     className,
-    direction,
+    direction = "column",
     children,
     ...props
 }: ContentWrapperProps) => {

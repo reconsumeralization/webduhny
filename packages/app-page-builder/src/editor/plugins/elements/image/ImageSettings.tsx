@@ -9,7 +9,10 @@ import Wrapper from "~/editor/plugins/elementSettings/components/Wrapper";
 import InputField from "~/editor/plugins/elementSettings/components/InputField";
 import SpacingPicker from "~/editor/plugins/elementSettings/components/SpacingPicker";
 import useUpdateHandlers from "~/editor/plugins/elementSettings/useUpdateHandlers";
-import {ContentWrapper, justifySelfEndStyle} from "~/editor/plugins/elementSettings/components/StyledComponents";
+import {
+    ContentWrapper,
+    justifySelfEndStyle
+} from "~/editor/plugins/elementSettings/components/StyledComponents";
 import {
     WIDTH_UNIT_OPTIONS,
     HEIGHT_UNIT_OPTIONS
@@ -24,13 +27,6 @@ const classes = {
         }
     })
 };
-
-const spacingPickerStyle = css({
-    width: "120px",
-    "& .inner-wrapper": {
-        display: "flex"
-    }
-});
 
 const ImageSettings = ({
     defaultAccordionValue = false
@@ -67,7 +63,6 @@ const ImageSettings = ({
                         onChange={updateWidth}
                         options={WIDTH_UNIT_OPTIONS}
                         useDefaultStyle={false}
-                        className={spacingPickerStyle}
                     />
                 </Wrapper>
                 <Wrapper
@@ -80,7 +75,6 @@ const ImageSettings = ({
                         onChange={updateHeight}
                         options={HEIGHT_UNIT_OPTIONS}
                         useDefaultStyle={false}
-                        className={spacingPickerStyle}
                     />
                 </Wrapper>
                 <Wrapper
@@ -89,11 +83,16 @@ const ImageSettings = ({
                     leftCellSpan={4}
                     rightCellSpan={8}
                 >
-                    <SelectField value={image?.htmlTag || "img"} onChange={updateHtmlTag}>
-                        <option value={"auto"}>{"Auto-detect"}</option>
-                        <option value={"img"}>{"<img>"}</option>
-                        <option value={"object"}>{"<object>"} (for SVGs)</option>
-                    </SelectField>
+                    <SelectField
+                        displayResetAction={false}
+                        value={image?.htmlTag || "img"}
+                        onChange={updateHtmlTag}
+                        options={[
+                            { label: "Auto-detect", value: "auto" },
+                            { label: "<img>", value: "img" },
+                            { label: "<object>", value: "object" }
+                        ]}
+                    />
                 </Wrapper>
             </ContentWrapper>
         </Accordion>
