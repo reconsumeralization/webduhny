@@ -15,17 +15,23 @@ export class GetTranslatableCollectionByIdRepository {
     async execute(collectionId: string): Promise<TranslatableCollection> {
         const model = await GetModel.byModelId(this.context, "translatableCollection");
 
-        const existingEntry = await this.context.cms.getEntry<TranslatableCollectionDTO>(model, {
-            where: { collectionId, latest: true }
-        });
+        try {
+            const existingEntry = await this.context.cms.getEntry<TranslatableCollectionDTO>(
+                model,
+                {
+                    where: { collectionId, latest: true }
+                }
+            );
 
-        if (!existingEntry) {
+            return TranslatableCollectionMapper.fromDTO(
+                existingEntry.values,
+                existingEntry.entryId
+            );
+        } catch {
             throw new WebinyError({
                 message: `TranslatableCollection "${collectionId}" not found!`,
                 code: "NOT_FOUND"
             });
         }
-
-        return TranslatableCollectionMapper.fromDTO(existingEntry.values, existingEntry.entryId);
     }
 }

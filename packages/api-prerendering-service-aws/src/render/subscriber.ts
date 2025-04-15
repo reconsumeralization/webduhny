@@ -114,7 +114,7 @@ export default (params: HandlerConfig) => {
              * the database. This way we are sure that we don't store obsolete infrastructure information.
              */
             toRender.push({
-                groupId: render.tenant,
+                groupId: render.groupId ?? render.tenant,
                 body: render
             });
         }

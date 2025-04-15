@@ -20,6 +20,7 @@ export const prerenderingHandlers = new ContextPlugin<PbContext>(context => {
                 const render = paths.map<RenderEvent>(item => ({
                     ...item,
                     tenant,
+                    groupId: tenant,
                     locale: locale.code
                 }));
 

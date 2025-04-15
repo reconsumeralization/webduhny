@@ -1,10 +1,21 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { createConfigurableComponent } from "@webiny/react-properties";
 import { Browser, BrowserConfig } from "./configComponents/Browser";
 import { FileDetails, FileDetailsConfig } from "./configComponents/FileDetails";
 import { getThumbnailRenderer } from "./getThumbnailRenderer";
+import { CompositionScope } from "@webiny/react-composition";
 
 const base = createConfigurableComponent<FileManagerViewConfigData>("FileManagerView");
+
+const ScopedFileManagerViewConfig = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <CompositionScope name={"fm"}>
+            <base.Config>{children}</base.Config>
+        </CompositionScope>
+    );
+};
+
+ScopedFileManagerViewConfig.displayName = "FileManagerViewConfig";
 
 export const FileManagerViewConfig = Object.assign(base.Config, { Browser, FileDetails });
 export const FileManagerViewWithConfig = base.WithConfig;

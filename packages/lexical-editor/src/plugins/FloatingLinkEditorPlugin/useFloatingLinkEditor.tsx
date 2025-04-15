@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRichTextEditor } from "~/hooks";
 import { getSelectedNode } from "~/utils/getSelectedNode";
+import { BaseSelection } from "lexical";
 import { $isAutoLinkNode, $isLinkNode, TOGGLE_LINK_COMMAND } from "@webiny/lexical-nodes";
 import { isChildOfLinkEditor } from "~/plugins/FloatingLinkEditorPlugin/isChildOfLinkEditor";
-import debounce from "lodash/debounce";
 import {
     $getSelection,
     $isRangeSelection,
@@ -15,55 +15,81 @@ import {
 } from "lexical";
 import { $findMatchingParent, mergeRegister } from "@lexical/utils";
 import { FloatingLinkEditor } from "./FloatingLinkEditorPlugin";
+import { HIDE_FLOATING_TOOLBAR } from "~/commands";
+
+const isLink = (selection: BaseSelection | null) => {
+    if (!$isRangeSelection(selection)) {
+        return;
+    }
+
+    const node = getSelectedNode(selection);
+    const linkParent = $findMatchingParent(node, $isLinkNode);
+    const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
+    const isLinkOrChildOfLink = Boolean($isLinkNode(node) || linkParent);
+
+    if (!isLinkOrChildOfLink) {
+        return false;
+    }
+
+    return linkParent !== null && autoLinkParent == null;
+};
+
+const isSelectionCollapsed = (selection: BaseSelection | null) => {
+    return $isRangeSelection(selection) && selection.isCollapsed();
+};
+
+const isLinkFocused = (selection: BaseSelection | null) => {
+    return isLink(selection) && isSelectionCollapsed(selection);
+};
+
+const isLinkSelected = (selection: BaseSelection | null) => {
+    return isLink(selection) && !isSelectionCollapsed(selection);
+};
 
 export function useFloatingLinkEditor(anchorElem: HTMLElement): JSX.Element | null {
     const { editor } = useRichTextEditor();
-    const [isLink, setIsLink] = useState(false);
+    const [isLinkEditorVisible, setShowLinkEditor] = useState(false);
+    const newLinkRef = useRef(false);
 
-    const debounceSetIsLink = useCallback(debounce(setIsLink, 50), []);
-
-    const updateToolbar = useCallback(() => {
-        const selection = $getSelection();
-        if (!$isRangeSelection(selection)) {
-            return;
+    const showLinkEditor = (state: boolean) => {
+        setShowLinkEditor(state);
+        if (!state) {
+            newLinkRef.current = false;
         }
-
-        const node = getSelectedNode(selection);
-        const linkParent = $findMatchingParent(node, $isLinkNode);
-        const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
-        const isLinkOrChildOfLink = Boolean($isLinkNode(node) || linkParent);
-
-        if (!isLinkOrChildOfLink) {
-            // When hiding the toolbar, we want to hide immediately.
-            setIsLink(false);
-        }
-
-        if (selection.dirty) {
-            // We don't want this menu to open for auto links.
-            if (linkParent != null && autoLinkParent == null) {
-                // When showing the toolbar, we want to debounce it, because sometimes selection gets updated
-                // multiple times, and the `selection.dirty` flag goes from true to false multiple times,
-                // eventually settling on `false`, which we want to set once it has settled.
-                debounceSetIsLink(true);
-            }
-        }
-    }, []);
+    };
 
     useEffect(() => {
         return mergeRegister(
             editor.registerCommand(
                 SELECTION_CHANGE_COMMAND,
                 () => {
-                    updateToolbar();
+                    const selection = $getSelection();
+
+                    if (isLinkFocused(selection)) {
+                        showLinkEditor(true);
+                        return false;
+                    }
+
+                    if (isLinkSelected(selection) && newLinkRef.current) {
+                        return false;
+                    }
+
+                    if (isLinkSelected(selection) && !newLinkRef.current) {
+                        showLinkEditor(false);
+                        return false;
+                    }
+
+                    showLinkEditor(false);
+
                     return false;
                 },
-                COMMAND_PRIORITY_CRITICAL
+                COMMAND_PRIORITY_LOW
             ),
             editor.registerCommand(
                 BLUR_COMMAND,
                 payload => {
                     if (!isChildOfLinkEditor(payload.relatedTarget as HTMLElement)) {
-                        setIsLink(false);
+                        showLinkEditor(false);
                     }
 
                     return false;
@@ -73,16 +99,28 @@ export function useFloatingLinkEditor(anchorElem: HTMLElement): JSX.Element | nu
             editor.registerCommand(
                 TOGGLE_LINK_COMMAND,
                 payload => {
-                    setIsLink(!!payload);
+                    const addLink = !!payload;
+
+                    if (addLink) {
+                        newLinkRef.current = true;
+                        showLinkEditor(true);
+                        editor.dispatchCommand(HIDE_FLOATING_TOOLBAR, {});
+                    } else {
+                        showLinkEditor(false);
+                    }
                     return false;
                 },
                 COMMAND_PRIORITY_CRITICAL
             )
         );
-    }, [editor, updateToolbar]);
+    }, [editor]);
 
     return createPortal(
-        <FloatingLinkEditor isVisible={isLink} editor={editor} anchorElem={anchorElem} />,
+        <FloatingLinkEditor
+            isVisible={isLinkEditorVisible}
+            editor={editor}
+            anchorElem={anchorElem}
+        />,
         anchorElem
     );
 }

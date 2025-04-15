@@ -28,7 +28,7 @@ export const translatableCollectionSchema = /* GraphQL*/ `
         data: TranslatableCollection
         error: PbError
     }
-
+    
     extend type TranslationsQuery {
         """Get the source collection with all the items that need to be translated."""
         getTranslatableCollection(collectionId: ID!): TranslatableCollectionResponse
@@ -39,5 +39,7 @@ export const translatableCollectionSchema = /* GraphQL*/ `
             collectionId: ID!
             items: [TranslatableItemInput!]!
         ): SaveTranslatableCollectionResponse
+        
+        deleteTranslatableCollection(collectionId: ID!): BooleanResponse
     }
 `;

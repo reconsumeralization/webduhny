@@ -14,11 +14,13 @@ export * from "./LexicalEditor";
 export const LexicalEditorPlugin = () => {
     return (
         <>
-            <CompositionScope name={"pb.paragraph"}>
-                <ParagraphEditorPreset />
-            </CompositionScope>
-            <CompositionScope name={"pb.heading"}>
-                <HeadingEditorPreset />
+            <CompositionScope name={"pb.pageEditor"}>
+                <CompositionScope name={"pb.paragraph"}>
+                    <ParagraphEditorPreset />
+                </CompositionScope>
+                <CompositionScope name={"pb.heading"}>
+                    <HeadingEditorPreset />
+                </CompositionScope>
             </CompositionScope>
             <TypographyAction.TypographyDropDown element={<TypographyDropDown />} />
             {/* Block editor variables */}

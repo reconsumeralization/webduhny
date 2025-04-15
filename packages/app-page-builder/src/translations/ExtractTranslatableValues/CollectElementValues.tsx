@@ -17,12 +17,15 @@ export interface CreateTranslatableItemParams {
     };
 }
 
-export interface CreateTranslatableItem {
-    (params: CreateTranslatableItemParams): Omit<TranslatableItem, "collectionId">;
+export type NewTranslatableItem = Omit<TranslatableItem, "collectionId"> &
+    Partial<Pick<TranslatableItem, "collectionId">>;
+
+export interface CreateTranslatableItems {
+    (params: CreateTranslatableItemParams): NewTranslatableItem[];
 }
 
 export const createElementRendererInputsDecorator = (
-    createTranslatableItem: CreateTranslatableItem
+    createTranslatableItems: CreateTranslatableItems
 ) => {
     return ElementRendererInputs.createDecorator(Original => {
         return function CollectElementValues(props) {
@@ -40,16 +43,20 @@ export const createElementRendererInputsDecorator = (
                         return;
                     }
 
-                    translations.setTranslationItem({
-                        collectionId: `page:${page.id}`,
-                        ...createTranslatableItem({
-                            element,
-                            value,
-                            input: {
-                                name: key,
-                                type: inputs[key].getType()
-                            }
-                        })
+                    const items = createTranslatableItems({
+                        element,
+                        value,
+                        input: {
+                            name: key,
+                            type: inputs[key].getType()
+                        }
+                    });
+
+                    items.forEach(({ collectionId, ...item }) => {
+                        translations.setTranslationItem({
+                            collectionId: collectionId ?? `page:${page.id}`,
+                            ...item
+                        });
                     });
                 });
             }, [element.id, values]);
