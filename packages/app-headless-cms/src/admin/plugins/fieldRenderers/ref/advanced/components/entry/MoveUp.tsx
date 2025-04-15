@@ -1,7 +1,6 @@
 import React from "react";
-import { ButtonLink } from "./elements/ButtonLink";
-import { ReactComponent as MoveUpIcon } from "./assets/move-up.svg";
-import { Tooltip } from "@webiny/ui/Tooltip";
+import { ReactComponent as MoveUpIcon } from "@webiny/icons/keyboard_arrow_up.svg";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 interface MoveUpProps {
     onClick: (ev: React.MouseEvent) => void;
@@ -10,10 +9,19 @@ interface MoveUpProps {
 
 export const MoveUp = ({ onClick, className }: MoveUpProps) => {
     return (
-        <ButtonLink className={"has-tooltip " + className} onClick={onClick} maxWidth={"100px"}>
-            <Tooltip content={"Shift+Click to move to top"} placement={"top"}>
-                <MoveUpIcon /> Move Up
-            </Tooltip>
-        </ButtonLink>
+        <Tooltip
+            content={"Shift+Click to move to top"}
+            side={"top"}
+            trigger={
+                <IconButton
+                    variant={"ghost"}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={onClick}
+                    className={className}
+                    icon={<MoveUpIcon />}
+                />
+            }
+        />
     );
 };

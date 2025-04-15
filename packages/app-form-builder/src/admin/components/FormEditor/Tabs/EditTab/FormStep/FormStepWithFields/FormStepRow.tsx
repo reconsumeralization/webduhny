@@ -72,7 +72,7 @@ export const FormStepRow = (props: FormStepRowProps) => {
                         "wby-flex wby-flex-column",
                         "wby-relative",
                         "wby-mt-md",
-                        "wby-border-sm wby-border-neutral-smoked wby-rounded-sm",
+                        "wby-border-sm wby-border-neutral-dimmed-darker wby-rounded-sm",
                         isDragging ? "wby-opacity-30" : "wby-opacity-100"
                     ])}
                 >

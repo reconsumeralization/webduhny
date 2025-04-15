@@ -39,14 +39,16 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
         borderColor: normalizedFigmaExport.reduce(
             (acc, { type, variantName }) => {
                 if (type === "borderColor") {
-                    const [color, variant] = variantName.split("-");
+                    const [color, ...variantParts] = variantName.split("-");
+                    const variantKey = variantParts.join("-") || "DEFAULT";
+
                     if (!acc[color]) {
                         acc[color] = {
                             DEFAULT: `hsl(var(--border-${color}-default))`
                         };
                     }
 
-                    acc[color][variant] = `hsl(var(--border-${variantName}))`;
+                    acc[color][variantKey] = `hsl(var(--border-${variantName}))`;
                 }
                 return acc;
             },
@@ -234,7 +236,11 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
             { ...DEFAULTS.COLORS }
         ),
         zIndex: {
-            5: 5
+            5: 5,
+            15: 15,
+            25: 25,
+            35: 35,
+            45: 45
         }
     };
 };

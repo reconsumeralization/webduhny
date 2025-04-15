@@ -1,20 +1,91 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta, Controls } from '@storybook/blocks';
 
-import * as AutoComplete from './AutoComplete.stories';
+import * as AutoCompleteStories from './AutoComplete.stories';
 
-<Meta of={AutoComplete} />
+<Meta of={AutoCompleteStories} />
 
 # AutoComplete
 
 The Input component is a user interface element that allows users to enter textual, numerical or any other kind of data into system database. It is essential for collecting user information, enabling interaction, and driving application functionality. As the user input is one of the most crucial aspects of using a system, we are ensuring that all our input options have necessary mechanism to make the data input as frictionless as possible.
-
-<Canvas of={AutoComplete.Default} />
 
 ## Usage
 
 ```
 import { AutoComplete } from '@webiny/admin-ui';
 ```
+
+```jsx
+<AutoComplete
+    options={["Eastern Standard Time (EST)",
+        "Central Standard Time (CST)",
+        "Pacific Standard Time (PST)",
+        "Greenwich Mean Time (GMT)"]}
+    label="Any field label"
+    description="Provide the required information for processing your request."
+    note="Note: Ensure your selection or input is accurate before proceeding."
+    required={true}
+    validation={{
+            isValid: false,
+            message: "This field is required."
+        }}
+    onValueChange={()=>{}}
+/>
+```
+
+<Canvas of={AutoCompleteStories.Documentation} source={ { code:
+`
+import { AutoComplete } from '@webiny/admin-ui';
+
+<AutoComplete
+    options={["Eastern Standard Time (EST)",
+        "Central Standard Time (CST)",
+        "Pacific Standard Time (PST)",
+        "Greenwich Mean Time (GMT)"]}
+    label="Any field label"
+    description="Provide the required information for processing your request."
+    note="Note: Ensure your selection or input is accurate before proceeding."
+    required={true}
+    validation={{
+            isValid: false,
+            message: "This field is required."
+        }}
+    onValueChange={()=>{}}
+/>
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/AutoComplete/AutoComplete.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={AutoCompleteStories.Documentation}/>
+
+## Examples
+
+### On Value Change
+`onValueChange` is a callback prop. It’s triggered whenever the user selects a new option or types into the field—basically, when the value of the component changes.
+
+<Canvas of={AutoCompleteStories.OnValueChange} source={ { code:
+        `
+import { AutoComplete } from '@webiny/admin-ui';
+
+<AutoComplete
+    options={["Eastern Standard Time (EST)",
+        "Central Standard Time (CST)",
+        "Pacific Standard Time (PST)",
+        "Greenwich Mean Time (GMT)"]}
+    label="Time Zone"
+    onValueChange={(value) => {console.log("User selected Time Zone:", value)}}
+/>
+` } }
+/>
 
 ## Anatomy
 

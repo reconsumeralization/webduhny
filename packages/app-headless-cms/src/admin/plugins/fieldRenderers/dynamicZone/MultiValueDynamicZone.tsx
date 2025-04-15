@@ -1,7 +1,5 @@
 import React from "react";
-import styled from "@emotion/styled";
 import cloneDeep from "lodash/cloneDeep";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import { ReactComponent as CloneIcon } from "@webiny/icons/library_add.svg";
 import { ReactComponent as ArrowUpIcon } from "@webiny/icons/expand_less.svg";
@@ -23,10 +21,7 @@ import { makeDecoratable } from "@webiny/react-composition";
 import { TemplateProvider } from "~/admin/plugins/fieldRenderers/dynamicZone/TemplateProvider";
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { useConfirmationDialog } from "@webiny/app-admin";
-
-const BottomMargin = styled.div`
-    margin-bottom: 20px;
-`;
+import { Accordion } from "@webiny/admin-ui";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -50,35 +45,35 @@ export const MultiValueItemContainer = makeDecoratable(
     "MultiValueItemContainer",
     ({ children, ...props }: MultiValueItemContainerProps) => {
         const actions = (
-            <AccordionItem.Actions>
-                <AccordionItem.Action
+            <>
+                <Accordion.Item.Action
                     icon={<ArrowUpIcon />}
                     onClick={props.onMoveUp}
                     disabled={props.isFirst}
                 />
-                <AccordionItem.Action
+                <Accordion.Item.Action
                     icon={<ArrowDownIcon />}
                     onClick={props.onMoveDown}
                     disabled={props.isLast}
                 />
-                <AccordionItem.Divider />
-                <AccordionItem.Action
+                <Accordion.Item.Action.Separator />
+                <Accordion.Item.Action
                     icon={<CloneIcon />}
                     onClick={() => props.onClone(props.value)}
                 />
-                <AccordionItem.Action icon={<DeleteIcon />} onClick={props.onDelete} />
-            </AccordionItem.Actions>
+                <Accordion.Item.Action icon={<DeleteIcon />} onClick={props.onDelete} />
+            </>
         );
 
         return (
-            <AccordionItem
+            <Accordion.Item
                 title={props.title}
                 description={props.description}
                 icon={props.icon}
                 actions={actions}
             >
                 {children}
-            </AccordionItem>
+            </Accordion.Item>
         );
     }
 );
@@ -252,9 +247,7 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
             {hasValues ? (
                 <AddTemplateIcon onTemplate={onTemplate} />
             ) : (
-                <BottomMargin>
-                    <AddTemplateButton onTemplate={onTemplate} />
-                </BottomMargin>
+                <AddTemplateButton onTemplate={onTemplate} />
             )}
         </>
     );

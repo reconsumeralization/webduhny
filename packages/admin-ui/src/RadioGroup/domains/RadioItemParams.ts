@@ -3,6 +3,6 @@ import React from "react";
 export interface RadioItemParams {
     id?: string;
     label: string | React.ReactNode;
-    value: string;
+    value: string | number;
     disabled?: boolean;
 }

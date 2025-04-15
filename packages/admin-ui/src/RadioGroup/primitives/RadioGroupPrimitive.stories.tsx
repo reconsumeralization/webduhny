@@ -13,7 +13,14 @@ const meta: Meta<typeof RadioGroupPrimitive> = {
     },
     render: args => {
         const [value, setValue] = useState(args.value);
-        return <RadioGroupPrimitive {...args} value={value} onChange={value => setValue(value)} />;
+        return (
+            <div className={"wby-w-full"}>
+                <RadioGroupPrimitive {...args} value={value} onChange={value => setValue(value)} />
+                <div className={"wby-mt-4 wby-text-center"}>
+                    Current selected value: <pre>{value}</pre>
+                </div>
+            </div>
+        );
     }
 };
 

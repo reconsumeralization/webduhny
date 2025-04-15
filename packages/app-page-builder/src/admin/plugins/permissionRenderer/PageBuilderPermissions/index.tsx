@@ -1,7 +1,7 @@
 import React from "react";
-import { AccordionItem } from "@webiny/ui/Accordion";
+import { Accordion } from "@webiny/admin-ui";
 import { AdminAppPermissionRendererPlugin } from "@webiny/app-admin/types";
-import { ReactComponent as Icon } from "../../../assets/table_chart-24px.svg";
+import { ReactComponent as PermissionsIcon } from "@webiny/icons/table_chart.svg";
 import { PageBuilderPermissions } from "./PageBuilderPermissions";
 import { i18n } from "@webiny/app/i18n";
 
@@ -12,14 +12,19 @@ const plugin: AdminAppPermissionRendererPlugin = {
     name: "admin-app-permissions-renderer-page-builder",
     render(props) {
         return (
-            <AccordionItem
-                icon={<Icon />}
+            <Accordion.Item
+                icon={
+                    <Accordion.Item.Icon
+                        icon={<PermissionsIcon />}
+                        label={"Page Builder Permissions"}
+                    />
+                }
                 title={t`Page Builder`}
                 description={t`Manage Page Builder app access permissions.`}
                 data-testid={"permission.pb"}
             >
                 <PageBuilderPermissions {...props} />
-            </AccordionItem>
+            </Accordion.Item>
         );
     }
 };

@@ -15,8 +15,8 @@ const meta: Meta<typeof CheckboxGroup> = {
         layout: "padded"
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
-        return <CheckboxGroup {...args} values={values} onChange={values => setValues(values)} />;
+        const [values, setValues] = useState(args.value);
+        return <CheckboxGroup {...args} value={values} onChange={values => setValues(values)} />;
     }
 };
 
@@ -39,7 +39,7 @@ export const Default: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     }
 };
 

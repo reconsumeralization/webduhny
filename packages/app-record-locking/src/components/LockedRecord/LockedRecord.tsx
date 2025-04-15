@@ -1,49 +1,10 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Elevation as BaseElevation } from "@webiny/ui/Elevation";
+import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
+import { Grid, Heading, Icon, Text } from "@webiny/admin-ui";
 import { useRecordLocking } from "~/hooks";
 import { useContentEntry } from "@webiny/app-headless-cms";
 import { LockedRecordForceUnlock } from "./LockedRecordForceUnlock";
-import { ReactComponent as LockIcon } from "@webiny/icons/lock.svg";
 import { IRecordLockingLockRecord } from "~/types";
-
-const StyledWrapper = styled("div")({
-    width: "50%",
-    margin: "100px auto 0 auto",
-    backgroundColor: "var(--mdc-theme-surface)"
-});
-
-const InnerWrapper = styled("div")({
-    display: "flex"
-});
-
-const Content = styled("div")({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center"
-});
-
-const IconBox = styled("div")({
-    width: 250,
-    height: 250,
-    marginRight: 25,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    backgroundColor: "var(--mdc-theme-background)",
-    svg: {
-        width: 150,
-        height: 150,
-        lineHeight: "100%",
-        display: "block",
-        fill: "var(--mdc-theme-primary)"
-    }
-});
-
-const Bold = styled("span")({
-    fontWeight: 600
-});
 
 interface IWrapperProps {
     children: React.ReactNode;
@@ -51,42 +12,49 @@ interface IWrapperProps {
 
 const Wrapper = ({ children }: IWrapperProps) => {
     return (
-        <StyledWrapper>
-            <Elevation z={2}>
-                <InnerWrapper>
-                    <IconBox>
-                        <LockIcon />
-                    </IconBox>
-                    <Content>{children}</Content>
-                </InnerWrapper>
-            </Elevation>
-        </StyledWrapper>
+        <>
+            <div className="wby-w-5/12 wby-absolute wby-top-1/2 wby-left-1/2 wby--translate-x-1/2 wby--translate-y-1/2 wby-z-50">
+                <div
+                    className={
+                        "wby-flex wby-p-lg wby-border-sm wby-border-neutral-dimmed-darker wby-rounded-3xl  wby-bg-neutral-base"
+                    }
+                >
+                    <Grid>
+                        <Grid.Column span={3}>
+                            <div className="wby-h-full wby-flex wby-items-center wby-justify-center wby-bg-neutral-dimmed wby-rounded-md wby-p-lg">
+                                <Icon
+                                    style={{
+                                        width: "64px",
+                                        height: "64px"
+                                    }}
+                                    icon={<LockIcon />}
+                                    label={"Locked Record"}
+                                    color={"accent"}
+                                    size={"lg"}
+                                />
+                            </div>
+                        </Grid.Column>
+                        <Grid.Column span={9}>
+                            <div className={"wby-flex wby-flex-col wby-justify-center"}>
+                                {children}
+                            </div>
+                        </Grid.Column>
+                    </Grid>
+                </div>
+            </div>
+            {/*<div className="wby-absolute wby-inset-0 wby-bg-neutral-dark/50 wby-z-45"></div>*/}
+        </>
     );
 };
 
-const StyledTitle = styled("h3")({
-    fontSize: 24,
-    marginBottom: "10px",
-    fontWeight: "600",
-    " > em": {
-        fontStyle: "italic"
-    }
-});
-
 const Title = () => {
     const { entry } = useContentEntry();
-    return <StyledTitle>Record ({entry.meta.title}) is locked!</StyledTitle>;
+    return (
+        <Heading level={4} className={"wby-mb-sm"}>
+            Record ({entry.meta.title}) is locked!
+        </Heading>
+    );
 };
-
-const Text = styled("p")({
-    fontSize: 16,
-    marginBottom: "10px",
-    lineHeight: "125%"
-});
-
-const Elevation = styled(BaseElevation)({
-    padding: "20px"
-});
 
 export interface ILockedRecordProps {
     record: IRecordLockingLockRecord;
@@ -109,10 +77,8 @@ export const LockedRecord = ({ record: lockRecordEntry }: ILockedRecordProps) =>
                 <Title />
                 <Text>
                     This record is locked, but the system cannot find the user that created the
-                    record lock.
-                </Text>
-                <Text>
-                    A force-unlock is required to regain editing capabilities for this record.
+                    record lock. A force-unlock is required to regain editing capabilities for this
+                    record.
                 </Text>
                 <LockedRecordForceUnlock
                     id={lockRecordEntry.id}
@@ -126,12 +92,9 @@ export const LockedRecord = ({ record: lockRecordEntry }: ILockedRecordProps) =>
         <Wrapper>
             <Title />
             <Text>
-                It is locked because <Bold>{lockRecordEntry.lockedBy.displayName}</Bold> is
-                currently editing this record.
-            </Text>
-            <Text>
-                You can either contact the user and ask them to unlock the record, or you can wait
-                for the lock to expire.
+                It is locked because <strong>{lockRecordEntry.lockedBy.displayName}</strong> is
+                currently editing this record. You can either contact the user and ask them to
+                unlock the record, or you can wait for the lock to expire.
             </Text>
             <LockedRecordForceUnlock
                 id={lockRecordEntry.id}

@@ -1,11 +1,12 @@
 import React from "react";
-import { ReactComponent as UnpublishIcon } from "@webiny/icons/settings_backup_restore.svg";
+import { ReactComponent as UnpublishIcon } from "@webiny/icons/visibility_off.svg";
 import { observer } from "mobx-react-lite";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useCms, useModel, usePermission } from "~/admin/hooks";
 import { getEntriesLabel } from "~/admin/components/ContentEntries/BulkActions/BulkActions";
 import { useRecords } from "@webiny/app-aco";
 import { useSnackbar } from "@webiny/app-admin";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const ActionUnpublish = observer(() => {
     const { model } = useModel();
@@ -15,7 +16,7 @@ export const ActionUnpublish = observer(() => {
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = ContentEntryListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog } = useDialog();
 
@@ -87,11 +88,18 @@ export const ActionUnpublish = observer(() => {
     }
 
     return (
-        <IconButton
-            icon={<UnpublishIcon />}
-            onAction={openUnpublishEntriesDialog}
-            label={`Unpublish ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Unpublish ${entriesLabel}`}
+            trigger={
+                <ButtonDefault
+                    icon={<UnpublishIcon />}
+                    onAction={openUnpublishEntriesDialog}
+                    size={"sm"}
+                >
+                    {"Unpublish"}
+                </ButtonDefault>
+            }
         />
     );
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Cell } from "@webiny/ui/Grid";
 import { validation } from "@webiny/validation";
 import { CmsModelFieldValidatorPlugin } from "~/types";
 import { createInputField } from "./date/createDateInputField";
@@ -13,30 +13,28 @@ function DateLteSettings() {
     const type = field.settings ? field.settings.type : undefined;
     const availableValidators = getAvailableValidators(type).join(",");
     return (
-        <Grid>
-            <Cell span={12}>
-                <Bind name={"settings.type"}>
-                    {bind => {
-                        if (bind.value !== type) {
-                            bind.onChange(type);
-                        }
-                        return <></>;
-                    }}
-                </Bind>
-                <Bind name={"settings.value"} validators={validation.create(availableValidators)}>
-                    {bind => {
-                        return (
-                            <>
-                                {createInputField(field, bind)}
-                                <FormElementMessage>
-                                    This is the latest date/time that will be allowed.
-                                </FormElementMessage>
-                            </>
-                        );
-                    }}
-                </Bind>
-            </Cell>
-        </Grid>
+        <Cell span={12}>
+            <Bind name={"settings.type"}>
+                {bind => {
+                    if (bind.value !== type) {
+                        bind.onChange(type);
+                    }
+                    return <></>;
+                }}
+            </Bind>
+            <Bind name={"settings.value"} validators={validation.create(availableValidators)}>
+                {bind => {
+                    return (
+                        <>
+                            {createInputField(field, bind)}
+                            <FormElementMessage>
+                                This is the latest date/time that will be allowed.
+                            </FormElementMessage>
+                        </>
+                    );
+                }}
+            </Bind>
+        </Cell>
     );
 }
 

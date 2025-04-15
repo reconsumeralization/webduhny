@@ -1,12 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import { CmsModelFieldRendererPlugin } from "~/types";
-import { Input } from "@webiny/ui/Input";
 import { i18n } from "@webiny/app/i18n";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
 import DynamicSection from "../DynamicSection";
-import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
+import { DelayedOnChange, IconButton, Textarea } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -28,23 +27,31 @@ const plugin: CmsModelFieldRendererPlugin = {
             return (
                 <DynamicSection {...props}>
                     {({ bind, index }) => (
-                        <DelayedOnChange
-                            value={bind.index.value}
-                            onChange={bind.index.onChange}
-                            onBlur={bind.index.validate}
-                        >
-                            <Input
-                                validation={bind.index.validation}
-                                rows={5}
-                                label={t`Value {number}`({ number: index + 1 })}
-                                placeholder={props.field.placeholderText}
-                                data-testid={`fr.input.longTexts.${props.field.label}.${index + 1}`}
-                                trailingIcon={{
-                                    icon: <DeleteIcon />,
-                                    onClick: () => bind.field.removeValue(index)
-                                }}
-                            />
-                        </DelayedOnChange>
+                        <div className={"wby-relative"}>
+                            <DelayedOnChange
+                                value={bind.index.value}
+                                onChange={bind.index.onChange}
+                                onBlur={bind.index.validate}
+                            >
+                                <Textarea
+                                    validation={bind.index.validation}
+                                    rows={5}
+                                    label={t`Value {number}`({ number: index + 1 })}
+                                    placeholder={props.field.placeholderText}
+                                    data-testid={`fr.input.longTexts.${props.field.label}.${
+                                        index + 1
+                                    }`}
+                                />
+                            </DelayedOnChange>
+                            <div className={"wby-absolute wby-top-xl wby-right-sm wby-z-10"}>
+                                <IconButton
+                                    variant={"ghost"}
+                                    size={"md"}
+                                    icon={<DeleteIcon />}
+                                    onClick={() => bind.field.removeValue(index)}
+                                />
+                            </div>
+                        </div>
                     )}
                 </DynamicSection>
             );

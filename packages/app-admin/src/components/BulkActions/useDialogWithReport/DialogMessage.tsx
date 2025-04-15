@@ -19,7 +19,7 @@ export const ResultDialogMessage = ({ results, message }: ResultDialogMessagePro
                         icon={
                             <Icon
                                 icon={result.status === "success" ? <SuccessIcon /> : <ErrorIcon />}
-                                label={result.title}
+                                label={result.status}
                                 className={cn(
                                     result.status === "success"
                                         ? "wby-fill-success"

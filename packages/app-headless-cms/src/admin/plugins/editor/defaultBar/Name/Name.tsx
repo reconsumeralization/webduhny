@@ -6,7 +6,7 @@ import React, { useCallback, useState } from "react";
 import { useHotkeys } from "react-hotkeyz";
 import { i18n } from "@webiny/app/i18n";
 import { useModelEditor } from "~/admin/hooks";
-import { Input, Text, Tooltip } from "@webiny/admin-ui";
+import { Heading, Input, Tooltip } from "@webiny/admin-ui";
 
 const t = i18n.namespace("ContentModelEditor.Name");
 
@@ -79,16 +79,16 @@ export const Name = () => {
             side={"bottom"}
             content={<span>{t`Rename content model`}</span>}
             trigger={
-                <Text
-                    size={"lg"}
+                <Heading
+                    level={5}
                     className={
-                        "wby-p-xs wby-border-sm wby-border-neutral-base wby-rounded-md hover:wby-border-neutral-muted"
+                        "wby-px-xs wby-border-sm wby-border-neutral-base wby-rounded-md hover:wby-border-neutral-muted"
                     }
                     data-testid="cms-editor-model-title"
                     onClick={startEditing}
                 >
                     {data.name}
-                </Text>
+                </Heading>
             }
         />
     );

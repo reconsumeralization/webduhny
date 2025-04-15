@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useMemo } from "react";
 import { Grid, Cell } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import { i18n } from "@webiny/app/i18n";
-import { PermissionInfo, gridNoPaddingClass } from "@webiny/app-admin/components/Permissions";
+import { PermissionInfo, gridWithPaddingClass } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
 import { SecurityPermission } from "@webiny/app-security/types";
 import { I18NSecurityPermission } from "~/types";
@@ -79,13 +79,13 @@ export const I18NPermissions = ({ value, onChange }: I18NPermissionsProps) => {
         >
             {({ Bind }) => (
                 <Fragment>
-                    <Grid className={gridNoPaddingClass}>
+                    <Grid className={gridWithPaddingClass}>
                         <Cell span={6}>
                             <PermissionInfo title={t`Access Level`} />
                         </Cell>
                         <Cell span={6}>
                             <Bind name={"level"}>
-                                <Select label={t`Access Level`}>
+                                <Select>
                                     <option value={NO_ACCESS}>{t`No access`}</option>
                                     <option value={FULL_ACCESS}>{t`Full access`}</option>
                                 </Select>

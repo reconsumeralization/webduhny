@@ -1,24 +1,25 @@
 import React from "react";
-import {
-    ButtonDefault as BaseButtonDefault,
-    ButtonPrimary as BaseButtonPrimary,
-    ButtonSecondary as BaseButtonSecondary,
-    IconButton as BaseIconButton,
-    ButtonProps as BaseButtonProps,
-    IconButtonProps as BaseIconButtonProps
-} from "@webiny/ui/Button";
-import { Tooltip, TooltipProps } from "@webiny/ui/Tooltip";
 
 import { ButtonsProvider } from "./useButtons";
 import { ButtonContainer } from "./Buttons.styles";
+import {
+    Button,
+    type ButtonProps as BaseButtonProps,
+    IconButton as BaseIconButton,
+    type IconButtonProps as BaseIconButtonProps,
+    Tooltip,
+    type TooltipProps
+} from "@webiny/admin-ui";
 
 interface ButtonProps extends Omit<BaseButtonProps, "onClick"> {
     onAction: (ev?: any) => void;
+    children: React.ReactNode;
 }
 
 interface IconButtonProps extends Omit<BaseIconButtonProps, "onClick"> {
+    label: string;
     onAction: (ev?: any) => void;
-    tooltipPlacement?: TooltipProps["placement"];
+    tooltipPlacement?: TooltipProps["side"];
 }
 
 export interface ButtonsProps {
@@ -36,7 +37,7 @@ export const Buttons = (props: ButtonsProps) => {
     return (
         <div className={"wby-flex wby-items-center wby-gap-sm"}>
             {props.actions.map(action => (
-                <div className={"empty:wby-hidden"} key={action.name}>
+                <div className={"empty:wby-hidden wby-leading-none wby-text-0"} key={action.name}>
                     <ButtonsProvider>{action.element}</ButtonsProvider>
                 </div>
             ))}
@@ -46,16 +47,16 @@ export const Buttons = (props: ButtonsProps) => {
 
 export { ButtonContainer };
 
-export const ButtonDefault = ({ onAction, ...other }: ButtonProps) => {
-    return <BaseButtonDefault {...other} onClick={onAction} />;
+export const ButtonDefault = ({ onAction, children, ...other }: ButtonProps) => {
+    return <Button variant={"ghost"} {...other} onClick={onAction} text={children} />;
 };
 
-export const ButtonPrimary = ({ onAction, ...other }: ButtonProps) => {
-    return <BaseButtonPrimary {...other} onClick={onAction} />;
+export const ButtonPrimary = ({ onAction, children, ...other }: ButtonProps) => {
+    return <Button variant={"primary"} {...other} onClick={onAction} text={children} />;
 };
 
-export const ButtonSecondary = ({ onAction, ...other }: ButtonProps) => {
-    return <BaseButtonSecondary {...other} onClick={onAction} />;
+export const ButtonSecondary = ({ onAction, children, ...other }: ButtonProps) => {
+    return <Button variant={"secondary"} {...other} onClick={onAction} text={children} />;
 };
 
 export const IconButton = ({
@@ -67,9 +68,11 @@ export const IconButton = ({
 }: IconButtonProps) => {
     if (label && !disabled) {
         return (
-            <Tooltip content={label} placement={tooltipPlacement}>
-                <BaseIconButton {...other} onClick={onAction} />
-            </Tooltip>
+            <Tooltip
+                content={label}
+                side={tooltipPlacement}
+                trigger={<BaseIconButton variant={"ghost"} {...other} onClick={onAction} />}
+            />
         );
     }
 

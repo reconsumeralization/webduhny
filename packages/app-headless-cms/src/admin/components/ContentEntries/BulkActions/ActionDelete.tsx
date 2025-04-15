@@ -7,6 +7,7 @@ import { useSnackbar } from "@webiny/app-admin";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useCms, useModel } from "~/admin/hooks";
 import { getEntriesLabel } from "~/admin/components/ContentEntries/BulkActions/BulkActions";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const ActionDelete = observer(() => {
     const { model } = useModel();
@@ -15,7 +16,7 @@ export const ActionDelete = observer(() => {
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = ContentEntryListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog } = useDialog();
 
@@ -81,11 +82,14 @@ export const ActionDelete = observer(() => {
         });
 
     return (
-        <IconButton
-            icon={<DeleteIcon />}
-            onAction={openDeleteEntriesDialog}
-            label={`Trash ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Trash ${entriesLabel}`}
+            trigger={
+                <ButtonDefault icon={<DeleteIcon />} onAction={openDeleteEntriesDialog} size={"sm"}>
+                    {"Trash"}
+                </ButtonDefault>
+            }
         />
     );
 });

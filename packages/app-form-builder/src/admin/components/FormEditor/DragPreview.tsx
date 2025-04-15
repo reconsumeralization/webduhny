@@ -68,32 +68,15 @@ const DragPreview = () => {
 
     return (
         <div
-            style={{
-                position: "fixed",
-                pointerEvents: "none",
-                zIndex: 100,
-                left: 0,
-                top: 0,
-                width: "100%",
-                height: "100%"
-            }}
+            style={{ zIndex: 1001 }}
+            className="wby-fixed wby-pointer-events-none wby-left-0 wby-top-0 wby-w-full wby-h-full"
         >
             <div
                 ref={el => (dragPreviewRef = el)}
-                style={{
-                    transition: "opacity .25s ease-in-out",
-                    display: "block",
-                    opacity: dragHelperOpacity
-                }}
+                className="wby-transition-opacity wby-duration-250 wby-ease-in-out wby-block"
+                style={{ opacity: dragHelperOpacity }}
             >
-                <div
-                    style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: "var(--mdc-theme-primary)",
-                        borderRadius: "50%"
-                    }}
-                />
+                <div className="wby-size-lg wby-rounded-full wby-bg-primary-default" />
             </div>
         </div>
     );

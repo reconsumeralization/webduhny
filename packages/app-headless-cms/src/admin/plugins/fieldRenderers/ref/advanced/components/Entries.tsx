@@ -1,31 +1,9 @@
 import React, { useCallback } from "react";
 import debounce from "lodash/debounce";
-import styled from "@emotion/styled";
 import { CmsReferenceContentEntry } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
+import { Scrollbar } from "@webiny/admin-ui";
 import { positionValues as PositionValues } from "react-custom-scrollbars";
-
-/**
- * Error is on the `overflowX: "hidden !important".
- */
-// @ts-expect-error
-const Container = styled("div")(() => ({
-    minWidth: "100%",
-    height: "460px",
-    backgroundColor: "var(--mdc-theme-background)",
-    boxSizing: "border-box",
-    display: "flex",
-    ">div>div": {
-        overflowX: "hidden !important",
-        overflowY: "scroll",
-        paddingRight: 20
-    }
-}));
-const ContainerChild = styled("div")({
-    boxSizing: "border-box",
-    width: "100%",
-    margin: "0 2px 25px 2px"
-});
+import { NoEntries } from "~/admin/plugins/fieldRenderers/ref/advanced/components/NoEntries";
 
 interface EntriesProps {
     entries: CmsReferenceContentEntry[];
@@ -47,19 +25,23 @@ export const Entries = (props: EntriesProps) => {
     );
 
     if (entries.length === 0) {
-        return <>No entries found.</>;
+        return <NoEntries text={"No records found"} />;
     }
+
     return (
-        <Container className={"entries"}>
+        <div
+            style={{ height: "260px" }}
+            className={"wby-w-full wby-overflow-x-hidden wby-overflow-y-hidden"}
+        >
             <Scrollbar data-testid="advanced-ref-field-entries" onScrollFrame={loadMoreOnScroll}>
                 {entries.map((entry, index) => {
                     return (
-                        <ContainerChild key={`entry-${entry.id}`}>
+                        <div className={"wby-mb-sm wby-w-full"} key={`entry-${entry.id}`}>
                             {children(entry, index)}
-                        </ContainerChild>
+                        </div>
                     );
                 })}
             </Scrollbar>
-        </Container>
+        </div>
     );
 };

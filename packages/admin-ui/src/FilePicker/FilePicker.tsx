@@ -51,6 +51,7 @@ const BaseFilePicker = ({
                     required={required}
                     disabled={disabled}
                     description={description}
+                    invalid={invalid}
                 />
             )}
             <FilePickerPrimitive
@@ -62,6 +63,7 @@ const BaseFilePicker = ({
                         disabled={disabled}
                         description={description}
                         className={"wby-m-0"}
+                        invalid={invalid}
                     />
                 }
                 disabled={disabled}

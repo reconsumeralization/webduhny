@@ -1,24 +1,23 @@
 import * as React from "react";
-import { Select as UiSelect, SelectProps as BaseSelectProps } from "@webiny/ui/Select";
+import { Select as UiSelect, SelectProps as UiSelectProps } from "@webiny/admin-ui";
 
 export interface Option {
     value: string;
     label: string;
 }
 
-export interface SelectProps extends BaseSelectProps {
+export interface SelectProps extends UiSelectProps {
     options: Option[];
 }
 export const Select = (props: SelectProps) => {
     return (
-        <UiSelect {...props}>
-            {props.options.map(t => {
-                return (
-                    <option key={t.value} value={t.value} data-testid={`fr.input.${t.label}`}>
-                        {t.label}
-                    </option>
-                );
-            })}
-        </UiSelect>
+        <UiSelect
+            {...props}
+            options={props.options.map(option => ({
+                value: option.value,
+                label: option.label,
+                "data-testid": `fr.input.${option.label}`
+            }))}
+        />
     );
 };

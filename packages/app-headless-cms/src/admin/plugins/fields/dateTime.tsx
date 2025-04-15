@@ -37,7 +37,10 @@ const DateTimeSettings = () => {
                             options={[
                                 { value: "date", label: t`Date only` },
                                 { value: "time", label: t`Time only` },
-                                { value: "dateTime", label: t`Date and time with timezone` },
+                                {
+                                    value: "dateTimeWithTimezone",
+                                    label: t`Date and time with timezone`
+                                },
                                 {
                                     value: "dateTimeWithoutTimezone",
                                     label: t`Date and time without timezone`

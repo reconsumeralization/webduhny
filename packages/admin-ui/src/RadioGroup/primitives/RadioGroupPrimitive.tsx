@@ -45,9 +45,13 @@ interface RadioGroupRendererProps extends Omit<RadioGroupPrimitiveProps, "onChan
     changeValue: (value: string) => void;
 }
 
-const RadioGroupRenderer = ({ items, changeValue, value }: RadioGroupRendererProps) => {
+const RadioGroupRenderer = ({ items, changeValue, value, disabled }: RadioGroupRendererProps) => {
     return (
-        <RadioGroupRoot value={value} onValueChange={value => changeValue(value)}>
+        <RadioGroupRoot
+            value={value}
+            onValueChange={value => changeValue(value)}
+            disabled={disabled}
+        >
             {items.map(item => (
                 <Radio
                     id={item.id}

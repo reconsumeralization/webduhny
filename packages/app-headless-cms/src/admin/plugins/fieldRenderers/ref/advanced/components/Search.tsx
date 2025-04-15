@@ -1,50 +1,27 @@
 import React from "react";
-import styled from "@emotion/styled";
-import searchIcon from "./assets/search.svg";
-
-const Container = styled("div")({
-    display: "flex",
-    width: "100%",
-    position: "relative",
-    height: "36px",
-    marginBottom: "16px",
-    padding: "5px 0",
-    border: "1px solid var(--mdc-theme-on-background)",
-    backgroundColor: "var(--mdc-theme-background)"
-});
-
-const Icon = styled("img")({
-    position: "absolute",
-    top: "12px",
-    left: "10px",
-    width: "24px",
-    height: "24px"
-});
-
-const Input = styled("input")({
-    display: "block",
-    boxSizing: "border-box",
-    border: "none",
-    backgroundColor: "transparent",
-    width: "100%",
-    height: "100%",
-    fontSize: "14px",
-    lineHeight: "36px",
-    paddingLeft: "45px",
-    ":focus-visible": {
-        outline: "none"
-    }
-});
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
+import { Input, DelayedOnChange, Icon } from "@webiny/admin-ui";
 
 interface SearchProps {
-    onInput: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    onChange: (value: string) => void;
+    value: string;
 }
 
-export const Search = ({ onInput }: SearchProps) => {
+export const Search = ({ onChange, value }: SearchProps) => {
     return (
-        <Container>
-            <Icon src={searchIcon} />
-            <Input placeholder={"Search entries"} onKeyUp={onInput} />
-        </Container>
+        <div className={"wby-mb-sm"}>
+            <DelayedOnChange value={value} onChange={onChange}>
+                {({ value, onChange }) => (
+                    <Input
+                        size={"lg"}
+                        placeholder={"Search entries..."}
+                        onChange={onChange}
+                        value={value}
+                        startIcon={<Icon label="Search" icon={<SearchIcon />} />}
+                        variant={"secondary"}
+                    />
+                )}
+            </DelayedOnChange>
+        </div>
     );
 };

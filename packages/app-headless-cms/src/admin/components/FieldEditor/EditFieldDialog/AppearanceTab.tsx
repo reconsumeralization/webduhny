@@ -8,7 +8,7 @@ import { RendererOptions } from "./AppearanceTab/RendererOptions";
 import { LegacyRichTextInput } from "./AppearanceTab/LegacyRichTextInput";
 import { useRendererPlugins } from "./useRendererPlugins";
 import { useModelField } from "~/admin/components/ModelFieldProvider";
-import { RadioGroup, Text, Grid } from "@webiny/admin-ui";
+import { RadioGroup, Text, Grid, Heading } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/content-model-editor/tabs/appearance-tab");
 
@@ -71,34 +71,37 @@ const AppearanceTab = () => {
                         </Grid.Column>
                     )}
                     <Grid.Column span={12}>
-                        Choose a component that will render the field:
+                        <Heading level={5}>Field renderer</Heading>
+                        <Text size={"sm"}>Choose a component that will render the field.</Text>
                     </Grid.Column>
                     <Grid.Column span={12}>
-                        <RadioGroup
-                            {...rendererName}
-                            items={renderers.map(item => ({
-                                id: item.renderer.rendererName,
-                                value: item.renderer.rendererName,
-                                label: (
-                                    <div>
-                                        <Text as={"div"} size={"md"}>
-                                            {item.renderer.name}
-                                        </Text>
-                                        <Text
-                                            as={"div"}
-                                            size={"sm"}
-                                            className={"wby-text-sm wby-text-neutral-strong"}
-                                        >
-                                            {item.renderer.description}
-                                        </Text>
-                                    </div>
-                                )
-                            }))}
-                        />
+                        <div className={"wby-mb-xl"}>
+                            <RadioGroup
+                                {...rendererName}
+                                items={renderers.map(item => ({
+                                    id: item.renderer.rendererName,
+                                    value: item.renderer.rendererName,
+                                    label: (
+                                        <div>
+                                            <Text as={"div"} size={"md"}>
+                                                {item.renderer.name}
+                                            </Text>
+                                            <Text
+                                                as={"div"}
+                                                size={"sm"}
+                                                className={"wby-text-sm wby-text-neutral-strong"}
+                                            >
+                                                {item.renderer.description}
+                                            </Text>
+                                        </div>
+                                    )
+                                }))}
+                            />
+                        </div>
                     </Grid.Column>
+                    <RendererOptions plugin={selectedPlugin} />
                 </>
             </Grid>
-            <RendererOptions plugin={selectedPlugin} />
         </>
     );
 };

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { CmsModelField } from "~/types";
 import { BindComponentRenderProp } from "@webiny/form";
-import { Input as UiInput } from "@webiny/ui/Input";
+import { Input as UiInput, Icon } from "@webiny/admin-ui";
 
 export interface TrailingIcon {
     icon: React.ReactNode;
@@ -16,7 +16,22 @@ export interface InputProps {
     trailingIcon?: TrailingIcon;
 }
 
-export const Input = ({ bind, ...props }: InputProps) => {
+export const Input = ({ bind, trailingIcon, ...props }: InputProps) => {
+    const endIcon = React.useMemo(() => {
+        if (!trailingIcon) {
+            return undefined;
+        }
+
+        return (
+            <Icon
+                label={"Icon"}
+                icon={trailingIcon?.icon}
+                onClick={trailingIcon?.onClick}
+                className={"wby-cursor-pointer"}
+            />
+        );
+    }, [trailingIcon]);
+
     return (
         <UiInput
             {...props}
@@ -31,7 +46,7 @@ export const Input = ({ bind, ...props }: InputProps) => {
             placeholder={props.field.placeholderText}
             description={props.field.multipleValues ? undefined : props.field.helpText}
             type={props.type}
-            trailingIcon={props.trailingIcon}
+            endIcon={endIcon}
             data-testid={`fr.input.${props.field.label}`}
         />
     );

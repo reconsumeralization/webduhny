@@ -1,12 +1,10 @@
 import React from "react";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
-import { DrawerContent } from "@webiny/ui/Drawer";
 import { RevisionsList } from "~/admin/views/contentEntries/ContentEntry/RevisionsList/RevisionsList";
 import { cmsLegacyEntryEditor } from "~/utils/cmsLegacyEntryEditor";
 import { useFullScreenContentEntry } from "../useFullScreenContentEntry";
-import { Header } from "./Header";
-import { DrawerRight } from "@webiny/ui/Drawer";
+import { Drawer } from "@webiny/admin-ui";
 
 export const RevisionListDrawer = () => {
     const { isRevisionListOpen, openRevisionList } = useFullScreenContentEntry();
@@ -24,17 +22,16 @@ export const RevisionListDrawer = () => {
     });
 
     return (
-        <DrawerRight
+        <Drawer
+            title={"Entry revisions"}
             open={isRevisionListOpen}
-            onClose={() => openRevisionList(false)}
+            onOpenChange={open => openRevisionList(open)}
             modal
-            dismissible
-            className={"wby-w-[1000px] wby-max-w-[100vw]"}
+            bodyPadding={false}
+            headerSeparator={true}
+            width={1000}
         >
-            <DrawerContent>
-                <Header onClose={() => openRevisionList(false)} />
-                <RevisionsList />
-            </DrawerContent>
-        </DrawerRight>
+            <RevisionsList />
+        </Drawer>
     );
 };

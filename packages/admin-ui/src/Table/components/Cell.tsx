@@ -7,7 +7,8 @@ const Cell = ({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellEleme
             [
                 "wby-box-border wby-px-md wby-py-sm-extra wby-text-md wby-text-left wby-align-middle wby-text-neutral-primary",
                 "wby-overflow-hidden wby-whitespace-nowrap wby-truncate",
-                "[&:has([role=checkbox])]:wby-pl-lg"
+                "[&:has([role=checkbox])]:wby-pl-lg",
+                "wby-text-0 wby-leading-none"
             ],
             className
         )}

@@ -1,27 +1,10 @@
 import React from "react";
-import { css } from "@emotion/react";
-import classNames from "classnames";
-import { Typography } from "@webiny/ui/Typography";
-
-const style = {
-    label: css({
-        marginBottom: "5px !important"
-    })
-};
+import { FormComponentLabel } from "@webiny/admin-ui";
 
 interface LabelProps {
     children?: React.ReactNode;
 }
 
-export const Label = ({ children }: LabelProps) => (
-    <div
-        className={classNames(
-            "mdc-text-field-helper-text mdc-text-field-helper-text--persistent",
-            style.label
-        )}
-    >
-        <Typography use={"body2"}>{children}</Typography>
-    </div>
-);
+export const Label = ({ children }: LabelProps) => <FormComponentLabel text={children} />;
 
 export default Label;

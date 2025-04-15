@@ -5,11 +5,10 @@ import { i18n } from "@webiny/app/i18n";
 import {
     CannotUseAaclAlert,
     PermissionInfo,
-    gridNoPaddingClass
+    gridWithPaddingClass,
+    PermissionsGroup
 } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
-import { Elevation } from "@webiny/ui/Elevation";
-import { Typography } from "@webiny/ui/Typography";
 import { SecurityPermission } from "@webiny/app-security/types";
 import { useSecurity } from "@webiny/app-security";
 import { AaclPermission } from "@webiny/app-admin";
@@ -103,20 +102,20 @@ export const AdminUsersPermissions = ({ value, onChange }: AdminUsersPermissions
                 const disableUserAccessScope = data.groupAccessScope === NO_ACCESS;
                 return (
                     <Fragment>
-                        <Grid className={gridNoPaddingClass}>
+                        <Grid className={gridWithPaddingClass}>
                             <Cell span={12}>
                                 {data.accessLevel === "custom" && cannotUseAAcl && (
                                     <CannotUseAaclAlert />
                                 )}
                             </Cell>
                         </Grid>
-                        <Grid className={gridNoPaddingClass}>
+                        <Grid className={gridWithPaddingClass}>
                             <Cell span={6}>
                                 <PermissionInfo title={t`Access Level`} />
                             </Cell>
                             <Cell span={6}>
                                 <Bind name={"accessLevel"}>
-                                    <Select label={t`Access Level`}>
+                                    <Select>
                                         <option value={NO_ACCESS}>{t`No access`}</option>
                                         <option value={FULL_ACCESS}>{t`Full access`}</option>
                                         <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>
@@ -125,12 +124,9 @@ export const AdminUsersPermissions = ({ value, onChange }: AdminUsersPermissions
                             </Cell>
                         </Grid>
                         {data.accessLevel === CUSTOM_ACCESS && (
-                            <React.Fragment>
-                                <Elevation z={1} style={{ marginTop: 10 }}>
+                            <div className={"wby-mt-lg"}>
+                                <PermissionsGroup title={t`Users`}>
                                     <Grid>
-                                        <Cell span={12}>
-                                            <Typography use={"overline"}>{t`Users`}</Typography>
-                                        </Cell>
                                         <Cell span={12}>
                                             <Bind name={"userAccessScope"}>
                                                 {({ value, ...props }) => (
@@ -157,8 +153,8 @@ export const AdminUsersPermissions = ({ value, onChange }: AdminUsersPermissions
                                             </Bind>
                                         </Cell>
                                     </Grid>
-                                </Elevation>
-                            </React.Fragment>
+                                </PermissionsGroup>
+                            </div>
                         )}
                     </Fragment>
                 );

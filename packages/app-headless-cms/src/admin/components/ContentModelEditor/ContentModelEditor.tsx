@@ -47,7 +47,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
             <Prompt when={!isPristine} message={prompt} />
             <Header />
             {/*TODO: remove the height in favour of a TW variable for the height (h-main-section)*/}
-            <div className={"wby-w-full wby-h-[calc(100vh-65px)]"}>
+            <div className={"wby-w-full wby-overflow-y-scroll wby-h-[calc(100vh-45px)]"}>
                 <SplitView>
                     <LeftPanel span={4} className={"wby-bg-neutral-light"}>
                         <div className={"wby-px-lg wby-py-md"}>
@@ -63,7 +63,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                         <Separator />
                         <div
                             className={
-                                "wby-px-lg wby-py-md wby-h-[calc(100vh-120px)] wby-overflow-y-auto"
+                                "wby-px-lg wby-py-md wby-h-[calc(100vh-98px)] wby-overflow-y-auto"
                             }
                         >
                             <FieldsSidebar
@@ -97,7 +97,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                                     icon={<EditIcon />}
                                     data-testid={"cms.editor.tab.edit"}
                                     content={
-                                        <div className={"wby-relative"}>
+                                        <div className={"wby-relative wby-mb-lg"}>
                                             <FieldEditor
                                                 fields={data.fields}
                                                 layout={data.layout || []}

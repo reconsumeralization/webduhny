@@ -5,11 +5,10 @@ import { i18n } from "@webiny/app/i18n";
 import {
     CannotUseAaclAlert,
     PermissionInfo,
-    gridNoPaddingClass
+    gridWithPaddingClass,
+    PermissionsGroup
 } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
-import { Elevation } from "@webiny/ui/Elevation";
-import { Typography } from "@webiny/ui/Typography";
 import { SecurityPermission } from "@webiny/app-security/types";
 import { useSecurity } from "@webiny/app-security";
 import { AaclPermission, useWcp } from "@webiny/app-admin";
@@ -122,20 +121,20 @@ export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProp
             {({ data, Bind }) => {
                 return (
                     <Fragment>
-                        <Grid className={gridNoPaddingClass}>
+                        <Grid className={gridWithPaddingClass}>
                             <Cell span={12}>
                                 {data.accessLevel === "custom" && cannotUseAacl && (
                                     <CannotUseAaclAlert />
                                 )}
                             </Cell>
                         </Grid>
-                        <Grid className={gridNoPaddingClass}>
+                        <Grid className={gridWithPaddingClass}>
                             <Cell span={6}>
                                 <PermissionInfo title={t`Access Level`} />
                             </Cell>
                             <Cell span={6}>
                                 <Bind name={"accessLevel"}>
-                                    <Select label={t`Access Level`}>
+                                    <Select>
                                         <option value={NO_ACCESS}>{t`No access`}</option>
                                         <option value={FULL_ACCESS}>{t`Full access`}</option>
                                         <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>
@@ -144,12 +143,9 @@ export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProp
                             </Cell>
                         </Grid>
                         {data.accessLevel === CUSTOM_ACCESS && (
-                            <React.Fragment>
-                                <Elevation z={1} style={{ marginTop: 10 }}>
+                            <div className={"wby-mt-lg"}>
+                                <PermissionsGroup title={t`API Keys`}>
                                     <Grid>
-                                        <Cell span={12}>
-                                            <Typography use={"overline"}>{t`API Keys`}</Typography>
-                                        </Cell>
                                         <Cell span={12}>
                                             <Bind name={"apiKeyAccessScope"}>
                                                 <Select
@@ -166,12 +162,9 @@ export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProp
                                             </Bind>
                                         </Cell>
                                     </Grid>
-                                </Elevation>
-                                <Elevation z={1} style={{ marginTop: 10 }}>
+                                </PermissionsGroup>
+                                <PermissionsGroup title={t`Roles`}>
                                     <Grid>
-                                        <Cell span={12}>
-                                            <Typography use={"overline"}>{t`Roles`}</Typography>
-                                        </Cell>
                                         <Cell span={12}>
                                             <Bind name={"groupAccessScope"}>
                                                 <Select
@@ -188,13 +181,10 @@ export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProp
                                             </Bind>
                                         </Cell>
                                     </Grid>
-                                </Elevation>
+                                </PermissionsGroup>
                                 {teams && (
-                                    <Elevation z={1} style={{ marginTop: 10 }}>
+                                    <PermissionsGroup title={t`Teams`}>
                                         <Grid>
-                                            <Cell span={12}>
-                                                <Typography use={"overline"}>{t`Teams`}</Typography>
-                                            </Cell>
                                             <Cell span={12}>
                                                 <Bind name={"teamAccessScope"}>
                                                     <Select
@@ -211,9 +201,9 @@ export const SecurityPermissions = ({ value, onChange }: SecurityPermissionsProp
                                                 </Bind>
                                             </Cell>
                                         </Grid>
-                                    </Elevation>
+                                    </PermissionsGroup>
                                 )}
-                            </React.Fragment>
+                            </div>
                         )}
                     </Fragment>
                 );

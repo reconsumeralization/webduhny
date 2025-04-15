@@ -168,7 +168,7 @@ const UsersDataList = () => {
             }
         >
             {({ data }: { data: UserItem[] }) => (
-                <ScrollList twoLine avatarList data-testid="default-data-list">
+                <ScrollList data-testid="default-data-list">
                     {data.map(item => (
                         <ListItem
                             key={item.id}

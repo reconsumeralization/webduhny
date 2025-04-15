@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { ReactComponent as Sort } from "@webiny/icons/sort.svg";
 import { PopoverPrimitive } from "~/Popover";
 import { withStaticProps } from "~/utils";
-import { SortIcon } from "~/DataList/index";
 import { Tooltip } from "~/Tooltip";
+import { IconButton } from "~/Button";
 
 interface DataListModalContentProps {
     children: React.ReactNode;
@@ -14,10 +15,11 @@ const DataListModalContent = ({ children }: DataListModalContentProps) => {
 
 interface DataListModalTriggerProps {
     "data-testid"?: string;
+    icon?: React.ReactElement;
 }
 
-const DataListModalTrigger = (props: DataListModalTriggerProps) => {
-    return <SortIcon {...props} size={"sm"} />;
+const DataListModalTrigger = ({ icon = <Sort />, ...props }: DataListModalTriggerProps) => {
+    return <IconButton icon={icon} variant={"ghost"} {...props} size={"sm"} />;
 };
 
 interface DataListModalProps {
@@ -35,7 +37,11 @@ const BaseDataListModal = (props: DataListModalProps) => {
     return (
         <PopoverPrimitive open={open} onOpenChange={open => setOpen(open)}>
             <Tooltip
-                trigger={<PopoverPrimitive.Trigger>{props.trigger}</PopoverPrimitive.Trigger>}
+                trigger={
+                    <PopoverPrimitive.Trigger asChild>
+                        <span>{props.trigger}</span>
+                    </PopoverPrimitive.Trigger>
+                }
                 content={"Sort list"}
             />
             <PopoverPrimitive.Content onOpenAutoFocus={e => e.preventDefault()} align={"end"}>

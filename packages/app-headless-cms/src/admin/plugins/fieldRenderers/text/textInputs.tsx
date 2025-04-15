@@ -1,12 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import { i18n } from "@webiny/app/i18n";
-import { Input } from "@webiny/ui/Input";
-import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { CmsModelFieldRendererPlugin } from "~/types";
-import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import DynamicSection from "../DynamicSection";
 import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
+import { DelayedOnChange, Icon, Input } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -39,10 +38,14 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 label={t`Value {number}`({ number: index + 1 })}
                                 placeholder={props.field.placeholderText}
                                 data-testid={`fr.input.texts.${props.field.label}.${index + 1}`}
-                                trailingIcon={{
-                                    icon: <DeleteIcon />,
-                                    onClick: () => bind.field.removeValue(index)
-                                }}
+                                endIcon={
+                                    <Icon
+                                        icon={<DeleteIcon />}
+                                        label={"Delete"}
+                                        onClick={() => bind.field.removeValue(index)}
+                                        className={"wby-cursor-pointer"}
+                                    />
+                                }
                             />
                         </DelayedOnChange>
                     )}

@@ -3,241 +3,105 @@ import type { FormValidation } from "@webiny/form";
 import { makeDecoratable } from "@webiny/react-composition";
 import { Global, css } from "@emotion/react";
 
-// To customize the color and icon, define a CSS variable within the validation class:
+// To customize the icon, define a CSS variable within the validation class:
 // .wby-content-entry-invalid-field {
-//     --error-color: blue;
 //     --error-icon: "🤔"
 // }
+// To customize the border color, use the Admin UI Colors APIs to override the default `destructive` color palette.
 
-const errorColor = `var(--error-color, #fa5723)`;
+const errorColor = `hsl(var(--border-destructive-default))`;
 const errorIcon = `var(--error-icon, "⚠️")`;
 
 const errorTitleMixin = `
-    content: ${errorIcon};
-    margin-right: 5px;
+    content: ${errorIcon}!important;
+    margin-right: var(--spacing-xs-plus)!important;
+`;
+
+const noErrorTitleMixin = `
+    content: "";
+    margin: 0;
 `;
 
 const errorBorderMixin = `
-    border-left: 5px solid ${errorColor};
-    padding-left: 10px;
-    border-top-left-radius: 5px; 
-    border-bottom-left-radius: 5px;
+    border: 1px solid ${errorColor};
 `;
 
 const defaultClass = css`
-    // default behavior for error fields
     .wby-content-entry-invalid-field {
-        ${errorBorderMixin}
-    }
+        // Default fields
+        .webiny_label-invalid {
+            left: var(--spacing-sm-extra);
 
-    // reset the default behavior for fields that we want to manually control
-    .wby-content-entry-invalid-field[data-field-type="text"],
-    .wby-content-entry-invalid-field[data-field-type="number"],
-    .wby-content-entry-invalid-field[data-field-type="datetime"],
-    .wby-content-entry-invalid-field[data-field-type="long-text"],
-    .wby-content-entry-invalid-field[data-field-type="dynamicZone"],
-    .wby-content-entry-invalid-field[data-field-type="object"],
-    .wby-content-entry-invalid-field[data-field-type="ref"],
-    .wby-content-entry-invalid-field[data-field-type="file"] {
-        border: none;
-        padding-left: 0;
-        border-radius: 0;
-    }
-
-    // short text error
-    // long text error
-    // number error
-    // checkbox error
-    // select error
-    // date time error
-    .wby-content-entry-invalid-field[data-field-type="text"],
-    .wby-content-entry-invalid-field[data-field-type="ref"][data-field-renderer="ref-input"],
-    .wby-content-entry-invalid-field[data-field-type="number"],
-    .wby-content-entry-invalid-field[data-field-type="datetime"],
-    .wby-content-entry-invalid-field[data-field-type="long-text"] {
-        // input renderer
-        &[data-field-multiple-values="false"]:not([data-field-renderer="radio-buttons"])
-            label:first-of-type,
-        &[data-field-multiple-values="true"] > hcms-parent-field-provider,
-        > label {
-            ${errorBorderMixin}
-            .mdc-floating-label {
-                left: 12px;
-            }
-
-            .mdc-floating-label::before {
+            .webiny_label-text::before {
                 ${errorTitleMixin}
             }
         }
 
-        &[data-field-multiple-values="true"] > hcms-parent-field-provider {
-            display: block;
+        // accordion
+        .webiny_accordion-item-title::before {
+            ${errorTitleMixin}
+        }
+        .webiny_accordion-title-text::before {
+            ${errorTitleMixin}
         }
 
         // multiple entries
-        > hcms-parent-field-provider h5::before {
+        > hcms-parent-field-provider .webiny_group-label-text::before {
             ${errorTitleMixin}
         }
 
         // radio buttons
         &[data-field-renderer="radio-buttons"] {
-            > div:first-of-type::before {
-                ${errorTitleMixin}
-                padding-right: 10px;
-            }
-            ${errorBorderMixin}
-        }
-
-        // select box
-        &[data-field-renderer="select-box"] {
-            .mdc-floating-label::before {
-                ${errorTitleMixin}
-            }
-
-            .webiny-ui-select {
-                ${errorBorderMixin}
-                padding-left: 0;
-                box-sizing: border-box;
+            [role="radiogroup"] .webiny_label-text::before {
+                ${noErrorTitleMixin}
             }
         }
 
         // checkboxes
         &[data-field-renderer="checkboxes"] {
-            > div:first-of-type::before {
-                ${errorTitleMixin}
-                padding-right: 10px;
+            [role="checkbox"] + label .webiny_label-text::before {
+                ${noErrorTitleMixin}
             }
-            ${errorBorderMixin}
         }
     }
 
     // reference field
-    .wby-content-entry-invalid-field[data-field-type="ref"][data-field-multiple-values="false"] {
-        h3::before,
-        h5::before {
+    .wby-content-entry-invalid-field[data-field-type="ref"] {
+        .webiny_group-label-text::before {
             ${errorTitleMixin}
         }
 
-        &:not([data-field-renderer="ref-input"]) {
+        .webiny_ref-field-container {
             ${errorBorderMixin}
         }
 
-        .wby-content-entry-invalid-field[data-field-type="dynamicZone"] {
-            padding-left: 0px;
-        }
-    }
+        &[data-field-renderer="ref-simple-single"] {
+            [role="radiogroup"] .webiny_label-text::before {
+                ${noErrorTitleMixin}
+            }
 
-    // dynamic zone
-    .wby-content-entry-invalid-field[data-field-type="dynamicZone"] {
-        ul > div > li::before {
-            ${errorTitleMixin}
-        }
-
-        ${errorBorderMixin}
-
-        .wby-content-entry-invalid-field[data-field-type="dynamicZone"] {
-            padding-left: 0px;
-        }
-
-        hcms-parent-field-provider .wby-content-entry-invalid-field {
-            li > .webiny-ui-accordion-item__title {
-                font-weight: bold;
-                color: ${errorColor};
+            [role="checkbox"] + label .webiny_label-text::before {
+                ${noErrorTitleMixin}
             }
         }
     }
 
-    // object field
+    // Object field
     .wby-content-entry-invalid-field[data-field-type="object"] {
         &[data-field-renderer="object"],
         &[data-field-renderer="objects"] {
-            h5::before,
-            ul > div > li::before {
+            .webiny_group-label-text::before {
                 ${errorTitleMixin}
             }
 
-            hcms-parent-field-provider {
-                ${errorBorderMixin}
+            label {
+                left: 0;
 
-                // object field (multiple values)
-                .wby-content-entry-invalid-field {
-                    border: none;
-                    padding-left: 0;
-                    .accordion-title > span {
-                        font-weight: bold;
-                        color: ${errorColor};
-                        ::before {
-                            ${errorTitleMixin}
-                        }
-                    }
+                .webiny_label-text::before {
+                    ${noErrorTitleMixin}
                 }
             }
         }
-
-        &[data-field-renderer="object-accordion"],
-        &[data-field-renderer="objects-accordion"] {
-            ul > div > li::before {
-                ${errorTitleMixin}
-                display: contents;
-            }
-
-            ${errorBorderMixin}
-
-            &[data-field-multiple-values="false"] {
-                padding-left: 0px;
-            }
-
-            &[data-field-multiple-values="true"] {
-                .wby-content-entry-invalid-field {
-                    border: none;
-                    padding-left: 0;
-                    // object field (multiple values)
-                    .accordion-title > span {
-                        font-weight: bold;
-                        color: ${errorColor};
-                        ::before {
-                            ${errorTitleMixin}
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // file error
-    .wby-content-entry-invalid-field[data-field-type="file"] {
-        &[data-field-multiple-values="false"] > div > div:first-of-type {
-            > span::before {
-                ${errorTitleMixin}
-            }
-
-            ${errorBorderMixin}
-        }
-
-        &[data-field-multiple-values="true"] {
-            > div > div > p::before {
-                ${errorTitleMixin}
-            }
-
-            ${errorBorderMixin}
-        }
-    }
-
-    .wby-content-entry-invalid-field > .webiny-ui-accordion {
-        margin-left: -10px;
-    }
-
-    .webiny-ui-accordion:has(.wby-content-entry-invalid-field) {
-        border-radius: 5px;
-    }
-
-    .wby-content-entry-invalid-field .webiny-ui-accordion-item {
-        border-radius: 5px;
-    }
-
-    // We don't want to add padding, if we're a direct child of an "ul".
-    ul > .wby-content-entry-invalid-field {
-        padding-left: 0px;
     }
 `;
 

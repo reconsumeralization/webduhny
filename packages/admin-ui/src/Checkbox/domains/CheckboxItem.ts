@@ -31,7 +31,7 @@ export class CheckboxItem {
             label: data.label,
             value: data.value,
             checked: Boolean(data.checked),
-            indeterminate: data.indeterminate ?? false,
+            indeterminate: (data.indeterminate && !data.checked) ?? false,
             disabled: data.disabled ?? false
         });
     }

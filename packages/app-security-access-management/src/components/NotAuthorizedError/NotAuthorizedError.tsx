@@ -1,53 +1,29 @@
 import * as React from "react";
-import { Link } from "@webiny/react-router";
-import { css } from "emotion";
-import styled from "@emotion/styled";
 import Helmet from "react-helmet";
 import authErrorImg from "./SecureRouteError.svg";
-import { Typography } from "@webiny/ui/Typography";
-
-const ContentWrapper = styled("div")({
-    display: "block",
-    paddingTop: "15%",
-    textAlign: "center",
-    margin: "auto"
-});
-
-const styles = {
-    authErrorImgStyle: css({
-        width: "192px",
-        paddingBottom: "24px"
-    }),
-    bodyStyle: css({
-        color: "var(--mdc-theme-text-primary-on-background)",
-        display: "block"
-    }),
-    linkStyle: css({
-        textDecoration: "none",
-        "&:hover": {
-            textDecoration: "none"
-        }
-    })
-};
+import { Link, Text } from "@webiny/admin-ui";
 
 export const NotAuthorizedError = () => {
     return (
-        <ContentWrapper>
-            <Helmet title={"Not authorized"} />
+        <div className={"wby-flex-1"}>
+            <div
+                className={
+                    "wby-h-full wby-flex wby-flex-col wby-items-center wby-justify-center wby-text-center wby-gap-xs"
+                }
+            >
+                <Helmet title={"Not authorized"} />
 
-            <img className={styles.authErrorImgStyle} src={authErrorImg} alt="Not Authorized" />
-
-            <Typography use={"body1"} className={styles.bodyStyle}>
-                You are not authorized to view this route.
-            </Typography>
-
-            <Typography use={"body1"} className={styles.bodyStyle}>
-                Please contact your administrator to request access.
-            </Typography>
-
-            <Link to="/" className={styles.linkStyle}>
-                Take me back.
-            </Link>
-        </ContentWrapper>
+                <img
+                    width={200}
+                    height={200}
+                    src={authErrorImg}
+                    alt="Not Authorized"
+                    className={"wby-mb-xl"}
+                />
+                <Text>You are not authorized to view this route.</Text>
+                <Text>Please contact your administrator to request access.</Text>
+                <Link to="/">Take me back.</Link>
+            </div>
+        </div>
     );
 };

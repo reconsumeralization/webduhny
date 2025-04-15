@@ -27,6 +27,7 @@ const meta: Meta<typeof IconButton> = {
             defaultValue: "default"
         },
         disabled: {
+            description: "State",
             control: "boolean",
             defaultValue: false
         },

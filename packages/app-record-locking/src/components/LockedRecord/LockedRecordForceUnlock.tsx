@@ -1,25 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "@emotion/styled";
+import { Alert, Button, Text } from "@webiny/admin-ui";
 import { IRecordLockingError, IRecordLockingIdentity } from "~/types";
 import { useConfirmationDialog, useSnackbar } from "@webiny/app-admin";
 import { useRecordLocking, usePermission } from "~/hooks";
 import { useRouter } from "@webiny/react-router";
 import { useContentEntriesList } from "@webiny/app-headless-cms";
-import { Alert } from "@webiny/ui/Alert";
-import { ButtonPrimary } from "@webiny/ui/Button";
-
-const Wrapper = styled("div")({
-    padding: "0",
-    backgroundColor: "white"
-});
-
-const Text = styled("p")({
-    lineHeight: "125%"
-});
-
-const Bold = styled("span")({
-    fontWeight: 600
-});
 
 export interface ILockedRecordForceUnlockProps {
     id: string;
@@ -32,16 +17,16 @@ const ErrorMessage = (props: ILockedRecordForceUnlockProps) => {
     const { title, lockedBy } = props;
     return (
         <div>
-            <Alert type="warning" title="Warning">
-                <Bold>{lockedBy?.displayName || "Unknown user"}</Bold> is currently editing this
+            <Alert type="warning" title="Warning" className={"wby-mb-md"}>
+                <strong>{lockedBy?.displayName || "Unknown user"}</strong> is currently editing this
                 record.
                 <br /> If you force unlock it, they could potentially lose their changes.
             </Alert>
-            <br />
-            <p>
-                You are about to forcefully unlock the <Bold>{title}</Bold> entry.
-            </p>
-            <p>Are you sure you want to continue?</p>
+
+            <Text>
+                You are about to forcefully unlock the <strong>{title}</strong> entry. Are you sure
+                you want to continue?
+            </Text>
         </div>
     );
 };
@@ -88,12 +73,11 @@ export const LockedRecordForceUnlock = (props: ILockedRecordForceUnlockProps) =>
     }
 
     return (
-        <Wrapper>
-            <Text>
+        <div className="wby-mt-md">
+            <Text as={"div"} className={"wby-mb-md"}>
                 Because you have a full access to the system, you can force unlock the record.
             </Text>
-            <br />
-            <ButtonPrimary onClick={onClick}>Unlock and go back</ButtonPrimary>
-        </Wrapper>
+            <Button onClick={onClick} text={"Unlock and go back"} />
+        </div>
     );
 };
