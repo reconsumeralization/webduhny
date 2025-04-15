@@ -1,11 +1,11 @@
 import React from "react";
-import { Main } from "./pageElements/main/website";
+import { ContainerWebsitePlugins } from "./pageElements/container/website/ContainerWebsitePlugins";
 import { InputWebsite } from "./pageElements/formElements/input/website";
 import { ButtonWebsite } from "./pageElements/formElements/button/website";
 
 export const Extension = () => (
     <>
-        <Main />
+        <ContainerWebsitePlugins />
 
         {/* Form Elements */}
         <InputWebsite />

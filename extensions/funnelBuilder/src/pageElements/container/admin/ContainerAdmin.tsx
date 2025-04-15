@@ -7,8 +7,6 @@ import styled from "@emotion/styled";
 import { Form } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 
-const Wrapper = styled.div``;
-
 const ElementsSection = styled.div<{ activePage: number }>`
     & > webiny-form-container > pb-grid {
         display: none;
@@ -23,7 +21,7 @@ const ElementsSection = styled.div<{ activePage: number }>`
     `}
 `;
 
-export const FunnelBuilderAdmin = createRenderer(() => {
+export const ContainerAdmin = createRenderer(() => {
     const { getElement } = useRenderer();
     const element = getElement();
     const [activePageIndex, setActivePageIndex] = useState(0);
@@ -35,10 +33,9 @@ export const FunnelBuilderAdmin = createRenderer(() => {
     ) as Element;
 
     return (
-        <Wrapper>
+        <div>
             <Tabs onActivate={index => setActivePageIndex(index)}>
                 {elementWithChildren.elements.map(element => {
-                    console.log("opaaa", element);
                     if (element.data) {
                         return <Tab label={element.data.fub.page.title} />;
                     }
@@ -55,6 +52,6 @@ export const FunnelBuilderAdmin = createRenderer(() => {
                     {() => <Elements element={elementWithChildren} />}
                 </Form>
             </ElementsSection>
-        </Wrapper>
+        </div>
     );
 });

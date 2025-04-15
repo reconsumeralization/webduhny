@@ -1,5 +1,5 @@
 import React from "react";
-import { Main } from "./pageElements/main/admin";
+import { ContainerAdminPlugins } from "./pageElements/container/admin/ContainerAdminPlugins";
 
 // Form elements.
 import { InputAdmin } from "./pageElements/formElements/input/admin";
@@ -11,7 +11,7 @@ import { FubPageElementGroup } from "./pageElements/FubPageElementGroup";
 export const Extension = () => (
     <>
         {/* Funnel Builder Page Element */}
-        <Main />
+        <ContainerAdminPlugins />
 
         {/* Form Elements */}
         <InputAdmin />

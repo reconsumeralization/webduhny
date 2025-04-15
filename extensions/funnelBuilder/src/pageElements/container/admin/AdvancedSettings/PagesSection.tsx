@@ -31,8 +31,8 @@ import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/a
 // ----------------------------------------------------------------------------
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
-import { createPageElement } from "../../../shared/createPageElement";
-import { FunnelBuilderMainElement } from "../types";
+import { createPageElement } from "../../../../shared/createPageElement";
+import { FunnelBuilderMainElement } from "../../types";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;

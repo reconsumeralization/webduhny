@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { FunnelBuilderPageElement } from "../../types";
+import { FunnelBuilderPageElement } from "../../../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
 import { Input } from "@webiny/ui/Input";
 import { Form, Bind } from "@webiny/form";
-import { useDisclosure } from "../../../../admin/useDisclosure";
+import { useDisclosure } from "../../../../../admin/useDisclosure";
 import { validation } from "@webiny/validation";
 
 // Icons.

@@ -4,18 +4,18 @@ import {
     PbEditorPageElementPlugin,
     PbRenderElementPlugin
 } from "@webiny/app-page-builder";
-import { FunnelBuilderAdmin } from "./FunnelBuilderAdmin";
+import { ContainerAdmin } from "./ContainerAdmin";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { AdvancedSettings } from "./AdvancedSettings";
-import { ELEMENT_TYPE } from "./constants";
-import { createFunnelBuilderElement } from "../../shared/createFunnelBuilderElement";
+import { ELEMENT_TYPE } from "../constants";
+import { createFunnelBuilderElement } from "../../../shared/createFunnelBuilderElement";
 
-export const Main = () => (
+export const ContainerAdminPlugins = () => (
     <>
-        <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={FunnelBuilderAdmin} />
+        <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={ContainerAdmin} />
         <PbEditorPageElementPlugin
             elementType={ELEMENT_TYPE}
-            renderer={FunnelBuilderAdmin}
+            renderer={ContainerAdmin}
             toolbar={{
                 // We use `pb-editor-element-group-media` to put our new
                 // page element into the Media group in the left sidebar.

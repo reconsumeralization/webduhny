@@ -1,4 +1,4 @@
-MH
+## MH
 - deleting pages
 - all pages rendered all the time or just single step? 
 - cond rules
@@ -7,8 +7,10 @@ MH
 - clean up imports (import from root not from nested dirs)
 - prevent parent block deletion
 - prevent grid/cell deletion :|
-- add FB block
-SH
+- advanced settings - apply changes as the user types (not on submit)
 
-CH/NTH
+## SH
+- add FB block
+
+## CH/NTH
 - add '~' imports

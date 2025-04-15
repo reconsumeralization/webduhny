@@ -2,7 +2,7 @@ import React from "react";
 import { createRenderer, useRenderer, Elements } from "@webiny/app-page-builder-elements";
 import { Form } from "@webiny/form";
 
-export const FunnelBuilderWebsite = createRenderer(() => {
+export const ContainerWebsite = createRenderer(() => {
     const { getElement } = useRenderer();
     const element = getElement();
 
