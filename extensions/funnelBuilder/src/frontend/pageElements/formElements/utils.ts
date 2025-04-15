@@ -1,4 +1,4 @@
-import { getRandomId } from "../../shared/getRandomId";
+import { getRandomId } from "../../../shared/getRandomId";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 

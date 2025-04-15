@@ -4,6 +4,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { App } from "./App";
 import "./plugins";
+import "@f/admin";
 
 import { renderApp } from "@webiny/app-admin";
 

@@ -4,11 +4,11 @@ import {
     PbEditorPageElementPlugin,
     PbRenderElementPlugin
 } from "@webiny/app-page-builder";
-import { ContainerAdmin } from "./ContainerAdmin";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
+import { ContainerAdmin } from "./ContainerAdmin";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "../constants";
-import { createFunnelBuilderElement } from "../../../shared/createFunnelBuilderElement";
+import { createFunnelBuilderElement } from "@f/shared/createFunnelBuilderElement";
 
 export const ContainerAdminPlugins = () => (
     <>

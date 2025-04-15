@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
 import { Input } from "@webiny/ui/Input";
 import { Form, Bind } from "@webiny/form";
-import { useDisclosure } from "../../../../../admin/useDisclosure";
+import { useDisclosure } from "@f/frontend/admin/useDisclosure";
 import { validation } from "@webiny/validation";
 
 // Icons.

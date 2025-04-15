@@ -1,12 +1,12 @@
 import React from "react";
-import { ContainerAdminPlugins } from "./pageElements/container/admin/ContainerAdminPlugins";
+import { ContainerAdminPlugins } from "./frontend/pageElements/container/admin/ContainerAdminPlugins";
 
 // Form elements.
-import { InputAdmin } from "./pageElements/formElements/input/admin";
-import { ButtonAdmin } from "./pageElements/formElements/button/admin";
+import { InputAdmin } from "./frontend/pageElements/formElements/input/admin";
+import { ButtonAdmin } from "./frontend/pageElements/formElements/button/admin";
 
 // Other.
-import { FubPageElementGroup } from "./pageElements/FubPageElementGroup";
+import { FubPageElementGroup } from "./frontend/pageElements/FubPageElementGroup";
 
 export const Extension = () => (
     <>

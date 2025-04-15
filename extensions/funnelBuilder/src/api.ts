@@ -1,5 +1,5 @@
 import { createContextPlugin } from "@webiny/api-serverless-cms";
-import { createInitialPageContent } from "./api/createInitialPageContent";
+import { createInitialPageContent } from "./backend/api/createInitialPageContent";
 
 export const createExtension = () => {
     return [
