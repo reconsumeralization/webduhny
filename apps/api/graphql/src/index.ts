@@ -107,7 +107,10 @@ export const handler = createHandler({
         createApwPageBuilderContext({
             storageOperations: createApwSaStorageOperations({ documentClient })
         }),
-        createAco(),
+        // TODO: add documentClient inside CWP
+        createAco({
+            documentClient
+        }),
         createAcoPageBuilderContext(),
         createAcoHcmsContext(),
         createHcmsTasks(),

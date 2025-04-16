@@ -3,7 +3,8 @@ import { CmsEntry } from "@webiny/api-headless-cms/types";
 export const baseFields = [
     // Entry ID is mapped to "id" (we don't use revisions with ACO entities).
     "id",
-
+    "tenant",
+    "locale",
     "createdOn",
     "modifiedOn",
     "savedOn",

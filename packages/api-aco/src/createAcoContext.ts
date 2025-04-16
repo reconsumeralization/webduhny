@@ -3,6 +3,7 @@ import { ContextPlugin } from "@webiny/api";
 import { I18NLocale } from "@webiny/api-i18n/types";
 import { Tenant } from "@webiny/api-tenancy/types";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
+import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { createAcoHooks } from "~/createAcoHooks";
 import { createAcoStorageOperations } from "~/createAcoStorageOperations";
 import {
@@ -26,6 +27,7 @@ import { createFilterCrudMethods } from "~/filter/filter.crud";
 
 interface CreateAcoContextParams {
     useFolderLevelPermissions?: boolean;
+    documentClient: DynamoDBDocument;
 }
 
 const setupAcoContext = async (
@@ -59,6 +61,7 @@ const setupAcoContext = async (
          * TODO: This is required for "entryFieldFromStorageTransform" which access plugins from context.
          */
         getCmsContext: () => context,
+        documentClient: setupAcoContextParams.documentClient,
         security
     });
 
@@ -92,7 +95,8 @@ const setupAcoContext = async (
                 modelName: FOLDER_MODEL_ID,
                 cms: context.cms,
                 getCmsContext: () => context,
-                security
+                security,
+                documentClient: setupAcoContextParams.documentClient
             });
 
             return withModel(async model => {
@@ -215,7 +219,7 @@ const setupAcoContext = async (
     }
 };
 
-export const createAcoContext = (params: CreateAcoContextParams = {}) => {
+export const createAcoContext = (params: CreateAcoContextParams) => {
     const plugin = new ContextPlugin<AcoContext>(async context => {
         /**
          * We can skip the ACO initialization if the installation is pending.

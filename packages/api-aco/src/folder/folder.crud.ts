@@ -61,7 +61,7 @@ export const createFolderCrudMethods = ({
         onFolderAfterDelete,
 
         async get(id) {
-            const folder = await storageOperations.getFolder({ id });
+            const folder = await storageOperations.folder.getFolder({ id });
 
             await folderLevelPermissions.ensureCanAccessFolder({
                 folder,
@@ -120,7 +120,9 @@ export const createFolderCrudMethods = ({
         async create(data) {
             let canCreateFolder = false;
             if (data.parentId) {
-                const parentFolder = await storageOperations.getFolder({ id: data.parentId });
+                const parentFolder = await storageOperations.folder.getFolder({
+                    id: data.parentId
+                });
                 canCreateFolder = await folderLevelPermissions.canAccessFolder({
                     folder: parentFolder,
                     rwd: "w"
@@ -134,7 +136,17 @@ export const createFolderCrudMethods = ({
             }
 
             await onFolderBeforeCreate.publish({ input: data });
-            const folder = await storageOperations.createFolder({ data });
+            const folder = await storageOperations.folder.createFolder({ data });
+            const level = await storageOperations.flp.create({
+                data: {
+                    ...folder,
+                    path: `root/${folder.slug}`,
+                    parentId: folder.parentId ?? "root",
+                    permissions: []
+                }
+            });
+
+            console.log("level", level);
 
             // We need to add the newly created folder to FLP's internal cache. Note that we're also
             // invalidating the permissions list cache for the folder type. We cannot rely on the cache
@@ -151,7 +163,7 @@ export const createFolderCrudMethods = ({
         },
 
         async update(id, data) {
-            const original = await storageOperations.getFolder({ id });
+            const original = await storageOperations.folder.getFolder({ id });
 
             const canUpdateFolder = await folderLevelPermissions.canAccessFolder({
                 folder: original,
@@ -225,7 +237,7 @@ export const createFolderCrudMethods = ({
 
             await onFolderBeforeUpdate.publish({ original, input: { id, data } });
 
-            const folder = await storageOperations.updateFolder({ id, data });
+            const folder = await storageOperations.folder.updateFolder({ id, data });
             await folderLevelPermissions.assignFolderPermissions(folder);
 
             await onFolderAfterUpdate.publish({ original, input: { id, data }, folder });
@@ -234,7 +246,7 @@ export const createFolderCrudMethods = ({
         },
 
         async delete(id: string) {
-            const folder = await storageOperations.getFolder({ id });
+            const folder = await storageOperations.folder.getFolder({ id });
 
             await folderLevelPermissions.ensureCanAccessFolder({
                 folder,
@@ -242,7 +254,7 @@ export const createFolderCrudMethods = ({
             });
 
             await onFolderBeforeDelete.publish({ folder });
-            await storageOperations.deleteFolder({ id });
+            await storageOperations.folder.deleteFolder({ id });
             await onFolderAfterDelete.publish({ folder });
             return true;
         },
