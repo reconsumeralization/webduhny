@@ -1,1 +1,1 @@
-export const ELEMENT_TYPE = "funnel-builder-main";
+export const ELEMENT_TYPE = "funnel-builder-container";

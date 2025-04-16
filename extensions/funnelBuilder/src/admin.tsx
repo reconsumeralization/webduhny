@@ -1,9 +1,6 @@
 import React from "react";
 import { ContainerAdminPlugins } from "./frontend/pageElements/container/admin/ContainerAdminPlugins";
-
-// Form elements.
-import { InputAdmin } from "./frontend/pageElements/formElements/input/admin";
-import { ButtonAdmin } from "./frontend/pageElements/formElements/button/admin";
+import { InputAdminPlugins } from "./frontend/pageElements/fields/input/InputAdminPlugins";
 
 // Other.
 import { FubPageElementGroup } from "./frontend/pageElements/FubPageElementGroup";
@@ -13,9 +10,8 @@ export const Extension = () => (
         {/* Funnel Builder Page Element */}
         <ContainerAdminPlugins />
 
-        {/* Form Elements */}
-        <InputAdmin />
-        <ButtonAdmin />
+        {/* Fields. */}
+        <InputAdminPlugins />
 
         {/* Other */}
         <FubPageElementGroup />

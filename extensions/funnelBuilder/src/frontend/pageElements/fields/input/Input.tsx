@@ -6,7 +6,7 @@ import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
-import { FormElementElementData } from "../types";
+import { InputFieldData } from "./types";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -25,16 +25,12 @@ export const StyledInput = styled.input`
     }
 `;
 
-export type InputElementData = FormElementElementData<{
-    placeholderText: string;
-    type: string;
-}>;
-
 export const Input = createRenderer(() => {
     const { getElement } = useRenderer();
-    const element = getElement<InputElementData>();
+    const element = getElement<InputFieldData>();
 
     const { field } = element.data;
+
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
         validators: field.validators
@@ -58,7 +54,7 @@ export const Input = createRenderer(() => {
                 onChange={e => onChange(e.target.value)}
                 value={value || ""}
                 placeholder={field.extra.placeholderText}
-                type={field.extra.type}
+                type={field.extra.inputType}
                 name={field.fieldId}
                 id={field.fieldId}
             />

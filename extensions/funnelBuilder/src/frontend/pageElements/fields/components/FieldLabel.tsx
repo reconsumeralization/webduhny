@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "@emotion/styled";
-import { FormElementElementData } from "../types";
+import { FieldElementData } from "../types";
 
 export const FieldLabelStyled = styled.label`
     width: 100%;
@@ -17,7 +17,7 @@ export const FieldLabelStyled = styled.label`
     }
 `;
 
-export const FieldLabel = ({ field }: FormElementElementData) => {
+export const FieldLabel = ({ field }: FieldElementData) => {
     return (
         <FieldLabelStyled>
             {field.label}

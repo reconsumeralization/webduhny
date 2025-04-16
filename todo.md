@@ -8,9 +8,13 @@
 - prevent parent block deletion
 - prevent grid/cell deletion :|
 - advanced settings - apply changes as the user types (not on submit)
+- moving elements? should we block that for now? maybe sh?
+- block multiple funnels on page
+-  
 
 ## SH
 - add FB block
-
+- have multiple funnels on page
+ 
 ## CH/NTH
 - add '~' imports

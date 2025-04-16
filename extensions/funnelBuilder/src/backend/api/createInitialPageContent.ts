@@ -1,5 +1,5 @@
-import { createFunnelBuilderElement } from "../shared/createFunnelBuilderElement";
-import { getRandomId } from "../shared/getRandomId";
+import { getRandomId } from "../../shared/getRandomId";
+import { createFunnelBuilderElement } from "../../shared/createFunnelBuilderElement";
 
 export const createInitialPageContent = () => {
     return {

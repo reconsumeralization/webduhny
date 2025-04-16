@@ -17,6 +17,14 @@ export interface PbEditorPageElementPluginProps
         | "onReceived"
         | "onChildDeleted"
         | "onCreate"
+        | "onElementBeforeCreate"
+        | "onElementAfterCreate"
+        | "onElementBeforeUpdate"
+        | "onElementAfterUpdate"
+        // | "onElementBeforeMove"
+        // | "onElementAfterMove"
+        | "onElementBeforeDelete"
+        | "onElementAfterDelete"
         | "renderElementPreview"
     > {
     renderer: Renderer;

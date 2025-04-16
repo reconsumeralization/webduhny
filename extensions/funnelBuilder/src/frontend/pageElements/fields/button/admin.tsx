@@ -8,12 +8,10 @@ import { Button } from "./Button";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
-import { FormElementElementData } from "../types";
-import { createInitialElementData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
+import { FieldElementData } from "../types";
+import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
 
-const INITIAL_ELEMENT_DATA: FormElementElementData = createInitialElementData({
-    action: "submit"
-});
+const INITIAL_ELEMENT_DATA: FieldElementData = createInitialFieldData();
 
 export const ButtonAdmin = () => (
     <>

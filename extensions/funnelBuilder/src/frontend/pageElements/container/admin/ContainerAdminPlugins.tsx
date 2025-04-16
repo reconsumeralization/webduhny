@@ -8,7 +8,7 @@ import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { ContainerAdmin } from "./ContainerAdmin";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "../constants";
-import { createFunnelBuilderElement } from "@f/shared/createFunnelBuilderElement";
+import { createFunnelBuilderElement } from "../../../../shared/createFunnelBuilderElement";
 
 export const ContainerAdminPlugins = () => (
     <>
@@ -40,9 +40,9 @@ export const ContainerAdminPlugins = () => (
             // In most cases, using `["cell", "block"]` will suffice.
             target={["cell", "block"]}
             onCreate={OnCreateActions.OPEN_SETTINGS}
+            //  onDelete={() => {  }}
             create={createFunnelBuilderElement}
-
-            // We don't want to allow deleting the main element.
+            // We don't want to allow deleting the container element.
             canDelete={() => false}
         />
         <PbEditorPageElementAdvancedSettingsPlugin
