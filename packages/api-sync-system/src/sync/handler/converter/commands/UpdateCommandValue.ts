@@ -1,26 +1,21 @@
 import { UpdateCommand } from "@webiny/aws-sdk/client-dynamodb";
-import type { ICommandValue } from "~/sync/types.js";
-
-export interface IUpdateCommandValueKeys {
-    PK: string;
-    SK: string;
-}
+import type { ICommandValue, ICommandValueItem } from "~/sync/types.js";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 
 export class UpdateCommandValue implements ICommandValue {
     public readonly command = "update";
-    public readonly keys: IUpdateCommandValueKeys;
+    public readonly item: ICommandValueItem;
 
     public constructor(input: UpdateCommand) {
-        this.keys = {
+        this.item = {
+            command: this.command,
             PK: input.input.Key!.PK,
-            SK: input.input.Key!.SK
+            SK: input.input.Key!.SK,
+            tableName: input.input.TableName as string
         };
     }
 
-    public toString(): string {
-        return JSON.stringify({
-            command: this.command,
-            keys: this.keys
-        });
+    public getItems(): NonEmptyArray<ICommandValueItem> {
+        return [this.item];
     }
 }

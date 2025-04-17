@@ -1,4 +1,4 @@
-import { createHandler } from "@webiny/handler-aws";
+import { createHandler } from "@webiny/api-sync-system";
 
 const debug = process.env.DEBUG === "true";
 

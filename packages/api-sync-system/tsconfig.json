@@ -4,6 +4,7 @@
   "references": [
     { "path": "../api" },
     { "path": "../aws-sdk" },
+    { "path": "../error" },
     { "path": "../handler" },
     { "path": "../plugins" },
     { "path": "../utils" }
@@ -19,6 +20,8 @@
       "@webiny/api": ["../api/src"],
       "@webiny/aws-sdk/*": ["../aws-sdk/src/*"],
       "@webiny/aws-sdk": ["../aws-sdk/src"],
+      "@webiny/error/*": ["../error/src/*"],
+      "@webiny/error": ["../error/src"],
       "@webiny/handler/*": ["../handler/src/*"],
       "@webiny/handler": ["../handler/src"],
       "@webiny/plugins/*": ["../plugins/src/*"],

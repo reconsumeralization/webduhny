@@ -2,7 +2,6 @@ import { attachToDynamoDbDocument } from "./attachToDynamoDbDocument.js";
 import type { Plugin } from "@webiny/plugins";
 import { createHandlerOnRequest } from "@webiny/handler";
 import { createSendDataToEventBridgeOnRequestEnd } from "./createSendDataToEventBridgeOnRequestEnd.js";
-import { createNullCommand } from "./handler/commands/NullCommand.js";
 import type { ICommandConverter, ISystem } from "./types.js";
 import { validateSystemInput } from "./utils/validateSystemInput.js";
 import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
@@ -16,6 +15,7 @@ import { createGetCommandConverter } from "./handler/converter/GetCommandConvert
 import { createUpdateCommandConverter } from "./handler/converter/UpdateCommandConverter.js";
 import { getManifest } from "./utils/manifest.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import { NullCommandValue } from "~/sync/handler/converter/commands/NullCommandValue.js";
 
 export interface ICreateSyncSystemParams {
     documentClient: DynamoDBDocument;
@@ -47,7 +47,7 @@ const createSyncSystemHandlerOnRequestPlugin = (
             return;
         }
         const converter = createHandlerConverter({
-            default: createNullCommand()
+            default: new NullCommandValue()
         });
         /**
          * We register users command converters because those are tested out first.

@@ -1,8 +1,8 @@
 import type {
-    IHandler,
-    IDynamoDbCommand,
-    IHandlerConverter,
     ICommandValue,
+    IDynamoDbCommand,
+    IHandler,
+    IHandlerConverter,
     ISystem
 } from "../types.js";
 import type {
@@ -12,6 +12,8 @@ import type {
 } from "@webiny/aws-sdk/client-eventbridge";
 import { PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
 import { convertException } from "@webiny/utils";
+import { IDetail } from "./types.js";
+import { SQS_EVENT_NAME } from "~/constants.js";
 
 export interface IHandlerEventBus {
     name: string;
@@ -76,14 +78,19 @@ export class Handler implements IHandler {
     private createEventBusEntries(): PutEventsRequestEntry[] {
         const result = this.commands
             .map((cmd): PutEventsRequestEntry | null => {
-                const value = cmd.toString();
-                if (!value) {
+                const items = cmd.getItems();
+                if (!items?.length) {
                     return null;
                 }
+                const detail: IDetail = {
+                    items,
+                    source: this.system,
+                    command: cmd.command
+                };
                 return {
-                    DetailType: "synchronization-input",
-                    Detail: value,
-                    Source: JSON.stringify(this.system),
+                    DetailType: SQS_EVENT_NAME,
+                    Detail: JSON.stringify(detail),
+                    Source: `webiny:${this.system.name}`,
                     EventBusName: this.eventBus.arn
                 };
             })

@@ -1,26 +1,21 @@
 import { DeleteCommand } from "@webiny/aws-sdk/client-dynamodb";
-import type { ICommandValue } from "~/sync/types.js";
-
-export interface IDeleteCommandValueKeys {
-    PK: string;
-    SK: string;
-}
+import type { ICommandValue, ICommandValueItem } from "~/sync/types.js";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 
 export class DeleteCommandValue implements ICommandValue {
     public readonly command = "delete";
-    public readonly keys: IDeleteCommandValueKeys;
+    public readonly item: ICommandValueItem;
 
     public constructor(input: DeleteCommand) {
-        this.keys = {
+        this.item = {
+            command: this.command,
             PK: input.input.Key!.PK,
-            SK: input.input.Key!.PK
+            SK: input.input.Key!.PK,
+            tableName: input.input.TableName as string
         };
     }
 
-    public toString(): string {
-        return JSON.stringify({
-            command: this.command,
-            keys: this.keys
-        });
+    public getItems(): NonEmptyArray<ICommandValueItem> {
+        return [this.item];
     }
 }

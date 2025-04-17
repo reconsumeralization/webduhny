@@ -1,2 +1,2 @@
 export * from "./sync";
-export * from "./transfer";
+export * from "./resolver";

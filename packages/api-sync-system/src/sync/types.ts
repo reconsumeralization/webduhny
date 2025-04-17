@@ -1,3 +1,4 @@
+import { NonEmptyArray } from "@webiny/api/types";
 import {
     type GetCommand,
     type BatchGetCommand,
@@ -6,6 +7,7 @@ import {
     type PutCommand,
     type UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
+import type { AllCommandType, CommandType } from "~/types.js";
 
 export type IDynamoDbCommand =
     | PutCommand
@@ -15,8 +17,16 @@ export type IDynamoDbCommand =
     | GetCommand
     | UpdateCommand;
 
+export interface ICommandValueItem {
+    PK: string;
+    SK: string;
+    command: CommandType;
+    tableName: string;
+}
+
 export interface ICommandValue {
-    toString(): string | null;
+    readonly command: AllCommandType;
+    getItems(): NonEmptyArray<ICommandValueItem> | null;
 }
 
 export interface ICommand<Result extends ICommandValue = ICommandValue> {
@@ -28,8 +38,9 @@ export interface ICommand<Result extends ICommandValue = ICommandValue> {
 export interface ISystem {
     name: string;
     env: string;
-    variant: string | undefined;
+    variant?: string | undefined;
     region: string;
+    version: string;
 }
 
 export interface IHandler {

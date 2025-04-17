@@ -6,11 +6,11 @@ import type {
 } from "../types.js";
 
 export interface IHandlerConverterParams {
-    default: ICommandConverter;
+    default: ICommandValue;
 }
 
 export class HandlerConverter implements IHandlerConverter {
-    private readonly _default: ICommandConverter;
+    private readonly _default: ICommandValue;
     private readonly converters: ICommandConverter[] = [];
 
     public constructor(params: IHandlerConverterParams) {

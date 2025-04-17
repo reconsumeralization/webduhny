@@ -1,15 +1,17 @@
 import { BatchWriteCommand } from "@webiny/aws-sdk/client-dynamodb";
-import type { ICommandValue } from "~/sync/types.js";
+import type { ICommandValue, ICommandValueItem } from "~/sync/types.js";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 
-export interface IBatchWriteCommandValueKeys {
-    command: string;
-    PK: string;
-    SK: string;
-}
+const convert = (items: ICommandValueItem[]): NonEmptyArray<ICommandValueItem> | null => {
+    if (items.length === 0) {
+        return null;
+    }
+    return items as NonEmptyArray<ICommandValueItem>;
+};
 
 export class BatchWriteCommandValue implements ICommandValue {
     public readonly command = "batchWrite";
-    public readonly items: IBatchWriteCommandValueKeys[] = [];
+    public readonly items: ICommandValueItem[] = [];
 
     public constructor(input: BatchWriteCommand) {
         for (const key in input.input.RequestItems) {
@@ -21,7 +23,8 @@ export class BatchWriteCommandValue implements ICommandValue {
                     this.items.push({
                         command: "put",
                         PK: item.PK,
-                        SK: item.SK
+                        SK: item.SK,
+                        tableName: item.TableName
                     });
                 } else if (value.DeleteRequest?.Key) {
                     const item = value.DeleteRequest.Key;
@@ -29,17 +32,15 @@ export class BatchWriteCommandValue implements ICommandValue {
                     this.items.push({
                         command: "delete",
                         PK: item.PK,
-                        SK: item.SK
+                        SK: item.SK,
+                        tableName: item.TableName
                     });
                 }
             }
         }
     }
 
-    public toString(): string {
-        return JSON.stringify({
-            command: this.command,
-            items: this.items
-        });
+    public getItems(): NonEmptyArray<ICommandValueItem> | null {
+        return convert(this.items);
     }
 }

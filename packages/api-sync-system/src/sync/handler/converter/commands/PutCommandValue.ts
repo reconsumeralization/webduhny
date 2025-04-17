@@ -1,26 +1,21 @@
 import { PutCommand } from "@webiny/aws-sdk/client-dynamodb";
-import type { ICommandValue } from "~/sync/types.js";
-
-export interface IPutCommandValueKeys {
-    PK: string;
-    SK: string;
-}
+import type { ICommandValue, ICommandValueItem } from "~/sync/types.js";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 
 export class PutCommandValue implements ICommandValue {
     public readonly command = "put";
-    public readonly keys: IPutCommandValueKeys;
+    public readonly item: ICommandValueItem;
 
     public constructor(input: PutCommand) {
-        this.keys = {
+        this.item = {
+            command: this.command,
             PK: input.input.Item!.PK,
-            SK: input.input.Item!.SK
+            SK: input.input.Item!.SK,
+            tableName: input.input.TableName as string
         };
     }
 
-    public toString(): string {
-        return JSON.stringify({
-            command: this.command,
-            keys: this.keys
-        });
+    public getItems(): NonEmptyArray<ICommandValueItem> {
+        return [this.item];
     }
 }

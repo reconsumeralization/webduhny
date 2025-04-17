@@ -13,7 +13,7 @@ export interface IErrorResponse {
 export type ValidateSystemInputResponse = IValidResponse | IErrorResponse;
 
 export const validateSystemInput = (input: Partial<ISystem>): ValidateSystemInputResponse => {
-    const { env, name, region, variant } = input;
+    const { env, name, region, variant, version } = input;
     if (!env) {
         return {
             error: "Sync System: No environment variable provided. Sync System will not be attached."
@@ -26,6 +26,10 @@ export const validateSystemInput = (input: Partial<ISystem>): ValidateSystemInpu
         return {
             error: "Sync System: No region variable provided. Sync System will not be attached."
         };
+    } else if (!version) {
+        return {
+            error: "Sync System: No version variable provided. Sync System will not be attached."
+        };
     }
 
     return {
@@ -33,7 +37,8 @@ export const validateSystemInput = (input: Partial<ISystem>): ValidateSystemInpu
             env,
             name,
             region,
-            variant
+            variant,
+            version
         }
     };
 };
