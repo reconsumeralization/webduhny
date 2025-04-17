@@ -143,6 +143,14 @@ export const elementInputs = {
         getDefaultValue: ({ element }) => {
             return element.data.action?.href;
         }
+    }),
+    actionScrollToElement: ElementInput.create<ButtonElementData["action"]["scrollToElement"]>({
+        name: "actionHref",
+        type: "link",
+        translatable: true,
+        getDefaultValue: ({ element }) => {
+            return element.data.action?.scrollToElement;
+        }
     })
 };
 
@@ -160,7 +168,8 @@ export const ButtonRenderer = createRenderer<Props, typeof elementInputs>(
         const action: ButtonElementData["action"] = {
             href: inputs.actionHref || "",
             newTab: inputs.actionNewTab || false,
-            actionType: inputs.actionType || "link"
+            actionType: inputs.actionType || "link",
+            scrollToElement: inputs.actionScrollToElement
         };
 
         let StyledButtonBody = ButtonBody;
