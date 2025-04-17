@@ -35,7 +35,7 @@ export const Input = createRenderer(() => {
 
     // const {funnel} = useContainer();
 
-    console.log('contexts', useForm(), useContainer());
+    console.log('Input comp / useContainer:', useContainer());
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,

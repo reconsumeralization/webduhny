@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-const ContainerContext = React.createContext<any>({ DEFAULT: "VALUE" });
+const ContainerContext = React.createContext<any>({ DEFAULT: "‼️‼️‼️INVALID‼️‼️‼️" });
 
 export const ContainerProvider = ({children}: any) => {
     return (
