@@ -31,7 +31,7 @@ import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/a
 // ----------------------------------------------------------------------------
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
-import { createPageElement } from "../../../../../shared/createPageElement";
+import { createStepElement } from "../../../../../shared/createStepElement";
 import { FunnelBuilderMainElement } from "../../types";
 
 const StyledAccordion = styled(Accordion)`
@@ -75,7 +75,7 @@ export const PagesSection = () => {
             // @ts-ignore
             elements: [
                 ...mainElement.elements,
-                createPageElement({ title: `Page ${mainElement.elements.length + 1}` })
+                createStepElement({ title: `Step ${mainElement.elements.length + 1}` })
             ]
         });
     }, [mainElement]);

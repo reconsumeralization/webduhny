@@ -38,6 +38,7 @@ export const ContainerAdmin = createRenderer(() => {
     return (
         <div>
             <ContainerAdminEventHandlers />
+
             <Tabs onActivate={index => setActivePageIndex(index)}>
                 {elementWithChildren.elements.map(element => {
                     if (element.data) {

@@ -7,14 +7,14 @@ import {
 import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { ContainerAdmin } from "./ContainerAdmin";
 import { AdvancedSettings } from "./AdvancedSettings";
-import { ELEMENT_TYPE } from "../constants";
-import { createFunnelBuilderElement } from "../../../../shared/createFunnelBuilderElement";
+import { createContainerElement } from "../../../../shared/createContainerElement";
+import { CONTAINER_ELEMENT_TYPE } from "../../../../shared/constants";
 
 export const ContainerAdminPlugins = () => (
     <>
-        <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={ContainerAdmin} />
+        <PbRenderElementPlugin elementType={CONTAINER_ELEMENT_TYPE} renderer={ContainerAdmin} />
         <PbEditorPageElementPlugin
-            elementType={ELEMENT_TYPE}
+            elementType={CONTAINER_ELEMENT_TYPE}
             renderer={ContainerAdmin}
             toolbar={{
                 // We use `pb-editor-element-group-media` to put our new
@@ -41,12 +41,12 @@ export const ContainerAdminPlugins = () => (
             target={["cell", "block"]}
             onCreate={OnCreateActions.OPEN_SETTINGS}
             //  onDelete={() => {  }}
-            create={createFunnelBuilderElement}
+            create={createContainerElement}
             // We don't want to allow deleting the container element.
             canDelete={() => false}
         />
         <PbEditorPageElementAdvancedSettingsPlugin
-            elementType={ELEMENT_TYPE}
+            elementType={CONTAINER_ELEMENT_TYPE}
             element={<AdvancedSettings />}
         />
     </>

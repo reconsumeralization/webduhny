@@ -13,7 +13,7 @@ export interface FubPageElementData {
     };
 }
 
-export const createPageElement = (params: FubCreatePageParams) => {
+export const createStepElement = (params: FubCreatePageParams) => {
     // Pages are basically grids with a single column and a single row,
     // which users can fill with elements.
 

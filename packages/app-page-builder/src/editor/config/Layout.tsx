@@ -2,6 +2,7 @@ import React from "react";
 import { makeDecoratable } from "@webiny/react-composition";
 import { EditorConfig } from "~/editor/config/EditorConfig";
 
+// probati ovdje sa fub provider
 export const Layout = makeDecoratable("EditorLayout", () => {
     return (
         <>

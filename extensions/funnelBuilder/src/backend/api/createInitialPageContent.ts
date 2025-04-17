@@ -1,5 +1,5 @@
 import { getRandomId } from "../../shared/getRandomId";
-import { createFunnelBuilderElement } from "../../shared/createFunnelBuilderElement";
+import { createContainerElement } from "../../shared/createContainerElement";
 
 export const createInitialPageContent = () => {
     return {
@@ -39,7 +39,7 @@ export const createInitialPageContent = () => {
                         }
                     }
                 },
-                elements: [createFunnelBuilderElement()]
+                elements: [createContainerElement()]
             }
         ]
     };

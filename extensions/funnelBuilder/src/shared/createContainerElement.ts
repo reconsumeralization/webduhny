@@ -1,15 +1,15 @@
-import { FUB_ELEMENT_TYPE } from "./constants";
-import { createPageElement } from "./createPageElement";
+import { CONTAINER_ELEMENT_TYPE } from "./constants";
+import { createStepElement } from "./createStepElement";
 import { getRandomId } from "./getRandomId";
 
-export const createFunnelBuilderElement = () => {
+export const createContainerElement = () => {
     return {
         id: getRandomId(),
-        type: FUB_ELEMENT_TYPE,
+        type: CONTAINER_ELEMENT_TYPE,
 
         // We are immediately creating a grid element inside our new page element.
         // This was users can start adding content to the grid right away.
-        elements: [createPageElement({ title: "Page 1" })],
+        elements: [createStepElement({ title: "Page 1" })],
         data: { settings: {}, fields: [] }
     };
 };

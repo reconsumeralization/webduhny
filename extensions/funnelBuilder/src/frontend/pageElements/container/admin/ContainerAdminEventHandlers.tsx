@@ -11,6 +11,7 @@ import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/edito
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import type { ContainerData } from "../types";
+import {FUB_ELEMENT_TYPE_PREFIX} from "../../../../shared/constants";
 
 const doNothing = {
     actions: []
@@ -33,8 +34,7 @@ export const ContainerAdminEventHandlers = () => {
 
         const { element: createdElement } = args;
 
-        //todo
-        if (createdElement.type !== "input") {
+        if (createdElement.type !== 'fub-input') {
             return doNothing;
         }
 
@@ -50,7 +50,7 @@ export const ContainerAdminEventHandlers = () => {
         eventHandler.trigger(
             new UpdateElementActionEvent({
                 element: containerElementClone,
-                history: true
+                history: false
             })
         );
 
@@ -69,7 +69,7 @@ export const ContainerAdminEventHandlers = () => {
         const { element: deletedElement } = args;
 
         //todo crate filter
-        if (deletedElement.type === "input") {
+        if (deletedElement.type === "fub-input") {
             const containerElementClone = structuredClone(containerElement);
 
             const updatedFields = containerElementClone.data.fields.filter(
@@ -84,7 +84,7 @@ export const ContainerAdminEventHandlers = () => {
             eventHandler.trigger(
                 new UpdateElementActionEvent({
                     element: containerElementClone,
-                    history: true
+                    history: false
                 })
             );
         }
@@ -105,7 +105,7 @@ export const ContainerAdminEventHandlers = () => {
         const { element: updatedField } = args;
 
         //todo
-        if (updatedField.type !== "input") {
+        if (updatedField.type !== "fub-input") {
             return doNothing;
         }
 
@@ -126,7 +126,7 @@ export const ContainerAdminEventHandlers = () => {
         eventHandler.trigger(
             new UpdateElementActionEvent({
                 element: containerElementClone,
-                history: true
+                history: false,
             })
         );
 
