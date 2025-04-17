@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import styled from "@emotion/styled";
@@ -9,7 +8,7 @@ import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { InputFieldData } from "./types";
 import { useContainer } from "../../container/ContainerContext";
-import { useForm } from "@webiny/form";
+import {useForm} from "@webiny/form";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -29,21 +28,14 @@ export const StyledInput = styled.input`
 `;
 
 export const Input = createRenderer(() => {
+    const { getElement } = useRenderer();
+    const element = getElement<InputFieldData>();
 
-    const useContainerContext = useContainer();
+    const { field } = element.data;
 
-    console.log('useContainerContext', useContainerContext);
-    return (
-        <div>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-        </div>
-    );
+    // const {funnel} = useContainer();
 
-    // @ts-ignore
-    const useFormContext = useForm();
-    console.log("CONTEXTS", useContainerContext, useFormContext);
+    console.log('contexts', useForm(), useContainer());
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,

@@ -35,11 +35,6 @@ export const ContainerAdmin = createRenderer(() => {
         elementWithChildrenByIdSelector(element.id)
     ) as Element;
 
-    return <ContainerProvider value={{}}>
-        <Elements element={elementWithChildren} />
-    </ContainerProvider>
-
-    // @ts-ignore
     return (
         <div>
             <ContainerAdminEventHandlers />
