@@ -11,7 +11,7 @@ import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/edito
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import type { ContainerData } from "../types";
-import {FUB_ELEMENT_TYPE_PREFIX} from "../../../../shared/constants";
+import { isFieldElementType } from "../../../../shared/constants";
 
 const doNothing = {
     actions: []
@@ -34,7 +34,7 @@ export const ContainerAdminEventHandlers = () => {
 
         const { element: createdElement } = args;
 
-        if (createdElement.type !== 'fub-input') {
+        if (!isFieldElementType(createdElement.type)) {
             return doNothing;
         }
 
@@ -68,8 +68,7 @@ export const ContainerAdminEventHandlers = () => {
 
         const { element: deletedElement } = args;
 
-        //todo crate filter
-        if (deletedElement.type === "fub-input") {
+        if (isFieldElementType(deletedElement.type)) {
             const containerElementClone = structuredClone(containerElement);
 
             const updatedFields = containerElementClone.data.fields.filter(
@@ -104,8 +103,7 @@ export const ContainerAdminEventHandlers = () => {
 
         const { element: updatedField } = args;
 
-        //todo
-        if (updatedField.type !== "fub-input") {
+        if (!isFieldElementType(updatedField.type)) {
             return doNothing;
         }
 
@@ -116,7 +114,7 @@ export const ContainerAdminEventHandlers = () => {
                 return updatedField.data.field;
             }
             return field;
-        })
+        });
 
         containerElementClone.data = {
             ...containerElementClone.data,
@@ -126,7 +124,7 @@ export const ContainerAdminEventHandlers = () => {
         eventHandler.trigger(
             new UpdateElementActionEvent({
                 element: containerElementClone,
-                history: false,
+                history: false
             })
         );
 
@@ -134,15 +132,15 @@ export const ContainerAdminEventHandlers = () => {
     };
 
     useEffect(() => {
-        const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
-        const offUpdateElement = eventHandler.on(UpdateElementActionEvent, onElementUpdate);
-        const offDeleteElement = eventHandler.on(DeleteElementActionEvent, onElementDelete);
-
-        return () => {
-            offCreateElement();
-            offUpdateElement();
-            offDeleteElement();
-        };
+        // const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
+        // const offUpdateElement = eventHandler.on(UpdateElementActionEvent, onElementUpdate);
+        // const offDeleteElement = eventHandler.on(DeleteElementActionEvent, onElementDelete);
+        //
+        // return () => {
+        //     offCreateElement();
+        //     offUpdateElement();
+        //     offDeleteElement();
+        // };
     }, [containerElement]);
     return null;
 };

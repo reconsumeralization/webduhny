@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { Form } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { ContainerAdminEventHandlers } from "./ContainerAdminEventHandlers";
+import { ContainerProvider } from "../ContainerContext";
 
 const ElementsSection = styled.div<{ activePage: number }>`
     & > webiny-form-container > pb-grid {
@@ -23,7 +24,7 @@ const ElementsSection = styled.div<{ activePage: number }>`
 `;
 
 export const ContainerAdmin = createRenderer(() => {
-    const { getElement } = useRenderer();
+    const { getElement, meta } = useRenderer();
     const element = getElement();
     const [activePageIndex, setActivePageIndex] = useState(0);
     // TODO
@@ -34,7 +35,11 @@ export const ContainerAdmin = createRenderer(() => {
         elementWithChildrenByIdSelector(element.id)
     ) as Element;
 
-    console.log("cont data", element.data);
+    return <ContainerProvider value={{}}>
+        <Elements element={elementWithChildren} />
+    </ContainerProvider>
+
+    // @ts-ignore
     return (
         <div>
             <ContainerAdminEventHandlers />
@@ -59,7 +64,11 @@ export const ContainerAdmin = createRenderer(() => {
                         console.log("Form submitted.", data);
                     }}
                 >
-                    {() => <Elements element={elementWithChildren} />}
+                    {() => (
+                        <ContainerProvider value={{}}>
+                            <Elements element={elementWithChildren} />
+                        </ContainerProvider>
+                    )}
                 </Form>
             </ElementsSection>
         </div>
