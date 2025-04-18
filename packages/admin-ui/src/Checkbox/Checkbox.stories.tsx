@@ -73,3 +73,56 @@ export const FullExample: Story = {
         }
     }
 };
+
+export const Documentation: Story = {
+    args: {
+        label: "Any field label",
+        checked: false,
+        disabled: false,
+        required: false,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        }
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the checkbox",
+            control: "text",
+            defaultValue: "Any field label"
+        },
+        checked: {
+            description: "Determines if the checkbox is checked",
+            control: "boolean",
+            defaultValue: false
+        },
+        disabled: {
+            description: "Disables the checkbox when set to true",
+            control: "boolean",
+            defaultValue: false
+        },
+        required: {
+            description: "Makes the checkbox required when set to true",
+            control: "boolean",
+            defaultValue: false
+        },
+        description: {
+            description: "Additional description text below the checkbox",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the checkbox",
+            control: "text"
+        },
+        validation: {
+            description: "Validation state and message",
+            control: "object"
+        },
+        onChange: {
+            description: "Callback function triggered when checkbox state changes",
+            control: "none"
+        }
+    }
+};

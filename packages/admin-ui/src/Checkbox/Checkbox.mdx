@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta, Controls } from '@storybook/blocks';
 
 import * as CheckboxStories from './Checkbox.stories';
 
@@ -8,18 +8,74 @@ import * as CheckboxStories from './Checkbox.stories';
 
 Checkboxes allow users to select multiple items from a list of individual items, or to mark one individual item as selected. A checkbox group is a grouping of checkboxes that are related to each other.
 
-<Canvas of={CheckboxStories.Default} />
-
 ## Usage
 
+```jsx
+import React, { useState } from "react";
+import { Checkbox } from "@webiny/admin-ui";
+
+const CheckboxExample = () => {
+    const [isChecked, setIsChecked] = useState(false);
+
+    return (
+        <div className={"wby-my-xxl"}>
+            <Checkbox
+                label="Any field label"
+                description="Provide the required information for processing your request."
+                note="Note: Ensure your selection or input is accurate before proceeding."
+                checked={isChecked}
+                onChange={(checked) => setIsChecked(checked)}
+            />
+        </div>
+    );
+};
+
+export default CheckboxExample;
 ```
-import { Checkbox } from '@webiny/admin-ui';
-```
+
+<Canvas of={CheckboxStories.Documentation} source={ { code:
+`// Code for a Checkbox
+
+import React, { useState } from "react";
+import { Checkbox } from "@webiny/admin-ui";
+
+const CheckboxExample = () => {
+    const [isChecked, setIsChecked] = useState(false);
+
+    return (
+                 <div className={"wby-my-xxl"}>
+            <Checkbox
+                label="Any field label"
+                description="Provide the required information for processing your request."
+                note="Note: Ensure your selection or input is accurate before proceeding."
+                checked={isChecked}
+                onChange={(checked) => setIsChecked(checked)}
+            />
+        </div>
+    );
+};
+
+export default CheckboxExample;
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Checkbox/Checkbox.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={CheckboxStories.Documentation} exclude={"onChange"}/>
 
 ## Anatomy
 
 ### General
-Checkbox input enable users to select a single or multiple items from a list of offered choices. A chackbox input group organizes related checkbox input options together for better clarity and functionality.
+Checkbox input enable users to select a single or multiple items from a list of offered choices. A checkbox input group organizes related checkbox input options together for better clarity and functionality.
 
 <img src="/images/storybook/checkbox/general.png" alt="General"/>
 

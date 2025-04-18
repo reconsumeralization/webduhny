@@ -121,3 +121,73 @@ export const FullExample: Story = {
         }
     }
 };
+
+export const Documentation: Story = {
+    args: {
+        label: "Any field label",
+        required: false,
+        disabled: false,
+        description: "Provide the required information for processing your request.",
+        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        validation: {
+            isValid: false,
+            message: "This field is required."
+        },
+        items: [
+            {
+                label: "Value 1",
+                value: "value-1"
+            },
+            {
+                label: "Value 2",
+                value: "value-2"
+            },
+            {
+                label: "Value 3",
+                value: "value-3"
+            }
+        ],
+        values: []
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the checkbox group",
+            control: "text",
+            defaultValue: "Any field label"
+        },
+        required: {
+            description: "Makes the checkbox group required when set to true",
+            control: "boolean",
+            defaultValue: false
+        },
+        disabled: {
+            description: "Disables the checkbox group when set to true",
+            control: "boolean",
+            defaultValue: false
+        },
+        description: {
+            description: "Additional description text below the checkbox group",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the checkbox group",
+            control: "text"
+        },
+        validation: {
+            description: "Validation state and message",
+            control: "object"
+        },
+        items: {
+            description: "Array of checkbox items with label and value",
+            control: "object"
+        },
+        values: {
+            description: "Array of selected values",
+            control: "object"
+        },
+        onChange: {
+            description: "Callback function triggered when selection changes",
+            control: "none"
+        }
+    }
+};
