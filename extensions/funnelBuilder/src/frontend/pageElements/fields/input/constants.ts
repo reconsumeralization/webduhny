@@ -1,3 +1,3 @@
-import { createElementType } from "../../../../shared/constants";
+import { createFieldElementType } from "../../../../shared/constants";
 
-export const ELEMENT_TYPE = createElementType("input");
+export const ELEMENT_TYPE = createFieldElementType("input");

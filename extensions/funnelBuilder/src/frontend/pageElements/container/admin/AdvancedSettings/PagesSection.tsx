@@ -32,7 +32,7 @@ import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/a
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { createStepElement } from "../../../../../shared/createStepElement";
-import { FunnelBuilderMainElement } from "../../types";
+import { IContainerElement } from "../../types";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;
@@ -50,7 +50,7 @@ const AddPageButton = styled(ButtonSecondary)`
 export const PagesSection = () => {
     const updateElement = useUpdateElement();
     const [activeElementId] = useActiveElementId();
-    const mainElement = useElementWithChildren(activeElementId!) as FunnelBuilderMainElement;
+    const mainElement = useElementWithChildren(activeElementId!) as IContainerElement;
 
     const { showConfirmation } = useConfirmationDialog({
         title: "Remove tab",

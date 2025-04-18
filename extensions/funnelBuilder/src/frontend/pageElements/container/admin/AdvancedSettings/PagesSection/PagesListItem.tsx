@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { FunnelBuilderPageElement } from "../../../types";
+import { IStepElement } from "../../../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
@@ -43,7 +43,7 @@ const StyledDragIcon = styled(DragIndicatorIcon)`
 `;
 
 interface PagesListItemProps {
-    element: FunnelBuilderPageElement;
+    element: IStepElement;
     canRemove?: boolean;
     onRemove?: () => void;
 }

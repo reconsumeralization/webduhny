@@ -10,7 +10,7 @@ import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
-import type { ContainerData } from "../types";
+import type { IContainerElementData } from "../types";
 import { isFieldElementType } from "../../../../shared/constants";
 
 const doNothing = {
@@ -21,7 +21,7 @@ export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
 
     const { getElement } = useRenderer();
-    const containerElement = getElement<ContainerData>();
+    const containerElement = getElement<IContainerElementData>();
 
     const onElementCreate: EventActionCallable<CreateElementEventActionArgsType> = (
         _,
@@ -33,7 +33,7 @@ export const ContainerAdminEventHandlers = () => {
         }
 
         const { element: createdElement } = args;
-
+        console.log('createdElement', createdElement);
         if (!isFieldElementType(createdElement.type)) {
             return doNothing;
         }
@@ -47,6 +47,7 @@ export const ContainerAdminEventHandlers = () => {
             fields: updatedFields
         };
 
+        console.log('jee', containerElementClone)
         eventHandler.trigger(
             new UpdateElementActionEvent({
                 element: containerElementClone,
@@ -132,15 +133,15 @@ export const ContainerAdminEventHandlers = () => {
     };
 
     useEffect(() => {
-        // const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
-        // const offUpdateElement = eventHandler.on(UpdateElementActionEvent, onElementUpdate);
-        // const offDeleteElement = eventHandler.on(DeleteElementActionEvent, onElementDelete);
-        //
-        // return () => {
-        //     offCreateElement();
-        //     offUpdateElement();
-        //     offDeleteElement();
-        // };
+        const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
+        const offUpdateElement = eventHandler.on(UpdateElementActionEvent, onElementUpdate);
+        const offDeleteElement = eventHandler.on(DeleteElementActionEvent, onElementDelete);
+
+        return () => {
+            offCreateElement();
+            offUpdateElement();
+            offDeleteElement();
+        };
     }, [containerElement]);
     return null;
 };

@@ -1,14 +1,15 @@
 import { PbEditorElement } from "@webiny/app-page-builder/types";
 
-export interface ContainerData {
+export interface IContainerElementData {
     fields: any[]
 }
 
-export interface FunnelBuilderMainElement extends PbEditorElement {
-    elements: FunnelBuilderPageElement[];
+export interface IContainerElement extends PbEditorElement {
+    elements: IStepElement[];
+    data: IContainerElementData;
 }
 
-export interface FunnelBuilderPageElement extends PbEditorElement {
+export interface IStepElement extends PbEditorElement {
     data: {
         fub: {
             page: {

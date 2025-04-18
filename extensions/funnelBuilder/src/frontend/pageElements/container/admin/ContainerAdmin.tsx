@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import { Form } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { ContainerAdminEventHandlers } from "./ContainerAdminEventHandlers";
-import { ContainerProvider } from "../ContainerContext";
+import { ContainerProvider } from "../ContainerProvider";
 
 const ElementsSection = styled.div<{ activePage: number }>`
     & > webiny-form-container > pb-grid {
@@ -39,33 +39,31 @@ export const ContainerAdmin = createRenderer(() => {
         <div>
             <ContainerAdminEventHandlers />
 
-            <Tabs onActivate={index => setActivePageIndex(index)}>
-                {elementWithChildren.elements.map(element => {
-                    if (element.data) {
-                        return (
-                            <Tab
-                                key={element.data.fub.page.id}
-                                label={element.data.fub.page.title}
-                            />
-                        );
-                    }
-                    return null;
-                })}
-            </Tabs>
+            <ContainerProvider initialFunnelData={element.data}>
+                <Tabs onActivate={index => setActivePageIndex(index)}>
+                    {elementWithChildren.elements.map(element => {
+                        if (element.data) {
+                            return (
+                                <Tab
+                                    key={element.data.fub.page.id}
+                                    label={element.data.fub.page.title}
+                                />
+                            );
+                        }
+                        return null;
+                    })}
+                </Tabs>
 
-            <ElementsSection activePage={activePageIndex} data-role={"fub-steps-wrapper"}>
-                <Form
-                    onSubmit={data => {
-                        console.log("Form submitted.", data);
-                    }}
-                >
-                    {() => (
-                        <ContainerProvider value={{}}>
-                            <Elements element={elementWithChildren} />
-                        </ContainerProvider>
-                    )}
-                </Form>
-            </ElementsSection>
+                <ElementsSection activePage={activePageIndex} data-role={"fub-steps-wrapper"}>
+                    <Form
+                        onSubmit={data => {
+                            console.log("Form submitted.", data);
+                        }}
+                    >
+                        {() => <Elements element={elementWithChildren} />}
+                    </Form>
+                </ElementsSection>
+            </ContainerProvider>
         </div>
     );
 });

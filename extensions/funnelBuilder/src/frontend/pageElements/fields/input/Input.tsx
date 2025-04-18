@@ -7,8 +7,7 @@ import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { InputFieldData } from "./types";
-import { useContainer } from "../../container/ContainerContext";
-import {useForm} from "@webiny/form";
+import { useFunnelBuilder } from "../../container/ContainerProvider";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -33,9 +32,7 @@ export const Input = createRenderer(() => {
 
     const { field } = element.data;
 
-    // const {funnel} = useContainer();
-
-    console.log('Input comp / useContainer:', useContainer());
+    const fb = useFunnelBuilder();
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
@@ -53,6 +50,7 @@ export const Input = createRenderer(() => {
 
     return (
         <Field>
+            <div>FIELDS COUNT: {fb?.fieldsCount}</div>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             <StyledInput

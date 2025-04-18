@@ -32,4 +32,15 @@ export class FunnelModel {
             fields: json.fields?.map((f: any) => FunnelField.fromJSON(f)),
         });
     }
+
+    addField() {
+        const newField = new FunnelField();
+        this.fields.push(newField);
+    }
+
+    removeField(field: FunnelField) {
+        this.fields = this.fields.filter(f => f !== field);
+    }
+
+
 }
