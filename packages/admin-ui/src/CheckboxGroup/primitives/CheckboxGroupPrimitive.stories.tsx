@@ -11,13 +11,18 @@ const meta: Meta<typeof CheckboxGroupPrimitive> = {
         layout: "padded"
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.value);
         return (
-            <CheckboxGroupPrimitive
-                {...args}
-                values={values}
-                onChange={values => setValues(values)}
-            />
+            <div className={"wby-w-full"}>
+                <CheckboxGroupPrimitive
+                    {...args}
+                    value={values}
+                    onChange={values => setValues(values)}
+                />
+                <div className={"wby-mt-4 wby-text-center"}>
+                    Current selected value: <pre>{values && values.join()}</pre>
+                </div>
+            </div>
         );
     }
 };
@@ -41,7 +46,7 @@ export const Default: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     }
 };
 
@@ -61,7 +66,7 @@ export const WithLongLabels: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     }
 };
 
@@ -81,7 +86,7 @@ export const WithSelectedValues: Story = {
                 value: "value-3"
             }
         ],
-        values: ["value-2"]
+        value: ["value-2"]
     }
 };
 
@@ -102,7 +107,7 @@ export const WithDisabledValue: Story = {
                 value: "value-3"
             }
         ],
-        values: ["value-2"]
+        value: ["value-2"]
     }
 };
 
@@ -111,13 +116,13 @@ export const WithExternalValueControl: Story = {
         ...Default.args
     },
     render: args => {
-        const [values, setValues] = useState(args.values);
+        const [values, setValues] = useState(args.value);
         return (
             <div className={"wby-w-full"}>
                 <div>
                     <CheckboxGroupPrimitive
                         {...args}
-                        values={values}
+                        value={values}
                         onChange={values => setValues(values)}
                     />
                 </div>
@@ -125,9 +130,38 @@ export const WithExternalValueControl: Story = {
                     <Button text={"Reset"} onClick={() => setValues([])} />
                 </div>
                 <div className={"wby-mt-4 wby-text-center"}>
-                    Current selected value: <pre>{values.join()}</pre>
+                    Current selected value: <pre>{values && values.join()}</pre>
                 </div>
             </div>
         );
+    }
+};
+
+export const WithNumericValues: Story = {
+    args: {
+        ...Default.args,
+        value: [3, 4],
+        items: [
+            {
+                label: "Number 1",
+                value: 1
+            },
+            {
+                label: "Number 2",
+                value: 2
+            },
+            {
+                label: "Number 3",
+                value: 3
+            },
+            {
+                label: "Number 4",
+                value: 4
+            },
+            {
+                label: "Number 5",
+                value: 5
+            }
+        ]
     }
 };

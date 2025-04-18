@@ -4,6 +4,7 @@ import { Label, LabelProps } from "~/Label";
 
 interface FormComponentLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     text?: React.ReactElement<typeof Label> | React.ReactNode;
+    invalid?: boolean;
     required?: boolean;
     disabled?: boolean;
     hint?: React.ReactNode;
@@ -14,6 +15,7 @@ const DecoratableFormComponentLabel = ({
     required,
     disabled,
     hint,
+    invalid,
     className,
     ...props
 }: FormComponentLabelProps) => {
@@ -28,12 +30,21 @@ const DecoratableFormComponentLabel = ({
                 ...text.props,
                 required: text.props.required ?? required,
                 disabled: text.props.disabled ?? disabled,
-                hint: text.props.hint ?? hint
+                hint: text.props.hint ?? hint,
+                invalid: text.props.invalid ?? invalid
             });
         }
 
-        return <Label text={text} required={required} disabled={disabled} hint={hint} />;
-    }, [text, required, disabled, hint]);
+        return (
+            <Label
+                text={text}
+                required={required}
+                disabled={disabled}
+                hint={hint}
+                invalid={invalid}
+            />
+        );
+    }, [text, required, disabled, hint, invalid]);
 
     if (!renderLabel) {
         return null;

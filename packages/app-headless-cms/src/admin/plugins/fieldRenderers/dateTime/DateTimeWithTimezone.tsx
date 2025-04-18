@@ -1,7 +1,7 @@
 import React from "react";
+import { Grid } from "@webiny/admin-ui";
 import { Input } from "./Input";
 import { Select } from "./Select";
-import { Grid, Cell } from "@webiny/ui/Grid";
 import {
     RemoveFieldButton,
     getDefaultFieldValue,
@@ -78,7 +78,7 @@ export const DateTimeWithTimezone = ({ bind, trailingIcon, field }: DateTimeWith
 
     return (
         <Grid>
-            <Cell span={4}>
+            <Grid.Column span={4}>
                 <Input
                     bind={{
                         ...bind,
@@ -100,8 +100,8 @@ export const DateTimeWithTimezone = ({ bind, trailingIcon, field }: DateTimeWith
                     }}
                     type={"date"}
                 />
-            </Cell>
-            <Cell span={4}>
+            </Grid.Column>
+            <Grid.Column span={4}>
                 <Input
                     bind={{
                         ...bind,
@@ -125,8 +125,8 @@ export const DateTimeWithTimezone = ({ bind, trailingIcon, field }: DateTimeWith
                     type={"time"}
                     step={60}
                 />
-            </Cell>
-            <Cell span={cellSize}>
+            </Grid.Column>
+            <Grid.Column span={cellSize}>
                 <Select
                     label="Timezone"
                     value={timezone}
@@ -143,7 +143,7 @@ export const DateTimeWithTimezone = ({ bind, trailingIcon, field }: DateTimeWith
                     }}
                     options={UTC_TIMEZONES.map(t => ({ value: t.value, label: t.label }))}
                 />
-            </Cell>
+            </Grid.Column>
             <RemoveFieldButton trailingIcon={trailingIcon} />
         </Grid>
     );

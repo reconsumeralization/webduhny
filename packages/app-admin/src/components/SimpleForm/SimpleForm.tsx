@@ -33,16 +33,19 @@ export const SimpleForm = ({ children, className, size, ...props }: SimpleFormPr
     );
 };
 
-const simpleFormHeaderVariants = cva("wby-p-md wby-pl-lg wby-border-sm wby-border-neutral-smoked", {
-    variants: {
-        rounded: {
-            true: "wby-rounded-t-3xl"
+const simpleFormHeaderVariants = cva(
+    "wby-p-md wby-pl-lg wby-border-sm wby-border-neutral-dimmed-darker",
+    {
+        variants: {
+            rounded: {
+                true: "wby-rounded-t-3xl"
+            }
+        },
+        defaultVariants: {
+            rounded: true
         }
-    },
-    defaultVariants: {
-        rounded: true
     }
-});
+);
 
 interface SimpleFormHeaderProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
@@ -90,7 +93,7 @@ export const SimpleFormFooter = ({ children, className }: SimpleFormFooterProps)
     return (
         <div
             className={cn(
-                "wby-p-lg wby-pt-none wby-border-sm wby-border-t-none wby-border-neutral-smoked wby-rounded-b-3xl",
+                "wby-p-lg wby-pt-none wby-border-sm wby-border-t-none wby-border-neutral-dimmed-darker wby-rounded-b-3xl",
                 "wby-flex wby-justify-end wby-gap-sm",
                 className
             )}
@@ -109,7 +112,7 @@ export const SimpleFormContent = ({ children, className }: SimpleFormContentProp
     return (
         <div
             className={cn(
-                "wby-p-lg wby-border-sm wby-border-y-none wby-border-neutral-smoked",
+                "wby-p-lg wby-border-sm wby-border-y-none wby-border-neutral-dimmed-darker",
                 className
             )}
         >

@@ -67,9 +67,9 @@ export interface ContentEntryContext extends ContentEntriesContext, ContentEntry
     revisions: CmsContentEntryRevision[];
     refetchContent: () => void;
 
-    setActiveTab(index: number): void;
+    setActiveTab(index: string): void;
 
-    activeTab: number;
+    activeTab: string;
     showEmptyView: boolean;
 }
 
@@ -116,7 +116,7 @@ export const ContentEntryProvider = ({
     currentFolderId
 }: ContentEntryContextProviderProps) => {
     const { isMounted } = useIsMounted();
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState("content");
     const [entry, setEntry] = useState<CmsContentEntry>();
     const [revisions, setRevisions] = useState<CmsContentEntryRevision[]>([]);
     const { contentModel: model, canCreate } = useContentEntries();
@@ -168,7 +168,7 @@ export const ContentEntryProvider = ({
         if (!revisionId && entry) {
             setEntry(undefined);
         }
-        setActiveTab(0);
+        setActiveTab("content");
     }, [revisionId]);
 
     const { READ_CONTENT } = useMemo(() => {

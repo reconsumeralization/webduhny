@@ -1,70 +1,24 @@
 import React, { useCallback } from "react";
-import styled from "@emotion/styled";
 import { CmsModel } from "~/types";
 import { OptionsModelList } from "~/admin/plugins/fieldRenderers/ref/advanced/components/options/OptionsModelList";
-import { ReactComponent as LinkIcon } from "./assets/link.svg";
-import { ReactComponent as AddIcon } from "./assets/add-circle.svg";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as LinkIcon } from "@webiny/icons/link.svg";
+import { Button, type ButtonProps, DropdownMenu } from "@webiny/admin-ui";
 
-const Container = styled("div")({
-    display: "flex",
-    flexDirection: "row",
-    width: "100%"
-});
-const NewRecord = styled("div")({
-    borderRight: "2px solid var(--mdc-theme-background)",
-    padding: "10px 15px",
-    display: "flex",
-    position: "relative",
-    alignItems: "center",
-    " > div ": {
-        display: "none"
-    },
-    ":hover > div": {
-        display: "block"
-    }
-});
-const NewRecordButton = styled("button")({
-    background: "transparent",
-    border: "none",
-    color: "var(--mdc-theme-primary)",
-    padding: "2px 2px",
-    cursor: "pointer",
-    alignItems: "center",
-    display: "flex",
-    "> svg": {
-        color: "var(--mdc-theme-primary)",
-        width: "16px",
-        height: "16px",
-        marginRight: 10
-    }
-});
-const LinkExistingRecord = styled("div")({
-    padding: "10px 15px",
-    alignItems: "center",
-    display: "flex",
-    position: "relative",
-    " > div ": {
-        display: "none"
-    },
-    ":hover > div": {
-        display: "block"
-    }
-});
-const LinkExistingRecordButton = styled("button")({
-    background: "transparent",
-    border: "none",
-    color: "var(--mdc-theme-primary)",
-    padding: "2px 5px",
-    cursor: "pointer",
-    alignItems: "center",
-    display: "flex",
-    "> svg": {
-        color: "var(--mdc-theme-primary)",
-        width: "16px",
-        height: "16px",
-        marginRight: 10
-    }
-});
+const CreateNewRecordButton = (props: ButtonProps) => {
+    return <Button {...props} variant={"tertiary"} text="Create a new record" icon={<AddIcon />} />;
+};
+
+const LinkExistingRecordButton = (props: ButtonProps) => {
+    return (
+        <Button
+            {...props}
+            variant={"tertiary"}
+            text="Link an existing record"
+            icon={<LinkIcon />}
+        />
+    );
+};
 
 interface OptionsProps {
     models: CmsModel[];
@@ -86,20 +40,40 @@ export const Options = ({ models, onNewRecord, onLinkExistingRecord }: OptionsPr
         }
         onLinkExistingRecord(models[0].modelId);
     }, [models]);
+
+    if (hasMultipleModels) {
+        return (
+            <div className={"wby-flex wby-gap-sm wby-mt-md"}>
+                <DropdownMenu
+                    trigger={
+                        <Button
+                            variant={"tertiary"}
+                            text="Create a new record"
+                            icon={<AddIcon />}
+                        />
+                    }
+                >
+                    <OptionsModelList onClick={onNewRecord} models={models} />
+                </DropdownMenu>
+                <DropdownMenu
+                    trigger={
+                        <Button
+                            variant={"tertiary"}
+                            text="Link an existing record"
+                            icon={<LinkIcon />}
+                        />
+                    }
+                >
+                    <OptionsModelList onClick={onLinkExistingRecord} models={models} />
+                </DropdownMenu>
+            </div>
+        );
+    }
+
     return (
-        <Container>
-            <NewRecord>
-                <NewRecordButton onClick={onSingleNewRecord}>
-                    <AddIcon /> create a new record
-                </NewRecordButton>
-                <OptionsModelList onClick={onNewRecord} models={models} />
-            </NewRecord>
-            <LinkExistingRecord>
-                <LinkExistingRecordButton onClick={onSingleExistingRecord}>
-                    <LinkIcon /> link an existing record
-                </LinkExistingRecordButton>
-                <OptionsModelList onClick={onLinkExistingRecord} models={models} />
-            </LinkExistingRecord>
-        </Container>
+        <div className={"wby-flex wby-gap-sm wby-mt-md"}>
+            <CreateNewRecordButton onClick={onSingleNewRecord} />
+            <LinkExistingRecordButton onClick={onSingleExistingRecord} />
+        </div>
     );
 };

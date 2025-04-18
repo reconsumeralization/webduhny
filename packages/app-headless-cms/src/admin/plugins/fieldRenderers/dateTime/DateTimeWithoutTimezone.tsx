@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Grid } from "@webiny/admin-ui";
 import {
     getCurrentDate,
     getCurrentLocalTime,
@@ -70,7 +70,7 @@ export const DateTimeWithoutTimezone = ({
 
     return (
         <Grid>
-            <Cell span={6}>
+            <Grid.Column span={6}>
                 <Input
                     bind={{
                         ...bind,
@@ -91,8 +91,8 @@ export const DateTimeWithoutTimezone = ({
                     }}
                     type={"date"}
                 />
-            </Cell>
-            <Cell span={cellSize}>
+            </Grid.Column>
+            <Grid.Column span={cellSize}>
                 <Input
                     bind={{
                         ...bind,
@@ -114,7 +114,7 @@ export const DateTimeWithoutTimezone = ({
                     type={"time"}
                     step={60}
                 />
-            </Cell>
+            </Grid.Column>
             <RemoveFieldButton trailingIcon={trailingIcon} />
         </Grid>
     );

@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useRef } from "react";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import classNames from "classnames";
-import { Typography } from "@webiny/ui/Typography";
+import { Text } from "@webiny/admin-ui";
 
 const classes = {
     accordionWrapper: css({
@@ -19,7 +19,7 @@ const classes = {
         color: "var(--mdc-theme-text-secondary-on-background)",
         cursor: "pointer",
         padding: "0px",
-        minHeight: 48, // To have same height as the remove value action button.
+        minHeight: 32, // To have same height as the remove value action button.
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -30,7 +30,7 @@ const classes = {
             justifyContent: "space-between",
             "& .accordion-title": {
                 span: {
-                    marginLeft: 16
+                    marginLeft: 24
                 }
             }
         },
@@ -54,7 +54,7 @@ const classes = {
         "&::before": {
             position: "absolute",
             top: "calc(50% - 5px)",
-            left: 0,
+            left: "5px",
             content: '""',
             width: 0,
             height: 0,
@@ -138,9 +138,9 @@ const Accordion = ({
             >
                 <div className="accordion-header--left">
                     <div className={"accordion-title"}>
-                        <Typography use={"subtitle1"} tag={"span"}>
+                        <Text size={"md"} as={"span"} className={"webiny_accordion-title-text"}>
                             {title}
-                        </Typography>
+                        </Text>
                     </div>
                 </div>
                 <div className="accordion-header--right">

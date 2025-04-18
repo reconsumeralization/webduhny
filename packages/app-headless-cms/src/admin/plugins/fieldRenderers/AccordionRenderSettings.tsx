@@ -1,7 +1,6 @@
 import React from "react";
 import { Bind } from "@webiny/form";
-import { Cell } from "@webiny/ui/Grid";
-import { Switch } from "@webiny/ui/Switch";
+import { Grid, Switch } from "@webiny/admin-ui";
 import {
     CmsModelField,
     CmsModelFieldRendererSettingsProps
@@ -25,15 +24,13 @@ export const getAccordionRenderSettings = (field: CmsModelField) => {
 
 export const AccordionRenderSettings = ({ field }: CmsModelFieldRendererSettingsProps) => {
     return (
-        <>
-            <Cell span={12}>
-                <Bind name={"renderer.settings.open"} defaultValue={false}>
-                    <Switch
-                        label={"Expand Accordion"}
-                        description={`Enable if "${field.label}" is to be expanded by default.`}
-                    />
-                </Bind>
-            </Cell>
-        </>
+        <Grid.Column span={12}>
+            <Bind name={"renderer.settings.open"} defaultValue={false}>
+                <Switch
+                    label={"Expand Accordion"}
+                    description={`Enable if "${field.label}" is to be expanded by default.`}
+                />
+            </Bind>
+        </Grid.Column>
     );
 };

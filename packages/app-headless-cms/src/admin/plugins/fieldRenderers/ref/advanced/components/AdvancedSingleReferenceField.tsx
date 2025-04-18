@@ -9,25 +9,15 @@ import { Options } from "./Options";
 import { useReferences } from "../hooks/useReferences";
 import { Entry } from "./Entry";
 import { ReferencesDialog } from "./ReferencesDialog";
-import styled from "@emotion/styled";
+import { NoEntries } from "./NoEntries";
+import { Container } from "./Container";
 import { useQuery, useModelFieldGraphqlContext } from "~/admin/hooks";
 import { ListCmsModelsQueryResponse } from "~/admin/viewsGraphql";
 import * as GQL from "~/admin/viewsGraphql";
 import { useSnackbar } from "@webiny/app-admin";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { Loader } from "./Loader";
 import { NewReferencedEntryDialog } from "~/admin/plugins/fieldRenderers/ref/components/NewReferencedEntryDialog";
-import { FormElementMessage } from "@webiny/ui/FormElementMessage";
-
-const Container = styled("div")({});
-
-const FieldLabel = styled("h3")({
-    fontSize: 24,
-    fontWeight: "normal",
-    borderBottom: "1px solid var(--mdc-theme-background)",
-    marginBottom: "20px",
-    paddingBottom: "5px"
-});
+import { FormComponentErrorMessage, FormComponentLabel, OverlayLoader } from "@webiny/admin-ui";
 
 interface AdvancedSingleReferenceFieldProps extends CmsModelFieldRendererProps {
     bind: BindComponentRenderProp<CmsReferenceValue | null>;
@@ -177,16 +167,14 @@ export const AdvancedSingleReferenceField = (props: AdvancedSingleReferenceField
 
     const { validation } = bind;
     const { isValid: validationIsValid, message: validationMessage } = validation || {};
+    const invalid = useMemo(() => validationIsValid === false, [validationIsValid]);
 
     return (
         <>
-            <FieldLabel>{field.label}</FieldLabel>
-            {validationIsValid === false && (
-                <FormElementMessage error>{validationMessage}</FormElementMessage>
-            )}
-            <Container>
-                {loading && <Loader />}
-                {initialValue && (
+            <FormComponentLabel text={field.label} invalid={invalid} />
+            <Container className={"webiny_ref-field-container"}>
+                {loading && <OverlayLoader size={"md"} />}
+                {initialValue ? (
                     <Entry
                         model={initialValue.model}
                         placement="singleRefField"
@@ -194,32 +182,35 @@ export const AdvancedSingleReferenceField = (props: AdvancedSingleReferenceField
                         entry={initialValue.entry}
                         onRemove={onRemove}
                     />
-                )}
-                <Options
-                    models={models}
-                    onNewRecord={onNewRecord}
-                    onLinkExistingRecord={onExistingRecord}
-                />
-
-                {newEntryDialogModel && (
-                    <NewReferencedEntryDialog
-                        model={newEntryDialogModel}
-                        onClose={onNewEntryDialogClose}
-                        onChange={onNewEntryCreate}
-                    />
-                )}
-
-                {linkEntryDialogModel && (
-                    <ReferencesDialog
-                        {...props}
-                        multiple={false}
-                        values={bind.value ? [bind.value] : []}
-                        contentModel={linkEntryDialogModel}
-                        storeValues={storeValues}
-                        onDialogClose={onLinkEntryDialogClose}
-                    />
+                ) : (
+                    <NoEntries text={"No record found"} />
                 )}
             </Container>
+            <FormComponentErrorMessage text={validationMessage} invalid={invalid} />
+            <Options
+                models={models}
+                onNewRecord={onNewRecord}
+                onLinkExistingRecord={onExistingRecord}
+            />
+
+            {newEntryDialogModel && (
+                <NewReferencedEntryDialog
+                    model={newEntryDialogModel}
+                    onClose={onNewEntryDialogClose}
+                    onChange={onNewEntryCreate}
+                />
+            )}
+
+            {linkEntryDialogModel && (
+                <ReferencesDialog
+                    {...props}
+                    multiple={false}
+                    values={bind.value ? [bind.value] : []}
+                    contentModel={linkEntryDialogModel}
+                    storeValues={storeValues}
+                    onDialogClose={onLinkEntryDialogClose}
+                />
+            )}
         </>
     );
 };

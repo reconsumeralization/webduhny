@@ -1,7 +1,7 @@
 import React from "react";
-import { AccordionItem } from "@webiny/ui/Accordion";
+import { Accordion } from "@webiny/admin-ui";
 import { AdminAppPermissionRendererPlugin } from "@webiny/app-admin/types";
-import { ReactComponent as FileManagerIcon } from "../../assets/icons/folder-open.svg";
+import { ReactComponent as PermissionsIcon } from "@webiny/icons/folder_open.svg";
 import { FileManagerPermissions } from "./FileManagerPermissions";
 import { i18n } from "@webiny/app/i18n";
 
@@ -12,14 +12,19 @@ export default {
     name: "admin-app-permissions-renderer-file-manager",
     render(props) {
         return (
-            <AccordionItem
-                icon={<FileManagerIcon />}
+            <Accordion.Item
+                icon={
+                    <Accordion.Item.Icon
+                        icon={<PermissionsIcon />}
+                        label={"File Manager Permissions"}
+                    />
+                }
                 title={t`File Manager`}
                 description={t`Manage File manager app access permissions.`}
                 data-testid={"permission.fm"}
             >
                 <FileManagerPermissions {...props} />
-            </AccordionItem>
+            </Accordion.Item>
         );
     }
 } as AdminAppPermissionRendererPlugin;

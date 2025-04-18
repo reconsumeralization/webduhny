@@ -1,18 +1,40 @@
 import React from "react";
-import { ReactComponent as DraftIcon } from "./assets/status-draft.svg";
-import { ReactComponent as PublishedIcon } from "./assets/status-published.svg";
-import { ReactComponent as UnpublishedIcon } from "./assets/status-unpublished.svg";
+import { ReactComponent as DraftIcon } from "@webiny/icons/draw.svg";
+import { ReactComponent as PublishedIcon } from "@webiny/icons/visibility.svg";
+import { ReactComponent as UnpublishedIcon } from "@webiny/icons/visibility_off.svg";
 import { Box } from "./Box";
 import { CmsContentEntryStatusType } from "~/types";
+import { Icon } from "@webiny/admin-ui";
 
 const getIcon = (status: CmsContentEntryStatusType) => {
     switch (status) {
         case "published":
-            return <PublishedIcon />;
+            return (
+                <Icon
+                    icon={<PublishedIcon />}
+                    label="Published"
+                    size={"lg"}
+                    className={"wby-fill-success-default"}
+                />
+            );
         case "unpublished":
-            return <UnpublishedIcon />;
+            return (
+                <Icon
+                    icon={<UnpublishedIcon />}
+                    label="Unpublished"
+                    size={"lg"}
+                    className={"wby-fill-danger-default"}
+                />
+            );
         case "draft":
-            return <DraftIcon />;
+            return (
+                <Icon
+                    icon={<DraftIcon />}
+                    label="Draft"
+                    size={"lg"}
+                    className={"wby-fill-warning-default"}
+                />
+            );
         default:
             return null;
     }

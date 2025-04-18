@@ -5,7 +5,7 @@ import { i18n } from "@webiny/app/i18n";
 import {
     CannotUseAaclAlert,
     PermissionInfo,
-    gridNoPaddingClass
+    gridWithPaddingClass
 } from "@webiny/app-admin/components/Permissions";
 import { Form } from "@webiny/form";
 import { useSecurity } from "@webiny/app-security";
@@ -86,20 +86,20 @@ export const AuditLogsPermissions = ({ value, onChange }: PageBuilderPermissions
         <Form data={formData} onChange={onFormChange}>
             {({ data, Bind }) => (
                 <Fragment>
-                    <Grid className={gridNoPaddingClass}>
+                    <Grid className={gridWithPaddingClass}>
                         <Cell span={12}>
                             {data.accessLevel === "custom" && cannotUseAAcl && (
                                 <CannotUseAaclAlert />
                             )}
                         </Cell>
                     </Grid>
-                    <Grid className={gridNoPaddingClass}>
+                    <Grid className={gridWithPaddingClass}>
                         <Cell span={6}>
                             <PermissionInfo title={t`Access Level`} />
                         </Cell>
                         <Cell span={6}>
                             <Bind name={"accessLevel"}>
-                                <Select label={t`Access Level`}>
+                                <Select>
                                     <option value={NO_ACCESS}>{t`No access`}</option>
                                     <option value={FULL_ACCESS}>{t`Full access`}</option>
                                     <option value={CUSTOM_ACCESS}>{t`Custom access`}</option>

@@ -2,8 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { CmsModelFieldRendererPlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
-import { Input } from "@webiny/ui/Input";
-import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
+import { DelayedOnChange, Input } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/number");
 

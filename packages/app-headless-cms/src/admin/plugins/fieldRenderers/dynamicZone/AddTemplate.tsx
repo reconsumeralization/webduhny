@@ -1,38 +1,10 @@
 import React, { useState } from "react";
-import styled from "@emotion/styled";
-import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
-import { ReactComponent as AddIcon } from "@webiny/icons/add_circle_outline.svg";
-import { Typography } from "@webiny/ui/Typography";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as AddCircleIcon } from "@webiny/icons/add_circle_outline.svg";
 import { CmsDynamicZoneTemplate, CmsDynamicZoneTemplateWithTypename } from "~/types";
 import { TemplateGallery } from "./TemplateGallery";
-import { IconButton, ButtonSecondary } from "@webiny/ui/Button";
 import { useTemplateTypename } from "~/admin/plugins/fieldRenderers/dynamicZone/useTemplateTypename";
-
-const AddIconContainer = styled.div`
-    text-align: center;
-    padding-top: 3px;
-`;
-
-const AddButtonContainer = styled.div`
-    text-align: center;
-    margin-top: 20px;
-
-    :first-of-type {
-        margin-top: 0;
-    }
-`;
-
-const Info = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
-
-    > svg {
-        width: 20px;
-        margin-right: 5px;
-    }
-`;
+import { Button, cn, IconButton, Link, Text, Tooltip } from "@webiny/admin-ui";
 
 interface UseAddTemplateParams {
     onTemplate: (template: CmsDynamicZoneTemplateWithTypename) => void;
@@ -74,21 +46,45 @@ export const AddTemplateButton = (props: AddTemplateProps) => {
     });
 
     return (
-        <AddButtonContainer>
+        <div
+            className={
+                "wby-w-full wby-rounded-md wby-border-sm wby-border-neutral-muted wby-p-sm-extra wby-mt-xs wby-mb-md wby-relative"
+            }
+        >
             {showGallery ? (
                 <TemplateGallery onTemplate={onTemplate} onClose={onGalleryClose} />
             ) : (
-                <>
-                    <ButtonSecondary onClick={browseTemplates}>+ Add a template</ButtonSecondary>
-                    <Info>
-                        <InfoIcon />
-                        <Typography use={"caption"}>
-                            Click here to learn how templates and dynamic zones work.
-                        </Typography>
-                    </Info>
-                </>
+                <div
+                    className={cn([
+                        "wby-w-full wby-flex wby-flex-col wby-gap-sm-extra wby-px-xl wby-pt-xl wby-pb-lg wby-bg-neutral-subtle wby-rounded wby-text-center",
+                        "hover:wby-bg-neutral-light"
+                    ])}
+                >
+                    <Button
+                        size={"sm"}
+                        variant={"ghost"}
+                        onClick={browseTemplates}
+                        text={"Pick a template"}
+                        icon={<AddIcon />}
+                    />
+                    <div
+                        className={
+                            "wby-flex wby-items-center wby-justify-center wby-gap-xs wby-w-full wby-mx-auto wby-text-center"
+                        }
+                    >
+                        <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                            <Link
+                                to={"http://webiny.link/admin/how-to-use/dynamic-zones"}
+                                target={"_blank"}
+                            >
+                                Learn how
+                            </Link>{" "}
+                            templates and dynamic zones work.
+                        </Text>
+                    </div>
+                </div>
             )}
-        </AddButtonContainer>
+        </div>
     );
 };
 
@@ -98,12 +94,22 @@ export const AddTemplateIcon = (props: AddTemplateProps) => {
     });
 
     return (
-        <AddIconContainer>
+        <div className={"wby-w-full wby-text-center wby-mt-md"}>
             {showGallery ? (
                 <TemplateGallery onTemplate={onTemplate} onClose={onGalleryClose} />
             ) : (
-                <IconButton onClick={browseTemplates} icon={<AddIcon />} />
+                <Tooltip
+                    content={"Add template"}
+                    trigger={
+                        <IconButton
+                            onClick={browseTemplates}
+                            icon={<AddCircleIcon />}
+                            size={"lg"}
+                            variant={"ghost"}
+                        />
+                    }
+                />
             )}
-        </AddIconContainer>
+        </div>
     );
 };

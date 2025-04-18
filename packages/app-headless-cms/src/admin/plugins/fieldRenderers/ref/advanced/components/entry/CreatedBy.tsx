@@ -10,8 +10,7 @@ interface CreatedByProps {
 export const CreatedBy = ({ createdBy, createdOn }: CreatedByProps) => {
     return (
         <Box icon={null} name={"Created By"}>
-            {createdBy.displayName} <br />
-            <TimeAgo datetime={createdOn} />
+            {createdBy.displayName} <TimeAgo datetime={createdOn} />
         </Box>
     );
 };

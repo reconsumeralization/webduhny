@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { CmsModelField, CmsModelFieldRendererPlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
-import { Checkbox, CheckboxGroup } from "@webiny/ui/Checkbox";
+import { CheckboxGroup } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -44,24 +44,13 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 {...bind}
                                 label={field.label}
                                 description={field.helpText}
-                            >
-                                {({ onChange, getValue }) => (
-                                    <React.Fragment>
-                                        {options.map((option, index) => {
-                                            return (
-                                                <div key={String(option.value) + index}>
-                                                    <Checkbox
-                                                        label={option.label}
-                                                        value={getValue(option.value)}
-                                                        onChange={onChange(option.value)}
-                                                        data-testid={`fr.input.${field.label}`}
-                                                    />
-                                                </div>
-                                            );
-                                        })}
-                                    </React.Fragment>
-                                )}
-                            </CheckboxGroup>
+                                value={bind.value}
+                                items={options.map(opt => ({
+                                    label: opt.label,
+                                    value: opt.value,
+                                    selected: opt.selected
+                                }))}
+                            />
                         </Bind.ValidationContainer>
                     )}
                 </Bind>

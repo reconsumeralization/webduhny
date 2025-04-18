@@ -5,6 +5,7 @@ type FormPickerLabelProps = Pick<
     FormComponentProps,
     "label" | "description" | "disabled" | "required"
 > & {
+    invalid?: boolean;
     className?: string;
 };
 
@@ -13,6 +14,7 @@ const FormPickerLabel = ({
     description,
     required,
     disabled,
+    invalid,
     className
 }: FormPickerLabelProps) => {
     return (
@@ -22,6 +24,7 @@ const FormPickerLabel = ({
             disabled={disabled}
             hint={description}
             className={className}
+            invalid={invalid}
         />
     );
 };

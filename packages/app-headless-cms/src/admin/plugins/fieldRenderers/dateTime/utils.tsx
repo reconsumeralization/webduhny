@@ -1,7 +1,5 @@
 import React from "react";
-import { css } from "@emotion/css";
-import { Cell } from "@webiny/ui/Grid";
-import { IconButton } from "@webiny/ui/Button";
+import { Grid, IconButton } from "@webiny/admin-ui";
 import { CmsModelField } from "~/types";
 
 export const DEFAULT_TIMEZONE = "+01:00";
@@ -74,12 +72,6 @@ export const getHHmmss = (time?: string) => {
     return parts.join(":");
 };
 
-const deleteIconStyles = css({
-    width: "100% !important",
-    height: "100% !important",
-    color: "var(--mdc-theme-text-secondary-on-background) !important"
-});
-
 interface RemoveFieldButtonProps {
     trailingIcon: any;
 }
@@ -88,12 +80,15 @@ export const RemoveFieldButton = ({ trailingIcon }: RemoveFieldButtonProps) => {
         return null;
     }
     return (
-        <Cell span={1}>
-            <IconButton
-                className={deleteIconStyles}
-                onClick={trailingIcon.onClick}
-                icon={trailingIcon.icon}
-            />
-        </Cell>
+        <Grid.Column span={1}>
+            <div className={"wby-flex wby-items-end wby-justify-center wby-h-full"}>
+                <IconButton
+                    variant={"ghost"}
+                    onClick={trailingIcon.onClick}
+                    icon={trailingIcon.icon}
+                    className={"wby-mb-xs-plus"}
+                />
+            </div>
+        </Grid.Column>
     );
 };

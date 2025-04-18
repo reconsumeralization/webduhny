@@ -36,6 +36,7 @@ const DecoratableRangeSlider = ({ description, note, validation, ...props }: Ran
                 text={props.label}
                 required={props.required}
                 disabled={props.disabled}
+                invalid={invalid}
             />
             <FormComponentDescription text={description} disabled={props.disabled} />
             <div className={"wby-flex wby-flex-row wby-items-center wby-justify-between"}>

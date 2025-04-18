@@ -19,36 +19,38 @@ const FieldRenderer = ({ field, getBind }: CmsModelFieldRendererProps) => {
                 const { value, onChange, validation } = bind;
 
                 return (
-                    <EditFileUsingUrl onSetFile={file => bind.onChange(file.src)}>
-                        {({ editFile }) => (
-                            <FileManager
-                                images={imagesOnly}
-                                render={({ showFileManager }) => {
-                                    return (
-                                        <FilePicker
-                                            {...bind}
-                                            label={field.label}
-                                            validation={validation}
-                                            description={[
-                                                field.helpText,
-                                                getSupportedExtensionsLabelHint(imagesOnly)
-                                            ]
-                                                .filter(Boolean)
-                                                .join(" ")}
-                                            value={value}
-                                            onSelectItem={() =>
-                                                showFileManager(file => onChange(file.src))
-                                            }
-                                            onEditItem={() => editFile(value)}
-                                            onRemoveItem={() => onChange(null)}
-                                            placeholder={field.placeholderText}
-                                            data-testid={`fr.input.filefield.${field.label}`}
-                                        />
-                                    );
-                                }}
-                            />
-                        )}
-                    </EditFileUsingUrl>
+                    <Bind.ValidationContainer>
+                        <EditFileUsingUrl onSetFile={file => bind.onChange(file.src)}>
+                            {({ editFile }) => (
+                                <FileManager
+                                    images={imagesOnly}
+                                    render={({ showFileManager }) => {
+                                        return (
+                                            <FilePicker
+                                                {...bind}
+                                                label={field.label}
+                                                validation={validation}
+                                                description={[
+                                                    field.helpText,
+                                                    getSupportedExtensionsLabelHint(imagesOnly)
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(" ")}
+                                                value={value}
+                                                onSelectItem={() =>
+                                                    showFileManager(file => onChange(file.src))
+                                                }
+                                                onEditItem={() => editFile(value)}
+                                                onRemoveItem={() => onChange(null)}
+                                                placeholder={field.placeholderText}
+                                                data-testid={`fr.input.filefield.${field.label}`}
+                                            />
+                                        );
+                                    }}
+                                />
+                            )}
+                        </EditFileUsingUrl>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

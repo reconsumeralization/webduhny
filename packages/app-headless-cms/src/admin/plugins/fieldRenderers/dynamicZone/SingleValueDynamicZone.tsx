@@ -1,6 +1,5 @@
 import React from "react";
-import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { AddTemplateButton } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";
 import { TemplateProvider } from "./TemplateProvider";
@@ -19,6 +18,7 @@ import {
     ModelFieldProvider
 } from "~/admin/components/ModelFieldProvider";
 import { useConfirmationDialog } from "@webiny/app-admin";
+import { Accordion } from "@webiny/admin-ui";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -66,19 +66,19 @@ export const SingleValueDynamicZone = ({
                     <ParentValueIndexProvider index={-1}>
                         <ModelFieldProvider field={field}>
                             <Accordion>
-                                <AccordionItem
+                                <Accordion.Item
                                     title={template.name}
                                     description={template.description}
                                     icon={<TemplateIcon icon={template.icon} />}
                                     open={true}
                                     interactive={false}
                                     actions={
-                                        <AccordionItem.Actions>
-                                            <AccordionItem.Action
+                                        <>
+                                            <Accordion.Item.Action
                                                 icon={<DeleteIcon />}
                                                 onClick={unsetValue}
                                             />
-                                        </AccordionItem.Actions>
+                                        </>
                                     }
                                 >
                                     <TemplateProvider template={template}>
@@ -89,7 +89,7 @@ export const SingleValueDynamicZone = ({
                                             Bind={Bind}
                                         />
                                     </TemplateProvider>
-                                </AccordionItem>
+                                </Accordion.Item>
                             </Accordion>
                         </ModelFieldProvider>
                     </ParentValueIndexProvider>

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { ButtonPrimary, ButtonDefault } from "@webiny/ui/Button";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
 import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { validation } from "@webiny/validation";
 import { CmsDynamicZoneTemplate } from "~/types";
 import { generateAlphaNumericLowerCaseId } from "@webiny/utils";
 import { IconPicker } from "~/admin/components/IconPicker";
-import { Dialog, DialogTitle, DialogContent, DialogActions } from "~/admin/components/Dialog";
-import { Alert } from "@webiny/ui/Alert";
 import { Tags } from "@webiny/ui/Tags";
+import { Alert, Dialog, Grid, Input, Textarea } from "@webiny/admin-ui";
 
 const typeNameValidator = (value: string) => {
     const regex = new RegExp("^[A-Z]+[_0-9A-Za-z]+$");
@@ -91,83 +87,73 @@ export const TemplateDialog = (props: TemplateDialogProps) => {
     };
 
     return (
-        <Dialog open={true} onClose={props.onClose}>
-            <Form<CmsDynamicZoneTemplate>
-                onSubmit={onSubmit}
-                data={props.template}
-                onChange={onFormChange}
-            >
-                {({ Bind, submit, form }) => (
-                    <>
-                        <DialogTitle>{dialogTitle}</DialogTitle>
-                        <DialogContent>
-                            <Grid>
-                                {showWarning ? (
-                                    <Cell span={12}>
-                                        <Alert title={"GraphQL Schema Change"} type={"danger"}>
-                                            You&apos;ve changed the GraphQL schema type name! If
-                                            your API is being queried by a 3rd party application,
-                                            this will affect the GraphQL queries in those
-                                            applications. Make sure your consumers are informed
-                                            about this change!
-                                        </Alert>
-                                    </Cell>
-                                ) : null}
-                                <Cell span={12}>
-                                    <Bind
-                                        name={"name"}
-                                        validators={[validation.create("required")]}
-                                    >
-                                        <Input label={"Name"} onBlur={nameOnBlur(form)} />
-                                    </Bind>
-                                </Cell>
-                                <Cell span={12}>
-                                    <Bind
-                                        name={"gqlTypeName"}
-                                        validators={[
-                                            validation.create("required"),
-                                            typeNameValidator
-                                        ]}
-                                    >
-                                        <Input
-                                            autoFocus={false}
-                                            label={"GraphQL Type Name"}
-                                            description={
-                                                "This string will be used to generate the GraphQL schema. "
-                                            }
-                                        />
-                                    </Bind>
-                                </Cell>
-                                <Cell span={12}>
-                                    <Bind
-                                        name={"icon"}
-                                        validators={[validation.create("required")]}
-                                    >
-                                        <IconPicker label={"Icon"} />
-                                    </Bind>
-                                </Cell>
-                                <Cell span={12}>
-                                    <Bind
-                                        name={"description"}
-                                        validators={[validation.create("required")]}
-                                    >
-                                        <Input rows={3} label={"Description"} />
-                                    </Bind>
-                                </Cell>
-                                <Cell span={12}>
-                                    <Bind name={"tags"} defaultValue={[]}>
-                                        <Tags label={"Tags"} />
-                                    </Bind>
-                                </Cell>
-                            </Grid>
-                        </DialogContent>
-                        <DialogActions>
-                            <ButtonDefault onClick={props.onClose}>Cancel</ButtonDefault>
-                            <ButtonPrimary onClick={submit}>{submitLabel}</ButtonPrimary>
-                        </DialogActions>
-                    </>
-                )}
-            </Form>
-        </Dialog>
+        <Form<CmsDynamicZoneTemplate>
+            onSubmit={onSubmit}
+            data={props.template}
+            onChange={onFormChange}
+        >
+            {({ Bind, submit, form }) => (
+                <Dialog
+                    open={true}
+                    onOpenChange={open => !open && props.onClose()}
+                    title={dialogTitle}
+                    actions={
+                        <>
+                            <Dialog.CancelButton />
+                            <Dialog.ConfirmButton onClick={submit} text={submitLabel} />
+                        </>
+                    }
+                >
+                    <Grid>
+                        <>
+                            {showWarning ? (
+                                <Grid.Column span={12}>
+                                    <Alert title={"GraphQL Schema Change"} type={"danger"}>
+                                        You&apos;ve changed the GraphQL schema type name! If your
+                                        API is being queried by a 3rd party application, this will
+                                        affect the GraphQL queries in those applications. Make sure
+                                        your consumers are informed about this change!
+                                    </Alert>
+                                </Grid.Column>
+                            ) : null}
+                        </>
+                        <Grid.Column span={12}>
+                            <Bind name={"name"} validators={[validation.create("required")]}>
+                                <Input label={"Name"} onBlur={nameOnBlur(form)} />
+                            </Bind>
+                        </Grid.Column>
+                        <Grid.Column span={12}>
+                            <Bind
+                                name={"gqlTypeName"}
+                                validators={[validation.create("required"), typeNameValidator]}
+                            >
+                                <Input
+                                    autoFocus={false}
+                                    label={"GraphQL Type Name"}
+                                    description={
+                                        "This string will be used to generate the GraphQL schema. "
+                                    }
+                                />
+                            </Bind>
+                        </Grid.Column>
+                        <Grid.Column span={12}>
+                            <Bind name={"icon"} validators={[validation.create("required")]}>
+                                <IconPicker label={"Icon"} />
+                            </Bind>
+                        </Grid.Column>
+                        <Grid.Column span={12}>
+                            <Bind name={"description"} validators={[validation.create("required")]}>
+                                <Textarea rows={3} label={"Description"} />
+                            </Bind>
+                        </Grid.Column>
+                        <Grid.Column span={12}>
+                            <Bind name={"tags"} defaultValue={[]}>
+                                <Tags label={"Tags"} />
+                            </Bind>
+                        </Grid.Column>
+                    </Grid>
+                </Dialog>
+            )}
+        </Form>
     );
 };

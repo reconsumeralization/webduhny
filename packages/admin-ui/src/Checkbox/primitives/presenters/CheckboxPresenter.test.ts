@@ -34,6 +34,15 @@ describe("CheckboxPresenter", () => {
             expect(presenter.vm.item?.checked).toBeTruthy();
         }
 
+        // `value`
+        {
+            presenter.init({
+                onCheckedChange,
+                value: "value"
+            });
+            expect(presenter.vm.item?.value).toEqual("value");
+        }
+
         // `indeterminate`
         {
             presenter.init({
@@ -41,6 +50,16 @@ describe("CheckboxPresenter", () => {
                 indeterminate: true
             });
             expect(presenter.vm.item?.indeterminate).toBeTruthy();
+        }
+
+        // `indeterminate` + `checked`
+        {
+            presenter.init({
+                onCheckedChange,
+                indeterminate: true,
+                checked: false
+            });
+            expect(presenter.vm.item?.indeterminate).toEqual(true);
         }
 
         // `disabled`

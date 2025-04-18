@@ -1,16 +1,6 @@
-import styled from "@emotion/styled";
 import React from "react";
+import { cn, Text } from "@webiny/admin-ui";
 
-const Content = styled("p")({
-    fontStyle: "normal",
-    fontWeight: 400,
-    fontSize: 14,
-    lineHeight: "20px",
-    letterSpacing: "0.25px",
-    boxSizing: "border-box",
-    paddingRight: 20,
-    paddingBottom: 10
-});
 interface DescriptionProps {
     description?: string | null;
 }
@@ -18,14 +8,14 @@ interface DescriptionProps {
 export const Description = ({ description }: DescriptionProps) => {
     const MAX_LENGTH = 320;
     if (!description) {
-        return <Content />;
+        return null;
     }
 
     return (
-        <Content>
+        <Text size="sm" as="div" className={cn("wby-truncate wby-w-full wby-text-neutral-muted")}>
             {description.length > MAX_LENGTH
                 ? description.substring(0, MAX_LENGTH) + "..."
                 : description}
-        </Content>
+        </Text>
     );
 };

@@ -48,63 +48,65 @@ const FieldRenderer = ({ getBind, field }: CmsModelFieldRendererProps) => {
                 ).filter(Boolean);
 
                 return (
-                    <EditFileUsingUrl onSetFile={onSetFile(bind)}>
-                        {({ editFile }) => (
-                            <FileManager
-                                multiple
-                                images={imagesOnly}
-                                render={({ showFileManager }) => {
-                                    const selectFiles = (index = -1) => {
-                                        showFileManager(files => {
-                                            const urls = files.map(f => f.src);
-                                            if (index === -1) {
-                                                onChange([...values, ...urls]);
-                                            } else {
-                                                onChange([
-                                                    ...values.slice(0, index),
-                                                    ...urls,
-                                                    ...values.slice(index + 1)
-                                                ]);
-                                            }
-                                        });
-                                    };
-                                    return (
-                                        <MultiFilePicker
-                                            {...bind}
-                                            label={field.label}
-                                            validation={validation}
-                                            description={[
-                                                field.helpText,
-                                                getSupportedExtensionsLabelHint(imagesOnly)
-                                            ]
-                                                .filter(Boolean)
-                                                .join(" ")}
-                                            values={values}
-                                            onSelectItem={() => selectFiles()}
-                                            onReplaceItem={(_, index) => selectFiles(index)}
-                                            onRemoveItem={(_, index) =>
-                                                onChange(dotProp.delete(values, index))
-                                            }
-                                            onEditItem={(value, index) => {
-                                                if (!value) {
-                                                    return;
+                    <Bind.ValidationContainer>
+                        <EditFileUsingUrl onSetFile={onSetFile(bind)}>
+                            {({ editFile }) => (
+                                <FileManager
+                                    multiple
+                                    images={imagesOnly}
+                                    render={({ showFileManager }) => {
+                                        const selectFiles = (index = -1) => {
+                                            showFileManager(files => {
+                                                const urls = files.map(f => f.src);
+                                                if (index === -1) {
+                                                    onChange([...values, ...urls]);
+                                                } else {
+                                                    onChange([
+                                                        ...values.slice(0, index),
+                                                        ...urls,
+                                                        ...values.slice(index + 1)
+                                                    ]);
                                                 }
+                                            });
+                                        };
+                                        return (
+                                            <MultiFilePicker
+                                                {...bind}
+                                                label={field.label}
+                                                validation={validation}
+                                                description={[
+                                                    field.helpText,
+                                                    getSupportedExtensionsLabelHint(imagesOnly)
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(" ")}
+                                                values={values}
+                                                onSelectItem={() => selectFiles()}
+                                                onReplaceItem={(_, index) => selectFiles(index)}
+                                                onRemoveItem={(_, index) =>
+                                                    onChange(dotProp.delete(values, index))
+                                                }
+                                                onEditItem={(value, index) => {
+                                                    if (!value) {
+                                                        return;
+                                                    }
 
-                                                editFileRef.current = {
-                                                    index,
-                                                    url: value.url
-                                                };
+                                                    editFileRef.current = {
+                                                        index,
+                                                        url: value.url
+                                                    };
 
-                                                editFile(value.url);
-                                            }}
-                                            placeholder={field.placeholderText}
-                                            data-testid={`fr.input.filefields.${field.label}`}
-                                        />
-                                    );
-                                }}
-                            />
-                        )}
-                    </EditFileUsingUrl>
+                                                    editFile(value.url);
+                                                }}
+                                                placeholder={field.placeholderText}
+                                                data-testid={`fr.input.filefields.${field.label}`}
+                                            />
+                                        );
+                                    }}
+                                />
+                            )}
+                        </EditFileUsingUrl>
+                    </Bind.ValidationContainer>
                 );
             }}
         </Bind>

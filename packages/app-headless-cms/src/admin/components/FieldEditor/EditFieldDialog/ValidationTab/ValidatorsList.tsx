@@ -5,7 +5,6 @@ import debounce from "lodash/debounce";
 import { plugins } from "@webiny/plugins";
 import { Switch } from "@webiny/ui/Switch";
 import { Form, Bind } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
 import { validation } from "@webiny/validation";
 import { Input } from "@webiny/ui/Input";
 import { CmsModelFieldValidator, CmsModelFieldValidatorPlugin } from "~/types";
@@ -14,6 +13,7 @@ import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import { CmsModelFieldValidatorConfigAdapter } from "~/utils/CmsModelFieldValidatorConfigAdapter";
 import styled from "@emotion/styled";
 import { Tooltip } from "@webiny/ui/Tooltip";
+import { Grid } from "@webiny/admin-ui";
 
 const Variable = styled.span`
     font-weight: bold;
@@ -185,7 +185,7 @@ const ValidatorItem = ({ validator, value, onChange }: ValidatorItemProps) => {
                     {({ Bind }) => (
                         <>
                             <Grid className={gridBottomPadding}>
-                                <Cell span={12}>
+                                <Grid.Column span={12}>
                                     <Bind
                                         name={"message"}
                                         validators={validation.create("required")}
@@ -201,10 +201,9 @@ const ValidatorItem = ({ validator, value, onChange }: ValidatorItemProps) => {
                                             );
                                         }}
                                     </Bind>
-                                </Cell>
+                                </Grid.Column>
+                                <>{renderSettings(validator)}</>
                             </Grid>
-
-                            {renderSettings(validator)}
                         </>
                     )}
                 </Form>

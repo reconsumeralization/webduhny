@@ -87,8 +87,8 @@ module.exports = {
             black: "hsl(var(--border-neutral-black))",
             dark: "hsl(var(--border-neutral-dark))",
             dimmed: "hsl(var(--border-neutral-dimmed))",
+            "dimmed-darker": "hsl(var(--border-neutral-dimmed-darker))",
             muted: "hsl(var(--border-neutral-muted))",
-            smoked: "hsl(var(--border-neutral-smoked))",
             strong: "hsl(var(--border-neutral-strong))",
             subtle: "hsl(var(--border-neutral-subtle))"
         },
@@ -391,6 +391,10 @@ module.exports = {
         }
     },
     zIndex: {
-        5: 5
+        5: 5,
+        15: 15,
+        25: 25,
+        35: 35,
+        45: 45
     }
 };

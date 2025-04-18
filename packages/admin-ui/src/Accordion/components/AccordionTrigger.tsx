@@ -61,7 +61,11 @@ const AccordionTrigger = ({
                     <div
                         className={"wby-flex wby-flex-col wby-gap-xxs wby-flex-grow wby-text-left"}
                     >
-                        <div className={"wby-text-md wby-font-semibold"}>{title}</div>
+                        <div
+                            className={"wby-text-md wby-font-semibold webiny_accordion-item-title"}
+                        >
+                            {title}
+                        </div>
                         <div className={"wby-text-sm wby-text-neutral-strong"}>{description}</div>
                     </div>
                     <div className={"wby-flex wby-ml-3xl wby-gap-xs"}>

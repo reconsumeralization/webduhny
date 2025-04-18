@@ -1,21 +1,21 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { BindComponentRenderProp, CmsModelField } from "~/types";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
 import { useContentModels } from "./useContentModels";
 import { useReferences } from "./useReferences";
-import { AddItemParams, SimpleItems } from "./SimpleItems";
+import { Loader } from "~/admin/plugins/fieldRenderers/ref/simple/components/Loader";
+import { RadioGroup } from "@webiny/admin-ui";
 
 interface SimpleSingleRendererProps {
     bind: BindComponentRenderProp<CmsReferenceValue | undefined | null>;
     field: CmsModelField;
-    loadingElement?: JSX.Element;
 }
 
 export const SimpleSingleRenderer = (props: SimpleSingleRendererProps) => {
     const { field, bind } = props;
 
     const value = useMemo(() => {
-        return bind.value;
+        return bind.value?.id;
     }, [bind.value]);
 
     const { models } = useContentModels({
@@ -26,27 +26,42 @@ export const SimpleSingleRenderer = (props: SimpleSingleRendererProps) => {
         models
     });
 
-    const addItem = useCallback(
-        (params: AddItemParams) => {
-            bind.onChange(params);
-        },
-        [bind, value]
-    );
-    const removeItem = useCallback(() => {
-        bind.onChange(null);
-    }, [bind, value]);
+    const items = useMemo(() => {
+        if (!references.entries) {
+            return [];
+        }
 
-    if (references.loading && props.loadingElement) {
-        return props.loadingElement;
+        return references.entries.map(entry => ({
+            label: entry.title,
+            value: entry.id
+        }));
+    }, [references]);
+
+    if (references.loading) {
+        return <Loader />;
     }
 
     return (
-        <SimpleItems
-            field={field}
-            values={value ? [value] : []}
-            items={references.entries}
-            addItem={addItem}
-            removeItem={removeItem}
+        <RadioGroup
+            {...bind}
+            label={field.label}
+            description={field.helpText}
+            value={value}
+            items={items}
+            onChange={(value: string) => {
+                const selectedItem = references.entries.find(
+                    entry => entry.entryId === value.split("#")[0]
+                );
+
+                if (!selectedItem) {
+                    return;
+                }
+
+                bind.onChange({
+                    id: selectedItem.id,
+                    modelId: selectedItem.model.modelId
+                });
+            }}
         />
     );
 };

@@ -1,11 +1,11 @@
 import React from "react";
 import { i18n } from "@webiny/app/i18n";
-import { Accordion as RootAccordion, AccordionItem } from "@webiny/ui/Accordion";
 import { CmsModelFieldRendererPlugin, CmsModelFieldRendererProps } from "~/types";
 import { FieldSettings } from "./FieldSettings";
 import { AccordionRenderSettings, getAccordionRenderSettings } from "../AccordionRenderSettings";
 import { MultiValueContainer } from "~/admin/plugins/fieldRenderers/object/MultiValueContainer";
 import { MultiValueRendererSettings } from "~/admin/plugins/fieldRenderers/MultiValueRendererSettings";
+import { Accordion } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -31,15 +31,19 @@ const ObjectsRenderer = (props: CmsModelFieldRendererProps) => {
 
                 return (
                     <Bind.ValidationContainer>
-                        <RootAccordion>
-                            <AccordionItem title={label} description={field.helpText} open={open}>
+                        <Accordion>
+                            <Accordion.Item
+                                title={label}
+                                description={field.helpText}
+                                defaultOpen={open}
+                            >
                                 <MultiValueContainer
                                     bind={bind}
                                     getBind={getBind}
                                     showTitle={false}
                                 />
-                            </AccordionItem>
-                        </RootAccordion>
+                            </Accordion.Item>
+                        </Accordion>
                     </Bind.ValidationContainer>
                 );
             }}

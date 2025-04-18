@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Move } from "@webiny/icons/drive_file_move.svg";
+import { ReactComponent as Move } from "@webiny/icons/exit_to_app.svg";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useEntry, useMoveContentEntryToFolder } from "~/admin/hooks";
 

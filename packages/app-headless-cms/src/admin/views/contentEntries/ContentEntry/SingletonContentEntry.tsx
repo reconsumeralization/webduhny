@@ -1,22 +1,17 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Elevation as BaseElevation } from "@webiny/ui/Elevation";
-import { CircularProgress } from "@webiny/ui/Progress";
+import { Grid, OverlayLoader } from "@webiny/admin-ui";
 import { ContentEntryForm } from "~/admin/components/ContentEntryForm/ContentEntryForm";
 import { makeDecoratable } from "@webiny/app";
 import { useSingletonContentEntry } from "../hooks/useSingletonContentEntry";
 import { PartialCmsContentEntryWithId } from "~/admin/contexts/Cms";
 import { SingletonHeader } from "~/admin/components/ContentEntryForm/SingletonHeader";
 
-const Elevation = styled(BaseElevation)`
-    height: 100%;
-    flex: 0 0 50%;
-`;
-
 const Container = styled.div`
-    display: flex;
-    padding: 25px;
-    justify-content: center;
+    // This is a workaround for the fact that the ContentEntryForm component is used by many views.
+    // It has no padding, so we need to override it here.
+    #cms-content-form {
+        padding: var(--padding-lg);
 `;
 
 export const SingletonContentEntry = makeDecoratable("SingletonContentEntry", () => {
@@ -24,16 +19,22 @@ export const SingletonContentEntry = makeDecoratable("SingletonContentEntry", ()
 
     return (
         <Container>
-            <Elevation z={2}>
-                {loading && <CircularProgress />}
-                <ContentEntryForm
-                    header={<SingletonHeader title={contentModel.name} />}
-                    entry={entry}
-                    persistEntry={entry =>
-                        updateEntry({ entry: entry as PartialCmsContentEntryWithId })
-                    }
-                />
-            </Elevation>
+            <div className={"wby-container wby-pt-lg"}>
+                <Grid>
+                    <Grid.Column span={10} offset={1}>
+                        <div className="wby-border-sm wby-border-b-none wby-border-neutral-dimmed-darker wby-rounded-t-3xl">
+                            {loading && <OverlayLoader />}
+                            <ContentEntryForm
+                                header={<SingletonHeader title={contentModel.name} />}
+                                entry={entry}
+                                persistEntry={entry =>
+                                    updateEntry({ entry: entry as PartialCmsContentEntryWithId })
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid>
+            </div>
         </Container>
     );
 });

@@ -11,11 +11,11 @@ interface CheckboxGroupPrimitiveProps<TValue = any> {
     /**
      * Callback function called when the checkbox values change.
      */
-    onChange: (values: TValue[]) => void;
+    onChange?: (values: TValue[]) => void;
     /**
      * Array of selected checkbox values.
      */
-    values: TValue[];
+    value?: TValue[];
 }
 
 interface CheckboxGroupPrimitiveVm {

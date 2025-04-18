@@ -127,8 +127,8 @@
     --border-neutral-black: var(--color-neutral-900);
     --border-neutral-dark: var(--color-neutral-600);
     --border-neutral-dimmed: var(--color-neutral-200);
+    --border-neutral-dimmed-darker: var(--color-neutral-300);
     --border-neutral-muted: var(--color-neutral-400);
-    --border-neutral-smoked: var(--color-neutral-300);
     --border-neutral-strong: var(--color-neutral-500);
     --border-neutral-subtle: var(--color-neutral-100);
 
@@ -323,5 +323,15 @@
   a {
     // Styles all links that were not rendered via the Link component.
     @apply wby-text-accent-primary hover:wby-underline focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed wby-rounded-xs;
+  }
+
+  b,
+  strong {
+    @apply wby-font-semibold;
+  }
+
+  i,
+  em {
+    @apply wby-italic;
   }
 }

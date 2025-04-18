@@ -72,7 +72,7 @@ const selectTriggerVariants = cva(
         ],
         defaultVariants: {
             variant: "primary",
-            size: "md"
+            size: "lg"
         }
     }
 );

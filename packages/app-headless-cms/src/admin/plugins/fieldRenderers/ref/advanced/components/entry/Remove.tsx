@@ -1,17 +1,9 @@
-import styled from "@emotion/styled";
 import React, { useCallback } from "react";
 import { CmsReferenceContentEntry } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { useConfirmationDialog } from "@webiny/app-admin";
-import { ButtonLink } from "./elements/ButtonLink";
 import { useForm } from "@webiny/form";
-
-const Text = styled("span")({
-    fontSize: "14px",
-    lineHeight: "20px",
-    letterSpacing: "0.1px",
-    textTransform: "uppercase"
-});
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 interface RemoveProps {
     entry: CmsReferenceContentEntry;
@@ -33,9 +25,18 @@ export const Remove = ({ entry, onRemove }: RemoveProps) => {
     }, [entry, onRemove]);
 
     return (
-        <ButtonLink onClick={onRemoveClick} maxWidth={"100px"}>
-            <DeleteIcon />
-            <Text>Remove</Text>
-        </ButtonLink>
+        <Tooltip
+            content={"Remove"}
+            side={"top"}
+            trigger={
+                <IconButton
+                    variant={"ghost"}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={onRemoveClick}
+                    icon={<DeleteIcon />}
+                />
+            }
+        />
     );
 };
