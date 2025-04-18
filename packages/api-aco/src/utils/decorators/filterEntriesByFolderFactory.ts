@@ -2,7 +2,7 @@ import { AcoContext } from "~/types";
 import { CmsEntry, CmsModel } from "@webiny/api-headless-cms/types";
 import { NotFoundError } from "@webiny/handler-graphql";
 import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
-import { ROOT_FOLDER } from "./constants";
+import { ROOT_FOLDER } from "~/constants";
 
 type Context = Pick<AcoContext, "aco" | "cms">;
 

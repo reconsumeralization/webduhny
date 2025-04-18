@@ -8,7 +8,6 @@ import { createSearchRecordOperations } from "~/record/record.so";
 import { createAcoModels } from "~/createAcoModels";
 
 import { AcoStorageOperations } from "~/types";
-import { FolderLevelPermissionsStorageOperations } from "~/flp/FolderLevelPermissionsStorageOperations";
 
 export interface CreateAcoStorageOperationsParams {
     cms: HeadlessCms;
@@ -27,7 +26,6 @@ export const createAcoStorageOperations = async (
     return {
         folder: createFolderOperations(params),
         search: createSearchRecordOperations(params),
-        filter: createFilterOperations(params),
-        flp: new FolderLevelPermissionsStorageOperations(params)
+        filter: createFilterOperations(params)
     };
 };

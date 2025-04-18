@@ -17,8 +17,6 @@ export interface Folder {
     type: string;
     parentId?: string | null;
     extensions?: Record<string, any>;
-    tenant: string;
-    locale: string;
 }
 
 export interface ListFoldersWhere {

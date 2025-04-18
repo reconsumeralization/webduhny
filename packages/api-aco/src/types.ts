@@ -4,6 +4,7 @@ import { I18NContext, I18NLocale } from "@webiny/api-i18n/types";
 import { SecurityContext } from "@webiny/api-security/types";
 import { AdminUsersContext } from "@webiny/api-admin-users/types";
 import { FileManagerContext } from "@webiny/api-file-manager/types";
+import { Context as TasksContext } from "@webiny/tasks/types";
 import { CmsContext, CmsModel, CmsModelField } from "@webiny/api-headless-cms/types";
 import type {
     AcoSearchRecordCrud,
@@ -14,7 +15,6 @@ import type {
 } from "~/record/record.types";
 import type { AcoFolderCrud, AcoFolderStorageOperations } from "~/folder/folder.types";
 import type { AcoFilterCrud, AcoFilterStorageOperations } from "~/filter/filter.types";
-import type { AcoFolderLevelPermissionsStorageOperations } from "~/flp/flp.types";
 import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
 
 export * from "./filter/filter.types";
@@ -74,7 +74,6 @@ export interface AcoStorageOperations {
     folder: AcoFolderStorageOperations;
     search: AcoSearchRecordStorageOperations;
     filter: AcoFilterStorageOperations;
-    flp: AcoFolderLevelPermissionsStorageOperations;
 }
 
 export interface AcoContext
@@ -84,7 +83,8 @@ export interface AcoContext
         SecurityContext,
         AdminUsersContext,
         CmsContext,
-        FileManagerContext {
+        FileManagerContext,
+        TasksContext {
     aco: AdvancedContentOrganisation;
 }
 

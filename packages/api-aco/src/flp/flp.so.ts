@@ -20,11 +20,11 @@ import type {
     StorageOperationsUpdateFlpParams
 } from "~/flp/flp.types";
 
-export interface StorageOperationsConfig {
+interface StorageOperationsConfig {
     documentClient: DynamoDBDocument;
 }
 
-export class FolderLevelPermissionsStorageOperations
+class FolderLevelPermissionsStorageOperations
     implements IAcoFolderLevelPermissionsStorageOperations
 {
     private readonly entity: Entity<any>;
@@ -43,7 +43,7 @@ export class FolderLevelPermissionsStorageOperations
         where: { tenant, locale, type, path_startsWith }
     }: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]> {
         try {
-            return await queryAll<FolderLevelPermission>({
+            const entries = await queryAll<{ data: FolderLevelPermission }>({
                 entity: this.entity,
                 partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
                 options: {
@@ -51,6 +51,7 @@ export class FolderLevelPermissionsStorageOperations
                     beginsWith: path_startsWith
                 }
             });
+            return entries.map(entry => entry.data);
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not folder level permissions.",
@@ -63,10 +64,12 @@ export class FolderLevelPermissionsStorageOperations
         where: { tenant, locale, type, id }
     }: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null> {
         try {
-            return await getClean<FolderLevelPermission>({
+            const entry = await getClean<{ data: FolderLevelPermission }>({
                 entity: this.entity,
                 keys: this.createKeys({ tenant, locale, type, id })
             });
+
+            return entry?.data || null;
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not load folder level permission.",
@@ -116,7 +119,7 @@ export class FolderLevelPermissionsStorageOperations
                 item: {
                     ...keys,
                     data: {
-                        ...original,
+                        ...(original && original),
                         ...data
                     }
                 }
@@ -168,3 +171,7 @@ export class FolderLevelPermissionsStorageOperations
         GSI1_SK: path
     });
 }
+
+export const createFlpOperations = (params: StorageOperationsConfig) => {
+    return new FolderLevelPermissionsStorageOperations(params);
+};

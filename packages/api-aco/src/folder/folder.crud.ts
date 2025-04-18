@@ -137,16 +137,6 @@ export const createFolderCrudMethods = ({
 
             await onFolderBeforeCreate.publish({ input: data });
             const folder = await storageOperations.folder.createFolder({ data });
-            const level = await storageOperations.flp.create({
-                data: {
-                    ...folder,
-                    path: `root/${folder.slug}`,
-                    parentId: folder.parentId ?? "root",
-                    permissions: []
-                }
-            });
-
-            console.log("level", level);
 
             // We need to add the newly created folder to FLP's internal cache. Note that we're also
             // invalidating the permissions list cache for the folder type. We cannot rely on the cache

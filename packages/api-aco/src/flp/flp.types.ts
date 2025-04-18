@@ -1,3 +1,6 @@
+import { ITaskRunParams } from "@webiny/tasks/types";
+import type { AcoContext, Folder } from "~/types";
+
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
 
 export interface FolderPermission {
@@ -11,6 +14,7 @@ export interface FolderLevelPermission {
     locale: string;
     id: string;
     parentId: string;
+    slug: string;
     path: string;
     permissions: FolderPermission[];
     type: string;
@@ -63,7 +67,7 @@ export interface UpdateFlpParams {
     /**
      * The flp data to be updated.
      */
-    original: FolderLevelPermission;
+    original?: FolderLevelPermission;
     /**
      * The flp data with the updated fields.
      */
@@ -85,3 +89,21 @@ export interface AcoFolderLevelPermissionsStorageOperations {
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
     delete(params: StorageOperationsDeleteFlpParams): Promise<void>;
 }
+
+/********
+ * Catalog Manager - BG Task
+ *******/
+
+export enum CatalogManagerAction {
+    CREATE = "CREATE_FLP",
+    UPDATE = "UPDATE_FLP",
+    DELETE = "DELETE_FLP"
+}
+
+export interface ICatalogManagerInput {
+    action: CatalogManagerAction;
+    data: Folder;
+    original?: Folder;
+}
+
+export type ICatalogManagerTaskParams = ITaskRunParams<AcoContext, ICatalogManagerInput>;

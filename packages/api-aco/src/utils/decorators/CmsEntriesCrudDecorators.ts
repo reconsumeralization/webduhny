@@ -1,6 +1,6 @@
 import { AcoContext } from "~/types";
 import { createWhere } from "./where";
-import { ROOT_FOLDER } from "./constants";
+import { ROOT_FOLDER } from "~/constants";
 import { filterEntriesByFolderFactory } from "./filterEntriesByFolderFactory";
 import { createFolderType } from "./createFolderType";
 import { decorateIfModelAuthorizationEnabled } from "./decorateIfModelAuthorizationEnabled";
