@@ -10,14 +10,10 @@ const ContainerContext = React.createContext<undefined | ContainerContextValue>(
 
 export interface ContainerProviderProps {
     children: React.ReactNode;
-    initialFunnelData?: any;
+    funnelBuilderVm: FunnelBuilderVm;
 }
 
-export const ContainerProvider = ({ children, initialFunnelData }: ContainerProviderProps) => {
-    const funnelBuilderVm = useMemo(() => {
-        return new FunnelBuilderVm(initialFunnelData);
-    }, []);
-
+export const ContainerProvider = ({ children, funnelBuilderVm }: ContainerProviderProps) => {
     // @ts-ignore
     window.__funnelBuilderVm = funnelBuilderVm;
 
