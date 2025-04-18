@@ -1,46 +1,38 @@
-import { FunnelStepModel } from "./FunnelStepModel";
-import { ConditionGroupModel } from "./ConditionGroupModel";
-import { FunnelField } from "./FunnelFieldModel";
+import { FunnelStepModel, FunnelStepModelDto } from "./FunnelStepModel";
+// import {ConditionGroupModel} from "./ConditionGroupModel";
+import { FunnelFieldModel, FunnelFieldModelDto } from "./FunnelFieldModel";
+
+export interface FunnelModelDto {
+    steps: FunnelStepModelDto[];
+    fields: FunnelFieldModelDto[];
+}
 
 export class FunnelModel {
+    fields: FunnelFieldModel[] = [];
     steps: FunnelStepModel[] = [];
-    conditions?: ConditionGroupModel;
-    fields: FunnelField[] = [];
+
+    // conditions?: FunnelConditionGroupModel; TODO
 
     constructor(init?: Partial<FunnelModel>) {
+        this.fields = init?.fields?.map(f => new FunnelFieldModel(f)) ?? [];
         this.steps = init?.steps?.map(s => new FunnelStepModel(s)) ?? [];
-        this.conditions = init?.conditions
-            ? new ConditionGroupModel(init.conditions)
-            : undefined;
-        this.fields = init?.fields?.map(f => new FunnelField(f)) ?? [];
+        // this.conditions = init?.conditions
+        //     ? new ConditionGroupModel(init.conditions)
+        //     : undefined;
     }
 
-    toJSON() {
+    toDto(): FunnelModelDto {
         return {
-            steps: this.steps.map(s => s.toJSON()),
-            conditions: this.conditions?.toJSON(),
-            fields: this.fields.map(f => f.toJSON()),
+            steps: this.steps.map(s => s.toDto()),
+            // conditions: this.conditions?.toJSON(),
+            fields: this.fields.map(f => f.toDto())
         };
     }
 
-    static fromJSON(json: any): FunnelModel {
+    static fromDto(dto: FunnelModelDto): FunnelModel {
         return new FunnelModel({
-            steps: json.steps?.map((s: any) => FunnelStepModel.fromJSON(s)),
-            conditions: json.conditions
-                ? ConditionGroupModel.fromJSON(json.conditions)
-                : undefined,
-            fields: json.fields?.map((f: any) => FunnelField.fromJSON(f)),
+            fields: dto.fields?.map(s => FunnelFieldModel.fromDto(s)),
+            steps: dto.steps?.map(s => FunnelStepModel.fromDto(s))
         });
     }
-
-    addField() {
-        const newField = new FunnelField();
-        this.fields.push(newField);
-    }
-
-    removeField(field: FunnelField) {
-        this.fields = this.fields.filter(f => f !== field);
-    }
-
-
 }

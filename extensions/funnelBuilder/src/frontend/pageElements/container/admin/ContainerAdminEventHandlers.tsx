@@ -10,8 +10,10 @@ import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
-import type { IContainerElementData } from "../types";
+import type { ContainerElementData } from "../types";
 import { isFieldElementType } from "../../../../shared/constants";
+import { useContainer } from "../ContainerProvider";
+import { FunnelFieldModelDto } from "../../models/FunnelFieldModel";
 
 const doNothing = {
     actions: []
@@ -19,41 +21,28 @@ const doNothing = {
 
 export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
+    const container = useContainer();
 
+    const { funnelVm } = container;
     const { getElement } = useRenderer();
-    const containerElement = getElement<IContainerElementData>();
+
+    const containerElement = getElement<ContainerElementData>();
 
     const onElementCreate: EventActionCallable<CreateElementEventActionArgsType> = (
         _,
         __,
         args
     ) => {
-        if (!args) {
+        if (!args || !funnelVm) {
             return doNothing;
         }
 
         const { element: createdElement } = args;
-        console.log('createdElement', createdElement);
         if (!isFieldElementType(createdElement.type)) {
             return doNothing;
         }
 
-        const containerElementClone = structuredClone(containerElement);
-
-        const updatedFields = [...containerElementClone.data.fields, createdElement.data.field];
-
-        containerElementClone.data = {
-            ...containerElementClone.data,
-            fields: updatedFields
-        };
-
-        console.log('jee', containerElementClone)
-        eventHandler.trigger(
-            new UpdateElementActionEvent({
-                element: containerElementClone,
-                history: false
-            })
-        );
+        funnelVm.addField(createdElement.data as FunnelFieldModelDto);
 
         return doNothing;
     };
@@ -63,7 +52,7 @@ export const ContainerAdminEventHandlers = () => {
         __,
         args
     ) => {
-        if (!args) {
+        if (!args || !funnelVm) {
             return doNothing;
         }
 
@@ -98,7 +87,7 @@ export const ContainerAdminEventHandlers = () => {
         __,
         args
     ) => {
-        if (!args) {
+        if (!args || !funnelVm) {
             return doNothing;
         }
 
@@ -108,26 +97,8 @@ export const ContainerAdminEventHandlers = () => {
             return doNothing;
         }
 
-        const containerElementClone = structuredClone(containerElement);
-
-        const updatedFields = containerElementClone.data.fields.map(field => {
-            if (field.id === updatedField.data.field.id) {
-                return updatedField.data.field;
-            }
-            return field;
-        });
-
-        containerElementClone.data = {
-            ...containerElementClone.data,
-            fields: updatedFields
-        };
-
-        eventHandler.trigger(
-            new UpdateElementActionEvent({
-                element: containerElementClone,
-                history: false
-            })
-        );
+        console.log('upuj to', updatedField.data.id, updatedField.data);
+        funnelVm.updateField(updatedField.data.id, updatedField.data);
 
         return doNothing;
     };

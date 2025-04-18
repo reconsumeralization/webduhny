@@ -1,12 +1,13 @@
 import { PbEditorElement } from "@webiny/app-page-builder/types";
 
-export interface IContainerElementData {
+export interface ContainerElementData {
     fields: any[]
+    steps: any[]
 }
 
 export interface IContainerElement extends PbEditorElement {
     elements: IStepElement[];
-    data: IContainerElementData;
+    data: ContainerElementData;
 }
 
 export interface IStepElement extends PbEditorElement {

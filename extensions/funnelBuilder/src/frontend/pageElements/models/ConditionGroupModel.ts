@@ -2,6 +2,11 @@ import { ConditionModel } from "./ConditionModel";
 
 export type ConditionGroupItem = ConditionModel | ConditionGroupModel;
 
+interface ConditionGroupModelDto {
+    operator: "AND" | "OR";
+    items: ConditionGroupItem[];
+}
+
 export class ConditionGroupModel {
     operator: "AND" | "OR";
     items: ConditionGroupItem[] = [];
@@ -11,20 +16,20 @@ export class ConditionGroupModel {
         this.items = init?.items ?? [];
     }
 
-    toJSON(): any {
+    toDto(): ConditionGroupModelDto {
         return {
             operator: this.operator,
             items: this.items.map(item =>
-                item instanceof ConditionGroupModel ? item.toJSON() : item.toJSON()
+                item instanceof ConditionGroupModel ? item.toDto() : item.toDto()
             ),
         };
     }
 
-    static fromJSON(json: any): ConditionGroupModel {
-        const group = new ConditionGroupModel({ operator: json.operator });
-        group.items = json.items.map((item: any) => {
+    static fromDto(dto: ConditionGroupModelDto): ConditionGroupModel {
+        const group = new ConditionGroupModel({ operator: dto.operator });
+        group.items = dto.items.map((item: any) => {
             if (item.items) {
-                return ConditionGroupModel.fromJSON(item);
+                return ConditionGroupModel.fromDto(item);
             } else {
                 return ConditionModel.fromJSON(item);
             }

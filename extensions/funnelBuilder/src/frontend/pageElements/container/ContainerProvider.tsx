@@ -1,27 +1,38 @@
-import React, { useContext, useEffect, useMemo } from "react";
-import { FunnelBuilderVm } from "../viewModels/FunnelBuilderVm";
+import React, { useContext, useMemo } from "react";
+import { ContainerElementData } from "./types";
+import { useRenderer } from "@webiny/app-page-builder-elements";
+import { FunnelVm } from "../viewModels/FunnelVm";
+import { FunnelModelDto } from "../models/FunnelModel";
 
-import { autorun } from "mobx";
 interface ContainerContextValue {
-    funnelBuilderVm: FunnelBuilderVm;
+    funnelVm: FunnelVm | undefined;
 }
 
-const ContainerContext = React.createContext<undefined | ContainerContextValue>(undefined);
+const ContainerContext = React.createContext<ContainerContextValue>({
+    funnelVm: undefined
+});
 
 export interface ContainerProviderProps {
     children: React.ReactNode;
-    funnelBuilderVm: FunnelBuilderVm;
+
+    // Used only within the Admin (editor) renderer.
+    updateElementData?: (data: FunnelModelDto) => void;
 }
 
-export const ContainerProvider = ({ children, funnelBuilderVm }: ContainerProviderProps) => {
-    // @ts-ignore
-    window.__funnelBuilderVm = funnelBuilderVm;
+export const ContainerProvider = ({
+    children,
+    updateElementData = () => undefined
+}: ContainerProviderProps) => {
+    const { getElement } = useRenderer();
+    const element = getElement<ContainerElementData>();
 
-    return (
-        <ContainerContext.Provider value={{ funnelBuilderVm }}>
-            {children}
-        </ContainerContext.Provider>
-    );
+    const funnelVm = useMemo(() => {
+        return new FunnelVm(element.data, {
+            onChange: updateElementData
+        });
+    }, [element.data]);
+
+    return <ContainerContext.Provider value={{ funnelVm }}>{children}</ContainerContext.Provider>;
 };
 
 ContainerProvider.displayName = "ContainerProvider";
@@ -29,23 +40,3 @@ ContainerProvider.displayName = "ContainerProvider";
 export const useContainer = () => {
     return useContext(ContainerContext);
 };
-
-export function useFunnelBuilder() {
-    const container = useContainer();
-    if (!container) {
-        return;
-    }
-
-    const { funnelBuilderVm } = container;
-
-    useEffect(() => {
-        console.log('use effect mobx init')
-        return autorun(() => {
-            console.log("Funnel changed:", funnelBuilderVm.fieldsCount);
-            console.log("Step count:", funnelBuilderVm.funnel.steps.length);
-        });
-    }, [funnelBuilderVm]);
-
-    return container.funnelBuilderVm;
-}
-

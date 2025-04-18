@@ -1,3 +1,9 @@
+export interface ConditionModelDto {
+    field: string;
+    operator: string;
+    value: string;
+}
+
 export class ConditionModel {
     field: string;
     operator: string;
@@ -9,7 +15,7 @@ export class ConditionModel {
         this.value = init?.value ?? "";
     }
 
-    toJSON() {
+    toDto(): ConditionModelDto {
         return {
             field: this.field,
             operator: this.operator,
@@ -17,7 +23,7 @@ export class ConditionModel {
         };
     }
 
-    static fromJSON(json: any) {
-        return new ConditionModel(json);
+    static fromDTO(dto: ConditionModelDto) {
+        return new ConditionModel(dto);
     }
 }

@@ -8,14 +8,12 @@ export const createInitialFieldData = <TFieldElementData extends FieldElementDat
     extra: TFieldElementData["field"]["extra"]
 ): TFieldElementData => {
     return {
-        field: {
-            id: getRandomId(),
-            fieldId: getRandomId(),
-            type: fieldType,
-            label: "",
-            helpText: "",
-            validators: [],
-            extra
-        }
-    }  as unknown as TFieldElementData; // Explicitly cast the object to TFieldElementData
+        id: getRandomId(),
+        fieldId: getRandomId(),
+        type: fieldType,
+        label: "",
+        helpText: "",
+        validators: [],
+        extra
+    } as unknown as TFieldElementData; // Explicitly cast the object to TFieldElementData
 };

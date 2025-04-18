@@ -6,8 +6,8 @@ import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
-import { InputFieldData } from "./types";
-import { useFunnelBuilder } from "../../container/ContainerProvider";
+import { useContainer } from "../../container/ContainerProvider";
+import {FunnelFieldModelDto} from "../../models/FunnelFieldModel";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -28,11 +28,14 @@ export const StyledInput = styled.input`
 
 export const Input = createRenderer(() => {
     const { getElement } = useRenderer();
-    const element = getElement<InputFieldData>();
+    const element = getElement<FunnelFieldModelDto>();
 
-    const { field } = element.data;
+    const { funnelVm } = useContainer();
+    if (!funnelVm) {
+        return null;
+    }
 
-    const fb = useFunnelBuilder();
+    const { data: field } = element;
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
@@ -48,9 +51,11 @@ export const Input = createRenderer(() => {
         }
     };
 
+    // console.log('getFieldsForActiveStep', funnelVm.getFieldsForActiveStep());
+
     return (
         <Field>
-            <div>FIELDS COUNT: {fb?.fieldsCount}</div>
+            <div>FIELDS COUNT:</div>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             <StyledInput
