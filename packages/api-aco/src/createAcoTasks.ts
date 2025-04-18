@@ -1,10 +1,10 @@
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
-import { flpTasks } from "~/flp/flp.tasks";
+import { flpTasks } from "~/flp";
 
 interface CreateAcoTasksParams {
     documentClient: DynamoDBDocument;
 }
 
 export const createAcoTasks = (params: CreateAcoTasksParams) => {
-    return [flpTasks(params)];
+    return [...flpTasks(params)];
 };

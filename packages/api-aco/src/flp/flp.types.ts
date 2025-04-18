@@ -94,16 +94,22 @@ export interface AcoFolderLevelPermissionsStorageOperations {
  * Catalog Manager - BG Task
  *******/
 
-export enum CatalogManagerAction {
-    CREATE = "CREATE_FLP",
-    UPDATE = "UPDATE_FLP",
-    DELETE = "DELETE_FLP"
-}
-
-export interface ICatalogManagerInput {
-    action: CatalogManagerAction;
+export interface ICreateFlpTaskInput {
     data: Folder;
-    original?: Folder;
 }
 
-export type ICatalogManagerTaskParams = ITaskRunParams<AcoContext, ICatalogManagerInput>;
+export type ICreateFlpTaskParams = ITaskRunParams<AcoContext, ICreateFlpTaskInput>;
+
+export interface IUpdateFlpTaskInput {
+    data: Folder;
+    original: Folder;
+    updated?: Set<string>;
+}
+
+export type IUpdateFlpTaskParams = ITaskRunParams<AcoContext, IUpdateFlpTaskInput>;
+
+export interface IDeleteFlpTaskInput {
+    data: Folder;
+}
+
+export type IDeleteFlpTaskParams = ITaskRunParams<AcoContext, IDeleteFlpTaskInput>;
