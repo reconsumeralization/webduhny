@@ -206,7 +206,6 @@ export const ButtonRenderer = createRenderer<Props, typeof elementInputs>(
 
         // In the editor, we don't want to have buttons clickable.
         if (isEditor) {
-            console.log("noo");
             return <StyledButtonBody>{buttonInnerContent}</StyledButtonBody>;
         }
 
