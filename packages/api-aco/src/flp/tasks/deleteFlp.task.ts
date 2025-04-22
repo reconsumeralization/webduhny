@@ -26,7 +26,7 @@ class DeleteFlpTask {
             id: DELETE_FLP_TASK_ID,
             title: "ACO - Delete FLP record",
             description:
-                "Keeps the FLP catalog in sync deleting an FLP record based on the provided Folder.",
+                "Synchronizes the FLP catalog by deleting the FLP record and its descendants based on the provided folder.",
             disableDatabaseLogs: true,
             run: async (params: IDeleteFlpTaskParams) => {
                 const { response, isAborted, input, context, isCloseToTimeout } = params;

@@ -26,7 +26,7 @@ class CreateFlpTask {
             id: CREATE_FLP_TASK_ID,
             title: "ACO - Create FLP record",
             description:
-                "Keeps the FLP catalog in sync creating a new FLP record based on the provided Folder.",
+                "Synchronizes the FLP catalog by creating the FLP record and its descendants based on the provided folder.",
             disableDatabaseLogs: true,
             run: async (params: ICreateFlpTaskParams) => {
                 const { response, isAborted, input, context, isCloseToTimeout } = params;

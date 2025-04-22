@@ -16,12 +16,10 @@ import { UPDATE_FLP_TASK_ID } from "~/flp/tasks";
 class UpdateFlpTask {
     private operations: AcoFolderLevelPermissionsStorageOperations;
     private flpGetter: GetFlp;
-    private updated: Set<string>;
 
     constructor(operations: AcoFolderLevelPermissionsStorageOperations, flpGetter: GetFlp) {
         this.operations = operations;
         this.flpGetter = flpGetter;
-        this.updated = new Set();
     }
 
     public init = () => {
@@ -29,22 +27,19 @@ class UpdateFlpTask {
             id: UPDATE_FLP_TASK_ID,
             title: "ACO - Update FLP record",
             description:
-                "Keeps the FLP catalog in sync updating the FLP record and all it's children, based on the provided Folder.",
+                "Synchronizes the FLP catalog by updating the FLP record and its descendants based on the provided folder.",
             disableDatabaseLogs: true,
             run: async (params: IUpdateFlpTaskParams) => {
                 const { response, isAborted, input, context, isCloseToTimeout } = params;
 
                 try {
-                    const { data, original, updated } = input;
-
-                    if (updated) {
-                        this.updated = updated;
-                    }
+                    const updated = new Set(input.updated ?? []);
+                    const { data, original } = input;
 
                     if (isAborted()) {
                         return response.aborted();
                     } else if (isCloseToTimeout()) {
-                        return response.continue({ ...input, updated: this.updated });
+                        return response.continue({ ...input, updated });
                     }
 
                     if (!data || !original) {
@@ -63,10 +58,53 @@ class UpdateFlpTask {
                         original: originalFlp
                     });
 
+                    const updateRecursive = async (flp: FolderLevelPermission) => {
+                        if (isCloseToTimeout()) {
+                            return response.continue({ ...input, updated });
+                        }
+
+                        if (updated.has(flp.id)) {
+                            return;
+                        }
+
+                        const parent = await this.operations.get({
+                            where: {
+                                tenant: flp.tenant,
+                                locale: flp.locale,
+                                type: flp.type,
+                                id: flp.parentId
+                            }
+                        });
+
+                        if (!parent) {
+                            throw new WError(
+                                `Parent FLP record not found for node ${flp.id} with parentId ${flp.parentId}.`,
+                                "ERROR_FLP_PARENT_NOT_FOUND"
+                            );
+                        }
+
+                        await this.operations.update({
+                            data: {
+                                ...flp,
+                                path: `${parent.path}/${flp.slug}`
+                            }
+                        });
+
+                        updated.add(flp.id);
+
+                        const children = await this.getDirectChildren(flp);
+
+                        for (const child of children) {
+                            await updateRecursive(child);
+                        }
+
+                        return;
+                    };
+
                     const children = await this.getDirectChildren(originalFlp);
 
                     for (const child of children) {
-                        await this.propagateUpdate(child);
+                        await updateRecursive(child);
                     }
 
                     return response.done("Task done: FLP catalog updated.");
@@ -76,46 +114,6 @@ class UpdateFlpTask {
             }
         });
     };
-
-    private async propagateUpdate(flp: FolderLevelPermission): Promise<void> {
-        if (this.updated.has(flp.id)) {
-            return;
-        }
-
-        this.updated.add(flp.id);
-        await this.updateFlp(flp);
-
-        const children = await this.getDirectChildren(flp);
-
-        for (const child of children) {
-            await this.propagateUpdate(child);
-        }
-    }
-
-    private async updateFlp(flp: FolderLevelPermission): Promise<void> {
-        const parent = await this.operations.get({
-            where: {
-                tenant: flp.tenant,
-                locale: flp.locale,
-                type: flp.type,
-                id: flp.parentId
-            }
-        });
-
-        if (!parent) {
-            throw new WError(
-                `Parent FLP record not found for node ${flp.id} with parentId ${flp.parentId}.`,
-                "ERROR_FLP_PARENT_NOT_FOUND"
-            );
-        }
-
-        await this.operations.update({
-            data: {
-                ...flp,
-                path: `${parent.path}/${flp.slug}`
-            }
-        });
-    }
 
     private async getDirectChildren(flp: FolderLevelPermission) {
         const children = await this.operations.list({
