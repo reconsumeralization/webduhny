@@ -1,12 +1,12 @@
 import type { GenericRecord } from "@webiny/api/types.js";
 import type { IDetail } from "~/sync/handler/types.js";
-import type { CommandType } from "~/types.js";
+import type { ExtendedCommandType } from "~/types.js";
 import { SQS_EVENT_NAME } from "~/constants.js";
 
 export interface IResolverRecordBodyItem {
     PK: string;
     SK: string;
-    command: CommandType;
+    command: ExtendedCommandType;
     /**
      * Table name to which the record belongs.
      * There will be multiple tables that will get populated through the system (regular table and elasticsearch for start).

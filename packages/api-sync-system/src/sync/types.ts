@@ -7,7 +7,7 @@ import {
     type PutCommand,
     type UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
-import type { AllCommandType, CommandType } from "~/types.js";
+import type { AllCommandType, ExtendedCommandType } from "~/types.js";
 
 export type IDynamoDbCommand =
     | PutCommand
@@ -20,7 +20,7 @@ export type IDynamoDbCommand =
 export interface ICommandValueItem {
     PK: string;
     SK: string;
-    command: CommandType;
+    command: ExtendedCommandType;
     tableName: string;
 }
 

@@ -1,19 +1,21 @@
+import type { CommandType } from "~/types.js";
+
 export interface IRecordsDataSystemTableItem {
     PK: string;
     SK: string;
-    command: "put" | "delete";
+    command: CommandType;
 }
 
 export interface IRecordsDataSystemTableItemParams {
     PK: string;
     SK: string;
-    command: "put" | "delete";
+    command: CommandType;
 }
 
 export class RecordsDataSystemTableItem implements IRecordsDataSystemTableItem {
     public readonly PK: string;
     public readonly SK: string;
-    public readonly command: "put" | "delete";
+    public readonly command: CommandType;
 
     public constructor(params: IRecordsDataSystemTableItemParams) {
         this.PK = params.PK;

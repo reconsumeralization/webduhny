@@ -54,7 +54,9 @@ export class ResolverApplication implements IResolverApplication {
         });
 
         try {
-            await this.recordHandler.handle({ data });
+            await this.recordHandler.handle({
+                data
+            });
         } catch (ex) {
             console.error(convertException(ex));
         }

@@ -1,9 +1,25 @@
 import type { IRecordsDataSystemTableItem } from "./RecordsDataSystemTableItem.js";
+import type { CommandType } from "~/types.js";
+
+export interface IRecordsDataSystemTableBundle {
+    items: IRecordsDataSystemTableItem[];
+    command: CommandType;
+}
 
 export interface IRecordsDataSystemTable {
     name: string;
     add(item: IRecordsDataSystemTableItem): void;
     getItems(): IRecordsDataSystemTableItem[];
+    /**
+     * Method that will bundle all items by command type.
+     * We need to keep the order of the operations as they are received.
+     * So there might be few bundles:
+     * * put - 10 operations
+     * * delete - 1 operation
+     * * put - 5 operations
+     * ...etc
+     */
+    bundle(): IRecordsDataSystemTableBundle[];
 }
 
 export interface ICreateRecordsDataSystemTableParamsCallableParams {
@@ -36,6 +52,31 @@ export class RecordsDataSystemTable implements IRecordsDataSystemTable {
 
     public add(item: IRecordsDataSystemTableItem): void {
         this.items.push(this.createRecordsDataSystemTableItem({ item }));
+    }
+
+    public bundle(): IRecordsDataSystemTableBundle[] {
+        const bundles: IRecordsDataSystemTableBundle[] = [];
+        let bundle: IRecordsDataSystemTableBundle | null = null;
+        for (const item of this.items) {
+            if (!bundle) {
+                bundle = this.createBundle(item);
+                continue;
+            } else if (bundle.command !== item.command) {
+                bundles.push(structuredClone(bundle));
+                bundle = this.createBundle(item);
+                continue;
+            }
+            bundle.items.push(structuredClone(item));
+        }
+
+        return bundles;
+    }
+
+    private createBundle(item: IRecordsDataSystemTableItem): IRecordsDataSystemTableBundle {
+        return {
+            items: [item],
+            command: item.command
+        };
     }
 }
 

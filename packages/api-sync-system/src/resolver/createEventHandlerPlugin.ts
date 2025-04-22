@@ -2,16 +2,34 @@ import { createEventHandler as createSQSEventHandler } from "@webiny/handler-aws
 import { createResolverApp } from "./app/ResolverApplication.js";
 import { convertException } from "@webiny/utils";
 import { createRecordHandler } from "./app/RecordHandler.js";
-import { RecordHandlerPlugin } from "./app/RecordHandlerPlugin.js";
+import { CommandHandlerPlugin } from "./app/CommandHandlerPlugin.js";
+import { createFetcher } from "~/resolver/app/fetcher/Fetcher.js";
+import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import { createStorer } from "~/resolver/app/storer/Storer.js";
 
 /**
  * TODO maybe add logger?
  */
 export const createEventHandlerPlugin = () => {
     return createSQSEventHandler(async ({ event, context, request, reply }) => {
-        const plugins = context.plugins.byType<RecordHandlerPlugin>(RecordHandlerPlugin.type);
+        const fetcher = createFetcher({
+            createDocumentClient: system => {
+                return getDocumentClient({
+                    region: system.region
+                });
+            }
+        });
+        const storer = createStorer({
+            createDocumentClient: system => {
+                return getDocumentClient({
+                    region: system.region
+                });
+            }
+        });
         const recordHandler = createRecordHandler({
-            plugins
+            plugins: context.plugins,
+            fetcher,
+            storer
         });
         const app = createResolverApp({
             recordHandler
