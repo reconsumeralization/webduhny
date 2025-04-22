@@ -14,6 +14,7 @@ import {
     ContentEntryFormMeta,
     ContentEntryFormTitle
 } from "~/admin/views/contentEntries/ContentEntry/FullScreenContentEntry/FullScreenContentEntryHeaderLeft";
+import { SingleValueItemContainer } from "~/admin/plugins/fieldRenderers/dynamicZone/SingleValueDynamicZone";
 
 export const ContentEntryEditorConfig = Object.assign(BaseContentEntryEditorConfig, {
     ContentEntry: Object.assign(ContentEntry, {
@@ -42,11 +43,9 @@ export const ContentEntryEditorConfig = Object.assign(BaseContentEntryEditorConf
                 useTemplate: DzField.useTemplate
             },
             Container: DzField.DynamicZoneContainer,
-            // SingleValue: {
-            //     Container: null,
-            //     ItemContainer: null,
-            //     Item: null
-            // },
+            SingleValue: {
+                ItemContainer: SingleValueItemContainer
+            },
             MultiValue: {
                 Container: DzField.MultiValueContainer,
                 ItemContainer: DzField.MultiValueItemContainer,

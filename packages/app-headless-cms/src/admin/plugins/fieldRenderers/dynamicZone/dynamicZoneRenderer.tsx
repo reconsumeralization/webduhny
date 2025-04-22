@@ -30,6 +30,7 @@ export type DynamicZoneContainerProps = {
     title?: string;
     description?: string;
     className?: string;
+    actions?: JSX.Element;
 };
 
 export const DynamicZoneContainer = makeDecoratable(
@@ -57,6 +58,7 @@ export const DynamicZoneContainer = makeDecoratable(
                         description={description}
                         className={className || defaultClassName}
                         open={open}
+                        actions={props.actions ?? null}
                     >
                         {children}
                     </AccordionItem>
