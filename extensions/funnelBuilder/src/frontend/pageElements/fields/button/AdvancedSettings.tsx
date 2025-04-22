@@ -16,7 +16,9 @@ export const AdvancedSettings = () => {
                 <Bind name={"field.extra.action"} validators={validation.create("required")}>
                     <Select
                         label={"Button action"}
-                        description={"Select the action that will be triggered when the button is clicked."}
+                        description={
+                            "Select the action that will be triggered when the button is clicked."
+                        }
                     >
                         {BUTTON_ACTION_OPTIONS.map(option => (
                             <option key={option.id} value={option.id}>

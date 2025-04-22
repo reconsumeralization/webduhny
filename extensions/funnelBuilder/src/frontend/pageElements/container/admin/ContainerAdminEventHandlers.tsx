@@ -97,7 +97,7 @@ export const ContainerAdminEventHandlers = () => {
             return doNothing;
         }
 
-        console.log('upuj to', updatedField.data.id, updatedField.data);
+        console.log("upuj to", updatedField.data.id, updatedField.data);
         funnelVm.updateField(updatedField.data.id, updatedField.data);
 
         return doNothing;

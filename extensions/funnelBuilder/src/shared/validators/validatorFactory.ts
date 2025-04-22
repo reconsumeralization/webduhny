@@ -4,6 +4,7 @@ import { AbstractValidator } from "./AbstractValidator";
 import { EmailValidator } from "./EmailValidator";
 import { LteValidator } from "./LteValidator";
 import { MaxLengthValidator } from "./MaxLengthValidator";
+import { MinLengthValidator } from "./MinLengthValidator";
 
 export interface FieldValidatorDto {
     type: string;
@@ -15,7 +16,7 @@ const registry: Record<string, (dto: FieldValidatorDto) => AbstractValidator> = 
     gte: dto => new GteValidator(dto.params),
     lte: dto => new LteValidator(dto.params),
     maxLength: dto => new MaxLengthValidator(dto.params),
-    minLength: dto => new MaxLengthValidator(dto.params),
+    minLength: dto => new MinLengthValidator(dto.params),
     required: () => new RequiredValidator()
 };
 

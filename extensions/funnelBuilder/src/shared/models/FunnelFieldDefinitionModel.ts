@@ -1,6 +1,6 @@
 import { getRandomId } from "../getRandomId";
 import { AbstractValidator } from "../validators/AbstractValidator";
-import {validatorFromDto, FieldValidatorDto} from "../validators/validatorFactory";
+import { validatorFromDto, FieldValidatorDto } from "../validators/validatorFactory";
 
 export interface FunnelFieldModelDto<TExtra = any> {
     id: string;

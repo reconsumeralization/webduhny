@@ -19,7 +19,7 @@ export class ConditionModel {
         return {
             field: this.field,
             operator: this.operator,
-            value: this.value,
+            value: this.value
         };
     }
 

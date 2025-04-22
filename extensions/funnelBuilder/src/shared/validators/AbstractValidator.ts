@@ -12,4 +12,3 @@ export abstract class AbstractValidator {
 
     abstract toDto(): FieldValidatorDto;
 }
-

@@ -9,7 +9,7 @@ export class EmailValidator extends AbstractValidator {
     }
 
     getErrorMessage() {
-        return `Value is email.`;
+        return "Value must be a valid email address.";
     }
 
     toDto() {

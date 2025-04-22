@@ -1,8 +1,8 @@
 import { PbEditorElement } from "@webiny/app-page-builder/types";
 
 export interface ContainerElementData {
-    fields: any[]
-    steps: any[]
+    fields: any[];
+    steps: any[];
 }
 
 export interface IContainerElement extends PbEditorElement {

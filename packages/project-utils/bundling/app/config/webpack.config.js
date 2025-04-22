@@ -307,7 +307,12 @@ module.exports = function (webpackEnv, { paths, options }) {
                                             cwd: paths.appPath,
                                             alias: {
                                                 "~": "./src",
-                                                "@f": path.join(projectApplication.project.root, 'extensions', 'funnelBuilder', 'src')
+                                                "@f": path.join(
+                                                    projectApplication.project.root,
+                                                    "extensions",
+                                                    "funnelBuilder",
+                                                    "src"
+                                                )
                                             }
                                         }
                                     ],

@@ -1,5 +1,5 @@
 import { validation } from "@webiny/validation";
-import {AbstractValidator} from "./AbstractValidator";
+import { AbstractValidator } from "./AbstractValidator";
 
 interface LteValidatorParams {
     threshold: number;

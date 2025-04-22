@@ -21,7 +21,7 @@ export class ConditionGroupModel {
             operator: this.operator,
             items: this.items.map(item =>
                 item instanceof ConditionGroupModel ? item.toDto() : item.toDto()
-            ),
+            )
         };
     }
 

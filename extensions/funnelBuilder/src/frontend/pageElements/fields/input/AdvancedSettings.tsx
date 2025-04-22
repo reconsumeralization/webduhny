@@ -10,7 +10,7 @@ export const AdvancedSettings = () => {
     // `@webiny/form`, `@webiny/ui`, and `@webiny/validation` packages.
     const { submit, data } = useForm();
 
-    console.log('data', data)
+    console.log("data", data);
     return (
         <Grid>
             <Cell span={12}>
@@ -41,10 +41,7 @@ export const AdvancedSettings = () => {
                 </Bind>
             </Cell>
             <Cell span={12}>
-                <Bind
-                    name={"helpText"}
-                    validators={validation.create("minLength:2,maxLength:500")}
-                >
+                <Bind name={"helpText"} validators={validation.create("minLength:2,maxLength:500")}>
                     <Input label={"Help text"} description={"Help text for the input field."} />
                 </Bind>
             </Cell>

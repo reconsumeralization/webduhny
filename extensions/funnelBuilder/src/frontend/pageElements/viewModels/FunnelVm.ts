@@ -1,5 +1,5 @@
 import { FunnelModel, FunnelModelDto } from "../models/FunnelModel";
-import {FunnelFieldModel, FunnelFieldModelDto} from "../models/FunnelFieldModel";
+import { FunnelFieldModel, FunnelFieldModelDto } from "../models/FunnelFieldModel";
 
 interface FunnelVmOptions {
     onChange?: (funnel: FunnelModelDto) => void;
@@ -44,8 +44,8 @@ export class FunnelVm {
     updateField(fieldId: string, fieldData: Partial<FunnelFieldModelDto>) {
         const field = this.funnel.fields.find(field => field.id === fieldId);
         if (field) {
-            console.log('field', field);
-            console.log('fieldData', fieldData);
+            console.log("field", field);
+            console.log("fieldData", fieldData);
             Object.assign(field, fieldData);
             this.onChange();
         }
@@ -68,7 +68,7 @@ export class FunnelVm {
             return;
         }
 
-        console.log('pozivam onchange sa', this.funnel.toDto())
+        console.log("pozivam onchange sa", this.funnel.toDto());
         this.options.onChange(this.funnel.toDto());
     }
 }

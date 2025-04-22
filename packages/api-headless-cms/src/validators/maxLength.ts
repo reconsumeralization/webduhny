@@ -11,7 +11,7 @@ export const createMaxLengthValidator = (): CmsModelFieldValidatorPlugin => {
                 const maxLengthValue = validator.settings?.value;
                 if (typeof maxLengthValue !== "undefined") {
                     return validation
-                        .validate(value, `maxLength:${maxLengthValue}`, {throw: false})
+                        .validate(value, `maxLength:${maxLengthValue}`, { throw: false })
                         .then(v => v === true)
                         .catch(() => false);
                 }

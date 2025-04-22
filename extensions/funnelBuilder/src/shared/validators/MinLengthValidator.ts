@@ -20,7 +20,7 @@ export class MinLengthValidator extends AbstractValidator {
     }
 
     getErrorMessage() {
-        return `Value must be less than or equal to ${this.params.threshold} characters long.`;
+        return `This field must be at least ${this.params.threshold} characters long.`;
     }
 
     toDto() {

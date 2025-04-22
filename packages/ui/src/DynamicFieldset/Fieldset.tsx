@@ -77,7 +77,7 @@ class Fieldset extends React.Component<FieldsetProps> {
             value = [];
         }
         if (index < 0) {
-            console.log('ideeee', [...value, {}])
+            console.log("ideeee", [...value, {}]);
             onChange([...value, {}]);
         } else {
             onChange([...value.slice(0, index + 1), {}, ...value.slice(index + 1)]);

@@ -7,7 +7,7 @@ import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { useContainer } from "../../container/ContainerProvider";
-import {FunnelFieldModelDto} from "../../models/FunnelFieldModel";
+import { FunnelFieldModelDto } from "../../models/FunnelFieldModel";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};

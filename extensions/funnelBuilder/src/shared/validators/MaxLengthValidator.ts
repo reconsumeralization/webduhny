@@ -1,5 +1,5 @@
 import { validation } from "@webiny/validation";
-import {AbstractValidator} from "./AbstractValidator";
+import { AbstractValidator } from "./AbstractValidator";
 
 interface MaxLengthValidatorParams {
     threshold: number;
@@ -20,7 +20,7 @@ export class MaxLengthValidator extends AbstractValidator {
     }
 
     getErrorMessage() {
-        return `Value must be less than or equal to ${this.params.threshold} characters long.`;
+        return `This field must be at most ${this.params.threshold} characters long.`;
     }
 
     toDto() {
