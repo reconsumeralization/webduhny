@@ -9,7 +9,12 @@ import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
 import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
-import { InputFieldData } from "./types";
+import { FunnelFieldDefinitionModelDto } from "../../../../shared/models/FunnelFieldDefinitionModel";
+
+type InputFieldData = FunnelFieldDefinitionModelDto<{
+    inputType: string;
+    placeholderText: string;
+}>;
 
 export const InputAdminPlugins = () => {
     return (

@@ -1,11 +1,11 @@
 import { getRandomId } from "../../../shared/getRandomId";
-import { FieldElementData } from "./types";
+import {FunnelFieldDefinitionModelDto} from "../../../shared/models/FunnelFieldDefinitionModel";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 
-export const createInitialFieldData = <TFieldElementData extends FieldElementData>(
+export const createInitialFieldData = <TFieldElementData extends FunnelFieldDefinitionModelDto>(
     fieldType: string,
-    extra: TFieldElementData["field"]["extra"]
+    extra: TFieldElementData["extra"]
 ): TFieldElementData => {
     return {
         id: getRandomId(),

@@ -13,7 +13,7 @@ import { useRenderer } from "@webiny/app-page-builder-elements";
 import type { ContainerElementData } from "../types";
 import { isFieldElementType } from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
-import { FunnelFieldModelDto } from "../../models/FunnelFieldModel";
+import { FunnelFieldDefinitionModelDto } from "../../../../shared/models/FunnelFieldDefinitionModel";
 
 const doNothing = {
     actions: []
@@ -42,7 +42,7 @@ export const ContainerAdminEventHandlers = () => {
             return doNothing;
         }
 
-        funnelVm.addField(createdElement.data as FunnelFieldModelDto);
+        funnelVm.addField(createdElement.data as FunnelFieldDefinitionModelDto);
 
         return doNothing;
     };
@@ -97,7 +97,6 @@ export const ContainerAdminEventHandlers = () => {
             return doNothing;
         }
 
-        console.log("upuj to", updatedField.data.id, updatedField.data);
         funnelVm.updateField(updatedField.data.id, updatedField.data);
 
         return doNothing;

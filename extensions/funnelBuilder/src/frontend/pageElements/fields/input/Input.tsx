@@ -41,12 +41,9 @@ export const Input = createRenderer(() => {
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
         validators: field.validators.map(validator => {
-            return {
-                validate: (value: any) => {
-                    return validator.validate(value);
-                },
-                validatorName: validator.type
-            };
+            return (value: any) => {
+                return validator.validate(value) as any;
+            }
         })
     });
 

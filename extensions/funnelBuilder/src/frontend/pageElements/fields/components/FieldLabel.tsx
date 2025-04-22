@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "@emotion/styled";
-import { FieldElementData } from "../types";
+import {FunnelFieldDefinitionModel} from "../../../../shared/models/FunnelFieldDefinitionModel";
 
 export const FieldLabelStyled = styled.label`
     width: 100%;
@@ -17,11 +17,15 @@ export const FieldLabelStyled = styled.label`
     }
 `;
 
-export const FieldLabel = ({ field }: FieldElementData) => {
+export interface FieldLabelProps {
+    field: FunnelFieldDefinitionModel;
+}
+
+export const FieldLabel = ({ field }: FieldLabelProps) => {
     return (
         <FieldLabelStyled>
             {field.label}
-            {field.validators?.some(validation => validation.name === "required") && (
+            {field.validators?.some(validation => validation.type === "required") && (
                 <span className="asterisk">*</span>
             )}
         </FieldLabelStyled>
