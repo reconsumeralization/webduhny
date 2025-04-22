@@ -12,5 +12,8 @@ module.exports = ({ message }) => {
         });
 
         setTimeout(resolve, 100);
+    }).catch(() => {
+        // Suppress any unexpected promise rejections to ensure smooth user experience.
+        // Notification errors are non-critical and can be safely ignored.
     });
 };

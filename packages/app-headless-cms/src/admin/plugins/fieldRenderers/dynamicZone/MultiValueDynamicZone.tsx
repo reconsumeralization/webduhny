@@ -42,6 +42,7 @@ export interface MultiValueItemContainerProps {
     title: React.ReactNode;
     description: string;
     icon: JSX.Element;
+    actions?: JSX.Element;
     template: CmsDynamicZoneTemplate;
     children: React.ReactNode;
 }
@@ -53,20 +54,28 @@ export const MultiValueItemContainer = makeDecoratable(
             <AccordionItem.Actions>
                 <AccordionItem.Action
                     icon={<ArrowUpIcon />}
+                    tooltip={"Move up"}
                     onClick={props.onMoveUp}
                     disabled={props.isFirst}
                 />
                 <AccordionItem.Action
                     icon={<ArrowDownIcon />}
+                    tooltip={"Move down"}
                     onClick={props.onMoveDown}
                     disabled={props.isLast}
                 />
                 <AccordionItem.Divider />
+                {props.actions ? <>{props.actions}</> : null}
                 <AccordionItem.Action
+                    tooltip={"Duplicate"}
                     icon={<CloneIcon />}
                     onClick={() => props.onClone(props.value)}
                 />
-                <AccordionItem.Action icon={<DeleteIcon />} onClick={props.onDelete} />
+                <AccordionItem.Action
+                    icon={<DeleteIcon />}
+                    onClick={props.onDelete}
+                    tooltip={"Delete"}
+                />
             </AccordionItem.Actions>
         );
 

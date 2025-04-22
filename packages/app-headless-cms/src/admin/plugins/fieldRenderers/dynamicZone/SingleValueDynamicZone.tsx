@@ -18,7 +18,7 @@ import {
     ParentValueIndexProvider,
     ModelFieldProvider
 } from "~/admin/components/ModelFieldProvider";
-import { useConfirmationDialog } from "@webiny/app-admin";
+import { makeDecoratable, useConfirmationDialog } from "@webiny/app-admin";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -28,6 +28,51 @@ interface SingleValueDynamicZoneProps {
     contentModel: CmsModel;
     getBind: GetBind;
 }
+
+interface TemplateValue {
+    _templateId: string;
+    [key: string]: any;
+}
+
+export interface SingleValueItemContainerProps {
+    value: TemplateValue;
+    contentModel: CmsModel;
+    onDelete: () => void;
+    title: React.ReactNode;
+    description: string;
+    icon: JSX.Element;
+    actions?: JSX.Element;
+    template: CmsDynamicZoneTemplate;
+    children: React.ReactNode;
+}
+
+export const SingleValueItemContainer = makeDecoratable(
+    "SingleValueItemContainer",
+    (props: SingleValueItemContainerProps) => {
+        const { template, actions, children } = props;
+        return (
+            <AccordionItem
+                title={template.name}
+                description={template.description}
+                icon={<TemplateIcon icon={template.icon} />}
+                open={true}
+                interactive={false}
+                actions={
+                    <AccordionItem.Actions>
+                        {actions ?? null}
+                        <AccordionItem.Action
+                            icon={<DeleteIcon />}
+                            onClick={props.onDelete}
+                            tooltip={"Delete"}
+                        />
+                    </AccordionItem.Actions>
+                }
+            >
+                {children}
+            </AccordionItem>
+        );
+    }
+);
 
 export const SingleValueDynamicZone = ({
     field,
@@ -66,20 +111,14 @@ export const SingleValueDynamicZone = ({
                     <ParentValueIndexProvider index={-1}>
                         <ModelFieldProvider field={field}>
                             <Accordion>
-                                <AccordionItem
+                                <SingleValueItemContainer
+                                    template={template}
+                                    value={bind.value}
+                                    contentModel={contentModel}
+                                    onDelete={unsetValue}
                                     title={template.name}
                                     description={template.description}
                                     icon={<TemplateIcon icon={template.icon} />}
-                                    open={true}
-                                    interactive={false}
-                                    actions={
-                                        <AccordionItem.Actions>
-                                            <AccordionItem.Action
-                                                icon={<DeleteIcon />}
-                                                onClick={unsetValue}
-                                            />
-                                        </AccordionItem.Actions>
-                                    }
                                 >
                                     <TemplateProvider template={template}>
                                         <Fields
@@ -89,7 +128,7 @@ export const SingleValueDynamicZone = ({
                                             Bind={Bind}
                                         />
                                     </TemplateProvider>
-                                </AccordionItem>
+                                </SingleValueItemContainer>
                             </Accordion>
                         </ModelFieldProvider>
                     </ParentValueIndexProvider>
