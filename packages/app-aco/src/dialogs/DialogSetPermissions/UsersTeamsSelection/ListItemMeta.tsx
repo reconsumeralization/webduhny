@@ -65,6 +65,10 @@ export const ListItemMeta = ({
     }, [permission]);
 
     const handle = useMemo(() => {
+        if (!currentLevel) {
+            return null;
+        }
+
         let handle = (
             <Button
                 variant={"ghost"}
@@ -80,14 +84,14 @@ export const ListItemMeta = ({
         }
 
         return handle;
-    }, [disabledReason, currentLevel.label]);
+    }, [disabledReason, currentLevel]);
+
+    if (!currentLevel) {
+        return null;
+    }
 
     return (
-        <DropdownMenu
-            trigger={handle}
-            // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
-            // portalZIndex={101}
-        >
+        <DropdownMenu trigger={handle}>
             {TARGET_LEVELS.map(level => (
                 <DropdownMenu.CheckboxItem
                     key={level.id}
