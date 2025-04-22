@@ -1,4 +1,6 @@
-import {getRandomId} from "../../../shared/getRandomId";
+import { getRandomId } from "../getRandomId";
+import { AbstractValidator } from "../validators/AbstractValidator";
+import {validatorFromDto, FieldValidatorDto} from "../validators/validatorFactory";
 
 export interface FunnelFieldModelDto<TExtra = any> {
     id: string;
@@ -7,18 +9,19 @@ export interface FunnelFieldModelDto<TExtra = any> {
     type: string;
     label: string;
     helpText: string;
-    validators: Array<any>; // todo
+    validators: FieldValidatorDto[];
     extra: TExtra;
 }
 
-export class FunnelFieldModel {
+export class FunnelFieldDefinitionModel {
     id: string;
     type: string;
     stepId: string;
     fieldId: string;
     label: string;
     helpText: string;
-    validators: Array<any>; // todo
+    defaultValue: any;
+    validators: AbstractValidator[];
     extra: any; // todo
 
     constructor(dto: FunnelFieldModelDto) {
@@ -28,11 +31,11 @@ export class FunnelFieldModel {
         this.type = dto?.type ?? "text"; // text, select, etc.
         this.label = dto?.label ?? "";
         this.helpText = dto?.helpText ?? "";
-        this.validators = dto?.validators ?? []; // todo
-        this.extra = dto?.extra ?? {}; // todo
+        this.validators = dto?.validators?.map(validatorFromDto) ?? [];
+        this.extra = dto?.extra ?? {};
     }
 
-    toDto():FunnelFieldModelDto {
+    toDto(): FunnelFieldModelDto {
         return {
             id: this.id,
             fieldId: this.id,
@@ -40,12 +43,12 @@ export class FunnelFieldModel {
             type: this.type,
             label: this.label,
             helpText: "",
-            validators: [], // todo
-            extra: {} // todo
+            validators: this.validators.map(v => v.toDto()),
+            extra: this.extra
         };
     }
 
-    static fromDto(dto: FunnelFieldModelDto): FunnelFieldModel {
-        return new FunnelFieldModel(dto);
+    static fromDto(dto: FunnelFieldModelDto): FunnelFieldDefinitionModel {
+        return new FunnelFieldDefinitionModel(dto);
     }
 }

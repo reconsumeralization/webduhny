@@ -1,6 +1,6 @@
 import { FunnelStepModel, FunnelStepModelDto } from "./FunnelStepModel";
 // import {ConditionGroupModel} from "./ConditionGroupModel";
-import { FunnelFieldModel, FunnelFieldModelDto } from "./FunnelFieldModel";
+import { FunnelFieldDefinitionModel, FunnelFieldModelDto } from "./FunnelFieldDefinitionModel";
 
 export interface FunnelModelDto {
     steps: FunnelStepModelDto[];
@@ -8,14 +8,14 @@ export interface FunnelModelDto {
 }
 
 export class FunnelModel {
-    fields: FunnelFieldModel[] = [];
+    fields: FunnelFieldDefinitionModel[] = [];
     steps: FunnelStepModel[] = [];
 
     // conditions?: FunnelConditionGroupModel; TODO
 
-    constructor(init?: Partial<FunnelModel>) {
-        this.fields = init?.fields?.map(f => new FunnelFieldModel(f)) ?? [];
-        this.steps = init?.steps?.map(s => new FunnelStepModel(s)) ?? [];
+    constructor(funnelDto?: FunnelModelDto) {
+        this.fields = funnelDto?.fields?.map(f => new FunnelFieldDefinitionModel(f)) ?? [];
+        this.steps = funnelDto?.steps?.map(s => new FunnelStepModel(s)) ?? [];
         // this.conditions = init?.conditions
         //     ? new ConditionGroupModel(init.conditions)
         //     : undefined;
@@ -31,7 +31,7 @@ export class FunnelModel {
 
     static fromDto(dto: FunnelModelDto): FunnelModel {
         return new FunnelModel({
-            fields: dto.fields?.map(s => FunnelFieldModel.fromDto(s)),
+            fields: dto.fields?.map(s => FunnelFieldDefinitionModel.fromDto(s)),
             steps: dto.steps?.map(s => FunnelStepModel.fromDto(s))
         });
     }
