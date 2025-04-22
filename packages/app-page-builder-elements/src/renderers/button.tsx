@@ -97,6 +97,7 @@ export interface ButtonElementData {
 export interface Props {
     linkComponent?: LinkComponent;
     clickHandlers?: Array<ButtonClickHandler>;
+    isEditor?: boolean;
 }
 
 export const elementInputs = {
@@ -157,6 +158,7 @@ export const elementInputs = {
 export const ButtonRenderer = createRenderer<Props, typeof elementInputs>(
     props => {
         const LinkComponent = props.linkComponent || DefaultLinkComponent;
+        const { isEditor } = props;
         const { getElement, getInputValues } = useRenderer();
         const element = getElement<ButtonElementData>();
         const inputs = getInputValues<typeof elementInputs>();
@@ -201,6 +203,12 @@ export const ButtonRenderer = createRenderer<Props, typeof elementInputs>(
         const isLinkAction = useMemo(() => {
             return link?.href || ["link", "scrollToElement"].includes(action?.actionType);
         }, [link?.href, action?.actionType]);
+
+        // In the editor, we don't want to have buttons clickable.
+        if (isEditor) {
+            console.log("noo");
+            return <StyledButtonBody>{buttonInnerContent}</StyledButtonBody>;
+        }
 
         if (isLinkAction) {
             let href = "";

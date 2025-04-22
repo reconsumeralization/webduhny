@@ -79,7 +79,7 @@ const buttonElementPluginsFactory = (args: PbEditorElementPluginArgs = {}) => {
                 return typeof args.create === "function" ? args.create(defaultValue) : defaultValue;
             },
             render({ element, ...rest }) {
-                return <ButtonRenderer element={element as Element} {...rest} />;
+                return <ButtonRenderer element={element as Element} {...rest} isEditor />;
             }
         } as PbEditorPageElementPlugin,
         {
