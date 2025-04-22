@@ -1,10 +1,10 @@
 import { FunnelStepModel, FunnelStepModelDto } from "./FunnelStepModel";
 // import {ConditionGroupModel} from "./ConditionGroupModel";
-import { FunnelFieldDefinitionModel, FunnelFieldModelDto } from "./FunnelFieldDefinitionModel";
+import { FunnelFieldDefinitionModel, FunnelFieldDefinitionModelDto } from "./FunnelFieldDefinitionModel";
 
 export interface FunnelModelDto {
     steps: FunnelStepModelDto[];
-    fields: FunnelFieldModelDto[];
+    fields: FunnelFieldDefinitionModelDto[];
 }
 
 export class FunnelModel {

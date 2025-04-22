@@ -2,14 +2,18 @@ import React, { useContext, useMemo } from "react";
 import { ContainerElementData } from "./types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
-import { FunnelModelDto } from "../models/FunnelModel";
+import { FunnelModelDto } from "../../../shared/models/FunnelModel";
+import { FunnelSubmissionModel } from "../../../shared/models/FunnelSubmissionModel";
+import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
 
 interface ContainerContextValue {
     funnelVm: FunnelVm | undefined;
+    funnelSubmissionVm: FunnelSubmissionVm | undefined;
 }
 
 const ContainerContext = React.createContext<ContainerContextValue>({
-    funnelVm: undefined
+    funnelVm: undefined,
+    funnelSubmissionVm: undefined
 });
 
 export interface ContainerProviderProps {
@@ -32,7 +36,15 @@ export const ContainerProvider = ({
         });
     }, [element.data]);
 
-    return <ContainerContext.Provider value={{ funnelVm }}>{children}</ContainerContext.Provider>;
+    const funnelSubmissionVm = useMemo(() => {
+        return new FunnelSubmissionVm(funnelVm.funnel);
+    }, [funnelVm.funnel]);
+
+    return (
+        <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
+            {children}
+        </ContainerContext.Provider>
+    );
 };
 
 ContainerProvider.displayName = "ContainerProvider";

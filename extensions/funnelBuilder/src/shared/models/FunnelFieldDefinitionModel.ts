@@ -2,7 +2,7 @@ import { getRandomId } from "../getRandomId";
 import { AbstractValidator } from "../validators/AbstractValidator";
 import { validatorFromDto, FieldValidatorDto } from "../validators/validatorFactory";
 
-export interface FunnelFieldModelDto<TExtra = any> {
+export interface FunnelFieldDefinitionModelDto<TExtra = any> {
     id: string;
     fieldId: string;
     stepId: string;
@@ -24,7 +24,7 @@ export class FunnelFieldDefinitionModel {
     validators: AbstractValidator[];
     extra: any; // todo
 
-    constructor(dto: FunnelFieldModelDto) {
+    constructor(dto: FunnelFieldDefinitionModelDto) {
         this.id = dto?.id ?? getRandomId();
         this.fieldId = dto?.fieldId ?? this.id; // Use id as fieldId if not provided
         this.stepId = dto?.stepId ?? "";
@@ -35,7 +35,7 @@ export class FunnelFieldDefinitionModel {
         this.extra = dto?.extra ?? {};
     }
 
-    toDto(): FunnelFieldModelDto {
+    toDto(): FunnelFieldDefinitionModelDto {
         return {
             id: this.id,
             fieldId: this.id,
@@ -48,7 +48,7 @@ export class FunnelFieldDefinitionModel {
         };
     }
 
-    static fromDto(dto: FunnelFieldModelDto): FunnelFieldDefinitionModel {
+    static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
         return new FunnelFieldDefinitionModel(dto);
     }
 }

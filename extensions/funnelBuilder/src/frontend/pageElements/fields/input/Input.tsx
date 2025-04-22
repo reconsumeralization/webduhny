@@ -7,7 +7,7 @@ import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { useContainer } from "../../container/ContainerProvider";
-import { FunnelFieldModelDto } from "../../models/FunnelFieldModel";
+import { FunnelFieldDefinitionModel } from "../../../../shared/models/FunnelFieldDefinitionModel";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -28,18 +28,26 @@ export const StyledInput = styled.input`
 
 export const Input = createRenderer(() => {
     const { getElement } = useRenderer();
-    const element = getElement<FunnelFieldModelDto>();
+    const element = getElement<FunnelFieldDefinitionModel>();
 
-    const { funnelVm } = useContainer();
-    if (!funnelVm) {
+    const { funnelVm, funnelSubmissionVm } = useContainer();
+
+    if (!funnelVm || !funnelSubmissionVm) {
         return null;
     }
 
-    const { data: field } = element;
+    const { definition: field } = funnelSubmissionVm.getField(element.data.fieldId);
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators: field.validators
+        validators: field.validators.map(validator => {
+            return {
+                validate: (value: any) => {
+                    return validator.validate(value);
+                },
+                validatorName: validator.type
+            };
+        })
     });
 
     const onBlur = (ev: React.SyntheticEvent) => {
@@ -50,8 +58,6 @@ export const Input = createRenderer(() => {
             validate();
         }
     };
-
-    // console.log('getFieldsForActiveStep', funnelVm.getFieldsForActiveStep());
 
     return (
         <Field>

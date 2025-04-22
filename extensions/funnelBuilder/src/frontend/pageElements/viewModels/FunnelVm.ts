@@ -1,5 +1,8 @@
-import { FunnelModel, FunnelModelDto } from "../models/FunnelModel";
-import { FunnelFieldModel, FunnelFieldModelDto } from "../models/FunnelFieldModel";
+import { FunnelModel, FunnelModelDto } from "../../../shared/models/FunnelModel";
+import {
+    FunnelFieldDefinitionModel,
+    FunnelFieldDefinitionModelDto
+} from "../../../shared/models/FunnelFieldDefinitionModel";
 
 interface FunnelVmOptions {
     onChange?: (funnel: FunnelModelDto) => void;
@@ -11,7 +14,7 @@ export class FunnelVm {
 
     activeStepIndex = 0;
 
-    constructor(funnel?: FunnelModel | Partial<FunnelModel>, options: FunnelVmOptions = {}) {
+    constructor(funnel?: FunnelModel | FunnelModelDto, options: FunnelVmOptions = {}) {
         if (funnel instanceof FunnelModel) {
             this.funnel = funnel;
         } else {
@@ -21,17 +24,17 @@ export class FunnelVm {
         this.options = options;
     }
 
-    static fromJSON(json: any) {
-        const funnel = FunnelModel.fromDto(json);
+    static fromDto(dto: any) {
+        const funnel = FunnelModel.fromDto(dto);
         return new FunnelVm(funnel);
     }
 
-    toJSON() {
+    toDto() {
         return this.funnel.toDto();
     }
 
-    addField(field: FunnelFieldModelDto) {
-        const newField = new FunnelFieldModel(field);
+    addField(field: FunnelFieldDefinitionModelDto) {
+        const newField = new FunnelFieldDefinitionModel(field);
         this.funnel.fields.push(newField);
         this.onChange();
     }
@@ -41,11 +44,9 @@ export class FunnelVm {
         this.onChange();
     }
 
-    updateField(fieldId: string, fieldData: Partial<FunnelFieldModelDto>) {
+    updateField(fieldId: string, fieldData: Partial<FunnelFieldDefinitionModelDto>) {
         const field = this.funnel.fields.find(field => field.id === fieldId);
         if (field) {
-            console.log("field", field);
-            console.log("fieldData", fieldData);
             Object.assign(field, fieldData);
             this.onChange();
         }
@@ -68,7 +69,6 @@ export class FunnelVm {
             return;
         }
 
-        console.log("pozivam onchange sa", this.funnel.toDto());
         this.options.onChange(this.funnel.toDto());
     }
 }
