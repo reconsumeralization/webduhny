@@ -7,6 +7,7 @@ const listPackages = async ({ inputs }) => {
         packagesList = Array.isArray(inputs.package) ? inputs.package : [inputs.package];
     } else {
         packagesList = await execa("yarn", [
+            "--silent",
             "webiny",
             "workspaces",
             "tree",
@@ -20,6 +21,7 @@ const listPackages = async ({ inputs }) => {
     }
 
     const commandArgs = [
+        "--silent",
         "webiny",
         "workspaces",
         "list",
