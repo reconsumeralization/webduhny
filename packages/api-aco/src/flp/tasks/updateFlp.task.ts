@@ -2,7 +2,6 @@ import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import WError from "@webiny/error";
 import { createPrivateTaskDefinition } from "@webiny/tasks";
 import { createFlpOperations } from "~/flp/flp.so";
-import { GetFlp } from "~/flp/tasks/GetFlp";
 import {
     type AcoContext,
     type AcoFolderLevelPermissionsStorageOperations,
@@ -12,6 +11,7 @@ import {
 } from "~/types";
 
 import { UPDATE_FLP_TASK_ID } from "~/flp/tasks";
+import { GetFlp } from "~/flp/tasks/GetFlp";
 
 class UpdateFlpTask {
     private operations: AcoFolderLevelPermissionsStorageOperations;
@@ -50,8 +50,8 @@ class UpdateFlpTask {
                         );
                     }
 
-                    const flp = await this.flpGetter.execute(data, context);
-                    const originalFlp = await this.flpGetter.execute(original, context);
+                    const flp = await this.flpGetter.getFromFolder(data, context);
+                    const originalFlp = await this.flpGetter.getFromFolder(original, context);
 
                     await this.operations.update({
                         data: flp,
@@ -67,26 +67,11 @@ class UpdateFlpTask {
                             return;
                         }
 
-                        const parent = await this.operations.get({
-                            where: {
-                                tenant: flp.tenant,
-                                locale: flp.locale,
-                                type: flp.type,
-                                id: flp.parentId
-                            }
-                        });
-
-                        if (!parent) {
-                            throw new WError(
-                                `Parent FLP record not found for node ${flp.id} with parentId ${flp.parentId}.`,
-                                "ERROR_FLP_PARENT_NOT_FOUND"
-                            );
-                        }
+                        const updatedFlp = await this.flpGetter.getFromFlp(flp, context);
 
                         await this.operations.update({
                             data: {
-                                ...flp,
-                                path: `${parent.path}/${flp.slug}`
+                                ...updatedFlp
                             }
                         });
 

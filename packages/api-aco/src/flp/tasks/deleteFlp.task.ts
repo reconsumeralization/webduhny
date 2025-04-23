@@ -8,9 +8,9 @@ import {
     type IDeleteFlpTaskParams
 } from "~/types";
 import WError from "@webiny/error";
-import { GetFlp } from "~/flp/tasks/GetFlp";
 
 import { DELETE_FLP_TASK_ID } from "~/flp/tasks";
+import { GetFlp } from "~/flp/tasks/GetFlp";
 
 class DeleteFlpTask {
     private operations: AcoFolderLevelPermissionsStorageOperations;
@@ -45,7 +45,7 @@ class DeleteFlpTask {
                         );
                     }
 
-                    const flp = await this.flpGetter.execute(input.data, context);
+                    const flp = await this.flpGetter.getFromFolder(input.data, context);
 
                     await this.operations.delete({
                         flp

@@ -45,7 +45,7 @@ class CreateFlpTask {
                         );
                     }
 
-                    const data = await this.flpGetter.execute(input.data, context);
+                    const data = await this.flpGetter.getFromFolder(input.data, context);
 
                     await this.operations.create({
                         data
