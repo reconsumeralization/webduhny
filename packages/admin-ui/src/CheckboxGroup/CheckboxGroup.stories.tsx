@@ -15,8 +15,8 @@ const meta: Meta<typeof CheckboxGroup> = {
         layout: "padded"
     },
     render: args => {
-        const [values, setValues] = useState(args.value);
-        return <CheckboxGroup {...args} value={values} onChange={values => setValues(values)} />;
+        const [value, setValue] = useState(args.value);
+        return <CheckboxGroup {...args} value={value} onChange={value => setValue(value)} />;
     }
 };
 
@@ -113,7 +113,7 @@ export const FullExample: Story = {
         label: "Select which deploy option do you prefer",
         required: true,
         description:
-            "Deployment option is simly a way of parsing the data based on your database settings.",
+            "Deployment option is simply a way of parsing the data based on your database settings.",
         note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {
             isValid: false,
@@ -147,7 +147,7 @@ export const Documentation: Story = {
                 value: "value-3"
             }
         ],
-        values: []
+        value: []
     },
     argTypes: {
         label: {
@@ -181,7 +181,7 @@ export const Documentation: Story = {
             description: "Array of checkbox items with label and value",
             control: "object"
         },
-        values: {
+        value: {
             description: "Array of selected values",
             control: "object"
         },
