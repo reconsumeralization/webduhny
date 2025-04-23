@@ -28,21 +28,21 @@ type Story = StoryObj<typeof Select>;
 export const Default: Story = {
     args: {
         options: [
-            "Eastern Standard Time (EST)",
-            "Central Standard Time (CST)",
-            "Pacific Standard Time (PST)",
-            "Greenwich Mean Time (GMT)",
-            "Central European Time (CET)",
-            "Central Africa Time (CAT)",
-            "India Standard Time (IST)",
-            "China Standard Time (CST)",
-            "Japan Standard Time (JST)",
-            "Australian Western Standard Time (AWST)",
-            "New Zealand Standard Time (NZST)",
-            "Fiji Time (FJT)",
-            "Argentina Time (ART)",
-            "Bolivia Time (BOT)",
-            "Brasilia Time (BRT)"
+            { value: "EST", label: "Eastern Standard Time (UTC-5)" },
+            { value: "CST", label: "Central Standard Time (UTC-6)" },
+            { value: "PST", label: "Pacific Standard Time (UTC-8)" },
+            { value: "GMT", label: "Greenwich Mean Time (UTC+0)" },
+            { value: "CET", label: "Central European Time (UTC+1)" },
+            { value: "CAT", label: "Central Africa Time (UTC+2)" },
+            { value: "IST", label: "India Standard Time (UTC+5:30)" },
+            { value: "CST_CHINA", label: "China Standard Time (UTC+8)" },
+            { value: "JST", label: "Japan Standard Time (UTC+9)" },
+            { value: "AWST", label: "Australian Western Standard Time (UTC+8)" },
+            { value: "NZST", label: "New Zealand Standard Time (UTC+12)" },
+            { value: "FJT", label: "Fiji Time (UTC+12)" },
+            { value: "ART", label: "Argentina Time (UTC-3)" },
+            { value: "BOT", label: "Bolivia Time (UTC-4)" },
+            { value: "BRT", label: "Brasilia Time (UTC-3)" }
         ]
     }
 };
@@ -105,5 +105,28 @@ export const FullExample: Story = {
             isValid: false,
             message: "This field is required."
         }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState("");
+
+        return <Select {...args} value={value} onChange={newValue => setValue(newValue)} />;
+    },
+    args: {
+        label: "Time Zone",
+        description: "Select your preferred time zone",
+        note: "This setting will affect how times are displayed throughout the application",
+        required: true,
+        disabled: false,
+        options: [
+            { value: "EST", label: "Eastern Standard Time (UTC-5)" },
+            { value: "CST", label: "Central Standard Time (UTC-6)" },
+            { value: "PST", label: "Pacific Standard Time (UTC-8)" },
+            { value: "GMT", label: "Greenwich Mean Time (UTC+0)" },
+            { value: "CET", label: "Central European Time (UTC+1)" },
+            { value: "IST", label: "India Standard Time (UTC+5:30)" }
+        ]
     }
 };
