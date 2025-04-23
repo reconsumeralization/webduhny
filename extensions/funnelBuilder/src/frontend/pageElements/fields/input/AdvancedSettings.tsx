@@ -12,42 +12,54 @@ export const AdvancedSettings = () => {
 
     console.log("data", data);
     return (
-        <Grid>
-            <Cell span={12}>
-                <Bind
-                    name={"fieldId"}
-                    validators={validation.create("required,minLength:2,maxLength:100")}
-                >
-                    <Input label={"Field Id"} description={"Id of the input field."} />
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Bind
-                    name={"label"}
-                    validators={validation.create("required,minLength:2,maxLength:100")}
-                >
-                    <Input label={"Label"} description={"Label of the input field."} />
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Bind
-                    name={"extra.placeholderText"}
-                    validators={validation.create("minLength:2,maxLength:500")}
-                >
-                    <Input
-                        label={"Placeholder text"}
-                        description={"Placeholder text for the input field."}
-                    />
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <Bind name={"helpText"} validators={validation.create("minLength:2,maxLength:500")}>
-                    <Input label={"Help text"} description={"Help text for the input field."} />
-                </Bind>
-            </Cell>
-            <Cell span={12}>
-                <ButtonPrimary onClick={submit}>Save</ButtonPrimary>
-            </Cell>
-        </Grid>
+        <>
+            <Grid>
+                <Cell span={12}>
+                    <Bind
+                        name={"fieldId"}
+                        validators={validation.create("required,minLength:2,maxLength:100")}
+                    >
+                        <Input label={"Field Id"} description={"Id of the input field."} />
+                    </Bind>
+                </Cell>
+                <Cell span={12}>
+                    <Bind
+                        name={"label"}
+                        validators={validation.create("required,minLength:2,maxLength:100")}
+                    >
+                        <Input label={"Label"} description={"Label of the input field."} />
+                    </Bind>
+                </Cell>
+                <Cell span={12}>
+                    <Bind
+                        name={"extra.placeholderText"}
+                        validators={validation.create("minLength:2,maxLength:500")}
+                    >
+                        <Input
+                            label={"Placeholder text"}
+                            description={"Placeholder text for the input field."}
+                        />
+                    </Bind>
+                </Cell>
+                <Cell span={12}>
+                    <Bind
+                        name={"helpText"}
+                        validators={validation.create("minLength:2,maxLength:500")}
+                    >
+                        <Input label={"Help text"} description={"Help text for the input field."} />
+                    </Bind>
+                </Cell>
+            </Grid>
+            <Grid>
+                <Cell span={12}>
+                    Valid
+                </Cell>
+            </Grid>
+            <Grid>
+                <Cell span={12}>
+                    <ButtonPrimary onClick={submit}>Save</ButtonPrimary>
+                </Cell>
+            </Grid>
+        </>
     );
 };

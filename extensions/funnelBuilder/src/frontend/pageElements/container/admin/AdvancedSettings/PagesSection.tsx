@@ -109,10 +109,7 @@ export const PagesSection = () => {
                 onDragEnd={handleDragEnd}
                 modifiers={[restrictToVerticalAxis]}
             >
-                <SortableContext
-                    items={container.elements}
-                    strategy={verticalListSortingStrategy}
-                >
+                <SortableContext items={container.elements} strategy={verticalListSortingStrategy}>
                     {container.elements.map(element => (
                         <PagesListItem
                             key={element.id}

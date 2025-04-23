@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "@emotion/styled";
-import {FunnelFieldDefinitionModel} from "../../../../shared/models/FunnelFieldDefinitionModel";
+import { FunnelFieldDefinitionModel } from "../../../../shared/models/FunnelFieldDefinitionModel";
 
 export const FieldLabelStyled = styled.label`
     width: 100%;

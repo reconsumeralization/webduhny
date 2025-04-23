@@ -5,14 +5,21 @@ import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
 
 interface ContainerContextValue {
-    funnelVm: FunnelVm | undefined;
-    funnelSubmissionVm: FunnelSubmissionVm | undefined;
+    funnelVm: FunnelVm;
+    funnelSubmissionVm: FunnelSubmissionVm;
 }
 
-const ContainerContext = React.createContext<ContainerContextValue>({
-    funnelVm: undefined,
-    funnelSubmissionVm: undefined
-});
+const createInitialContextValue = (): ContainerContextValue => {
+    const funnelVm = new FunnelVm();
+    const funnelSubmissionVm = new FunnelSubmissionVm(funnelVm.funnel);
+
+    return {
+        funnelVm,
+        funnelSubmissionVm
+    };
+};
+
+const ContainerContext = React.createContext<ContainerContextValue>(createInitialContextValue());
 
 export interface ContainerProviderProps {
     children: React.ReactNode;

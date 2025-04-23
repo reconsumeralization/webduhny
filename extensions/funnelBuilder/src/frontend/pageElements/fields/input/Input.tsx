@@ -1,13 +1,11 @@
 import React from "react";
-import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import styled from "@emotion/styled";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
-import { useContainer } from "../../container/ContainerProvider";
-import { FunnelFieldDefinitionModel } from "../../../../shared/models/FunnelFieldDefinitionModel";
+import { createFieldRenderer } from "../utils";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -26,25 +24,13 @@ export const StyledInput = styled.input`
     }
 `;
 
-export const Input = createRenderer(() => {
-    const { getElement } = useRenderer();
-    const element = getElement<FunnelFieldDefinitionModel>();
-
-    const { funnelVm, funnelSubmissionVm } = useContainer();
-
-    if (!funnelVm || !funnelSubmissionVm) {
-        return null;
-    }
-
-    if (!funnelSubmissionVm.fieldExists(element.data.fieldId)) {
-        return null;
-    }
-
-    const { definition: field } = funnelSubmissionVm.getField(element.data.fieldId);
+export const Input = createFieldRenderer((props) => {
+    const { definition: field } = props.field;
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators: field.validators.map(validator => validator.validate)
+        validators: field.validators.map(validator => validator.validate),
+        defaultValue: field.defaultValue,
     });
 
     const onBlur = (ev: React.SyntheticEvent) => {

@@ -1,9 +1,6 @@
-import { FunnelFieldDefinitionModelDto } from "../../../../shared/models/FunnelFieldDefinitionModel";
+import { FieldElementData } from "../types";
 
-export type InputElementData = Omit<
-    FunnelFieldDefinitionModelDto<{
-        inputType: string;
-        placeholderText: string;
-    }>,
-    "stepId"
->;
+export type InputFieldElementData = FieldElementData<{
+    inputType: string;
+    placeholderText: string;
+}>;

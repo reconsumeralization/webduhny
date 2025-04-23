@@ -8,11 +8,16 @@
 - prevent parent block deletion
 - prevent grid/cell deletion :|
 - advanced settings - apply changes as the user types (not on submit)
-- moving elements? should we block that for now? maybe sh?
 - block multiple funnels on page
 - any checks on moving steps needed?
+- history: false check! (checking everything is saved as expected)
+- default Value
+- validators
+-  async stuff? like vlaidators?
+-  supported validators per field type
 
 ## SH
+- moving elements? should we block that for now? maybe sh?
 - add FB block
 - have multiple funnels on page
  

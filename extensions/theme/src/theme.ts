@@ -77,7 +77,7 @@ export const typography = {
             tag: "h1",
             styles: {
                 desktop: { ...headings, fontWeight: "bold", fontSize: "100px" },
-                tablet: { ...headings, fontWeight: "bold", fontSize: "10px" },
+                tablet: { ...headings, fontWeight: "bold", fontSize: "10px" }
             }
         },
         {
