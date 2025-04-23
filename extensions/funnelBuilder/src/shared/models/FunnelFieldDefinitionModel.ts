@@ -1,4 +1,3 @@
-import { getRandomId } from "../getRandomId";
 import { AbstractValidator } from "../validators/AbstractValidator";
 import { validatorFromDto, FieldValidatorDto } from "../validators/validatorFactory";
 
@@ -25,24 +24,24 @@ export class FunnelFieldDefinitionModel {
     extra: any; // todo
 
     constructor(dto: FunnelFieldDefinitionModelDto) {
-        this.id = dto?.id ?? getRandomId();
-        this.fieldId = dto?.fieldId ?? this.id; // Use id as fieldId if not provided
-        this.stepId = dto?.stepId ?? "";
-        this.type = dto?.type ?? "text"; // text, select, etc.
-        this.label = dto?.label ?? "";
-        this.helpText = dto?.helpText ?? "";
-        this.validators = dto?.validators?.map(validatorFromDto) ?? [];
-        this.extra = dto?.extra ?? {};
+        this.id = dto.id;
+        this.fieldId = dto.fieldId;
+        this.stepId = dto.stepId;
+        this.type = dto.type;
+        this.label = dto.label;
+        this.helpText = dto.helpText;
+        this.validators = dto.validators?.map(validatorFromDto) ?? [];
+        this.extra = dto.extra ?? {};
     }
 
     toDto(): FunnelFieldDefinitionModelDto {
         return {
             id: this.id,
-            fieldId: this.id,
-            stepId: this.id,
+            fieldId: this.fieldId,
+            stepId: this.stepId,
             type: this.type,
             label: this.label,
-            helpText: "",
+            helpText: this.helpText,
             validators: this.validators.map(v => v.toDto()),
             extra: this.extra
         };

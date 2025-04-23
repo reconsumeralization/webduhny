@@ -12,7 +12,7 @@ export class FunnelVm {
     funnel: FunnelModel;
     options: FunnelVmOptions;
 
-    activeStepIndex = 0;
+    activeStepId: string;
 
     constructor(funnel?: FunnelModel | FunnelModelDto, options: FunnelVmOptions = {}) {
         if (funnel instanceof FunnelModel) {
@@ -20,6 +20,8 @@ export class FunnelVm {
         } else {
             this.funnel = new FunnelModel(funnel);
         }
+
+        this.activeStepId = this.funnel.steps[0]?.id || "";
 
         this.options = options;
     }
@@ -29,18 +31,14 @@ export class FunnelVm {
         return new FunnelVm(funnel);
     }
 
-    toDto() {
-        return this.funnel.toDto();
-    }
-
-    addField(field: FunnelFieldDefinitionModelDto) {
-        const newField = new FunnelFieldDefinitionModel(field);
+    addField(dto: FunnelFieldDefinitionModelDto) {
+        const newField = new FunnelFieldDefinitionModel(dto);
         this.funnel.fields.push(newField);
         this.onChange();
     }
 
-    removeField(fieldId: string) {
-        this.funnel.fields = this.funnel.fields.filter(field => field.id !== fieldId);
+    removeField(id: string) {
+        this.funnel.fields = this.funnel.fields.filter(field => field.id !== id);
         this.onChange();
     }
 
@@ -57,11 +55,19 @@ export class FunnelVm {
     }
 
     getFieldsForActiveStep() {
-        const step = this.funnel.steps[this.activeStepIndex];
+        const step = this.funnel.steps.find(step => step.id === this.activeStepId);
         if (!step) {
             return [];
         }
         return this.funnel.fields.filter(field => field.stepId === step.id);
+    }
+
+    getActiveStepId() {
+        return this.activeStepId;
+    }
+
+    getActiveStep() {
+        return this.funnel.steps.find(step => step.id === this.activeStepId);
     }
 
     private onChange() {

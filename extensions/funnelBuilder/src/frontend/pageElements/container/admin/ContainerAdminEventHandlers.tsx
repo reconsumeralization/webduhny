@@ -10,23 +10,23 @@ import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
-import type { ContainerElementData } from "../types";
+import { useActiveElement } from "@webiny/app-page-builder/editor";
 import { isFieldElementType } from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import { FunnelFieldDefinitionModelDto } from "../../../../shared/models/FunnelFieldDefinitionModel";
+import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
 
-const doNothing = {
-    actions: []
-};
+const DO_NOTHING = { actions: [] };
 
 export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
     const container = useContainer();
 
+    const [activeElement] = useActiveElement();
     const { funnelVm } = container;
     const { getElement } = useRenderer();
 
-    const containerElement = getElement<ContainerElementData>();
+    const containerElement = getElement<FunnelModelDto>();
 
     const onElementCreate: EventActionCallable<CreateElementEventActionArgsType> = (
         _,
@@ -34,17 +34,20 @@ export const ContainerAdminEventHandlers = () => {
         args
     ) => {
         if (!args || !funnelVm) {
-            return doNothing;
+            return DO_NOTHING;
         }
 
         const { element: createdElement } = args;
         if (!isFieldElementType(createdElement.type)) {
-            return doNothing;
+            return DO_NOTHING;
         }
 
-        funnelVm.addField(createdElement.data as FunnelFieldDefinitionModelDto);
+        funnelVm.addField({
+            ...createdElement.data,
+            stepId: funnelVm.getActiveStepId()
+        } as FunnelFieldDefinitionModelDto);
 
-        return doNothing;
+        return DO_NOTHING;
     };
 
     const onElementDelete: EventActionCallable<DeleteElementActionArgsType> = async (
@@ -53,33 +56,17 @@ export const ContainerAdminEventHandlers = () => {
         args
     ) => {
         if (!args || !funnelVm) {
-            return doNothing;
+            return DO_NOTHING;
         }
 
         const { element: deletedElement } = args;
 
         if (isFieldElementType(deletedElement.type)) {
-            const containerElementClone = structuredClone(containerElement);
-
-            const updatedFields = containerElementClone.data.fields.filter(
-                field => field.id !== deletedElement.data.field.id
-            );
-
-            containerElementClone.data = {
-                ...containerElementClone.data,
-                fields: updatedFields
-            };
-
-            eventHandler.trigger(
-                new UpdateElementActionEvent({
-                    element: containerElementClone,
-                    history: false
-                })
-            );
+            funnelVm.removeField(deletedElement.data.id);
         }
 
         // TODO: Find deleted child inputs and update container.
-        return doNothing;
+        return DO_NOTHING;
     };
 
     const onElementUpdate: EventActionCallable<UpdateElementActionArgsType> = async (
@@ -88,18 +75,18 @@ export const ContainerAdminEventHandlers = () => {
         args
     ) => {
         if (!args || !funnelVm) {
-            return doNothing;
+            return DO_NOTHING;
         }
 
         const { element: updatedField } = args;
 
         if (!isFieldElementType(updatedField.type)) {
-            return doNothing;
+            return DO_NOTHING;
         }
 
         funnelVm.updateField(updatedField.data.id, updatedField.data);
 
-        return doNothing;
+        return DO_NOTHING;
     };
 
     useEffect(() => {

@@ -10,7 +10,7 @@
 - advanced settings - apply changes as the user types (not on submit)
 - moving elements? should we block that for now? maybe sh?
 - block multiple funnels on page
--  `I` prefi on interfaces
+- any checks on moving steps needed?
 
 ## SH
 - add FB block

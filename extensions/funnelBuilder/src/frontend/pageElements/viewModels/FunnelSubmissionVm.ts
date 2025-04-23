@@ -20,6 +20,10 @@ export class FunnelSubmissionVm {
         return this.funnelSubmission.getField(fieldId);
     }
 
+    fieldExists(fieldId: string) {
+        return this.funnelSubmission.fieldExists(fieldId);
+    }
+
     private onChange() {
         if (!this.options.onChange) {
             return;

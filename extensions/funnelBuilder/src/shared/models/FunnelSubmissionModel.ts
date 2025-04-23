@@ -141,6 +141,10 @@ export class FunnelSubmissionModel {
         return this.fields[fieldId];
     }
 
+    fieldExists(fieldId: string) {
+        return !!this.fields[fieldId];
+    }
+
     getFieldsForActiveStep() {
         const activeStep = this.funnel.steps.find(step => step.id === this.activeStep);
         if (!activeStep) {

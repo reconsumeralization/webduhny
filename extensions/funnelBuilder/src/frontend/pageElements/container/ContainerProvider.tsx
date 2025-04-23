@@ -1,9 +1,7 @@
 import React, { useContext, useMemo } from "react";
-import { ContainerElementData } from "./types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
-import { FunnelSubmissionModel } from "../../../shared/models/FunnelSubmissionModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
 
 interface ContainerContextValue {
@@ -28,7 +26,7 @@ export const ContainerProvider = ({
     updateElementData = () => undefined
 }: ContainerProviderProps) => {
     const { getElement } = useRenderer();
-    const element = getElement<ContainerElementData>();
+    const element = getElement<FunnelModelDto>();
 
     const funnelVm = useMemo(() => {
         return new FunnelVm(element.data, {

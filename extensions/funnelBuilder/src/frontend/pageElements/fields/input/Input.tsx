@@ -36,15 +36,15 @@ export const Input = createRenderer(() => {
         return null;
     }
 
+    if (!funnelSubmissionVm.fieldExists(element.data.fieldId)) {
+        return null;
+    }
+
     const { definition: field } = funnelSubmissionVm.getField(element.data.fieldId);
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators: field.validators.map(validator => {
-            return (value: any) => {
-                return validator.validate(value) as any;
-            }
-        })
+        validators: field.validators.map(validator => validator.validate)
     });
 
     const onBlur = (ev: React.SyntheticEvent) => {
@@ -58,7 +58,6 @@ export const Input = createRenderer(() => {
 
     return (
         <Field>
-            <div>FIELDS COUNT:</div>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             <StyledInput

@@ -51,7 +51,7 @@ export const InputAdminPlugins = () => {
                     return {
                         type: ELEMENT_TYPE,
                         elements: [],
-                        data: createInitialFieldData<InputFieldData>("input", {
+                        data: createInitialFieldData("input", {
                             inputType: "",
                             placeholderText: ""
                         }),

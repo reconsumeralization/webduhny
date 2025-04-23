@@ -32,7 +32,7 @@ import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/a
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { createStepElement } from "../../../../../shared/createStepElement";
-import { IContainerElement } from "../../types";
+import { ContainerElement } from "../../types";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;
@@ -50,7 +50,7 @@ const AddPageButton = styled(ButtonSecondary)`
 export const PagesSection = () => {
     const updateElement = useUpdateElement();
     const [activeElementId] = useActiveElementId();
-    const mainElement = useElementWithChildren(activeElementId!) as IContainerElement;
+    const container = useElementWithChildren(activeElementId!) as ContainerElement;
 
     const { showConfirmation } = useConfirmationDialog({
         title: "Remove tab",
@@ -61,24 +61,24 @@ export const PagesSection = () => {
         (elementId: string) => {
             showConfirmation(async () => {
                 updateElement({
-                    ...mainElement,
-                    elements: mainElement.elements.filter(element => element.id !== elementId)
+                    ...container,
+                    elements: container.elements.filter(element => element.id !== elementId)
                 });
             });
         },
-        [mainElement]
+        [container]
     );
 
     const onCreate = useCallback(() => {
         updateElement({
-            ...mainElement,
+            ...container,
             // @ts-ignore
             elements: [
-                ...mainElement.elements,
-                createStepElement({ title: `Step ${mainElement.elements.length + 1}` })
+                ...container.elements,
+                createStepElement({ title: `Step ${container.elements.length + 1}` })
             ]
         });
-    }, [mainElement]);
+    }, [container]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -91,12 +91,12 @@ export const PagesSection = () => {
         const { active, over } = event;
 
         if (active.id !== over.id) {
-            const oldIndex = mainElement.elements.findIndex(element => element.id === active.id);
-            const newIndex = mainElement.elements.findIndex(element => element.id === over.id);
+            const oldIndex = container.elements.findIndex(element => element.id === active.id);
+            const newIndex = container.elements.findIndex(element => element.id === over.id);
 
             updateElement({
-                ...mainElement,
-                elements: arrayMove(mainElement.elements, oldIndex, newIndex)
+                ...container,
+                elements: arrayMove(container.elements, oldIndex, newIndex)
             });
         }
     }
@@ -110,10 +110,10 @@ export const PagesSection = () => {
                 modifiers={[restrictToVerticalAxis]}
             >
                 <SortableContext
-                    items={mainElement.elements}
+                    items={container.elements}
                     strategy={verticalListSortingStrategy}
                 >
-                    {mainElement.elements.map(element => (
+                    {container.elements.map(element => (
                         <PagesListItem
                             key={element.id}
                             element={element}

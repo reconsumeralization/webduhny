@@ -1,13 +1,9 @@
 import { PbEditorElement } from "@webiny/app-page-builder/types";
+import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 
-export interface ContainerElementData {
-    fields: any[];
-    steps: any[];
-}
-
-export interface IContainerElement extends PbEditorElement {
+export interface ContainerElement extends PbEditorElement {
     elements: IStepElement[];
-    data: ContainerElementData;
+    data: FunnelModelDto;
 }
 
 export interface IStepElement extends PbEditorElement {

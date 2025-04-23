@@ -31,23 +31,6 @@
   border-left-style: solid;
   padding-left: 16px;
 }
-.WebinyLexical__h1 {
-  font-size: 24px;
-  font-weight: inherit;
-  margin: inherit;
-}
-
-.WebinyLexical__h2 {
-  font-size: 15px;
-  font-weight: inherit;
-  margin: inherit;
-}
-
-.WebinyLexical__h3 {
-  font-size: 12px;
-  font-weight: inherit;
-  margin: inherit;
-}
 
 .WebinyLexical__textBold {
   font-weight: bold;

@@ -1,12 +1,9 @@
 import { getRandomId } from "../../../shared/getRandomId";
-import {FunnelFieldDefinitionModelDto} from "../../../shared/models/FunnelFieldDefinitionModel";
+import { FunnelFieldDefinitionModelDto } from "../../../shared/models/FunnelFieldDefinitionModel";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 
-export const createInitialFieldData = <TFieldElementData extends FunnelFieldDefinitionModelDto>(
-    fieldType: string,
-    extra: TFieldElementData["extra"]
-): TFieldElementData => {
+export const createInitialFieldData = (fieldType: string, extra: Record<string, any> = {}) => {
     return {
         id: getRandomId(),
         fieldId: getRandomId(),
@@ -15,5 +12,5 @@ export const createInitialFieldData = <TFieldElementData extends FunnelFieldDefi
         helpText: "",
         validators: [],
         extra
-    } as unknown as TFieldElementData; // Explicitly cast the object to TFieldElementData
+    } as Omit<FunnelFieldDefinitionModelDto, "stepId">;
 };
