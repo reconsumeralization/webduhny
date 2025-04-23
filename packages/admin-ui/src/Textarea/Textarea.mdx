@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta, Controls } from '@storybook/blocks';
 
 import * as TextareaStories from './Textarea.stories';
 
@@ -6,15 +6,112 @@ import * as TextareaStories from './Textarea.stories';
 
 # Textarea
 
-Text textarea field component enable users to textarea, edit, or search text in digital interfaces. It facilitates data collection, user interaction, and communication. Text fields ensure clarity, consistency, and accessibility across applications, supporting tasks like form completion, authentication, and search queries in an intuitive and efficient manner.
-
-<Canvas of={TextareaStories.Default} />
+The Textarea component is a multi-line text input field that enables users to enter longer text content. It's ideal for collecting detailed information, feedback, comments, or any content that requires multiple lines of text.
 
 ## Usage
 
+```jsx
+import React, { useState } from "react";
+
+import { Textarea } from "@webiny/admin-ui";
+
+const TextareaExample = () => {
+    const [value, setValue] = useState("");
+
+    return (
+        <Textarea
+            label="Message"
+            description="Enter your feedback or message"
+            note="Please be specific and provide relevant details"
+            placeholder="Type your message here..."
+            required={true}
+            value={value}
+            onChange={newValue => setValue(newValue)}
+        />
+    );
+};
+
+export default TextareaExample;
 ```
-import { Textarea } from '@webiny/admin-ui';
-```
+
+<Canvas of={TextareaStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+
+import { Textarea } from "@webiny/admin-ui";
+
+const TextareaExample = () => {
+    const [value, setValue] = useState("");
+
+    return (
+        <Textarea
+            label="Message"
+            description="Enter your feedback or message"
+            note="Please be specific and provide relevant details"
+            placeholder="Type your message here..."
+            required={true}
+            value={value}
+            onChange={newValue => setValue(newValue)}
+        />
+    );
+};
+
+export default TextareaExample;`
+} }
+    additionalActions={[
+        {
+            title: 'Open in GitHub',
+            onClick: () => {
+                window.open(
+                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Textarea/Textarea.tsx',
+                    '_blank'
+                );
+            },
+        }
+    ]}
+/>
+
+<Controls of={TextareaStories.Documentation}/>
+
+## Examples
+
+### With Validate Function
+The Textarea component supports validation using the validation prop, as shown in the example above.
+For more complex or reusable validation scenarios, you can use the validate prop, which accepts a custom validation function.
+Try entering less than 10 characters to see it in action, and click on **Show code** to view the validation function.
+
+<Canvas of={TextareaStories.WithValidateFunction} source={ { code: `
+import React, { useState } from "react";
+
+import { Textarea } from "@webiny/admin-ui";
+
+const MessageTextarea = () => {
+    const [value, setValue] = useState("");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const validate = async () => {
+        if (!value.trim()) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else if (value.length < 10) {
+            setValidation({ isValid: false, message: "Message must be at least 10 characters long" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <Textarea
+            label="Message"
+            description="Enter a message (minimum 10 characters)"
+            required={true}
+            value={value}
+            onChange={newValue => setValue(newValue)}
+            validate={validate}
+            validation={validation}
+        />
+    );
+};` } }
+/>
+
 
 ## Anatomy
 
