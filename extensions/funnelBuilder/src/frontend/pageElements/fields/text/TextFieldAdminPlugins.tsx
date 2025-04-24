@@ -1,29 +1,26 @@
 import React from "react";
-import {
-    PbEditorPageElementAdvancedSettingsPlugin,
-    PbEditorPageElementPlugin,
-    PbRenderElementPlugin
-} from "@webiny/app-page-builder";
-import { Input } from "./Input";
+import { PbEditorPageElementPlugin, PbRenderElementPlugin } from "@webiny/app-page-builder";
+import { TextFieldRenderer } from "./TextFieldRenderer";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
-import { AdvancedSettings } from "./AdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
 import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
+import { TextFieldSettings } from "./TextFieldSettings";
+import { PbEditorFunnelFieldSettingsPlugin } from "../../../admin/plugins/PbEditorFunnelFieldSettingsPlugin";
+import { ReactComponent as TextIcon } from "@material-design-icons/svg/outlined/text_fields.svg";
 
-export const InputAdminPlugins = () => {
+export const TextFieldAdminPlugins = () => {
     return (
         <>
-            <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={Input} />
+            <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={TextFieldRenderer} />
             <PbEditorPageElementPlugin
                 elementType={ELEMENT_TYPE}
-                renderer={Input}
+                renderer={TextFieldRenderer}
                 toolbar={{
-                    title: "Input",
+                    title: "Short Text",
                     group: FUB_PAGE_ELEMENT_GROUP,
                     preview() {
-                        // We can return any JSX / React code here. To keep it
-                        // simple, we are simply returning the element's name.
-                        return <>Input</>;
+                        return <TextIcon/>
+                         // return <>Titles, names, single line input</>;
                     }
                 }}
                 // Defines which types of element settings are available to the user.
@@ -45,7 +42,7 @@ export const InputAdminPlugins = () => {
                     return {
                         type: ELEMENT_TYPE,
                         elements: [],
-                        data: createInitialFieldData("input", {
+                        data: createInitialFieldData("text", {
                             inputType: "",
                             placeholderText: ""
                         }),
@@ -53,9 +50,11 @@ export const InputAdminPlugins = () => {
                     };
                 }}
             />
-            <PbEditorPageElementAdvancedSettingsPlugin
-                elementType={ELEMENT_TYPE}
-                element={<AdvancedSettings />}
+
+            <PbEditorFunnelFieldSettingsPlugin
+                fieldType={"text"}
+                // validators={["required", "minLength", "maxLength", "pattern"]}
+                renderer={TextFieldSettings}
             />
         </>
     );

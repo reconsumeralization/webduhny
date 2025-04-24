@@ -4,9 +4,11 @@ import { Grid, Cell } from "@webiny/ui/Grid";
 import camelCase from "lodash/camelCase";
 import { validation } from "@webiny/validation";
 import { Validator } from "@webiny/validation/types";
-import { FunnelFieldDefinitionModelDto } from "../../../shared/models/FunnelFieldDefinitionModel";
 import { useForm, Bind } from "@webiny/form";
-import {FieldElementData} from "../../pageElements/fields/types";
+import { FieldElementData } from "../../pageElements/fields/types";
+import { plugins } from "@webiny/plugins";
+import { type Plugin } from "@webiny/plugins/types";
+import { PbEditorFunnelFieldSettingsPluginProps } from "../plugins/PbEditorFunnelFieldSettingsPlugin";
 
 interface GeneralTabProps {
     field: FieldElementData;
@@ -43,16 +45,20 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
         throw Error('Field ID may contain only letters, numbers and "-" and "_" characters.');
     }, []);
 
-    // const fieldPlugin = getFieldPlugin({ name: field.name });
-    //
-    // let additionalSettings: React.ReactNode = null;
-    // if (fieldPlugin && typeof fieldPlugin.field.renderSettings === "function") {
-    //     additionalSettings = fieldPlugin.field.renderSettings({
-    //         form,
-    //         afterChangeLabel,
-    //         uniqueFieldIdValidator
-    //     });
-    // }
+    const fieldSettingsPlugin = plugins.byType("pb-editor-funnel-field-settings").find(plugin => {
+        return plugin.fieldType === "text";
+    }) as Plugin<PbEditorFunnelFieldSettingsPluginProps>;
+
+    let additionalSettings: React.ReactNode = null;
+    if (fieldSettingsPlugin) {
+        const RendererComponent = fieldSettingsPlugin.renderer;
+        additionalSettings = (
+            <RendererComponent
+                afterChangeLabel={afterChangeLabel}
+                uniqueFieldIdValidator={uniqueFieldIdValidator}
+            />
+        );
+    }
 
     return (
         <>
@@ -84,7 +90,7 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
                     </Bind>
                 </Cell>
             </Grid>
-            {/*{additionalSettings}*/}
+            {additionalSettings}
         </>
     );
 };

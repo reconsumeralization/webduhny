@@ -40,11 +40,10 @@ export const ContainerAdmin = createRenderer(() => {
         <div>
             <ContainerProvider
                 updateElementData={data => {
-                    console.log("container.update", data);
                     handler.trigger(
                         new UpdateElementActionEvent({
                             element: { ...element, data },
-                            history: false
+                            history: true
                         })
                     );
                 }}

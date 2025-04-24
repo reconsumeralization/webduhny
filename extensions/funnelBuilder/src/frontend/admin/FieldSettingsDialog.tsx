@@ -11,7 +11,7 @@ import { FieldElementData } from "../pageElements/fields/types";
 const dialogBody = css({
     "&.webiny-ui-dialog__content": {
         width: 875,
-        height: 450
+        height: 500
     }
 });
 

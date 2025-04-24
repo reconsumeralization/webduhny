@@ -15,6 +15,8 @@
 - validators
 -  async stuff? like vlaidators?
 -  supported validators per field type
+- PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
+-  
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

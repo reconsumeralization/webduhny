@@ -1,19 +1,19 @@
 import React from "react";
 import { ContainerAdminPlugins } from "./frontend/pageElements/container/admin/ContainerAdminPlugins";
-import { InputAdminPlugins } from "./frontend/pageElements/fields/input/InputAdminPlugins";
-
-// Other.
-import { FubPageElementGroup } from "./frontend/pageElements/FubPageElementGroup";
+import { TextFieldAdminPlugins } from "./frontend/pageElements/fields/text/TextFieldAdminPlugins";
+import { FunnelBuilderPageElementGroup } from "./frontend/pageElements/FunnelBuilderPageElementGroup";
+import {DecoratedElementControls} from "./frontend/pageElements/ElementControlsDecorator";
 
 export const Extension = () => (
     <>
-        {/* Funnel Builder Page Element */}
+        {/* Container Page Element */}
         <ContainerAdminPlugins />
 
         {/* Fields. */}
-        <InputAdminPlugins />
+        <TextFieldAdminPlugins />
 
         {/* Other */}
-        <FubPageElementGroup />
+        <FunnelBuilderPageElementGroup />
+        <DecoratedElementControls/>
     </>
 );

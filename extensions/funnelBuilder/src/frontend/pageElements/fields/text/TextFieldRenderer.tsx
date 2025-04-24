@@ -24,13 +24,13 @@ export const StyledInput = styled.input`
     }
 `;
 
-export const Input = createFieldRenderer((props) => {
+export const TextFieldRenderer = createFieldRenderer(props => {
     const { definition: field } = props.field;
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
         validators: field.validators.map(validator => validator.validate),
-        defaultValue: field.defaultValue,
+        defaultValue: field.defaultValue
     });
 
     const onBlur = (ev: React.SyntheticEvent) => {
@@ -43,19 +43,22 @@ export const Input = createFieldRenderer((props) => {
     };
 
     return (
-        <Field>
-            <FieldLabel field={field} />
-            {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
-            <StyledInput
-                onBlur={onBlur}
-                onChange={e => onChange(e.target.value)}
-                value={value || ""}
-                placeholder={field.extra.placeholderText}
-                type={field.extra.inputType}
-                name={field.fieldId}
-                id={field.fieldId}
-            />
-            <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
-        </Field>
+        <>
+
+            <Field>
+                <FieldLabel field={field} />
+                {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
+                <StyledInput
+                    onBlur={onBlur}
+                    onChange={e => onChange(e.target.value)}
+                    value={value || ""}
+                    placeholder={field.extra.placeholderText}
+                    type={field.extra.inputType}
+                    name={field.fieldId}
+                    id={field.fieldId}
+                />
+                <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
+            </Field>
+        </>
     );
 });
