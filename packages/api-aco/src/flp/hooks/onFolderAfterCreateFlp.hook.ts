@@ -8,7 +8,7 @@ export const onFolderAfterCreateFlpHook = (context: AcoContext) => {
             await context.tasks.trigger<ICreateFlpTaskInput>({
                 definition: CREATE_FLP_TASK_ID,
                 input: {
-                    data: folder
+                    folder
                 }
             });
         } catch (error) {

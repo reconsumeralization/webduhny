@@ -1,13 +1,6 @@
-import type { Entity, Table } from "@webiny/db-dynamodb/toolbox";
+import { Entity, Table } from "@webiny/db-dynamodb/toolbox";
 import { DynamoDBDocument } from "../../../aws-sdk/src/client-dynamodb";
-import {
-    createStandardEntity,
-    createTable,
-    deleteItem,
-    getClean,
-    put,
-    queryAll
-} from "@webiny/db-dynamodb";
+import { deleteItem, getClean, put, queryAll } from "@webiny/db-dynamodb";
 
 import { WebinyError } from "@webiny/error";
 import type {
@@ -16,12 +9,23 @@ import type {
     StorageOperationsCreateFlpParams,
     StorageOperationsDeleteFlpParams,
     StorageOperationsGetFlpParams,
+    StorageOperationsListDescendantFlpsParams,
     StorageOperationsListFlpsParams,
     StorageOperationsUpdateFlpParams
 } from "~/flp/flp.types";
 
 interface StorageOperationsConfig {
     documentClient: DynamoDBDocument;
+}
+
+export interface CreateTableParams {
+    name?: string;
+    documentClient: DynamoDBDocument;
+}
+
+interface CreateEntityParams {
+    table: Table<string, string, string>;
+    name: string;
 }
 
 class FolderLevelPermissionsStorageOperations
@@ -31,9 +35,9 @@ class FolderLevelPermissionsStorageOperations
     private readonly table: Table<string, string, string>;
 
     constructor({ documentClient }: StorageOperationsConfig) {
-        this.table = createTable({ documentClient });
+        this.table = this.createTable({ documentClient });
 
-        this.entity = createStandardEntity({
+        this.entity = this.createEntity({
             table: this.table,
             name: "ACO.flp"
         });
@@ -54,8 +58,29 @@ class FolderLevelPermissionsStorageOperations
             return entries.map(entry => entry.data);
         } catch (err) {
             throw WebinyError.from(err, {
-                message: "Could not folder level permissions.",
-                code: "LIST_FLP_FOLDER_ERROR"
+                message: "Could not list folder level permissions.",
+                code: "LIST_FLP_ERROR"
+            });
+        }
+    }
+
+    async listDescendants({
+        where: { tenant, locale, type, parentId }
+    }: StorageOperationsListDescendantFlpsParams): Promise<FolderLevelPermission[]> {
+        try {
+            const entries = await queryAll<{ data: FolderLevelPermission }>({
+                entity: this.entity,
+                partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+                options: {
+                    index: "GSI2",
+                    eq: parentId
+                }
+            });
+            return entries.map(entry => entry.data);
+        } catch (err) {
+            throw WebinyError.from(err, {
+                message: "Could not list descendant folder level permissions.",
+                code: "LIST_FLP_ERROR"
             });
         }
     }
@@ -73,7 +98,7 @@ class FolderLevelPermissionsStorageOperations
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not load folder level permission.",
-                code: "GET_FLP_FOLDER_ERROR",
+                code: "GET_FLP_ERROR",
                 data: { tenant, locale, type, id }
             });
         }
@@ -98,7 +123,7 @@ class FolderLevelPermissionsStorageOperations
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not create folder level permission.",
-                code: "CREATE_FLP_FOLDER_ERROR",
+                code: "CREATE_FLP_ERROR",
                 data: { keys, data }
             });
         }
@@ -128,7 +153,7 @@ class FolderLevelPermissionsStorageOperations
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not update folder level permission.",
-                code: "UPDATE_FLP_FOLDER_ERROR",
+                code: "UPDATE_FLP_ERROR",
                 data: { keys, data, original }
             });
         }
@@ -145,11 +170,65 @@ class FolderLevelPermissionsStorageOperations
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not delete folder level permission.",
-                code: "DELETE_FLP_FOLDER_ERROR",
+                code: "DELETE_FLP_ERROR",
                 data: { keys, flp }
             });
         }
     }
+
+    private createEntity = (params: CreateEntityParams): Entity<any> => {
+        return new Entity({
+            name: params.name,
+            table: params.table,
+            attributes: {
+                PK: {
+                    partitionKey: true
+                },
+                SK: {
+                    sortKey: true
+                },
+                GSI1_PK: {
+                    type: "string"
+                },
+                GSI1_SK: {
+                    type: "string"
+                },
+                GSI2_PK: {
+                    type: "string"
+                },
+                GSI2_SK: {
+                    type: "string"
+                },
+                TYPE: {
+                    type: "string"
+                },
+                data: {
+                    type: "map"
+                }
+            }
+        });
+    };
+
+    private createTable = ({ name, documentClient }: CreateTableParams) => {
+        return new Table({
+            name: name || String(process.env.DB_TABLE),
+            partitionKey: "PK",
+            sortKey: "SK",
+            DocumentClient: documentClient,
+            indexes: {
+                GSI1: {
+                    partitionKey: "GSI1_PK",
+                    sortKey: "GSI1_SK"
+                },
+                GSI2: {
+                    partitionKey: "GSI2_PK",
+                    sortKey: "GSI2_SK"
+                }
+            },
+            autoExecute: true,
+            autoParse: true
+        });
+    };
 
     private createKeys = ({
         id,
@@ -165,10 +244,13 @@ class FolderLevelPermissionsStorageOperations
         tenant,
         locale,
         type,
-        path
-    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale" | "type" | "path">) => ({
+        path,
+        parentId
+    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale" | "type" | "path" | "parentId">) => ({
         GSI1_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
-        GSI1_SK: path
+        GSI1_SK: path,
+        GSI2_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+        GSI2_SK: parentId
     });
 }
 

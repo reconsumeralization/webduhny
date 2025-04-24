@@ -8,7 +8,7 @@ export const onFolderAfterDeleteFlpHook = (context: AcoContext) => {
             await context.tasks.trigger<IDeleteFlpTaskInput>({
                 definition: DELETE_FLP_TASK_ID,
                 input: {
-                    data: folder
+                    folder
                 }
             });
         } catch (error) {

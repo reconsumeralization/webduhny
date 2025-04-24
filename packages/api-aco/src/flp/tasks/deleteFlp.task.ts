@@ -1,24 +1,20 @@
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
+import WError from "@webiny/error";
 import { createPrivateTaskDefinition } from "@webiny/tasks";
 import { createFlpOperations } from "~/flp/flp.so";
+import { DELETE_FLP_TASK_ID } from "~/flp/tasks";
 import {
     type AcoContext,
     type AcoFolderLevelPermissionsStorageOperations,
     type IDeleteFlpTaskInput,
     type IDeleteFlpTaskParams
 } from "~/types";
-import WError from "@webiny/error";
-
-import { DELETE_FLP_TASK_ID } from "~/flp/tasks";
-import { GetFlp } from "~/flp/tasks/GetFlp";
 
 class DeleteFlpTask {
     private operations: AcoFolderLevelPermissionsStorageOperations;
-    private flpGetter: GetFlp;
 
-    constructor(operations: AcoFolderLevelPermissionsStorageOperations, flpGetter: GetFlp) {
+    constructor(operations: AcoFolderLevelPermissionsStorageOperations) {
         this.operations = operations;
-        this.flpGetter = flpGetter;
     }
 
     public init = () => {
@@ -26,7 +22,7 @@ class DeleteFlpTask {
             id: DELETE_FLP_TASK_ID,
             title: "ACO - Delete FLP record",
             description:
-                "Synchronizes the FLP catalog by deleting the FLP record and its descendants based on the provided folder.",
+                "Synchronizes the FLP catalog by deleting the FLP record based on the provided folder.",
             disableDatabaseLogs: true,
             run: async (params: IDeleteFlpTaskParams) => {
                 const { response, isAborted, input, context, isCloseToTimeout } = params;
@@ -38,26 +34,61 @@ class DeleteFlpTask {
                         return response.continue(input);
                     }
 
-                    if (!input.data) {
+                    if (!input.folder) {
                         throw new WError(
-                            "Missing `data`, I can't create a new record into the FLP catalog.",
-                            "ERROR_CREATE_FLP_TASK"
+                            "Missing `folder` from the task input, I can't delete the record from the FLP catalog.",
+                            "ERROR_DELETE_FLP_TASK_FOLDER_NOT_PROVIDED",
+                            { input }
                         );
                     }
 
-                    const flp = await this.flpGetter.getFromFolder(input.data, context);
+                    const flp = await this.operations.get({
+                        where: {
+                            tenant: this.getTenantId(context),
+                            locale: this.getLocaleCode(context),
+                            type: params.input.folder.type,
+                            id: params.input.folder.type
+                        }
+                    });
+
+                    if (!flp) {
+                        throw new WError(
+                            "I can't find the FLP for the provided folder, I can't delete it from the FLP catalog.",
+                            "ERROR_DELETE_FLP_TASK_FLP_NOT_FOUND",
+                            { input }
+                        );
+                    }
 
                     await this.operations.delete({
                         flp
                     });
 
-                    return response.done("Task done: FLP catalog updated.");
+                    return response.done("Task done: FLP record deleted.");
                 } catch (error) {
                     return response.error(error);
                 }
             }
         });
     };
+
+    private getTenantId(context: AcoContext) {
+        const tenant = context.tenancy.getCurrentTenant();
+        if (!tenant) {
+            throw new WError("Missing tenant in context.", "ERROR_DELETE_FLP_TASK_MISSING_TENANT");
+        }
+        return tenant.id;
+    }
+
+    private getLocaleCode(context: AcoContext) {
+        const locale = context.i18n.getContentLocale();
+        if (!locale) {
+            throw new WError(
+                "Missing content locale in context.",
+                "ERROR_DELETE_FLP_TASK_MISSING_LOCALE"
+            );
+        }
+        return locale.code;
+    }
 }
 
 interface FlpTasksParams {
@@ -66,7 +97,6 @@ interface FlpTasksParams {
 
 export const deleteFlpTask = (params: FlpTasksParams) => {
     const operations = createFlpOperations(params);
-    const flpGetter = new GetFlp(operations);
-    const task = new DeleteFlpTask(operations, flpGetter);
+    const task = new DeleteFlpTask(operations);
     return task.init();
 };

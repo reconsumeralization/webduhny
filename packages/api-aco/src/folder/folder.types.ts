@@ -65,6 +65,10 @@ export interface StorageOperationsGetFolderParams {
     parentId?: string | null;
 }
 
+export interface GetFolderParams {
+    id: string;
+}
+
 export type StorageOperationsListFoldersParams = ListFoldersParams;
 
 export interface StorageOperationsCreateFolderParams {

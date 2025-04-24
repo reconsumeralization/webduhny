@@ -1,5 +1,5 @@
 import { ITaskRunParams } from "@webiny/tasks/types";
-import type { AcoContext, Folder } from "~/types";
+import { type AcoContext, type Folder } from "~/types";
 
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
 
@@ -27,19 +27,34 @@ export interface FolderLevelPermission {
 export interface ListFlpsParams {
     where: {
         path_startsWith: string;
+        type: string;
     };
 }
 
-export interface StorageOperationsListFlpsParams extends ListFlpsParams {
+export interface StorageOperationsListFlpsParams {
     where: ListFlpsParams["where"] & {
         tenant: string;
         locale: string;
+    };
+}
+
+export interface ListDescendantFlpsParams {
+    where: {
+        parentId: string;
         type: string;
+    };
+}
+
+export interface StorageOperationsListDescendantFlpsParams {
+    where: ListDescendantFlpsParams["where"] & {
+        tenant: string;
+        locale: string;
     };
 }
 
 export interface GetFlpWhere {
     id: string;
+    type: string;
 }
 
 export interface GetFlpParams {
@@ -54,16 +69,14 @@ export interface StorageOperationsGetFlpParams extends GetFlpParams {
     };
 }
 
-export interface CreateFlpParams {
+export type StorageOperationsCreateFlpParams = {
     /**
      * The flp data.
      */
     data: FolderLevelPermission;
-}
+};
 
-export type StorageOperationsCreateFlpParams = CreateFlpParams;
-
-export interface UpdateFlpParams {
+export type StorageOperationsUpdateFlpParams = {
     /**
      * The flp data to be updated.
      */
@@ -72,9 +85,7 @@ export interface UpdateFlpParams {
      * The flp data with the updated fields.
      */
     data: FolderLevelPermission;
-}
-
-export type StorageOperationsUpdateFlpParams = UpdateFlpParams;
+};
 
 export interface DeleteFlpParams {
     flp: FolderLevelPermission;
@@ -84,24 +95,32 @@ export type StorageOperationsDeleteFlpParams = DeleteFlpParams;
 
 export interface AcoFolderLevelPermissionsStorageOperations {
     list(params: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]>;
+    listDescendants(
+        params: StorageOperationsListDescendantFlpsParams
+    ): Promise<FolderLevelPermission[]>;
     get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null>;
     create(params: StorageOperationsCreateFlpParams): Promise<FolderLevelPermission>;
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
     delete(params: StorageOperationsDeleteFlpParams): Promise<void>;
 }
 
+export interface AcoFolderLevelPermissionsCrud {
+    list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
+    get(where: GetFlpWhere): Promise<FolderLevelPermission | null>;
+}
+
 /********
- * Catalog Manager - BG Task
+ *  BG Tasks
  *******/
 
 export interface ICreateFlpTaskInput {
-    data: Folder;
+    folder: Folder;
 }
 
 export type ICreateFlpTaskParams = ITaskRunParams<AcoContext, ICreateFlpTaskInput>;
 
 export interface IUpdateFlpTaskInput {
-    data: Folder;
+    folder: Folder;
     original: Folder;
     updated?: Set<string>;
 }
@@ -109,7 +128,7 @@ export interface IUpdateFlpTaskInput {
 export type IUpdateFlpTaskParams = ITaskRunParams<AcoContext, IUpdateFlpTaskInput>;
 
 export interface IDeleteFlpTaskInput {
-    data: Folder;
+    folder: Folder;
 }
 
 export type IDeleteFlpTaskParams = ITaskRunParams<AcoContext, IDeleteFlpTaskInput>;

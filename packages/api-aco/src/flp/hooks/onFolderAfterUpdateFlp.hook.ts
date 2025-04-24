@@ -8,7 +8,7 @@ export const onFolderAfterUpdateFlpHook = (context: AcoContext) => {
             await context.tasks.trigger<IUpdateFlpTaskInput>({
                 definition: UPDATE_FLP_TASK_ID,
                 input: {
-                    data: folder,
+                    folder,
                     original
                 }
             });

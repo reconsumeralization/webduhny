@@ -24,6 +24,7 @@ import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 import { createOperationsWrapper } from "~/utils/createOperationsWrapper";
 import { pickEntryFieldValues } from "~/utils/pickEntryFieldValues";
 import { createFilterCrudMethods } from "~/filter/filter.crud";
+import { createFlpCrudMethods } from "~/flp";
 
 interface CreateAcoContextParams {
     useFolderLevelPermissions?: boolean;
@@ -65,7 +66,14 @@ const setupAcoContext = async (
         security
     });
 
+    const flpCrudMethods = createFlpCrudMethods({
+        getLocale,
+        getTenant,
+        storageOperations
+    });
+
     const folderLevelPermissions = new FolderLevelPermissions({
+        crud: flpCrudMethods,
         getIdentity: () => security.getIdentity(),
         listIdentityTeams: async () => {
             return security.withoutAuthorization(async () => {

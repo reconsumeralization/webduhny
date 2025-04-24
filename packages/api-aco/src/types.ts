@@ -15,6 +15,7 @@ import type {
 } from "~/record/record.types";
 import type { AcoFolderCrud, AcoFolderStorageOperations } from "~/folder/folder.types";
 import type { AcoFilterCrud, AcoFilterStorageOperations } from "~/filter/filter.types";
+import type { AcoFolderLevelPermissionsStorageOperations } from "~/flp/flp.types";
 import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
 
 export * from "./filter/filter.types";
@@ -74,6 +75,7 @@ export interface AcoStorageOperations {
     folder: AcoFolderStorageOperations;
     search: AcoSearchRecordStorageOperations;
     filter: AcoFilterStorageOperations;
+    flp: AcoFolderLevelPermissionsStorageOperations;
 }
 
 export interface AcoContext

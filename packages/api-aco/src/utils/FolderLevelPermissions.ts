@@ -3,7 +3,7 @@ import { SecurityPermission, Team } from "@webiny/api-security/types";
 import { Folder, ListFoldersParams } from "~/folder/folder.types";
 import { NotAuthorizedError } from "@webiny/api-security";
 import { ListFoldersRepository } from "~/utils/ListFoldersRepository";
-import { ListMeta } from "~/types";
+import { type AcoFolderLevelPermissionsCrud, ListMeta } from "~/types";
 import { folderCacheFactory } from "~/utils/FoldersCacheFactory";
 
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
@@ -47,6 +47,7 @@ interface ListFolderPermissionsParams {
 }
 
 export interface FolderLevelPermissionsParams {
+    crud: AcoFolderLevelPermissionsCrud;
     getIdentity: Authentication["getIdentity"];
     listIdentityTeams: () => Promise<Team[]>;
     listPermissions: () => Promise<SecurityPermission[]>;
@@ -58,7 +59,7 @@ export interface FolderLevelPermissionsParams {
 
 export class FolderLevelPermissions {
     canUseFolderLevelPermissions: () => boolean;
-
+    private crud: AcoFolderLevelPermissionsCrud;
     private readonly getIdentity: Authentication["getIdentity"];
     private readonly listIdentityTeams: () => Promise<Team[]>;
     private readonly listPermissions: () => Promise<SecurityPermission[]>;
@@ -68,10 +69,12 @@ export class FolderLevelPermissions {
     private foldersLoader: ListFoldersRepository;
 
     constructor(params: FolderLevelPermissionsParams) {
+        this.crud = params.crud;
         this.getIdentity = params.getIdentity;
         this.listIdentityTeams = params.listIdentityTeams;
         this.listPermissions = params.listPermissions;
         this.canUseTeams = params.canUseTeams;
+
         this.canUseFolderLevelPermissions = () => {
             const identity = this.getIdentity();
 
@@ -360,13 +363,23 @@ export class FolderLevelPermissions {
 
         const { folder } = params;
 
-        const folderPermissions = await this.getFolderPermissions({
-            folder,
-            foldersList: params.foldersList
+        const folderPermissions = await this.crud.get({
+            id: folder.id,
+            type: folder.type
         });
 
+        if (!folderPermissions) {
+            return true;
+        }
+
+        const permissions = folderPermissions.permissions || [];
+
+        if (!permissions.length) {
+            return true;
+        }
+
         const identity = this.getIdentity();
-        const currentIdentityPermission = folderPermissions?.permissions.find(p => {
+        const currentIdentityPermission = permissions.find(p => {
             return p.target === `admin:${identity.id}`;
         });
 
