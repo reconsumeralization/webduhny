@@ -1,20 +1,11 @@
 import type { GenericRecord } from "@webiny/api/types";
-import { BatchGetCommand, type getDocumentClient } from "@webiny/aws-sdk/client-dynamodb";
-import type {
-    IRecordsDataSystemTable,
-    IRecordsDataSystemTableBundle
-} from "~/resolver/app/data/RecordsDataSystemTable.js";
-import type { ISystem } from "~/sync/types.js";
+import { BatchGetCommand, type DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import lodashChunk from "lodash/chunk";
-import type { IRecordsDataSystemTableItem } from "~/resolver/app/data/RecordsDataSystemTableItem.js";
+import type { IRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
 import { convertException } from "@webiny/utils";
-import { IFetchExecute } from "./types";
+import { IFetchExecute, type IFetchExecuteExecuteParams } from "./types";
 
 export interface IFetchExecuteParams {
-    client: Pick<ReturnType<typeof getDocumentClient>, "send">;
-    system: ISystem;
-    table: IRecordsDataSystemTable;
-    bundle: IRecordsDataSystemTableBundle;
     maxBatchSize?: number;
     maxRetries?: number;
     retryDelay?: number;
@@ -32,30 +23,25 @@ interface IKeys {
 
 interface IFetcherExecuteRunCommandParams {
     command: BatchGetCommand;
+    table: string;
+    client: Pick<DynamoDBDocument, "send">;
 }
 
 export class FetchExecute implements IFetchExecute {
-    private readonly client: Pick<ReturnType<typeof getDocumentClient>, "send">;
-    private readonly system: ISystem;
-    private readonly table: IRecordsDataSystemTable;
-    private readonly bundle: IRecordsDataSystemTableBundle;
-    private readonly maxBatchSize: number = 100;
-    private readonly maxRetries: number = 10;
-    private readonly retryDelay: number = 1000;
+    private readonly maxBatchSize: number;
+    private readonly maxRetries: number;
+    private readonly retryDelay: number;
     private retryCount = 0;
 
     public constructor(params: IFetchExecuteParams) {
-        this.client = params.client;
-        this.system = params.system;
-        this.table = params.table;
-        this.bundle = params.bundle;
-        this.maxBatchSize = params.maxBatchSize || this.maxBatchSize;
-        this.maxRetries = params.maxRetries || this.maxRetries;
-        this.retryDelay = params.retryDelay || this.retryDelay;
+        this.maxBatchSize = params.maxBatchSize || 100;
+        this.maxRetries = params.maxRetries || 10;
+        this.retryDelay = params.retryDelay || 1000;
     }
 
-    public async execute<T = GenericRecord>() {
-        const batches = lodashChunk(this.bundle.items, this.maxBatchSize);
+    public async execute<T = GenericRecord>(params: IFetchExecuteExecuteParams) {
+        const { client, table, bundle } = params;
+        const batches = lodashChunk(bundle.items, this.maxBatchSize);
 
         const results: T[] = [];
         for (const batch of batches) {
@@ -64,14 +50,16 @@ export class FetchExecute implements IFetchExecute {
             while (keys.length > 0) {
                 const command = new BatchGetCommand({
                     RequestItems: {
-                        [this.table.name]: {
+                        [table.name]: {
                             Keys: keys
                         }
                     }
                 });
                 this.retryCount = 0;
                 const { items, unprocessedKeys } = await this.runCommand<T>({
-                    command
+                    command,
+                    client,
+                    table: table.name
                 });
 
                 results.push(...items);
@@ -85,14 +73,14 @@ export class FetchExecute implements IFetchExecute {
     private async runCommand<T = GenericRecord>(
         params: IFetcherExecuteRunCommandParams
     ): Promise<IFetcherExecuteRunCommandResult<T>> {
-        const { command } = params;
+        const { command, table, client } = params;
 
         try {
-            const result = await this.client.send(command);
+            const result = await client.send(command);
 
             return {
-                items: (result.Responses?.[this.table.name] || []) as T[],
-                unprocessedKeys: (result.UnprocessedKeys?.[this.table.name]?.Keys || []) as IKeys[]
+                items: (result.Responses?.[table] || []) as T[],
+                unprocessedKeys: (result.UnprocessedKeys?.[table]?.Keys || []) as IKeys[]
             };
         } catch (ex) {
             if (this.retryCount < this.maxRetries) {
@@ -100,9 +88,7 @@ export class FetchExecute implements IFetchExecute {
                 await this.sleep();
                 return await this.runCommand<T>(params);
             }
-            console.error(
-                `Max retries reached. Could not fetch items from table: ${this.table.name}`
-            );
+            console.error(`Max retries reached. Could not fetch items from table: ${table}`);
             console.log(convertException(ex));
             throw ex;
         }
@@ -116,7 +102,7 @@ export class FetchExecute implements IFetchExecute {
         });
     }
 
-    private getKeys(items: IRecordsDataSystemTableItem[]): IKeys[] {
+    private getKeys(items: IRecordsDataDeploymentTableItem[]): IKeys[] {
         return items.map(item => {
             return {
                 PK: item.PK,

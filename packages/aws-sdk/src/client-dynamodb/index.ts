@@ -24,7 +24,8 @@ export {
     GetCommand,
     UpdateCommand,
     DeleteCommand,
-    DynamoDBDocument
+    DynamoDBDocument,
+    QueryCommandOutput
 } from "@aws-sdk/lib-dynamodb";
 
 export { unmarshall, marshall } from "@aws-sdk/util-dynamodb";

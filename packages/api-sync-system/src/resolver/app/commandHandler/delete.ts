@@ -1,14 +1,13 @@
 import { createCommandHandlerPlugin } from "~/resolver/plugins/CommandHandlerPlugin.js";
-import { PutCommandHandler } from "./PutCommandHandler";
+import { DeleteCommandHandler } from "./DeleteCommandHandler";
 
-export const createPutCommandHandlerPlugin = () => {
+export const createDeleteCommandHandlerPlugin = () => {
     return createCommandHandlerPlugin({
         canHandle: command => {
-            return command === "put";
+            return command === "delete";
         },
         handle: async params => {
-            const handler = new PutCommandHandler({
-                plugins: params.plugins,
+            const handler = new DeleteCommandHandler({
                 fetcher: params.fetcher,
                 storer: params.storer
             });

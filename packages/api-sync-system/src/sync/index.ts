@@ -16,10 +16,11 @@ import { createUpdateCommandConverter } from "./handler/converter/UpdateCommandC
 import { getManifest } from "./utils/manifest.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { NullCommandValue } from "~/sync/handler/converter/commands/NullCommandValue.js";
+import type { PossiblyUndefinedProperties } from "@webiny/api/types";
 
 export interface ICreateSyncSystemParams {
     documentClient: DynamoDBDocument;
-    system: Partial<ISystem>;
+    system: PossiblyUndefinedProperties<Omit<ISystem, "name">>;
 }
 
 export interface ICreateSyncSystemResponse {

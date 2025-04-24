@@ -6,19 +6,23 @@ import { createRecordsValidation } from "./RecordsValidation.js";
 import { convertException } from "@webiny/utils";
 import type { IRecordHandler } from "./abstractions/RecordHandler.js";
 import { createRecordsData } from "~/resolver/app/data/RecordsData.js";
-import { createRecordsDataSystem } from "~/resolver/app/data/RecordsDataSystem.js";
-import { createRecordsDataSystemTable } from "~/resolver/app/data/RecordsDataSystemTable.js";
-import { createRecordsDataSystemTableItem } from "~/resolver/app/data/RecordsDataSystemTableItem.js";
+import { createRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
+import { createRecordsDataDeploymentTable } from "~/resolver/app/data/RecordsDataDeploymentTable.js";
+import { createRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
+import type { IDeployments } from "~/resolver/deployment/types.js";
 
 export interface IResolverApplicationParams {
     recordHandler: IRecordHandler;
+    deployments: IDeployments;
 }
 
 export class ResolverApplication implements IResolverApplication {
     private readonly recordHandler: IRecordHandler;
+    private readonly deployments: IDeployments;
 
     public constructor(params: IResolverApplicationParams) {
         this.recordHandler = params.recordHandler;
+        this.deployments = params.deployments;
     }
 
     public async resolve(params: IResolverApplicationResolveParams): Promise<void> {
@@ -34,14 +38,18 @@ export class ResolverApplication implements IResolverApplication {
          * TODO - determine if required - possibly for modifications?
          */
         const data = createRecordsData({
-            createRecordsDataSystem: system => {
-                return createRecordsDataSystem({
-                    system,
-                    createRecordsDataSystemTable: ({ tableName }) => {
-                        return createRecordsDataSystemTable({
+            createRecordsDataDeployment: name => {
+                const deployment = this.deployments.get(name);
+                if (!deployment) {
+                    throw new Error(`Deployment "${name}" not found.`);
+                }
+                return createRecordsDataDeployment({
+                    deployment,
+                    createRecordsDataDeploymentTable: ({ tableName }) => {
+                        return createRecordsDataDeploymentTable({
                             name: tableName,
-                            createRecordsDataSystemTableItem: ({ item }) => {
-                                return createRecordsDataSystemTableItem(item);
+                            createRecordsDataDeploymentTableItem: ({ item }) => {
+                                return createRecordsDataDeploymentTableItem(item);
                             }
                         });
                     }

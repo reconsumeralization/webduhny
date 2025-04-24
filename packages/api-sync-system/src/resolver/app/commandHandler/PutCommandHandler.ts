@@ -1,18 +1,18 @@
-import type { IRecordsDataSystem } from "~/resolver/app/data/RecordsDataSystem.js";
-import { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin";
+import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
+import type { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin";
 import { middleware, type MiddlewareCallable } from "@webiny/utils";
 import type { GenericRecord } from "@webiny/api/types.js";
 import type {
-    IRecordsDataSystemTable,
-    IRecordsDataSystemTableBundle
-} from "~/resolver/app/data/RecordsDataSystemTable.js";
-import { IFetcher } from "../fetcher/types";
-import { IStorer } from "../storer/types";
+    IRecordsDataDeploymentTable,
+    IRecordsDataDeploymentTableBundle
+} from "~/resolver/app/data/RecordsDataDeploymentTable.js";
+import type { IFetcher } from "../fetcher/types";
+import type { IStorer } from "../storer/types";
 
 export interface IPutCommandHandlerHandleParams {
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
-    bundle: IRecordsDataSystemTableBundle;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
+    bundle: IRecordsDataDeploymentTableBundle;
 }
 
 export interface IPutCommandHandlerParams {
@@ -23,8 +23,8 @@ export interface IPutCommandHandlerParams {
 
 export interface IMiddlewareParams<I = unknown, O = GenericRecord> {
     record: GenericRecord<string, I>;
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
     next: () => Promise<O>;
 }
 
@@ -39,7 +39,7 @@ export class PutCommandHandler {
         this.storer = params.storer;
     }
     public async handle(config: IPutCommandHandlerHandleParams): Promise<void> {
-        const { system, table, bundle } = config;
+        const { deployment, table, bundle } = config;
 
         const runner = middleware(
             this.plugins.map(plugin => {
@@ -52,12 +52,12 @@ export class PutCommandHandler {
             })
         );
 
-        const { items } = await this.fetcher.exec({ system, table, bundle });
+        const { items } = await this.fetcher.exec({ deployment, table, bundle });
 
         const result = await Promise.all(
             items.map(async record => {
                 return runner({
-                    system,
+                    deployment,
                     table,
                     bundle,
                     record
@@ -66,7 +66,7 @@ export class PutCommandHandler {
         );
 
         await this.storer.exec({
-            system,
+            deployment,
             table,
             bundle,
             items: result

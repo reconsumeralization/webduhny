@@ -6,6 +6,7 @@ import {
 import { DeleteCommand, getDocumentClient, PutCommand } from "@webiny/aws-sdk/client-dynamodb";
 import { getSyncSystemOutput } from "@webiny/pulumi-aws/apps/syncSystem/getSyncSystemOutput.js";
 import { getStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils/index.js";
+import { createSystemName } from "@webiny/api-sync-system/utils/createSystemName.js";
 
 interface IGetStacksParams {
     env: string;
@@ -61,6 +62,10 @@ export const createSyncSystemPlugins = (): Plugin[] => {
             }
 
             const item = {
+                name: createSystemName({ env, variant }),
+                env,
+                variant,
+                version: process.env.WEBINY_VERSION,
                 region: core.region,
                 s3Id: core.fileManagerBucketId,
                 s3Arn: core.fileManagerBucketArn,

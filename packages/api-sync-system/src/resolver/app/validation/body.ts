@@ -24,7 +24,7 @@ export const createBodyValidation = () => {
         }),
         source: zod.string().transform((value, ctx) => {
             if (value.startsWith("webiny:")) {
-                return value;
+                return value as `webiny:${string}`;
             }
             ctx.addIssue({
                 code: zod.ZodIssueCode.custom,

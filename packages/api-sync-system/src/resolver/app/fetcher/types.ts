@@ -1,14 +1,16 @@
 import type { GenericRecord } from "@webiny/api/types.js";
-import type { IRecordsDataSystem } from "../data/RecordsDataSystem";
+import type { IRecordsDataDeployment } from "../data/RecordsDataDeployment.js";
 import type {
-    IRecordsDataSystemTable,
-    IRecordsDataSystemTableBundle
-} from "~/resolver/app/data/RecordsDataSystemTable.js";
+    IRecordsDataDeploymentTable,
+    IRecordsDataDeploymentTableBundle
+} from "~/resolver/app/data/RecordsDataDeploymentTable.js";
+import type { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import type { IDeployment } from "~/resolver/deployment/types.js";
 
 export interface IFetcherExecParams {
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
-    bundle: IRecordsDataSystemTableBundle;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
+    bundle: IRecordsDataDeploymentTableBundle;
     maxBatchSize?: number;
     maxRetries?: number;
     retryDelay?: number;
@@ -22,6 +24,13 @@ export interface IFetcher {
     exec<T = GenericRecord>(params: IFetcherExecParams): Promise<IFetcherExecResult<T>>;
 }
 
+export interface IFetchExecuteExecuteParams {
+    client: Pick<ReturnType<typeof getDocumentClient>, "send">;
+    deployment: Pick<IDeployment, "region">;
+    table: IRecordsDataDeploymentTable;
+    bundle: IRecordsDataDeploymentTableBundle;
+}
+
 export interface IFetchExecute {
-    execute<T = GenericRecord>(): Promise<T[]>;
+    execute<T = GenericRecord>(params: IFetchExecuteExecuteParams): Promise<T[]>;
 }

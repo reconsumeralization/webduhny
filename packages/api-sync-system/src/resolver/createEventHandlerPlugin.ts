@@ -2,27 +2,44 @@ import { createEventHandler as createSQSEventHandler } from "@webiny/handler-aws
 import { createResolverApp } from "./app/ResolverApplication.js";
 import { convertException } from "@webiny/utils";
 import { createRecordHandler } from "./app/RecordHandler.js";
-import { CommandHandlerPlugin } from "./app/CommandHandlerPlugin.js";
 import { createFetcher } from "~/resolver/app/fetcher/Fetcher.js";
 import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { createStorer } from "~/resolver/app/storer/Storer.js";
+import { createDeploymentsFetcher } from "~/resolver/deployment/DeploymentsFetcher.js";
+import { WebinyError } from "@webiny/error/index.js";
 
 /**
  * TODO maybe add logger?
  */
 export const createEventHandlerPlugin = () => {
-    return createSQSEventHandler(async ({ event, context, request, reply }) => {
+    return createSQSEventHandler(async ({ event, context }) => {
         const fetcher = createFetcher({
-            createDocumentClient: system => {
+            createDocumentClient: deployment => {
                 return getDocumentClient({
-                    region: system.region
+                    region: deployment.region
                 });
             }
         });
+
+        const tableName = process.env.DB_TABLE;
+        if (!tableName) {
+            throw new WebinyError({
+                message: "DB_TABLE environment variable is not set."
+            });
+        }
+
+        const deploymentsFetcher = createDeploymentsFetcher({
+            client: getDocumentClient(),
+            table: tableName
+        });
+
+        const deployments = await deploymentsFetcher.fetch();
+
         const storer = createStorer({
-            createDocumentClient: system => {
+            deployments,
+            createDocumentClient: deployment => {
                 return getDocumentClient({
-                    region: system.region
+                    region: deployment.region
                 });
             }
         });
@@ -32,7 +49,8 @@ export const createEventHandlerPlugin = () => {
             storer
         });
         const app = createResolverApp({
-            recordHandler
+            recordHandler,
+            deployments
         });
 
         try {

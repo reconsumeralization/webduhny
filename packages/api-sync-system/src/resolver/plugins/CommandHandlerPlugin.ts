@@ -1,18 +1,18 @@
 import { Plugin } from "@webiny/plugins";
 import type { CommandType } from "~/types.js";
 import type {
-    IRecordsDataSystemTable,
-    IRecordsDataSystemTableBundle
-} from "~/resolver/app/data/RecordsDataSystemTable.js";
-import type { IRecordsDataSystem } from "~/resolver/app/data/RecordsDataSystem.js";
+    IRecordsDataDeploymentTable,
+    IRecordsDataDeploymentTableBundle
+} from "~/resolver/app/data/RecordsDataDeploymentTable.js";
+import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
 import type { IFetcher } from "~/resolver/app/fetcher/types.js";
 import type { IStorer } from "~/resolver/app/storer/types.js";
 import type { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin.js";
 
 export interface ICommandHandlerPluginCallableParams {
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
-    bundle: IRecordsDataSystemTableBundle;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
+    bundle: IRecordsDataDeploymentTableBundle;
     fetcher: IFetcher;
     storer: IStorer;
     plugins: TransformRecordPlugin[];
@@ -27,9 +27,9 @@ export interface ICommandHandlerPluginCanHandleCallable {
 }
 
 export interface ICommandHandlerPluginHandleParams {
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
-    bundle: IRecordsDataSystemTableBundle;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
+    bundle: IRecordsDataDeploymentTableBundle;
     fetcher: IFetcher;
     storer: IStorer;
     plugins: TransformRecordPlugin[];
@@ -57,7 +57,7 @@ export class CommandHandlerPlugin extends Plugin {
     public async handle(params: ICommandHandlerPluginHandleParams): Promise<void> {
         return await this.config.handle({
             bundle: params.bundle,
-            system: params.system,
+            deployment: params.deployment,
             table: params.table,
             fetcher: params.fetcher,
             storer: params.storer,

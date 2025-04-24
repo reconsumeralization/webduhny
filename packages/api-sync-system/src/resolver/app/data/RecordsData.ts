@@ -1,13 +1,14 @@
-import { ISystem } from "~/sync/types";
-import { IRecordsDataSystem } from "./RecordsDataSystem";
+import type { IRecordsDataDeployment } from "./RecordsDataDeployment.js";
 import type { IResolverSQSRecord } from "~/resolver/app/abstractions/ResolverRecord.js";
+import { convertException } from "@webiny/utils/exception.js";
+import type { ISystem } from "~/sync/types.js";
 
-export interface IRecordsDataSystemCreateRecordsDataSystemCallable {
-    (system: ISystem): IRecordsDataSystem;
+export interface IRecordsDataDeploymentCreateRecordsDataDeploymentCallable {
+    (name: string): IRecordsDataDeployment;
 }
 
 export interface IRecordsDataParams {
-    createRecordsDataSystem: IRecordsDataSystemCreateRecordsDataSystemCallable;
+    createRecordsDataDeployment: IRecordsDataDeploymentCreateRecordsDataDeploymentCallable;
 }
 
 export interface IRecordsDataIngestParams {
@@ -15,44 +16,52 @@ export interface IRecordsDataIngestParams {
 }
 
 export interface IRecordsData {
-    getSystems(): IRecordsDataSystem[];
+    getDeployments(): IRecordsDataDeployment[];
     ingest(params: IRecordsDataIngestParams): Promise<void>;
 }
 
 export class RecordsData implements IRecordsData {
-    private readonly data: IRecordsDataSystem[] = [];
+    private readonly data: IRecordsDataDeployment[] = [];
 
-    private readonly createRecordsDataSystem: IRecordsDataSystemCreateRecordsDataSystemCallable;
+    private readonly createRecordsDataDeployment: IRecordsDataDeploymentCreateRecordsDataDeploymentCallable;
 
     public constructor(params: IRecordsDataParams) {
-        this.createRecordsDataSystem = params.createRecordsDataSystem;
+        this.createRecordsDataDeployment = params.createRecordsDataDeployment;
     }
 
     public async ingest(params: IRecordsDataIngestParams): Promise<void> {
         const { records } = params;
 
         for (const record of records) {
-            const system = this.getSystem(record.body.detail.source);
-
-            await system.ingest({
+            const deployment = this.getDeployment(record.body.detail.source);
+            if (!deployment) {
+                continue;
+            }
+            await deployment.ingest({
                 items: record.body.detail.items
             });
         }
     }
 
-    public getSystems(): IRecordsDataSystem[] {
+    public getDeployments(): IRecordsDataDeployment[] {
         return this.data;
     }
 
-    private getSystem(system: ISystem): IRecordsDataSystem {
-        const existingSystem = this.data.find(item => item.system.name === system.name);
-        if (existingSystem) {
-            return existingSystem;
+    private getDeployment(system: ISystem): IRecordsDataDeployment | null {
+        const existingDeployment = this.data.find(item => item.deployment.name === system.name);
+        if (existingDeployment) {
+            return existingDeployment;
         }
 
-        const newSystem = this.createRecordsDataSystem(system);
-        this.data.push(newSystem);
-        return newSystem;
+        try {
+            const newDeployment = this.createRecordsDataDeployment(system.name);
+            this.data.push(newDeployment);
+            return newDeployment;
+        } catch (ex) {
+            console.error("Error while creating system out of deployments.");
+            console.log(convertException(ex));
+        }
+        return null;
     }
 }
 

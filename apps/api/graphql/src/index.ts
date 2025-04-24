@@ -59,8 +59,8 @@ const syncSystem = createSyncSystem({
     system: {
         env: process.env.WEBINY_ENV,
         variant: process.env.WEBINY_ENV_VARIANT,
-        name: process.env.WEBINY_ENV_NAME,
-        region: process.env.AWS_REGION
+        region: process.env.AWS_REGION,
+        version: process.env.WEBINY_VERSION
     }
 });
 /**

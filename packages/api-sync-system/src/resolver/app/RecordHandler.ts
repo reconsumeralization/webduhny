@@ -1,5 +1,5 @@
 import type { IRecordHandler, IRecordHandlerHandleParams } from "./abstractions/RecordHandler.js";
-import { CommandHandlerPlugin } from "./CommandHandlerPlugin.js";
+import { CommandHandlerPlugin } from "../plugins/CommandHandlerPlugin.js";
 import { convertException } from "@webiny/utils";
 import type { CommandType } from "~/types.js";
 import type { PluginsContainer } from "@webiny/plugins";
@@ -36,9 +36,9 @@ export class RecordHandler implements IRecordHandler {
     public async handle(params: IRecordHandlerHandleParams): Promise<void> {
         const { data } = params;
 
-        const systems = data.getSystems();
-        for (const system of systems) {
-            const tables = system.getTables();
+        const deployments = data.getDeployments();
+        for (const deployment of deployments) {
+            const tables = deployment.getTables();
             for (const table of tables) {
                 /**
                  * We will handle the records in bundles.
@@ -49,7 +49,7 @@ export class RecordHandler implements IRecordHandler {
                     try {
                         const commandHandler = this.getCommandHandler(bundle.command);
                         await commandHandler.handle({
-                            system,
+                            deployment,
                             table,
                             bundle,
                             plugins: this.transformRecordPlugins,

@@ -18,7 +18,7 @@ export interface IResolverSQSRecordBody {
     version: `${number}`;
     id: string;
     "detail-type": typeof SQS_EVENT_NAME;
-    source: string;
+    source: `webiny:${string}`;
     account: `${number}`;
     time: Date;
     region: string;

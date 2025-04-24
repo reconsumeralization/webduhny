@@ -1,6 +1,6 @@
-import { NonEmptyArray } from "@webiny/api/types";
-import { ISystem } from "../types";
+import type { NonEmptyArray } from "@webiny/api/types";
 import type { AllCommandType, ExtendedCommandType } from "~/types.js";
+import type { ISystem } from "../types";
 
 export interface IDetailItem {
     PK: string;

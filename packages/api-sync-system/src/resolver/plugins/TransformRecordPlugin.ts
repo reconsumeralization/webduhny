@@ -1,15 +1,15 @@
 import { Plugin } from "@webiny/plugins";
 import type { GenericRecord } from "@webiny/api/types.js";
-import type { IRecordsDataSystem } from "~/resolver/app/data/RecordsDataSystem.js";
-import { IRecordsDataSystemTable } from "../app/data/RecordsDataSystemTable";
+import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
+import { IRecordsDataDeploymentTable } from "../app/data/RecordsDataDeploymentTable.js";
 
 export interface ITransformRecordPluginConfigTransformCallableParams<
     I = unknown,
     O = GenericRecord
 > {
     record: GenericRecord<string, I>;
-    system: IRecordsDataSystem;
-    table: IRecordsDataSystemTable;
+    deployment: IRecordsDataDeployment;
+    table: IRecordsDataDeploymentTable;
     next: () => Promise<O>;
 }
 
