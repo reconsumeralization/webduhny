@@ -1,10 +1,10 @@
 import React from "react";
-import { RequiredFieldPlugin } from "./required";
+import { RequiredFieldValidatorPlugin } from "./RequiredFieldValidatorPlugin";
 
-export const FieldValidators = () => {
+export const FieldValidatorPlugins = () => {
     return (
         <>
-            <RequiredFieldPlugin />
+            <RequiredFieldValidatorPlugin />
         </>
     );
 };

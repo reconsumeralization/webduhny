@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ElementControls } from "@webiny/app-page-builder/editor/contexts/EditorPageElementsProvider/ElementControls";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import {
@@ -11,9 +11,11 @@ import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/
 import { IconButton } from "@webiny/ui/Button";
 import { isFieldElementType } from "../../shared/constants";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { FieldElement } from "./fields/types";
 import FieldSettingsDialog from "../admin/FieldSettingsDialog";
 import { UpdateElementActionEvent } from "@webiny/app-page-builder/editor/recoil/actions";
+import { useDisclosure } from "../admin/useDisclosure";
+import { FunnelFieldDefinitionModel } from "../../shared/models/FunnelFieldDefinitionModel";
+import { useContainer } from "./container/ContainerProvider";
 
 const EditFieldButtonWrapper = styled.div`
     position: absolute;
@@ -36,22 +38,31 @@ const EditFieldButton = styled(IconButton)`
 
 export const DecoratedElementControls = ElementControls.createDecorator(Component => {
     return function DecoratedElementControls(props) {
+        const eventHandler = useEventActionHandler();
+        const [activeElementId] = useActiveElementId();
+        const { funnelVm } = useContainer();
         const { getElement } = useRenderer();
         const element = getElement();
-
-        const [activeElementId] = useActiveElementId();
         const [editorElement] = useElementById(element.id);
 
-        const eventHandler = useEventActionHandler();
-        const [currentFieldElement, setCurrentFieldElement] = useState<FieldElement | null>(null);
+        const {
+            open: showFieldSettingsDialog,
+            close: hideFieldSettingsDialog,
+            isOpen: isFieldSettingsDialogShown,
+            data: selectedField
+        } = useDisclosure<FunnelFieldDefinitionModel>();
 
         if (!isFieldElementType(element.type)) {
             return <Component {...props} />;
         }
 
+        const field = funnelVm.getField(element.data.id);
+        if (!field) {
+            return <Component {...props} />;
+        }
+
         const isActive = activeElementId === element.id;
         const isHighlighted = editorElement?.isHighlighted ?? false;
-
         if (!isActive && !isHighlighted) {
             return <Component {...props} />;
         }
@@ -62,20 +73,19 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
                     <Tooltip content={"Edit field setting"} placement={"bottom"}>
                         <EditFieldButton
                             icon={<EditIcon />}
-                            onClick={() => {
-                                setCurrentFieldElement(element as FieldElement);
-                            }}
+                            onClick={() => showFieldSettingsDialog(field.clone())}
                         />
                     </Tooltip>
                 </EditFieldButtonWrapper>
 
                 <FieldSettingsDialog
-                    field={currentFieldElement?.data}
-                    onClose={() => setCurrentFieldElement(null)}
+                    open={isFieldSettingsDialogShown}
+                    field={selectedField!}
+                    onClose={hideFieldSettingsDialog}
                     onSubmit={data => {
                         eventHandler.trigger(
                             new UpdateElementActionEvent({
-                                element: { ...currentFieldElement!, data },
+                                element: { ...editorElement!, data },
                                 history: false
                             })
                         );

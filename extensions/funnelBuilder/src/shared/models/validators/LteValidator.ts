@@ -1,29 +1,19 @@
 import { validation } from "@webiny/validation";
 import { AbstractValidator } from "./AbstractValidator";
 
-interface LteValidatorParams {
-    threshold: number;
+interface LteValidatorExtraParams {
+    threshold?: number;
 }
 
-export class LteValidator extends AbstractValidator {
+export class LteValidator extends AbstractValidator<LteValidatorExtraParams> {
     type = "lte";
-    params: LteValidatorParams;
-
-    constructor(params: LteValidatorParams) {
-        super();
-        this.params = params;
-    }
+    params = {
+        errorMessage: "Value is too great.",
+        extra: { threshold: undefined }
+    };
 
     validate(value: any) {
-        const validators = `lte:${this.params.threshold}`;
+        const validators = `lte:${this.params.extra.threshold}`;
         return validation.validateSync(value, validators, { throw: false }) === true;
-    }
-
-    getErrorMessage() {
-        return `Value must be less than or equal to ${this.params.threshold}.`;
-    }
-
-    toDto() {
-        return { type: this.type, value: this.params.threshold };
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { PbEditorFunnelFieldValidatorPlugin } from "../PbEditorFunnelFieldValidatorPlugin";
 
-export const RequiredFieldPlugin = () => (
+export const RequiredFieldValidatorPlugin = () => (
     <PbEditorFunnelFieldValidatorPlugin
         validatorType={"required"}
         label={"Required"}

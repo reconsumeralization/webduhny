@@ -57,4 +57,8 @@ export class FunnelFieldDefinitionModel {
     static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
         return new FunnelFieldDefinitionModel(dto);
     }
+
+    clone() {
+        return new FunnelFieldDefinitionModel(this.toDto());
+    }
 }

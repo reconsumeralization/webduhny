@@ -1,29 +1,19 @@
 import { validation } from "@webiny/validation";
 import { AbstractValidator } from "./AbstractValidator";
 
-interface GteValidatorParams {
-    threshold: number;
+interface GteValidatorExtraParams {
+    threshold?: number;
 }
 
-export class GteValidator extends AbstractValidator {
+export class GteValidator extends AbstractValidator<GteValidatorExtraParams> {
     type = "gte";
-    params: GteValidatorParams;
-
-    constructor(params: GteValidatorParams) {
-        super();
-        this.params = params;
-    }
+    params = {
+        errorMessage: "Value is too small.",
+        extra: { threshold: undefined }
+    };
 
     validate(value: any) {
-        const validators = `gte:${this.params.threshold}`;
+        const validators = `gte:${this.params.extra.threshold}`;
         return validation.validateSync(value, validators, { throw: false }) === true;
-    }
-
-    getErrorMessage() {
-        return `Value must be greater than or equal to ${this.params.threshold}.`;
-    }
-
-    toDto() {
-        return { type: this.type, value: this.params.threshold };
     }
 }

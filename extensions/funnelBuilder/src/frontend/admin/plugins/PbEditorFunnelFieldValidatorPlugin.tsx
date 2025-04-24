@@ -1,10 +1,10 @@
 import { legacyPluginToReactComponent } from "@webiny/app/utils";
 import * as React from "react";
+import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 
 export type RenderSettings = React.ComponentType<{
     setMessage: (message: string) => void;
-    data: any;
-    formFieldData?: Record<string, any>;
+    field?: FunnelFieldDefinitionModel;
 }>;
 
 export interface PbEditorFunnelFieldValidatorPluginProps {
@@ -13,7 +13,7 @@ export interface PbEditorFunnelFieldValidatorPluginProps {
     description: string;
     defaultMessage: string;
     defaultSettings?: Record<string, any>;
-    renderSettings?: RenderSettings
+    settingsRenderer?: RenderSettings;
 }
 
 export const PbEditorFunnelFieldValidatorPlugin =

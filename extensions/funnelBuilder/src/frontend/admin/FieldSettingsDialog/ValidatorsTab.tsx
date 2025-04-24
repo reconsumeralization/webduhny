@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { plugins } from "@webiny/plugins";
 import { Switch } from "@webiny/ui/Switch";
 import {
@@ -6,24 +6,30 @@ import {
     SimpleFormContent,
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
-import { useFormEditor } from "../../../Context";
-import { BindComponentRenderPropOnChange, Form, FormRenderPropParams } from "@webiny/form";
+import {
+    Bind,
+    BindComponentRenderProp,
+    BindComponentRenderPropOnChange,
+    Form,
+    useBind,
+    useForm
+} from "@webiny/form";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Input } from "@webiny/ui/Input";
 import { validation } from "@webiny/validation";
-import {
-    FbBuilderFormFieldValidatorPlugin,
-    FbBuilderFormFieldValidatorPluginValidator,
-    FbFormModelField
-} from "~/types";
+import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
+import { PbEditorFunnelFieldValidatorPluginProps } from "../plugins/PbEditorFunnelFieldValidatorPlugin";
+import { AbstractValidator } from "../../../shared/models/validators/AbstractValidator";
+import { validatorFromDto } from "../../../shared/models/validators/validatorFactory";
+import {help} from "yargs";
 
 interface OnEnabledChangeParams {
     data: Record<string, string>;
-    validationValue: FbBuilderFormFieldValidatorPluginValidator[];
+    validationValue: any[];
     onChangeValidation: BindComponentRenderPropOnChange;
-    validator: FbBuilderFormFieldValidatorPluginValidator;
+    validator: any;
 }
 
 const onEnabledChange = ({
@@ -69,140 +75,120 @@ const onFormChange = debounce(
     200
 );
 
-interface Validator {
-    optional: boolean;
-    validator: FbBuilderFormFieldValidatorPluginValidator;
-}
-
 interface ValidatorsTabProps {
-    field: FbFormModelField;
-    form: FormRenderPropParams;
+    field: FunnelFieldDefinitionModel;
 }
 
 export const ValidatorsTab = (props: ValidatorsTabProps) => {
-    const { getFieldPlugin } = useFormEditor();
-    const { field, form } = props;
-    const { Bind, data: formFieldData } = form;
+    console.log("renderimram ValidatorsTab");
+    const { field } = props;
 
-    const fieldPlugin = getFieldPlugin({ name: field.name });
-
-    const validators = useMemo<Validator[]>(() => {
-        const fieldPluginFieldValidators = fieldPlugin?.field?.validators;
-        if (!fieldPluginFieldValidators) {
+    const parentForm = useForm();
+    const supportedValidators = useMemo<PbEditorFunnelFieldValidatorPluginProps[]>(() => {
+        const fieldSupportedValidators = field.supportedValidatorTypes;
+        if (!fieldSupportedValidators) {
             return [];
         }
-        return plugins
-            .byType<FbBuilderFormFieldValidatorPlugin>("form-editor-field-validator")
-            .reduce<Validator[]>((collection, plugin) => {
-                if (fieldPluginFieldValidators.includes(plugin.validator.name)) {
-                    collection.push({ optional: true, validator: plugin.validator });
-                } else if (fieldPluginFieldValidators.includes(`!${plugin.validator.name}`)) {
-                    collection.push({ optional: false, validator: plugin.validator });
-                }
 
-                return collection;
-            }, [])
-            .sort((a, b) => {
-                if (!a.optional && b.optional) {
-                    return -1;
-                }
+        const validatorPlugins = plugins.byType(
+            "pb-editor-funnel-field-validator"
+        ) as unknown as PbEditorFunnelFieldValidatorPluginProps[];
 
-                if (a.optional && !b.optional) {
-                    return 1;
-                }
+        return validatorPlugins.filter(plugin => {
+            return fieldSupportedValidators.includes(plugin.validatorType);
+        });
+    }, [field.supportedValidatorTypes]);
 
-                return 0;
-            });
-    }, [fieldPlugin]);
+    const { value: validatorsValue, onChange: updateValidatorsValue } = useBind({
+        name: "validators"
+    }) as BindComponentRenderProp<AbstractValidator[]>;
+
+    const toggleValidator = (validatorType: string) => {
+        console.log(parentForm.data)
+        const alreadyEnabled = validatorsValue.some(
+            (item: AbstractValidator) => item.type === validatorType
+        );
+
+        if (alreadyEnabled) {
+            console.log("REMOVING", [...validatorsValue.filter(item => item.type !== validatorType)]);
+            updateValidatorsValue([...validatorsValue.filter(item => item.type !== validatorType)]);
+        } else {
+            console.log("ADDING", [
+                ...validatorsValue,
+                { type: validatorType }
+            ]);
+            updateValidatorsValue([...validatorsValue, { type: validatorType }]);
+        }
+    };
 
     return (
-        <Bind name={"validation"}>
-            {({ value: validationValue, onChange: onChangeValidation }) => {
-                return (
-                    <>
-                        {validators.map(({ optional, validator }) => {
-                            const validatorIndex = validationValue.findIndex(
-                                /**
-                                 * TODO remove expect error and fix the validationValue type
-                                 */
-                                // @ts-expect-error
-                                item => item.name === validator.name
-                            );
-                            const data = validationValue[validatorIndex];
-
-                            return (
-                                <SimpleForm key={validator.name}>
-                                    {/*TODO: @ts-adrian nema descriptiona?*/}
-                                    <SimpleFormHeader title={validator.label}>
-                                        {optional && (
-                                            <Switch
-                                                label="Enabled"
-                                                value={validatorIndex >= 0}
-                                                onChange={() =>
-                                                    onEnabledChange({
-                                                        data,
-                                                        validationValue,
-                                                        onChangeValidation,
-                                                        validator
-                                                    })
-                                                }
-                                            />
-                                        )}
-                                    </SimpleFormHeader>
-                                    {data && (
-                                        <Form
-                                            data={data}
-                                            onChange={data =>
-                                                onFormChange({
-                                                    data,
-                                                    validationValue,
-                                                    onChangeValidation,
-                                                    validatorIndex
-                                                })
-                                            }
-                                        >
-                                            {({ Bind, setValue }) => (
-                                                <SimpleFormContent>
-                                                    <Grid>
-                                                        <Cell span={12}>
-                                                            {/*TODO: @ts-adrian kako ovo?*/}
-                                                            <Bind
-                                                                name={"message"}
-                                                                validators={validation.create(
-                                                                    "required"
-                                                                )}
-                                                            >
-                                                                <Input
-                                                                    label={"Message"}
-                                                                    description={
-                                                                        "This message will be displayed to the user"
-                                                                    }
-                                                                />
-                                                            </Bind>
-                                                        </Cell>
-                                                    </Grid>
-
-                                                    {typeof validator.renderSettings ===
-                                                        "function" &&
-                                                        validator.renderSettings({
-                                                            setValue,
-                                                            setMessage: message => {
-                                                                setValue("message", message);
-                                                            },
-                                                            data,
-                                                            Bind,
-                                                            formFieldData
-                                                        })}
-                                                </SimpleFormContent>
-                                            )}
-                                        </Form>
-                                    )}
-                                </SimpleForm>
-                            );
-                        })}
-                    </>
+        <>
+            {supportedValidators.map(validatorPlugin => {
+                const validator = validatorsValue.find(
+                    item => item.type === validatorPlugin.validatorType
                 );
-            }}
-        </Bind>
+
+                console.log("validatorsNadjen", validator);
+
+                return (
+                    <SimpleForm key={validatorPlugin.validatorType}>
+                        <SimpleFormHeader title={validatorPlugin.label}>
+                            <Switch
+                                label="Enabled"
+                                value={!!validator}
+                                onChange={() => toggleValidator(validatorPlugin.validatorType)}
+                            />
+                        </SimpleFormHeader>
+                        {validator && (
+                            <Form
+                                data={validator}
+                                onChange={
+                                    data => {}
+                                    // onFormChange({
+                                    //     data,
+                                    //     validationValue: validatorsValue,
+                                    //     onChangeValidation: validatorsValueOnChange,
+                                    //     validatorIndex
+                                    // })
+                                }
+                            >
+                                {({ Bind, setValue }) => {
+                                    const { settingsRenderer: SettingsRendererComponent } =
+                                        validatorPlugin;
+                                    return (
+                                        <SimpleFormContent>
+                                            <Grid>
+                                                <Cell span={12}>
+                                                    <Bind
+                                                        name={"message"}
+                                                        validators={validation.create("required")}
+                                                    >
+                                                        <Input
+                                                            label={"Message"}
+                                                            description={
+                                                                "This message will be displayed to the user"
+                                                            }
+                                                        />
+                                                    </Bind>
+                                                </Cell>
+                                            </Grid>
+
+                                            {SettingsRendererComponent && (
+                                                <SettingsRendererComponent
+                                                    field={field}
+                                                    setMessage={message =>
+                                                        setValue("message", message)
+                                                    }
+                                                />
+                                            )}
+                                        </SimpleFormContent>
+                                    );
+                                }}
+                            </Form>
+                        )}
+                    </SimpleForm>
+                );
+            })}
+        </>
     );
 };

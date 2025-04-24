@@ -1,29 +1,19 @@
 import { validation } from "@webiny/validation";
 import { AbstractValidator } from "./AbstractValidator";
 
-interface MaxLengthValidatorParams {
-    threshold: number;
+interface MaxLengthValidatorExtraParams {
+    threshold?: number;
 }
 
-export class MaxLengthValidator extends AbstractValidator {
+export class MaxLengthValidator extends AbstractValidator<MaxLengthValidatorExtraParams> {
     type = "maxLength";
-    params: MaxLengthValidatorParams;
-
-    constructor(params: MaxLengthValidatorParams) {
-        super();
-        this.params = params;
-    }
+    params = {
+        errorMessage: "Value is too long.",
+        extra: { threshold: undefined }
+    };
 
     validate(value: any) {
-        const validators = `maxLength:${this.params.threshold}`;
+        const validators = `maxLength:${this.params.extra.threshold}`;
         return validation.validateSync(value, validators, { throw: false }) === true;
-    }
-
-    getErrorMessage() {
-        return `This field must be at most ${this.params.threshold} characters long.`;
-    }
-
-    toDto() {
-        return { type: this.type, value: this.params.threshold };
     }
 }

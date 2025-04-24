@@ -2,7 +2,8 @@ import React from "react";
 import { ContainerAdminPlugins } from "./frontend/pageElements/container/admin/ContainerAdminPlugins";
 import { TextFieldAdminPlugins } from "./frontend/pageElements/fields/text/TextFieldAdminPlugins";
 import { FunnelBuilderPageElementGroup } from "./frontend/pageElements/FunnelBuilderPageElementGroup";
-import {DecoratedElementControls} from "./frontend/pageElements/ElementControlsDecorator";
+import { DecoratedElementControls } from "./frontend/pageElements/ElementControlsDecorator";
+import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators";
 
 export const Extension = () => (
     <>
@@ -13,7 +14,8 @@ export const Extension = () => (
         <TextFieldAdminPlugins />
 
         {/* Other */}
+        <FieldValidatorPlugins />
         <FunnelBuilderPageElementGroup />
-        <DecoratedElementControls/>
+        <DecoratedElementControls />
     </>
 );

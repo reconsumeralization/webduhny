@@ -1,24 +1,36 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Input } from "@webiny/ui/Input";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Cell, Grid } from "@webiny/ui/Grid";
 import camelCase from "lodash/camelCase";
 import { validation } from "@webiny/validation";
 import { Validator } from "@webiny/validation/types";
-import { useForm, Bind } from "@webiny/form";
-import { FieldElementData } from "../../pageElements/fields/types";
+import { Bind, useForm } from "@webiny/form";
 import { plugins } from "@webiny/plugins";
 import { type Plugin } from "@webiny/plugins/types";
 import { PbEditorFunnelFieldSettingsPluginProps } from "../plugins/PbEditorFunnelFieldSettingsPlugin";
+import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 
 interface GeneralTabProps {
-    field: FieldElementData;
+    field: FunnelFieldDefinitionModel;
 }
 
 export const GeneralTab = ({ field }: GeneralTabProps) => {
     const { setValue } = useForm();
 
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
     const afterChangeLabel = useCallback((value: string): void => {
         setValue("fieldId", camelCase(value));
+    }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (!inputRef.current) {
+                return;
+            }
+
+            inputRef.current.focus();
+        }, 333);
     }, []);
 
     const uniqueFieldIdValidator: Validator = useCallback((fieldId: string) => {
@@ -69,7 +81,7 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
                         validators={validation.create("required")}
                         afterChange={afterChangeLabel}
                     >
-                        <Input label={"Label"} autoFocus={true} />
+                        <Input label={"Label"} autoFocus={true} inputRef={inputRef} />
                     </Bind>
                 </Cell>
                 <Cell span={6}>

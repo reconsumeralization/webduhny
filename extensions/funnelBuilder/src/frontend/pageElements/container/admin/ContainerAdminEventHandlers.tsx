@@ -88,18 +88,19 @@ export const ContainerAdminEventHandlers = () => {
         };
     }, [containerElement]);
 
-    return (
-        <FieldSettingsDialog
-            field={createdFieldElement?.data}
-            onClose={() => setCreatedFieldElement(null)}
-            onSubmit={data => {
-                eventHandler.trigger(
-                    new UpdateElementActionEvent({
-                        element: { ...createdFieldElement!, data },
-                        history: false
-                    })
-                );
-            }}
-        />
-    );
+    return null;
+    // return (
+    //     <FieldSettingsDialog
+    //         field={createdFieldElement?.data}
+    //         onClose={() => setCreatedFieldElement(null)}
+    //         onSubmit={data => {
+    //             eventHandler.trigger(
+    //                 new UpdateElementActionEvent({
+    //                     element: { ...createdFieldElement!, data },
+    //                     history: false
+    //                 })
+    //             );
+    //         }}
+    //     />
+    // );
 };

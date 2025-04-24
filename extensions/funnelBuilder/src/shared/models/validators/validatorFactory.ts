@@ -14,10 +14,10 @@ export interface FieldValidatorDto {
 
 const registry: Record<string, (dto: FieldValidatorDto) => AbstractValidator> = {
     email: () => new EmailValidator(),
-    gte: dto => new GteValidator(dto.params),
-    lte: dto => new LteValidator(dto.params),
-    maxLength: dto => new MaxLengthValidator(dto.params),
-    minLength: dto => new MinLengthValidator(dto.params),
+    // gte: dto => new GteValidator(dto.params),
+    // lte: dto => new LteValidator(dto.params),
+    // maxLength: dto => new MaxLengthValidator(dto.params),
+    // minLength: dto => new MinLengthValidator(dto.params),
     required: () => new RequiredValidator(),
     url: () => new UrlValidator()
 };

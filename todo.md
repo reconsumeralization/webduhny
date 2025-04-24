@@ -1,6 +1,6 @@
 ## MH
-- deleting pages
-- all pages rendered all the time or just single step? 
+- deleting steps
+- all steps rendered all the time or just single step? 
 - cond rules
 - submission
 - themes
@@ -12,11 +12,10 @@
 - any checks on moving steps needed?
 - history: false check! (checking everything is saved as expected)
 - default Value
-- validators
 -  async stuff? like vlaidators?
 -  supported validators per field type
 - PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
--  
+- optional validators  
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

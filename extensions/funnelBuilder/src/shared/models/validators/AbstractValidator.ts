@@ -1,14 +1,24 @@
-export interface FieldValidatorDto {
-    type: string;
-    params?: any; // Additional parameters for the validator.
+export interface FieldValidatorParams<TExtra = {}> {
+    errorMessage: string; // Error message to be displayed when validation fails.
+    extra: TExtra;
 }
 
-export abstract class AbstractValidator {
+export interface FieldValidatorDto<TExtraParams = {}> {
+    type: string;
+    params: FieldValidatorParams<TExtraParams>; // Additional parameters for the validator.
+}
+
+export abstract class AbstractValidator<TExtraParams = {}> {
     abstract type: string;
+    abstract params: FieldValidatorParams<TExtraParams>;
 
     abstract validate(value: any): boolean;
 
-    abstract getErrorMessage(): string;
+    getErrorMessage() {
+        return this.params.errorMessage;
+    }
 
-    abstract toDto(): FieldValidatorDto;
+    toDto(): FieldValidatorDto<TExtraParams> {
+        return { type: this.type, params: this.params };
+    }
 }
