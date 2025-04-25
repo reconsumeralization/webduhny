@@ -17,34 +17,43 @@ describe("Funnel Entries", () => {
                     label: "First Name",
                     helpText: "Enter your first name",
                     validators: [
-                        { type: "required" },
-                        { type: "minLength", params: { threshold: 2 } }
+                        {
+                            type: "required",
+                            params: { extra: {}, errorMessage: "Value is required." }
+                        },
+                        {
+                            type: "minLength",
+                            params: {
+                                extra: { threshold: 2 },
+                                errorMessage: "This field must be at least 2 characters long."
+                            }
+                        }
                     ],
                     extra: {}
                 },
-                {
-                    id: "lastName",
-                    fieldId: "lastName",
-                    stepId: "step1",
-                    type: "text",
-                    label: "Last Name",
-                    helpText: "Enter your last name",
-                    validators: [
-                        { type: "required" },
-                        { type: "minLength", params: { threshold: 2 } }
-                    ],
-                    extra: {}
-                },
-                {
-                    id: "email",
-                    fieldId: "email",
-                    stepId: "step2",
-                    type: "text",
-                    label: "Email",
-                    helpText: "Enter your email address",
-                    validators: [{ type: "required" }, { type: "email" }],
-                    extra: {}
-                }
+                // {
+                //     id: "lastName",
+                //     fieldId: "lastName",
+                //     stepId: "step1",
+                //     type: "text",
+                //     label: "Last Name",
+                //     helpText: "Enter your last name",
+                //     validators: [
+                //         { type: "required" },
+                //         { type: "minLength", params: { threshold: 2 } }
+                //     ],
+                //     extra: {}
+                // },
+                // {
+                //     id: "email",
+                //     fieldId: "email",
+                //     stepId: "step2",
+                //     type: "text",
+                //     label: "Email",
+                //     helpText: "Enter your email address",
+                //     validators: [{ type: "required" }, { type: "email" }],
+                //     extra: {}
+                // }
             ]
         });
 

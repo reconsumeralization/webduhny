@@ -1,18 +1,26 @@
-export interface FieldValidatorParams<TExtra = {}> {
+export type FieldValidatorParams<TExtra = Record<string, any>> = {
     errorMessage: string; // Error message to be displayed when validation fails.
     extra: TExtra;
 }
 
-export interface FieldValidatorDto<TExtraParams = {}> {
+export type FieldValidatorParamsDto<TExtra = Record<string, any>> = Partial<FieldValidatorParams<TExtra>>
+
+export interface FieldValidatorDto<TExtraParams = Record<string, any>> {
     type: string;
-    params: FieldValidatorParams<TExtraParams>; // Additional parameters for the validator.
+    params?: FieldValidatorParamsDto<TExtraParams>; // Additional parameters for the validator.
 }
 
-export abstract class AbstractValidator<TExtraParams = {}> {
-    abstract type: string;
-    abstract params: FieldValidatorParams<TExtraParams>;
+export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
+    type: string;
+    params: FieldValidatorParams<TExtraParams>;
 
-    abstract validate(value: any): boolean;
+    constructor(dto: FieldValidatorDto) {
+        this.type = dto.type;
+        this.params = {
+            errorMessage: dto.params?.errorMessage || "Invalid value.",
+            extra: (dto.params?.extra || {}) as TExtraParams
+        };
+    }
 
     getErrorMessage() {
         return this.params.errorMessage;
@@ -21,4 +29,6 @@ export abstract class AbstractValidator<TExtraParams = {}> {
     toDto(): FieldValidatorDto<TExtraParams> {
         return { type: this.type, params: this.params };
     }
+
+    abstract validate(value: any): boolean;
 }

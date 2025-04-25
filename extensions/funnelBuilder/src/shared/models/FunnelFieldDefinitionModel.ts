@@ -1,5 +1,5 @@
-import { AbstractValidator } from "./validators/AbstractValidator";
-import { validatorFromDto, FieldValidatorDto } from "./validators/validatorFactory";
+import { AbstractValidator, FieldValidatorDto } from "./validators/AbstractValidator";
+import { validatorFromDto } from "./validators/validatorFactory";
 
 export interface FunnelFieldDefinitionModelDto<TExtra = any> {
     id: string;
@@ -52,6 +52,18 @@ export class FunnelFieldDefinitionModel {
             validators: this.validators.map(v => v.toDto()),
             extra: this.extra
         };
+    }
+
+    populate(dto: Partial<FunnelFieldDefinitionModelDto>) {
+        this.fieldId = dto.fieldId || this.fieldId;
+        this.stepId = dto.stepId || this.stepId;
+        this.type = dto.type || this.type;
+        this.label = dto.label || this.label;
+        this.helpText = dto.helpText || this.helpText;
+        this.validators = dto.validators?.map(validatorFromDto) ?? this.validators;
+
+        console.log('populirao, vals:', this.validators)
+        this.extra = dto.extra ?? this.extra;
     }
 
     static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {

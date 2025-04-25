@@ -1,18 +1,28 @@
 import { validation } from "@webiny/validation";
-import { AbstractValidator } from "./AbstractValidator";
+import { AbstractValidator, FieldValidatorParamsDto } from "./AbstractValidator";
 
 interface MinLengthValidatorExtraParams {
     threshold?: number;
 }
 
 export class MinLengthValidator extends AbstractValidator<MinLengthValidatorExtraParams> {
-    type = "minLength";
-    params = {
-        errorMessage: "Value is too short.",
-        extra: { threshold: undefined }
-    };
+    constructor(params: FieldValidatorParamsDto<MinLengthValidatorExtraParams> = {}) {
+        super({
+            type: "minLength",
+            params: {
+                errorMessage: params.errorMessage || "Value is too short.",
+                extra: {
+                    threshold: params.extra?.threshold
+                }
+            }
+        });
+    }
 
     validate(value: any) {
+        if (!this.params.extra?.threshold) {
+            return true;
+        }
+
         const validators = `minLength:${this.params.extra.threshold}`;
         return validation.validateSync(value, validators, { throw: false }) === true;
     }

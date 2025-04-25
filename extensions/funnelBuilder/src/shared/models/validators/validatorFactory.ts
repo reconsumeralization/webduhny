@@ -1,25 +1,20 @@
 import { RequiredValidator } from "./RequiredValidator";
 import { GteValidator } from "./GteValidator";
-import { AbstractValidator } from "./AbstractValidator";
+import {AbstractValidator, FieldValidatorDto} from "./AbstractValidator";
 import { EmailValidator } from "./EmailValidator";
 import { LteValidator } from "./LteValidator";
 import { MaxLengthValidator } from "./MaxLengthValidator";
 import { MinLengthValidator } from "./MinLengthValidator";
 import { UrlValidator } from "./UrlValidator";
 
-export interface FieldValidatorDto {
-    type: string;
-    params?: any; // Additional parameters for the validator.
-}
-
 const registry: Record<string, (dto: FieldValidatorDto) => AbstractValidator> = {
-    email: () => new EmailValidator(),
-    // gte: dto => new GteValidator(dto.params),
-    // lte: dto => new LteValidator(dto.params),
-    // maxLength: dto => new MaxLengthValidator(dto.params),
-    // minLength: dto => new MinLengthValidator(dto.params),
-    required: () => new RequiredValidator(),
-    url: () => new UrlValidator()
+    email: (dto) => new EmailValidator(dto.params),
+    gte: dto => new GteValidator(dto.params),
+    lte: dto => new LteValidator(dto.params),
+    maxLength: dto => new MaxLengthValidator(dto.params),
+    minLength: dto => new MinLengthValidator(dto.params),
+    required: (dto) => new RequiredValidator(dto.params),
+    url: (dto) => new UrlValidator(dto.params)
 };
 
 export function validatorFromDto(dto: FieldValidatorDto): AbstractValidator {

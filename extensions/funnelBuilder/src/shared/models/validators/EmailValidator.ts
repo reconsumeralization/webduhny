@@ -1,14 +1,19 @@
 import { validation } from "@webiny/validation";
-import { AbstractValidator } from "./AbstractValidator";
+import { AbstractValidator, FieldValidatorParamsDto } from "./AbstractValidator";
 
 export class EmailValidator extends AbstractValidator {
-    type = "email";
-    params = {
-        errorMessage: "Value must be a valid email address.",
-        extra: {}
-    };
+    constructor(params: FieldValidatorParamsDto = {}) {
+        super({
+            type: "email",
+            params: {
+                errorMessage: params.errorMessage || "Value must be a valid email address.",
+                extra: {}
+            }
+        });
+    }
 
     validate(value: any) {
-        return validation.validateSync(value, "email", { throw: false }) === true;
+        const validators = `email`;
+        return validation.validateSync(value, validators, { throw: false }) === true;
     }
 }

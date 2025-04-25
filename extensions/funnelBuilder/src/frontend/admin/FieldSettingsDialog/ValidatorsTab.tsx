@@ -6,14 +6,7 @@ import {
     SimpleFormContent,
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
-import {
-    Bind,
-    BindComponentRenderProp,
-    BindComponentRenderPropOnChange,
-    Form,
-    useBind,
-    useForm
-} from "@webiny/form";
+import { BindComponentRenderProp, Form, useBind, useForm } from "@webiny/form";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { Cell, Grid } from "@webiny/ui/Grid";
@@ -21,40 +14,8 @@ import { Input } from "@webiny/ui/Input";
 import { validation } from "@webiny/validation";
 import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 import { PbEditorFunnelFieldValidatorPluginProps } from "../plugins/PbEditorFunnelFieldValidatorPlugin";
-import { AbstractValidator } from "../../../shared/models/validators/AbstractValidator";
-import { validatorFromDto } from "../../../shared/models/validators/validatorFactory";
-import {help} from "yargs";
-
-interface OnEnabledChangeParams {
-    data: Record<string, string>;
-    validationValue: any[];
-    onChangeValidation: BindComponentRenderPropOnChange;
-    validator: any;
-}
-
-const onEnabledChange = ({
-    data,
-    validationValue,
-    onChangeValidation,
-    validator
-}: OnEnabledChangeParams): void => {
-    if (data) {
-        const index = validationValue.findIndex(item => item.name === validator.name);
-        onChangeValidation([
-            ...validationValue.slice(0, index),
-            ...validationValue.slice(index + 1)
-        ]);
-        return;
-    }
-    onChangeValidation([
-        ...validationValue,
-        {
-            name: validator.name,
-            settings: validator.defaultSettings,
-            message: validator.defaultMessage
-        }
-    ]);
-};
+import {AbstractValidator, FieldValidatorDto} from "../../../shared/models/validators/AbstractValidator";
+import {validatorFromDto} from "../../../shared/models/validators/validatorFactory";
 
 interface OnFormChangeParams {
     data: Record<string, string>;
@@ -79,11 +40,7 @@ interface ValidatorsTabProps {
     field: FunnelFieldDefinitionModel;
 }
 
-export const ValidatorsTab = (props: ValidatorsTabProps) => {
-    console.log("renderimram ValidatorsTab");
-    const { field } = props;
-
-    const parentForm = useForm();
+export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
     const supportedValidators = useMemo<PbEditorFunnelFieldValidatorPluginProps[]>(() => {
         const fieldSupportedValidators = field.supportedValidatorTypes;
         if (!fieldSupportedValidators) {
@@ -101,25 +58,24 @@ export const ValidatorsTab = (props: ValidatorsTabProps) => {
 
     const { value: validatorsValue, onChange: updateValidatorsValue } = useBind({
         name: "validators"
-    }) as BindComponentRenderProp<AbstractValidator[]>;
+    }) as BindComponentRenderProp<FieldValidatorDto[]>;
 
-    const toggleValidator = (validatorType: string) => {
-        console.log(parentForm.data)
-        const alreadyEnabled = validatorsValue.some(
-            (item: AbstractValidator) => item.type === validatorType
-        );
+    const toggleValidator = useCallback((validatorType: string) => {
+        const alreadyEnabled = validatorsValue.some(item => item.type === validatorType);
 
         if (alreadyEnabled) {
-            console.log("REMOVING", [...validatorsValue.filter(item => item.type !== validatorType)]);
             updateValidatorsValue([...validatorsValue.filter(item => item.type !== validatorType)]);
         } else {
-            console.log("ADDING", [
-                ...validatorsValue,
-                { type: validatorType }
-            ]);
-            updateValidatorsValue([...validatorsValue, { type: validatorType }]);
+            // We're immediately transforming the validator type to a DTO because we're
+            // using DTOs in the form and we need to keep the same format.
+            const newValidator = validatorFromDto({ type: validatorType }).toDto();
+            updateValidatorsValue([...validatorsValue, newValidator]);
         }
-    };
+    }, [validatorsValue]);
+
+    const updateValidatorSettings = () => {
+
+    }
 
     return (
         <>
@@ -128,7 +84,9 @@ export const ValidatorsTab = (props: ValidatorsTabProps) => {
                     item => item.type === validatorPlugin.validatorType
                 );
 
-                console.log("validatorsNadjen", validator);
+                const validatorIndex = validatorsValue.findIndex(
+                    item => item.type === validatorPlugin.validatorType
+                );
 
                 return (
                     <SimpleForm key={validatorPlugin.validatorType}>
@@ -140,10 +98,16 @@ export const ValidatorsTab = (props: ValidatorsTabProps) => {
                             />
                         </SimpleFormHeader>
                         {validator && (
-                            <Form
+                            <Form<FieldValidatorDto>
                                 data={validator}
                                 onChange={
-                                    data => {}
+                                    data => {
+                                        updateValidatorsValue([
+                                            ...validatorsValue.slice(0, validatorIndex),
+                                            data,
+                                            ...validatorsValue.slice(validatorIndex + 1)
+                                        ])
+                                    }
                                     // onFormChange({
                                     //     data,
                                     //     validationValue: validatorsValue,
@@ -160,7 +124,7 @@ export const ValidatorsTab = (props: ValidatorsTabProps) => {
                                             <Grid>
                                                 <Cell span={12}>
                                                     <Bind
-                                                        name={"message"}
+                                                        name={"params.errorMessage"}
                                                         validators={validation.create("required")}
                                                     >
                                                         <Input

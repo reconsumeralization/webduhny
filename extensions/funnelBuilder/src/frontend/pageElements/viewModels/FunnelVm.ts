@@ -45,7 +45,7 @@ export class FunnelVm {
     updateField(fieldId: string, fieldData: Partial<FunnelFieldDefinitionModelDto>) {
         const field = this.funnel.fields.find(field => field.id === fieldId);
         if (field) {
-            Object.assign(field, fieldData);
+            field.populate(fieldData);
             this.onChange();
         }
     }
