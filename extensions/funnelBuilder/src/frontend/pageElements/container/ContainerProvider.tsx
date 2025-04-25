@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, {useContext, useMemo, useSyncExternalStore} from "react";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
@@ -35,7 +35,9 @@ export const ContainerProvider = ({
     const { getElement } = useRenderer();
     const element = getElement<FunnelModelDto>();
 
-    const [funnelSubmissionChecksum, setFunnelSubmissionChecksum] = React.useState<string | null>(null);
+    // With this, we're forcing the funnel to be re-rendered when the data changes.
+    const [funnelSubmissionActiveStepIndex, setFunnelSubmissionActiveStepIndex] =
+        React.useState<number>(0);
 
     const funnelVm = useMemo(() => {
         return new FunnelVm(element.data, {
@@ -44,14 +46,7 @@ export const ContainerProvider = ({
     }, [element.data]);
 
     const funnelSubmissionVm = useMemo(() => {
-        return new FunnelSubmissionVm(funnelVm.funnel, {
-            onChange: () => {
-                const checksum = funnelSubmissionVm.getDataChecksum();
-                if (funnelSubmissionChecksum !== checksum) {
-                    setFunnelSubmissionChecksum(checksum);
-                }
-            }
-        });
+        return new FunnelSubmissionVm(funnelVm.funnel);
     }, [funnelVm]);
 
     return (

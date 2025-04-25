@@ -1,12 +1,9 @@
 import { FunnelModel } from "../../../shared/models/FunnelModel";
 import {
     FunnelSubmissionModel,
-    FunnelSubmissionModelDto
 } from "../../../shared/models/FunnelSubmissionModel";
 
-interface FunnelSubmissionVmOptions {
-    onChange?: (funnel: FunnelSubmissionModelDto) => void;
-}
+interface FunnelSubmissionVmOptions {}
 
 export class FunnelSubmissionVm {
     funnel: FunnelModel;
@@ -29,19 +26,6 @@ export class FunnelSubmissionVm {
 
     submitActiveStep() {
         this.funnelSubmission.submitActiveStep();
-        this.onChange();
-    }
-
-    getDataChecksum() {
-        return this.funnelSubmission.getDataChecksum();
-    }
-
-    private onChange() {
-        if (!this.options.onChange) {
-            return;
-        }
-
-        this.options.onChange(this.funnel.toDto());
     }
 
 }
