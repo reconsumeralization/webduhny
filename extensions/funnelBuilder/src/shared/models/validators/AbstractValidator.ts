@@ -1,9 +1,11 @@
 export type FieldValidatorParams<TExtra = Record<string, any>> = {
     errorMessage: string; // Error message to be displayed when validation fails.
     extra: TExtra;
-}
+};
 
-export type FieldValidatorParamsDto<TExtra = Record<string, any>> = Partial<FieldValidatorParams<TExtra>>
+export type FieldValidatorParamsDto<TExtra = Record<string, any>> = Partial<
+    FieldValidatorParams<TExtra>
+>;
 
 export interface FieldValidatorDto<TExtraParams = Record<string, any>> {
     type: string;
@@ -30,5 +32,12 @@ export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
         return { type: this.type, params: this.params };
     }
 
-    abstract validate(value: any): boolean;
+    validate(value: any) {
+        const isValid = this.isValid(value);
+        if (!isValid) {
+            throw new Error(this.getErrorMessage());
+        }
+    }
+
+    abstract isValid(value: any): boolean;
 }

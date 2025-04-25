@@ -11,9 +11,7 @@ describe("Validator From DTO", () => {
 
         expect(validator).toBeInstanceOf(RequiredValidator);
         expect(validator.type).toBe("required");
-        expect(validator.params.errorMessage).toBe(
-            "Value is required."
-        );
+        expect(validator.params.errorMessage).toBe("Value is required.");
         expect(validator.params.extra).toEqual({});
     });
 

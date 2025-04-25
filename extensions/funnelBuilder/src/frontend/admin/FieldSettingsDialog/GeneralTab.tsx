@@ -58,11 +58,12 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
     }, []);
 
     const fieldSettingsPlugin = plugins.byType("pb-editor-funnel-field-settings").find(plugin => {
-        return plugin.fieldType === "text";
+        return plugin.fieldType === field.type;
     }) as Plugin<PbEditorFunnelFieldSettingsPluginProps>;
 
     let additionalSettings: React.ReactNode = null;
     if (fieldSettingsPlugin) {
+        console.log("fieldSettingsPlugin", fieldSettingsPlugin);
         const RendererComponent = fieldSettingsPlugin.renderer;
         additionalSettings = (
             <RendererComponent

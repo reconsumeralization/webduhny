@@ -18,7 +18,7 @@ export class LteValidator extends AbstractValidator<LteValidatorExtraParams> {
         });
     }
 
-    validate(value: any) {
+    isValid(value: any) {
         if (!this.params.extra?.threshold) {
             return true;
         }

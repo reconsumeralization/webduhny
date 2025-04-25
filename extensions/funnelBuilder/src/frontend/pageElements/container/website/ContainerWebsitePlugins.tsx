@@ -1,8 +1,11 @@
 import React from "react";
 import { PbRenderElementPlugin } from "@webiny/app-website";
-import { ContainerWebsite } from "./ContainerWebsite";
-import { ELEMENT_TYPE } from "../constants";
+import { ContainerWebsiteRenderer } from "./ContainerWebsiteRenderer";
+import { CONTAINER_ELEMENT_TYPE } from "../../../../shared/constants";
 
 export const ContainerWebsitePlugins = () => (
-    <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={ContainerWebsite} />
+    <PbRenderElementPlugin
+        elementType={CONTAINER_ELEMENT_TYPE}
+        renderer={ContainerWebsiteRenderer}
+    />
 );

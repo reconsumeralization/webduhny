@@ -18,7 +18,7 @@ export class GteValidator extends AbstractValidator<GteValidatorExtraParams> {
         });
     }
 
-    validate(value: any) {
+    isValid(value: any) {
         if (!this.params.extra?.threshold) {
             return true;
         }

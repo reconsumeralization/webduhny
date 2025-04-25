@@ -11,11 +11,14 @@
 - default Value
 - preview / clicking in editor should work? no?
 - embed test
+- predefned fiedl definitiins (the same liek it's with validators? we need this for suppored validators)
 - validators
   - supported validators per field type
   - async validators
   - pattern validator
+- uniqueFieldIdValidator
 - docs
+- edit field dialog reopening?
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

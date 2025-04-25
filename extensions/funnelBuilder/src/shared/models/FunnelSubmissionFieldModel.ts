@@ -52,7 +52,7 @@ export class FunnelSubmissionFieldModel {
         const validators = this.definition.validators;
 
         for (const validator of validators) {
-            if (!validator.validate(this.value)) {
+            if (!validator.isValid(this.value)) {
                 return {
                     isValid: false,
                     errorMessage: validator.getErrorMessage()

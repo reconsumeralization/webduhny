@@ -6,14 +6,15 @@ import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import { BUTTON_ACTION_OPTIONS } from "./constants";
 
-export const AdvancedSettings = () => {
+
+export const ButtonAdvancedSettings = () => {
     // In order to construct the settings form, we're using the
     // `@webiny/form`, `@webiny/ui`, and `@webiny/validation` packages.
     const { submit } = useForm();
     return (
         <Grid>
             <Cell span={12}>
-                <Bind name={"field.extra.action"} validators={validation.create("required")}>
+                <Bind name={"action"} validators={validation.create("required")}>
                     <Select
                         label={"Button action"}
                         description={

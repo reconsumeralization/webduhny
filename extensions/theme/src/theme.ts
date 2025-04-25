@@ -75,10 +75,7 @@ export const typography = {
             id: "heading1",
             name: "Heading 1",
             tag: "h1",
-            styles: {
-                desktop: { ...headings, fontWeight: "bold", fontSize: "100px" },
-                tablet: { ...headings, fontWeight: "bold", fontSize: "10px" }
-            }
+            styles: { ...headings, fontWeight: "bold", fontSize: 48 }
         },
         {
             id: "heading2",

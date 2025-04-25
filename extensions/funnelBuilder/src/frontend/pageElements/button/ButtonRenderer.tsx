@@ -1,25 +1,33 @@
 import React, { useCallback, useMemo } from "react";
-import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
-import styled from "@emotion/styled";
 import { useForm } from "@webiny/form";
+import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import { ButtonElementData } from "./types";
+import styled from "@emotion/styled";
 
-export const ButtonWrapper = styled.div`
-    ${({ theme }) => theme.styles.elements["button"]["primary"]};
+interface ButtonWrapperProps {
+    fullWidth?: boolean;
+    type?: "primary" | "default";
+}
 
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+export const ButtonWrapper = styled.div<ButtonWrapperProps>`
+    ${({ theme, type }) => theme.styles.elements["button"][`${type}`]}
+    .button-body {
+        width: ${props => (props.fullWidth ? "100%" : "auto")};
+        margin-left: auto;
+
+        &:disabled {
+            opacity: 0.5;
+        }
     }
 `;
 
-export const Button = createRenderer(() => {
+export const ButtonRenderer = createRenderer(props => {
     const { submit } = useForm();
     const { getElement } = useRenderer();
     const element = getElement<ButtonElementData>();
-    const { field } = element.data;
-    const { action } = field.extra;
+    const { action } = element.data;
 
+    console.log('element.data', element.data);
     const buttonLabel = useMemo(() => {
         switch (action) {
             case "previousStep":
@@ -40,7 +48,7 @@ export const Button = createRenderer(() => {
     }, [action]);
 
     return (
-        <ButtonWrapper>
+        <ButtonWrapper type={"primary"}>
             <button className={"button-body"} onClick={onClick}>
                 {buttonLabel}
             </button>

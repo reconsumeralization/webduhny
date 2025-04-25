@@ -1,7 +1,6 @@
 import React from "react";
 import { PbEditorPageElementPlugin } from "@webiny/app-page-builder";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
-import { ReactComponent as TextIcon } from "@material-design-icons/svg/outlined/text_fields.svg";
 import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import type { Renderer } from "@webiny/app-page-builder-elements/types";
@@ -20,6 +19,7 @@ export interface PbEditorFunnelFieldPageElementPluginProps {
     renderer: Renderer;
     name: string;
     description: string;
+    icon: React.ReactNode;
     extraFieldData: Record<string, any>;
 }
 
@@ -38,7 +38,7 @@ export const PbEditorFunnelFieldPageElementPlugin = (
                 preview() {
                     return (
                         <StyledPreview>
-                            <TextIcon />
+                            {props.icon}
                             <Typography use={"headline6"}>{props.name}</Typography>
                             <Typography use={"body2"}>{props.description}</Typography>
                         </StyledPreview>

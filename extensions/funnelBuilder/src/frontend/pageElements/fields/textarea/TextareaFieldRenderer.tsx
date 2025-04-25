@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
@@ -7,7 +7,7 @@ import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { createFieldRenderer } from "../utils";
 
-export const StyledInput = styled.input`
+const StyledTextarea = styled.textarea`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
     background-color: ${props => props.theme.styles.colors["color5"]};
     width: 100%;
@@ -24,16 +24,12 @@ export const StyledInput = styled.input`
     }
 `;
 
-export const TextFieldRenderer = createFieldRenderer(props => {
+export const TextareaFieldRenderer = createFieldRenderer(props => {
     const { definition: field } = props.field;
-
-    const validators = useMemo(() => {
-        return field.validators.map(validator => validator.validate.bind(validator));
-    }, [field.validators]);
 
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators,
+        validators: field.validators.map(validator => validator.validate),
         defaultValue: field.defaultValue
     });
 
@@ -47,21 +43,20 @@ export const TextFieldRenderer = createFieldRenderer(props => {
     };
 
     return (
-        <>
-            <Field>
-                <FieldLabel field={field} />
-                {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
-                <StyledInput
-                    onBlur={onBlur}
-                    onChange={e => onChange(e.target.value)}
-                    value={value || ""}
-                    placeholder={field.extra.placeholderText}
-                    type={field.extra.inputType}
-                    name={field.fieldId}
-                    id={field.fieldId}
-                />
-                <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
-            </Field>
-        </>
+        <Field>
+            <FieldLabel field={field} />
+            {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
+            <StyledTextarea
+                onBlur={onBlur}
+                onChange={e => onChange(e.target.value)}
+                value={value || ""}
+                placeholder={field.extra.placeholderText}
+                rows={field.extra.rows}
+                name={field.fieldId}
+                id={field.fieldId}
+            />
+            <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
+        </Field>
+
     );
 });

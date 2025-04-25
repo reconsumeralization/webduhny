@@ -11,21 +11,21 @@ import { ContainerProvider } from "../ContainerProvider";
 import { useEventActionHandler } from "@webiny/app-page-builder/editor";
 import { UpdateElementActionEvent } from "@webiny/app-page-builder/editor/recoil/actions";
 
-const ElementsSection = styled.div<{ activePage: number }>`
+const ElementsSection = styled.div<{ activePageIndex: number }>`
     & > webiny-form-container > pb-grid {
         display: none;
     }
 
     ${props =>
-        props.activePage !== undefined &&
+        props.activePageIndex !== undefined &&
         `
-        & > webiny-form-container > pb-grid:nth-of-type(${props.activePage + 1}) {
+        & > webiny-form-container > pb-grid:nth-of-type(${props.activePageIndex + 1}) {
             display: block;
         }
     `}
 `;
 
-export const ContainerAdmin = createRenderer(() => {
+export const ContainerAdminRenderer = createRenderer(() => {
     const { getElement, meta } = useRenderer();
     const element = getElement();
     const [activePageIndex, setActivePageIndex] = useState(0);
@@ -63,7 +63,7 @@ export const ContainerAdmin = createRenderer(() => {
                     })}
                 </Tabs>
 
-                <ElementsSection activePage={activePageIndex} data-role={"fub-steps-wrapper"}>
+                <ElementsSection activePageIndex={activePageIndex} data-role={"fub-steps-wrapper"}>
                     <Form
                         onSubmit={data => {
                             console.log("Form submitted.", data);

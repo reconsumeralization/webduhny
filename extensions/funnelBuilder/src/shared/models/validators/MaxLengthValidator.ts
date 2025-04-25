@@ -18,7 +18,7 @@ export class MaxLengthValidator extends AbstractValidator<MaxLengthValidatorExtr
         });
     }
 
-    validate(value: any) {
+    isValid(value: any) {
         if (!this.params.extra?.threshold) {
             return true;
         }

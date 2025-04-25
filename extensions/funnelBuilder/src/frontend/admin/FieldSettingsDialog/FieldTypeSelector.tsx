@@ -47,4 +47,3 @@ export const FbFormModelFieldSelector = ({ fieldType, onClick }: FbFormModelFiel
         </span>
     );
 };
-

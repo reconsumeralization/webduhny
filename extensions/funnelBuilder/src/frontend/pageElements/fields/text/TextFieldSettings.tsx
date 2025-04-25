@@ -8,18 +8,12 @@ export const TextFieldSettings = () => {
         <Grid>
             <Cell span={12}>
                 <Bind name={"extra.placeholderText"}>
-                    <Input
-                        label={"Placeholder text"}
-                        description={"Placeholder text (optional)"}
-                    />
+                    <Input label={"Placeholder text"} description={"Placeholder text (optional)"} />
                 </Bind>
             </Cell>
             <Cell span={12}>
                 <Bind name={"defaultValue"}>
-                    <Input
-                        label={"Default value"}
-                        description={"Default value (optional)"}
-                    />
+                    <Input label={"Default value"} description={"Default value (optional)"} />
                 </Bind>
             </Cell>
         </Grid>

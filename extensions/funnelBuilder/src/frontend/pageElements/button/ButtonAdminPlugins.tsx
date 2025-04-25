@@ -4,21 +4,23 @@ import {
     PbEditorPageElementPlugin,
     PbRenderElementPlugin
 } from "@webiny/app-page-builder";
-import { Button } from "./Button";
+import { ButtonRenderer } from "./ButtonRenderer";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
-import { AdvancedSettings } from "./AdvancedSettings";
+import { ButtonAdvancedSettings } from "./ButtonAdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
-import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../utils";
+import { FUB_PAGE_ELEMENT_GROUP } from "../fields/utils";
 import { ButtonElementData } from "./types";
 
-const INITIAL_ELEMENT_DATA: ButtonElementData = createInitialFieldData("button", {});
+const INITIAL_ELEMENT_DATA: ButtonElementData = {
+    action: "nextStep"
+}
 
-export const ButtonAdmin = () => (
+export const ButtonAdminPlugins = () => (
     <>
-        <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={Button} />
+        <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={ButtonRenderer} />
         <PbEditorPageElementPlugin
             elementType={ELEMENT_TYPE}
-            renderer={Button}
+            renderer={ButtonRenderer}
             toolbar={{
                 title: "Button",
                 group: FUB_PAGE_ELEMENT_GROUP,
@@ -54,7 +56,7 @@ export const ButtonAdmin = () => (
         />
         <PbEditorPageElementAdvancedSettingsPlugin
             elementType={ELEMENT_TYPE}
-            element={<AdvancedSettings />}
+            element={<ButtonAdvancedSettings />}
         />
     </>
 );

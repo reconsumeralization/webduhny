@@ -5,17 +5,17 @@ import {
     PbRenderElementPlugin
 } from "@webiny/app-page-builder";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
-import { ContainerAdmin } from "./ContainerAdmin";
+import { ContainerAdminRenderer } from "./ContainerAdminRenderer";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { createContainerElement } from "../../../../shared/createContainerElement";
 import { CONTAINER_ELEMENT_TYPE } from "../../../../shared/constants";
 
 export const ContainerAdminPlugins = () => (
     <>
-        <PbRenderElementPlugin elementType={CONTAINER_ELEMENT_TYPE} renderer={ContainerAdmin} />
+        <PbRenderElementPlugin elementType={CONTAINER_ELEMENT_TYPE} renderer={ContainerAdminRenderer} />
         <PbEditorPageElementPlugin
             elementType={CONTAINER_ELEMENT_TYPE}
-            renderer={ContainerAdmin}
+            renderer={ContainerAdminRenderer}
             toolbar={{
                 // We use `pb-editor-element-group-media` to put our new
                 // page element into the Media group in the left sidebar.

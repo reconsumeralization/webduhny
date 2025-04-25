@@ -12,7 +12,7 @@ export class RequiredValidator extends AbstractValidator {
         });
     }
 
-    validate(value: any) {
+    isValid(value: any) {
         const validators = `required`;
         return validation.validateSync(value, validators, { throw: false }) === true;
     }
