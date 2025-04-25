@@ -28,7 +28,7 @@ export interface IHandlerParams {
 }
 
 export class Handler implements IHandler {
-    public readonly system: ISystem;
+    private readonly system: ISystem;
     private readonly client: Pick<EventBridgeClient, "send">;
     private commands: ICommandValue[] = [];
     private readonly converter: IHandlerConverter;

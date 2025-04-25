@@ -3,8 +3,19 @@ import { createHandler } from "~/sync/createHandler";
 import { createMockSystem } from "./mocks/system";
 import { createMockManifest } from "./mocks/manifest";
 import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/getDocumentClient";
+import { createMockEventBridgeClient } from "~tests/sync/mocks/eventBridgeClient.js";
 
 describe("attachToDynamoDbDocument", () => {
+    it("should not have attached decorator", async () => {
+        const client = getDocumentClient();
+        // @ts-expect-error
+        expect(client.__decoratedByWebiny).toBeUndefined();
+
+        const anotherClient = getDocumentClient();
+        // @ts-expect-error
+        expect(anotherClient.__decoratedByWebiny).toBeUndefined();
+    });
+
     it("should attach a decorator to the DynamoDB DocumentClient", async () => {
         const initialClient = getDocumentClient();
         // @ts-expect-error
@@ -13,7 +24,8 @@ describe("attachToDynamoDbDocument", () => {
         const { handler } = createHandler({
             system: createMockSystem(),
             manifest: createMockManifest(),
-            commandConverters: []
+            commandConverters: [],
+            client: createMockEventBridgeClient()
         });
 
         attachToDynamoDbDocument({
@@ -23,15 +35,5 @@ describe("attachToDynamoDbDocument", () => {
         const client = getDocumentClient();
         // @ts-expect-error
         expect(client.__decoratedByWebiny).toBe(true);
-    });
-
-    it("should not have attached decorator", async () => {
-        const client = getDocumentClient();
-        // @ts-expect-error
-        expect(client.__decoratedByWebiny).toBeUndefined();
-
-        const anotherClient = getDocumentClient();
-        // @ts-expect-error
-        expect(anotherClient.__decoratedByWebiny).toBeUndefined();
     });
 });

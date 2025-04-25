@@ -18,9 +18,7 @@ export class HandlerConverter implements IHandlerConverter {
     }
 
     public register(input: ICommandConverter | ICommandConverter[]): void {
-        if (!input) {
-            return;
-        } else if (Array.isArray(input)) {
+        if (Array.isArray(input)) {
             this.converters.push(...input);
             return;
         }

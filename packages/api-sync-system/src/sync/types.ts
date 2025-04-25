@@ -52,7 +52,6 @@ export interface ISystem {
 }
 
 export interface IHandler {
-    system: ISystem;
     flush(): Promise<void>;
     add(input: IDynamoDbCommand): void;
 }

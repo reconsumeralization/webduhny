@@ -10,7 +10,7 @@ export class DeleteCommandValue implements ICommandValue {
         this.item = {
             command: this.command,
             PK: input.input.Key!.PK,
-            SK: input.input.Key!.PK,
+            SK: input.input.Key!.SK,
             tableName: input.input.TableName as string
         };
     }

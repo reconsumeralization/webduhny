@@ -22,13 +22,20 @@ export const getManifest = async (params: IGetManifestParams) => {
         const { data, error } = validateManifest.safeParse(manifest);
         if (error) {
             console.error("Sync System: Failed to validate manifest.");
-            console.info(convertException(createZodError(error)));
-            return null;
+            const err = createZodError(error);
+            console.info(convertException(err));
+            return {
+                error: err
+            };
         }
-        return data;
+        return {
+            data
+        };
     } catch (ex) {
         console.error("Sync System: Failed to load manifest.");
         console.info(convertException(ex));
+        return {
+            error: ex
+        };
     }
-    return null;
 };

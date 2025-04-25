@@ -17,8 +17,8 @@ export const createSyncSystemHandlerOnRequestPlugin = (
     params: ICreateSyncSystemHandlerOnRequestPluginParams
 ) => {
     return createHandlerOnRequest(async (_, __, context) => {
-        const manifest = await getManifest(params);
-        if (!manifest?.sync?.region) {
+        const { data: manifest, error: manifestError } = await getManifest(params);
+        if (!manifest?.sync?.region || manifestError) {
             return;
         }
 

@@ -1,6 +1,6 @@
 import {
-    getDocumentClient,
     DynamoDBDocument,
+    getDocumentClient,
     QueryCommand,
     unmarshall
 } from "@webiny/aws-sdk/client-dynamodb";
@@ -17,7 +17,7 @@ class ServiceManifestLoader {
     private client: DynamoDBDocument | undefined;
     private manifest: Manifest | undefined = undefined;
 
-    async load() {
+    public async load() {
         if (this.manifest) {
             return this.manifest;
         }
@@ -39,8 +39,12 @@ class ServiceManifestLoader {
         return this.manifest;
     }
 
-    setDocumentClient(client: DynamoDBDocument) {
+    public setDocumentClient(client: DynamoDBDocument) {
         this.client = client;
+    }
+
+    public clear(): void {
+        this.manifest = undefined;
     }
 
     private async loadManifests(): Promise<ServiceManifest[] | undefined> {
@@ -74,5 +78,11 @@ export class ServiceDiscovery {
 
     static async load() {
         return serviceManifestLoader.load();
+    }
+    /**
+     * Should be used for testing purposes only!
+     */
+    static clear(): void {
+        serviceManifestLoader.clear();
     }
 }

@@ -14,8 +14,8 @@ export class BatchWriteCommandValue implements ICommandValue {
     public readonly items: ICommandValueItem[] = [];
 
     public constructor(input: BatchWriteCommand) {
-        for (const key in input.input.RequestItems) {
-            const values = input.input.RequestItems[key];
+        for (const tableName in input.input.RequestItems) {
+            const values = input.input.RequestItems[tableName];
             for (const value of values) {
                 if (value.PutRequest?.Item) {
                     const item = value.PutRequest.Item;
@@ -24,7 +24,7 @@ export class BatchWriteCommandValue implements ICommandValue {
                         command: "put",
                         PK: item.PK,
                         SK: item.SK,
-                        tableName: item.TableName
+                        tableName
                     });
                 } else if (value.DeleteRequest?.Key) {
                     const item = value.DeleteRequest.Key;
@@ -33,7 +33,7 @@ export class BatchWriteCommandValue implements ICommandValue {
                         command: "delete",
                         PK: item.PK,
                         SK: item.SK,
-                        tableName: item.TableName
+                        tableName
                     });
                 }
             }
