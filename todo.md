@@ -3,19 +3,18 @@
 - all steps rendered all the time or just single step? 
 - cond rules
 - submission
-
 - prevent parent block deletion
 - prevent grid/cell deletion :|
 - block multiple funnels on page
 - any checks on moving steps needed?
 - history: false check! (checking everything is saved as expected)
 - default Value
--  async stuff? like vlaidators?
--  supported validators per field type
-- PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
-- pattern validator
 - preview / clicking in editor should work? no?
 - embed test
+- validators
+  - supported validators per field type
+  - async validators
+  - pattern validator
 - docs
 
 ## SH
@@ -26,6 +25,7 @@
 ## CH/NTH
 - add '~' imports
 - themes
+- PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
 
 ## WH
 - optional validators  
