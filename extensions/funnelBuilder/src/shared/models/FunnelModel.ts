@@ -27,6 +27,15 @@ export class FunnelModel {
         };
     }
 
+    populate(funnelDto: Partial<FunnelModelDto>) {
+        if (funnelDto.fields) {
+            this.fields = funnelDto.fields.map(f => FunnelFieldDefinitionModel.fromDto(f));
+        }
+        if (funnelDto.steps) {
+            this.steps = funnelDto.steps.map(s => FunnelStepModel.fromDto(s));
+        }
+    }
+
     static fromDto(dto: FunnelModelDto): FunnelModel {
         return new FunnelModel({
             fields: dto.fields?.map(s => FunnelFieldDefinitionModel.fromDto(s)),

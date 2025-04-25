@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import styled from "@emotion/styled";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
@@ -27,9 +27,13 @@ const StyledTextarea = styled.textarea`
 export const TextareaFieldRenderer = createFieldRenderer(props => {
     const { definition: field } = props.field;
 
+    const validators = useMemo(() => {
+        return field.validators.map(validator => validator.validate.bind(validator));
+    }, [field.validators]);
+
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators: field.validators.map(validator => validator.validate),
+        validators,
         defaultValue: field.defaultValue
     });
 

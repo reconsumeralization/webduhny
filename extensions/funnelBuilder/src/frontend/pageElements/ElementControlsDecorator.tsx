@@ -83,7 +83,6 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
                     field={selectedField!}
                     onClose={hideFieldSettingsDialog}
                     onSubmit={data => {
-                        console.log("submitaamooo", data);
                         eventHandler.trigger(
                             new UpdateElementActionEvent({
                                 element: { ...editorElement!, data },

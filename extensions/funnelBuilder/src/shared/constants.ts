@@ -13,4 +13,8 @@ export const isFieldElementType = (type: string) => {
     return type.startsWith(FUB_FIELD_ELEMENT_TYPE_PREFIX);
 };
 
+export const isContainerElementType = (type: string) => {
+    return type === CONTAINER_ELEMENT_TYPE;
+};
+
 export const CONTAINER_ELEMENT_TYPE = createElementType("container");

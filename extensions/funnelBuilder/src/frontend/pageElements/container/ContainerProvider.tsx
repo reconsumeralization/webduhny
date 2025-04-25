@@ -35,6 +35,8 @@ export const ContainerProvider = ({
     const { getElement } = useRenderer();
     const element = getElement<FunnelModelDto>();
 
+    const [funnelSubmissionChecksum, setFunnelSubmissionChecksum] = React.useState<string | null>(null);
+
     const funnelVm = useMemo(() => {
         return new FunnelVm(element.data, {
             onChange: updateElementData
@@ -42,8 +44,15 @@ export const ContainerProvider = ({
     }, [element.data]);
 
     const funnelSubmissionVm = useMemo(() => {
-        return new FunnelSubmissionVm(funnelVm.funnel);
-    }, [funnelVm.funnel]);
+        return new FunnelSubmissionVm(funnelVm.funnel, {
+            onChange: () => {
+                const checksum = funnelSubmissionVm.getDataChecksum();
+                if (funnelSubmissionChecksum !== checksum) {
+                    setFunnelSubmissionChecksum(checksum);
+                }
+            }
+        });
+    }, [funnelVm]);
 
     return (
         <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>

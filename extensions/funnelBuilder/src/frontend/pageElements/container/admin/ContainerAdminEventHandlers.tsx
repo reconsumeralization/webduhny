@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useEventActionHandler } from "@webiny/app-page-builder/editor";
+import React, { useEffect } from "react";
+import {
+    useActiveElementId,
+    useElementById,
+    useEventActionHandler
+} from "@webiny/app-page-builder/editor";
 import {
     CreateElementActionEvent,
     DeleteElementActionEvent,
@@ -13,22 +17,34 @@ import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import { useRenderer } from "@webiny/app-page-builder-elements";
-import { isFieldElementType } from "../../../../shared/constants";
+import {isContainerElementType, isFieldElementType} from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
-import { FunnelFieldDefinitionModelDto } from "../../../../shared/models/FunnelFieldDefinitionModel";
+import {
+    FunnelFieldDefinitionModel,
+    FunnelFieldDefinitionModelDto
+} from "../../../../shared/models/FunnelFieldDefinitionModel";
 import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
+import { useDisclosure } from "../../../admin/useDisclosure";
 import FieldSettingsDialog from "../../../admin/FieldSettingsDialog";
-import { FieldElement } from "../../fields/types";
 
 export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
-    const [createdFieldElement, setCreatedFieldElement] = useState<FieldElement | null>(null);
     const { getElement } = useRenderer();
+
+    const {
+        open: showFieldSettingsDialog,
+        close: hideFieldSettingsDialog,
+        isOpen: isFieldSettingsDialogShown,
+        data: createdField
+    } = useDisclosure<FunnelFieldDefinitionModel>();
 
     const container = useContainer();
     const { funnelVm } = container;
 
     const containerElement = getElement<FunnelModelDto>();
+
+    const [activeElementId] = useActiveElementId();
+    const [createdEditorElement] = useElementById(activeElementId);
 
     const createOnElementEventHandler = function <
         TArgs extends EventActionHandlerCallableArgs = any
@@ -55,7 +71,8 @@ export const ContainerAdminEventHandlers = () => {
             stepId: funnelVm.getActiveStepId()
         } as FunnelFieldDefinitionModelDto);
 
-        setCreatedFieldElement(createdElement as FieldElement);
+        const fieldClone = funnelVm.getField(createdElement.data.id)!.clone();
+        showFieldSettingsDialog(fieldClone);
     });
 
     const onElementDelete = createOnElementEventHandler<DeleteElementActionArgsType>(args => {
@@ -69,11 +86,16 @@ export const ContainerAdminEventHandlers = () => {
 
     const onElementUpdate = createOnElementEventHandler<UpdateElementActionArgsType>(args => {
         const { element: updatedField } = args;
-        if (!isFieldElementType(updatedField.type)) {
+        if (isFieldElementType(updatedField.type)) {
+            funnelVm.updateField(updatedField.data.id, updatedField.data);
             return;
         }
 
-        funnelVm.updateField(updatedField.data.id, updatedField.data);
+        if (isContainerElementType(updatedField.type)) {
+            console.log('CONTAINER UDATED', updatedField.data)
+            funnelVm.funnel.populate(updatedField.data)
+            return;
+        }
     });
 
     useEffect(() => {
@@ -88,19 +110,19 @@ export const ContainerAdminEventHandlers = () => {
         };
     }, [containerElement]);
 
-    return null;
-    // return (
-    //     <FieldSettingsDialog
-    //         field={createdFieldElement?.data}
-    //         onClose={() => setCreatedFieldElement(null)}
-    //         onSubmit={data => {
-    //             eventHandler.trigger(
-    //                 new UpdateElementActionEvent({
-    //                     element: { ...createdFieldElement!, data },
-    //                     history: false
-    //                 })
-    //             );
-    //         }}
-    //     />
-    // );
+    return (
+        <FieldSettingsDialog
+            open={isFieldSettingsDialogShown}
+            field={createdField!}
+            onClose={hideFieldSettingsDialog}
+            onSubmit={data => {
+                eventHandler.trigger(
+                    new UpdateElementActionEvent({
+                        element: { ...createdEditorElement!, data },
+                        history: false
+                    })
+                );
+            }}
+        />
+    );
 };

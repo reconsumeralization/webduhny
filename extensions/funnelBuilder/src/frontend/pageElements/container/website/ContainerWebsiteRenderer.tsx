@@ -18,22 +18,23 @@ const ElementsSection = styled.div<{ activePageIndex: number }>`
     `}
 `;
 
-const CurrentStepForm = () => {
+const CurrentStep = () => {
     const { getElement } = useRenderer();
     const element = getElement();
     const { funnelSubmissionVm } = useContainer();
 
     const { funnelSubmission } = funnelSubmissionVm;
 
+    console.log('funnelSubmission.getActiveStepIndex()', funnelSubmission.getActiveStepIndex())
+
+    // @ts-ignore
+    window.fsub = funnelSubmission;
     return (
         <ElementsSection activePageIndex={funnelSubmission.getActiveStepIndex()}>
             <Form
                 onSubmit={data => {
                     funnelSubmission.setData(data);
-
-                    console.log('funnelSubmission', funnelSubmission)
                     funnelSubmission.submitActiveStep();
-                    console.log("Form submitted.", data);
                 }}
             >
                 {() => <Elements element={element} />}
@@ -45,7 +46,7 @@ const CurrentStepForm = () => {
 export const ContainerWebsiteRenderer = createRenderer(() => {
     return (
         <ContainerProvider>
-            <CurrentStepForm />
+            <CurrentStep />
         </ContainerProvider>
     );
 });

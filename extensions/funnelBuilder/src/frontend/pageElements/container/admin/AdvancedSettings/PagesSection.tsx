@@ -33,6 +33,7 @@ import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDi
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { createStepElement } from "../../../../../shared/createStepElement";
 import { ContainerElement } from "../../types";
+import {getRandomId} from "../../../../../shared/getRandomId";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;
@@ -53,8 +54,8 @@ export const PagesSection = () => {
     const container = useElementWithChildren(activeElementId!) as ContainerElement;
 
     const { showConfirmation } = useConfirmationDialog({
-        title: "Remove tab",
-        message: <p>Are you sure you want to remove this page?</p>
+        title: "Remove step",
+        message: <p>Are you sure you want to remove this step?</p>
     });
 
     const onRemove = useCallback(
@@ -72,6 +73,16 @@ export const PagesSection = () => {
     const onCreate = useCallback(() => {
         updateElement({
             ...container,
+            data: {
+                ...container.data,
+                steps: [
+                    ...container.data.steps,
+                    {
+                        id: getRandomId(),
+                        title: 'New step'
+                    }
+                ]
+            },
             // @ts-ignore
             elements: [
                 ...container.elements,
@@ -120,7 +131,7 @@ export const PagesSection = () => {
                         />
                     ))}
                     <AddPageButton onClick={onCreate}>
-                        <ButtonIcon icon={<AddIcon />} /> Add Page
+                        <ButtonIcon icon={<AddIcon />} /> Add step
                     </AddPageButton>
                 </SortableContext>
             </DndContext>

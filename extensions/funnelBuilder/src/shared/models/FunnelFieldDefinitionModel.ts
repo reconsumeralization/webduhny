@@ -61,8 +61,6 @@ export class FunnelFieldDefinitionModel {
         this.label = dto.label || this.label;
         this.helpText = dto.helpText || this.helpText;
         this.validators = dto.validators?.map(validatorFromDto) ?? this.validators;
-
-        console.log("populirao, vals:", this.validators);
         this.extra = dto.extra ?? this.extra;
     }
 

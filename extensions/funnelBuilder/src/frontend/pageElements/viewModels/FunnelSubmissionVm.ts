@@ -1,8 +1,11 @@
-import { FunnelModel, FunnelModelDto } from "../../../shared/models/FunnelModel";
-import { FunnelSubmissionModel } from "../../../shared/models/FunnelSubmissionModel";
+import { FunnelModel } from "../../../shared/models/FunnelModel";
+import {
+    FunnelSubmissionModel,
+    FunnelSubmissionModelDto
+} from "../../../shared/models/FunnelSubmissionModel";
 
 interface FunnelSubmissionVmOptions {
-    onChange?: (funnel: FunnelModelDto) => void;
+    onChange?: (funnel: FunnelSubmissionModelDto) => void;
 }
 
 export class FunnelSubmissionVm {
@@ -24,6 +27,15 @@ export class FunnelSubmissionVm {
         return this.funnelSubmission.fieldExists(fieldId);
     }
 
+    submitActiveStep() {
+        this.funnelSubmission.submitActiveStep();
+        this.onChange();
+    }
+
+    getDataChecksum() {
+        return this.funnelSubmission.getDataChecksum();
+    }
+
     private onChange() {
         if (!this.options.onChange) {
             return;
@@ -31,4 +43,5 @@ export class FunnelSubmissionVm {
 
         this.options.onChange(this.funnel.toDto());
     }
+
 }

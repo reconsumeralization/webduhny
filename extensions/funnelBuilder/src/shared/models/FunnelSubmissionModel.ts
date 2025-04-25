@@ -136,6 +136,13 @@ export class FunnelSubmissionModel {
         return validationResult;
     }
 
+    getDataChecksum() {
+        const data = this.getData();
+        return Object.values(data).reduce((acc, value) => {
+            return acc + JSON.stringify(value);
+        }, "");
+    }
+
     // Fields-related methods. 👇
     getField(fieldId: string) {
         return this.fields[fieldId];

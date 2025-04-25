@@ -1,5 +1,6 @@
 ## MH
 - deleting steps
+- deleting fields - what happens whith children els?
 - all steps rendered all the time or just single step? 
 - cond rules
 - submission
