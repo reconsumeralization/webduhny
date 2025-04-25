@@ -11,8 +11,6 @@ export interface PbEditorFunnelFieldValidatorPluginProps {
     validatorType: string;
     label: string;
     description: string;
-    defaultMessage: string;
-    defaultSettings?: Record<string, any>;
     settingsRenderer?: RenderSettings;
 }
 

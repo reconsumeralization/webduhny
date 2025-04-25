@@ -31,29 +31,29 @@ describe("Funnel Entries", () => {
                     ],
                     extra: {}
                 },
-                // {
-                //     id: "lastName",
-                //     fieldId: "lastName",
-                //     stepId: "step1",
-                //     type: "text",
-                //     label: "Last Name",
-                //     helpText: "Enter your last name",
-                //     validators: [
-                //         { type: "required" },
-                //         { type: "minLength", params: { threshold: 2 } }
-                //     ],
-                //     extra: {}
-                // },
-                // {
-                //     id: "email",
-                //     fieldId: "email",
-                //     stepId: "step2",
-                //     type: "text",
-                //     label: "Email",
-                //     helpText: "Enter your email address",
-                //     validators: [{ type: "required" }, { type: "email" }],
-                //     extra: {}
-                // }
+                {
+                    id: "lastName",
+                    fieldId: "lastName",
+                    stepId: "step1",
+                    type: "text",
+                    label: "Last Name",
+                    helpText: "Enter your last name",
+                    validators: [
+                        { type: "required" },
+                        { type: "minLength", params: { threshold: 2 } }
+                    ],
+                    extra: {}
+                },
+                {
+                    id: "email",
+                    fieldId: "email",
+                    stepId: "step2",
+                    type: "text",
+                    label: "Email",
+                    helpText: "Enter your email address",
+                    validators: [{ type: "required" }, { type: "email" }],
+                    extra: {}
+                }
             ]
         });
 

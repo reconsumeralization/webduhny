@@ -24,7 +24,7 @@ export class FunnelFieldDefinitionModel {
     extra: any; // todo
 
     // Meta fields.
-    supportedValidatorTypes: string[] = ["required", "minLength", "maxLength", "email", "url"];
+    supportedValidatorTypes: string[] = ["required", "minLength", "maxLength", "gte", "lte"];
 
     constructor(dto: FunnelFieldDefinitionModelDto) {
         this.id = dto.id;

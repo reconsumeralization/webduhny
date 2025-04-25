@@ -6,7 +6,7 @@ import {
     SimpleFormContent,
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
-import { BindComponentRenderProp, Form, useBind, useForm } from "@webiny/form";
+import { BindComponentRenderProp, Form, useBind } from "@webiny/form";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { Cell, Grid } from "@webiny/ui/Grid";
@@ -14,8 +14,8 @@ import { Input } from "@webiny/ui/Input";
 import { validation } from "@webiny/validation";
 import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 import { PbEditorFunnelFieldValidatorPluginProps } from "../plugins/PbEditorFunnelFieldValidatorPlugin";
-import {AbstractValidator, FieldValidatorDto} from "../../../shared/models/validators/AbstractValidator";
-import {validatorFromDto} from "../../../shared/models/validators/validatorFactory";
+import { FieldValidatorDto } from "../../../shared/models/validators/AbstractValidator";
+import { validatorFromDto } from "../../../shared/models/validators/validatorFactory";
 
 interface OnFormChangeParams {
     data: Record<string, string>;
@@ -60,22 +60,23 @@ export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
         name: "validators"
     }) as BindComponentRenderProp<FieldValidatorDto[]>;
 
-    const toggleValidator = useCallback((validatorType: string) => {
-        const alreadyEnabled = validatorsValue.some(item => item.type === validatorType);
+    const toggleValidator = useCallback(
+        (validatorType: string) => {
+            const alreadyEnabled = validatorsValue.some(item => item.type === validatorType);
 
-        if (alreadyEnabled) {
-            updateValidatorsValue([...validatorsValue.filter(item => item.type !== validatorType)]);
-        } else {
-            // We're immediately transforming the validator type to a DTO because we're
-            // using DTOs in the form and we need to keep the same format.
-            const newValidator = validatorFromDto({ type: validatorType }).toDto();
-            updateValidatorsValue([...validatorsValue, newValidator]);
-        }
-    }, [validatorsValue]);
-
-    const updateValidatorSettings = () => {
-
-    }
+            if (alreadyEnabled) {
+                updateValidatorsValue([
+                    ...validatorsValue.filter(item => item.type !== validatorType)
+                ]);
+            } else {
+                // We're immediately transforming the validator type to a DTO because we're
+                // using DTOs in the form and we need to keep the same format.
+                const newValidator = validatorFromDto({ type: validatorType }).toDto();
+                updateValidatorsValue([...validatorsValue, newValidator]);
+            }
+        },
+        [validatorsValue]
+    );
 
     return (
         <>
@@ -100,21 +101,13 @@ export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
                         {validator && (
                             <Form<FieldValidatorDto>
                                 data={validator}
-                                onChange={
-                                    data => {
-                                        updateValidatorsValue([
-                                            ...validatorsValue.slice(0, validatorIndex),
-                                            data,
-                                            ...validatorsValue.slice(validatorIndex + 1)
-                                        ])
-                                    }
-                                    // onFormChange({
-                                    //     data,
-                                    //     validationValue: validatorsValue,
-                                    //     onChangeValidation: validatorsValueOnChange,
-                                    //     validatorIndex
-                                    // })
-                                }
+                                onChange={data => {
+                                    updateValidatorsValue([
+                                        ...validatorsValue.slice(0, validatorIndex),
+                                        data,
+                                        ...validatorsValue.slice(validatorIndex + 1)
+                                    ]);
+                                }}
                             >
                                 {({ Bind, setValue }) => {
                                     const { settingsRenderer: SettingsRendererComponent } =
