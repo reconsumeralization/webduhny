@@ -87,7 +87,6 @@ export class Handler implements IHandler {
                     source: this.system,
                     command: cmd.command
                 };
-                // TODO IMPORTANT!
                 return {
                     DetailType: SQS_EVENT_NAME,
                     Detail: JSON.stringify(detail),
