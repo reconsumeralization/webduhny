@@ -3,7 +3,12 @@ import { SecurityPermission, Team } from "@webiny/api-security/types";
 import { Folder, ListFoldersParams } from "~/folder/folder.types";
 import { NotAuthorizedError } from "@webiny/api-security";
 import { ListFoldersRepository } from "~/utils/ListFoldersRepository";
-import { type AcoFolderLevelPermissionsCrud, ListMeta } from "~/types";
+import {
+    type AcoFolderLevelPermissionsCrud,
+    type GetFlpParams,
+    type ListDescendantFlpsParams,
+    ListMeta
+} from "~/types";
 import { folderCacheFactory } from "~/utils/FoldersCacheFactory";
 
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
@@ -101,6 +106,90 @@ export class FolderLevelPermissions {
         this.foldersLoader = new ListFoldersRepository({
             gateway: params.listAllFolders
         });
+    }
+
+    async hasFullAccess(): Promise<boolean> {
+        const permissions = await this.listPermissions();
+        return permissions.some(p => p.name === "*");
+    }
+
+    async getDefaultPermissions(permissions: FolderPermission[] = []): Promise<FolderPermission[]> {
+        const identity = this.getIdentity();
+        const hasFullAccess = await this.hasFullAccess();
+
+        /**
+         * If the user has full access to the application, add a specific "owner" permission to the list.
+         * This ensures the user has complete control over the folder.
+         */
+        if (hasFullAccess) {
+            return [
+                {
+                    target: `admin:${identity.id}`,
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
+                },
+                ...permissions
+            ];
+        }
+
+        /**
+         * Retrieves the list of teams the current identity belongs to and checks if any of these teams
+         * have permissions for the folder. If a team has permissions, the current identity is granted
+         * the same permissions, inheriting them from the team.
+         */
+        const identityTeams: Team[] = this.canUseTeams() ? await this.listIdentityTeams() : [];
+        if (identityTeams.length) {
+            for (const identityTeam of identityTeams) {
+                // Check if the team has permissions for the folder.
+                const teamPermission = permissions.find(
+                    p => p.target === `team:${identityTeam.id}`
+                );
+
+                if (teamPermission) {
+                    // Grant the current identity the same permissions as the team, marking them as inherited.
+                    permissions.push({
+                        target: `admin:${identity.id}`,
+                        level: teamPermission.level,
+                        inheritedFrom: "team:" + identityTeam.id
+                    });
+                }
+            }
+        }
+
+        if (permissions.length > 0) {
+            return permissions;
+        }
+
+        /**
+         * No permissions provided. This means the folder is public.
+         * Add a specific "public" permission to the list to ensure the folder is accessible to everyone.
+         */
+        return [
+            {
+                target: `admin:${identity.id}`,
+                level: "public",
+                inheritedFrom: "public"
+            }
+        ];
+    }
+
+    async canReadFolder(folder: Folder): Promise<boolean> {
+        const hasFullAccess = await this.hasFullAccess();
+
+        if (hasFullAccess) {
+            return true;
+        }
+
+        const identity = this.getIdentity();
+        return folder.permissions?.some(p => p.target === `admin:${identity.id}`) ?? false;
+    }
+
+    async listDescendantFolderLevelPermissions(params: ListDescendantFlpsParams) {
+        return await this.crud.listDescendants(params);
+    }
+
+    async getFolderLevelPermission(params: GetFlpParams) {
+        return await this.crud.get(params);
     }
 
     async listAllFolders(folderType: string): Promise<Folder[]> {
@@ -364,8 +453,10 @@ export class FolderLevelPermissions {
         const { folder } = params;
 
         const folderPermissions = await this.crud.get({
-            id: folder.id,
-            type: folder.type
+            where: {
+                id: folder.id,
+                type: folder.type
+            }
         });
 
         if (!folderPermissions) {

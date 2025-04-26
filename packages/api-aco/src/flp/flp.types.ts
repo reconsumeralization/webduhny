@@ -106,7 +106,8 @@ export interface AcoFolderLevelPermissionsStorageOperations {
 
 export interface AcoFolderLevelPermissionsCrud {
     list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
-    get(where: GetFlpWhere): Promise<FolderLevelPermission | null>;
+    listDescendants(params: ListDescendantFlpsParams): Promise<FolderLevelPermission[]>;
+    get(where: GetFlpParams): Promise<FolderLevelPermission | null>;
 }
 
 /********

@@ -60,7 +60,8 @@ export const createFolderCrudMethods = ({
     });
 
     const { listFoldersUseCase } = getListFoldersUseCases({
-        listOperation: storageOperations.folder.listFolders
+        listOperation: storageOperations.folder.listFolders,
+        folderLevelPermissions
     });
 
     const { createFolderUseCase } = getCreateFolderUseCases({

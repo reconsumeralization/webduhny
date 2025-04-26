@@ -30,7 +30,11 @@ export const UsersTeamsSelection = ({
     onUpdatePermission
 }: UsersTeamsSelectionProps) => {
     const selection = permissions
+        .filter(Boolean)
         .map(permission => {
+            if (!permission) {
+                return null;
+            }
             const target = targetsList.find(u => u.target === permission.target);
             if (target) {
                 return { permission, target };

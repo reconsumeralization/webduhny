@@ -14,13 +14,22 @@ export const createFlpCrudMethods = ({
     getLocale
 }: CreateFlpCrudMethodsParams): AcoFolderLevelPermissionsCrud => {
     return {
-        async get({ id, type }) {
+        async get({ where }) {
             return storageOperations.flp.get({
-                where: { id, type, tenant: getTenant().id, locale: getLocale().code }
+                where: { ...where, tenant: getTenant().id, locale: getLocale().code }
             });
         },
         async list({ where }) {
             return storageOperations.flp.list({
+                where: {
+                    ...where,
+                    tenant: getTenant().id,
+                    locale: getLocale().code
+                }
+            });
+        },
+        async listDescendants({ where }) {
+            return storageOperations.flp.listDescendants({
                 where: {
                     ...where,
                     tenant: getTenant().id,
