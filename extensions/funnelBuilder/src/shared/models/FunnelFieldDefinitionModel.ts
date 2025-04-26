@@ -24,7 +24,7 @@ export class FunnelFieldDefinitionModel {
     extra: any; // todo
 
     // Meta fields.
-    supportedValidatorTypes: string[] = ["required", "minLength", "maxLength", "gte", "lte"];
+    supportedValidatorTypes: string[] = ["required"];
 
     constructor(dto: FunnelFieldDefinitionModelDto) {
         this.id = dto.id;
@@ -65,10 +65,11 @@ export class FunnelFieldDefinitionModel {
     }
 
     static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
-        return new FunnelFieldDefinitionModel(dto);
+        // Could not import the module directly because of circular dependency.
+        return require('./fields/fieldFactory').fieldFromDto(dto);
     }
 
     clone() {
-        return new FunnelFieldDefinitionModel(this.toDto());
+        return FunnelFieldDefinitionModel.fromDto(this.toDto());
     }
 }

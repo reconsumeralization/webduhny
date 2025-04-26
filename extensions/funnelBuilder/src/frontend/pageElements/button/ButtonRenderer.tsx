@@ -27,7 +27,6 @@ export const ButtonRenderer = createRenderer(props => {
     const element = getElement<ButtonElementData>();
     const { action } = element.data;
 
-    console.log('element.data', element.data);
     const buttonLabel = useMemo(() => {
         switch (action) {
             case "previousStep":

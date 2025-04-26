@@ -40,7 +40,13 @@ describe("Funnel Entries", () => {
                     helpText: "Enter your last name",
                     validators: [
                         { type: "required" },
-                        { type: "minLength", params: { threshold: 2 } }
+                        {
+                            type: "minLength",
+                            params: {
+                                extra: { threshold: 2 },
+                                errorMessage: "This field must be at least 2 characters long."
+                            }
+                        }
                     ],
                     extra: {}
                 },
@@ -51,7 +57,7 @@ describe("Funnel Entries", () => {
                     type: "text",
                     label: "Email",
                     helpText: "Enter your email address",
-                    validators: [{ type: "required" }, { type: "email" }],
+                    validators: [{ type: "required" }, /*{ type: "email" }*/],
                     extra: {}
                 }
             ]

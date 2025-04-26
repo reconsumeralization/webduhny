@@ -7,8 +7,6 @@ import {
     SimpleFormHeader
 } from "@webiny/app-admin/components/SimpleForm";
 import { BindComponentRenderProp, Form, useBind } from "@webiny/form";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { Input } from "@webiny/ui/Input";
 import { validation } from "@webiny/validation";
@@ -17,31 +15,13 @@ import { PbEditorFunnelFieldValidatorPluginProps } from "../plugins/PbEditorFunn
 import { FieldValidatorDto } from "../../../shared/models/validators/AbstractValidator";
 import { validatorFromDto } from "../../../shared/models/validators/validatorFactory";
 
-interface OnFormChangeParams {
-    data: Record<string, string>;
-    validationValue: Record<string, any>;
-    onChangeValidation: (value: Record<string, any>) => void;
-    validatorIndex: number;
-}
-
-const onFormChange = debounce(
-    ({ data, validationValue, onChangeValidation, validatorIndex }: OnFormChangeParams) => {
-        const newValidationValue = cloneDeep(validationValue);
-        newValidationValue[validatorIndex] = {
-            ...newValidationValue[validatorIndex],
-            ...cloneDeep(data)
-        };
-        onChangeValidation(newValidationValue);
-    },
-    200
-);
-
 interface ValidatorsTabProps {
     field: FunnelFieldDefinitionModel;
 }
 
 export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
     const supportedValidators = useMemo<PbEditorFunnelFieldValidatorPluginProps[]>(() => {
+        console.log('field', field)
         const fieldSupportedValidators = field.supportedValidatorTypes;
         if (!fieldSupportedValidators) {
             return [];
@@ -69,8 +49,8 @@ export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
                     ...validatorsValue.filter(item => item.type !== validatorType)
                 ]);
             } else {
-                // We're immediately transforming the validator type to a DTO because we're
-                // using DTOs in the form and we need to keep the same format.
+                // We're immediately transforming the validator type to a DTO because we need
+                // to use DTOs as form data. Form data cannot be a class (model) instance.
                 const newValidator = validatorFromDto({ type: validatorType }).toDto();
                 updateValidatorsValue([...validatorsValue, newValidator]);
             }

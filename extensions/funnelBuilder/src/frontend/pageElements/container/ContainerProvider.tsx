@@ -1,8 +1,9 @@
-import React, {useContext, useMemo, useSyncExternalStore} from "react";
+import React, { useContext, useMemo, useSyncExternalStore } from "react";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
+import { observer } from "mobx-react-lite";
 
 interface ContainerContextValue {
     funnelVm: FunnelVm;
@@ -28,33 +29,32 @@ export interface ContainerProviderProps {
     updateElementData?: (data: FunnelModelDto) => void;
 }
 
-export const ContainerProvider = ({
-    children,
-    updateElementData = () => undefined
-}: ContainerProviderProps) => {
-    const { getElement } = useRenderer();
-    const element = getElement<FunnelModelDto>();
+export const ContainerProvider = observer(
+    ({ children, updateElementData = () => undefined }: ContainerProviderProps) => {
+        const { getElement } = useRenderer();
+        const element = getElement<FunnelModelDto>();
 
-    // With this, we're forcing the funnel to be re-rendered when the data changes.
-    const [funnelSubmissionActiveStepIndex, setFunnelSubmissionActiveStepIndex] =
-        React.useState<number>(0);
+        const funnelVm = useMemo(() => {
+            return new FunnelVm(element.data, { onChange: updateElementData });
+        }, [element.data]);
 
-    const funnelVm = useMemo(() => {
-        return new FunnelVm(element.data, {
-            onChange: updateElementData
-        });
-    }, [element.data]);
+        const funnelSubmissionVm = useMemo(() => {
+            return new FunnelSubmissionVm(funnelVm.funnel);
+        }, [funnelVm]);
 
-    const funnelSubmissionVm = useMemo(() => {
-        return new FunnelSubmissionVm(funnelVm.funnel);
-    }, [funnelVm]);
+        useSyncExternalStore(
+            funnelSubmissionVm.subscribe.bind(funnelSubmissionVm),
+            funnelSubmissionVm.getChangedOn.bind(funnelSubmissionVm),
+        );
 
-    return (
-        <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
-            {children}
-        </ContainerContext.Provider>
-    );
-};
+        console.log('funnelVm', funnelVm)
+        return (
+            <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
+                {children}
+            </ContainerContext.Provider>
+        );
+    }
+);
 
 ContainerProvider.displayName = "ContainerProvider";
 

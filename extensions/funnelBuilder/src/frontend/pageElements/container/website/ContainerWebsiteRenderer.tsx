@@ -23,16 +23,14 @@ const CurrentStep = () => {
     const element = getElement();
     const { funnelSubmissionVm } = useContainer();
 
-    const [_, setActiveStepIndex] = React.useState(0);
     const { funnelSubmission } = funnelSubmissionVm;
 
     return (
         <ElementsSection activePageIndex={funnelSubmission.getActiveStepIndex()}>
             <Form
                 onSubmit={data => {
-                    funnelSubmission.setData(data);
-                    funnelSubmission.submitActiveStep();
-                    setActiveStepIndex(funnelSubmission.getActiveStepIndex());
+                    funnelSubmissionVm.setData(data);
+                    funnelSubmissionVm.submitActiveStep();
                 }}
             >
                 {() => <Elements element={element} />}
