@@ -10,10 +10,20 @@ import { ButtonAdvancedSettings } from "./ButtonAdvancedSettings";
 import { ELEMENT_TYPE } from "./constants";
 import { FUB_PAGE_ELEMENT_GROUP } from "../fields/utils";
 import { ButtonElementData } from "./types";
+import styled from "@emotion/styled";
+import { Typography } from "@webiny/ui/Typography";
+import { ReactComponent as ButtonIcon } from "@material-design-icons/svg/outlined/arrow_circle_right.svg";
 
 const INITIAL_ELEMENT_DATA: ButtonElementData = {
-    action: "nextStep"
-}
+    action: "submit"
+};
+
+const StyledPreview = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+`;
 
 export const ButtonAdminPlugins = () => (
     <>
@@ -25,9 +35,13 @@ export const ButtonAdminPlugins = () => (
                 title: "Button",
                 group: FUB_PAGE_ELEMENT_GROUP,
                 preview() {
-                    // We can return any JSX / React code here. To keep it
-                    // simple, we are simply returning the element's name.
-                    return <>Button</>;
+                    return (
+                        <StyledPreview>
+                            <ButtonIcon />
+                            <Typography use={"headline6"}>{"Button"}</Typography>
+                            <Typography use={"body2"}>{"Submits the form"}</Typography>
+                        </StyledPreview>
+                    );
                 }
             }}
             // Defines which types of element settings are available to the user.

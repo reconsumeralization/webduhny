@@ -12,9 +12,8 @@
 - default Value
 - preview / clicking in editor should work? no?
 - embed test
-- predefned fiedl definitiins (the same liek it's with validators? we need this for suppored validators)
+- more fields?
 - validators
-  - supported validators per field type
   - async validators
   - pattern validator
 - uniqueFieldIdValidator

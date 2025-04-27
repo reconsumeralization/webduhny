@@ -11,11 +11,11 @@ export const Extension = () => (
     <>
         {/* Container Page Element */}
         <ContainerAdminPlugins />
-        <ButtonAdminPlugins />
 
         {/* Fields. */}
         <TextFieldAdminPlugins />
         <TextareaFieldAdminPlugins />
+        <ButtonAdminPlugins />
 
         {/* Other */}
         <FieldValidatorPlugins />

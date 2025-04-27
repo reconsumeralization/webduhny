@@ -37,10 +37,6 @@ export class FunnelFieldDefinitionModel {
         this.extra = dto.extra ?? {};
     }
 
-    getSupportedValidatorTypes(): string[] {
-        return this.supportedValidatorTypes;
-    }
-
     toDto(): FunnelFieldDefinitionModelDto {
         return {
             id: this.id,
