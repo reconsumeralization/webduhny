@@ -4,7 +4,8 @@ import { useRenderer } from "@webiny/app-page-builder-elements";
 import {
     useActiveElementId,
     useElementById,
-    useEventActionHandler
+    useEventActionHandler,
+    useUpdateElement
 } from "@webiny/app-page-builder/editor";
 import styled from "@emotion/styled";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
@@ -12,7 +13,6 @@ import { IconButton } from "@webiny/ui/Button";
 import { isFieldElementType } from "../../shared/constants";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import FieldSettingsDialog from "../admin/FieldSettingsDialog";
-import { UpdateElementActionEvent } from "@webiny/app-page-builder/editor/recoil/actions";
 import { useDisclosure } from "../admin/useDisclosure";
 import { FunnelFieldDefinitionModel } from "../../shared/models/FunnelFieldDefinitionModel";
 import { useContainer } from "./container/ContainerProvider";
@@ -44,6 +44,7 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
         const { getElement } = useRenderer();
         const element = getElement();
         const [editorElement] = useElementById(element.id);
+        const updateElement = useUpdateElement();
 
         const {
             open: showFieldSettingsDialog,
@@ -83,12 +84,8 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
                     field={selectedField!}
                     onClose={hideFieldSettingsDialog}
                     onSubmit={data => {
-                        eventHandler.trigger(
-                            new UpdateElementActionEvent({
-                                element: { ...editorElement!, data },
-                                history: false
-                            })
-                        );
+                        updateElement({ ...editorElement!, data }, { history: false });
+                        hideFieldSettingsDialog();
                     }}
                 />
 

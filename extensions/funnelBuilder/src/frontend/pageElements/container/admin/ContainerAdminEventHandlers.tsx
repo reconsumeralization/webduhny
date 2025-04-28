@@ -136,6 +136,7 @@ export const ContainerAdminEventHandlers = () => {
             onClose={hideFieldSettingsDialog}
             onSubmit={data => {
                 updateElement({ ...createdEditorElement!, data }, { history: true });
+                hideFieldSettingsDialog();
             }}
         />
     );

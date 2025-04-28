@@ -115,9 +115,9 @@ export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsLis
             </PageTitleContainer>
 
             <IconsContainer>
-                {canDeleteStep && <Icon element={<DeleteIcon />} onClick={onDeleteStep} />}
 
                 <Icon element={<StyledDragIcon />} {...attributes} {...listeners} />
+                <Icon disabled={!canDeleteStep} element={<DeleteIcon />} onClick={onDeleteStep} />
             </IconsContainer>
         </ListItemStyled>
     );

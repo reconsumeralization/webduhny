@@ -1,7 +1,6 @@
 ## MH
-- deleting steps
-- deleting fields - what happens whith children els?
-- all steps rendered all the time or just single step? 
+- deleting steps - delete all children within it
+- deleting elements - what happens whit children fields?
 - cond rules
 - submission
 - prevent parent block deletion
@@ -21,6 +20,9 @@
 - edit field dialog reopening?
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - when adding tab, should be activated immediately
+- esc doesn't work on dialogs sometimes (if not focused correctly)
+-
+
 ## SH
 - moving elements? should we block that for now? maybe sh?
 - add FB block
