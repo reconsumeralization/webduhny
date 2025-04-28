@@ -42,6 +42,10 @@ export class FunnelSubmissionVm {
         return this.funnelSubmission.getActiveStepIndex();
     }
 
+    get activeStepId() {
+        return this.funnelSubmission.activeStepId
+    }
+
     subscribe(listener: Listener) {
         this.listeners.add(listener);
         return () => this.listeners.delete(listener);

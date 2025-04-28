@@ -166,6 +166,7 @@ export class FunnelSubmissionModel {
         return this.funnel.steps.findIndex(step => step.id === this.activeStepId);
     }
 
+
     getStepsCount() {
         return this.funnel.steps.length;
     }

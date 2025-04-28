@@ -3,11 +3,13 @@ import { ContainerWebsitePlugins } from "./frontend/pageElements/container/websi
 import { ButtonWebsitePlugins } from "./frontend/pageElements/button/ButtonWebsitePlugins";
 import { TextFieldWebsitePlugins } from "./frontend/pageElements/fields/text/TextFieldWebsitePlugins";
 import { TextareaFieldWebsitePlugins } from "./frontend/pageElements/fields/textarea/TextareaFieldWebsitePlugins";
+import { StepWebsitePlugins } from "./frontend/pageElements/step/website/StepWebsitePlugins";
 
 export const Extension = () => (
     <>
         {/* Container Page Element */}
         <ContainerWebsitePlugins />
+        <StepWebsitePlugins />
         <ButtonWebsitePlugins />
 
         {/* Fields. */}

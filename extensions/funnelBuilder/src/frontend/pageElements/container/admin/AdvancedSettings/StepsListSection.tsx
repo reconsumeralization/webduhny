@@ -81,7 +81,7 @@ export const StepsListSection = () => {
     const createStep = useCallback(() => {
         const initialStepData = {
             id: getRandomId(),
-            title: "new sstep"
+            title: "New Step"
         };
         updateElement({
             ...containerElementWithChildren,

@@ -2,13 +2,13 @@ import React from "react";
 import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
 import { Form } from "@webiny/form";
 import { useContainer } from "../../container/ContainerProvider";
-import { StepElement } from "../types";
+import { StepElementData } from "../types";
 import { StepElementWithChildren } from "../../container/types";
 import { useElementWithChildren } from "@webiny/app-page-builder/editor";
 
 export const StepAdminRenderer = createRenderer(() => {
     const { getElement, meta } = useRenderer();
-    const element = getElement<StepElement>();
+    const element = getElement<StepElementData>();
     const elementWithChildren = useElementWithChildren(element.id!) as StepElementWithChildren;
 
     const { funnelVm } = useContainer();
@@ -19,11 +19,7 @@ export const StepAdminRenderer = createRenderer(() => {
 
     return (
         <div>
-            <Form
-                onSubmit={data => {
-                    console.log("Form submitted.", data);
-                }}
-            >
+            <Form>
                 {/* @ts-ignore */}
                 {() => <Elements element={elementWithChildren} />}
             </Form>
