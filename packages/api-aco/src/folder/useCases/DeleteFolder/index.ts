@@ -29,13 +29,19 @@ export const getDeleteFolderUseCases = (params: DeleteFolderUseCasesParams) => {
         deleteFolder
     );
 
-    const deleteFolderUseCaseWithFlp = new DeleteFolderWithFolderLevelPermissions(
-        params.folderLevelPermissions,
-        params.getOperation,
-        deleteFolderUseCase
-    );
+    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
+        const deleteFolderUseCaseWithFlp = new DeleteFolderWithFolderLevelPermissions(
+            params.folderLevelPermissions,
+            params.getOperation,
+            deleteFolderUseCase
+        );
+
+        return {
+            deleteFolderUseCase: deleteFolderUseCaseWithFlp
+        };
+    }
 
     return {
-        deleteFolderUseCase: deleteFolderUseCaseWithFlp
+        deleteFolderUseCase
     };
 };

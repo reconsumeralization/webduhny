@@ -21,8 +21,10 @@ import type {
 import {
     GetIdentityGatewayFromContext,
     type IGetIdentityGateway,
+    type IIsAuthorizationEnabledGateway,
     type IListIdentityTeamsGateway,
     type IListPermissionsGateway,
+    IsAuthorizationEnabledGatewayFromContext,
     ListIdentityTeamsGatewayFromContext,
     ListPermissionsGatewayFromContext
 } from "./gateways";
@@ -40,6 +42,7 @@ export class FolderLevelPermissions {
     private readonly getIdentityGateway: IGetIdentityGateway;
     private readonly listPermissionsGateway: IListPermissionsGateway;
     private readonly listIdentityTeamsGateway: IListIdentityTeamsGateway;
+    private readonly isAuthorizationEnabledGateway: IIsAuthorizationEnabledGateway;
 
     constructor(params: CreateFolderLevelPermissionsParams) {
         this.context = params.context;
@@ -48,6 +51,9 @@ export class FolderLevelPermissions {
         this.getIdentityGateway = new GetIdentityGatewayFromContext(params.context);
         this.listPermissionsGateway = new ListPermissionsGatewayFromContext(params.context);
         this.listIdentityTeamsGateway = new ListIdentityTeamsGatewayFromContext(params.context);
+        this.isAuthorizationEnabledGateway = new IsAuthorizationEnabledGatewayFromContext(
+            params.context
+        );
     }
 
     public canUseFolderLevelPermissions(enabled?: boolean) {
@@ -76,6 +82,10 @@ export class FolderLevelPermissions {
     }
 
     public async canAccessFolderContent(params: CanAccessFolderContentParams) {
+        if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
+            return true;
+        }
+
         const canAccessFolderContentUseCase = new CanAccessFolderContent(this.getIdentityGateway);
         return await canAccessFolderContentUseCase.execute(params);
     }
@@ -99,14 +109,30 @@ export class FolderLevelPermissions {
     }
 
     public async canManageFolderContent(folder: Folder) {
+        if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
+            return true;
+        }
+
         return await this.canAccessFolderContent({ folder, rwd: "w" });
     }
 
     public async canManageFolderStructure(folder: Folder) {
+        if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
+            return true;
+        }
+
         return await this.canAccessFolder({ folder, rwd: "w" });
     }
 
     public async canManageFolderPermissions(folder: Folder) {
+        if (!this.canUseFolderLevelPermissions()) {
+            return false;
+        }
+
+        if (!this.isAuthorizationEnabledGateway.execute()) {
+            return true;
+        }
+
         return await this.canAccessFolder({ folder, rwd: "w", managePermissions: true });
     }
 

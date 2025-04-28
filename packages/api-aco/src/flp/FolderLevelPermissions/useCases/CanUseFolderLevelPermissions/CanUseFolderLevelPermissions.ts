@@ -13,6 +13,6 @@ export class CanUseFolderLevelPermissions implements ICanUseFolderLevelPermissio
             return false;
         }
 
-        return this.context.wcp.canUseTeams();
+        return this.context.wcp.canUseFolderLevelPermissions();
     }
 }

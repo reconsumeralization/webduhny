@@ -27,7 +27,7 @@ export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
                 rwd: "w"
             });
         } else {
-            canCreateFolder = await this.folderLevelPermissions.canCreateFolderInRoot();
+            canCreateFolder = this.folderLevelPermissions.canCreateFolderInRoot();
         }
 
         if (!canCreateFolder) {

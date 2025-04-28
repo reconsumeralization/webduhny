@@ -25,13 +25,19 @@ export const getCreateFolderUseCases = (params: CreateFolderUseCasesParams) => {
     const createFolder = new CreateFolder(params.createOperation);
     const createFolderUseCase = new CreateFolderWithEvents(params.topics, createFolder);
 
-    const createFolderUseCaseWithFlp = new CreateFolderWithFolderLevelPermissions(
-        params.folderLevelPermissions,
-        params.getOperation,
-        createFolderUseCase
-    );
+    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
+        const createFolderUseCaseWithFlp = new CreateFolderWithFolderLevelPermissions(
+            params.folderLevelPermissions,
+            params.getOperation,
+            createFolderUseCase
+        );
+
+        return {
+            createFolderUseCase: createFolderUseCaseWithFlp
+        };
+    }
 
     return {
-        createFolderUseCase: createFolderUseCaseWithFlp
+        createFolderUseCase
     };
 };

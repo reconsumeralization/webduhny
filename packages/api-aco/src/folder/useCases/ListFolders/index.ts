@@ -11,12 +11,18 @@ interface ListFoldersUseCasesParams {
 export const getListFoldersUseCases = (params: ListFoldersUseCasesParams) => {
     const listFoldersUseCase = new ListFolders(params.listOperation);
 
-    const listFoldersUseCaseWithFlp = new ListFoldersWithFolderLevelPermissions(
-        params.folderLevelPermissions,
-        listFoldersUseCase
-    );
+    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
+        const listFoldersUseCaseWithFlp = new ListFoldersWithFolderLevelPermissions(
+            params.folderLevelPermissions,
+            listFoldersUseCase
+        );
+
+        return {
+            listFoldersUseCase: listFoldersUseCaseWithFlp
+        };
+    }
 
     return {
-        listFoldersUseCase: listFoldersUseCaseWithFlp
+        listFoldersUseCase
     };
 };

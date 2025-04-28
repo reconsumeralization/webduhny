@@ -6,6 +6,7 @@ import type {
 } from "~/folder/folder.types";
 import { UpdateFolder } from "./UpdateFolder";
 import { UpdateFolderWithEvents } from "./UpdateFolderWithEvents";
+import { UpdateFolderWithFolderLevelPermissions } from "./UpdateFolderWithFolderLevelPermissions";
 import { FolderLevelPermissions } from "~/flp";
 
 export interface UpdateFolderUseCasesTopics {
@@ -28,11 +29,17 @@ export const getUpdateFolderUseCase = (params: UpdateFolderUseCasesParams) => {
         updateFolder
     );
 
-    // const updateFolderUseCaseWithFlp = new UpdateFolderWithFolderLevelPermissions(
-    //     params.folderLevelPermissions,
-    //     params.getOperation,
-    //     updateFolderUseCase
-    // );
+    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
+        const updateFolderUseCaseWithFlp = new UpdateFolderWithFolderLevelPermissions(
+            params.folderLevelPermissions,
+            params.getOperation,
+            updateFolderUseCase
+        );
+
+        return {
+            updateFolderUseCase: updateFolderUseCaseWithFlp
+        };
+    }
 
     return {
         updateFolderUseCase

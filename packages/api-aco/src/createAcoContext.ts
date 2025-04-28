@@ -91,22 +91,10 @@ const setupAcoContext = async (
         });
     }
 
-    const listAdminUsers = () => {
-        return security.withoutAuthorization(async () => {
-            return context.adminUsers.listUsers();
-        });
-    };
-    const listTeams = () => {
-        return security.withoutAuthorization(async () => {
-            return context.security.listTeams();
-        });
-    };
-
     context.aco = {
         folder: createFolderCrudMethods({
             ...params,
-            listAdminUsers,
-            listTeams
+            context
         }),
         search: createSearchRecordCrudMethods(params),
         folderLevelPermissions,
