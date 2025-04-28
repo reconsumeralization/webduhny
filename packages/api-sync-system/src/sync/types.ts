@@ -9,12 +9,14 @@ import {
 } from "@webiny/aws-sdk/client-dynamodb";
 import type { AllCommandType, ExtendedCommandType } from "~/types.js";
 
+export interface IManifestData {
+    region: string;
+    eventBusName: string;
+    eventBusArn: string;
+}
+
 export interface IManifest {
-    sync: {
-        region: string;
-        eventBusName: string;
-        eventBusArn: string;
-    };
+    sync: IManifestData;
 }
 
 export type IDynamoDbCommand =

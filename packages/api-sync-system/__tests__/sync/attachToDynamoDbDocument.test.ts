@@ -36,4 +36,24 @@ describe("attachToDynamoDbDocument", () => {
         // @ts-expect-error
         expect(client.__decoratedByWebiny).toBe(true);
     });
+
+    it("should not attach a decorator if already attached", async () => {
+        const { handler } = createHandler({
+            system: createMockSystem(),
+            manifest: createMockManifest(),
+            commandConverters: [],
+            client: createMockEventBridgeClient()
+        });
+
+        try {
+            const result = attachToDynamoDbDocument({
+                handler
+            });
+            expect(result).toEqual("SHOULD NOT REACH!");
+        } catch (ex) {
+            expect(ex.message).toEqual(
+                "Cannot add more than one decoration of the document client. This is internal Webiny method, please do not use it."
+            );
+        }
+    });
 });

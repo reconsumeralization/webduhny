@@ -72,6 +72,7 @@ export class Handler implements IHandler {
                     entries: entries.map(entry => entry.Detail)
                 })
             );
+            throw ex;
         }
     }
 

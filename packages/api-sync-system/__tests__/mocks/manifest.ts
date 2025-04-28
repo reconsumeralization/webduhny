@@ -1,4 +1,5 @@
-import type { IManifest } from "~/sync/types.js";
+import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
+import type { IManifest, IManifestData } from "~/sync/types.js";
 
 export interface ICreateMockManifestParams {
     region?: string;
@@ -19,4 +20,27 @@ export const createMockManifest = (params?: ICreateMockManifestParams): IManifes
             eventBusArn
         }
     };
+};
+
+export interface ICreateMockManifestInDynamoDbParams {
+    client: DynamoDBDocument;
+    tableName?: string;
+    manifest?: IManifestData;
+}
+
+export const createMockManifestInDynamoDb = async (params: ICreateMockManifestInDynamoDbParams) => {
+    const { client } = params;
+    await client.put({
+        TableName: params.tableName || process.env.DB_TABLE,
+        Item: {
+            PK: `SERVICE_MANIFEST#api#sync`,
+            SK: "default",
+            GSI1_PK: "SERVICE_MANIFESTS",
+            GSI1_SK: `api#sync`,
+            data: {
+                name: "sync",
+                manifest: params.manifest || {}
+            }
+        }
+    });
 };

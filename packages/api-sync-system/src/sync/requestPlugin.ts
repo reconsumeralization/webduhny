@@ -5,11 +5,13 @@ import { getManifest } from "~/sync/utils/manifest.js";
 import { attachToDynamoDbDocument } from "~/sync/attachToDynamoDbDocument.js";
 import { createSendDataToEventBridgeOnRequestEnd } from "~/sync/createSendDataToEventBridgeOnRequestEnd.js";
 import { createHandler } from "./createHandler.js";
+import type { EventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
 import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
 
 export interface ICreateSyncSystemHandlerOnRequestPluginParams {
     documentClient: DynamoDBDocument;
     system: ISystem;
+    client?: EventBridgeClient;
     commandConverters?: ICommandConverter[];
 }
 
@@ -23,9 +25,11 @@ export const createSyncSystemHandlerOnRequestPlugin = (
         }
 
         const { handler } = createHandler({
-            client: createEventBridgeClient({
-                region: manifest.sync.region
-            }),
+            client:
+                params.client ||
+                createEventBridgeClient({
+                    region: manifest.sync.region
+                }),
             system: params.system,
             manifest,
             commandConverters: params.commandConverters

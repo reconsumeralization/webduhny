@@ -1,5 +1,5 @@
-import { ISystem } from "../types";
 import { createSystemName } from "~/utils/createSystemName.js";
+import type { ISystem } from "~/sync/types.js";
 
 export interface ICreateMockSystemParams {
     env?: string;

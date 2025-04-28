@@ -1,7 +1,5 @@
-import { createSyncHandler, Handler } from "~/sync/handler/Handler.js";
+import { Handler } from "~/sync/handler/Handler.js";
 import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
-import { createMockSystem } from "~tests/mocks/system.js";
-import { createMockEventBus } from "~tests/mocks/eventBus.js";
 import { createMockHandlerConverter } from "~tests/mocks/handlerConverter.js";
 import {
     DeleteCommand,
@@ -98,9 +96,7 @@ describe("Handler", () => {
 
         const handler = createMockSyncHandler({
             client,
-            converter: createMockHandlerConverter({
-                commandConverters: "all"
-            })
+            converter: "all"
         });
 
         handler.add(
@@ -117,7 +113,12 @@ describe("Handler", () => {
 
         console.error = errorFn;
 
-        await handler.flush();
+        try {
+            const result = await handler.flush();
+            expect(result).toEqual("SHOULD NOT REACH!");
+        } catch (ex) {
+            expect(ex.message).toEqual("Unspecified error.");
+        }
 
         expect(errorFn).toHaveBeenCalledWith("Unspecified error.");
     });
