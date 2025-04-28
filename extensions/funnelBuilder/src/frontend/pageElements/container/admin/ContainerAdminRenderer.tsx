@@ -6,13 +6,35 @@ import { useElementWithChildren, useUpdateElement } from "@webiny/app-page-build
 import { ContainerElementWithChildren } from "../types";
 import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
 import styled from "@emotion/styled";
+import { Typography } from "@webiny/ui/Typography";
 
+// Had to quickly recreate the Tabs component here because Webiny one
+// was having re-rendering issues when adding / removing tabs.
 const Tabs = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 30px;
-    align-items: center;
-    border: 1px solid red;
+`;
+
+const Tab = styled.div`
+    text-align: center;
+    flex: 1 0;
+    align-content: center;
+    border-bottom: 2px solid transparent;
+    transition: background-color 300ms, border-bottom 150ms;
+    height: 48px;
+
+    &:hover {
+        background-color: #fff8f6;
+        cursor: pointer;
+    }
+
+    &:active {
+        background-color: #fedfd7;
+    }
+
+    &[data-active="true"] {
+        border-bottom: 2px solid #f94d20;
+    }
 `;
 
 export const ContainerAdmin = () => {
@@ -21,26 +43,27 @@ export const ContainerAdmin = () => {
     const elementWithChildren = useElementWithChildren(element.id!) as ContainerElementWithChildren;
     const { funnelVm } = useContainer();
 
-    console.log("funnelVm", funnelVm.getSteps());
-    console.log("funnelVm.getActiveStepIndex()", funnelVm.getActiveStepIndex());
     return (
         <>
             <Tabs>
                 {funnelVm.getSteps().map((step, index) => {
                     const isActive = index === funnelVm.getActiveStepIndex();
                     return (
-                        <div
+                        <Tab
+                            data-active={isActive}
                             key={step.id}
                             onClick={() => {
                                 funnelVm.activateStepIndex(index);
                             }}
                         >
                             {isActive ? (
-                                <strong style={{ fontWeight: "bold" }}>{step.title}</strong>
+                                <strong style={{ fontWeight: "bold" }}>
+                                    <Typography use={"button"}>{step.title}</Typography>
+                                </strong>
                             ) : (
-                                <span>{step.title}</span>
+                                <Typography use={"button"}>{step.title}</Typography>
                             )}
-                        </div>
+                        </Tab>
                     );
                 })}
             </Tabs>
