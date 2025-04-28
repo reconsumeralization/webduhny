@@ -1,11 +1,19 @@
 import React from "react";
 import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
-import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { ContainerAdminEventHandlers } from "./ContainerAdminEventHandlers";
 import { ContainerProvider, useContainer } from "../ContainerProvider";
 import { useElementWithChildren, useUpdateElement } from "@webiny/app-page-builder/editor";
 import { ContainerElementWithChildren } from "../types";
 import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
+import styled from "@emotion/styled";
+
+const Tabs = styled.div`
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    align-items: center;
+    border: 1px solid red;
+`;
 
 export const ContainerAdmin = () => {
     const { getElement, meta } = useRenderer();
@@ -13,11 +21,27 @@ export const ContainerAdmin = () => {
     const elementWithChildren = useElementWithChildren(element.id!) as ContainerElementWithChildren;
     const { funnelVm } = useContainer();
 
+    console.log("funnelVm", funnelVm.getSteps());
+    console.log("funnelVm.getActiveStepIndex()", funnelVm.getActiveStepIndex());
     return (
         <>
-            <Tabs onActivate={index => funnelVm.activateStepIndex(index)}>
-                {funnelVm.getSteps().map(step => {
-                    return <Tab key={step.id} label={step.title} />;
+            <Tabs>
+                {funnelVm.getSteps().map((step, index) => {
+                    const isActive = index === funnelVm.getActiveStepIndex();
+                    return (
+                        <div
+                            key={step.id}
+                            onClick={() => {
+                                funnelVm.activateStepIndex(index);
+                            }}
+                        >
+                            {isActive ? (
+                                <strong style={{ fontWeight: "bold" }}>{step.title}</strong>
+                            ) : (
+                                <span>{step.title}</span>
+                            )}
+                        </div>
+                    );
                 })}
             </Tabs>
 

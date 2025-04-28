@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
 import { Input } from "@webiny/ui/Input";
-import { Form, Bind } from "@webiny/form";
+import { Bind, Form } from "@webiny/form";
 import { useDisclosure } from "../../../../../admin/useDisclosure";
 import { validation } from "@webiny/validation";
 
@@ -44,11 +44,11 @@ const StyledDragIcon = styled(DragIndicatorIcon)`
 
 interface StepsListItemProps {
     element: StepElement;
-    canRemove?: boolean;
-    onRemove?: (stepId: string) => void;
+    canDeleteStep: boolean;
+    onDeleteStep: () => void;
 }
 
-export const StepsListItem = ({ element }: StepsListItemProps) => {
+export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsListItemProps) => {
     const {
         open: showTitleInput,
         close: hideEditTitleInput,
@@ -72,9 +72,6 @@ export const StepsListItem = ({ element }: StepsListItemProps) => {
         hideEditTitleInput();
     };
 
-    const canRemove = true;
-    const onRemove = (id: string) => {};
-
     const style = {
         transform: CSS.Transform.toString(transform),
         transition
@@ -91,9 +88,7 @@ export const StepsListItem = ({ element }: StepsListItemProps) => {
                             <Bind name={"title"} validators={validation.create("required")}>
                                 <Input
                                     size={"small"}
-                                    onBlur={() => {
-                                        hideEditTitleInput();
-                                    }}
+                                    onBlur={hideEditTitleInput}
                                     autoFocus
                                     onKeyDown={e => {
                                         // @ts-expect-error
@@ -120,9 +115,7 @@ export const StepsListItem = ({ element }: StepsListItemProps) => {
             </PageTitleContainer>
 
             <IconsContainer>
-                {canRemove && (
-                    <Icon element={<DeleteIcon />} onClick={() => onRemove(element.id)} />
-                )}
+                {canDeleteStep && <Icon element={<DeleteIcon />} onClick={onDeleteStep} />}
 
                 <Icon element={<StyledDragIcon />} {...attributes} {...listeners} />
             </IconsContainer>

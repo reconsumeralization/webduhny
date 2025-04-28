@@ -17,7 +17,7 @@ import type {
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
-import { isContainerElementType, isFieldElementType } from "../../../../shared/constants";
+import {isContainerElementType, isFieldElementType, isStepElementType} from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import {
     FunnelFieldDefinitionModel,
@@ -108,8 +108,11 @@ export const ContainerAdminEventHandlers = () => {
                 return;
             }
 
-            // Note: we don't catch any changes on container elements. This is because, as soon
-            // as the container element is updated, the VM in `ContainerProvider` is recreated.
+            if (isStepElementType(updatedElement.type)) {
+                funnelVm.updateStep(updatedElement.data.step.id, updatedElement.data.step);
+                return;
+            }
+
         }),
         [funnelVm]
     );

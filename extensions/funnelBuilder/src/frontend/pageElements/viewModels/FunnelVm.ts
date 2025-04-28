@@ -9,9 +9,7 @@ type Listener = (dto: FunnelModelDto) => void;
 
 export class FunnelVm {
     funnel: FunnelModel;
-
     activeStepId: string;
-
     listeners: Set<Listener> = new Set();
 
     constructor(funnel?: FunnelModel | FunnelModelDto) {
@@ -22,11 +20,6 @@ export class FunnelVm {
         }
 
         this.activeStepId = this.funnel.steps[0]?.id || "";
-    }
-
-    populateFunnel(funnel: Partial<FunnelModelDto>) {
-        this.funnel.populate(funnel);
-        this.emitChange();
     }
 
     // Fields. 👇
@@ -77,6 +70,11 @@ export class FunnelVm {
         this.emitChange();
     }
 
+    updateStep(stepId: string, stepData: Partial<FunnelStepModelDto>) {
+        this.funnel.updateStep(stepId, stepData);
+        this.emitChange();
+    }
+
     getSteps() {
         return this.funnel.steps;
     }
@@ -89,6 +87,10 @@ export class FunnelVm {
         return this.funnel.steps.find(step => step.id === this.activeStepId);
     }
 
+    getActiveStepIndex() {
+        return this.funnel.steps.findIndex(step => step.id === this.activeStepId);
+    }
+
     activateStepIndex(index: number) {
         const step = this.funnel.steps[index];
         if (!step) {
@@ -99,20 +101,26 @@ export class FunnelVm {
         this.emitChange();
     }
 
+    // Other methods. 👇
+    populateFunnel(funnel: Partial<FunnelModelDto>) {
+        this.funnel.populate(funnel);
+        this.emitChange();
+    }
+
     subscribe(listener: Listener) {
         this.listeners.add(listener);
         return () => {
-            this.listeners.delete(listener)
+            this.listeners.delete(listener);
         };
+    }
+
+    getChecksum() {
+        return [this.funnel.getChecksum(), this.getActiveStepId()].join();
     }
 
     private emitChange() {
         for (const listener of this.listeners) {
             listener(this.funnel.toDto());
         }
-    }
-
-    getChecksum() {
-        return [this.funnel.getChecksum(), this.getActiveStepId()].join();
     }
 }

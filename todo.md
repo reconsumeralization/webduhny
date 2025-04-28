@@ -20,7 +20,7 @@
 - docs
 - edit field dialog reopening?
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
-
+- when adding tab, should be activated immediately
 ## SH
 - moving elements? should we block that for now? maybe sh?
 - add FB block

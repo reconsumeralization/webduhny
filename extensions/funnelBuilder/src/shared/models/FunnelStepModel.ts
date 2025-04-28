@@ -26,6 +26,15 @@ export class FunnelStepModel {
         return createObjectHash(this.toDto());
     }
 
+    populate(stepDto: Partial<FunnelStepModelDto>) {
+        if (stepDto.id) {
+            this.id = stepDto.id;
+        }
+        if (stepDto.title) {
+            this.title = stepDto.title;
+        }
+    }
+
     static fromDto(dto: FunnelStepModelDto): FunnelStepModel {
         return new FunnelStepModel(dto);
     }

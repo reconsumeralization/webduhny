@@ -20,13 +20,20 @@ export class FunnelModel {
         ];
     }
 
-    toDto(): FunnelModelDto {
-        return {
-            steps: this.steps.map(s => s.toDto()),
-            fields: this.fields.map(f => f.toDto())
-        };
+    // Steps. 👇
+    updateStep(stepId: string, stepDto: Partial<FunnelStepModelDto>) {
+        const step = this.steps.find(s => s.id === stepId);
+        if (!step) {
+            return;
+        }
+        step.populate(stepDto);
     }
 
+    removeStep(id: string) {
+        this.steps = this.steps.filter(step => step.id !== id);
+    }
+
+    // Other methods. 👇
     populate(funnelDto: Partial<FunnelModelDto>) {
         if (funnelDto.fields) {
             this.fields = funnelDto.fields.map(f => FunnelFieldDefinitionModel.fromDto(f));
@@ -41,6 +48,13 @@ export class FunnelModel {
             .map(step => step.getChecksum())
             .concat(this.fields.map(field => field.getChecksum()))
             .join("");
+    }
+
+    toDto(): FunnelModelDto {
+        return {
+            steps: this.steps.map(s => s.toDto()),
+            fields: this.fields.map(f => f.toDto())
+        };
     }
 
     static fromDto(dto: FunnelModelDto): FunnelModel {

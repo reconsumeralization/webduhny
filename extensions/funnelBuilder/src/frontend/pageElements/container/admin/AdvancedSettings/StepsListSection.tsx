@@ -65,12 +65,30 @@ export const StepsListSection = () => {
     });
 
     const deleteStep = useCallback(
-        (elementId: string) => {
+        (stepId: string) => {
+            console.log('showConfirmation', {
+                ...containerElementWithChildren,
+                data: {
+                    ...containerElementWithChildren.data,
+                    steps: containerElementWithChildren.data.steps.filter(
+                        step => step.id !== stepId
+                    )
+                },
+                elements: containerElementWithChildren.elements.filter(
+                    element => element.data.step.id !== stepId
+                )
+            })
             showConfirmation(async () => {
                 updateElement({
                     ...containerElementWithChildren,
+                    data: {
+                        ...containerElementWithChildren.data,
+                        steps: containerElementWithChildren.data.steps.filter(
+                            step => step.id !== stepId
+                        )
+                    },
                     elements: containerElementWithChildren.elements.filter(
-                        element => element.id !== elementId
+                        element => element.data.step.id !== stepId
                     )
                 });
             });
@@ -83,6 +101,7 @@ export const StepsListSection = () => {
             id: getRandomId(),
             title: "New Step"
         };
+
         updateElement({
             ...containerElementWithChildren,
             data: {
@@ -136,8 +155,8 @@ export const StepsListSection = () => {
                         <StepsListItem
                             key={element.id}
                             element={element}
-                            canRemove={canDeleteSteps}
-                            onRemove={deleteStep}
+                            canDeleteStep={canDeleteSteps}
+                            onDeleteStep={() => deleteStep(element.data.step.id)}
                         />
                     ))}
                     <AddPageButton onClick={createStep}>
