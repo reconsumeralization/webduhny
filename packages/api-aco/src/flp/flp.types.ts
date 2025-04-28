@@ -26,27 +26,14 @@ export interface FolderLevelPermission {
 
 export interface ListFlpsParams {
     where: {
-        path_startsWith: string;
+        path_startsWith?: string;
+        parentId?: string;
         type: string;
     };
 }
 
 export interface StorageOperationsListFlpsParams {
     where: ListFlpsParams["where"] & {
-        tenant: string;
-        locale: string;
-    };
-}
-
-export interface ListDescendantFlpsParams {
-    where: {
-        parentId: string;
-        type: string;
-    };
-}
-
-export interface StorageOperationsListDescendantFlpsParams {
-    where: ListDescendantFlpsParams["where"] & {
         tenant: string;
         locale: string;
     };
@@ -95,9 +82,6 @@ export type StorageOperationsDeleteFlpParams = DeleteFlpParams;
 
 export interface AcoFolderLevelPermissionsStorageOperations {
     list(params: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]>;
-    listDescendants(
-        params: StorageOperationsListDescendantFlpsParams
-    ): Promise<FolderLevelPermission[]>;
     get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null>;
     create(params: StorageOperationsCreateFlpParams): Promise<FolderLevelPermission>;
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
@@ -106,7 +90,6 @@ export interface AcoFolderLevelPermissionsStorageOperations {
 
 export interface AcoFolderLevelPermissionsCrud {
     list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
-    listDescendants(params: ListDescendantFlpsParams): Promise<FolderLevelPermission[]>;
     get(where: GetFlpParams): Promise<FolderLevelPermission | null>;
 }
 

@@ -1,8 +1,7 @@
-import { AcoContext } from "~/types";
+import { AcoContext, type Folder } from "~/types";
 import { createWhere } from "./where";
 import { ROOT_FOLDER } from "~/constants";
 import { filterEntriesByFolderFactory } from "./filterEntriesByFolderFactory";
-import { createFolderType } from "./createFolderType";
 import { decorateIfModelAuthorizationEnabled } from "./decorateIfModelAuthorizationEnabled";
 
 type Context = Pick<AcoContext, "aco" | "cms">;
@@ -26,8 +25,10 @@ export class CmsEntriesCrudDecorators {
 
         decorateIfModelAuthorizationEnabled(context.cms, "listEntries", async (...allParams) => {
             const [decoratee, model, params] = allParams;
-            const folderType = createFolderType(model);
-            const folders = await folderLevelPermissions.listAllFoldersWithPermissions(folderType);
+            // TODO: fix the search within folders
+            const folders = [] as Folder[];
+            // const folderType = createFolderType(model);
+            // const folders = await folderLevelPermissions.listAllFoldersWithPermissions(folderType);
 
             const where = createWhere({
                 model,
@@ -45,10 +46,12 @@ export class CmsEntriesCrudDecorators {
             "listLatestEntries",
             async (...allParams) => {
                 const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
+                // TODO: fix the search within folders
+                const folders = [] as Folder[];
+                // const folderType = createFolderType(model);
+                // const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
+                //     folderType
+                // );
 
                 const where = createWhere({
                     model,
@@ -67,10 +70,12 @@ export class CmsEntriesCrudDecorators {
             "listPublishedEntries",
             async (...allParams) => {
                 const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
+                // TODO: fix the search within folders
+                const folders = [] as Folder[];
+                // const folderType = createFolderType(model);
+                // const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
+                //    folderType
+                // );
 
                 const where = createWhere({
                     model,
@@ -89,10 +94,12 @@ export class CmsEntriesCrudDecorators {
             "listDeletedEntries",
             async (...allParams) => {
                 const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
+                // TODO: fix the search within folders
+                const folders = [] as Folder[];
+                // const folderType = createFolderType(model);
+                // const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
+                //    folderType
+                // );
 
                 const where = createWhere({
                     model,

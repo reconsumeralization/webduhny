@@ -4,10 +4,10 @@ import {
     type OnFolderAfterCreateTopicParams,
     type OnFolderBeforeCreateTopicParams
 } from "~/folder/folder.types";
-import { CreateFolder } from "~/folder/useCases/CreateFolder/CreateFolder";
-import { CreateFolderWithEvents } from "~/folder/useCases/CreateFolder/CreateFolderWithEvents";
-import type { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
-import { CreateFolderWithFolderLevelPermissions } from "~/folder/useCases/CreateFolder/CreateFolderWithFolderLevelPermissions";
+import { CreateFolder } from "./CreateFolder";
+import { CreateFolderWithEvents } from "./CreateFolderWithEvents";
+import { CreateFolderWithFolderLevelPermissions } from "./CreateFolderWithFolderLevelPermissions";
+import { FolderLevelPermissions } from "~/flp";
 
 export interface CreateFolderUseCasesTopics {
     onFolderBeforeCreate: Topic<OnFolderBeforeCreateTopicParams>;

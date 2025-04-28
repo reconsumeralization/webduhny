@@ -9,7 +9,6 @@ import type {
     StorageOperationsCreateFlpParams,
     StorageOperationsDeleteFlpParams,
     StorageOperationsGetFlpParams,
-    StorageOperationsListDescendantFlpsParams,
     StorageOperationsListFlpsParams,
     StorageOperationsUpdateFlpParams
 } from "~/flp/flp.types";
@@ -44,42 +43,43 @@ class FolderLevelPermissionsStorageOperations
     }
 
     async list({
-        where: { tenant, locale, type, path_startsWith }
+        where: { tenant, locale, type, path_startsWith, parentId }
     }: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]> {
         try {
-            const entries = await queryAll<{ data: FolderLevelPermission }>({
-                entity: this.entity,
-                partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
-                options: {
-                    index: "GSI1",
-                    beginsWith: path_startsWith
-                }
+            if (parentId) {
+                const entries = await queryAll<{ data: FolderLevelPermission }>({
+                    entity: this.entity,
+                    partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+                    options: {
+                        index: "GSI2",
+                        eq: parentId
+                    }
+                });
+                return entries.map(entry => entry.data);
+            }
+
+            if (path_startsWith) {
+                const entries = await queryAll<{ data: FolderLevelPermission }>({
+                    entity: this.entity,
+                    partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+                    options: {
+                        index: "GSI1",
+                        beginsWith: path_startsWith
+                    }
+                });
+                return entries.map(entry => entry.data);
+            }
+
+            throw new WebinyError("Missing required parameters.", "LIST_FLP_MISSING_PARAMETERS", {
+                tenant,
+                locale,
+                type,
+                path_startsWith,
+                parentId
             });
-            return entries.map(entry => entry.data);
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not list folder level permissions.",
-                code: "LIST_FLP_ERROR"
-            });
-        }
-    }
-
-    async listDescendants({
-        where: { tenant, locale, type, parentId }
-    }: StorageOperationsListDescendantFlpsParams): Promise<FolderLevelPermission[]> {
-        try {
-            const entries = await queryAll<{ data: FolderLevelPermission }>({
-                entity: this.entity,
-                partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
-                options: {
-                    index: "GSI2",
-                    eq: parentId
-                }
-            });
-            return entries.map(entry => entry.data);
-        } catch (err) {
-            throw WebinyError.from(err, {
-                message: "Could not list descendant folder level permissions.",
                 code: "LIST_FLP_ERROR"
             });
         }

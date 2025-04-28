@@ -6,25 +6,15 @@ import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { createAcoHooks } from "~/createAcoHooks";
 import { createAcoStorageOperations } from "~/createAcoStorageOperations";
-import {
-    AcoContext,
-    CreateAcoParams,
-    Folder,
-    IAcoAppRegisterParams,
-    ListFoldersParams
-} from "~/types";
+import { AcoContext, CreateAcoParams, IAcoAppRegisterParams } from "~/types";
 import { createFolderCrudMethods } from "~/folder/folder.crud";
 import { createSearchRecordCrudMethods } from "~/record/record.crud";
 import { AcoApps } from "./apps";
 import { SEARCH_RECORD_MODEL_ID } from "~/record/record.model";
 import { AcoAppRegisterPlugin } from "~/plugins";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
 import { CmsEntriesCrudDecorators } from "~/utils/decorators/CmsEntriesCrudDecorators";
-import { FOLDER_MODEL_ID } from "~/folder/folder.model";
-import { createOperationsWrapper } from "~/utils/createOperationsWrapper";
-import { pickEntryFieldValues } from "~/utils/pickEntryFieldValues";
 import { createFilterCrudMethods } from "~/filter/filter.crud";
-import { createFlpCrudMethods } from "~/flp";
+import { createFlpCrudMethods, FolderLevelPermissions } from "~/flp";
 
 interface CreateAcoContextParams {
     useFolderLevelPermissions?: boolean;
@@ -72,94 +62,7 @@ const setupAcoContext = async (
         storageOperations
     });
 
-    const folderLevelPermissions = new FolderLevelPermissions({
-        crud: flpCrudMethods,
-        getIdentity: () => security.getIdentity(),
-        listIdentityTeams: async () => {
-            return security.withoutAuthorization(async () => {
-                const identity = security.getIdentity();
-                if (!identity) {
-                    return [];
-                }
-
-                const adminUser = await context.adminUsers.getUser({ where: { id: identity.id } });
-                if (!adminUser) {
-                    return [];
-                }
-
-                const hasTeams = adminUser.teams && adminUser.teams.length > 0;
-                if (hasTeams) {
-                    return context.security.listTeams({ where: { id_in: adminUser.teams } });
-                }
-
-                return [];
-            });
-        },
-        listPermissions: () => security.listPermissions(),
-        listAllFolders: (params: ListFoldersParams) => {
-            // When retrieving a list of all folders, we want to do it in the
-            // fastest way and that is by directly using CMS's storage operations.
-            const { withModel } = createOperationsWrapper({
-                modelName: FOLDER_MODEL_ID,
-                cms: context.cms,
-                getCmsContext: () => context,
-                security,
-                documentClient: setupAcoContextParams.documentClient
-            });
-
-            return withModel(async model => {
-                try {
-                    const response = await context.cms.storageOperations.entries.list(model, {
-                        limit: 10_000,
-                        where: {
-                            ...params.where,
-
-                            // Folders always work with latest entries. We never publish them.
-                            latest: true
-                        },
-                        after: params.after,
-                        sort: ["title_ASC"]
-                    });
-
-                    return [
-                        response.items.map(pickEntryFieldValues<Folder>),
-                        {
-                            cursor: response.cursor,
-                            totalCount: response.totalCount,
-                            hasMoreItems: response.hasMoreItems
-                        }
-                    ];
-                } catch (ex) {
-                    /**
-                     * Skip throwing an error if the error is related to the search phase execution.
-                     * This is a temporary solution to avoid breaking the entire system when no entries were ever inserted in the index.
-                     *
-                     * TODO: figure out better way to handle this.
-                     */
-                    if (ex.message === "search_phase_execution_exception") {
-                        return [
-                            [],
-                            {
-                                cursor: null,
-                                totalCount: 0,
-                                hasMoreItems: false
-                            }
-                        ];
-                    }
-                    throw ex;
-                }
-            });
-        },
-        canUseTeams: () => context.wcp.canUseTeams(),
-        canUseFolderLevelPermissions: () => {
-            if (setupAcoContextParams.useFolderLevelPermissions === false) {
-                return false;
-            }
-
-            return context.wcp.canUseFolderLevelPermissions();
-        },
-        isAuthorizationEnabled: () => context.security.isAuthorizationEnabled()
-    });
+    const folderLevelPermissions = new FolderLevelPermissions({ context, crud: flpCrudMethods });
 
     const params: CreateAcoParams = {
         getLocale,

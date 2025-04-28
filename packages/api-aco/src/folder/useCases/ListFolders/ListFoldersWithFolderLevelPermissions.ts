@@ -1,6 +1,6 @@
 import type { Folder, ListFoldersParams } from "~/folder/folder.types";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
-import type { IListFolders } from "~/folder/useCases/ListFolders/IListFolders";
+import type { IListFolders } from "./IListFolders";
+import { FolderLevelPermissions } from "~/flp";
 import { ROOT_FOLDER } from "~/constants";
 import type { ListMeta } from "~/types";
 

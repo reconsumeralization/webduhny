@@ -1,7 +1,7 @@
 import type { ICreateFolder } from "./ICreateFolder";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
 import type { AcoFolderStorageOperations, CreateFolderParams } from "~/folder/folder.types";
 import { NotAuthorizedError } from "@webiny/api-security";
+import { FolderLevelPermissions } from "~/flp";
 
 export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
     private folderLevelPermissions: FolderLevelPermissions;

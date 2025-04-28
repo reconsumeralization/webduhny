@@ -123,7 +123,7 @@ class UpdateFlpTask {
     };
 
     private async getDirectChildren(flp: FolderLevelPermission) {
-        return await this.operations.listDescendants({
+        return await this.operations.list({
             where: {
                 tenant: flp.tenant,
                 locale: flp.locale,

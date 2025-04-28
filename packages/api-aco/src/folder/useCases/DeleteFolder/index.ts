@@ -4,10 +4,10 @@ import {
     type OnFolderAfterDeleteTopicParams,
     type OnFolderBeforeDeleteTopicParams
 } from "~/folder/folder.types";
-import { DeleteFolder } from "~/folder/useCases/DeleteFolder/DeleteFolder";
-import { DeleteFolderWithEvents } from "~/folder/useCases/DeleteFolder/DeleteFolderWithEvents";
-import type { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
-import { DeleteFolderWithFolderLevelPermissions } from "~/folder/useCases/DeleteFolder/DeleteFolderWithFolderLevelPermissions";
+import { DeleteFolder } from "./DeleteFolder";
+import { DeleteFolderWithEvents } from "./DeleteFolderWithEvents";
+import { DeleteFolderWithFolderLevelPermissions } from "./DeleteFolderWithFolderLevelPermissions";
+import { FolderLevelPermissions } from "~/flp";
 
 export interface DeleteFolderUseCasesTopics {
     onFolderBeforeDelete: Topic<OnFolderBeforeDeleteTopicParams>;

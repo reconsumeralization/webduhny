@@ -1,6 +1,6 @@
 import { NotAuthorizedError } from "@webiny/api-security";
-import type { IGetFolder } from "~/folder/useCases/GetFolder/IGetFolder";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
+import type { IGetFolder } from "./IGetFolder";
+import { FolderLevelPermissions } from "~/flp";
 import type { GetFolderParams } from "~/folder/folder.types";
 
 export class GetFolderWithFolderLevelPermissions implements IGetFolder {

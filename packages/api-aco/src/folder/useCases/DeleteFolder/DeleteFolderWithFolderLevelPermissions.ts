@@ -1,6 +1,6 @@
 import type { AcoFolderStorageOperations, DeleteFolderParams } from "~/folder/folder.types";
-import type { IDeleteFolder } from "~/folder/useCases/DeleteFolder/IDeleteFolder";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
+import type { IDeleteFolder } from "./IDeleteFolder";
+import { FolderLevelPermissions } from "~/flp";
 
 export class DeleteFolderWithFolderLevelPermissions implements IDeleteFolder {
     private folderLevelPermissions: FolderLevelPermissions;

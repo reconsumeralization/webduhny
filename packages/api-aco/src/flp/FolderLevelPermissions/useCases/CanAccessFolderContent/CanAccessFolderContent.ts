@@ -1,0 +1,36 @@
+import type {
+    CanAccessFolderContentParams,
+    ICanAccessFolderContent
+} from "./ICanAccessFolderContent";
+import type { IGetIdentityGateway } from "../../gateways";
+
+export class CanAccessFolderContent implements ICanAccessFolderContent {
+    private getIdentityGateway: IGetIdentityGateway;
+
+    constructor(getIdentityGateway: IGetIdentityGateway) {
+        this.getIdentityGateway = getIdentityGateway;
+    }
+
+    async execute(params: CanAccessFolderContentParams) {
+        const identity = this.getIdentityGateway.execute();
+
+        const permissions = params.folder?.permissions || [];
+
+        const currentIdentityPermission = permissions.find(p => {
+            return p.target === `admin:${identity.id}`;
+        });
+
+        if (!currentIdentityPermission) {
+            return false;
+        }
+
+        // If the user is not an owner and we're checking for "write" or
+        // "delete" access, then we can immediately return false.
+        if (params.rwd !== "r") {
+            const { level } = currentIdentityPermission;
+            return level !== "viewer";
+        }
+
+        return true;
+    }
+}

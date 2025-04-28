@@ -16,7 +16,7 @@ import type {
 import type { AcoFolderCrud, AcoFolderStorageOperations } from "~/folder/folder.types";
 import type { AcoFilterCrud, AcoFilterStorageOperations } from "~/filter/filter.types";
 import type { AcoFolderLevelPermissionsStorageOperations } from "~/flp/flp.types";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
+import { FolderLevelPermissions } from "~/flp";
 
 export * from "./filter/filter.types";
 export * from "./folder/folder.types";

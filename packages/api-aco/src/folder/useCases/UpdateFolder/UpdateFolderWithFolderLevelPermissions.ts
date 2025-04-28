@@ -1,8 +1,8 @@
-import type { AcoFolderStorageOperations, UpdateFolderParams } from "~/folder/folder.types";
-import { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
-import type { IUpdateFolder } from "~/folder/useCases/UpdateFolder/IUpdateFolder";
 import { NotAuthorizedError } from "@webiny/api-security";
 import WError from "@webiny/error";
+import type { AcoFolderStorageOperations, UpdateFolderParams } from "~/folder/folder.types";
+import type { IUpdateFolder } from "./IUpdateFolder";
+import { FolderLevelPermissions } from "~/flp";
 
 export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
     private folderLevelPermissions: FolderLevelPermissions;

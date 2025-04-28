@@ -1,6 +1,5 @@
-import { ListMeta, ListSort, User } from "~/types";
+import { type FolderPermission, ListMeta, ListSort, User } from "~/types";
 import { Topic } from "@webiny/pubsub/types";
-import { FolderPermission } from "~/utils/FolderLevelPermissions";
 
 export interface Folder {
     id: string;

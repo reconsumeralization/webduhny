@@ -4,9 +4,9 @@ import type {
     OnFolderAfterUpdateTopicParams,
     OnFolderBeforeUpdateTopicParams
 } from "~/folder/folder.types";
-import { UpdateFolder } from "~/folder/useCases/UpdateFolder/UpdateFolder";
-import { UpdateFolderWithEvents } from "~/folder/useCases/UpdateFolder/UpdateFolderWithEvents";
-import type { FolderLevelPermissions } from "~/utils/FolderLevelPermissions";
+import { UpdateFolder } from "./UpdateFolder";
+import { UpdateFolderWithEvents } from "./UpdateFolderWithEvents";
+import { FolderLevelPermissions } from "~/flp";
 
 export interface UpdateFolderUseCasesTopics {
     onFolderBeforeUpdate: Topic<OnFolderBeforeUpdateTopicParams>;

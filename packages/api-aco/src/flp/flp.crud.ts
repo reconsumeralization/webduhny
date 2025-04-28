@@ -27,15 +27,6 @@ export const createFlpCrudMethods = ({
                     locale: getLocale().code
                 }
             });
-        },
-        async listDescendants({ where }) {
-            return storageOperations.flp.listDescendants({
-                where: {
-                    ...where,
-                    tenant: getTenant().id,
-                    locale: getLocale().code
-                }
-            });
         }
     };
 };
