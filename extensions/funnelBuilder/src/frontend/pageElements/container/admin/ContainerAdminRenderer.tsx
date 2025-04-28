@@ -1,77 +1,56 @@
-import React, { useState } from "react";
+import React from "react";
 import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
-import { useRecoilValue } from "recoil";
-import { elementWithChildrenByIdSelector } from "@webiny/app-page-builder/editor/recoil/modules";
-import { Element } from "@webiny/app-page-builder-elements/types";
-import styled from "@emotion/styled";
-import { Form } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { ContainerAdminEventHandlers } from "./ContainerAdminEventHandlers";
-import { ContainerProvider } from "../ContainerProvider";
-import { useEventActionHandler } from "@webiny/app-page-builder/editor";
-import { UpdateElementActionEvent } from "@webiny/app-page-builder/editor/recoil/actions";
+import { ContainerProvider, useContainer } from "../ContainerProvider";
+import { useElementWithChildren, useUpdateElement } from "@webiny/app-page-builder/editor";
+import { ContainerElementWithChildren } from "../types";
+import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
 
-const ElementsSection = styled.div<{ activePageIndex: number }>`
-    & > webiny-form-container > pb-grid {
-        display: none;
-    }
-
-    ${props =>
-        props.activePageIndex !== undefined &&
-        `
-        & > webiny-form-container > pb-grid:nth-of-type(${props.activePageIndex + 1}) {
-            display: block;
-        }
-    `}
-`;
-
-export const ContainerAdminRenderer = createRenderer(() => {
+export const ContainerAdmin = () => {
     const { getElement, meta } = useRenderer();
     const element = getElement();
-    const [activePageIndex, setActivePageIndex] = useState(0);
-    // TODO const elementWithChildren = useElementWithChildren(element.id!) as FunnelBuilderMainElement;
-    const elementWithChildren = useRecoilValue(
-        elementWithChildrenByIdSelector(element.id)
-    ) as Element;
+    const elementWithChildren = useElementWithChildren(element.id!) as ContainerElementWithChildren;
+    const { funnelVm } = useContainer();
 
-    const handler = useEventActionHandler();
+    return (
+        <>
+            <Tabs onActivate={index => funnelVm.activateStepIndex(index)}>
+                {funnelVm.getSteps().map(step => {
+                    return <Tab key={step.id} label={step.title} />;
+                })}
+            </Tabs>
+
+            {/* @ts-ignore Had an issue with types here. It's fine to ignore. */}
+            <Elements element={elementWithChildren} />
+        </>
+    );
+};
+
+export const ContainerAdminRenderer = createRenderer(() => {
+    const { getElement } = useRenderer();
+    const element = getElement();
+    const updateElement = useUpdateElement();
+
+    const updateContainerElementData = (data: FunnelModelDto) => {
+        updateElement(
+            {
+                ...element,
+                data: {
+                    ...element.data,
+                    ...data
+                }
+            },
+            // Ensures change is stored in history and page is updated on the backend.
+            { history: true }
+        );
+    };
 
     return (
         <div>
-            <ContainerProvider
-                updateElementData={data => {
-                    handler.trigger(
-                        new UpdateElementActionEvent({
-                            element: { ...element, data },
-                            history: true
-                        })
-                    );
-                }}
-            >
+            <ContainerProvider updateElementData={updateContainerElementData}>
                 <ContainerAdminEventHandlers />
-                <Tabs onActivate={index => setActivePageIndex(index)}>
-                    {elementWithChildren.elements.map(element => {
-                        if (element.data) {
-                            return (
-                                <Tab
-                                    key={element.data.fub.page.id}
-                                    label={element.data.fub.page.title}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
-                </Tabs>
-
-                <ElementsSection activePageIndex={activePageIndex} data-role={"fub-steps-wrapper"}>
-                    <Form
-                        onSubmit={data => {
-                            console.log("Form submitted.", data);
-                        }}
-                    >
-                        {() => <Elements element={elementWithChildren} />}
-                    </Form>
-                </ElementsSection>
+                <ContainerAdmin />
             </ContainerProvider>
         </div>
     );

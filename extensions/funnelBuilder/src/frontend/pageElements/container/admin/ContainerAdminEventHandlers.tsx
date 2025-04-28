@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
     useActiveElementId,
     useElementById,
-    useEventActionHandler
+    useEventActionHandler,
+    useUpdateElement
 } from "@webiny/app-page-builder/editor";
 import {
     CreateElementActionEvent,
@@ -16,21 +17,18 @@ import type {
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
-import { useRenderer } from "@webiny/app-page-builder-elements";
-import {isContainerElementType, isFieldElementType} from "../../../../shared/constants";
+import { isContainerElementType, isFieldElementType } from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import {
     FunnelFieldDefinitionModel,
     FunnelFieldDefinitionModelDto
 } from "../../../../shared/models/FunnelFieldDefinitionModel";
-import { FunnelModelDto } from "../../../../shared/models/FunnelModel";
 import { useDisclosure } from "../../../admin/useDisclosure";
 import FieldSettingsDialog from "../../../admin/FieldSettingsDialog";
 
 export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
-    const { getElement } = useRenderer();
-
+    const updateElement = useUpdateElement();
     const {
         open: showFieldSettingsDialog,
         close: hideFieldSettingsDialog,
@@ -41,62 +39,80 @@ export const ContainerAdminEventHandlers = () => {
     const container = useContainer();
     const { funnelVm } = container;
 
-    const containerElement = getElement<FunnelModelDto>();
-
     const [activeElementId] = useActiveElementId();
     const [createdEditorElement] = useElementById(activeElementId);
 
-    const createOnElementEventHandler = function <
-        TArgs extends EventActionHandlerCallableArgs = any
-    >(handler: (args: TArgs) => void): EventActionCallable<TArgs> {
-        return (_, __, args) => {
-            if (!args || !funnelVm) {
+    const createOnElementEventHandler = useCallback(
+        function <TArgs extends EventActionHandlerCallableArgs = any>(
+            handler: (args: TArgs) => void
+        ): EventActionCallable<TArgs> {
+            return (_, __, args) => {
+                if (!args || !funnelVm) {
+                    return { actions: [] };
+                }
+
+                handler(args);
+
                 return { actions: [] };
+            };
+        },
+        [funnelVm]
+    );
+
+    const onElementCreate = useCallback(
+        createOnElementEventHandler<CreateElementEventActionArgsType>(args => {
+            const { element: createdElement } = args;
+
+            if (!isFieldElementType(createdElement.type)) {
+                return;
             }
 
-            handler(args);
+            console.log("onElCreate", {
+                ...createdElement.data,
+                stepId: funnelVm.getActiveStepId()
+            });
 
-            return { actions: [] };
-        };
-    };
+            funnelVm.addField({
+                ...createdElement.data,
+                stepId: funnelVm.getActiveStepId()
+            } as FunnelFieldDefinitionModelDto);
 
-    const onElementCreate = createOnElementEventHandler<CreateElementEventActionArgsType>(args => {
-        const { element: createdElement } = args;
-        if (!isFieldElementType(createdElement.type)) {
-            return;
-        }
+            const fieldClone = funnelVm.getField(createdElement.data.id)!.clone();
+            showFieldSettingsDialog(fieldClone);
+        }),
+        [funnelVm]
+    );
 
-        funnelVm.addField({
-            ...createdElement.data,
-            stepId: funnelVm.getActiveStepId()
-        } as FunnelFieldDefinitionModelDto);
+    const onElementDelete = useCallback(
+        createOnElementEventHandler<DeleteElementActionArgsType>(args => {
+            const { element: deletedElement } = args;
+            if (isFieldElementType(deletedElement.type)) {
+                funnelVm.removeField(deletedElement.data.id);
+            }
 
-        const fieldClone = funnelVm.getField(createdElement.data.id)!.clone();
-        showFieldSettingsDialog(fieldClone);
-    });
+            // TODO: Find deleted child inputs and update container.
+        }),
+        [funnelVm]
+    );
 
-    const onElementDelete = createOnElementEventHandler<DeleteElementActionArgsType>(args => {
-        const { element: deletedElement } = args;
-        if (isFieldElementType(deletedElement.type)) {
-            funnelVm.removeField(deletedElement.data.id);
-        }
+    const onElementUpdate = useCallback(
+        createOnElementEventHandler<UpdateElementActionArgsType>(args => {
+            const { element: updatedElement } = args;
+            if (isFieldElementType(updatedElement.type)) {
+                funnelVm.updateField(updatedElement.data.id, updatedElement.data);
+                return;
+            }
 
-        // TODO: Find deleted child inputs and update container.
-    });
+            if (isContainerElementType(updatedElement.type)) {
+                funnelVm.funnel.populate(updatedElement.data)
+                return;
+            }
 
-    const onElementUpdate = createOnElementEventHandler<UpdateElementActionArgsType>(args => {
-        const { element: updatedField } = args;
-        if (isFieldElementType(updatedField.type)) {
-            funnelVm.updateField(updatedField.data.id, updatedField.data);
-            return;
-        }
-
-        if (isContainerElementType(updatedField.type)) {
-            console.log('CONTAINER UDATED', updatedField.data)
-            funnelVm.funnel.populate(updatedField.data)
-            return;
-        }
-    });
+            // Note: we don't catch any changes on container elements. This is because, as soon
+            // as the container element is updated, the VM in `ContainerProvider` is recreated.
+        }),
+        [funnelVm]
+    );
 
     useEffect(() => {
         const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
@@ -108,7 +124,7 @@ export const ContainerAdminEventHandlers = () => {
             offUpdateElement();
             offDeleteElement();
         };
-    }, [containerElement]);
+    }, [funnelVm]);
 
     return (
         <FieldSettingsDialog
@@ -116,12 +132,7 @@ export const ContainerAdminEventHandlers = () => {
             field={createdField!}
             onClose={hideFieldSettingsDialog}
             onSubmit={data => {
-                eventHandler.trigger(
-                    new UpdateElementActionEvent({
-                        element: { ...createdEditorElement!, data },
-                        history: false
-                    })
-                );
+                updateElement({ ...createdEditorElement!, data }, { history: true });
             }}
         />
     );

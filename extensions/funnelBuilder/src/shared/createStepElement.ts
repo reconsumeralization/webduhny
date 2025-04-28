@@ -1,76 +1,31 @@
 import { getRandomId } from "./getRandomId";
+import { createElementType } from "./constants";
+import { FunnelStepModelDto } from "./models/FunnelStepModel";
 
-interface FubCreatePageParams {
-    title: string;
-}
-
-export interface FubPageElementData {
-    fub: {
-        page: {
-            id: string;
-            title: string;
-        };
-    };
-}
-
-export const createStepElement = (params: FubCreatePageParams) => {
-    // Pages are basically grids with a single column and a single row,
-    // which users can fill with elements.
-
+export const createStepElement = (initialStepData?: FunnelStepModelDto) => {
     return {
         id: getRandomId(),
-        type: "grid",
+        type: createElementType("step"),
         parent: undefined,
         data: {
-            fub: {
-                page: { id: getRandomId(), title: params.title }
-            },
-            settings: {
-                width: {
-                    desktop: {
-                        value: "1100px"
-                    }
-                },
-                margin: {
-                    desktop: {
-                        top: "0px",
-                        right: "0px",
-                        bottom: "0px",
-                        left: "0px",
-                        advanced: true
-                    }
-                },
-                padding: {
-                    desktop: {
-                        all: "10px"
-                    }
-                },
-                grid: {
-                    cellsType: "12"
-                },
-                gridSettings: {
-                    desktop: {
-                        flexDirection: "row"
-                    },
-                    "mobile-landscape": {
-                        flexDirection: "column"
-                    }
-                },
-                horizontalAlignFlex: {
-                    desktop: "flex-start"
-                },
-                verticalAlign: {
-                    desktop: "flex-start"
-                }
+            settings: {},
+            step: initialStepData || {
+                id: getRandomId(),
+                title: "New step"
             }
         },
         elements: [
             {
                 id: getRandomId(),
-                type: "cell",
+                type: "grid",
                 parent: undefined,
                 data: {
                     settings: {
+                        width: {
+                            desktop: {
+                                value: "1100px"
+                            }
+                        },
                         margin: {
                             desktop: {
                                 top: "0px",
@@ -82,14 +37,52 @@ export const createStepElement = (params: FubCreatePageParams) => {
                         },
                         padding: {
                             desktop: {
-                                all: "0px"
+                                all: "10px"
                             }
                         },
-                        grid: { size: 12 },
-                        horizontalAlignFlex: { desktop: "flex-start" }
+                        grid: {
+                            cellsType: "12"
+                        },
+                        gridSettings: {
+                            desktop: {
+                                flexDirection: "row"
+                            },
+                            "mobile-landscape": {
+                                flexDirection: "column"
+                            }
+                        },
+                        horizontalAlignFlex: { desktop: "flex-start" },
+                        verticalAlign: { desktop: "flex-start" }
                     }
                 },
-                elements: []
+                elements: [
+                    {
+                        id: getRandomId(),
+                        type: "cell",
+                        parent: undefined,
+                        data: {
+                            settings: {
+                                margin: {
+                                    desktop: {
+                                        top: "0px",
+                                        right: "0px",
+                                        bottom: "0px",
+                                        left: "0px",
+                                        advanced: true
+                                    }
+                                },
+                                padding: {
+                                    desktop: {
+                                        all: "0px"
+                                    }
+                                },
+                                grid: { size: 12 },
+                                horizontalAlignFlex: { desktop: "flex-start" }
+                            }
+                        },
+                        elements: []
+                    }
+                ]
             }
         ]
     };

@@ -17,4 +17,9 @@ export const isContainerElementType = (type: string) => {
     return type === CONTAINER_ELEMENT_TYPE;
 };
 
+export const isStepElementType = (type: string) => {
+    return type === STEP_ELEMENT_TYPE;
+};
+
 export const CONTAINER_ELEMENT_TYPE = createElementType("container");
+export const STEP_ELEMENT_TYPE = createElementType("step");

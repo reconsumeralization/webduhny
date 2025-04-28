@@ -32,6 +32,8 @@ export const createFieldRenderer = (
         }
 
         if (!funnelSubmissionVm.fieldExists(element.data.fieldId)) {
+            console.log('💣field does not exist', element.data)
+            console.log('funnelSubmissionVm', funnelSubmissionVm)
             return null;
         }
 

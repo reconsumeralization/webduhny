@@ -17,6 +17,7 @@ export { useRefreshBlock } from "./useRefreshBlock";
 export { useRootElement } from "./useRootElement";
 export { useUI } from "./useUI";
 export { useUpdateElement } from "./useUpdateElement";
+export { useCreateElement } from "./useCreateElement";
 export { useUpdateHandlers } from "./useUpdateHandlers";
 export { useGetElement } from "./useGetElement";
 export { useIsElementChildOfType } from "./useIsElementChildOfType";

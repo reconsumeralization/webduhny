@@ -1,4 +1,5 @@
 import { getRandomId } from "../getRandomId";
+import {createObjectHash} from "../createObjectHash";
 
 export interface FunnelStepModelDto {
     id: string;
@@ -19,6 +20,10 @@ export class FunnelStepModel {
             id: this.id,
             title: this.title
         };
+    }
+
+    getChecksum():string {
+        return createObjectHash(this.toDto());
     }
 
     static fromDto(dto: FunnelStepModelDto): FunnelStepModel {

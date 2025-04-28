@@ -3,18 +3,18 @@ import {
     FunnelFieldDefinitionModel,
     FunnelFieldDefinitionModelDto
 } from "../../../shared/models/FunnelFieldDefinitionModel";
+import { FunnelStepModel, FunnelStepModelDto } from "../../../shared/models/FunnelStepModel";
 
-interface FunnelVmOptions {
-    onChange?: (funnel: FunnelModelDto) => void;
-}
+type Listener = (dto: FunnelModelDto) => void;
 
 export class FunnelVm {
     funnel: FunnelModel;
-    options: FunnelVmOptions;
 
     activeStepId: string;
 
-    constructor(funnel?: FunnelModel | FunnelModelDto, options: FunnelVmOptions = {}) {
+    listeners: Set<Listener> = new Set();
+
+    constructor(funnel?: FunnelModel | FunnelModelDto) {
         if (funnel instanceof FunnelModel) {
             this.funnel = funnel;
         } else {
@@ -22,31 +22,30 @@ export class FunnelVm {
         }
 
         this.activeStepId = this.funnel.steps[0]?.id || "";
-
-        this.options = options;
     }
 
-    static fromDto(dto: any) {
-        const funnel = FunnelModel.fromDto(dto);
-        return new FunnelVm(funnel);
+    populateFunnel(funnel: Partial<FunnelModelDto>) {
+        this.funnel.populate(funnel);
+        this.emitChange();
     }
 
+    // Fields. 👇
     addField(dto: FunnelFieldDefinitionModelDto) {
         const newField = new FunnelFieldDefinitionModel(dto);
         this.funnel.fields.push(newField);
-        this.onChange();
+        this.emitChange();
     }
 
     removeField(id: string) {
         this.funnel.fields = this.funnel.fields.filter(field => field.id !== id);
-        this.onChange();
+        this.emitChange();
     }
 
     updateField(fieldId: string, fieldData: Partial<FunnelFieldDefinitionModelDto>) {
         const field = this.funnel.fields.find(field => field.id === fieldId);
         if (field) {
             field.populate(fieldData);
-            this.onChange();
+            this.emitChange();
         }
     }
 
@@ -66,6 +65,22 @@ export class FunnelVm {
         return this.funnel.fields.filter(field => field.stepId === step.id);
     }
 
+    // Steps. 👇
+    addStep(dto: FunnelStepModelDto) {
+        const newStep = new FunnelStepModel(dto);
+        this.funnel.steps.push(newStep);
+        this.emitChange();
+    }
+
+    removeStep(id: string) {
+        this.funnel.steps = this.funnel.steps.filter(step => step.id !== id);
+        this.emitChange();
+    }
+
+    getSteps() {
+        return this.funnel.steps;
+    }
+
     getActiveStepId() {
         return this.activeStepId;
     }
@@ -74,11 +89,30 @@ export class FunnelVm {
         return this.funnel.steps.find(step => step.id === this.activeStepId);
     }
 
-    private onChange() {
-        if (!this.options.onChange) {
+    activateStepIndex(index: number) {
+        const step = this.funnel.steps[index];
+        if (!step) {
             return;
         }
 
-        this.options.onChange(this.funnel.toDto());
+        this.activeStepId = step.id;
+        this.emitChange();
+    }
+
+    subscribe(listener: Listener) {
+        this.listeners.add(listener);
+        return () => {
+            this.listeners.delete(listener)
+        };
+    }
+
+    private emitChange() {
+        for (const listener of this.listeners) {
+            listener(this.funnel.toDto());
+        }
+    }
+
+    getChecksum() {
+        return [this.funnel.getChecksum(), this.getActiveStepId()].join();
     }
 }

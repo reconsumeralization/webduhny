@@ -3,25 +3,16 @@ import {
     FunnelSubmissionModel,
 } from "../../../shared/models/FunnelSubmissionModel";
 
-interface FunnelSubmissionVmOptions {
-    onChange?: () => {}
-}
-
 type Listener = () => void;
 
 export class FunnelSubmissionVm {
     funnel: FunnelModel;
     funnelSubmission: FunnelSubmissionModel;
-    options: FunnelSubmissionVmOptions;
     listeners: Set<Listener> = new Set();
 
-    private changedOn = 0;
-
-    constructor(funnel: FunnelModel, options: FunnelSubmissionVmOptions = {}) {
+    constructor(funnel: FunnelModel) {
         this.funnel = funnel;
         this.funnelSubmission = new FunnelSubmissionModel(funnel);
-        this.options = options;
-
     }
 
     getField(fieldId: string) {
@@ -34,6 +25,7 @@ export class FunnelSubmissionVm {
 
     setData(data: any) {
         this.funnelSubmission.setData(data);
+        this.emitChange();
     }
 
     submitActiveStep() {
@@ -43,14 +35,11 @@ export class FunnelSubmissionVm {
 
     activatePreviousStep() {
         this.funnelSubmission.activatePreviousStep();
+        this.emitChange();
     }
 
     get activeStepIndex() {
         return this.funnelSubmission.getActiveStepIndex();
-    }
-
-    getChangedOn() {
-        return this.changedOn;
     }
 
     subscribe(listener: Listener) {
@@ -59,11 +48,13 @@ export class FunnelSubmissionVm {
     }
 
     private emitChange() {
-        this.changedOn = Date.now();
         for (const listener of this.listeners) {
             listener();
         }
     }
 
+    getChecksum() {
+        return this.funnelSubmission.getChecksum();
+    }
 
 }

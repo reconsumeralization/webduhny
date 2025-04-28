@@ -1,5 +1,6 @@
 import { FunnelModel } from "./FunnelModel";
 import { FunnelSubmissionFieldModel } from "./FunnelSubmissionFieldModel";
+import { createObjectHash } from "../createObjectHash";
 
 export interface FunnelSubmissionModelDto {
     fields?: Record<string, any>;
@@ -26,11 +27,11 @@ export type FunnelSubmissionStepSubmissionResult =
 export class FunnelSubmissionModel {
     funnel: FunnelModel;
     fields: Record<string, FunnelSubmissionFieldModel>;
-    activeStep: string;
+    activeStepId: string;
 
     constructor(funnel: FunnelModel, funnelEntryDto: FunnelSubmissionModelDto = {}) {
         this.funnel = funnel;
-        this.activeStep = funnelEntryDto.activeStep || funnel.steps[0].id;
+        this.activeStepId = funnelEntryDto.activeStep || funnel.steps[0].id;
         this.fields = funnel.fields.reduce((acc, field) => {
             acc[field.fieldId] = new FunnelSubmissionFieldModel(
                 this,
@@ -43,7 +44,7 @@ export class FunnelSubmissionModel {
 
     toDto(): FunnelSubmissionModelDto {
         return {
-            activeStep: this.activeStep,
+            activeStep: this.activeStepId,
             fields: Object.values(this.fields).reduce((acc, field) => {
                 acc[field.definition.fieldId] = field.toDto();
                 return acc;
@@ -136,13 +137,6 @@ export class FunnelSubmissionModel {
         return validationResult;
     }
 
-    getDataChecksum() {
-        const data = this.getData();
-        return Object.values(data).reduce((acc, value) => {
-            return acc + JSON.stringify(value);
-        }, "");
-    }
-
     // Fields-related methods. 👇
     getField(fieldId: string) {
         return this.fields[fieldId];
@@ -153,7 +147,7 @@ export class FunnelSubmissionModel {
     }
 
     getFieldsForActiveStep() {
-        const activeStep = this.funnel.steps.find(step => step.id === this.activeStep);
+        const activeStep = this.funnel.steps.find(step => step.id === this.activeStepId);
         if (!activeStep) {
             return [];
         }
@@ -165,11 +159,11 @@ export class FunnelSubmissionModel {
 
     // Steps-related methods. 👇
     getActiveStep() {
-        return this.funnel.steps.find(step => step.id === this.activeStep);
+        return this.funnel.steps.find(step => step.id === this.activeStepId);
     }
 
     getActiveStepIndex() {
-        return this.funnel.steps.findIndex(step => step.id === this.activeStep);
+        return this.funnel.steps.findIndex(step => step.id === this.activeStepId);
     }
 
     getStepsCount() {
@@ -183,14 +177,18 @@ export class FunnelSubmissionModel {
     activateNextStep() {
         const activeIndex = this.getActiveStepIndex();
         if (activeIndex < this.funnel.steps.length - 1) {
-            this.activeStep = this.funnel.steps[activeIndex + 1].id;
+            this.activeStepId = this.funnel.steps[activeIndex + 1].id;
         }
     }
 
     activatePreviousStep() {
         const activeIndex = this.getActiveStepIndex();
         if (activeIndex > 0) {
-            this.activeStep = this.funnel.steps[activeIndex - 1].id;
+            this.activeStepId = this.funnel.steps[activeIndex - 1].id;
         }
+    }
+
+    getChecksum() {
+        return createObjectHash(this.toDto());
     }
 }

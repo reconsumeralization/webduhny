@@ -4,9 +4,9 @@ import { getRandomId } from "./getRandomId";
 import { FunnelStepModelDto } from "./models/FunnelStepModel";
 
 export const createContainerElement = () => {
-    const initialStep: FunnelStepModelDto = {
+    const initialStepData: FunnelStepModelDto = {
         id: getRandomId(),
-        title: "Step 1"
+        title: "New step"
     };
 
     return {
@@ -15,7 +15,7 @@ export const createContainerElement = () => {
 
         // We are immediately creating a grid element inside our new page element.
         // This was users can start adding content to the grid right away.
-        elements: [createStepElement(initialStep)],
-        data: { settings: {}, fields: [], steps: [initialStep] }
+        elements: [createStepElement(initialStepData)],
+        data: { settings: {}, fields: [], steps: [initialStepData] }
     };
 };

@@ -1,5 +1,6 @@
 import { AbstractValidator, FieldValidatorDto } from "./validators/AbstractValidator";
 import { validatorFromDto } from "./validators/validatorFactory";
+import {createObjectHash} from "../createObjectHash";
 
 export interface FunnelFieldDefinitionModelDto<TExtra = any> {
     id: string;
@@ -60,12 +61,16 @@ export class FunnelFieldDefinitionModel {
         this.extra = dto.extra ?? this.extra;
     }
 
-    static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
-        // Could not import the module directly because of circular dependency.
-        return require('./fields/fieldFactory').fieldFromDto(dto);
+    getChecksum():string {
+        return createObjectHash(this.toDto());
     }
 
     clone() {
         return FunnelFieldDefinitionModel.fromDto(this.toDto());
+    }
+
+    static fromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
+        // Could not import the module directly because of circular dependency.
+        return require("./fields/fieldFactory").fieldFromDto(dto);
     }
 }

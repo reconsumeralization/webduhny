@@ -36,6 +36,13 @@ export class FunnelModel {
         }
     }
 
+    getChecksum() {
+        return this.steps
+            .map(step => step.getChecksum())
+            .concat(this.fields.map(field => field.getChecksum()))
+            .join("");
+    }
+
     static fromDto(dto: FunnelModelDto): FunnelModel {
         return new FunnelModel({
             fields: dto.fields?.map(s => FunnelFieldDefinitionModel.fromDto(s)),

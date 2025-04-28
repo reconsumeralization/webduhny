@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { IStepElement } from "../../../types";
+import { StepElement } from "../../../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
@@ -42,13 +42,13 @@ const StyledDragIcon = styled(DragIndicatorIcon)`
     cursor: grab;
 `;
 
-interface PagesListItemProps {
-    element: IStepElement;
+interface StepsListItemProps {
+    element: StepElement;
     canRemove?: boolean;
-    onRemove?: () => void;
+    onRemove?: (stepId: string) => void;
 }
 
-export const PagesListItem = ({ element }: PagesListItemProps) => {
+export const StepsListItem = ({ element }: StepsListItemProps) => {
     const {
         open: showTitleInput,
         close: hideEditTitleInput,
@@ -62,7 +62,7 @@ export const PagesListItem = ({ element }: PagesListItemProps) => {
     const updateElement = useUpdateElement();
     const submitTitleForm = (data: { title: string }) => {
         const elementClone = structuredClone(element);
-        elementClone.data.fub.page.title = data.title;
+        elementClone.data.step.title = data.title;
 
         updateElement({
             ...elementClone,
@@ -80,7 +80,7 @@ export const PagesListItem = ({ element }: PagesListItemProps) => {
         transition
     };
 
-    const pageTitle = element.data.fub.page.title || "Page";
+    const pageTitle = element.data.step.title;
 
     return (
         <ListItemStyled ref={setNodeRef} style={style}>
@@ -98,7 +98,6 @@ export const PagesListItem = ({ element }: PagesListItemProps) => {
                                     onKeyDown={e => {
                                         // @ts-expect-error
                                         if (e.key === "Enter") {
-                                            console.log("zovuii");
                                             submit();
                                         }
 

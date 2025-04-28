@@ -1,9 +1,8 @@
-import React, { useContext, useMemo, useSyncExternalStore } from "react";
+import React, { useContext, useEffect, useMemo, useSyncExternalStore } from "react";
 import { useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
-import { observer } from "mobx-react-lite";
 
 interface ContainerContextValue {
     funnelVm: FunnelVm;
@@ -29,32 +28,40 @@ export interface ContainerProviderProps {
     updateElementData?: (data: FunnelModelDto) => void;
 }
 
-export const ContainerProvider = observer(
-    ({ children, updateElementData = () => undefined }: ContainerProviderProps) => {
-        const { getElement } = useRenderer();
-        const element = getElement<FunnelModelDto>();
+export const ContainerProvider = ({
+    children,
+    updateElementData = () => undefined
+}: ContainerProviderProps) => {
+    const { getElement } = useRenderer();
+    const element = getElement<FunnelModelDto>();
 
-        const funnelVm = useMemo(() => {
-            return new FunnelVm(element.data, { onChange: updateElementData });
-        }, [element.data]);
+    // 1. FunnelVm.
+    const funnelVm = useMemo(() => {
+        return new FunnelVm(element.data);
+    }, []);
 
-        const funnelSubmissionVm = useMemo(() => {
-            return new FunnelSubmissionVm(funnelVm.funnel);
-        }, [funnelVm]);
+    useEffect(() => {
+        return funnelVm.subscribe(updateElementData);
+    }, [funnelVm.getChecksum(), updateElementData]);
 
-        useSyncExternalStore(
-            funnelSubmissionVm.subscribe.bind(funnelSubmissionVm),
-            funnelSubmissionVm.getChangedOn.bind(funnelSubmissionVm),
-        );
+    useSyncExternalStore(funnelVm.subscribe.bind(funnelVm), funnelVm.getChecksum.bind(funnelVm));
 
-        console.log('funnelVm', funnelVm)
-        return (
-            <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
-                {children}
-            </ContainerContext.Provider>
-        );
-    }
-);
+    // 2. FunnelSubmissionVm.
+    const funnelSubmissionVm = useMemo(() => {
+        return new FunnelSubmissionVm(funnelVm.funnel);
+    }, [funnelVm.getChecksum()]);
+
+    useSyncExternalStore(
+        funnelSubmissionVm.subscribe.bind(funnelSubmissionVm),
+        funnelSubmissionVm.getChecksum.bind(funnelSubmissionVm)
+    );
+
+    return (
+        <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
+            {children}
+        </ContainerContext.Provider>
+    );
+};
 
 ContainerProvider.displayName = "ContainerProvider";
 

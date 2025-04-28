@@ -63,7 +63,6 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
 
     let additionalSettings: React.ReactNode = null;
     if (fieldSettingsPlugin) {
-        console.log("fieldSettingsPlugin", fieldSettingsPlugin);
         const RendererComponent = fieldSettingsPlugin.renderer;
         additionalSettings = (
             <RendererComponent
