@@ -1,25 +1,19 @@
-import { createSyncHandler, Handler } from "~/sync/handler/Handler";
-import { createMockEventBridgeClient } from "~tests/sync/mocks/eventBridgeClient.js";
-import { createMockSystem } from "~tests/sync/mocks/system.js";
-import { createMockEventBus } from "../mocks/eventBus";
-import { createMockHandlerConverter } from "~tests/sync/mocks/handlerConverter.js";
+import { createSyncHandler, Handler } from "~/sync/handler/Handler.js";
+import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
+import { createMockSystem } from "~tests/mocks/system.js";
+import { createMockEventBus } from "~tests/mocks/eventBus.js";
+import { createMockHandlerConverter } from "~tests/mocks/handlerConverter.js";
 import {
     DeleteCommand,
     GetCommand,
     PutCommand,
     UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
+import { createMockSyncHandler } from "~tests/mocks/syncHandler.js";
 
 describe("Handler", () => {
-    const eventBus = createMockEventBus();
-
     it("should create a sync handler", async () => {
-        const handler = createSyncHandler({
-            client: createMockEventBridgeClient(),
-            system: createMockSystem(),
-            converter: createMockHandlerConverter(),
-            eventBus
-        });
+        const handler = createMockSyncHandler();
 
         expect(handler).toBeInstanceOf(Handler);
     });
@@ -31,13 +25,11 @@ describe("Handler", () => {
             send
         });
 
-        const handler = createSyncHandler({
+        const handler = createMockSyncHandler({
             client,
-            system: createMockSystem(),
             converter: createMockHandlerConverter({
                 commandConverters: "all"
-            }),
-            eventBus
+            })
         });
 
         expect(client.send).not.toHaveBeenCalled();
@@ -95,5 +87,38 @@ describe("Handler", () => {
         expect(handler.commands).toHaveLength(0);
 
         expect(send).toHaveBeenCalledTimes(1);
+    });
+
+    it("should throw an error on flush due to unknown error", async () => {
+        const client = createMockEventBridgeClient({
+            send: async () => {
+                throw new Error("Unspecified error.");
+            }
+        });
+
+        const handler = createMockSyncHandler({
+            client,
+            converter: createMockHandlerConverter({
+                commandConverters: "all"
+            })
+        });
+
+        handler.add(
+            new PutCommand({
+                TableName: "test",
+                Item: {
+                    PK: "pk1",
+                    SK: "sk1"
+                }
+            })
+        );
+
+        const errorFn = jest.fn();
+
+        console.error = errorFn;
+
+        await handler.flush();
+
+        expect(errorFn).toHaveBeenCalledWith("Unspecified error.");
     });
 });

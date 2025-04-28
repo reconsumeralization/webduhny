@@ -1,9 +1,9 @@
 import { createHandler } from "~/sync/createHandler";
-import { createMockSystem } from "~tests/sync/mocks/system.js";
-import { createMockManifest } from "~tests/sync/mocks/manifest.js";
+import { createMockSystem } from "~tests/mocks/system.js";
+import { createMockManifest } from "~tests/mocks/manifest.js";
 import { Handler } from "~/sync/handler/Handler.js";
 import { HandlerConverter } from "~/sync/handler/HandlerConverter.js";
-import { createMockEventBridgeClient } from "~tests/sync/mocks/eventBridgeClient.js";
+import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
 import {
     BatchGetCommand,
     BatchWriteCommand,

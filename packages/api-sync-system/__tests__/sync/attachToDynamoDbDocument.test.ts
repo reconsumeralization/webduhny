@@ -1,9 +1,9 @@
 import { attachToDynamoDbDocument } from "~/sync/attachToDynamoDbDocument.js";
-import { createHandler } from "~/sync/createHandler";
-import { createMockSystem } from "./mocks/system";
-import { createMockManifest } from "./mocks/manifest";
-import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/getDocumentClient";
-import { createMockEventBridgeClient } from "~tests/sync/mocks/eventBridgeClient.js";
+import { createHandler } from "~/sync/createHandler.js";
+import { createMockSystem } from "~tests/mocks/system.js";
+import { createMockManifest } from "~tests/mocks/manifest.js";
+import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/getDocumentClient.js";
+import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
 
 describe("attachToDynamoDbDocument", () => {
     it("should not have attached decorator", async () => {
