@@ -14,7 +14,7 @@ interface ServiceManifest {
 type Manifest = GenericRecord<string>;
 
 class ServiceManifestLoader {
-    private client: DynamoDBDocument | undefined;
+    private client: Pick<DynamoDBDocument, "send"> | undefined;
     private manifest: Manifest | undefined = undefined;
 
     public async load() {
@@ -39,7 +39,7 @@ class ServiceManifestLoader {
         return this.manifest;
     }
 
-    public setDocumentClient(client: DynamoDBDocument) {
+    public setDocumentClient(client: Pick<DynamoDBDocument, "send">) {
         this.client = client;
     }
 
@@ -72,7 +72,7 @@ class ServiceManifestLoader {
 const serviceManifestLoader = new ServiceManifestLoader();
 
 export class ServiceDiscovery {
-    static setDocumentClient(client: DynamoDBDocument): void {
+    static setDocumentClient(client: Pick<DynamoDBDocument, "send">): void {
         serviceManifestLoader.setDocumentClient(client);
     }
 

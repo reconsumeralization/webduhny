@@ -12,7 +12,7 @@ const validateManifest = zod.object({
 });
 
 export interface IGetManifestParams {
-    documentClient: DynamoDBDocument;
+    documentClient: Pick<DynamoDBDocument, "send">;
 }
 
 export const getManifest = async (params: IGetManifestParams) => {

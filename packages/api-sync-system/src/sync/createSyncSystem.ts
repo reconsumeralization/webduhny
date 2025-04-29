@@ -6,7 +6,7 @@ import type { PossiblyUndefinedProperties } from "@webiny/api/types";
 import { createSyncSystemHandlerOnRequestPlugin } from "./requestPlugin.js";
 
 export interface ICreateSyncSystemParams {
-    documentClient: DynamoDBDocument;
+    documentClient: Pick<DynamoDBDocument, "send">;
     system: PossiblyUndefinedProperties<Omit<ISystem, "name">>;
 }
 

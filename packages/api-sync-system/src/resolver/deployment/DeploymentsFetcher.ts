@@ -3,7 +3,7 @@ import type {
     DynamoDBDocument,
     QueryCommandOutput
 } from "@webiny/aws-sdk/client-dynamodb/index.js";
-import { QueryCommand } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import { QueryCommand, unmarshall } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { WebinyError } from "@webiny/error";
 import { createDeployments } from "./Deployments.js";
 import zod from "zod";
@@ -28,12 +28,12 @@ const deploymentsValidation = zod.array(
 );
 
 export interface IDeploymentsFetcherParams {
-    client: DynamoDBDocument;
+    client: Pick<DynamoDBDocument, "send">;
     table: string;
 }
 
 export class DeploymentsFetcher implements IDeploymentsFetcher {
-    private readonly client: DynamoDBDocument;
+    private readonly client: Pick<DynamoDBDocument, "send">;
     private deployments: IDeployments | undefined;
     private readonly table: string;
 
@@ -55,9 +55,9 @@ export class DeploymentsFetcher implements IDeploymentsFetcher {
         const cmd = new QueryCommand({
             TableName: this.table,
             IndexName: "GSI1",
-            KeyConditionExpression: "GSI1_PK = :gsiPk",
+            KeyConditionExpression: `GSI1_PK = :pk`,
             ExpressionAttributeValues: {
-                ":gsiPk": {
+                ":pk": {
                     S: "DEPLOYMENTS"
                 }
             }
@@ -74,8 +74,11 @@ export class DeploymentsFetcher implements IDeploymentsFetcher {
     }
 
     private output(output: QueryCommandOutput): IDeployment[] {
-        const items = output.Items;
-        if (!items?.length) {
+        const items = (output.Items || []).map(item => {
+            const result = unmarshall(item);
+            return result.item;
+        });
+        if (items.length === 0) {
             throw new WebinyError({
                 message: "No deployments found which need to be synced.",
                 code: "NO_DEPLOYMENTS",

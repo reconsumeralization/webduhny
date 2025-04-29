@@ -1,2 +1,2 @@
 export * from "./sync/createSyncSystem.js";
-export * from "./resolver";
+export * from "./resolver/createResolverHandler.js";

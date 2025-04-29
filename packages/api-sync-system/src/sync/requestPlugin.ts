@@ -9,7 +9,7 @@ import type { EventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index
 import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
 
 export interface ICreateSyncSystemHandlerOnRequestPluginParams {
-    documentClient: DynamoDBDocument;
+    documentClient: Pick<DynamoDBDocument, "send">;
     system: ISystem;
     client?: EventBridgeClient;
     commandConverters?: ICommandConverter[];
