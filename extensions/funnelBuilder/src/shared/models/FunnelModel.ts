@@ -3,21 +3,26 @@ import {
     FunnelFieldDefinitionModel,
     FunnelFieldDefinitionModelDto
 } from "./FunnelFieldDefinitionModel";
+import { FunnelConditionRuleModel, FunnelConditionRuleModelDto } from "./FunnelConditionRuleModel";
 
 export interface FunnelModelDto {
     steps: FunnelStepModelDto[];
     fields: FunnelFieldDefinitionModelDto[];
+    conditionRules: FunnelConditionRuleModelDto[];
 }
 
 export class FunnelModel {
     fields: FunnelFieldDefinitionModel[] = [];
     steps: FunnelStepModel[] = [];
+    conditionRules: FunnelConditionRuleModel[];
 
-    constructor(funnelDto?: FunnelModelDto) {
-        this.fields = funnelDto?.fields?.map(f => FunnelFieldDefinitionModel.fromDto(f)) || [];
-        this.steps = funnelDto?.steps?.map(s => FunnelStepModel.fromDto(s)) || [
-            new FunnelStepModel()
-        ];
+    constructor(dto?: FunnelModelDto) {
+        this.fields = dto?.fields?.map(f => FunnelFieldDefinitionModel.fromDto(f)) || [];
+        this.steps = dto?.steps?.map(s => FunnelStepModel.fromDto(s)) || [new FunnelStepModel()];
+
+        this.conditionRules = dto?.conditionRules
+            ? dto.conditionRules.map(dto => FunnelConditionRuleModel.fromDto(dto))
+            : [];
     }
 
     // Steps. 👇
@@ -53,14 +58,16 @@ export class FunnelModel {
     toDto(): FunnelModelDto {
         return {
             steps: this.steps.map(s => s.toDto()),
-            fields: this.fields.map(f => f.toDto())
+            fields: this.fields.map(f => f.toDto()),
+            conditionRules: this.conditionRules.map(rule => rule.toDto())
         };
     }
 
     static fromDto(dto: FunnelModelDto): FunnelModel {
         return new FunnelModel({
             fields: dto.fields?.map(s => FunnelFieldDefinitionModel.fromDto(s)),
-            steps: dto.steps?.map(s => FunnelStepModel.fromDto(s))
+            steps: dto.steps?.map(s => FunnelStepModel.fromDto(s)),
+            conditionRules: dto.conditionRules?.map(s => FunnelConditionRuleModel.fromDto(s))
         });
     }
 }

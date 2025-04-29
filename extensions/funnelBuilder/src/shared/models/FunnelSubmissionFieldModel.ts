@@ -48,6 +48,13 @@ export class FunnelSubmissionFieldModel {
         return this.value;
     }
 
+    get disabled() {
+
+        return false;
+
+
+    }
+
     validate(): FunnelEntryFieldValidationResult {
         const validators = this.definition.validators;
 

@@ -1,11 +1,14 @@
 import { FunnelModel } from "../FunnelModel";
 import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
 
-describe("Funnel Entries", () => {
+describe("Funnel Submissions", () => {
     test("test", async () => {
         const funnel = new FunnelModel({
             steps: [
-                { id: "step1", title: "Step 1" },
+                {
+                    id: "step1",
+                    title: "Step 1",
+                },
                 { id: "step2", title: "Step 2" }
             ],
             fields: [
@@ -57,8 +60,45 @@ describe("Funnel Entries", () => {
                     type: "text",
                     label: "Email",
                     helpText: "Enter your email address",
-                    validators: [{ type: "required" }, /*{ type: "email" }*/],
+                    validators: [
+                        { type: "required" },
+                        {
+                            type: "pattern",
+                            params: {
+                                errorMessage: "Value must be a valid email address.",
+                                extra: {
+                                    preset: "email"
+                                }
+                            }
+                        }
+                    ],
                     extra: {}
+                }
+            ],
+            conditionRules: [
+                {
+                    conditionGroup: {
+                        operator: "and",
+                        items: [
+                            {
+                                sourceFieldId: "firstName",
+                                operator: "eq",
+                                value: ""
+                            }
+                        ]
+                    },
+                    actions: [
+                        {
+                            type: "disableField",
+                            target: {
+                                type: "field",
+                                id: "lastName"
+                            },
+                            params: {
+                                fieldId: "lastName"
+                            }
+                        }
+                    ]
                 }
             ]
         });

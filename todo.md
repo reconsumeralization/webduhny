@@ -27,6 +27,8 @@
 - missing form comp in hiearchy - ensure fields can only be dropped within container
 - prevent deletion of grid in step el
 - back btn
+- fieldIds must be unique across the whole funnel
+- input type
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

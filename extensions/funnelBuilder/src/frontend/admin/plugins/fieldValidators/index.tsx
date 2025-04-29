@@ -4,6 +4,7 @@ import { MinLengthFieldValidatorPlugin } from "./MinLengthFieldValidatorPlugin";
 import { MaxLengthFieldValidatorPlugin } from "./MaxLengthFieldValidatorPlugin";
 import { LteFieldValidatorPlugin } from "./LteLengthFieldValidatorPlugin";
 import { GteFieldValidatorPlugin } from "./GteLengthFieldValidatorPlugin";
+import { PatternFieldValidatorPlugin } from "./PatternFieldValidatorPlugin";
 
 export const FieldValidatorPlugins = () => {
     return (
@@ -13,6 +14,7 @@ export const FieldValidatorPlugins = () => {
             <MaxLengthFieldValidatorPlugin />
             <LteFieldValidatorPlugin />
             <GteFieldValidatorPlugin />
+            <PatternFieldValidatorPlugin />
         </>
     );
 };

@@ -52,6 +52,7 @@ export const TextFieldRenderer = createFieldRenderer(props => {
                 <FieldLabel field={field} />
                 {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
                 <StyledInput
+                    disabled={props.field.disabled}
                     onBlur={onBlur}
                     onChange={e => onChange(e.target.value)}
                     value={value || ""}

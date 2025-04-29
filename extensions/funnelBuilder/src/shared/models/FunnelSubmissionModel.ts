@@ -189,7 +189,15 @@ export class FunnelSubmissionModel {
         }
     }
 
+    // Other methods. 👇
     getChecksum() {
         return createObjectHash(this.toDto());
+    }
+
+    evaluateConditionRulesFieldsForActiveStep() {
+        // Evaluate condition rules for the active step fields.
+        const activeStepFields = this.getFieldsForActiveStep();
+
+
     }
 }

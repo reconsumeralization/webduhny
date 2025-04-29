@@ -114,7 +114,7 @@ export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
                                                 <SettingsRendererComponent
                                                     field={field}
                                                     setMessage={message =>
-                                                        setValue("message", message)
+                                                        setValue("params.errorMessage", message)
                                                     }
                                                 />
                                             )}

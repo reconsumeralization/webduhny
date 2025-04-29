@@ -1,5 +1,5 @@
 import { getRandomId } from "../getRandomId";
-import {createObjectHash} from "../createObjectHash";
+import { createObjectHash } from "../createObjectHash";
 
 export interface FunnelStepModelDto {
     id: string;
@@ -10,19 +10,20 @@ export class FunnelStepModel {
     id: string;
     title: string;
 
-    constructor(init?: Partial<FunnelStepModel>) {
-        this.id = init?.id ?? getRandomId();
-        this.title = init?.title ?? "Step";
+    constructor(dto?: FunnelStepModelDto) {
+        this.id = dto?.id ?? getRandomId();
+        this.title = dto?.title ?? "Step";
+
     }
 
     toDto(): FunnelStepModelDto {
         return {
             id: this.id,
-            title: this.title
+            title: this.title,
         };
     }
 
-    getChecksum():string {
+    getChecksum(): string {
         return createObjectHash(this.toDto());
     }
 
