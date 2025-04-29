@@ -23,10 +23,28 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
         const original = await this.getOperation({ id });
         const originalFlp = await this.folderLevelPermissions.getFolderLevelPermission(id);
 
+        // Let's ensure current identity's permission allows the update operation.
         await this.folderLevelPermissions.ensureCanAccessFolder({
             permissions: originalFlp.permissions,
             rwd: "w"
         });
+
+        const permissions = await this.folderLevelPermissions.getDefaultPermissions(
+            params.permissions ?? []
+        );
+
+        // Check if the user still has access to the folder with the provided permissions.
+        const stillHasAccess = await this.folderLevelPermissions.canAccessFolder({
+            permissions,
+            rwd: "w"
+        });
+
+        if (!stillHasAccess) {
+            throw new WError(
+                `Cannot continue because you would loose access to this folder.`,
+                "CANNOT_LOOSE_FOLDER_ACCESS"
+            );
+        }
 
         // Validate data.
         if (Array.isArray(params.permissions)) {
@@ -72,14 +90,9 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
         const folder = await this.decoretee.execute(id, params);
 
-        // Let's set default permissions based on the current user.
-        const permissionsWithDefaults = await this.folderLevelPermissions.getDefaultPermissions(
-            folder?.permissions ?? []
-        );
-
         return {
             ...folder,
-            permissions: permissionsWithDefaults
+            permissions
         };
     }
 }

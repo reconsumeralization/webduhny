@@ -17,13 +17,13 @@ class UpdateFlpTask {
                     /* webpackChunkName: "UpdateFlp" */ "../useCases/UpdateFlp"
                 );
 
-                const useCase = new UpdateFlp(context);
+                const useCase = new UpdateFlp(context, input.updated);
 
                 try {
                     if (isAborted()) {
                         return response.aborted();
                     } else if (isCloseToTimeout()) {
-                        return response.continue(input);
+                        return response.continue({ ...input, updated: useCase.getUpdated() });
                     }
 
                     await useCase.execute(input.folder, input.original);

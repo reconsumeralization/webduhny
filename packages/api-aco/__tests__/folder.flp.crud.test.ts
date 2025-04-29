@@ -47,7 +47,7 @@ describe("Folder Level Permissions", () => {
             parentId: folderA.id,
             permissions: [
                 {
-                    inheritedFrom: `parent:${folderA.id}`,
+                    inheritedFrom: "role:full-access",
                     level: "owner",
                     target: "admin:12345678"
                 }
@@ -103,7 +103,7 @@ describe("Folder Level Permissions", () => {
             parentId: folderA.id,
             permissions: [
                 {
-                    inheritedFrom: `parent:${folderA.id}`,
+                    inheritedFrom: "role:full-access",
                     level: "owner",
                     target: "admin:12345678"
                 }
@@ -162,7 +162,7 @@ describe("Folder Level Permissions", () => {
             parentId: folderA.id,
             permissions: [
                 {
-                    inheritedFrom: `parent:${folderA.id}`,
+                    inheritedFrom: "role:full-access",
                     level: "owner",
                     target: "admin:12345678"
                 }
@@ -220,7 +220,7 @@ describe("Folder Level Permissions", () => {
                 parentId: folderA.id,
                 permissions: [
                     {
-                        inheritedFrom: `parent:${folderA.id}`,
+                        inheritedFrom: "role:full-access",
                         level: "owner",
                         target: "admin:12345678"
                     }
@@ -392,7 +392,7 @@ describe("Folder Level Permissions", () => {
                 parentId: folderA.id,
                 permissions: [
                     {
-                        inheritedFrom: `parent:${folderA.id}`,
+                        inheritedFrom: "role:full-access",
                         level: "owner",
                         target: "admin:12345678"
                     },
@@ -407,7 +407,7 @@ describe("Folder Level Permissions", () => {
                 parentId: folderB.id,
                 permissions: [
                     {
-                        inheritedFrom: `parent:${folderB.id}`,
+                        inheritedFrom: "role:full-access",
                         level: "owner",
                         target: "admin:12345678"
                     },
@@ -424,7 +424,7 @@ describe("Folder Level Permissions", () => {
                 parentId: folderC.id,
                 permissions: [
                     {
-                        inheritedFrom: `parent:${folderC.id}`,
+                        inheritedFrom: "role:full-access",
                         level: "owner",
                         target: "admin:12345678"
                     },
@@ -503,7 +503,7 @@ describe("Folder Level Permissions", () => {
                 parentId: folderA.id,
                 permissions: [
                     {
-                        inheritedFrom: `parent:${folderA.id}`,
+                        inheritedFrom: "role:full-access",
                         level: "owner",
                         target: `admin:${identityA.id}`
                     }
@@ -540,7 +540,7 @@ describe("Folder Level Permissions", () => {
                     {
                         target: "admin:2",
                         level: "public",
-                        inheritedFrom: `parent:${folderA.id}`
+                        inheritedFrom: "public"
                     }
                 ],
                 hasNonInheritedPermissions: false,

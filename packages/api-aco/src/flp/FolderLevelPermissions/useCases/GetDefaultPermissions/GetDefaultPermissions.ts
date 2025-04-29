@@ -29,7 +29,11 @@ export class GetDefaultPermissions implements IGetDefaultPermissions {
                     level: "owner" as FolderAccessLevel,
                     inheritedFrom: "role:full-access"
                 },
-                ...permissions
+                /**
+                 * Remove any permissions related to the full access user,
+                 * as these are always superseded by the "owner" permission defined above.
+                 */
+                ...permissions.filter(p => p.target !== `admin:${identity.id}`)
             ];
         }
 

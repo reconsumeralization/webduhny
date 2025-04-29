@@ -7,8 +7,9 @@ export class UpdateFlp {
     private context: AcoContext;
     private updated: Set<string> = new Set();
 
-    constructor(context: AcoContext) {
+    constructor(context: AcoContext, updated?: string[]) {
         this.context = context;
+        this.updated = new Set(updated);
     }
 
     async execute(folder: Folder, original: Folder) {
@@ -30,34 +31,10 @@ export class UpdateFlp {
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
 
-            const updateRecursive = async (
-                targetFlp: FolderLevelPermission,
-                parentFlp: FolderLevelPermission
-            ) => {
-                if (this.updated.has(targetFlp.id)) {
-                    return;
-                }
-
-                const updatedTargetFlp = await this.context.aco.flp.update(targetFlp.id, {
-                    path: this.getPath(targetFlp.slug, parentFlp.path),
-                    permissions: Permissions.create(targetFlp.permissions, parentFlp)
-                });
-
-                this.updated.add(targetFlp.id);
-
-                const children = await this.getDirectChildren(targetFlp);
-
-                for (const child of children) {
-                    await updateRecursive(child, updatedTargetFlp);
-                }
-
-                return;
-            };
-
-            const children = await this.getDirectChildren(flp);
+            const children = await this.listDirectChildren(flp);
 
             for (const child of children) {
-                await updateRecursive(child, updatedFlp);
+                await this.executeRecursive(child, updatedFlp);
             }
         } catch (error) {
             throw WebinyError.from(error, {
@@ -67,17 +44,53 @@ export class UpdateFlp {
         }
     }
 
-    private async getFlp(id: string) {
-        return await this.context.aco.flp.get(id);
+    public getUpdated() {
+        return Array.from(this.updated);
     }
 
-    private async getDirectChildren(flp: FolderLevelPermission) {
+    private setUpdated(id: string) {
+        this.updated.add(id);
+    }
+
+    private isUpdated(id: string) {
+        return this.updated.has(id);
+    }
+
+    private async executeRecursive(
+        targetFlp: FolderLevelPermission,
+        parentFlp: FolderLevelPermission
+    ) {
+        if (this.isUpdated(targetFlp.id)) {
+            return;
+        }
+
+        const updatedTargetFlp = await this.context.aco.flp.update(targetFlp.id, {
+            path: this.getPath(targetFlp.slug, parentFlp.path),
+            permissions: Permissions.create(targetFlp.permissions, parentFlp)
+        });
+
+        this.setUpdated(targetFlp.id);
+
+        const children = await this.listDirectChildren(targetFlp);
+
+        for (const child of children) {
+            await this.executeRecursive(child, updatedTargetFlp);
+        }
+
+        return;
+    }
+
+    private async listDirectChildren(flp: FolderLevelPermission) {
         return await this.context.aco.flp.list({
             where: {
                 type: flp.type,
                 parentId: flp.id
             }
         });
+    }
+
+    private async getFlp(id: string) {
+        return await this.context.aco.flp.get(id);
     }
 
     private getPath(slug: string, parentPath?: string) {
