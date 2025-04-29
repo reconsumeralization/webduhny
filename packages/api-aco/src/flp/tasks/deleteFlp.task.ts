@@ -1,22 +1,8 @@
-import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
-import WError from "@webiny/error";
 import { createPrivateTaskDefinition } from "@webiny/tasks";
-import { createFlpOperations } from "~/flp/flp.so";
 import { DELETE_FLP_TASK_ID } from "~/flp/tasks";
-import {
-    type AcoContext,
-    type AcoFolderLevelPermissionsStorageOperations,
-    type IDeleteFlpTaskInput,
-    type IDeleteFlpTaskParams
-} from "~/types";
+import { type AcoContext, type IDeleteFlpTaskInput, type IDeleteFlpTaskParams } from "~/types";
 
 class DeleteFlpTask {
-    private operations: AcoFolderLevelPermissionsStorageOperations;
-
-    constructor(operations: AcoFolderLevelPermissionsStorageOperations) {
-        this.operations = operations;
-    }
-
     public init = () => {
         return createPrivateTaskDefinition<AcoContext, IDeleteFlpTaskInput>({
             id: DELETE_FLP_TASK_ID,
@@ -27,6 +13,12 @@ class DeleteFlpTask {
             run: async (params: IDeleteFlpTaskParams) => {
                 const { response, isAborted, input, context, isCloseToTimeout } = params;
 
+                const { DeleteFlp } = await import(
+                    /* webpackChunkName: "DeleteFlp" */ "../useCases/DeleteFlp"
+                );
+
+                const useCase = new DeleteFlp(context);
+
                 try {
                     if (isAborted()) {
                         return response.aborted();
@@ -34,34 +26,7 @@ class DeleteFlpTask {
                         return response.continue(input);
                     }
 
-                    if (!input.folder) {
-                        throw new WError(
-                            "Missing `folder` from the task input, I can't delete the record from the FLP catalog.",
-                            "ERROR_DELETE_FLP_TASK_FOLDER_NOT_PROVIDED",
-                            { input }
-                        );
-                    }
-
-                    const flp = await this.operations.get({
-                        where: {
-                            tenant: this.getTenantId(context),
-                            locale: this.getLocaleCode(context),
-                            type: params.input.folder.type,
-                            id: params.input.folder.type
-                        }
-                    });
-
-                    if (!flp) {
-                        throw new WError(
-                            "I can't find the FLP for the provided folder, I can't delete it from the FLP catalog.",
-                            "ERROR_DELETE_FLP_TASK_FLP_NOT_FOUND",
-                            { input }
-                        );
-                    }
-
-                    await this.operations.delete({
-                        flp
-                    });
+                    await useCase.execute(input.folder);
 
                     return response.done("Task done: FLP record deleted.");
                 } catch (error) {
@@ -70,33 +35,9 @@ class DeleteFlpTask {
             }
         });
     };
-
-    private getTenantId(context: AcoContext) {
-        const tenant = context.tenancy.getCurrentTenant();
-        if (!tenant) {
-            throw new WError("Missing tenant in context.", "ERROR_DELETE_FLP_TASK_MISSING_TENANT");
-        }
-        return tenant.id;
-    }
-
-    private getLocaleCode(context: AcoContext) {
-        const locale = context.i18n.getContentLocale();
-        if (!locale) {
-            throw new WError(
-                "Missing content locale in context.",
-                "ERROR_DELETE_FLP_TASK_MISSING_LOCALE"
-            );
-        }
-        return locale.code;
-    }
 }
 
-interface FlpTasksParams {
-    documentClient: DynamoDBDocument;
-}
-
-export const deleteFlpTask = (params: FlpTasksParams) => {
-    const operations = createFlpOperations(params);
-    const task = new DeleteFlpTask(operations);
+export const deleteFlpTask = () => {
+    const task = new DeleteFlpTask();
     return task.init();
 };

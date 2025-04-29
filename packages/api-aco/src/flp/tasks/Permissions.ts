@@ -4,7 +4,7 @@ import type {
 } from "~/flp/flp.types";
 
 export class Permissions {
-    public create(
+    public static create(
         permissions?: FolderPermission[],
         parentFlp?: IFolderLevelPermission | null
     ): FolderPermission[] {

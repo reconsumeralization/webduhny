@@ -15,7 +15,7 @@ export interface CreateAcoParams {
 }
 
 export const createAco = (params: CreateAcoParams) => {
-    return [createAcoContext(params), ...createAcoGraphQL(), ...createAcoTasks(params)];
+    return [createAcoContext(params), ...createAcoGraphQL(), ...createAcoTasks()];
 };
 
 export * from "./folder/createFolderModelModifier";

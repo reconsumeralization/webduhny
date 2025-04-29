@@ -169,13 +169,9 @@ export class FolderLevelPermissions {
         );
     }
 
-    public async getFolderLevelPermission(type: string, id: string) {
+    public async getFolderLevelPermission(id: string) {
         const getFolderLevelPermissionUseCase = new GetFolderPermission(this.crud.get);
-        const flp = await getFolderLevelPermissionUseCase.execute(type, id);
-
-        if (!flp) {
-            return null;
-        }
+        const flp = await getFolderLevelPermissionUseCase.execute(id);
 
         return {
             ...flp,

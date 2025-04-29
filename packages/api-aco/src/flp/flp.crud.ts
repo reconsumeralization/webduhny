@@ -1,6 +1,18 @@
-import type { AcoFolderLevelPermissionsCrud, AcoStorageOperations } from "~/types";
 import { I18NLocale } from "@webiny/api-i18n/types";
 import { Tenant } from "@webiny/api-tenancy/types";
+import { createTopic } from "@webiny/pubsub";
+import {
+    type AcoFolderLevelPermissionsCrud,
+    type AcoStorageOperations,
+    type CreateFlpParams,
+    type OnFlpAfterCreateTopicParams,
+    type OnFlpAfterDeleteTopicParams,
+    type OnFlpAfterUpdateTopicParams,
+    type OnFlpBeforeCreateTopicParams,
+    type OnFlpBeforeDeleteTopicParams,
+    type OnFlpBeforeUpdateTopicParams,
+    type UpdateFlpParams
+} from "~/types";
 
 export interface CreateFlpCrudMethodsParams {
     getLocale: () => I18NLocale;
@@ -13,14 +25,54 @@ export const createFlpCrudMethods = ({
     getTenant,
     getLocale
 }: CreateFlpCrudMethodsParams): AcoFolderLevelPermissionsCrud => {
+    // create
+    const onFlpBeforeCreate = createTopic<OnFlpBeforeCreateTopicParams>("aco.onFlpBeforeCreate");
+    const onFlpAfterCreate = createTopic<OnFlpAfterCreateTopicParams>("aco.onFlpAfterCreate");
+    // update
+    const onFlpBeforeUpdate = createTopic<OnFlpBeforeUpdateTopicParams>("aco.onFlpBeforeUpdate");
+    const onFlpAfterUpdate = createTopic<OnFlpAfterUpdateTopicParams>("aco.onFlpAfterUpdate");
+    // delete
+    const onFlpBeforeDelete = createTopic<OnFlpBeforeDeleteTopicParams>("aco.onFlpBeforeDelete");
+    const onFlpAfterDelete = createTopic<OnFlpAfterDeleteTopicParams>("aco.onFlpAfterDelete");
+
     return {
-        async get({ where }) {
-            return storageOperations.flp.get({
-                where: { ...where, tenant: getTenant().id, locale: getLocale().code }
+        onFlpBeforeCreate,
+        onFlpAfterCreate,
+        onFlpBeforeUpdate,
+        onFlpAfterUpdate,
+        onFlpBeforeDelete,
+        onFlpAfterDelete,
+        async create(params: CreateFlpParams) {
+            await onFlpBeforeCreate.publish({ input: params });
+            const flp = await storageOperations.flp.create({
+                data: { ...params, tenant: getTenant().id, locale: getLocale().code }
+            });
+            await onFlpAfterCreate.publish({ flp });
+            return flp;
+        },
+        async update(id: string, data: UpdateFlpParams) {
+            const original = await this.get(id);
+            await onFlpBeforeUpdate.publish({ original, input: { id, data } });
+            const flp = await storageOperations.flp.update({ original, data });
+            await onFlpAfterUpdate.publish({ original, input: { id, data }, flp });
+            return flp;
+        },
+        async delete(id: string) {
+            const flp = await this.get(id);
+            await onFlpBeforeDelete.publish({ flp });
+            await storageOperations.flp.delete({ flp });
+            await onFlpAfterDelete.publish({ flp });
+            return true;
+        },
+        async get(id: string) {
+            return await storageOperations.flp.get({
+                id,
+                tenant: getTenant().id,
+                locale: getLocale().code
             });
         },
         async list({ where }) {
-            return storageOperations.flp.list({
+            return await storageOperations.flp.list({
                 where: {
                     ...where,
                     tenant: getTenant().id,

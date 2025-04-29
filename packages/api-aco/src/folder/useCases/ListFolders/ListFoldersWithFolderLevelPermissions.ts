@@ -33,13 +33,8 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
             folders.map(async folder => {
                 if (!this.hasFlp(folder.id)) {
                     const currentFolderFlp =
-                        await this.folderLevelPermissions.getFolderLevelPermission(
-                            folder.type,
-                            folder.id
-                        );
-                    if (currentFolderFlp) {
-                        this.setFlp(currentFolderFlp.id, currentFolderFlp);
-                    }
+                        await this.folderLevelPermissions.getFolderLevelPermission(folder.id);
+                    this.setFlp(currentFolderFlp.id, currentFolderFlp);
                 }
             })
         );

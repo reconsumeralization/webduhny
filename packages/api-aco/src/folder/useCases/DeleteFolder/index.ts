@@ -32,7 +32,6 @@ export const getDeleteFolderUseCases = (params: DeleteFolderUseCasesParams) => {
     if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
         const deleteFolderUseCaseWithFlp = new DeleteFolderWithFolderLevelPermissions(
             params.folderLevelPermissions,
-            params.getOperation,
             deleteFolderUseCase
         );
 

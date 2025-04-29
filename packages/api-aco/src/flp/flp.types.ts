@@ -1,3 +1,4 @@
+import { Topic } from "@webiny/pubsub/types";
 import { ITaskRunParams } from "@webiny/tasks/types";
 import { type AcoContext, type Folder } from "~/types";
 
@@ -21,7 +22,7 @@ export interface FolderLevelPermission {
 }
 
 /********
- * Storage operations
+ * CRUD operations
  *******/
 
 export interface ListFlpsParams {
@@ -32,6 +33,64 @@ export interface ListFlpsParams {
     };
 }
 
+export type CreateFlpParams = Pick<
+    FolderLevelPermission,
+    "id" | "type" | "permissions" | "path" | "parentId" | "slug"
+>;
+
+export interface UpdateFlpParams {
+    parentId?: string;
+    slug?: string;
+    path?: string;
+    permissions?: FolderPermission[];
+    type?: string;
+}
+
+export interface OnFlpBeforeCreateTopicParams {
+    input: CreateFlpParams;
+}
+
+export interface OnFlpAfterCreateTopicParams {
+    flp: FolderLevelPermission;
+}
+
+export interface OnFlpBeforeUpdateTopicParams {
+    original: FolderLevelPermission;
+    input: Record<string, any>;
+}
+
+export interface OnFlpAfterUpdateTopicParams {
+    original: FolderLevelPermission;
+    flp: FolderLevelPermission;
+    input: Record<string, any>;
+}
+
+export interface OnFlpBeforeDeleteTopicParams {
+    flp: FolderLevelPermission;
+}
+
+export interface OnFlpAfterDeleteTopicParams {
+    flp: FolderLevelPermission;
+}
+
+export interface AcoFolderLevelPermissionsCrud {
+    list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
+    get(id: string): Promise<FolderLevelPermission>;
+    create(params: CreateFlpParams): Promise<FolderLevelPermission>;
+    update(id: string, data: UpdateFlpParams): Promise<FolderLevelPermission>;
+    delete(id: string): Promise<boolean>;
+    onFlpBeforeCreate: Topic<OnFlpBeforeCreateTopicParams>;
+    onFlpAfterCreate: Topic<OnFlpAfterCreateTopicParams>;
+    onFlpBeforeUpdate: Topic<OnFlpBeforeUpdateTopicParams>;
+    onFlpAfterUpdate: Topic<OnFlpAfterUpdateTopicParams>;
+    onFlpBeforeDelete: Topic<OnFlpBeforeDeleteTopicParams>;
+    onFlpAfterDelete: Topic<OnFlpAfterDeleteTopicParams>;
+}
+
+/********
+ * Storage operations
+ *******/
+
 export interface StorageOperationsListFlpsParams {
     where: ListFlpsParams["where"] & {
         tenant: string;
@@ -39,62 +98,35 @@ export interface StorageOperationsListFlpsParams {
     };
 }
 
-export interface GetFlpWhere {
+export interface StorageOperationsGetFlpParams {
+    tenant: string;
+    locale: string;
     id: string;
-    type: string;
-}
-
-export interface GetFlpParams {
-    where: GetFlpWhere;
-}
-
-export interface StorageOperationsGetFlpParams extends GetFlpParams {
-    where: GetFlpParams["where"] & {
-        tenant: string;
-        locale: string;
-        type: string;
-    };
 }
 
 export type StorageOperationsCreateFlpParams = {
-    /**
-     * The flp data.
-     */
     data: FolderLevelPermission;
 };
 
 export type StorageOperationsUpdateFlpParams = {
-    /**
-     * The flp data to be updated.
-     */
-    original?: FolderLevelPermission;
-    /**
-     * The flp data with the updated fields.
-     */
-    data: FolderLevelPermission;
+    original: FolderLevelPermission;
+    data: UpdateFlpParams;
 };
 
-export interface DeleteFlpParams {
+export type StorageOperationsDeleteFlpParams = {
     flp: FolderLevelPermission;
-}
-
-export type StorageOperationsDeleteFlpParams = DeleteFlpParams;
+};
 
 export interface AcoFolderLevelPermissionsStorageOperations {
     list(params: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]>;
-    get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null>;
+    get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission>;
     create(params: StorageOperationsCreateFlpParams): Promise<FolderLevelPermission>;
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
     delete(params: StorageOperationsDeleteFlpParams): Promise<void>;
 }
 
-export interface AcoFolderLevelPermissionsCrud {
-    list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
-    get(where: GetFlpParams): Promise<FolderLevelPermission | null>;
-}
-
 /********
- *  BG Tasks
+ *  Background Tasks
  *******/
 
 export interface ICreateFlpTaskInput {

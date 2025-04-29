@@ -1,40 +1,18 @@
-import WError from "@webiny/error";
-import type { AcoFolderStorageOperations, DeleteFolderParams } from "~/folder/folder.types";
-import type { IDeleteFolder } from "./IDeleteFolder";
 import { FolderLevelPermissions } from "~/flp";
+import type { IDeleteFolder } from "./IDeleteFolder";
+import type { DeleteFolderParams } from "~/folder/folder.types";
 
 export class DeleteFolderWithFolderLevelPermissions implements IDeleteFolder {
     private folderLevelPermissions: FolderLevelPermissions;
-    private readonly getOperation: AcoFolderStorageOperations["getFolder"];
     private readonly decoretee: IDeleteFolder;
 
-    constructor(
-        folderLevelPermissions: FolderLevelPermissions,
-        getOperation: AcoFolderStorageOperations["getFolder"],
-        decoretee: IDeleteFolder
-    ) {
+    constructor(folderLevelPermissions: FolderLevelPermissions, decoretee: IDeleteFolder) {
         this.folderLevelPermissions = folderLevelPermissions;
-        this.getOperation = getOperation;
         this.decoretee = decoretee;
     }
 
     async execute(params: DeleteFolderParams) {
-        const folder = await this.getOperation({ id: params.id });
-        const flp = await this.folderLevelPermissions.getFolderLevelPermission(
-            folder.type,
-            folder.id
-        );
-
-        if (!flp) {
-            throw new WError(
-                "Failed to retrieve folder level permissions (FLP) for the specified folder.",
-                "DELETE_FOLDER_WITH_FLP_ERROR",
-                {
-                    params,
-                    folder
-                }
-            );
-        }
+        const flp = await this.folderLevelPermissions.getFolderLevelPermission(params.id);
 
         await this.folderLevelPermissions.ensureCanAccessFolder({
             permissions: flp.permissions,

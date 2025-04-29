@@ -15,7 +15,10 @@ import type {
 } from "~/record/record.types";
 import type { AcoFolderCrud, AcoFolderStorageOperations } from "~/folder/folder.types";
 import type { AcoFilterCrud, AcoFilterStorageOperations } from "~/filter/filter.types";
-import type { AcoFolderLevelPermissionsStorageOperations } from "~/flp/flp.types";
+import type {
+    AcoFolderLevelPermissionsCrud,
+    AcoFolderLevelPermissionsStorageOperations
+} from "~/flp/flp.types";
 import { FolderLevelPermissions } from "~/flp";
 
 export * from "./filter/filter.types";
@@ -57,6 +60,7 @@ export interface AdvancedContentOrganisation {
     folder: AcoFolderCrud;
     search: AcoSearchRecordCrud;
     filter: AcoFilterCrud;
+    flp: AcoFolderLevelPermissionsCrud;
     folderLevelPermissions: FolderLevelPermissions;
     apps: IAcoApps;
     registerApp: (params: IAcoAppRegisterParams) => Promise<IAcoApp>;

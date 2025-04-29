@@ -21,21 +21,7 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
     async execute(id: string, params: UpdateFolderParams) {
         const original = await this.getOperation({ id });
-        const originalFlp = await this.folderLevelPermissions.getFolderLevelPermission(
-            original.type,
-            original.id
-        );
-
-        if (!originalFlp) {
-            throw new WError(
-                "Failed to retrieve folder level permissions (FLP) for the specified folder.",
-                "UPDATE_FOLDER_WITH_FLP_ERROR",
-                {
-                    id,
-                    params
-                }
-            );
-        }
+        const originalFlp = await this.folderLevelPermissions.getFolderLevelPermission(id);
 
         await this.folderLevelPermissions.ensureCanAccessFolder({
             permissions: originalFlp.permissions,
@@ -62,7 +48,6 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
             try {
                 // Getting the parent folder FLP will throw an error if the user doesn't have access.
                 const parentFlp = await this.folderLevelPermissions.getFolderLevelPermission(
-                    original.type,
                     params.parentId
                 );
 

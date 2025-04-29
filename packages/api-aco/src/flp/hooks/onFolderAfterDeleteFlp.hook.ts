@@ -1,11 +1,14 @@
 import WebinyError from "@webiny/error";
 import { AcoContext, type IDeleteFlpTaskInput } from "~/types";
 import { DELETE_FLP_TASK_ID } from "../tasks";
+import { DeleteFlp } from "~/flp/useCases";
 
 export const onFolderAfterDeleteFlpHook = (context: AcoContext) => {
     context.aco.folder.onFolderAfterDelete.subscribe(async ({ folder }) => {
         try {
             if (!context.tasks) {
+                const useCase = new DeleteFlp(context);
+                await useCase.execute(folder);
                 return;
             }
 

@@ -1,11 +1,14 @@
 import WebinyError from "@webiny/error";
 import { AcoContext, type ICreateFlpTaskInput } from "~/types";
 import { CREATE_FLP_TASK_ID } from "../tasks";
+import { CreateFlp } from "~/flp/useCases";
 
 export const onFolderAfterCreateFlpHook = (context: AcoContext) => {
     context.aco.folder.onFolderAfterCreate.subscribe(async ({ folder }) => {
         try {
             if (!context.tasks) {
+                const useCase = new CreateFlp(context);
+                await useCase.execute(folder);
                 return;
             }
 

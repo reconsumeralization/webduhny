@@ -8,7 +8,7 @@ export class GetFolderPermission implements IGetFolderPermission {
         this.crud = crud;
     }
 
-    public async execute(type: string, id: string) {
-        return this.crud({ where: { id, type } });
+    public async execute(id: string) {
+        return this.crud(id);
     }
 }

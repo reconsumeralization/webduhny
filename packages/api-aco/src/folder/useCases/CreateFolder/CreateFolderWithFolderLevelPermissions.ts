@@ -17,7 +17,6 @@ export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
         let canCreateFolder: boolean;
         if (params.parentId) {
             const parentFlp = await this.folderLevelPermissions.getFolderLevelPermission(
-                params.type,
                 params.parentId
             );
 

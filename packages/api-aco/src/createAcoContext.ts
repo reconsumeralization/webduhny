@@ -99,6 +99,7 @@ const setupAcoContext = async (
         search: createSearchRecordCrudMethods(params),
         folderLevelPermissions,
         filter: createFilterCrudMethods(params),
+        flp: flpCrudMethods,
         apps,
         getApp: (name: string) => apps.get(name),
         listApps: () => apps.list(),

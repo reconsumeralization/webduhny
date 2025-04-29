@@ -86,20 +86,30 @@ class FolderLevelPermissionsStorageOperations
     }
 
     async get({
-        where: { tenant, locale, type, id }
-    }: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null> {
+        tenant,
+        locale,
+        id
+    }: StorageOperationsGetFlpParams): Promise<FolderLevelPermission> {
         try {
             const entry = await getClean<{ data: FolderLevelPermission }>({
                 entity: this.entity,
-                keys: this.createKeys({ tenant, locale, type, id })
+                keys: this.createKeys({ tenant, locale, id })
             });
+
+            if (!entry) {
+                throw new WebinyError("Could not find folder level permission.", "GET_FLP_ERROR", {
+                    tenant,
+                    locale,
+                    id
+                });
+            }
 
             return entry?.data || null;
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not load folder level permission.",
                 code: "GET_FLP_ERROR",
-                data: { tenant, locale, type, id }
+                data: { tenant, locale, id }
             });
         }
     }
@@ -130,31 +140,34 @@ class FolderLevelPermissionsStorageOperations
     }
 
     async update({
-        data,
+        data: inputData,
         original
     }: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission> {
         const keys = {
-            ...this.createKeys(data),
-            ...this.createGsiKeys(data)
+            ...this.createKeys(original),
+            ...this.createGsiKeys(original)
         };
 
         try {
+            const data = {
+                ...original,
+                ...inputData
+            };
+
             await put({
                 entity: this.entity,
                 item: {
                     ...keys,
-                    data: {
-                        ...(original && original),
-                        ...data
-                    }
+                    data
                 }
             });
+
             return data;
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not update folder level permission.",
                 code: "UPDATE_FLP_ERROR",
-                data: { keys, data, original }
+                data: { keys, inputData, original }
             });
         }
     }
@@ -233,10 +246,9 @@ class FolderLevelPermissionsStorageOperations
     private createKeys = ({
         id,
         tenant,
-        locale,
-        type
-    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale" | "type">) => ({
-        PK: `T#${tenant}#L#${locale}#AT#${type}#FLP#${id}`,
+        locale
+    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale">) => ({
+        PK: `T#${tenant}#L#${locale}#FLP#${id}`,
         SK: `A`
     });
 
