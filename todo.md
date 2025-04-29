@@ -3,6 +3,7 @@
 - deleting elements - what happens whit children fields?
 - cond rules
 - submission
+  - what happens when I submit the last step?
 - prevent parent block deletion
 - prevent grid/cell deletion :|
 - block multiple funnels on page
@@ -23,6 +24,9 @@
 - esc doesn't work on dialogs sometimes (if not focused correctly)
 - deleting a step if focused causes a blank canvas
 - field settings - 
+- missing form comp in hiearchy - ensure fields can only be dropped within container
+- prevent deletion of grid in step el
+- back btn
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

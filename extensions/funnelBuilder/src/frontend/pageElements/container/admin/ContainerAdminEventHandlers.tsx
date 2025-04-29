@@ -67,11 +67,6 @@ export const ContainerAdminEventHandlers = () => {
                 return;
             }
 
-            console.log("onElCreate", {
-                ...createdElement.data,
-                stepId: funnelVm.getActiveStepId()
-            });
-
             funnelVm.addField({
                 ...createdElement.data,
                 stepId: funnelVm.getActiveStepId()

@@ -1,18 +1,10 @@
 import React from "react";
 import { PbEditorPageElementPlugin } from "@webiny/app-page-builder";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
-import { Typography } from "@webiny/ui/Typography";
-import styled from "@emotion/styled";
 import type { Renderer } from "@webiny/app-page-builder-elements/types";
 import { createFieldElementType } from "../../../shared/constants";
 import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../../pageElements/fields/utils";
-
-const StyledPreview = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-`;
+import { ElementToolbarPreview } from "../../pageElements/ElementToolbarPreview";
 
 export interface PbEditorFunnelFieldPageElementPluginProps {
     fieldType: string;
@@ -37,11 +29,11 @@ export const PbEditorFunnelFieldPageElementPlugin = (
                 group: FUB_PAGE_ELEMENT_GROUP,
                 preview() {
                     return (
-                        <StyledPreview>
-                            {props.icon}
-                            <Typography use={"headline6"}>{props.name}</Typography>
-                            <Typography use={"body2"}>{props.description}</Typography>
-                        </StyledPreview>
+                        <ElementToolbarPreview
+                            title={props.name}
+                            icon={props.icon}
+                            description={props.description}
+                        />
                     );
                 }
             }}

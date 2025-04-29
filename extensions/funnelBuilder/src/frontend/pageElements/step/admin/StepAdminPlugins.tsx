@@ -21,6 +21,7 @@ export const StepAdminPlugins = () => (
                 "pb-editor-page-element-style-settings-background"
             ]}
             target={[CONTAINER_ELEMENT_TYPE]}
+            canReceiveChildren={true}
             onCreate={OnCreateActions.OPEN_SETTINGS}
             create={() => createStepElement()}
             // We don't want to allow deleting the step element.

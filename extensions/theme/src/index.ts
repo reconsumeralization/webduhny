@@ -10,7 +10,6 @@ import "./global.scss";
 import theme from "./theme";
 
 // Default layouts used by Page Builder pages and Form Builder forms.
-import FunnelEmbed from "./layouts/pages/FunnelEmbed";
 import StaticLayout from "./layouts/pages/Static";
 import DefaultFormLayout from "./layouts/forms/DefaultFormLayout";
 
@@ -23,11 +22,6 @@ export default () => [
         name: "static",
         title: "Static page",
         component: StaticLayout
-    }),
-    new PbPageLayoutPlugin({
-        name: "funnelEmbed",
-        title: "Funnel Embed",
-        component: FunnelEmbed
     }),
 
     new FbFormLayoutPlugin({

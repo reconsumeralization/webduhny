@@ -10,14 +10,14 @@ import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators"
 
 export const Extension = () => (
     <>
-        {/* Container Page Element */}
-        <ContainerAdminPlugins />
-        <StepAdminPlugins />
-
         {/* Fields. */}
         <TextFieldAdminPlugins />
         <TextareaFieldAdminPlugins />
         <ButtonAdminPlugins />
+
+        {/* Container Page Element */}
+        <ContainerAdminPlugins />
+        <StepAdminPlugins />
 
         {/* Other */}
         <FieldValidatorPlugins />

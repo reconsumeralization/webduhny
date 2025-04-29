@@ -9,22 +9,30 @@ import { ContainerAdminRenderer } from "./ContainerAdminRenderer";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { createContainerElement } from "../../../../shared/createContainerElement";
 import { CONTAINER_ELEMENT_TYPE } from "../../../../shared/constants";
+import { FUB_PAGE_ELEMENT_GROUP } from "../../fields/utils";
+import { ElementToolbarPreview } from "../../ElementToolbarPreview";
+import { ReactComponent as ContainerIcon } from "@material-design-icons/svg/outlined/view_module.svg";
 
 export const ContainerAdminPlugins = () => (
     <>
-        <PbRenderElementPlugin elementType={CONTAINER_ELEMENT_TYPE} renderer={ContainerAdminRenderer} />
+        <PbRenderElementPlugin
+            elementType={CONTAINER_ELEMENT_TYPE}
+            renderer={ContainerAdminRenderer}
+        />
         <PbEditorPageElementPlugin
             elementType={CONTAINER_ELEMENT_TYPE}
             renderer={ContainerAdminRenderer}
             toolbar={{
-                // We use `pb-editor-element-group-media` to put our new
-                // page element into the Media group in the left sidebar.
-                title: "Funnel Builder",
-                group: "pb-editor-element-group-media",
+                title: "Container Element",
+                group: FUB_PAGE_ELEMENT_GROUP,
                 preview() {
-                    // We can return any JSX / React code here. To keep it
-                    // simple, we are simply returning the element's name.
-                    return <>Funnel Builder</>;
+                    return (
+                        <ElementToolbarPreview
+                            title={"Container Element"}
+                            icon={<ContainerIcon />}
+                            description={"Container element that can contain other elements."}
+                        />
+                    );
                 }
             }}
             settings={[

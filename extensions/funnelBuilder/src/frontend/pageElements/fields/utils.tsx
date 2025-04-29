@@ -4,6 +4,7 @@ import { FunnelFieldDefinitionModelDto } from "../../../shared/models/FunnelFiel
 import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import { useContainer } from "../container/ContainerProvider";
 import { FunnelSubmissionFieldModel } from "../../../shared/models/FunnelSubmissionFieldModel";
+import styled from "@emotion/styled";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 
@@ -19,6 +20,10 @@ export const createInitialFieldData = (fieldType: string, extra: Record<string, 
     } as Omit<FunnelFieldDefinitionModelDto, "stepId">;
 };
 
+const NotWithinFunnelBuilderContainer = styled.div`
+    padding: 12px;
+`;
+
 export const createFieldRenderer = (
     Component: React.ComponentType<{ field: FunnelSubmissionFieldModel }>
 ) => {
@@ -26,15 +31,13 @@ export const createFieldRenderer = (
         const { getElement } = useRenderer();
         const element = getElement();
 
-        const { funnelVm, funnelSubmissionVm } = useContainer();
-        if (!funnelVm || !funnelSubmissionVm) {
-            return null;
-        }
-
-        if (!funnelSubmissionVm.fieldExists(element.data.fieldId)) {
-            console.log('💣field does not exist', element.data)
-            console.log('funnelSubmissionVm', funnelSubmissionVm)
-            return null;
+        const { funnelSubmissionVm } = useContainer();
+        if (!funnelSubmissionVm || !funnelSubmissionVm.fieldExists(element.data.fieldId)) {
+            return (
+                <NotWithinFunnelBuilderContainer>
+                    Field not located within the Funnel Builder container.
+                </NotWithinFunnelBuilderContainer>
+            );
         }
 
         const field = funnelSubmissionVm.getField(element.data.fieldId);

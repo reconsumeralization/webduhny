@@ -4,17 +4,25 @@ import { Form } from "@webiny/form";
 import { useContainer } from "../../container/ContainerProvider";
 import { StepElementData } from "../types";
 import { StepElementWithChildren } from "../../container/types";
-import { useElementWithChildren } from "@webiny/app-page-builder/editor";
+import { useActiveElementId, useElementWithChildren } from "@webiny/app-page-builder/editor";
+import { EmptyCell } from "@webiny/app-page-builder/editor/plugins/elements/cell/EmptyCell";
 
 export const StepAdminRenderer = createRenderer(() => {
-    const { getElement, meta } = useRenderer();
+    const { getElement } = useRenderer();
     const element = getElement<StepElementData>();
     const elementWithChildren = useElementWithChildren(element.id!) as StepElementWithChildren;
+
+    const [activeElementId] = useActiveElementId();
+    const isActive = activeElementId === element.id;
 
     const { funnelVm } = useContainer();
 
     if (funnelVm.getActiveStepId() !== element.data.step.id) {
         return null;
+    }
+
+    if (!elementWithChildren.elements.length) {
+        return <EmptyCell element={element} depth={isActive ? 1000 : 0} />;
     }
 
     return (
