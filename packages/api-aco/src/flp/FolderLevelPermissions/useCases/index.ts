@@ -5,4 +5,5 @@ export * from "./CanUseFolderLevelPermissions";
 export * from "./CanUseTeams";
 export * from "./CheckNotInheritedPermissions";
 export * from "./GetDefaultPermissions";
+export * from "./GetFolderPermission";
 export * from "./ListFolderPermissions";

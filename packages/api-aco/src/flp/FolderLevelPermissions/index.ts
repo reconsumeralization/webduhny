@@ -1,3 +1,4 @@
+import { NotAuthorizedError } from "@webiny/api-security";
 import {
     CanAccessFolder,
     CanAccessFolderContent,
@@ -8,14 +9,16 @@ import {
     CanUseTeams,
     CheckNotInheritedPermissions,
     GetDefaultPermissions,
-    GetDefaultPermissionsWithTeams
+    GetDefaultPermissionsWithTeams,
+    GetFolderPermission,
+    ListFolderPermissions
 } from "./useCases";
 import type {
     AcoContext,
     AcoFolderLevelPermissionsCrud,
     Folder,
+    FolderLevelPermission,
     FolderPermission,
-    GetFlpParams,
     ListFlpsParams
 } from "~/types";
 import {
@@ -28,7 +31,6 @@ import {
     ListIdentityTeamsGatewayFromContext,
     ListPermissionsGatewayFromContext
 } from "./gateways";
-import { NotAuthorizedError } from "@webiny/api-security";
 
 interface CreateFolderLevelPermissionsParams {
     context: AcoContext;
@@ -104,8 +106,8 @@ export class FolderLevelPermissions {
         }
     }
 
-    public async canReadFolder(folder: Folder) {
-        return await this.canAccessFolder({ folder, rwd: "r" });
+    public async canReadFolder({ permissions }: Folder | FolderLevelPermission) {
+        return await this.canAccessFolder({ permissions, rwd: "r" });
     }
 
     public async canManageFolderContent(folder: Folder) {
@@ -116,15 +118,15 @@ export class FolderLevelPermissions {
         return await this.canAccessFolderContent({ folder, rwd: "w" });
     }
 
-    public async canManageFolderStructure(folder: Folder) {
+    public async canManageFolderStructure({ permissions }: Folder) {
         if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
             return true;
         }
 
-        return await this.canAccessFolder({ folder, rwd: "w" });
+        return await this.canAccessFolder({ permissions, rwd: "w" });
     }
 
-    public async canManageFolderPermissions(folder: Folder) {
+    public async canManageFolderPermissions({ permissions }: Folder) {
         if (!this.canUseFolderLevelPermissions()) {
             return false;
         }
@@ -133,7 +135,7 @@ export class FolderLevelPermissions {
             return true;
         }
 
-        return await this.canAccessFolder({ folder, rwd: "w", managePermissions: true });
+        return await this.canAccessFolder({ permissions, rwd: "w", managePermissions: true });
     }
 
     public getDefaultPermissions(permissions: FolderPermission[]) {
@@ -155,11 +157,29 @@ export class FolderLevelPermissions {
         return getDefaultPermissionsUseCase.execute(permissions);
     }
 
-    public async listDescendantFolderLevelPermissions(params: ListFlpsParams) {
-        return await this.crud.list(params);
+    public async listFolderLevelPermissions(params: ListFlpsParams) {
+        const listFolderLevelPermissionsUseCase = new ListFolderPermissions(this.crud.list);
+        const flps = await listFolderLevelPermissionsUseCase.execute(params);
+
+        return Promise.all(
+            flps.map(async flp => ({
+                ...flp,
+                permissions: await this.getDefaultPermissions(flp.permissions)
+            }))
+        );
     }
 
-    public async getFolderLevelPermission(params: GetFlpParams) {
-        return await this.crud.get(params);
+    public async getFolderLevelPermission(type: string, id: string) {
+        const getFolderLevelPermissionUseCase = new GetFolderPermission(this.crud.get);
+        const flp = await getFolderLevelPermissionUseCase.execute(type, id);
+
+        if (!flp) {
+            return null;
+        }
+
+        return {
+            ...flp,
+            permissions: await this.getDefaultPermissions(flp.permissions)
+        };
     }
 }

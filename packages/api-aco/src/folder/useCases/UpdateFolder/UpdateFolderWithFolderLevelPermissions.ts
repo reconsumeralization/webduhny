@@ -21,8 +21,24 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
     async execute(id: string, params: UpdateFolderParams) {
         const original = await this.getOperation({ id });
+        const originalFlp = await this.folderLevelPermissions.getFolderLevelPermission(
+            original.type,
+            original.id
+        );
+
+        if (!originalFlp) {
+            throw new WError(
+                "Failed to retrieve folder level permissions (FLP) for the specified folder.",
+                "UPDATE_FOLDER_WITH_FLP_ERROR",
+                {
+                    id,
+                    params
+                }
+            );
+        }
+
         await this.folderLevelPermissions.ensureCanAccessFolder({
-            folder: original,
+            permissions: originalFlp.permissions,
             rwd: "w"
         });
 
@@ -44,12 +60,18 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
         // Parent change is not allowed if the user doesn't have access to the new parent.
         if (params.parentId && params.parentId !== original.parentId) {
             try {
-                // Getting the parent folder will throw an error if the user doesn't have access.
-                const parentFolder = await this.getOperation({ id: params.parentId });
-                await this.folderLevelPermissions.ensureCanAccessFolder({
-                    folder: parentFolder,
-                    rwd: "r"
-                });
+                // Getting the parent folder FLP will throw an error if the user doesn't have access.
+                const parentFlp = await this.folderLevelPermissions.getFolderLevelPermission(
+                    original.type,
+                    params.parentId
+                );
+
+                if (parentFlp) {
+                    await this.folderLevelPermissions.ensureCanAccessFolder({
+                        permissions: parentFlp.permissions,
+                        rwd: "r"
+                    });
+                }
             } catch (e) {
                 if (e instanceof NotAuthorizedError) {
                     throw new WError(
@@ -63,6 +85,16 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
             }
         }
 
-        return await this.decoretee.execute(id, params);
+        const folder = await this.decoretee.execute(id, params);
+
+        // Let's set default permissions based on the current user.
+        const permissionsWithDefaults = await this.folderLevelPermissions.getDefaultPermissions(
+            folder?.permissions ?? []
+        );
+
+        return {
+            ...folder,
+            permissions: permissionsWithDefaults
+        };
     }
 }

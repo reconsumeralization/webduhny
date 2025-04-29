@@ -5,6 +5,10 @@ import { CREATE_FLP_TASK_ID } from "../tasks";
 export const onFolderAfterCreateFlpHook = (context: AcoContext) => {
     context.aco.folder.onFolderAfterCreate.subscribe(async ({ folder }) => {
         try {
+            if (!context.tasks) {
+                return;
+            }
+
             await context.tasks.trigger<ICreateFlpTaskInput>({
                 definition: CREATE_FLP_TASK_ID,
                 input: {

@@ -1,5 +1,4 @@
 import { createTopic } from "@webiny/pubsub";
-import { type AcoContext, CreateAcoParams, Folder } from "~/types";
 import {
     AcoFolderCrud,
     OnFolderAfterCreateTopicParams,
@@ -18,6 +17,7 @@ import {
     getListFoldersUseCases,
     getUpdateFolderUseCase
 } from "~/folder/useCases";
+import { type AcoContext, CreateAcoParams, Folder } from "~/types";
 
 const FIXED_FOLDER_LISTING_LIMIT = 10_000;
 
@@ -61,7 +61,6 @@ export const createFolderCrudMethods = ({
 
     const { createFolderUseCase } = getCreateFolderUseCases({
         createOperation: storageOperations.folder.createFolder,
-        getOperation: storageOperations.folder.getFolder,
         folderLevelPermissions,
         topics: {
             onFolderAfterCreate,

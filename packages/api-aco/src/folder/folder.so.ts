@@ -7,6 +7,7 @@ import { createOperationsWrapper } from "~/utils/createOperationsWrapper";
 import { pickEntryFieldValues } from "~/utils/pickEntryFieldValues";
 import { AcoFolderStorageOperations, Folder } from "./folder.types";
 import { ENTRY_META_FIELDS } from "@webiny/api-headless-cms/constants";
+import { ListSort } from "~/types";
 
 interface AcoCheckExistingFolderParams {
     params: {
@@ -92,9 +93,15 @@ export const createFolderOperations = (
             return withModel(async model => {
                 const { sort, where } = params;
 
+                const listSort =
+                    sort ||
+                    ({
+                        title: "ASC"
+                    } as unknown as ListSort);
+
                 const [entries, meta] = await cms.listLatestEntries(model, {
                     ...params,
-                    sort: createListSort(sort),
+                    sort: createListSort(listSort),
                     where: {
                         ...(where || {})
                     }

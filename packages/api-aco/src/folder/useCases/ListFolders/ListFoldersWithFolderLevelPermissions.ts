@@ -17,7 +17,7 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
         const [folders, meta] = await this.decoretee.execute(params);
 
         // Let's get the FLP records for the current folders.
-        const flps = await this.folderLevelPermissions.listDescendantFolderLevelPermissions({
+        const flps = await this.folderLevelPermissions.listFolderLevelPermissions({
             where: {
                 type: params.where.type,
                 parentId: params.where.parentId ?? ROOT_FOLDER
@@ -30,14 +30,9 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
         for (const folder of folders) {
             const permissions = flpCatalog.get(folder.id)?.permissions || [];
 
-            // Let's set default permissions based on the current user.
-            const permissionsWithDefaults = await this.folderLevelPermissions.getDefaultPermissions(
-                permissions
-            );
-
             const folderWithFlp = {
                 ...folder,
-                permissions: permissionsWithDefaults
+                permissions
             };
 
             // Let's check if the current user has read access level.

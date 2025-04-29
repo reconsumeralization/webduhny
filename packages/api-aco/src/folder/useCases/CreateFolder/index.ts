@@ -16,7 +16,6 @@ export interface CreateFolderUseCasesTopics {
 
 interface CreateFolderUseCasesParams {
     createOperation: AcoFolderStorageOperations["createFolder"];
-    getOperation: AcoFolderStorageOperations["getFolder"];
     folderLevelPermissions: FolderLevelPermissions;
     topics: CreateFolderUseCasesTopics;
 }
@@ -28,7 +27,6 @@ export const getCreateFolderUseCases = (params: CreateFolderUseCasesParams) => {
     if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
         const createFolderUseCaseWithFlp = new CreateFolderWithFolderLevelPermissions(
             params.folderLevelPermissions,
-            params.getOperation,
             createFolderUseCase
         );
 

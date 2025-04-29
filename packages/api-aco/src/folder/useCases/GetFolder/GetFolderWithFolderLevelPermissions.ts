@@ -1,4 +1,5 @@
 import { NotAuthorizedError } from "@webiny/api-security";
+import WError from "@webiny/error";
 import type { IGetFolder } from "./IGetFolder";
 import { FolderLevelPermissions } from "~/flp";
 import type { GetFolderParams } from "~/folder/folder.types";
@@ -15,21 +16,25 @@ export class GetFolderWithFolderLevelPermissions implements IGetFolder {
     async execute(params: GetFolderParams) {
         const folder = await this.decoretee.execute(params);
 
-        const flp = await this.folderLevelPermissions.getFolderLevelPermission({
-            where: {
-                id: folder.id,
-                type: folder.type
-            }
-        });
-
-        // Let's set default permissions based on the current user.
-        const permissionsWithDefaults = await this.folderLevelPermissions.getDefaultPermissions(
-            flp?.permissions ?? []
+        const flp = await this.folderLevelPermissions.getFolderLevelPermission(
+            folder.type,
+            folder.id
         );
+
+        if (!flp) {
+            throw new WError(
+                "Error while retrieving FLP for folder.",
+                "GET_FOLDER_WITH_FLP_ERROR",
+                {
+                    params,
+                    folder
+                }
+            );
+        }
 
         const folderWithFlp = {
             ...folder,
-            permissions: permissionsWithDefaults
+            permissions: flp.permissions
         };
 
         // Let's check if the current user has read access level.
