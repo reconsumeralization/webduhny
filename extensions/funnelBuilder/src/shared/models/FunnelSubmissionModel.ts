@@ -1,6 +1,7 @@
 import { FunnelModel } from "./FunnelModel";
 import { FunnelSubmissionFieldModel } from "./FunnelSubmissionFieldModel";
 import { createObjectHash } from "../createObjectHash";
+import { FunnelConditionRulesEvaluator } from "./FunnelConditionRulesEvaluator";
 
 export interface FunnelSubmissionModelDto {
     fields?: Record<string, any>;
@@ -198,6 +199,8 @@ export class FunnelSubmissionModel {
         // Evaluate condition rules for the active step fields.
         const activeStepFields = this.getFieldsForActiveStep();
 
-
+        // Create a new evaluator and get the actions
+        const evaluator = new FunnelConditionRulesEvaluator(this.funnel, this);
+        return evaluator.evaluate();
     }
 }
