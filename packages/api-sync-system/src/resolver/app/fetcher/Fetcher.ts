@@ -34,7 +34,7 @@ export class Fetcher implements IFetcher {
 
         const items = await cmd.execute<T>({
             client,
-            deployment: deployment.deployment,
+            // deployment: deployment.deployment,
             table,
             bundle
         });

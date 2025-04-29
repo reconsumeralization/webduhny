@@ -85,8 +85,7 @@ export class Handler implements IHandler {
                 }
                 const detail: IDetail = {
                     items,
-                    source: this.system,
-                    command: cmd.command
+                    source: this.system
                 };
                 return {
                     DetailType: SQS_EVENT_NAME,

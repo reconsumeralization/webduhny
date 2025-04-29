@@ -1,7 +1,11 @@
 import type { IRecordsDataDeployment } from "./RecordsDataDeployment.js";
-import type { IResolverSQSRecord } from "~/resolver/app/abstractions/ResolverRecord.js";
+import type {
+    IResolverSQSRecord,
+    IResolverSQSRecordBody
+} from "~/resolver/app/abstractions/ResolverRecord.js";
 import { convertException } from "@webiny/utils/exception.js";
 import type { ISystem } from "~/sync/types.js";
+import type { IDetail } from "~/sync/handler/types.js";
 
 export interface IRecordsDataDeploymentCreateRecordsDataDeploymentCallable {
     (name: string): IRecordsDataDeployment;
@@ -11,8 +15,16 @@ export interface IRecordsDataParams {
     createRecordsDataDeployment: IRecordsDataDeploymentCreateRecordsDataDeploymentCallable;
 }
 
+export interface IRecordsDataIngestRecordBody {
+    detail: IDetail;
+}
+
+export interface IRecordsDataIngestRecord {
+    body: IRecordsDataIngestRecordBody;
+}
+
 export interface IRecordsDataIngestParams {
-    records: IResolverSQSRecord[];
+    records: IRecordsDataIngestRecord[];
 }
 
 export interface IRecordsData {

@@ -1,5 +1,5 @@
 import type { NonEmptyArray } from "@webiny/api/types";
-import type { AllCommandType, ExtendedCommandType } from "~/types.js";
+import type { ExtendedCommandType } from "~/types.js";
 import type { ISystem } from "../types";
 
 export interface IDetailItem {
@@ -16,5 +16,4 @@ export interface IDetailItem {
 export interface IDetail {
     items: NonEmptyArray<IDetailItem>;
     source: ISystem;
-    command: AllCommandType;
 }

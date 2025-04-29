@@ -1,10 +1,20 @@
 import { Context } from "@webiny/api/Context";
 import type { Context as ContextType } from "~/types";
-import type { Reply as FastifyReply, Request as FastifyRequest } from "@webiny/handler/types.js";
+// @ts-expect-error
+import FastifyReply from "fastify/lib/reply.js";
+import type { Request as FastifyRequest } from "@webiny/handler/types.js";
 
 export const createMockContext = () => {
     const request = {} as FastifyRequest;
-    const reply = {} as FastifyReply;
+    const sent: unknown[] = [];
+    const send = jest.fn();
+
+    const reply = {
+        send: (data: unknown) => {
+            sent.push(data);
+            return send(data);
+        }
+    } as unknown as FastifyReply;
     const context = new Context({
         plugins: [],
         WEBINY_VERSION: process.env.WEBINY_VERSION as string
@@ -13,6 +23,12 @@ export const createMockContext = () => {
     return {
         context,
         request,
-        reply
+        reply,
+        getSent: () => {
+            return sent;
+        },
+        getSend: () => {
+            return send;
+        }
     };
 };

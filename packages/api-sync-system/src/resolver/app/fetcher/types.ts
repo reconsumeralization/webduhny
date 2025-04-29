@@ -4,7 +4,7 @@ import type {
     IRecordsDataDeploymentTable,
     IRecordsDataDeploymentTableBundle
 } from "~/resolver/app/data/RecordsDataDeploymentTable.js";
-import type { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import type { IDeployment } from "~/resolver/deployment/types.js";
 
 export interface IFetcherExecParams {
@@ -25,8 +25,8 @@ export interface IFetcher {
 }
 
 export interface IFetchExecuteExecuteParams {
-    client: Pick<ReturnType<typeof getDocumentClient>, "send">;
-    deployment: Pick<IDeployment, "region">;
+    client: Pick<DynamoDBDocument, "send">;
+    // deployment: Pick<IDeployment, "region">;
     table: IRecordsDataDeploymentTable;
     bundle: IRecordsDataDeploymentTableBundle;
 }

@@ -62,13 +62,14 @@ export class RecordsDataDeploymentTable implements IRecordsDataDeploymentTable {
         for (const item of this.items) {
             if (!bundle) {
                 bundle = this.createBundle(item);
+                bundles.push(bundle);
                 continue;
             } else if (bundle.command !== item.command) {
-                bundles.push(structuredClone(bundle));
                 bundle = this.createBundle(item);
+                bundles.push(bundle);
                 continue;
             }
-            bundle.items.push(structuredClone(item));
+            bundle.items.push(item);
         }
 
         return bundles;

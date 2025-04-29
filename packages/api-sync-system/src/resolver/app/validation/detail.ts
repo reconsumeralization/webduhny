@@ -32,7 +32,6 @@ export const createDetailValidation = () => {
             .transform(values => {
                 return convert(values);
             }),
-        command: zod.enum(["update", "put", "batchWrite", "delete"]),
         source: createSystemValidation()
     });
 };
