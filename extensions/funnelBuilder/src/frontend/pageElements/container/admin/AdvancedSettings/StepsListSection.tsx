@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import styled from "@emotion/styled";
 import { useActiveElementId, useElementWithChildren } from "@webiny/app-page-builder/editor";
 import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import {useSnackbar     } from "@webiny/app-admin";
+import { useSnackbar } from "@webiny/app-admin";
 import { StepsListItem } from "./StepsListSection/StepsListItem";
 
 // Sorting.
@@ -23,10 +23,10 @@ import {
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { ContainerElementWithChildren } from "../../types";
-import { useEditorElements } from "../../../useEditorElements";
 
 // Icons.
 import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
+import { useStepsActions } from "./useStepsActions";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;
@@ -47,18 +47,18 @@ export const StepsListSection = () => {
         activeElementId!
     ) as ContainerElementWithChildren;
 
-    const {showSnackbar} = useSnackbar();
+    const { showSnackbar } = useSnackbar();
     const { showConfirmation } = useConfirmationDialog({
         title: "Remove step",
         message: <p>Are you sure you want to remove this step?</p>
     });
 
-    const editorElements = useEditorElements();
+    const stepsActions = useStepsActions();
 
     const deleteStep = useCallback(
         (stepId: string) => {
             showConfirmation(async () => {
-                editorElements.deleteStep(containerElementWithChildren, stepId);
+                stepsActions.deleteStep(containerElementWithChildren, stepId);
                 showSnackbar("Step deleted successfully.");
             });
         },
@@ -66,7 +66,7 @@ export const StepsListSection = () => {
     );
 
     const createStep = useCallback(() => {
-        editorElements.createStep(containerElementWithChildren);
+        stepsActions.createStep(containerElementWithChildren);
     }, [containerElementWithChildren]);
 
     function moveStep(event: any) {
@@ -82,7 +82,7 @@ export const StepsListSection = () => {
             element => element.id === over.id
         );
 
-        editorElements.moveStep(containerElementWithChildren, srcStepIndex, targetStepIndex);
+        stepsActions.moveStep(containerElementWithChildren, srcStepIndex, targetStepIndex);
     }
 
     const sensors = useSensors(

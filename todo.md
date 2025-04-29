@@ -15,13 +15,14 @@
 - validators
   - async validators
   - pattern validator
-- uniqueFieldIdValidator
+  - uniqueFieldIdValidator
 - docs
 - edit field dialog reopening?
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - when adding tab, should be activated immediately
 - esc doesn't work on dialogs sometimes (if not focused correctly)
--
+- deleting a step if focused causes a blank canvas
+- field settings - 
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

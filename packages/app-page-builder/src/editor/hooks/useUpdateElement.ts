@@ -3,7 +3,7 @@ import { PbEditorElement, PbEditorElementTree } from "~/types";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
 
-interface UpdateOptions {
+export interface UpdateOptions {
     history: boolean;
     debounce?: boolean;
     onFinish?: () => void;

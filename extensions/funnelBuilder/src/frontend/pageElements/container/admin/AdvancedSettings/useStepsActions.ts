@@ -1,17 +1,17 @@
 import { useUpdateElement } from "@webiny/app-page-builder/editor";
 import { useCallback } from "react";
-import { ContainerElementWithChildren } from "./container/types";
-import { getRandomId } from "../../shared/getRandomId";
-import { createStepElement } from "../../shared/createStepElement";
 import { arrayMove } from "@dnd-kit/sortable";
+import { ContainerElementWithChildren } from "../../types";
+import { getRandomId } from "../../../../../shared/getRandomId";
+import { createStepElement } from "../../../../../shared/createStepElement";
 
-export const useEditorElements = () => {
+export const useStepsActions = () => {
     const updateElement = useUpdateElement();
 
     const deleteStep = useCallback(
         (containerElementWithChildren: ContainerElementWithChildren, stepId: string) => {
-            console.log('containerElementWithChildren', containerElementWithChildren);
-            console.log('stepId', stepId);
+            console.log("containerElementWithChildren", containerElementWithChildren);
+            console.log("stepId", stepId);
             updateElement(
                 {
                     ...containerElementWithChildren,
@@ -46,7 +46,7 @@ export const useEditorElements = () => {
                         steps: [...containerElementWithChildren.data.steps, initialStepData]
                     },
 
-                    // @ts-ignore
+                    // @ts-ignore Incompatible types. Ignoring for now.
                     elements: [
                         ...containerElementWithChildren.elements,
                         createStepElement(initialStepData)
