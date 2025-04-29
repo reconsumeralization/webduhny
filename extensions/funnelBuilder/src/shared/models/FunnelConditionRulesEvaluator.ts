@@ -27,6 +27,29 @@ export class FunnelConditionRulesEvaluator {
         return actions;
     }
 
+    evaluateForActiveStep(): FunnelConditionActionModel[] {
+        const actions: FunnelConditionActionModel[] = [];
+        const activeStepFields = this.funnelSubmission.getFieldsForActiveStep();
+        const activeStepFieldIds = activeStepFields.map(field => field.definition.fieldId);
+
+        // Evaluate each condition rule
+        for (const rule of this.funnel.conditionRules) {
+            // Check if any of the rule's actions target fields in the active step
+            const hasRelevantActions = rule.actions.some(
+                action =>
+                    action.target.type === "field" && activeStepFieldIds.includes(action.target.id)
+            );
+
+            // If the rule has relevant actions and the condition group evaluates to true,
+            // add the rule's actions to the list
+            if (hasRelevantActions && this.evaluateConditionGroup(rule.conditionGroup)) {
+                actions.push(...rule.actions);
+            }
+        }
+
+        return actions;
+    }
+
     private evaluateConditionGroup(group: FunnelConditionGroupModel): boolean {
         // If there are no items, return true (empty condition is always satisfied)
         if (group.items.length === 0) {
@@ -50,11 +73,7 @@ export class FunnelConditionRulesEvaluator {
             return this.evaluateConditionGroup(item);
         }
         // Otherwise, it's a condition, so evaluate it
-        else if (item instanceof FunnelConditionModel) {
-            return this.evaluateCondition(item);
-        }
-
-        return false;
+        return this.evaluateCondition(item);
     }
 
     private evaluateCondition(condition: FunnelConditionModel): boolean {

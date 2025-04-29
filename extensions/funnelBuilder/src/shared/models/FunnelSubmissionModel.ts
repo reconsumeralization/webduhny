@@ -197,10 +197,13 @@ export class FunnelSubmissionModel {
 
     evaluateConditionRulesFieldsForActiveStep() {
         // Evaluate condition rules for the active step fields.
-        const activeStepFields = this.getFieldsForActiveStep();
+        const activeStep = this.getActiveStep();
+        if (!activeStep) {
+            return [];
+        }
 
-        // Create a new evaluator and get the actions
+        // Create a new evaluator and get the actions for the active step
         const evaluator = new FunnelConditionRulesEvaluator(this.funnel, this);
-        return evaluator.evaluate();
+        return evaluator.evaluateForActiveStep();
     }
 }

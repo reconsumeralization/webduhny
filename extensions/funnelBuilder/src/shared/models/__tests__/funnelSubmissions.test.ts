@@ -5,10 +5,7 @@ describe("Funnel Submissions", () => {
     test("test", async () => {
         const funnel = new FunnelModel({
             steps: [
-                {
-                    id: "step1",
-                    title: "Step 1",
-                },
+                { id: "step1", title: "Step 1" },
                 { id: "step2", title: "Step 2" }
             ],
             fields: [
@@ -106,11 +103,39 @@ describe("Funnel Submissions", () => {
         const funnelSubmission = new FunnelSubmissionModel(funnel);
 
         funnelSubmission.setData({
-            firstName: "J",
+            firstName: "",
             lastName: "D"
         });
 
         let submissionResult = funnelSubmission.submitActiveStep();
+
+        expect(submissionResult).toEqual({
+            data: { firstName: "", lastName: "D" },
+            errors: {
+                firstName: "Value is required.",
+                lastName: "This field must be at least 2 characters long."
+            },
+            success: false
+        });
+
+        let validationResult = funnelSubmission.validateActiveStep();
+        expect(validationResult).toEqual({
+            isValid: false,
+            errors: {
+                firstName: "Value is required.",
+                lastName: "This field must be at least 2 characters long."
+            }
+        });
+
+        expect(funnelSubmission.getField("lastName").disabled).toBe(true);
+
+        // Pass a short value for `firstName` field.
+        funnelSubmission.setData({
+            firstName: "J",
+            lastName: "D"
+        });
+
+        submissionResult = funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
             data: { firstName: "J", lastName: "D" },
@@ -121,15 +146,18 @@ describe("Funnel Submissions", () => {
             success: false
         });
 
-        let validationResult = funnelSubmission.validateActiveStep();
+        validationResult = funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: false,
             errors: {
-                firstName: "This field must be at least 2 characters long.",
-                lastName: "This field must be at least 2 characters long."
+                lastName: "This field must be at least 2 characters long.",
+                firstName: "This field must be at least 2 characters long."
             }
         });
 
+        expect(funnelSubmission.getField("lastName").disabled).toBe(false);
+
+        // Pass valid values for both `firstName` and `lastName`.
         funnelSubmission.setData({ firstName: "John", lastName: "Doe" });
 
         submissionResult = funnelSubmission.submitActiveStep();
