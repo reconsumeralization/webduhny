@@ -11,7 +11,7 @@ import {
 } from "@webiny/app-page-builder/editor";
 import { ContainerElementWithChildren } from "../../types";
 import { ConditionRulesDialog } from "./ConditionRulesSection/ConditionRulesDialog";
-import { FunnelConditionRuleModelDto } from "../../../../../shared/models/FunnelConditionRuleModel";
+import { FunnelModelDto } from "../../../../../shared/models/FunnelModel";
 
 const EditConditionRulesButton = styled(ButtonSecondary)`
     display: block;
@@ -31,8 +31,8 @@ export const ConditionRulesSection = () => {
         open: showConditionRulesDialog,
         close: hideConditionRulesDialog,
         isOpen: isConditionRulesDialogShown,
-        data: conditionRules
-    } = useDisclosure<FunnelConditionRuleModelDto[]>();
+        data: conditionRulesDialogData
+    } = useDisclosure<FunnelModelDto>();
 
     return (
         <Accordion title={"Conditional Rules"} defaultValue={true}>
@@ -40,7 +40,7 @@ export const ConditionRulesSection = () => {
                 <EditConditionRulesButton
                     onClick={() => {
                         const conditionRulesClone = structuredClone(
-                            containerElementWithChildren.data.conditionRules
+                            containerElementWithChildren.data
                         );
                         showConditionRulesDialog(conditionRulesClone);
                     }}
@@ -50,11 +50,12 @@ export const ConditionRulesSection = () => {
 
                 <ConditionRulesDialog
                     open={isConditionRulesDialogShown}
-                    conditionRules={conditionRules!}
+                    data={conditionRulesDialogData!}
                     onClose={hideConditionRulesDialog}
                     onSubmit={data => {
-                        updateElement({ ...editorElement!, data }, { history: false });
-                        hideConditionRulesDialog();
+                        console.log('dataaaaa', data)
+                        // updateElement({ ...editorElement!, data }, { history: false });
+                        // hideConditionRulesDialog();
                     }}
                 />
             </>

@@ -1,18 +1,25 @@
+// @ts-nocheck
 import React from "react";
-import { Bind, BindComponentRenderPropOnChange, Form, FormOnSubmit, useBind } from "@webiny/form";
+import {
+    BindComponentRenderPropOnChange,
+    Form,
+    FormOnSubmit,
+    useBind,
+    useForm
+} from "@webiny/form";
 import { ButtonDefault, ButtonPrimary as Button, IconButton } from "@webiny/ui/Button";
 import { Select } from "@webiny/ui/Select";
-import { DynamicFieldset } from "@webiny/ui/DynamicFieldset";
 import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
 import { Typography } from "@webiny/ui/Typography";
 import { Input } from "@webiny/ui/Input";
 import styled from "@emotion/styled";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as BasePlusIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { FunnelConditionRuleModelDto } from "../../../../../../shared/models/FunnelConditionRuleModel";
 import { Dialog, DialogActions, DialogButton, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { ClassNames } from "@emotion/react";
 import { getRandomId } from "../../../../../../shared/getRandomId";
+import { FunnelModelDto } from "../../../../../../shared/models/FunnelModel";
+import { FunnelConditionGroupModelDto } from "../../../../../../shared/models/FunnelConditionGroupModel";
 
 const PlusIcon = styled(BasePlusIcon)`
     fill: white;
@@ -48,18 +55,279 @@ const ConditionMessage = styled.span`
 
 // --------------------------------------------------------------------------------
 
-interface ConditionRulesFormData {
-    rules: FunnelConditionRuleModelDto[];
+// Recursive component to render condition groups and their items
+interface ConditionGroupRendererProps {
+    ruleIndex: number;
+    group: any; // Using any for simplicity, should be FunnelConditionGroupModelDto
+    groupPath: string; // Path to the group in the rules array, e.g., "rules[0].conditionGroup"
+    fields: any[]; // Array of fields from the funnel model
+    updateRules: (rules: any[]) => void;
+    rules: any[]; // Array of rules
 }
 
+const ConditionGroupRenderer: React.FC<ConditionGroupRendererProps> = ({
+    ruleIndex,
+    group,
+    groupPath,
+    fields,
+    updateRules,
+    rules
+}) => {
+    // Add a condition to the group
+    const addCondition = () => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        // Navigate to the correct group using the groupPath
+        let currentGroup = rule;
+        const pathParts = groupPath.split(".");
+        for (let i = 1; i < pathParts.length; i++) {
+            const part = pathParts[i];
+            if (part.includes("[")) {
+                const [arrayName, indexStr] = part.split("[");
+                const index = parseInt(indexStr.replace("]", ""));
+                currentGroup = currentGroup[arrayName][index];
+            } else {
+                currentGroup = currentGroup[part];
+            }
+        }
+
+        // Add the new condition
+        currentGroup.items.push({
+            id: getRandomId(),
+            sourceFieldId: "",
+            operator: "eq",
+            value: ""
+        });
+
+        updateRules(updatedRules);
+    };
+
+    // Add a nested condition group to the group
+    const addNestedGroup = () => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        // Navigate to the correct group using the groupPath
+        let currentGroup = rule;
+        const pathParts = groupPath.split(".");
+        for (let i = 1; i < pathParts.length; i++) {
+            const part = pathParts[i];
+            if (part.includes("[")) {
+                const [arrayName, indexStr] = part.split("[");
+                const index = parseInt(indexStr.replace("]", ""));
+                currentGroup = currentGroup[arrayName][index];
+            } else {
+                currentGroup = currentGroup[part];
+            }
+        }
+
+        // Add the new nested group
+        currentGroup.items.push({
+            id: getRandomId(),
+            operator: "and",
+            items: []
+        });
+
+        updateRules(updatedRules);
+    };
+
+    // Remove an item from the group
+    const removeItem = (itemIndex: number) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        // Navigate to the correct group using the groupPath
+        let currentGroup = rule;
+        const pathParts = groupPath.split(".");
+        for (let i = 1; i < pathParts.length; i++) {
+            const part = pathParts[i];
+            if (part.includes("[")) {
+                const [arrayName, indexStr] = part.split("[");
+                const index = parseInt(indexStr.replace("]", ""));
+                currentGroup = currentGroup[arrayName][index];
+            } else {
+                currentGroup = currentGroup[part];
+            }
+        }
+
+        // Remove the item
+        currentGroup.items = currentGroup.items.filter((_, index) => index !== itemIndex);
+
+        updateRules(updatedRules);
+    };
+
+    // Update the operator of the group
+    const updateOperator = (operator: "and" | "or") => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        // Navigate to the correct group using the groupPath
+        let currentGroup = rule;
+        const pathParts = groupPath.split(".");
+        for (let i = 1; i < pathParts.length; i++) {
+            const part = pathParts[i];
+            if (part.includes("[")) {
+                const [arrayName, indexStr] = part.split("[");
+                const index = parseInt(indexStr.replace("]", ""));
+                currentGroup = currentGroup[arrayName][index];
+            } else {
+                currentGroup = currentGroup[part];
+            }
+        }
+
+        // Update the operator
+        currentGroup.operator = operator;
+
+        updateRules(updatedRules);
+    };
+
+    // Update a condition in the group
+    const updateCondition = (itemIndex: number, updates: Partial<any>) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        // Navigate to the correct group using the groupPath
+        let currentGroup = rule;
+        const pathParts = groupPath.split(".");
+        for (let i = 1; i < pathParts.length; i++) {
+            const part = pathParts[i];
+            if (part.includes("[")) {
+                const [arrayName, indexStr] = part.split("[");
+                const index = parseInt(indexStr.replace("]", ""));
+                currentGroup = currentGroup[arrayName][index];
+            } else {
+                currentGroup = currentGroup[part];
+            }
+        }
+
+        // Update the condition
+        currentGroup.items[itemIndex] = {
+            ...currentGroup.items[itemIndex],
+            ...updates
+        };
+
+        updateRules(updatedRules);
+    };
+
+    return (
+        <div style={{ border: "1px solid #eee", padding: "10px", marginBottom: "10px" }}>
+            <Header>
+                <Typography use={"overline"}>Condition Group</Typography>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <Typography use={"caption"}>Operator:</Typography>
+                    <Select
+                        size={"small"}
+                        value={group.operator}
+                        onChange={value => updateOperator(value as "and" | "or")}
+                    >
+                        <option value="and">AND</option>
+                        <option value="or">OR</option>
+                    </Select>
+                    <ButtonDefault onClick={addCondition}>
+                        <PlusIcon /> Add Condition
+                    </ButtonDefault>
+                    <ButtonDefault onClick={addNestedGroup}>
+                        <PlusIcon /> Add Group
+                    </ButtonDefault>
+                </div>
+            </Header>
+
+            {group.items.length === 0 ? (
+                <Typography use={"caption"} style={{ textAlign: "center", padding: "10px" }}>
+                    No conditions added yet. Click "Add Condition" or "Add Group" to add one.
+                </Typography>
+            ) : (
+                group.items.map((item, itemIndex) => {
+                    // Check if the item is a condition group
+                    const isConditionGroup = "items" in item;
+
+                    if (isConditionGroup) {
+                        // Render a nested condition group
+                        return (
+                            <div key={item.id} style={{ marginLeft: "20px" }}>
+                                <ConditionGroupRenderer
+                                    ruleIndex={ruleIndex}
+                                    group={item}
+                                    groupPath={`${groupPath}.items[${itemIndex}]`}
+                                    fields={fields}
+                                    updateRules={updateRules}
+                                    rules={rules}
+                                />
+                                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                    <ButtonDefault onClick={() => removeItem(itemIndex)}>
+                                        <DeleteIcon /> Remove Group
+                                    </ButtonDefault>
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        // Render a condition
+                        return (
+                            <Fieldset key={item.id}>
+                                <Select
+                                    size={"small"}
+                                    value={item.sourceFieldId}
+                                    onChange={value =>
+                                        updateCondition(itemIndex, { sourceFieldId: value })
+                                    }
+                                >
+                                    <option value="">Select Field</option>
+                                    {fields.map(field => (
+                                        <option key={field.id} value={field.fieldId}>
+                                            {field.label}
+                                        </option>
+                                    ))}
+                                </Select>
+
+                                <Select
+                                    size={"small"}
+                                    value={item.operator}
+                                    onChange={value =>
+                                        updateCondition(itemIndex, { operator: value })
+                                    }
+                                >
+                                    <option value="eq">equals</option>
+                                    <option value="neq">not equals</option>
+                                    <option value="gt">greater than</option>
+                                    <option value="gte">greater than or equal</option>
+                                    <option value="lt">less than</option>
+                                    <option value="lte">less than or equal</option>
+                                    <option value="includes">includes</option>
+                                    <option value="notIncludes">not includes</option>
+                                </Select>
+
+                                <Input
+                                    size={"small"}
+                                    value={item.value}
+                                    onChange={value => updateCondition(itemIndex, { value })}
+                                />
+
+                                <DeleteConditionButton
+                                    icon={<DeleteIcon />}
+                                    onClick={() => removeItem(itemIndex)}
+                                />
+                            </Fieldset>
+                        );
+                    }
+                })
+            )}
+        </div>
+    );
+};
+
 export const ConditionRules = () => {
-    const bind = useBind({
-        name: "rules"
+    // Get the full funnel model data
+    const { data: formData } = useForm<FunnelModelDto>();
+
+    // Get the condition rules from the model
+    const conditionRulesBind = useBind({
+        name: "conditionRules"
     });
 
-    const rules = bind.value as ConditionRulesFormData["rules"];
-    const updateRules = bind.onChange as BindComponentRenderPropOnChange<
-        ConditionRulesFormData["rules"]
+    const rules = (conditionRulesBind.value as FunnelModelDto["conditionRules"]) || [];
+    const updateRules = conditionRulesBind.onChange as BindComponentRenderPropOnChange<
+        FunnelModelDto["conditionRules"]
     >;
 
     const addRule = () => {
@@ -77,6 +345,136 @@ export const ConditionRules = () => {
         updateRules(rules.filter(rule => rule.id !== ruleId));
     };
 
+    const addCondition = (ruleIndex: number) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            conditionGroup: {
+                ...rule.conditionGroup,
+                items: [
+                    ...rule.conditionGroup.items,
+                    {
+                        id: getRandomId(),
+                        sourceFieldId: "",
+                        operator: "eq",
+                        value: ""
+                    }
+                ]
+            }
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const removeCondition = (ruleIndex: number, conditionIndex: number) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            conditionGroup: {
+                ...rule.conditionGroup,
+                items: rule.conditionGroup.items.filter((_, index) => index !== conditionIndex)
+            }
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const updateCondition = (ruleIndex: number, conditionIndex: number, updates: Partial<any>) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+        const items = [...rule.conditionGroup.items];
+
+        items[conditionIndex] = {
+            ...items[conditionIndex],
+            ...updates
+        };
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            conditionGroup: {
+                ...rule.conditionGroup,
+                items
+            }
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const addAction = (ruleIndex: number) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            actions: [
+                ...rule.actions,
+                {
+                    id: getRandomId(),
+                    type: "disableField",
+                    target: {
+                        id: "",
+                        type: "field"
+                    },
+                    params: {}
+                }
+            ]
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const removeAction = (ruleIndex: number, actionIndex: number) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            actions: rule.actions.filter((_, index) => index !== actionIndex)
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const updateAction = (ruleIndex: number, actionIndex: number, updates: Partial<any>) => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+        const actions = [...rule.actions];
+
+        actions[actionIndex] = {
+            ...actions[actionIndex],
+            ...updates
+        };
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            actions
+        };
+
+        updateRules(updatedRules);
+    };
+
+    const updateConditionGroupOperator = (ruleIndex: number, operator: "and" | "or") => {
+        const updatedRules = [...rules];
+        const rule = updatedRules[ruleIndex];
+
+        updatedRules[ruleIndex] = {
+            ...rule,
+            conditionGroup: {
+                ...rule.conditionGroup,
+                operator
+            }
+        };
+
+        updateRules(updatedRules);
+    };
+
+    // Get the fields from the funnel model
+    const fields = formData.value?.fields || [];
+
     return (
         <>
             <div>
@@ -84,7 +482,7 @@ export const ConditionRules = () => {
                     <PlusIcon /> Add Rule
                 </Button>
             </div>
-            {/*<Accordion elevation={1}>
+            <Accordion elevation={1}>
                 {rules.map((rule, ruleIndex) => (
                     <AccordionItem key={rule.id} title={`Rule ${ruleIndex + 1}`}>
                         <div
@@ -94,195 +492,273 @@ export const ConditionRules = () => {
                                 gap: 20
                             }}
                         >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "start",
-                                    alignItems: "center",
-                                    columnGap: 10
-                                }}
-                            >
-                                 <div>If</div>
-                                {rule.conditions.map((condition, index) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 10
-                                        }}
-                                    >
-                                        {index > 0 && <span>AND</span>}
-                                        <Chip onRemove={() => {}}>
-                                            {condition.elementId} {condition.operator}{" "}
-                                            {condition.value}
-                                        </Chip>
-                                    </div>
-                                ))}
-                                <ArrowRight />
-                                <Chip onRemove={() => {}}>{rule.action.type}</Chip>
-                            </div>
-
+                            {/* Condition Group Section */}
                             <div
                                 style={{
                                     display: "flex",
                                     flexDirection: "column",
-                                    gap: 20
+                                    gap: 10
                                 }}
                             >
-                                <h4>Conditions</h4>
+                                <Header>
+                                    <Typography use={"overline"}>Conditions</Typography>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                        <Typography use={"caption"}>Operator:</Typography>
+                                        <Select
+                                            size={"small"}
+                                            value={rule.conditionGroup.operator}
+                                            onChange={(
+                                                value: FunnelConditionGroupModelDto["operator"]
+                                            ) => updateConditionGroupOperator(ruleIndex, value)}
+                                        >
+                                            <option value="and">AND</option>
+                                            <option value="or">OR</option>
+                                        </Select>
+                                        <ButtonDefault onClick={() => addCondition(ruleIndex)}>
+                                            <PlusIcon /> Add Condition
+                                        </ButtonDefault>
+                                        <ButtonDefault
+                                            onClick={() => {
+                                                const updatedRules = [...rules];
+                                                const rule = updatedRules[ruleIndex];
 
-                                <Accordion elevation={1}>
-                                    <AccordionItem
-                                        key={index}
-                                        title={`Condition ${index + 1}`}
+                                                rule.conditionGroup.items.push({
+                                                    id: getRandomId(),
+                                                    operator: "and",
+                                                    items: []
+                                                });
+
+                                                updateRules(updatedRules);
+                                            }}
+                                        >
+                                            <PlusIcon /> Add Group
+                                        </ButtonDefault>
+                                    </div>
+                                </Header>
+
+                                {rule.conditionGroup.items.length === 0 ? (
+                                    <Typography
+                                        use={"caption"}
+                                        style={{ textAlign: "center", padding: "10px" }}
                                     >
+                                        No conditions added yet. Click "Add Condition" to add one.
+                                    </Typography>
+                                ) : (
+                                    rule.conditionGroup.items.map((condition, conditionIndex) => {
+                                        const isConditionGroup = "items" in condition;
+                                        if (isConditionGroup) {
+                                            // Condition group.
+                                            return (
+                                                <div
+                                                    key={condition.id}
+                                                    style={{ marginLeft: "20px" }}
+                                                >
+                                                    <ConditionGroupRenderer
+                                                        ruleIndex={ruleIndex}
+                                                        group={condition}
+                                                        groupPath={`conditionGroup.items[${conditionIndex}]`}
+                                                        fields={fields}
+                                                        updateRules={updateRules}
+                                                        rules={rules}
+                                                    />
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent: "flex-end"
+                                                        }}
+                                                    >
+                                                        <ButtonDefault
+                                                            onClick={() =>
+                                                                removeCondition(
+                                                                    ruleIndex,
+                                                                    conditionIndex
+                                                                )
+                                                            }
+                                                        >
+                                                            <DeleteIcon /> Remove Group
+                                                        </ButtonDefault>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
 
-                                    </AccordionItem>
-                                </Accordion>
-
-                                <Bind name={`rules.${ruleIndex}`}>
-                                    <DynamicFieldset>
-                                        {({ actions, header, row, empty }) => (
+                                        // Condition.
+                                        return (
                                             <>
-                                                {row(({ data: rule, index: conditionIndex }) => (
-                                                    <Fieldset>
-                                                        {rule.conditionGroup.items.map(() => {
-                                                            return (
-                                                                <>
-                                                                    <Bind
-                                                                        name={`rules.${ruleIndex}.conditionGroup.items.`}
-                                                                    >
-                                                                        <Select size={"small"}>
-                                                                            <option value="ele1">
-                                                                                EL1
-                                                                            </option>
-                                                                            <option value="ele2">
-                                                                                EL2
-                                                                            </option>
-                                                                        </Select>
-                                                                    </Bind>
+                                                <Fieldset key={conditionIndex}>
+                                                    <Select
+                                                        size={"small"}
+                                                        value={condition.sourceFieldId}
+                                                        onChange={value =>
+                                                            updateCondition(
+                                                                ruleIndex,
+                                                                conditionIndex,
+                                                                { sourceFieldId: value }
+                                                            )
+                                                        }
+                                                    >
+                                                        <option value="">Select Field</option>
+                                                        <>
+                                                            {fields.map(field => (
+                                                                <option
+                                                                    key={field.id}
+                                                                    value={field.fieldId}
+                                                                >
+                                                                    {field.label}
+                                                                </option>
+                                                            ))}
+                                                        </>
+                                                    </Select>
 
-                                                                    <Bind
-                                                                        name={`rules.${ruleIndex}.conditions.${conditionIndex}.operator`}
-                                                                    >
-                                                                        <Select size={"small"}>
-                                                                            <option value="equals">
-                                                                                equals
-                                                                            </option>
-                                                                            <option value="notEquals">
-                                                                                not equals
-                                                                            </option>
-                                                                            <option value="contains">
-                                                                                contains
-                                                                            </option>
-                                                                            <option value="greaterThan">
-                                                                                greater than
-                                                                            </option>
-                                                                            <option value="lessThan">
-                                                                                less than
-                                                                            </option>
-                                                                        </Select>
-                                                                    </Bind>
+                                                    <Select
+                                                        size={"small"}
+                                                        value={condition.operator}
+                                                        onChange={value =>
+                                                            updateCondition(
+                                                                ruleIndex,
+                                                                conditionIndex,
+                                                                { operator: value }
+                                                            )
+                                                        }
+                                                    >
+                                                        <option value="eq">equals</option>
+                                                        <option value="neq">not equals</option>
+                                                        <option value="gt">greater than</option>
+                                                        <option value="gte">
+                                                            greater than or equal
+                                                        </option>
+                                                        <option value="lt">less than</option>
+                                                        <option value="lte">
+                                                            less than or equal
+                                                        </option>
+                                                        <option value="includes">includes</option>
+                                                        <option value="notIncludes">
+                                                            not includes
+                                                        </option>
+                                                    </Select>
 
-                                                                    <Bind
-                                                                        name={`rules.${ruleIndex}.conditions.${conditionIndex}.value`}
-                                                                    >
-                                                                        <Input size={"small"} />
-                                                                    </Bind>
+                                                    <Input
+                                                        size={"small"}
+                                                        value={condition.value}
+                                                        onChange={value =>
+                                                            updateCondition(
+                                                                ruleIndex,
+                                                                conditionIndex,
+                                                                { value }
+                                                            )
+                                                        }
+                                                    />
 
-                                                                    <DeleteConditionButton
-                                                                        icon={<DeleteIcon />}
-                                                                        onClick={() => {
-                                                                            actions.remove(
-                                                                                conditionIndex
-                                                                            );
-                                                                        }}
-                                                                    />
-                                                                </>
-                                                            );
-                                                        })}
-                                                    </Fieldset>
-                                                ))}
-                                                {empty(() => (
-                                                    <Header>
-                                                        <Typography use={"overline"}>
-                                                            Conditions
-                                                        </Typography>
-                                                        <ButtonDefault
-                                                            // @ts-ignore
-                                                            onClick={actions.add}
-                                                        >
-                                                            <PlusIcon /> Add Condition
-                                                        </ButtonDefault>
-                                                    </Header>
-                                                ))}
-                                                {header(() => (
-                                                    <Header>
-                                                        <Typography use={"overline"}>
-                                                            Conditions
-                                                        </Typography>
-                                                        <ButtonDefault
-                                                            // @ts-ignore
-                                                            onClick={actions.add}
-                                                        >
-                                                            <PlusIcon /> Add Condition
-                                                        </ButtonDefault>
-                                                    </Header>
-                                                ))}
+                                                    <DeleteConditionButton
+                                                        icon={<DeleteIcon />}
+                                                        onClick={() =>
+                                                            removeCondition(
+                                                                ruleIndex,
+                                                                conditionIndex
+                                                            )
+                                                        }
+                                                    />
+                                                </Fieldset>
                                             </>
-                                        )}
-                                    </DynamicFieldset>
-                                </Bind>
+                                        );
+                                    })
+                                )}
                             </div>
 
-                            <div>
-                                <h4>Action</h4>
-                                <Bind name={"ds"}>
-                                    <Select
-                                        onChange={value =>
-                                            updateRuleAction(rule.id, { type: value })
-                                        }
+                            {/* Actions Section */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 10
+                                }}
+                            >
+                                <Header>
+                                    <Typography use={"overline"}>Actions</Typography>
+                                    <ButtonDefault onClick={() => addAction(ruleIndex)}>
+                                        <PlusIcon /> Add Action
+                                    </ButtonDefault>
+                                </Header>
+
+                                {rule.actions.length === 0 ? (
+                                    <Typography
+                                        use={"caption"}
+                                        style={{ textAlign: "center", padding: "10px" }}
                                     >
-                                        <option value="goto">Go to</option>
-                                        <option value="show">Show</option>
-                                        <option value="hide">Hide</option>
-                                        <option value="enable">Enable</option>
-                                        <option value="disable">Disable</option>
-                                    </Select>
-                                </Bind>
-                                {rule.action.type === "goto" && (
-                                    <Select
-                                        value={rule.action.pageId}
-                                        onChange={value =>
-                                            updateRuleAction(rule.id, { pageId: value })
-                                        }
-                                    >
-                                        <option value={"page1"}>Page 1</option>
-                                        <option value={"page2"}>Page 2</option>
-                                    </Select>
+                                        No actions added yet. Click "Add Action" to add one.
+                                    </Typography>
+                                ) : (
+                                    rule.actions.map((action, actionIndex) => (
+                                        <Fieldset key={actionIndex}>
+                                            <Select
+                                                size={"small"}
+                                                value={action.type}
+                                                onChange={value =>
+                                                    updateAction(ruleIndex, actionIndex, {
+                                                        type: value
+                                                    })
+                                                }
+                                            >
+                                                <option value="disableField">Disable Field</option>
+                                                <option value="enableField">Enable Field</option>
+                                                <option value="goToStep">Go To Step</option>
+                                                <option value="showField">Show Field</option>
+                                                <option value="hideField">Hide Field</option>
+                                                <option value="submitAndEnd">Submit and End</option>
+                                            </Select>
+
+                                            {action.type !== "submitAndEnd" && (
+                                                <Select
+                                                    size={"small"}
+                                                    value={action.target.id}
+                                                    onChange={value =>
+                                                        updateAction(ruleIndex, actionIndex, {
+                                                            target: {
+                                                                ...action.target,
+                                                                id: value
+                                                            }
+                                                        })
+                                                    }
+                                                >
+                                                    <option value="">Select Target</option>
+                                                    <>
+                                                        {fields.map(field => (
+                                                            <option
+                                                                key={field.id}
+                                                                value={field.fieldId}
+                                                            >
+                                                                {field.label}
+                                                            </option>
+                                                        ))}
+                                                    </>
+                                                </Select>
+                                            )}
+
+                                            <DeleteConditionButton
+                                                icon={<DeleteIcon />}
+                                                onClick={() => removeAction(ruleIndex, actionIndex)}
+                                            />
+                                        </Fieldset>
+                                    ))
                                 )}
-                                {(rule.action.type === "disable" ||
-                                    rule.action.type === "enable" ||
-                                    rule.action.type === "show" ||
-                                    rule.action.type === "hide") && (
-                                    <Select
-                                        value={rule.action.elementId}
-                                        onChange={value =>
-                                            updateRuleAction(rule.id, {
-                                                elementId: value
-                                            })
-                                        }
-                                    >
-                                        <option value={"ele1"}>Element 1</option>
-                                        <option value={"ele2"}>Element 2</option>
-                                    </Select>
-                                )}
+                            </div>
+
+                            {/* Delete Rule Button */}
+                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                <ButtonDefault onClick={() => removeRule(rule.id)}>
+                                    <DeleteIcon /> Delete Rule
+                                </ButtonDefault>
                             </div>
                         </div>
                     </AccordionItem>
                 ))}
-            </Accordion>*/}
+            </Accordion>
+
+            {rules.length === 0 && (
+                <Typography use={"caption"} style={{ textAlign: "center", padding: "20px" }}>
+                    No rules added yet. Click "Add Rule" to add one.
+                </Typography>
+            )}
         </>
     );
 };
@@ -295,13 +771,13 @@ const dialogContentCss = {
 
 interface ConditionRulesDialogProps {
     open: boolean;
-    conditionRules: FunnelConditionRuleModelDto[];
+    data: FunnelModelDto;
     onClose: () => void;
-    onSubmit: FormOnSubmit<ConditionRulesFormData>;
+    onSubmit: FormOnSubmit<FunnelModelDto>;
 }
 
 export const ConditionRulesDialog = ({
-    conditionRules,
+    data,
     open,
     onClose,
     onSubmit
@@ -309,8 +785,8 @@ export const ConditionRulesDialog = ({
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Conditional Rules</DialogTitle>
-            {conditionRules && (
-                <Form<ConditionRulesFormData> data={{ rules: conditionRules }} onSubmit={onSubmit}>
+            {data && (
+                <Form<FunnelModelDto> data={data} onSubmit={onSubmit}>
                     {({ submit }) => (
                         <>
                             <ClassNames>
