@@ -23,7 +23,7 @@ const dialogContentCss = {
     maxHeight: 600
 };
 
-const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFieldDialogProps) => {
+export const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFieldDialogProps) => {
     const initialFormData = useMemo(() => {
         if (!field) {
             return {};
@@ -67,5 +67,3 @@ const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFieldDialog
         </Dialog>
     );
 };
-
-export default FieldSettingsDialog;

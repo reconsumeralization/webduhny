@@ -17,14 +17,18 @@ import type {
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
-import {isContainerElementType, isFieldElementType, isStepElementType} from "../../../../shared/constants";
+import {
+    isContainerElementType,
+    isFieldElementType,
+    isStepElementType
+} from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import {
     FunnelFieldDefinitionModel,
     FunnelFieldDefinitionModelDto
 } from "../../../../shared/models/FunnelFieldDefinitionModel";
 import { useDisclosure } from "../../../admin/useDisclosure";
-import FieldSettingsDialog from "../../../admin/FieldSettingsDialog";
+import { FieldSettingsDialog } from "../../../admin/FieldSettingsDialog";
 
 export const ContainerAdminEventHandlers = () => {
     const eventHandler = useEventActionHandler();
@@ -99,7 +103,7 @@ export const ContainerAdminEventHandlers = () => {
             }
 
             if (isContainerElementType(updatedElement.type)) {
-                funnelVm.funnel.populate(updatedElement.data)
+                funnelVm.funnel.populate(updatedElement.data);
                 return;
             }
 
@@ -107,7 +111,6 @@ export const ContainerAdminEventHandlers = () => {
                 funnelVm.updateStep(updatedElement.data.step.id, updatedElement.data.step);
                 return;
             }
-
         }),
         [funnelVm]
     );

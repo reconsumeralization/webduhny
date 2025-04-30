@@ -4,7 +4,6 @@ import { useRenderer } from "@webiny/app-page-builder-elements";
 import {
     useActiveElementId,
     useElementById,
-    useEventActionHandler,
     useUpdateElement
 } from "@webiny/app-page-builder/editor";
 import styled from "@emotion/styled";
@@ -12,7 +11,7 @@ import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/
 import { IconButton } from "@webiny/ui/Button";
 import { isFieldElementType } from "../../shared/constants";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import FieldSettingsDialog from "../admin/FieldSettingsDialog";
+import { FieldSettingsDialog } from "../admin/FieldSettingsDialog";
 import { useDisclosure } from "../admin/useDisclosure";
 import { FunnelFieldDefinitionModel } from "../../shared/models/FunnelFieldDefinitionModel";
 import { useContainer } from "./container/ContainerProvider";
@@ -38,7 +37,6 @@ const EditFieldButton = styled(IconButton)`
 
 export const DecoratedElementControls = ElementControls.createDecorator(Component => {
     return function DecoratedElementControls(props) {
-        const eventHandler = useEventActionHandler();
         const [activeElementId] = useActiveElementId();
         const { funnelVm } = useContainer();
         const { getElement } = useRenderer();
