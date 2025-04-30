@@ -53,4 +53,44 @@ describe("FetchExecute", () => {
             expect(result).toEqual([]);
         }
     });
+
+    it("should fail to fetch because of an error while executing dynamodb command", async () => {
+        const fetchExecute = createFetchExecute({
+            maxBatchSize: 50,
+            maxRetries: 2,
+            retryDelay: 10
+        });
+
+        table.add({
+            command: "put",
+            PK: "pk1",
+            SK: "sk1"
+        });
+
+        const bundles = table.bundle();
+        expect(bundles).toHaveLength(1);
+
+        const bundle = bundles[0];
+
+        console.error = jest.fn();
+
+        try {
+            const result = await fetchExecute.execute({
+                client: {
+                    send: async () => {
+                        throw new Error("Unspecified error.");
+                    }
+                },
+                table,
+                bundle
+            });
+            expect(result).toEqual("SHOULD NOT REACH!");
+        } catch (ex) {
+            expect(ex.message).toEqual("Unspecified error.");
+        }
+
+        expect(console.error).toHaveBeenCalledWith(
+            `Max retries reached. Could not fetch items from table: ${process.env.DB_TABLE}`
+        );
+    });
 });

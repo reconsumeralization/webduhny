@@ -1,10 +1,10 @@
 import { createEventHandlerPlugin } from "~/resolver/createEventHandlerPlugin.js";
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 import { SQSEventHandler } from "@webiny/handler-aws/sqs";
-import { createMockSQSEventRecord, createMockSQSEvent } from "~tests/mocks/sqsEvent.js";
+import { createMockSQSEventRecord } from "~tests/mocks/sqsEvent.js";
 import { createMockContext } from "~tests/mocks/context.js";
 import { createLambdaContext } from "~tests/mocks/lambdaContext.js";
-import { SQSEvent } from "@webiny/aws-sdk/types/index.js";
+import type { SQSEvent } from "@webiny/aws-sdk/types/index.js";
 import { createMockDeploymentData, storeDeployment } from "~tests/mocks/deployments.js";
 import type {
     DynamoDBClientConfig,
@@ -29,8 +29,6 @@ describe("createEventHandlerPlugin", () => {
             createDocumentClient
         });
         expect(handler).toBeInstanceOf(SQSEventHandler);
-
-        const event = createMockSQSEvent();
 
         const { context, request, reply } = createMockContext();
         const lambdaContext = createLambdaContext();
@@ -114,7 +112,7 @@ describe("createEventHandlerPlugin", () => {
             ]
         };
 
-        const result = await handler.cb({
+        await handler.cb({
             context,
             reply,
             request,

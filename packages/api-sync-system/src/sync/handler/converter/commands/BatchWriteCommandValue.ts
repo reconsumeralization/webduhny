@@ -1,6 +1,7 @@
-import { BatchWriteCommand } from "@webiny/aws-sdk/client-dynamodb";
+import type { BatchWriteCommand } from "@webiny/aws-sdk/client-dynamodb";
 import type { ICommandValue, ICommandValueItem } from "~/sync/types.js";
 import type { NonEmptyArray } from "@webiny/api/types.js";
+import { getTableType } from "~/sync/utils/getTableType.js";
 
 const convert = (items: ICommandValueItem[]): NonEmptyArray<ICommandValueItem> | null => {
     if (items.length === 0) {
@@ -24,7 +25,8 @@ export class BatchWriteCommandValue implements ICommandValue {
                         command: "put",
                         PK: item.PK,
                         SK: item.SK,
-                        tableName
+                        tableName,
+                        tableType: getTableType(tableName)
                     });
                 } else if (value.DeleteRequest?.Key) {
                     const item = value.DeleteRequest.Key;
@@ -33,7 +35,8 @@ export class BatchWriteCommandValue implements ICommandValue {
                         command: "delete",
                         PK: item.PK,
                         SK: item.SK,
-                        tableName
+                        tableName,
+                        tableType: getTableType(tableName)
                     });
                 }
             }

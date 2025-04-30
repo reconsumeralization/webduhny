@@ -40,7 +40,9 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
                 client: createDocumentClient(),
                 table: tableName
             });
-
+            /**
+             * Fetch all possible deployments, out of which we will filter out the deployment that the records came from.
+             */
             const deployments = await deploymentsFetcher.fetch();
 
             const storer = createStorer({

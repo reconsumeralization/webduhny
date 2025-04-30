@@ -7,7 +7,7 @@ export interface ICreateMockPutCommandParams {
 
 export const createMockPutCommand = (params: ICreateMockPutCommandParams = {}) => {
     return new PutCommand({
-        TableName: params.TableName || "test",
+        TableName: params.TableName || process.env.DB_TABLE,
         Item: params.Item || {
             PK: "p1",
             SK: "s1"

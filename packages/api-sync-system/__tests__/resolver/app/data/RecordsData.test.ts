@@ -102,6 +102,36 @@ describe("RecordsData", () => {
                             })
                         }
                     }
+                },
+                {
+                    body: {
+                        detail: {
+                            items: [
+                                {
+                                    tableName,
+                                    command: "put",
+                                    PK: "pk4put",
+                                    SK: "sk4put"
+                                },
+                                {
+                                    tableName,
+                                    command: "delete",
+                                    PK: "pk5delete",
+                                    SK: "sk5delete"
+                                },
+                                {
+                                    tableName,
+                                    command: "delete",
+                                    PK: "pk6delete",
+                                    SK: "sk6delete"
+                                }
+                            ],
+                            source: createMockSystem({
+                                env: "dev",
+                                variant: "blue"
+                            })
+                        }
+                    }
                 }
             ]
         });
@@ -109,5 +139,16 @@ describe("RecordsData", () => {
         const deployments = data.getDeployments();
 
         expect(deployments).toHaveLength(1);
+
+        const tables = deployments[0].getTables();
+        expect(tables).toHaveLength(1);
+
+        const bundles = tables[0].bundle();
+        expect(bundles).toHaveLength(4);
+
+        expect(bundles[0].command).toEqual("put");
+        expect(bundles[1].command).toEqual("delete");
+        expect(bundles[2].command).toEqual("put");
+        expect(bundles[3].command).toEqual("delete");
     });
 });

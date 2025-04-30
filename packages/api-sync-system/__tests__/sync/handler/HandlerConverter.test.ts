@@ -30,7 +30,7 @@ describe("HandlerConverter", () => {
 
         const result = handlerConverter.convert(
             new PutCommand({
-                TableName: "test",
+                TableName: process.env.DB_TABLE,
                 Item: {
                     PK: "p1",
                     SK: "s1"

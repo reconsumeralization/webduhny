@@ -95,9 +95,9 @@ export class FetchExecute implements IFetchExecute {
     }
 
     private async sleep() {
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             setTimeout(() => {
-                resolve(true);
+                resolve();
             }, this.retryDelay);
         });
     }

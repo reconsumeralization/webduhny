@@ -1,9 +1,9 @@
 import { NonEmptyArray } from "@webiny/api/types";
 import {
-    type GetCommand,
     type BatchGetCommand,
     type BatchWriteCommand,
     type DeleteCommand,
+    type GetCommand,
     type PutCommand,
     type UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
@@ -32,7 +32,10 @@ export interface ICommandValueItem {
     SK: string;
     command: ExtendedCommandType;
     tableName: string;
+    tableType: TableType | null;
 }
+
+export type TableType = "regular" | "elasticsearch" | "log";
 
 export interface ICommandValue {
     readonly command: AllCommandType;

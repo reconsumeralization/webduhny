@@ -1,8 +1,4 @@
 import type { IRecordsDataDeployment } from "./RecordsDataDeployment.js";
-import type {
-    IResolverSQSRecord,
-    IResolverSQSRecordBody
-} from "~/resolver/app/abstractions/ResolverRecord.js";
 import { convertException } from "@webiny/utils/exception.js";
 import type { ISystem } from "~/sync/types.js";
 import type { IDetail } from "~/sync/handler/types.js";
@@ -43,10 +39,20 @@ export class RecordsData implements IRecordsData {
 
     public async ingest(params: IRecordsDataIngestParams): Promise<void> {
         const { records } = params;
-
+        /**
+         * We need to go through all the records and find the deployment it belongs to.
+         * If no deployment is found, we skip the record - but leave the log.
+         *
+         * We need to split the records by deployment because we will need to do transforms on the records, and we need to know which deployment the record was sent from.
+         */
         for (const record of records) {
-            const deployment = this.getDeployment(record.body.detail.source);
+            const source = record.body.detail.source;
+            const deployment = this.getDeployment(source);
             if (!deployment) {
+                console.error(
+                    `Deployment not found for source "${source.name}". More info in next log.`
+                );
+                console.log(JSON.stringify(source));
                 continue;
             }
             await deployment.ingest({

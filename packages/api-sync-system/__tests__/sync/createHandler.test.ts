@@ -17,8 +17,11 @@ import { UpdateCommandValue } from "~/sync/handler/converter/commands/UpdateComm
 import { NullCommandValue } from "~/sync/handler/converter/commands/NullCommandValue.js";
 import { DeleteCommandValue } from "~/sync/handler/converter/commands/DeleteCommandValue";
 import { BatchWriteCommandValue } from "~/sync/handler/converter/commands/BatchWriteCommandValue.js";
+import { getTableType } from "~/sync/utils/getTableType.js";
 
 describe("createHandler", () => {
+    const tableName = process.env.DB_TABLE as string;
+
     it("should create a handler and a converter", async () => {
         const { handler, converter } = createHandler({
             client: createMockEventBridgeClient(),
@@ -39,7 +42,7 @@ describe("createHandler", () => {
 
         const result = converter.convert(
             new DeleteCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "p1",
                     SK: "s1"
@@ -54,7 +57,8 @@ describe("createHandler", () => {
             command: "delete",
             PK: "p1",
             SK: "s1",
-            tableName: "test"
+            tableName,
+            tableType: getTableType(tableName)
         });
     });
 
@@ -67,7 +71,7 @@ describe("createHandler", () => {
 
         const result = converter.convert(
             new PutCommand({
-                TableName: "test",
+                TableName: tableName,
                 Item: {
                     PK: "p1",
                     SK: "s1"
@@ -82,7 +86,8 @@ describe("createHandler", () => {
             command: "put",
             PK: "p1",
             SK: "s1",
-            tableName: "test"
+            tableName,
+            tableType: getTableType(tableName)
         });
     });
 
@@ -95,7 +100,7 @@ describe("createHandler", () => {
 
         const result = converter.convert(
             new UpdateCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "p1",
                     SK: "s1"
@@ -110,7 +115,8 @@ describe("createHandler", () => {
             command: "update",
             PK: "p1",
             SK: "s1",
-            tableName: "test"
+            tableName,
+            tableType: getTableType(tableName)
         });
     });
 
@@ -123,7 +129,7 @@ describe("createHandler", () => {
 
         const result = converter.convert(
             new GetCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "p1",
                     SK: "s1"
@@ -146,7 +152,7 @@ describe("createHandler", () => {
         const result = converter.convert(
             new BatchGetCommand({
                 RequestItems: {
-                    test: {
+                    [tableName]: {
                         Keys: [
                             {
                                 PK: "p1",
@@ -177,7 +183,7 @@ describe("createHandler", () => {
         const result = converter.convert(
             new BatchWriteCommand({
                 RequestItems: {
-                    test: [
+                    [tableName]: [
                         {
                             PutRequest: {
                                 Item: {
@@ -231,31 +237,36 @@ describe("createHandler", () => {
                 command: "put",
                 PK: "p1",
                 SK: "s1",
-                tableName: "test"
+                tableName,
+                tableType: getTableType(tableName)
             },
             {
                 command: "delete",
                 PK: "p2",
                 SK: "s2",
-                tableName: "test"
+                tableName,
+                tableType: getTableType(tableName)
             },
             {
                 command: "put",
                 PK: "p3",
                 SK: "s3",
-                tableName: "test"
+                tableName,
+                tableType: getTableType(tableName)
             },
             {
                 command: "delete",
                 PK: "p4",
                 SK: "s4",
-                tableName: "test"
+                tableName,
+                tableType: getTableType(tableName)
             },
             {
                 command: "delete",
                 PK: "p5",
                 SK: "s5",
-                tableName: "test"
+                tableName,
+                tableType: getTableType(tableName)
             }
         ]);
     });
@@ -288,7 +299,7 @@ describe("createHandler", () => {
         const result = converter.convert(
             new BatchWriteCommand({
                 RequestItems: {
-                    test: []
+                    [tableName]: []
                 }
             })
         );

@@ -10,6 +10,8 @@ import {
 import { createMockSyncHandler } from "~tests/mocks/syncHandler.js";
 
 describe("Handler", () => {
+    const tableName = process.env.DB_TABLE as string;
+
     it("should create a sync handler", async () => {
         const handler = createMockSyncHandler();
 
@@ -40,7 +42,7 @@ describe("Handler", () => {
 
         handler.add(
             new GetCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "pk0",
                     SK: "sk0"
@@ -50,7 +52,7 @@ describe("Handler", () => {
 
         handler.add(
             new PutCommand({
-                TableName: "test",
+                TableName: tableName,
                 Item: {
                     PK: "pk1",
                     SK: "sk1"
@@ -59,7 +61,7 @@ describe("Handler", () => {
         );
         handler.add(
             new DeleteCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "pk2",
                     SK: "sk2"
@@ -69,7 +71,7 @@ describe("Handler", () => {
 
         handler.add(
             new UpdateCommand({
-                TableName: "test",
+                TableName: tableName,
                 Key: {
                     PK: "pk3",
                     SK: "sk3"
@@ -101,7 +103,7 @@ describe("Handler", () => {
 
         handler.add(
             new PutCommand({
-                TableName: "test",
+                TableName: tableName,
                 Item: {
                     PK: "pk1",
                     SK: "sk1"
