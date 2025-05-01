@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { type FileItemDto, FilePicker } from "~/FilePicker";
 import { Providers } from "~/Providers";
@@ -217,6 +217,121 @@ export const CompactFullExample: Story = {
         validation: {
             isValid: false,
             message: "This field is required."
+        }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [selectedFile, setSelectedFile] = useState(args.value);
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setSelectedFile(args.value);
+        }, [args.value]);
+
+        const handleSelect = () => {
+            setSelectedFile(getFile());
+            setValidation({ isValid: true, message: "" });
+        };
+
+        const handleEdit = (file: any) => {
+            if (file) {
+                console.log("Editing file:", file);
+                alert(`Editing File: ${file.name}`);
+            }
+        };
+
+        const handleRemove = () => {
+            setSelectedFile(null);
+
+            if (args.required) {
+                setValidation({ isValid: false, message: "Please select a file" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && !selectedFile) {
+                setValidation({ isValid: false, message: "Please select a file" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, selectedFile]);
+
+        return (
+            <Providers>
+                <FilePicker
+                    {...args}
+                    value={selectedFile}
+                    onSelectItem={handleSelect}
+                    onRemoveItem={handleRemove}
+                    onEditItem={handleEdit}
+                    validation={validation}
+                />
+            </Providers>
+        );
+    },
+    args: {
+        label: "Upload Image",
+        required: true,
+        disabled: false,
+        description: "Select a file to upload (JPG, PNG, PDF)",
+        note: "Note: Maximum file size is 5MB",
+        type: "area",
+        value: null,
+        validation: undefined,
+        onSelectItem: undefined,
+        onEditItem: undefined,
+        onRemoveItem: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the file picker",
+            control: "text"
+        },
+        required: {
+            description: "Makes the field required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the file picker when set to true",
+            control: "boolean"
+        },
+        description: {
+            description: "Additional description text below the field",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the field",
+            control: "text"
+        },
+        type: {
+            description: "The visual style of the file picker",
+            control: "radio",
+            options: ["area", "compact"]
+        },
+        value: {
+            description: "The currently selected file",
+            control: "object"
+        },
+        validation: {
+            description:
+                "Object containing validation state and message. Please refer to the example above for more details.",
+            control: "none"
+        },
+        onSelectItem: {
+            description: "Function called when a file is selected",
+            control: "none"
+        },
+        onEditItem: {
+            description: "Function called when a file is edited",
+            control: "none"
+        },
+        onRemoveItem: {
+            description: "Function called when a file is removed",
+            control: "none"
         }
     }
 };
