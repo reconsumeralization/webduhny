@@ -22,7 +22,9 @@ import type {
 } from "~/types";
 import {
     GetIdentityGatewayFromContext,
+    GetWcpGatewayFromContext,
     type IGetIdentityGateway,
+    type IGetWcpGateway,
     type IIsAuthorizationEnabledGateway,
     type IListIdentityTeamsGateway,
     type IListPermissionsGateway,
@@ -37,18 +39,18 @@ interface CreateFolderLevelPermissionsParams {
 }
 
 export class FolderLevelPermissions {
-    private readonly context: AcoContext;
     private crud: AcoFolderLevelPermissionsCrud;
 
+    private readonly getWcpGateway: IGetWcpGateway;
     private readonly getIdentityGateway: IGetIdentityGateway;
     private readonly listPermissionsGateway: IListPermissionsGateway;
     private readonly listIdentityTeamsGateway: IListIdentityTeamsGateway;
     private readonly isAuthorizationEnabledGateway: IIsAuthorizationEnabledGateway;
 
     constructor(params: CreateFolderLevelPermissionsParams) {
-        this.context = params.context;
         this.crud = params.crud;
 
+        this.getWcpGateway = new GetWcpGatewayFromContext(params.context);
         this.getIdentityGateway = new GetIdentityGatewayFromContext(params.context);
         this.listPermissionsGateway = new ListPermissionsGatewayFromContext(params.context);
         this.listIdentityTeamsGateway = new ListIdentityTeamsGatewayFromContext(params.context);
@@ -58,12 +60,15 @@ export class FolderLevelPermissions {
     }
 
     public canUseFolderLevelPermissions(enabled?: boolean) {
-        const canUseFolderLevelPermissionsUseCase = new CanUseFolderLevelPermissions(this.context);
+        const canUseFolderLevelPermissionsUseCase = new CanUseFolderLevelPermissions(
+            this.getWcpGateway,
+            this.getIdentityGateway
+        );
         return canUseFolderLevelPermissionsUseCase.execute(enabled);
     }
 
     public canUseTeams() {
-        const canUseTeamsUseCase = new CanUseTeams(this.context);
+        const canUseTeamsUseCase = new CanUseTeams(this.getWcpGateway);
         return canUseTeamsUseCase.execute();
     }
 
@@ -78,6 +83,10 @@ export class FolderLevelPermissions {
     }
 
     public async canAccessFolder(params: CanAccessFolderParams) {
+        if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
+            return true;
+        }
+
         const canAccessFolderUseCase = new CanAccessFolder(this.getIdentityGateway);
         return await canAccessFolderUseCase.execute(params);
     }

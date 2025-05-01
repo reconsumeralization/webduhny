@@ -1,14 +1,14 @@
 import type { ICanUseTeams } from "./ICanUseTeams";
-import type { AcoContext } from "~/types";
+import type { IGetWcpGateway } from "~/flp/FolderLevelPermissions/gateways/GetWcpGateway";
 
 export class CanUseTeams implements ICanUseTeams {
-    private context: AcoContext;
+    private getWcpGateway: IGetWcpGateway;
 
-    constructor(context: AcoContext) {
-        this.context = context;
+    constructor(getWcpGateway: IGetWcpGateway) {
+        this.getWcpGateway = getWcpGateway;
     }
 
     execute() {
-        return this.context.wcp.canUseTeams();
+        return this.getWcpGateway.execute().canUseTeams();
     }
 }
