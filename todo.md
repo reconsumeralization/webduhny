@@ -14,8 +14,7 @@
 - checkbox/radio elements
 - validators
   - async validators
-  - pattern validator
-  - uniqueFieldIdValidator
+  ---------> uniqueFieldIdValidator
 - edit field dialog reopening?
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - when adding tab, should be activated immediately
@@ -30,6 +29,10 @@
 - themes
 - docs
 - test in CWP
+- delete __fb-formElements folder
+-
+
+
 
 ## SH
 - have multiple funnels on page

@@ -33,12 +33,11 @@ export const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFiel
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <Form<FunnelFieldDefinitionModelDto> data={initialFormData} onSubmit={onSubmit}>
-                {({ submit, data }) => (
-                    <>
-                        <DialogTitle>Field Settings {data.label && ` - ${data.label}`}</DialogTitle>
-
-                        {field && (
+            <DialogTitle>Field Settings</DialogTitle>
+            {field && (
+                <Form<FunnelFieldDefinitionModelDto> data={initialFormData} onSubmit={onSubmit}>
+                    {({ submit }) => (
+                        <>
                             <ClassNames>
                                 {({ css }) => (
                                     <DialogContent className={css(dialogContentCss)}>
@@ -55,16 +54,16 @@ export const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFiel
                                     </DialogContent>
                                 )}
                             </ClassNames>
-                        )}
-                        <DialogActions style={{ justifyContent: "flex-end" }}>
-                            <div>
-                                <DialogButton onClick={onClose}>{"Cancel"}</DialogButton>
-                                <DialogButton onClick={submit}>{"Save"}</DialogButton>
-                            </div>
-                        </DialogActions>
-                    </>
-                )}
-            </Form>
+                            <DialogActions style={{ justifyContent: "flex-end" }}>
+                                <div>
+                                    <DialogButton onClick={onClose}>{"Cancel"}</DialogButton>
+                                    <DialogButton onClick={submit}>{"Save"}</DialogButton>
+                                </div>
+                            </DialogActions>
+                        </>
+                    )}
+                </Form>
+            )}
         </Dialog>
     );
 };

@@ -74,10 +74,13 @@ describe("Funnel Submissions", () => {
             ],
             conditionRules: [
                 {
+                    id: "rule1",
                     conditionGroup: {
+                        id: "conditionGroup1",
                         operator: "and",
                         items: [
                             {
+                                id: "condition1",
                                 sourceFieldId: "firstName",
                                 operator: "eq",
                                 value: ""
@@ -86,6 +89,7 @@ describe("Funnel Submissions", () => {
                     },
                     actions: [
                         {
+                            id: "action1",
                             type: "disableField",
                             target: {
                                 type: "field",

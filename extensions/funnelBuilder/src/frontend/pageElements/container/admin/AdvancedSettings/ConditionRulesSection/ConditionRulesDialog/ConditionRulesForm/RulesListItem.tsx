@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IconButton } from "@webiny/ui/Button";
 import { AccordionItem } from "@webiny/ui/Accordion";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
@@ -18,12 +18,14 @@ export const RulesListItem = ({ rule }: RulesListItemProps) => {
 
     const conditionsCount = getConditionsCount(rule.id);
     const actionsCount = getActionsCount(rule.id);
-    const description = [
-        conditionsCount || "No",
-        "conditions,",
-        actionsCount || "no",
-        "actions"
-    ].join(" ");
+    const description = useMemo(() => {
+        return [
+            conditionsCount || "No",
+            conditionsCount === 1 ? "condition," : "conditions,",
+            actionsCount || "no",
+            actionsCount === 1 ? "action" : "actions"
+        ].join(' ');
+    }, [conditionsCount, actionsCount]);
 
     return (
         <AccordionItem

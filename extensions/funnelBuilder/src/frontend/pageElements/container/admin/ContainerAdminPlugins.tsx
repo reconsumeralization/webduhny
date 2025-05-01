@@ -48,9 +48,7 @@ export const ContainerAdminPlugins = () => (
             // In most cases, using `["cell", "block"]` will suffice.
             target={["cell", "block"]}
             onCreate={OnCreateActions.OPEN_SETTINGS}
-            //  onDelete={() => {  }}
             create={createContainerElement}
-            // We don't want to allow deleting the container element.
             canDelete={() => false}
         />
         <PbEditorPageElementAdvancedSettingsPlugin

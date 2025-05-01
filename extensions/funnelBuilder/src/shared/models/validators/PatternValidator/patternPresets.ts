@@ -6,13 +6,13 @@ export const patternPresets = [
         flags: "i"
     },
     {
-        type: "lowerCase",
+        type: "lowercase",
         name: "Lower case",
         regex: `^([a-z]*)$`,
         flags: ""
     },
     {
-        type: "upperCase",
+        type: "uppercase",
         name: "Upper case",
         regex: `^([A-Z]*)$`,
         flags: ""
