@@ -70,7 +70,30 @@ describe("Funnel Submissions", () => {
                         }
                     ],
                     extra: {}
-                }
+                },
+                {
+                    id: "location",
+                    fieldId: "location",
+                    stepId: "step2",
+                    type: "text",
+                    label: "Location",
+                    helpText: "Location",
+                    defaultValue: 'Earth',
+                    validators: [
+                        {
+                            type: "required",
+                            params: { extra: {}, errorMessage: "Value is required." }
+                        },
+                        {
+                            type: "minLength",
+                            params: {
+                                extra: { threshold: 2 },
+                                errorMessage: "This field must be at least 2 characters long."
+                            }
+                        }
+                    ],
+                    extra: {}
+                },
             ],
             conditionRules: [
                 {

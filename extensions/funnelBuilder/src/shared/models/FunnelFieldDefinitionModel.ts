@@ -1,8 +1,9 @@
 import { AbstractValidator, FieldValidatorDto } from "./validators/AbstractValidator";
 import { validatorFromDto } from "./validators/validatorFactory";
 import { createObjectHash } from "../createObjectHash";
+import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "./FunnelFieldValueModel";
 
-export interface FunnelFieldDefinitionModelDto<TExtra = any> {
+export interface FunnelFieldDefinitionModelDto<TExtra = any, TFieldValue = unknown> {
     id: string;
     fieldId: string;
     stepId: string;
@@ -10,24 +11,25 @@ export interface FunnelFieldDefinitionModelDto<TExtra = any> {
     label: string;
     helpText: string;
     validators: FieldValidatorDto[];
+    defaultValue: FunnelFieldValueModelDto<TFieldValue>;
     extra: TExtra;
 }
 
-export class FunnelFieldDefinitionModel {
+export class FunnelFieldDefinitionModel<TExtra = any, TFieldValue = unknown> {
     id: string;
     type: string;
     stepId: string;
     fieldId: string;
     label: string;
     helpText: string;
-    defaultValue: any;
+    defaultValue: FunnelFieldValueModel<TFieldValue>;
     validators: AbstractValidator[];
     extra: any; // todo
 
     // Meta fields.
     supportedValidatorTypes: string[] = ["required"];
 
-    constructor(dto: FunnelFieldDefinitionModelDto) {
+    constructor(dto: FunnelFieldDefinitionModelDto<TExtra, TFieldValue>) {
         this.id = dto.id;
         this.fieldId = dto.fieldId;
         this.stepId = dto.stepId;
@@ -35,6 +37,7 @@ export class FunnelFieldDefinitionModel {
         this.label = dto.label;
         this.helpText = dto.helpText;
         this.validators = dto.validators?.map(validatorFromDto) ?? [];
+        this.defaultValue = FunnelFieldValueModel.fromDto<TFieldValue>(dto.defaultValue)
         this.extra = dto.extra ?? {};
     }
 
@@ -47,6 +50,7 @@ export class FunnelFieldDefinitionModel {
             label: this.label,
             helpText: this.helpText,
             validators: this.validators.map(v => v.toDto()),
+            defaultValue: this.defaultValue.toDto(),
             extra: this.extra
         };
     }
