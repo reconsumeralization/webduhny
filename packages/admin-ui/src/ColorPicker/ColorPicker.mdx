@@ -1,0 +1,125 @@
+import { Canvas, Meta, Controls } from '@storybook/blocks';
+
+import * as ColorPickerStories from './ColorPicker.stories';
+
+<Meta of={ColorPickerStories} />
+
+# Color Picker
+
+The Color Picker component allows users to select colors from a predefined palette or specify custom colors using various formats (hex, RGB, or named colors). It provides an intuitive interface for color selection in forms and design tools.
+
+## Usage
+
+```tsx
+import React, { useState } from "react";
+import { ColorPicker } from "@webiny/admin-ui";
+
+const ColorPickerExample = () => {
+    const [color, setColor] = useState("#4285F4");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newColor: string) => {
+        setColor(newColor);
+
+        if (!newColor) {
+            setValidation({ isValid: false, message: "Please select a color" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <ColorPicker
+            label="Brand Color"
+            description="Select your primary brand color"
+            note="Note: Choose a color that aligns with your brand identity"
+            required={true}
+            value={color}
+            onChange={handleChange}
+            validation={validation}
+        />
+    );
+};
+
+export default ColorPickerExample;
+```
+
+<Canvas of={ColorPickerStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+import { ColorPicker } from "@webiny/admin-ui";
+
+const ColorPickerExample = () => {
+    const [color, setColor] = useState("#4285F4");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newColor: string) => {
+        setColor(newColor);
+
+        if (!newColor) {
+            setValidation({ isValid: false, message: "Please select a color" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <ColorPicker
+            label="Brand Color"
+            description="Select your primary brand color"
+            note="Note: Choose a color that aligns with your brand identity"
+            required={true}
+            value={color}
+            onChange={handleChange}
+            validation={validation}
+        />
+    );
+};
+
+export default ColorPickerExample;
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/ColorPicker/ColorPicker.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={ColorPickerStories.Documentation} exclude={"onChange"}/>
+
+## Anatomy
+
+### Color Picker Anatomy
+The Color Picker component consists of several key parts:
+
+1. **Label**: Identifies the purpose of the color picker
+2. **Color Preview**: Shows the currently selected color
+3. **Color Palette**: Displays predefined colors for quick selection
+4. **Custom Color Picker**: Advanced interface for selecting custom colors
+5. **Validation Message**: Displays error messages when validation fails
+6. **Description**: Provides additional context or instructions
+7. **Note**: Additional information or guidance for the user
+
+### Features
+
+- **Predefined Color Palette**: Quick access to commonly used colors
+- **Custom Color Selection**: Advanced color picker with RGB, HSL, and hex input
+- **Color Preview**: Visual representation of the selected color
+- **Transparency Support**: Ability to set opacity/alpha values
+- **Theme Integration**: Uses colors from your application's theme
+- **Validation**: Built-in support for validation with error messages
+- **Accessibility**: Keyboard navigation and screen reader support
+
+## Best Practices
+
+1. **Always provide a label**: Make it clear what the color picker is for
+2. **Use theme colors**: When possible, use colors from your application's theme for consistency
+3. **Provide helpful validation**: Give specific error messages when validation fails
+4. **Consider color accessibility**: Remind users to choose colors with sufficient contrast
+5. **Add descriptions**: Help users understand what the color will be used for
+6. **Show color preview**: Always display the currently selected color clearly
