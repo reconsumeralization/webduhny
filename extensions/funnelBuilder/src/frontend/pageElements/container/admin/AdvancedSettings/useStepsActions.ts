@@ -35,7 +35,7 @@ export const useStepsActions = () => {
         (containerElementWithChildren: ContainerElementWithChildren) => {
             const initialStepData = {
                 id: getRandomId(),
-                title: "New Step"
+                title: "New Page"
             };
 
             updateElement(

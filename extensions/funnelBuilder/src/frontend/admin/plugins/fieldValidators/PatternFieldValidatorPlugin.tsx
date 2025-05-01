@@ -35,9 +35,7 @@ const ValidatorSettings: RenderSettings = ({ setMessage }) => {
                         setValue("params.extra.regex", null);
                         setValue("params.extra.flags", null);
 
-                        const selectedPreset = patternPresets.find(
-                            preset => preset.type === value
-                        );
+                        const selectedPreset = patternPresets.find(preset => preset.type === value);
 
                         if (!selectedPreset) {
                             return;

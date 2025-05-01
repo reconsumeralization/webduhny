@@ -16,7 +16,7 @@ export const TextFieldAdminPlugins = () => {
                 renderer={TextFieldRenderer}
                 name={"Short Text"}
                 description={"Titles, names, single line input"}
-                icon={<TextIcon/>}
+                icon={<TextIcon />}
                 extraFieldData={{
                     inputType: "",
                     placeholderText: ""

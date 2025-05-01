@@ -19,10 +19,10 @@ export const RulesListItem = ({ rule }: RulesListItemProps) => {
     const conditionsCount = getConditionsCount(rule.id);
     const actionsCount = getActionsCount(rule.id);
     const description = [
-        conditionsCount,
-        conditionsCount > 1 ? "conditions," : "condition,",
-        actionsCount,
-        actionsCount > 1 ? "actions" : "action"
+        conditionsCount || "No",
+        "conditions,",
+        actionsCount || "no",
+        "actions"
     ].join(" ");
 
     return (

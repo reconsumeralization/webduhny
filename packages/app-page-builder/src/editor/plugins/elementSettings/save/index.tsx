@@ -8,9 +8,6 @@ export default {
     name: "pb-editor-page-element-settings-save",
     type: "pb-editor-page-element-settings",
     renderAction() {
-        return (
-            <>
-            </>
-        );
+        return <></>;
     }
 } as PbEditorPageElementSettingsPlugin;

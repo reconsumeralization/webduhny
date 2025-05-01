@@ -1,6 +1,6 @@
 import { AbstractValidator, FieldValidatorDto } from "./validators/AbstractValidator";
 import { validatorFromDto } from "./validators/validatorFactory";
-import {createObjectHash} from "../createObjectHash";
+import { createObjectHash } from "../createObjectHash";
 
 export interface FunnelFieldDefinitionModelDto<TExtra = any> {
     id: string;
@@ -61,7 +61,7 @@ export class FunnelFieldDefinitionModel {
         this.extra = dto.extra ?? this.extra;
     }
 
-    getChecksum():string {
+    getChecksum(): string {
         return createObjectHash(this.toDto());
     }
 

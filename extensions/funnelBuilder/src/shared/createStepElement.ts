@@ -11,7 +11,7 @@ export const createStepElement = (initialStepData?: FunnelStepModelDto) => {
             settings: {},
             step: initialStepData || {
                 id: getRandomId(),
-                title: "New step"
+                title: "New page"
             }
         },
         elements: [

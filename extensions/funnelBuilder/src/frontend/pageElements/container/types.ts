@@ -8,20 +8,20 @@ export interface PbEditorElementWithChildren extends PbEditorElement {
 export interface StepElement extends PbEditorElement {
     data: {
         step: {
-            id: string
-            title: string
-        }
-    }
+            id: string;
+            title: string;
+        };
+    };
 }
 
 export interface StepElementWithChildren extends PbEditorElement {
     data: {
         step: {
-            id: string
-            title: string
-        }
-    },
-    elements: PbEditorElementWithChildren[]
+            id: string;
+            title: string;
+        };
+    };
+    elements: PbEditorElementWithChildren[];
 }
 
 export interface ContainerElement extends PbEditorElement {
@@ -30,6 +30,5 @@ export interface ContainerElement extends PbEditorElement {
 }
 
 export interface ContainerElementWithChildren extends ContainerElement {
-    elements: StepElementWithChildren[]
-
+    elements: StepElementWithChildren[];
 }

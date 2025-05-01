@@ -151,7 +151,7 @@ export const useConditionRulesForm = () => {
         });
     };
 
-    const getConditionsCount = (ruleId: string)=>{
+    const getConditionsCount = (ruleId: string) => {
         const rule = rules.find(rule => rule.id === ruleId);
         if (!rule) {
             return 0;
@@ -170,8 +170,7 @@ export const useConditionRulesForm = () => {
 
         traverseConditionGroup(rule.conditionGroup);
         return count;
-
-    }
+    };
 
     // Condition groups.👇
     const updateConditionGroupOperator = (conditionGroupId: string, operator: LogicalOperator) => {
@@ -295,7 +294,7 @@ export const useConditionRulesForm = () => {
         }
 
         return rule.actions.length;
-    }
+    };
 
     return {
         addCondition,

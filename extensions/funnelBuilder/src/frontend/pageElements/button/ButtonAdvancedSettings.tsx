@@ -6,7 +6,6 @@ import { Cell, Grid } from "@webiny/ui/Grid";
 import { Select } from "@webiny/ui/Select";
 import { BUTTON_ACTION_OPTIONS } from "./constants";
 
-
 export const ButtonAdvancedSettings = () => {
     // In order to construct the settings form, we're using the
     // `@webiny/form`, `@webiny/ui`, and `@webiny/validation` packages.

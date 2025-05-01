@@ -6,7 +6,7 @@ import { FunnelStepModelDto } from "./models/FunnelStepModel";
 export const createContainerElement = () => {
     const initialStepData: FunnelStepModelDto = {
         id: getRandomId(),
-        title: "New step"
+        title: "New page"
     };
 
     return {

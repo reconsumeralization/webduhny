@@ -13,13 +13,12 @@ export class FunnelStepModel {
     constructor(dto?: FunnelStepModelDto) {
         this.id = dto?.id ?? getRandomId();
         this.title = dto?.title ?? "Step";
-
     }
 
     toDto(): FunnelStepModelDto {
         return {
             id: this.id,
-            title: this.title,
+            title: this.title
         };
     }
 

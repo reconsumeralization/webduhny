@@ -21,7 +21,6 @@ interface ValidatorsTabProps {
 
 export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
     const supportedValidators = useMemo<PbEditorFunnelFieldValidatorPluginProps[]>(() => {
-        console.log('field', field)
         const fieldSupportedValidators = field.supportedValidatorTypes;
         if (!fieldSupportedValidators) {
             return [];

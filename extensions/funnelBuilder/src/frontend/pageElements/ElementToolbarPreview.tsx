@@ -9,13 +9,13 @@ const StyledPreview = styled.div`
     cursor: pointer;
 `;
 
-export interface ToolbarPreviewProps{
+export interface ToolbarPreviewProps {
     icon?: React.ReactNode;
     title: string;
     description: string;
 }
 
-export const ElementToolbarPreview = ({icon,title,description}: ToolbarPreviewProps) => (
+export const ElementToolbarPreview = ({ icon, title, description }: ToolbarPreviewProps) => (
     <StyledPreview>
         {icon}
         <Typography use={"headline6"}>{title}</Typography>

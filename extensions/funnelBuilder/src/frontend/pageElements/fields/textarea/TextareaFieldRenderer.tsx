@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
@@ -61,6 +61,5 @@ export const TextareaFieldRenderer = createFieldRenderer(props => {
             />
             <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
         </Field>
-
     );
 });

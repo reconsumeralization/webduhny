@@ -31,10 +31,9 @@ export class PatternValidator extends AbstractValidator<PatternValidatorExtraPar
 
         let pattern: Pick<PatternValidatorExtraParams, "regex" | "flags"> | undefined = undefined;
         if (params.extra.preset === "custom") {
-            pattern = params.extra
+            pattern = params.extra;
         } else {
-            const patternPreset = patternPresets
-                .find(item => item.type === params.extra.preset);
+            const patternPreset = patternPresets.find(item => item.type === params.extra.preset);
             if (patternPreset) {
                 pattern = patternPreset;
             }
@@ -45,6 +44,5 @@ export class PatternValidator extends AbstractValidator<PatternValidatorExtraPar
         }
 
         return new RegExp(pattern.regex, pattern.flags).test(value);
-        
     }
 }

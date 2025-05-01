@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const Wrapper = styled.div<Pick<IconProps, "disabled" | "size">>`
     cursor: pointer;
     fill: var(--mdc-theme-text-secondary-on-background);
-    ${({disabled}) => {
+    ${({ disabled }) => {
         if (disabled) {
             return `
                 cursor: not-allowed;

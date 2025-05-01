@@ -1,7 +1,5 @@
 import { FunnelModel } from "../../../shared/models/FunnelModel";
-import {
-    FunnelSubmissionModel,
-} from "../../../shared/models/FunnelSubmissionModel";
+import { FunnelSubmissionModel } from "../../../shared/models/FunnelSubmissionModel";
 
 type Listener = () => void;
 
@@ -43,7 +41,7 @@ export class FunnelSubmissionVm {
     }
 
     get activeStepId() {
-        return this.funnelSubmission.activeStepId
+        return this.funnelSubmission.activeStepId;
     }
 
     subscribe(listener: Listener) {
@@ -60,5 +58,4 @@ export class FunnelSubmissionVm {
     getChecksum() {
         return this.funnelSubmission.getChecksum();
     }
-
 }

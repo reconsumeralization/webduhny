@@ -9,14 +9,14 @@ export type FunnelOperator =
     | "notIncludes";
 
 export interface FunnelConditionModelDto {
-    id: string
+    id: string;
     sourceFieldId: string; // the field whose value we're checking
     operator: FunnelOperator; // the operator to use for comparison
     value: any;
 }
 
 export class FunnelConditionModel {
-    id: string
+    id: string;
     sourceFieldId: string;
     operator: FunnelOperator;
     value: any;

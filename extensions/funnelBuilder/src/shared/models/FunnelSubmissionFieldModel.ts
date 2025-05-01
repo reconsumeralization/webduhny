@@ -53,10 +53,11 @@ export class FunnelSubmissionFieldModel {
         const actions = this.submission.evaluateConditionRulesFieldsForActiveStep();
 
         // Check if any action is to disable this field
-        return actions.some(action => 
-            action.type === "disableField" && 
-            action.target.type === "field" && 
-            action.target.id === this.definition.fieldId
+        return actions.some(
+            action =>
+                action.type === "disableField" &&
+                action.target.type === "field" &&
+                action.target.id === this.definition.fieldId
         );
     }
 

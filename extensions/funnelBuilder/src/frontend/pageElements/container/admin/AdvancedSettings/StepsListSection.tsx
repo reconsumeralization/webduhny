@@ -118,7 +118,7 @@ export const StepsListSection = () => {
                         />
                     ))}
                     <AddPageButton onClick={createStep}>
-                        <ButtonIcon icon={<AddIcon />} /> Add step
+                        <ButtonIcon icon={<AddIcon />} /> Add page
                     </AddPageButton>
                 </SortableContext>
             </DndContext>
