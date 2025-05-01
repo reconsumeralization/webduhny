@@ -78,3 +78,52 @@ export const Icon: Story = {
         )
     }
 };
+
+export const Documentation: Story = {
+    render: args => {
+        return (
+            <Avatar
+                {...args}
+                image={args.image || <Avatar.Image src="https://i.pravatar.cc/300" alt="@webiny" />}
+                fallback={args.fallback || <Avatar.Fallback delayMs={0}>W</Avatar.Fallback>}
+            />
+        );
+    },
+    args: {
+        size: "md",
+        variant: "strong",
+        image: undefined,
+        fallback: undefined,
+        className: "commas, separated, class, name"
+    },
+    argTypes: {
+        size: {
+            description: "Controls the size of the avatar",
+            control: "select",
+            options: ["sm", "md", "lg", "xl"],
+            defaultValue: "md"
+        },
+        variant: {
+            description: "Controls the visual style of the avatar",
+            control: "select",
+            options: ["strong", "subtle", "light", "quiet", "outlined"],
+            defaultValue: "strong"
+        },
+        image: {
+            description:
+                "The image element to display. Please refer to the example code above for details on usage.",
+            control: "none"
+        },
+        fallback: {
+            description:
+                "The fallback element to display when the image fails to load. Please refer to the example code above for details on usage.",
+            control: "none"
+        },
+        className: {
+            description:
+                "Additional CSS class names. You can pass multiple class names, separated by commas.",
+            placeholder: "Enter class names, separated by commas.",
+            control: "text"
+        }
+    }
+};
