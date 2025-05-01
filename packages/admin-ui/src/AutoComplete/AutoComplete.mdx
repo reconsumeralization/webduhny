@@ -10,82 +10,90 @@ The Input component is a user interface element that allows users to enter textu
 
 ## Usage
 
-```
-import { AutoComplete } from '@webiny/admin-ui';
-```
+```tsx
+import React, { useState } from "react";
+import { AutoComplete } from "@webiny/admin-ui";
 
-```jsx
-<AutoComplete
-    options={["Eastern Standard Time (EST)",
+const TimezoneSelector = () => {
+    const [value, setValue] = useState("");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleValueChange = (newValue: string) => {
+        setValue(newValue);
+
+        if (!newValue) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    const timezones = [
+        "Eastern Standard Time (EST)",
         "Central Standard Time (CST)",
         "Pacific Standard Time (PST)",
-        "Greenwich Mean Time (GMT)"]}
-    label="Any field label"
-    description="Provide the required information for processing your request."
-    note="Note: Ensure your selection or input is accurate before proceeding."
-    required={true}
-    validation={{
-            isValid: false,
-            message: "This field is required."
-        }}
-    onValueChange={()=>{}}
-/>
+        "Greenwich Mean Time (GMT)"
+    ];
+
+    return (
+        <AutoComplete
+            label="Time Zone"
+            required={true}
+            description="Select your timezone from the list"
+            placeholder="Select timezone..."
+            options={timezones}
+            value={value}
+            onValueChange={handleValueChange}
+            validation={validation}
+        />
+    );
+};
+
+export default TimezoneSelector;
 ```
 
-<Canvas of={AutoCompleteStories.Documentation} source={ { code:
-`
-import { AutoComplete } from '@webiny/admin-ui';
+<Canvas of={AutoCompleteStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+import { AutoComplete } from "@webiny/admin-ui";
 
-<AutoComplete
-    options={["Eastern Standard Time (EST)",
+const TimezoneSelector = () => {
+    const [value, setValue] = useState("");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleValueChange = (newValue: string) => {
+        setValue(newValue);
+
+        if (!newValue) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    const timezones = [
+        "Eastern Standard Time (EST)",
         "Central Standard Time (CST)",
         "Pacific Standard Time (PST)",
-        "Greenwich Mean Time (GMT)"]}
-    label="Any field label"
-    description="Provide the required information for processing your request."
-    note="Note: Ensure your selection or input is accurate before proceeding."
-    required={true}
-    validation={{
-            isValid: false,
-            message: "This field is required."
-        }}
-    onValueChange={()=>{}}
-/>
+        "Greenwich Mean Time (GMT)"
+    ];
+
+    return (
+        <AutoComplete
+            label="Time Zone"
+            required={true}
+            description="Select your timezone from the list"
+            placeholder="Select timezone..."
+            options={timezones}
+            value={value}
+            onValueChange={handleValueChange}
+            validation={validation}
+        />
+    );
+};
 ` } }
-        additionalActions={[
-            {
-                title: 'Open in GitHub',
-                onClick: () => {
-                    window.open(
-                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/AutoComplete/AutoComplete.tsx',
-                        '_blank'
-                    );
-                },
-            }
-        ]}
 />
 
 <Controls of={AutoCompleteStories.Documentation}/>
-
-## Examples
-
-### On Value Change
-`onValueChange` is a callback prop. It’s triggered whenever the user selects a new option or types into the field—basically, when the value of the component changes.
-
-<Canvas of={AutoCompleteStories.OnValueChange} source={ { code:
-        `
-import { AutoComplete } from '@webiny/admin-ui';
-
-<AutoComplete
-    options={["Eastern Standard Time (EST)",
-        "Central Standard Time (CST)",
-        "Pacific Standard Time (PST)",
-        "Greenwich Mean Time (GMT)"]}
-    label="Time Zone"
-    onValueChange={(value) => {console.log("User selected Time Zone:", value)}}
-/>
-` } }
-/>
 
 ## Anatomy
 

@@ -119,6 +119,30 @@ export const OnValueChange: Story = {
 };
 
 export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState("");
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        const handleValueChange = (newValue: string) => {
+            setValue(newValue);
+
+            // Simple required validation
+            if (!newValue && args.required) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        return (
+            <AutoComplete
+                {...args}
+                value={value}
+                onValueChange={handleValueChange}
+                validation={validation}
+            />
+        );
+    },
     args: {
         options: [
             "Eastern Standard Time (EST)",
@@ -126,15 +150,15 @@ export const Documentation: Story = {
             "Pacific Standard Time (PST)",
             "Greenwich Mean Time (GMT)"
         ],
-        label: "Any field label",
+        label: "Time Zone",
         required: true,
-        description: "Provide the required information for processing your request.",
-        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        description: "Select your timezone from the list",
+        placeholder: "Select timezone...",
         validation: {
             isValid: false,
             message: "This field is required."
         },
-        onValueChange: () => {}
+        onValueChange: undefined
     },
     argTypes: {
         options: {
@@ -142,23 +166,26 @@ export const Documentation: Story = {
                 "AutoComplete Options - Please refer to the example code above for details on usage."
         },
         label: {
-            description: "Label"
+            description: "Label text for the autocomplete field",
+            control: "text"
         },
         required: {
-            description: "Is this a required field?",
+            description: "Makes the field required when set to true",
             control: "boolean"
         },
         description: {
-            description: "Description"
+            description: "Additional description text below the field",
+            control: "text"
         },
-        note: {
-            description: "Note"
+        placeholder: {
+            description: "Placeholder text shown when no value is selected",
+            control: "text"
         },
         validation: {
-            description: "Validation"
+            description: "Object containing validation state and message"
         },
         onValueChange: {
-            description: "Please refer to the 'On Value Change' example below for details.",
+            description: "Function called when the selected value changes",
             control: "none"
         }
     }
