@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { AutoComplete } from "./AutoComplete";
 
@@ -120,8 +120,13 @@ export const OnValueChange: Story = {
 
 export const Documentation: Story = {
     render: args => {
-        const [value, setValue] = useState("");
+        const [value, setValue] = useState(args.value || "");
         const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setValue(args.value || "");
+        }, [args.value]);
 
         const handleValueChange = (newValue: string) => {
             setValue(newValue);
@@ -133,6 +138,15 @@ export const Documentation: Story = {
                 setValidation({ isValid: true, message: "" });
             }
         };
+
+        // Validate on required change
+        useEffect(() => {
+            if (args.required && !value) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, value]);
 
         return (
             <AutoComplete

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox } from "~/Checkbox";
 
@@ -75,11 +75,44 @@ export const FullExample: Story = {
 };
 
 export const Documentation: Story = {
+    render: args => {
+        const [checked, setChecked] = useState(args.checked || false);
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update checked state when args.checked changes
+        useEffect(() => {
+            setChecked(args.checked || false);
+        }, [args.checked]);
+
+        const handleChange = (isChecked: boolean) => {
+            setChecked(isChecked);
+
+            // Simple required validation
+            if (args.required && !isChecked) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change
+        useEffect(() => {
+            if (args.required && !checked) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, checked]);
+
+        return (
+            <Checkbox {...args} checked={checked} onChange={handleChange} validation={validation} />
+        );
+    },
     args: {
         label: "Any field label",
         checked: false,
         disabled: false,
-        required: false,
+        required: true,
         description: "Provide the required information for processing your request.",
         note: "Note: Ensure your selection or input is accurate before proceeding.",
         validation: {

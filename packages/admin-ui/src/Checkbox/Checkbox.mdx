@@ -10,13 +10,23 @@ Checkboxes allow users to select multiple items from a list of individual items,
 
 ## Usage
 
-```jsx
+```tsx
 import React, { useState } from "react";
-
 import { Checkbox } from "@webiny/admin-ui";
 
 const CheckboxExample = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (checked: boolean) => {
+        setIsChecked(checked);
+
+        if (!checked) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
 
     return (
         <div>
@@ -25,7 +35,9 @@ const CheckboxExample = () => {
                 description="Provide the required information for processing your request."
                 note="Note: Ensure your selection or input is accurate before proceeding."
                 checked={isChecked}
-                onChange={(checked) => setIsChecked(checked)}
+                required={true}
+                onChange={handleChange}
+                validation={validation}
             />
         </div>
     );
@@ -38,20 +50,32 @@ export default CheckboxExample;
 `// Code for a Checkbox
 
 import React, { useState } from "react";
-
 import { Checkbox } from "@webiny/admin-ui";
 
 const CheckboxExample = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (checked: boolean) => {
+        setIsChecked(checked);
+
+        if (!checked) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
 
     return (
-                 <div>
+        <div>
             <Checkbox
                 label="Any field label"
                 description="Provide the required information for processing your request."
                 note="Note: Ensure your selection or input is accurate before proceeding."
                 checked={isChecked}
-                onChange={(checked) => setIsChecked(checked)}
+                required={true}
+                onChange={handleChange}
+                validation={validation}
             />
         </div>
     );
