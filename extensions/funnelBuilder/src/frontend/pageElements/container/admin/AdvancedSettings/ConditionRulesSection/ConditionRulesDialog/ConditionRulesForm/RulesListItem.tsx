@@ -12,11 +12,12 @@ interface RulesListItemProps {
 }
 
 export const RulesListItem = ({ rule }: RulesListItemProps) => {
-    const { getRuleIndex, removeRule, getConditionsCount, getActionsCount } = useConditionRulesForm();
+    const { getRuleIndex, removeRule, getConditionsCount, getActionsCount } =
+        useConditionRulesForm();
     const ruleIndex = getRuleIndex(rule);
 
     const conditionsCount = getConditionsCount(rule.id);
-    const actionsCount = rule.actions.length;
+    const actionsCount = getActionsCount(rule.id);
     const description = [
         conditionsCount,
         conditionsCount > 1 ? "conditions," : "condition,",

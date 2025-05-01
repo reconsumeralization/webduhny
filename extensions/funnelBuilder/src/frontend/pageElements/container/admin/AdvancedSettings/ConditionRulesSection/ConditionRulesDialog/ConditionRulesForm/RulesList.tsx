@@ -22,7 +22,7 @@ export const RulesList = ({ children }: ConditionRulesFormProps) => {
 
     return (
         <>
-            {rules.length > 0 && <Accordion elevation={1}>{children}</Accordion>}
+            {rules.length > 0 && <Accordion elevation={0}>{children}</Accordion>}
 
             {rules.length === 0 ? (
                 <div style={{ marginTop: 100 }}>
