@@ -149,19 +149,20 @@ export const FullExample: Story = {
 
 export const Documentation: Story = {
     render: args => {
-        const [value, setValue] = useState(args.value || "");
+        const [value, setValue] = useState(args.value || null);
         const [validation, setValidation] = useState({ isValid: true, message: "" });
 
         // Update value when args.value changes
         useEffect(() => {
-            setValue(args.value || "");
+            setValue(args.value || null);
         }, [args.value]);
 
-        const handleChange = (newValue: string) => {
+        const handleChange = (newValue: any) => {
             setValue(newValue);
 
+            // Simple required validation
             if (args.required && !newValue) {
-                setValidation({ isValid: false, message: "This field is required" });
+                setValidation({ isValid: false, message: "Please select an icon" });
             } else {
                 setValidation({ isValid: true, message: "" });
             }
@@ -170,7 +171,7 @@ export const Documentation: Story = {
         // Validate on required change or value change
         useEffect(() => {
             if (args.required && !value) {
-                setValidation({ isValid: false, message: "This field is required" });
+                setValidation({ isValid: false, message: "Please select an icon" });
             } else {
                 setValidation({ isValid: true, message: "" });
             }
@@ -187,31 +188,19 @@ export const Documentation: Story = {
         );
     },
     args: {
-        label: "Icon Picker",
+        label: "Select an Icon",
         required: true,
         disabled: false,
-        description: "Select an icon from the available options",
-        note: "Note: You can search for icons by name",
-        value: "",
+        description: "Choose an icon for your button",
+        note: "Note: The selected icon will be displayed on your button",
         icons: [
             { prefix: "fas", name: "trash-restore-alt" },
-            { prefix: "fas", name: "trash-can-arrow-up" },
-            { prefix: "fas", name: "naira-sign" },
-            { prefix: "fas", name: "cart-arrow-down" },
-            { prefix: "fas", name: "walkie-talkie" },
-            { prefix: "fas", name: "file-edit" },
             { prefix: "fas", name: "file-pen" },
             { prefix: "fas", name: "receipt" },
-            { prefix: "fas", name: "pen-square" },
-            { prefix: "fas", name: "pencil-square" },
-            { prefix: "fas", name: "square-pen" },
-            { prefix: "fas", name: "suitcase-rolling" },
-            { prefix: "fas", name: "person-circle-exclamation" },
-            { prefix: "fas", name: "chevron-down" },
-            { prefix: "fas", name: "battery" },
-            { prefix: "fas", name: "battery-5" },
-            { prefix: "fas", name: "battery-full" }
+            { prefix: "fas", name: "user-circle" },
+            { prefix: "fas", name: "circle-user" }
         ],
+        value: null,
         validation: undefined
     },
     argTypes: {
@@ -235,13 +224,13 @@ export const Documentation: Story = {
             description: "Additional note text below the field",
             control: "text"
         },
-        value: {
-            description: "The selected icon value (in format 'prefix/name')",
-            control: "text"
-        },
         icons: {
             description: "Array of available icons with prefix and name properties",
             control: "object"
+        },
+        value: {
+            description: "The selected icon value (in format 'prefix/name')",
+            control: "none"
         },
         validation: {
             description:
@@ -249,7 +238,7 @@ export const Documentation: Story = {
             control: "none"
         },
         onChange: {
-            description: "Function called when the selected icon changes",
+            description: "Function called when an icon is selected",
             control: "none"
         }
     }

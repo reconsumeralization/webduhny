@@ -123,11 +123,11 @@ export const Documentation: Story = {
         );
     },
     args: {
-        label: "Code Editor",
+        label: "JSON Configuration",
         required: true,
         disabled: false,
-        description: "Enter your code here",
-        note: "Note: Make sure your code is properly formatted",
+        description: "Enter your configuration in JSON format",
+        note: "Note: Make sure your JSON is valid",
         mode: "json",
         theme: "github",
         value: '{\n  "name": "example",\n  "version": "1.0.0"\n}',

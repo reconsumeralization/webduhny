@@ -100,8 +100,9 @@ export const Documentation: Story = {
         const handleChange = (newValue: string) => {
             setValue(newValue);
 
+            // Simple required validation
             if (args.required && (!newValue || newValue.trim() === "")) {
-                setValidation({ isValid: false, message: "This field is required" });
+                setValidation({ isValid: false, message: "Please select a color" });
             } else {
                 setValidation({ isValid: true, message: "" });
             }
@@ -110,7 +111,7 @@ export const Documentation: Story = {
         // Validate on required change or value change
         useEffect(() => {
             if (args.required && (!value || value.trim() === "")) {
-                setValidation({ isValid: false, message: "This field is required" });
+                setValidation({ isValid: false, message: "Please select a color" });
             } else {
                 setValidation({ isValid: true, message: "" });
             }
@@ -127,11 +128,11 @@ export const Documentation: Story = {
         );
     },
     args: {
-        label: "Color Picker",
+        label: "Brand Color",
         required: true,
         disabled: false,
-        description: "Choose a color from the palette or enter a custom color value",
-        note: "Note: You can use hex, RGB, or named colors",
+        description: "Select your primary brand color",
+        note: "Note: Choose a color that aligns with your brand identity",
         value: "#4285F4",
         validation: undefined
     },

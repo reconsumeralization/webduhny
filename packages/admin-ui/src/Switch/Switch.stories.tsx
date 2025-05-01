@@ -130,12 +130,12 @@ export const Documentation: Story = {
         );
     },
     args: {
-        label: "Any field label",
+        label: "Enable feature",
         checked: false,
         disabled: false,
         required: true,
-        description: "Provide the required information for processing your request.",
-        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        description: "Enabling this feature will activate additional functionality.",
+        note: "Note: This setting can be changed at any time.",
         validation: undefined
     },
     argTypes: {
