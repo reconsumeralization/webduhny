@@ -29,6 +29,7 @@
 - back btn
 - fieldIds must be unique across the whole funnel
 - input type
+- field settings closed despite invalid field
 
 ## SH
 - moving elements? should we block that for now? maybe sh?

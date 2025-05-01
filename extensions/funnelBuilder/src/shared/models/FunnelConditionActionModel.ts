@@ -3,10 +3,10 @@ import { getRandomId } from "../getRandomId";
 export type FunnelConditionActionType =
     | "disableField"
     | "enableField"
-    | "goToStep"
     | "showField"
     | "hideField"
-    | "submitAndEnd";
+    | "onSubmitActivateStep"
+    | "onSubmitEnd";
 
 export type FunnelConditionActionTarget = {
     id: string;

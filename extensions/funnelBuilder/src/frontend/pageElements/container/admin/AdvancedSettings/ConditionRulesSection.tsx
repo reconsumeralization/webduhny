@@ -3,12 +3,7 @@ import styled from "@emotion/styled";
 import { ButtonSecondary } from "@webiny/ui/Button";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { useDisclosure } from "../../../../admin/useDisclosure";
-import {
-    useActiveElementId,
-    useElementById,
-    useElementWithChildren,
-    useUpdateElement
-} from "@webiny/app-page-builder/editor";
+import { useActiveElementId, useElementWithChildren } from "@webiny/app-page-builder/editor";
 import { ContainerElementWithChildren } from "../../types";
 import { ConditionRulesDialog } from "./ConditionRulesSection/ConditionRulesDialog";
 import { FunnelModelDto } from "../../../../../shared/models/FunnelModel";
@@ -24,15 +19,14 @@ export const ConditionRulesSection = () => {
         activeElementId!
     ) as ContainerElementWithChildren;
 
-    const [editorElement] = useElementById(activeElementId);
-    const updateElement = useUpdateElement();
-
     const {
         open: showConditionRulesDialog,
         close: hideConditionRulesDialog,
         isOpen: isConditionRulesDialogShown,
         data: conditionRulesDialogData
     } = useDisclosure<FunnelModelDto>();
+
+    const conditionalRulesCount = containerElementWithChildren.data.conditionRules.length;
 
     return (
         <Accordion title={"Conditional Rules"} defaultValue={true}>
@@ -45,7 +39,8 @@ export const ConditionRulesSection = () => {
                         showConditionRulesDialog(conditionRulesClone);
                     }}
                 >
-                    Edit Conditional Rules
+                    Conditional Rules&nbsp;
+                    {conditionalRulesCount > 0 && <>({conditionalRulesCount})</>}
                 </EditConditionRulesButton>
 
                 <ConditionRulesDialog
@@ -53,7 +48,7 @@ export const ConditionRulesSection = () => {
                     data={conditionRulesDialogData!}
                     onClose={hideConditionRulesDialog}
                     onSubmit={data => {
-                        console.log('dataaaaa', data)
+                        console.log("dataaaaa", data);
                         // updateElement({ ...editorElement!, data }, { history: false });
                         // hideConditionRulesDialog();
                     }}
