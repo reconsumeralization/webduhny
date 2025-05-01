@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { CodeEditor } from "./CodeEditor";
 
 const meta: Meta<typeof CodeEditor> = {
     title: "Components/Form/CodeEditor",
     component: CodeEditor,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         disabled: {
@@ -78,6 +78,104 @@ export const FullExample: Story = {
         validation: {
             isValid: false,
             message: "This field is required."
+        }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState(args.value || "");
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setValue(args.value || "");
+        }, [args.value]);
+
+        const handleChange = (newValue: string) => {
+            setValue(newValue);
+
+            // Simple required validation
+            if (args.required && (!newValue || newValue.trim() === "")) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && (!value || value.trim() === "")) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, value]);
+
+        return (
+            <CodeEditor
+                {...args}
+                value={value}
+                onChange={handleChange}
+                validation={validation}
+                required={args.required}
+            />
+        );
+    },
+    args: {
+        label: "Code Editor",
+        required: true,
+        disabled: false,
+        description: "Enter your code here",
+        note: "Note: Make sure your code is properly formatted",
+        mode: "json",
+        theme: "github",
+        value: '{\n  "name": "example",\n  "version": "1.0.0"\n}',
+        validation: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the code editor",
+            control: "text"
+        },
+        required: {
+            description: "Makes the field required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the code editor when set to true",
+            control: "boolean"
+        },
+        description: {
+            description: "Additional description text below the field",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the field",
+            control: "text"
+        },
+        mode: {
+            description: "The language mode for syntax highlighting",
+            control: "select",
+            options: ["html", "json"]
+        },
+        theme: {
+            description: "The theme for the code editor",
+            control: "select",
+            options: ["github", "twilight", "chrome"]
+        },
+        value: {
+            description: "The code content",
+            control: "text"
+        },
+        validation: {
+            description:
+                "Object containing validation state and message. Please refer to the example above for more details.",
+            control: "none"
+        },
+        onChange: {
+            description: "Function called when the code changes",
+            control: "none"
         }
     }
 };

@@ -1,0 +1,126 @@
+import { Canvas, Meta, Controls } from '@storybook/blocks';
+
+import * as CodeEditorStories from './CodeEditor.stories';
+
+<Meta of={CodeEditorStories} />
+
+# Code Editor
+
+The Code Editor component is a specialized input field that allows users to write and edit code with syntax highlighting, making it easier to work with HTML, JSON, and other code formats. It provides a more user-friendly experience for editing code compared to a standard text area.
+
+## Usage
+
+```tsx
+import React, { useState } from "react";
+import { CodeEditor } from "@webiny/admin-ui";
+
+const CodeEditorExample = () => {
+    const [code, setCode] = useState('{\n  "name": "example",\n  "version": "1.0.0"\n}');
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newCode: string) => {
+        setCode(newCode);
+
+        // Simple required validation
+        if (!newCode || newCode.trim() === "") {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <CodeEditor
+            label="JSON Configuration"
+            description="Enter your configuration in JSON format"
+            note="Note: Make sure your JSON is valid"
+            required={true}
+            mode="json"
+            theme="github"
+            value={code}
+            onChange={handleChange}
+            validation={validation}
+        />
+    );
+};
+
+export default CodeEditorExample;
+```
+
+<Canvas of={CodeEditorStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+import { CodeEditor } from "@webiny/admin-ui";
+
+const CodeEditorExample = () => {
+    const [code, setCode] = useState('{\\n  "name": "example",\\n  "version": "1.0.0"\\n}');
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newCode: string) => {
+        setCode(newCode);
+
+        // Simple required validation
+        if (!newCode || newCode.trim() === "") {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <CodeEditor
+            label="JSON Configuration"
+            description="Enter your configuration in JSON format"
+            note="Note: Make sure your JSON is valid"
+            required={true}
+            mode="json"
+            theme="github"
+            value={code}
+            onChange={handleChange}
+            validation={validation}
+        />
+    );
+};
+
+export default CodeEditorExample;
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/CodeEditor/CodeEditor.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={CodeEditorStories.Documentation} exclude={"onChange"}/>
+
+## Anatomy
+
+### Code Editor Anatomy
+The Code Editor component consists of several key parts:
+
+1. **Label**: Identifies the purpose of the editor
+2. **Description**: Provides additional context or instructions
+3. **Editor Area**: The main code editing interface with syntax highlighting
+4. **Validation Message**: Displays error messages when validation fails
+5. **Note**: Additional information or guidance for the user
+
+### Features
+
+- **Syntax Highlighting**: Makes code more readable by coloring different parts of the syntax
+- **Theme Support**: Different visual themes for the editor (github, twilight, chrome)
+- **Language Modes**: Support for different programming languages (HTML, JSON)
+- **Validation**: Built-in support for validation with error messages
+- **Accessibility**: Keyboard navigation and screen reader support
+
+## Best Practices
+
+1. **Always provide a label**: Make it clear what the code editor is for
+2. **Use appropriate language mode**: Select the correct syntax highlighting for the expected code
+3. **Provide helpful validation**: Give specific error messages when validation fails
+4. **Consider read-only mode**: Use the disabled prop when you want to display code without allowing edits
+5. **Add descriptions**: Help users understand what kind of code is expected
