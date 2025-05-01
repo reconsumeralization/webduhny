@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { CheckboxGroup } from "~/CheckboxGroup";
 
@@ -123,16 +123,51 @@ export const FullExample: Story = {
 };
 
 export const Documentation: Story = {
+    render: args => {
+        const [selectedValues, setSelectedValues] = useState<string[]>(args.value || []);
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update values when args.value changes
+        useEffect(() => {
+            setSelectedValues(args.value || []);
+        }, [args.value]);
+
+        const handleChange = (newValues: string[]) => {
+            setSelectedValues(newValues);
+
+            // Simple required validation
+            if (args.required && (!newValues || newValues.length === 0)) {
+                setValidation({ isValid: false, message: "Please select at least one option." });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && (!selectedValues || selectedValues.length === 0)) {
+                setValidation({ isValid: false, message: "Please select at least one option." });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, selectedValues]);
+
+        return (
+            <CheckboxGroup
+                {...args}
+                value={selectedValues}
+                onChange={handleChange}
+                validation={validation}
+                required={args.required}
+            />
+        );
+    },
     args: {
-        label: "Any field label",
-        required: false,
+        label: "Select your preferences",
+        required: true,
         disabled: false,
-        description: "Provide the required information for processing your request.",
-        note: "Note: Ensure your selection or input is accurate before proceeding.",
-        validation: {
-            isValid: false,
-            message: "This field is required."
-        },
+        description: "Choose one or more options.",
+        note: "Note: You can select multiple values.",
         items: [
             {
                 label: "Value 1",
@@ -147,18 +182,22 @@ export const Documentation: Story = {
                 value: "value-3"
             }
         ],
-        value: []
+        value: [],
+        validation: {
+            isValid: false,
+            message: "Please select at least one option."
+        }
     },
     argTypes: {
         label: {
             description: "Label text for the checkbox group",
             control: "text",
-            defaultValue: "Any field label"
+            defaultValue: "Select your preferences"
         },
         required: {
             description: "Makes the checkbox group required when set to true",
             control: "boolean",
-            defaultValue: false
+            defaultValue: true
         },
         disabled: {
             description: "Disables the checkbox group when set to true",

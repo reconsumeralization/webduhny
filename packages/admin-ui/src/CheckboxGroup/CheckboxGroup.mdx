@@ -10,13 +10,25 @@ Checkboxes allow users to select multiple items from a list of individual items,
 
 ## Usage
 
-```jsx
+```tsx
 import React, { useState } from "react";
 
 import { CheckboxGroup } from "@webiny/admin-ui";
 
 const CheckboxGroupExample = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>(["value-2"]);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newValues: string[]) => {
+        setSelectedValues(newValues);
+
+        // Simple required validation
+        if (!newValues || newValues.length === 0) {
+            setValidation({ isValid: false, message: "Please select at least one option." });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
 
     return (
         <div>
@@ -30,12 +42,9 @@ const CheckboxGroupExample = () => {
                     { label: "Value 2", value: "value-2" },
                     { label: "Value 3", value: "value-3" }
                 ]}
-                values={selectedValues}
-                onChange={(newValues: string[]) => setSelectedValues(newValues)}
-                validation={{
-                    isValid: selectedValues.length > 0,
-                    message: "Please select at least one option."
-                }}
+                value={selectedValues}
+                onChange={handleChange}
+                validation={validation}
             />
         </div>
     );
@@ -52,7 +61,19 @@ import React, { useState } from "react";
 import { CheckboxGroup } from "@webiny/admin-ui";
 
 const CheckboxGroupExample = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>(["value-2"]);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newValues: string[]) => {
+        setSelectedValues(newValues);
+
+        // Simple required validation
+        if (!newValues || newValues.length === 0) {
+            setValidation({ isValid: false, message: "Please select at least one option." });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
 
     return (
         <div>
@@ -66,12 +87,9 @@ const CheckboxGroupExample = () => {
                     { label: "Value 2", value: "value-2" },
                     { label: "Value 3", value: "value-3" }
                 ]}
-                values={selectedValues}
-                onChange={(newValues: string[]) => setSelectedValues(newValues)}
-                validation={{
-                    isValid: selectedValues.length > 0,
-                    message: "Please select at least one option."
-                }}
+                value={selectedValues}
+                onChange={handleChange}
+                validation={validation}
             />
         </div>
     );
