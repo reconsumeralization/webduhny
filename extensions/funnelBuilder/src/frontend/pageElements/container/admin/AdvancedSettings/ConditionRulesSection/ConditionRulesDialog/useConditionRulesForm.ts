@@ -151,6 +151,28 @@ export const useConditionRulesForm = () => {
         });
     };
 
+    const getConditionsCount = (ruleId: string)=>{
+        const rule = rules.find(rule => rule.id === ruleId);
+        if (!rule) {
+            return 0;
+        }
+
+        let count = 0;
+        const traverseConditionGroup = (conditionGroup: FunnelConditionGroupModelDto) => {
+            for (const item of conditionGroup.items) {
+                if ("sourceFieldId" in item) {
+                    count++;
+                } else {
+                    traverseConditionGroup(item);
+                }
+            }
+        };
+
+        traverseConditionGroup(rule.conditionGroup);
+        return count;
+
+    }
+
     // Condition groups.👇
     const updateConditionGroupOperator = (conditionGroupId: string, operator: LogicalOperator) => {
         updateRules(rules => {
@@ -266,13 +288,20 @@ export const useConditionRulesForm = () => {
         });
     };
 
+    const getActionsCount = (ruleId: string) => {
+        const rule = rules.find(rule => rule.id === ruleId);
+        if (!rule) {
+            return 0;
+        }
+
+        return rule.actions.length;
+    }
+
     return {
-        addAction,
-        removeAction,
-        updateAction,
         addCondition,
         removeCondition,
         updateCondition,
+        getConditionsCount,
         updateRules,
         updateConditionGroupOperator,
         addRule,
@@ -280,6 +309,10 @@ export const useConditionRulesForm = () => {
         getRuleIndex,
         addConditionGroup,
         removeConditionGroup,
+        addAction,
+        removeAction,
+        updateAction,
+        getActionsCount,
         funnel,
         rules
     };

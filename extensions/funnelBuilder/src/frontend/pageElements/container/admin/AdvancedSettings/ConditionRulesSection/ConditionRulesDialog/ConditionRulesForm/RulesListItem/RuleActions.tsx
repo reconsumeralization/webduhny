@@ -8,19 +8,26 @@ import { ReactComponent as PlusIcon } from "@material-design-icons/svg/outlined/
 import { useConditionRulesForm } from "../../useConditionRulesForm";
 import { FunnelConditionRuleModelDto } from "../../../../../../../../../shared/models/FunnelConditionRuleModel";
 
-const Fieldset = styled.div({
-    display: "flex",
-    alignItems: "center",
-    columnGap: 10,
-    position: "relative",
-    width: "100%",
-    marginBottom: 15
-});
+const Fieldset = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    position: relative;
+    width: 100%;
+`;
 
-const Header = styled.div({
-    display: "flex",
-    justifyContent: "space-between"
-});
+const Header = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ebeaeb;
+    padding: 5px 0;
+`;
+
+const NoActionsMessage = styled.div`
+    padding: 10px;
+`;
 
 export interface RuleActionsProps {
     rule: FunnelConditionRuleModelDto;
@@ -33,8 +40,7 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
         <div
             style={{
                 display: "flex",
-                flexDirection: "column",
-                gap: 10
+                flexDirection: "column"
             }}
         >
             <Header>
@@ -45,9 +51,11 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
             </Header>
 
             {rule.actions.length === 0 ? (
-                <Typography use={"body2"} style={{ textAlign: "center", padding: "10px" }}>
-                    No actions added yet.
-                </Typography>
+                <NoActionsMessage>
+                    <Typography use={"body2"} style={{ textAlign: "center", padding: "10px" }}>
+                        No actions added yet.
+                    </Typography>
+                </NoActionsMessage>
             ) : (
                 rule.actions.map((action, actionIndex) => (
                     <Fieldset key={actionIndex}>

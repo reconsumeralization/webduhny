@@ -12,13 +12,23 @@ interface RulesListItemProps {
 }
 
 export const RulesListItem = ({ rule }: RulesListItemProps) => {
-    const { getRuleIndex, removeRule } = useConditionRulesForm();
+    const { getRuleIndex, removeRule, getConditionsCount, getActionsCount } = useConditionRulesForm();
     const ruleIndex = getRuleIndex(rule);
+
+    const conditionsCount = getConditionsCount(rule.id);
+    const actionsCount = rule.actions.length;
+    const description = [
+        conditionsCount,
+        conditionsCount > 1 ? "conditions," : "condition,",
+        actionsCount,
+        actionsCount > 1 ? "actions" : "action"
+    ].join(" ");
 
     return (
         <AccordionItem
             interactive={false}
             open={true}
+            description={description}
             title={`Rule ${ruleIndex + 1}`}
             actions={<IconButton onClick={() => removeRule(rule.id)} icon={<DeleteIcon />} />}
         >
@@ -26,7 +36,7 @@ export const RulesListItem = ({ rule }: RulesListItemProps) => {
                 {/* Root condition group is passed here. The component can
                     then also render nested condition groups. */}
                 <RuleConditionGroup conditionGroup={rule.conditionGroup} />
-                <RuleActions rule={rule}/>
+                <RuleActions rule={rule} />
             </div>
         </AccordionItem>
     );
