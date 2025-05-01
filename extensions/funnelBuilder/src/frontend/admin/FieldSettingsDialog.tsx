@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Dialog, DialogActions, DialogButton, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { Form, FormOnSubmit } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
+import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 import { GeneralTab } from "./FieldSettingsDialog/GeneralTab";
 import { ValidatorsTab } from "./FieldSettingsDialog/ValidatorsTab";
 import {
@@ -55,10 +56,8 @@ export const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFiel
                                 )}
                             </ClassNames>
                             <DialogActions style={{ justifyContent: "flex-end" }}>
-                                <div>
-                                    <DialogButton onClick={onClose}>{"Cancel"}</DialogButton>
-                                    <DialogButton onClick={submit}>{"Save"}</DialogButton>
-                                </div>
+                                <ButtonDefault onClick={onClose}>Cancel</ButtonDefault>
+                                <ButtonPrimary onClick={submit}>Save</ButtonPrimary>
                             </DialogActions>
                         </>
                     )}

@@ -9,14 +9,16 @@ import { plugins } from "@webiny/plugins";
 import { type Plugin } from "@webiny/plugins/types";
 import { PbEditorFunnelFieldSettingsPluginProps } from "../plugins/PbEditorFunnelFieldSettingsPlugin";
 import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
+import { useContainer } from "../../pageElements/container/ContainerProvider";
 
 interface GeneralTabProps {
     field: FunnelFieldDefinitionModel;
 }
 
-export const GeneralTab = ({ field }: GeneralTabProps) => {
-    const { setValue } = useForm();
+export const GeneralTab = ({}: GeneralTabProps) => {
+    const { setValue, data: field } = useForm();
 
+    const { funnelVm } = useContainer();
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const afterChangeLabel = useCallback((value: string): void => {
@@ -33,18 +35,17 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
         }, 333);
     }, []);
 
-    const uniqueFieldIdValidator: Validator = useCallback((fieldId: string) => {
-        return true;
-        // const existingField = false; // TODO
-        // if (!existingField) {
-        //     return true;
-        // }
-        //
-        // if (existingField.id === field.id) {
-        //     return true;
-        // }
-        // throw new Error("Please enter a unique Field ID");
-    }, []);
+    const uniqueFieldIdValidator: Validator = useCallback(() => {
+        const existingField = funnelVm.getFieldByFieldId(field.fieldId);
+        if (!existingField) {
+            return true;
+        }
+
+        if (existingField.id === field.id) {
+            return true;
+        }
+        throw new Error("A field with this field ID already exists.");
+    }, [field.fieldId]);
 
     const fieldIdValidator: Validator = useCallback((fieldId: string) => {
         if (!fieldId) {
@@ -81,7 +82,7 @@ export const GeneralTab = ({ field }: GeneralTabProps) => {
                         validators={validation.create("required")}
                         afterChange={afterChangeLabel}
                     >
-                        <Input label={"Label"} autoFocus={true} inputRef={inputRef} />
+                        <Input label={"Label"} inputRef={inputRef} />
                     </Bind>
                 </Cell>
                 <Cell span={6}>

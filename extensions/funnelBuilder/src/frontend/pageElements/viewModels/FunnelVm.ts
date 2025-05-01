@@ -50,6 +50,10 @@ export class FunnelVm {
         return this.funnel.fields.find(field => field.id === id);
     }
 
+    getFieldByFieldId(fieldId: string) {
+        return this.funnel.fields.find(field =>field.fieldId === fieldId);
+    }
+
     getFieldsForActiveStep() {
         const step = this.funnel.steps.find(step => step.id === this.activeStepId);
         if (!step) {
