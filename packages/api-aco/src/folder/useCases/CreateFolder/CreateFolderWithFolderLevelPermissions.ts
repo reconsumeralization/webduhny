@@ -31,7 +31,7 @@ export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
             }
 
             canCreateFolder = await this.folderLevelPermissions.canAccessFolder({
-                permissions: parentFlp.permissions,
+                flp: parentFlp,
                 rwd: "w"
             });
         } else {

@@ -9,7 +9,7 @@ export class CanAccessFolder implements ICanAccessFolder {
     }
 
     async execute(params: CanAccessFolderParams) {
-        const permissions = params?.permissions || [];
+        const permissions = params.flp?.permissions || [];
 
         if (!permissions.length) {
             return true;

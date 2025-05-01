@@ -16,18 +16,16 @@ export class GetFolderWithFolderLevelPermissions implements IGetFolder {
         const folder = await this.decoretee.execute(params);
         const flp = await this.folderLevelPermissions.getFolderLevelPermission(folder.id);
 
-        const folderWithFlp = {
-            ...folder,
-            permissions: flp.permissions
-        };
-
         // Let's check if the current user has read access level.
-        const canAccessFolder = await this.folderLevelPermissions.canReadFolder(folderWithFlp);
+        const canAccessFolder = await this.folderLevelPermissions.canReadFolder(flp);
 
         if (!canAccessFolder) {
             throw new NotAuthorizedError();
         }
 
-        return folderWithFlp;
+        return {
+            ...folder,
+            permissions: flp.permissions
+        };
     }
 }

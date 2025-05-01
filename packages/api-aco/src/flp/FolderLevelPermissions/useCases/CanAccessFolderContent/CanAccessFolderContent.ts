@@ -14,7 +14,7 @@ export class CanAccessFolderContent implements ICanAccessFolderContent {
     async execute(params: CanAccessFolderContentParams) {
         const identity = this.getIdentityGateway.execute();
 
-        const permissions = params.folder?.permissions || [];
+        const permissions = params.flp?.permissions || [];
 
         const currentIdentityPermission = permissions.find(p => {
             return p.target === `admin:${identity.id}`;

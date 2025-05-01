@@ -8,6 +8,7 @@ import { compress } from "~/utils/compress";
 
 import { AcoContext, Folder } from "~/types";
 import { FOLDER_MODEL_ID } from "~/folder/folder.model";
+import type { FolderLevelPermission } from "~/flp/flp.types";
 
 export const createFoldersSchema = (params: CreateFolderTypeDefsParams) => {
     const folderGraphQL = new GraphQLSchemaPlugin<AcoContext>({
@@ -62,13 +63,17 @@ export const createFoldersSchema = (params: CreateFolderTypeDefsParams) => {
                                     folder.permissions
                                 ),
                             canManageStructure:
-                                context.aco.folderLevelPermissions.canManageFolderStructure(folder),
+                                context.aco.folderLevelPermissions.canManageFolderStructure(
+                                    folder as unknown as FolderLevelPermission
+                                ),
                             canManagePermissions:
                                 context.aco.folderLevelPermissions.canManageFolderPermissions(
-                                    folder
+                                    folder as unknown as FolderLevelPermission
                                 ),
                             canManageContent:
-                                context.aco.folderLevelPermissions.canManageFolderContent(folder)
+                                context.aco.folderLevelPermissions.canManageFolderContent(
+                                    folder as unknown as FolderLevelPermission
+                                )
                         }));
 
                         return compress(folders);

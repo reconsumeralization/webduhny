@@ -42,11 +42,18 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
         // Filter folders based on permissions.
         const foldersWithPermissions = await Promise.all(
             folders.map(async folder => {
-                const permissions = this.getFlp(folder.id)?.permissions || [];
-                const folderWithFlp = { ...folder, permissions };
-                const canAccessFolder = await this.folderLevelPermissions.canReadFolder(
-                    folderWithFlp
-                );
+                const flp = this.getFlp(folder.id);
+                if (!flp) {
+                    return null;
+                }
+
+                const canAccessFolder = await this.folderLevelPermissions.canReadFolder(flp);
+
+                if (!canAccessFolder) {
+                    return null;
+                }
+
+                const folderWithFlp = { ...folder, permissions: flp.permissions };
                 return canAccessFolder ? folderWithFlp : null;
             })
         );

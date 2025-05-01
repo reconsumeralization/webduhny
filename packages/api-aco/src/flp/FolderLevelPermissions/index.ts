@@ -16,7 +16,6 @@ import {
 import type {
     AcoContext,
     AcoFolderLevelPermissionsCrud,
-    Folder,
     FolderLevelPermission,
     FolderPermission,
     ListFlpsParams
@@ -106,27 +105,27 @@ export class FolderLevelPermissions {
         }
     }
 
-    public async canReadFolder({ permissions }: Folder | FolderLevelPermission) {
-        return await this.canAccessFolder({ permissions, rwd: "r" });
+    public async canReadFolder(flp: FolderLevelPermission) {
+        return await this.canAccessFolder({ flp, rwd: "r" });
     }
 
-    public async canManageFolderContent(folder: Folder) {
+    public async canManageFolderContent(flp: FolderLevelPermission) {
         if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
             return true;
         }
 
-        return await this.canAccessFolderContent({ folder, rwd: "w" });
+        return await this.canAccessFolderContent({ flp, rwd: "w" });
     }
 
-    public async canManageFolderStructure({ permissions }: Folder) {
+    public async canManageFolderStructure(flp: FolderLevelPermission) {
         if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
             return true;
         }
 
-        return await this.canAccessFolder({ permissions, rwd: "w" });
+        return await this.canAccessFolder({ flp, rwd: "w" });
     }
 
-    public async canManageFolderPermissions({ permissions }: Folder) {
+    public async canManageFolderPermissions(flp: FolderLevelPermission) {
         if (!this.canUseFolderLevelPermissions()) {
             return false;
         }
@@ -135,7 +134,7 @@ export class FolderLevelPermissions {
             return true;
         }
 
-        return await this.canAccessFolder({ permissions, rwd: "w", managePermissions: true });
+        return await this.canAccessFolder({ flp, rwd: "w", managePermissions: true });
     }
 
     public getDefaultPermissions(permissions: FolderPermission[]) {

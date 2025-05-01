@@ -1,6 +1,6 @@
 import { Entity, Table } from "@webiny/db-dynamodb/toolbox";
 import { DynamoDBDocument } from "../../../aws-sdk/src/client-dynamodb";
-import { deleteItem, getClean, put, queryAll } from "@webiny/db-dynamodb";
+import { deleteItem, getClean, put, queryAllClean } from "@webiny/db-dynamodb";
 
 import { WebinyError } from "@webiny/error";
 import type {
@@ -46,10 +46,12 @@ class FolderLevelPermissionsStorageOperations
         where: { tenant, locale, type, path_startsWith, parentId }
     }: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]> {
         try {
+            const partitionKey = `T#${tenant}#L#${locale}#AT#${type}#FLP`;
+
             if (parentId) {
-                const entries = await queryAll<{ data: FolderLevelPermission }>({
+                const entries = await queryAllClean<{ data: FolderLevelPermission }>({
                     entity: this.entity,
-                    partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+                    partitionKey,
                     options: {
                         index: "GSI2",
                         eq: parentId
@@ -59,9 +61,9 @@ class FolderLevelPermissionsStorageOperations
             }
 
             if (path_startsWith) {
-                const entries = await queryAll<{ data: FolderLevelPermission }>({
+                const entries = await queryAllClean<{ data: FolderLevelPermission }>({
                     entity: this.entity,
-                    partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+                    partitionKey,
                     options: {
                         index: "GSI1",
                         beginsWith: path_startsWith
@@ -201,16 +203,20 @@ class FolderLevelPermissionsStorageOperations
                     sortKey: true
                 },
                 GSI1_PK: {
-                    type: "string"
+                    type: "string",
+                    required: true
                 },
                 GSI1_SK: {
-                    type: "string"
+                    type: "string",
+                    required: true
                 },
                 GSI2_PK: {
-                    type: "string"
+                    type: "string",
+                    required: true
                 },
                 GSI2_SK: {
-                    type: "string"
+                    type: "string",
+                    required: true
                 },
                 TYPE: {
                     type: "string"

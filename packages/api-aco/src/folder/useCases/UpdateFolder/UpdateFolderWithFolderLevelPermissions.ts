@@ -25,7 +25,7 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
         // Let's ensure current identity's permission allows the update operation.
         await this.folderLevelPermissions.ensureCanAccessFolder({
-            permissions: originalFlp.permissions,
+            flp: originalFlp,
             rwd: "w"
         });
 
@@ -35,7 +35,10 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
         // Check if the user still has access to the folder with the provided permissions.
         const stillHasAccess = await this.folderLevelPermissions.canAccessFolder({
-            permissions,
+            flp: {
+                ...originalFlp,
+                permissions
+            },
             rwd: "w"
         });
 
@@ -71,7 +74,7 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
                 if (parentFlp) {
                     await this.folderLevelPermissions.ensureCanAccessFolder({
-                        permissions: parentFlp.permissions,
+                        flp: parentFlp,
                         rwd: "r"
                     });
                 }

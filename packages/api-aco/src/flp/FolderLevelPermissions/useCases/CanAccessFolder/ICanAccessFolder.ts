@@ -1,7 +1,7 @@
-import type { FolderPermission } from "~/flp/flp.types";
+import type { FolderLevelPermission } from "~/flp/flp.types";
 
 export interface CanAccessFolderParams {
-    permissions?: FolderPermission[];
+    flp: FolderLevelPermission;
     rwd?: "r" | "w" | "d";
     managePermissions?: boolean;
 }
