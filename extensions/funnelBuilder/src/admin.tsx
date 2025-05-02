@@ -4,6 +4,7 @@ import { StepAdminPlugins } from "./frontend/pageElements/step/admin/StepAdminPl
 import { ButtonAdminPlugins } from "./frontend/pageElements/button/ButtonAdminPlugins";
 import { TextFieldAdminPlugins } from "./frontend/pageElements/fields/text/TextFieldAdminPlugins";
 import { TextareaFieldAdminPlugins } from "./frontend/pageElements/fields/textarea/TextareaFieldAdminPlugins";
+import { CheckboxGroupFieldAdminPlugins } from "./frontend/pageElements/fields/checkboxGroup/CheckboxGroupFieldAdminPlugins";
 import { FunnelBuilderPageElementGroup } from "./frontend/pageElements/FunnelBuilderPageElementGroup";
 import { DecoratedElementControls } from "./frontend/pageElements/ElementControlsDecorator";
 import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators";
@@ -13,6 +14,7 @@ export const Extension = () => (
         {/* Fields. */}
         <TextFieldAdminPlugins />
         <TextareaFieldAdminPlugins />
+        <CheckboxGroupFieldAdminPlugins />
         <ButtonAdminPlugins />
 
         {/* Container Page Element */}

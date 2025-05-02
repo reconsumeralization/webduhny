@@ -1,3 +1,5 @@
+import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
+
 export type FieldValidatorParams<TExtra = Record<string, any>> = {
     errorMessage: string; // Error message to be displayed when validation fails.
     extra: TExtra;
@@ -39,5 +41,5 @@ export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
         }
     }
 
-    abstract isValid(value: any): boolean;
+    abstract isValid(value: FunnelFieldValueModel): boolean;
 }

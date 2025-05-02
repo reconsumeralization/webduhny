@@ -108,6 +108,32 @@ describe("Funnel Submissions", () => {
                         type: "string"
                     },
                     extra: {}
+                },
+                {
+                    id: "colors",
+                    fieldId: "colors",
+                    stepId: "step2",
+                    type: "text",
+                    label: "Colors",
+                    helpText: "Colors",
+                    validators: [
+                        {
+                            type: "required",
+                            params: { extra: {}, errorMessage: "Please choose at least one color." }
+                        }
+                    ],
+                    value: {
+                        value: [],
+                        array: true,
+                        type: "string"
+                    },
+                    extra: {
+                        options: [
+                            { value: "red", label: "Red" },
+                            { value: "green", label: "Green" },
+                            { value: "blue", label: "Blue" }
+                        ]
+                    }
                 }
             ],
             conditionRules: [
@@ -218,6 +244,7 @@ describe("Funnel Submissions", () => {
 
         expect(submissionResult).toEqual({
             data: {
+                colors: [],
                 email: "",
                 location: "Earth"
             },
@@ -258,28 +285,39 @@ describe("Funnel Submissions", () => {
             fields: {
                 email: {
                     value: {
+                        array: false,
                         type: "string",
                         value: "john@example.com"
                     }
                 },
                 firstName: {
                     value: {
+                        array: false,
                         type: "string",
                         value: "John"
                     }
                 },
                 lastName: {
                     value: {
+                        array: false,
                         type: "string",
                         value: "Doe"
                     }
                 },
                 location: {
                     value: {
+                        array: false,
                         type: "string",
                         value: "Earth"
                     }
-                }
+                },
+                "colors": {
+                    "value": {
+                        "array": true,
+                        "type": "string",
+                        "value": []
+                    }
+                },
             }
         });
     });

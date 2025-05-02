@@ -53,6 +53,10 @@ export class FunnelSubmissionFieldModel<TValue = unknown> {
         return this.value.value;
     }
 
+    setValue(value: TValue) {
+        this.value.value = value;
+    }
+
     get disabled() {
         // Get the actions from the evaluator
         const actions = this.submission.evaluateConditionRulesFieldsForActiveStep();
@@ -68,9 +72,8 @@ export class FunnelSubmissionFieldModel<TValue = unknown> {
 
     validate(): FunnelSubmissionFieldValidationResult {
         const validators = this.definition.validators;
-
         for (const validator of validators) {
-            if (!validator.isValid(this.value.value)) {
+            if (!validator.isValid(this.value)) {
                 return {
                     isValid: false,
                     errorMessage: validator.getErrorMessage()

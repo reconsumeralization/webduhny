@@ -1,12 +1,11 @@
-import React from "react";
-import { FormRenderFbFormModelField } from "@webiny/app-form-builder/types";
-import { useBind } from "@webiny/form";
-import { Field } from "./components/Field";
-import { FieldErrorMessage } from "./components/FieldErrorMessage";
-import { FieldHelperMessage } from "./components/FieldHelperMessage";
-import { FieldLabel } from "./components/FieldLabel";
-import { StyledInput } from "./Input";
+import React, { useMemo } from "react";
 import styled from "@emotion/styled";
+import { useBind } from "@webiny/form";
+import { FieldErrorMessage } from "../components/FieldErrorMessage";
+import { FieldHelperMessage } from "../components/FieldHelperMessage";
+import { FieldLabel } from "../components/FieldLabel";
+import { Field } from "../components/Field";
+import { createFieldRenderer } from "../utils";
 
 export const CheckboxGroup = styled.div`
     align-items: center;
@@ -40,12 +39,21 @@ export const CheckboxButton = styled.input`
     }
 `;
 
-const OtherInput = styled(StyledInput)`
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: -2px;
-    margin-bottom: -2px;
-    margin-left: 16px;
+export const StyledInput = styled.input`
+    border: 1px solid ${props => props.theme.styles.colors["color5"]};
+    background-color: ${props => props.theme.styles.colors["color5"]};
+    width: 100%;
+    padding: 10px;
+    border-radius: ${props => props.theme.styles.borderRadius};
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    ${props => props.theme.styles.typography.paragraphs.stylesById("paragraph1")};
+
+    &:focus {
+        border-color: ${props => props.theme.styles.colors["color2"]};
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        outline: none;
+    }
 `;
 
 interface Option {
@@ -79,66 +87,35 @@ const checked = ({ option, value }: CheckedParams) => {
     return Array.isArray(value) && value.includes(option.value);
 };
 
-const otherOption: Option = {
-    label: "Other",
-    value: "other"
-};
+export const CheckboxGroupFieldRenderer = createFieldRenderer(props => {
+    const { definition: field } = props.field;
 
-interface CheckboxFieldProps {
-    field: FormRenderFbFormModelField;
-}
-
-export const CheckboxField = ({ field }: CheckboxFieldProps) => {
-    const fieldId = field.fieldId;
+    const validators = useMemo(() => {
+        return field.validators.map(validator => validator.validate.bind(validator));
+    }, [field.validators]);
 
     const { validation, value, onChange } = useBind({
         name: field.fieldId,
-        validators: field.validators
-    });
-    const { value: otherOptionValue, onChange: otherOptionOnChange } = useBind({
-        name: `${field.fieldId}Other`
+        validators
     });
 
     return (
         <Field>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
-            {(field.options || []).map(option => (
+            {(field.extra.options || []).map((option: any) => (
                 <CheckboxGroup key={option.value}>
                     <CheckboxButton
-                        name={fieldId}
+                        name={field.fieldId}
                         type="checkbox"
-                        id={"checkbox-" + fieldId + option.value}
+                        id={"checkbox-" + field.fieldId + option.value}
                         checked={checked({ option, value })}
                         onChange={() => change({ option, value, onChange })}
                     />
-                    <label htmlFor={"checkbox-" + fieldId + option.value}>{option.label}</label>
+                    <label htmlFor={"checkbox-" + field.fieldId + option.value}>{option.label}</label>
                 </CheckboxGroup>
             ))}
-            {field.settings["otherOption"] && (
-                <CheckboxGroup>
-                    <CheckboxButton
-                        name={fieldId}
-                        type="checkbox"
-                        id={"checkbox-" + fieldId + otherOption.value}
-                        checked={checked({ option: otherOption, value })}
-                        onChange={() => change({ option: otherOption, value, onChange })}
-                    />
-                    <label htmlFor={"checkbox-" + fieldId + otherOption.value}>
-                        {otherOption.label}
-                    </label>
-                    {checked({ option: otherOption, value }) && (
-                        <OtherInput
-                            name={`${fieldId}Other`}
-                            id={`${fieldId}Other`}
-                            onChange={e => otherOptionOnChange(e.target.value)}
-                            value={otherOptionValue}
-                            autoFocus
-                        />
-                    )}
-                </CheckboxGroup>
-            )}
             <FieldErrorMessage isValid={validation.isValid} message={validation.message} />
         </Field>
     );
-};
+});

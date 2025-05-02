@@ -1,16 +1,17 @@
 import { getRandomId } from "../getRandomId";
-import { createObjectHash } from "../createObjectHash";
+import { AbstractModel } from "./AbstractModel";
 
 export interface FunnelStepModelDto {
     id: string;
     title: string;
 }
 
-export class FunnelStepModel {
+export class FunnelStepModel extends AbstractModel<FunnelStepModelDto> {
     id: string;
     title: string;
 
     constructor(dto?: FunnelStepModelDto) {
+        super();
         this.id = dto?.id ?? getRandomId();
         this.title = dto?.title ?? "Step";
     }
@@ -20,19 +21,6 @@ export class FunnelStepModel {
             id: this.id,
             title: this.title
         };
-    }
-
-    getChecksum(): string {
-        return createObjectHash(this.toDto());
-    }
-
-    populate(stepDto: Partial<FunnelStepModelDto>) {
-        if (stepDto.id) {
-            this.id = stepDto.id;
-        }
-        if (stepDto.title) {
-            this.title = stepDto.title;
-        }
     }
 
     static fromDto(dto: FunnelStepModelDto): FunnelStepModel {

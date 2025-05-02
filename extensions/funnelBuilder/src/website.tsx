@@ -3,6 +3,8 @@ import { ContainerWebsitePlugins } from "./frontend/pageElements/container/websi
 import { ButtonWebsitePlugins } from "./frontend/pageElements/button/ButtonWebsitePlugins";
 import { TextFieldWebsitePlugins } from "./frontend/pageElements/fields/text/TextFieldWebsitePlugins";
 import { TextareaFieldWebsitePlugins } from "./frontend/pageElements/fields/textarea/TextareaFieldWebsitePlugins";
+import { CheckboxGroupFieldWebsitePlugins } from "./frontend/pageElements/fields/checkboxGroup/CheckboxGroupFieldWebsitePlugins";
+
 import { StepWebsitePlugins } from "./frontend/pageElements/step/website/StepWebsitePlugins";
 
 export const Extension = () => (
@@ -15,5 +17,6 @@ export const Extension = () => (
         {/* Fields. */}
         <TextFieldWebsitePlugins />
         <TextareaFieldWebsitePlugins />
+        <CheckboxGroupFieldWebsitePlugins/>
     </>
 );

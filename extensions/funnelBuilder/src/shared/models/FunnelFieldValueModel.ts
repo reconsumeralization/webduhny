@@ -1,45 +1,55 @@
-import { createObjectHash } from "../createObjectHash";
+import { AbstractModel } from "./AbstractModel";
 
 export interface FunnelFieldValueModelDto<TValue = unknown> {
     type: string;
-    value: TValue;
+    value?: TValue;
+    array?: boolean;
 }
 
-export class FunnelFieldValueModel<TValue = unknown> {
+export class FunnelFieldValueModel<
+    TValue = unknown
+> extends AbstractModel<FunnelFieldValueModelDto> {
     type: string;
+    array: boolean;
     value: TValue;
 
     constructor(dto: FunnelFieldValueModelDto<TValue>) {
+        super();
         this.type = dto.type;
-        this.value = dto.value;
-    }
-
-    isEmpty() {
-        return !this.value;
+        this.array = dto.array || false;
+        if (typeof dto.value !== "undefined") {
+            this.value = dto.value;
+        } else {
+            this.value = this.getDefaultValue() as TValue;
+        }
     }
 
     exists() {
-        return !this.isEmpty();
+        if (this.array) {
+            return Array.isArray(this.value) && this.value.length > 0;
+        }
+
+        return !!this.value;
+    }
+
+    isEmpty() {
+        return !this.exists();
     }
 
     toDto(): FunnelFieldValueModelDto<TValue> {
         return {
             type: this.type,
-            value: this.value
+            value: this.value,
+            array: this.array
         };
-    }
-
-    populate(dto: Partial<FunnelFieldValueModelDto<TValue>>) {
-        this.type = dto.type || this.type;
-        this.value = dto.value || this.value;
-    }
-
-    getChecksum(): string {
-        return createObjectHash(this.toDto());
     }
 
     clone() {
         return FunnelFieldValueModel.fromDto(this.toDto());
+    }
+
+    getDefaultValue() {
+        return this.array ? [] : null;
     }
 
     static fromDto<TValue = unknown>(

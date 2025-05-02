@@ -10,7 +10,7 @@
 - moving steps needed
 - preview / clicking in editor should work? no?
 - embed test
-- checkbox/radio elements
+  - -----------------> checkbox/radio elements
 - validators
   - async validators
 - edit field dialog reopening?
@@ -24,9 +24,8 @@
 - docs
 - test in CWP
 - delete __fb-formElements folder
-- MODELS - TExtra
 - MODELS - AbstractModel
-
+- pattern array validator
 
 ## SH
 - esc doesn't work on dialogs sometimes (if not focused correctly)
@@ -39,6 +38,7 @@
 ## CH/NTH
 - add '~' imports
 - PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
-- when doing new FunnelSubmission, fields need to auto have defautl vlaues (`defaultValue: field.value.value` thingie) 
+-  
+
 ## WH
 - optional validators  

@@ -19,6 +19,7 @@ export const StepWebsiteRenderer = createRenderer(() => {
                 onSubmit={data => {
                     funnelSubmissionVm.setData(data);
                     funnelSubmissionVm.submitActiveStep();
+                    console.log('data', data)
                 }}
             >
                 {() => <Elements element={element} />}

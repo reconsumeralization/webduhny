@@ -37,7 +37,8 @@ export class FunnelFieldDefinitionModel<
     extra: TExtra;
 
     // Meta fields.
-    supportedValidatorTypes: string[] = ["required"];
+    supportedValidatorTypes: string[] = [];
+    supportedFieldValueTypes: string[] = [];
 
     constructor(dto: FunnelFieldDefinitionModelDto<TValue, TExtra>) {
         this.id = dto.id;

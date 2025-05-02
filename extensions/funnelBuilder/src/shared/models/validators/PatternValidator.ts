@@ -1,5 +1,6 @@
 import { AbstractValidator, FieldValidatorParamsDto } from "./AbstractValidator";
 import { patternPresets } from "./PatternValidator/patternPresets";
+import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 interface PatternValidatorExtraParams {
     preset?: string;
@@ -22,8 +23,13 @@ export class PatternValidator extends AbstractValidator<PatternValidatorExtraPar
         });
     }
 
-    isValid(value: any) {
-        if (!value) {
+    isValid(value: FunnelFieldValueModel) {
+        if (!value.isEmpty()) {
+            return true;
+        }
+
+        if (value.array) {
+            // TODO
             return true;
         }
 
@@ -43,6 +49,6 @@ export class PatternValidator extends AbstractValidator<PatternValidatorExtraPar
             return true;
         }
 
-        return new RegExp(pattern.regex, pattern.flags).test(value);
+        return new RegExp(pattern.regex, pattern.flags).test(String(value.value));
     }
 }

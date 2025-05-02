@@ -82,6 +82,7 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
                     field={selectedField!}
                     onClose={hideFieldSettingsDialog}
                     onSubmit={data => {
+                        console.log('data', data)
                         updateElement({ ...editorElement!, data }, { history: false });
                         hideFieldSettingsDialog();
                     }}

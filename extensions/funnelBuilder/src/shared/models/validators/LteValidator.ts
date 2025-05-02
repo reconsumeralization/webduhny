@@ -1,5 +1,6 @@
 import { validation } from "@webiny/validation";
 import { AbstractValidator, FieldValidatorParamsDto } from "./AbstractValidator";
+import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 interface LteValidatorExtraParams {
     threshold?: number;
@@ -18,8 +19,17 @@ export class LteValidator extends AbstractValidator<LteValidatorExtraParams> {
         });
     }
 
-    isValid(value: any) {
+    isValid(value: FunnelFieldValueModel) {
+        if (value.isEmpty()) {
+            return true;
+        }
+
         if (!this.params.extra?.threshold) {
+            return true;
+        }
+
+        if (value.array) {
+            // This validator can't be applied on array values.
             return true;
         }
 
