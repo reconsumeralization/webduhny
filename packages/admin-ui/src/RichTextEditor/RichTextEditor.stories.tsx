@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { RichTextEditor } from "./RichTextEditor";
-import { type RichTextEditorValue } from "@webiny/admin-ui";
+import { type RichTextEditorValue } from "./RichTextEditorPrimitive";
 
 const meta: Meta<typeof RichTextEditor> = {
     title: "Components/Form/RichTextEditor",
