@@ -2,8 +2,6 @@ import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "../FunnelFieldV
 
 export class BooleanArrayFieldValue extends FunnelFieldValueModel<boolean[]> {
     constructor(dto: FunnelFieldValueModelDto<boolean[]>) {
-        super(dto);
-        this.type = "booleanArray";
-        this.array = true;
+        super({ ...dto, type: "booleanArray", array: true, value: dto.value });
     }
 }

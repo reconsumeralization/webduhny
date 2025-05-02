@@ -2,8 +2,6 @@ import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "../FunnelFieldV
 
 export class StringArrayFieldValue extends FunnelFieldValueModel<string[]> {
     constructor(dto: FunnelFieldValueModelDto<string[]>) {
-        super(dto);
-        this.type = "stringArray";
-        this.array = true;
+        super({ ...dto, type: "stringArray", array: true, value: dto.value });
     }
 }

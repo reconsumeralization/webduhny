@@ -2,8 +2,6 @@ import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "../FunnelFieldV
 
 export class NumberArrayFieldValue extends FunnelFieldValueModel<number[]> {
     constructor(dto: FunnelFieldValueModelDto<number[]>) {
-        super(dto);
-        this.type = "numberArray";
-        this.array = true;
+        super({ ...dto, type: "numberArray", array: true, value: dto.value });
     }
 }
