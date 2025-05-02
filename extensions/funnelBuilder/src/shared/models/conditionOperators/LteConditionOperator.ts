@@ -1,10 +1,14 @@
 import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
-export class GteConditionOperator extends FunnelConditionOperatorModel<GteConditionOperatorExtraParams, FunnelFieldValueModel<number>> {
-    constructor(dto: FunnelConditionOperatorModelDto<GteConditionOperatorExtraParams>) {
+interface LteConditionOperatorExtraParams {
+    threshold?: number;
+}
+
+export class LteConditionOperator extends FunnelConditionOperatorModel<LteConditionOperatorExtraParams, FunnelFieldValueModel<number>> {
+    constructor(dto: FunnelConditionOperatorModelDto<LteConditionOperatorExtraParams>) {
         super({
-            id: "gte",
+            id: "lte",
             params: {
                 extra: {
                     threshold: dto.params?.extra?.threshold
@@ -18,10 +22,6 @@ export class GteConditionOperator extends FunnelConditionOperatorModel<GteCondit
             return true;
         }
 
-        return value.exists() && value.value >= this.params.extra.threshold;
+        return value.exists() && value.value <= this.params.extra.threshold;
     }
-}
-
-interface GteConditionOperatorExtraParams {
-    threshold?: number;
 }
