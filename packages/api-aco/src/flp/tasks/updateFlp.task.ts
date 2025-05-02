@@ -17,17 +17,18 @@ class UpdateFlpTask {
                     /* webpackChunkName: "UpdateFlp" */ "../useCases/UpdateFlp"
                 );
 
-                const useCase = new UpdateFlp(context, input.updated);
+                const useCase = new UpdateFlp({
+                    context,
+                    updated: input.updated,
+                    isCloseToTimeout: isCloseToTimeout,
+                    handleTimeout: (updated: string[]) => response.continue({ ...input, updated })
+                });
 
                 try {
                     if (isAborted()) {
                         return response.aborted();
-                    } else if (isCloseToTimeout()) {
-                        return response.continue({ ...input, updated: useCase.getUpdated() });
                     }
-
                     await useCase.execute(input.folder, input.original);
-
                     return response.done("Task done: FLP record updated.");
                 } catch (error) {
                     return response.error(error);

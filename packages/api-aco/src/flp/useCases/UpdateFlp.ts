@@ -3,13 +3,24 @@ import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
 import type { AcoContext, Folder, FolderLevelPermission } from "~/types";
 
+interface UpdateFlpParams {
+    context: AcoContext;
+    updated?: string[];
+    isCloseToTimeout?: () => boolean;
+    handleTimeout?: (updated: string[]) => void;
+}
+
 export class UpdateFlp {
     private context: AcoContext;
-    private updated: Set<string> = new Set();
+    private readonly updated: Set<string> = new Set();
+    private readonly isCloseToTimeout?: () => boolean;
+    private readonly handleTimeout?: (updated: string[]) => void;
 
-    constructor(context: AcoContext, updated?: string[]) {
-        this.context = context;
-        this.updated = new Set(updated);
+    constructor(params: UpdateFlpParams) {
+        this.context = params.context;
+        this.updated = new Set(params.updated);
+        this.isCloseToTimeout = params.isCloseToTimeout;
+        this.handleTimeout = params.handleTimeout;
     }
 
     async execute(folder: Folder, original: Folder) {
@@ -34,6 +45,10 @@ export class UpdateFlp {
             const children = await this.listDirectChildren(flp);
 
             for (const child of children) {
+                if (this.isCloseToTimeout?.()) {
+                    this.handleTimeout?.(this.getUpdated());
+                    return;
+                }
                 await this.executeRecursive(child, updatedFlp);
             }
         } catch (error) {
@@ -44,7 +59,7 @@ export class UpdateFlp {
         }
     }
 
-    public getUpdated() {
+    private getUpdated() {
         return Array.from(this.updated);
     }
 
@@ -74,6 +89,10 @@ export class UpdateFlp {
         const children = await this.listDirectChildren(targetFlp);
 
         for (const child of children) {
+            if (this.isCloseToTimeout?.()) {
+                this.handleTimeout?.(this.getUpdated());
+                return;
+            }
             await this.executeRecursive(child, updatedTargetFlp);
         }
 

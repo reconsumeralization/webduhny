@@ -7,7 +7,7 @@ export const onFolderAfterUpdateFlpHook = (context: AcoContext) => {
     context.aco.folder.onFolderAfterUpdate.subscribe(async ({ folder, original }) => {
         try {
             if (!context.tasks) {
-                const useCase = new UpdateFlp(context);
+                const useCase = new UpdateFlp({ context });
                 await useCase.execute(folder, original);
                 return;
             }
