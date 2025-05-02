@@ -1,7 +1,7 @@
-import type { AcoContext, Folder, FolderLevelPermission } from "~/types";
 import { WebinyError } from "@webiny/error";
+import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
-import { Permissions } from "~/flp/tasks/Permissions";
+import type { AcoContext, Folder, FolderLevelPermission } from "~/types";
 
 export class UpdateFlp {
     private context: AcoContext;

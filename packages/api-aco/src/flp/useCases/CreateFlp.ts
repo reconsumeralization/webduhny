@@ -1,7 +1,7 @@
 import { WebinyError } from "@webiny/error";
-import { Permissions } from "~/flp/tasks/Permissions";
-import type { Folder } from "~/folder/folder.types";
+import { Permissions } from "./Permissions";
 import type { FolderLevelPermission as IFolderLevelPermission } from "~/flp/flp.types";
+import type { Folder } from "~/folder/folder.types";
 import type { AcoContext } from "~/types";
 import { ROOT_FOLDER } from "~/constants";
 
