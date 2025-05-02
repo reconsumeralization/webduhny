@@ -1,23 +1,9 @@
-import { AcoContext } from "~/types";
-import { CmsEntry, CmsModel } from "@webiny/api-headless-cms/types";
-import { NotFoundError } from "@webiny/handler-graphql";
+import { CmsEntry } from "@webiny/api-headless-cms/types";
 import { ROOT_FOLDER } from "~/constants";
 import { FolderLevelPermissions } from "~/flp";
-type Context = Pick<AcoContext, "aco" | "cms">;
 
-import { createFolderType } from "./createFolderType";
-
-export const filterEntriesByFolderFactory = (
-    context: Context,
-    permissions: FolderLevelPermissions
-) => {
-    return async (model: CmsModel, entries: CmsEntry[]) => {
-        const [folders] = await context.aco.folder.listAll({
-            where: {
-                type: createFolderType(model)
-            }
-        });
-
+export const filterEntriesByFolderFactory = (permissions: FolderLevelPermissions) => {
+    return async (entries: CmsEntry[]) => {
         const results = await Promise.all(
             entries.map(async entry => {
                 const folderId = entry.location?.folderId;
@@ -25,12 +11,9 @@ export const filterEntriesByFolderFactory = (
                     return entry;
                 }
 
-                const folder = folders.find(folder => folder.id === folderId);
-                if (!folder) {
-                    throw new NotFoundError(`Folder "${folderId}" not found.`);
-                }
+                const flp = await permissions.getFolderLevelPermission(folderId);
                 const result = await permissions.canAccessFolderContent({
-                    folder,
+                    flp,
                     rwd: "r"
                 });
                 return result ? entry : null;
