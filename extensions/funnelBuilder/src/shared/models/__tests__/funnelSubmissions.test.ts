@@ -248,7 +248,7 @@ describe("Funnel Submissions", () => {
                 email: "",
                 location: "Earth"
             },
-            errors: { email: "Value is required." },
+            errors: { colors: "Please choose at least one color.", email: "Value is required." },
             success: false
         });
 
@@ -256,10 +256,10 @@ describe("Funnel Submissions", () => {
 
         expect(validationResult).toEqual({
             isValid: false,
-            errors: { email: "Value is required." }
+            errors: { colors: "Please choose at least one color.", email: "Value is required." }
         });
 
-        funnelSubmission.setData({ email: "john@example" });
+        funnelSubmission.setData({ email: "john@example", colors: ["red"] });
 
         validationResult = funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
@@ -281,43 +281,45 @@ describe("Funnel Submissions", () => {
 
         const dto = funnelSubmission.toDto();
         expect(dto).toEqual({
-            activeStep: "step2",
-            fields: {
-                email: {
-                    value: {
-                        array: false,
-                        type: "string",
-                        value: "john@example.com"
-                    }
-                },
-                firstName: {
-                    value: {
-                        array: false,
-                        type: "string",
-                        value: "John"
-                    }
-                },
-                lastName: {
-                    value: {
-                        array: false,
-                        type: "string",
-                        value: "Doe"
-                    }
-                },
-                location: {
-                    value: {
-                        array: false,
-                        type: "string",
-                        value: "Earth"
-                    }
-                },
+            "activeStep": "step2",
+            "fields": {
                 "colors": {
                     "value": {
                         "array": true,
                         "type": "string",
-                        "value": []
+                        "value": [
+                            "red"
+                        ]
                     }
                 },
+                "email": {
+                    "value": {
+                        "array": false,
+                        "type": "string",
+                        "value": "john@example.com"
+                    }
+                },
+                "firstName": {
+                    "value": {
+                        "array": false,
+                        "type": "string",
+                        "value": "John"
+                    }
+                },
+                "lastName": {
+                    "value": {
+                        "array": false,
+                        "type": "string",
+                        "value": "Doe"
+                    }
+                },
+                "location": {
+                    "value": {
+                        "array": false,
+                        "type": "string",
+                        "value": "Earth"
+                    }
+                }
             }
         });
     });

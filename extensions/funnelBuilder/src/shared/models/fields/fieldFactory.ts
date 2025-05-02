@@ -4,17 +4,22 @@ import {
     type FunnelFieldDefinitionModel,
     type FunnelFieldDefinitionModelDto
 } from "../FunnelFieldDefinitionModel";
-import { CheckboxGroupField } from "./CheckboxGroupField";
+import {
+    CheckboxGroupField,
+    FunnelCheckboxGroupFieldDefinitionModelDto
+} from "./CheckboxGroupField";
 import { NumberField } from "./NumberField";
 import { RadioField } from "./RadioField";
 
 const registry: Record<string, (dto: FunnelFieldDefinitionModelDto) => FunnelFieldDefinitionModel> =
     {
-        checkboxGroup: dto => new CheckboxGroupField(dto), // Placeholder, replace with actual CheckboxField class
+        checkboxGroup: dto => {
+            return new CheckboxGroupField(dto as FunnelCheckboxGroupFieldDefinitionModelDto);
+        },
         number: dto => new NumberField(dto),
         radio: dto => new RadioField(dto),
         textarea: dto => new TextareaField(dto),
-        text: dto => new TextField(dto),
+        text: dto => new TextField(dto)
     };
 
 export function fieldFromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {

@@ -24,16 +24,16 @@ export class GteValidator extends AbstractValidator<GteValidatorExtraParams> {
             return true;
         }
 
+        // Array values are not supported by this validator (can be expanded later if needed).
+        if (value.array) {
+            return true;
+        }
+
         if (!this.params.extra?.threshold) {
             return true;
         }
 
-        if (value.array) {
-            // This validator can't be applied on array values.
-            return true;
-        }
-
         const validators = `gte:${this.params.extra.threshold}`;
-        return validation.validateSync(value, validators, { throw: false }) === true;
+        return validation.validateSync(value.value, validators, { throw: false }) === true;
     }
 }

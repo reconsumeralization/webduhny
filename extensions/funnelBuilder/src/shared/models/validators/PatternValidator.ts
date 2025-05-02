@@ -24,12 +24,12 @@ export class PatternValidator extends AbstractValidator<PatternValidatorExtraPar
     }
 
     isValid(value: FunnelFieldValueModel) {
-        if (!value.isEmpty()) {
+        if (value.isEmpty()) {
             return true;
         }
 
+        // Array values are not supported by this validator (can be expanded later if needed).
         if (value.array) {
-            // TODO
             return true;
         }
 

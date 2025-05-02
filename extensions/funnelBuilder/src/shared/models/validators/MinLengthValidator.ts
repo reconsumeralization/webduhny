@@ -24,15 +24,16 @@ export class MinLengthValidator extends AbstractValidator<MinLengthValidatorExtr
             return true;
         }
 
+        // Array values are not supported by this validator (can be expanded later if needed).
+        if (value.array) {
+            return true;
+        }
+
         if (!this.params.extra?.threshold) {
             return true;
         }
 
-        if (value.array) {
-            return Array.isArray(value.value) && value.value.length >= this.params.extra?.threshold;
-        }
-
         const validators = `minLength:${this.params.extra.threshold}`;
-        return validation.validateSync(value, validators, { throw: false }) === true;
+        return validation.validateSync(value.value, validators, { throw: false }) === true;
     }
 }
