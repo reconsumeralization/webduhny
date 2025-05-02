@@ -9,18 +9,11 @@ interface GetFolderUseCasesParams {
 }
 
 export const getGetFolderUseCase = (params: GetFolderUseCasesParams) => {
-    const getFolderUseCase = new GetFolder(params.getOperation);
-
-    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
-        const getFolderUseCaseWithFlp = new GetFolderWithFolderLevelPermissions(
-            params.folderLevelPermissions,
-            getFolderUseCase
-        );
-
-        return {
-            getFolderUseCase: getFolderUseCaseWithFlp
-        };
-    }
+    const getFolder = new GetFolder(params.getOperation);
+    const getFolderUseCase = new GetFolderWithFolderLevelPermissions(
+        params.folderLevelPermissions,
+        getFolder
+    );
 
     return {
         getFolderUseCase

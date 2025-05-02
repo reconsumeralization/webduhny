@@ -22,18 +22,11 @@ interface CreateFolderUseCasesParams {
 
 export const getCreateFolderUseCases = (params: CreateFolderUseCasesParams) => {
     const createFolder = new CreateFolder(params.createOperation);
-    const createFolderUseCase = new CreateFolderWithEvents(params.topics, createFolder);
-
-    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
-        const createFolderUseCaseWithFlp = new CreateFolderWithFolderLevelPermissions(
-            params.folderLevelPermissions,
-            createFolderUseCase
-        );
-
-        return {
-            createFolderUseCase: createFolderUseCaseWithFlp
-        };
-    }
+    const createFolderUseCaseWithEvents = new CreateFolderWithEvents(params.topics, createFolder);
+    const createFolderUseCase = new CreateFolderWithFolderLevelPermissions(
+        params.folderLevelPermissions,
+        createFolderUseCaseWithEvents
+    );
 
     return {
         createFolderUseCase

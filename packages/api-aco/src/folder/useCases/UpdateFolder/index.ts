@@ -23,23 +23,16 @@ interface UpdateFolderUseCasesParams {
 
 export const getUpdateFolderUseCase = (params: UpdateFolderUseCasesParams) => {
     const updateFolder = new UpdateFolder(params.updateOperation);
-    const updateFolderUseCase = new UpdateFolderWithEvents(
+    const updateFolderUseCaseWithEvents = new UpdateFolderWithEvents(
         params.topics,
         params.getOperation,
         updateFolder
     );
-
-    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
-        const updateFolderUseCaseWithFlp = new UpdateFolderWithFolderLevelPermissions(
-            params.folderLevelPermissions,
-            params.getOperation,
-            updateFolderUseCase
-        );
-
-        return {
-            updateFolderUseCase: updateFolderUseCaseWithFlp
-        };
-    }
+    const updateFolderUseCase = new UpdateFolderWithFolderLevelPermissions(
+        params.folderLevelPermissions,
+        params.getOperation,
+        updateFolderUseCaseWithEvents
+    );
 
     return {
         updateFolderUseCase

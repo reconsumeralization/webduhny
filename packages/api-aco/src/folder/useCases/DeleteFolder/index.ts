@@ -23,22 +23,15 @@ interface DeleteFolderUseCasesParams {
 
 export const getDeleteFolderUseCases = (params: DeleteFolderUseCasesParams) => {
     const deleteFolder = new DeleteFolder(params.deleteOperation);
-    const deleteFolderUseCase = new DeleteFolderWithEvents(
+    const deleteFolderUseCaseWithEvents = new DeleteFolderWithEvents(
         params.topics,
         params.getOperation,
         deleteFolder
     );
-
-    if (params.folderLevelPermissions.canUseFolderLevelPermissions()) {
-        const deleteFolderUseCaseWithFlp = new DeleteFolderWithFolderLevelPermissions(
-            params.folderLevelPermissions,
-            deleteFolderUseCase
-        );
-
-        return {
-            deleteFolderUseCase: deleteFolderUseCaseWithFlp
-        };
-    }
+    const deleteFolderUseCase = new DeleteFolderWithFolderLevelPermissions(
+        params.folderLevelPermissions,
+        deleteFolderUseCaseWithEvents
+    );
 
     return {
         deleteFolderUseCase

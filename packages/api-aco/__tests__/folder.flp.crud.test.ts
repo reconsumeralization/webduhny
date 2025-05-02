@@ -586,35 +586,35 @@ describe("Folder Level Permissions", () => {
             }
         });
 
-        await expect(listFolders({ limit: 6 })).resolves.toMatchObject({
+        const listResult1 = await listFolders({ limit: 6 });
+        expect(listResult1).toMatchObject({
             meta: {
-                cursor: createdFolders[5].id,
+                cursor: expect.any(String),
                 hasMoreItems: true,
                 totalCount: 20
             }
         });
 
-        await expect(listFolders({ limit: 6, after: createdFolders[5].id })).resolves.toMatchObject(
-            {
-                meta: {
-                    cursor: createdFolders[11].id,
-                    hasMoreItems: true,
-                    totalCount: 20
-                }
-            }
-        );
-
-        await expect(
-            listFolders({ limit: 6, after: createdFolders[11].id })
-        ).resolves.toMatchObject({
+        const listResult2 = await listFolders({ limit: 6, after: listResult1.meta.cursor });
+        expect(listResult2).toMatchObject({
             meta: {
-                cursor: createdFolders[17].id,
+                cursor: expect.any(String),
                 hasMoreItems: true,
                 totalCount: 20
             }
         });
 
-        const lastPageResult = await listFolders({ limit: 6, after: createdFolders[17].id });
+        const listResult3 = await listFolders({ limit: 6, after: listResult2.meta.cursor });
+
+        expect(listResult3).toMatchObject({
+            meta: {
+                cursor: expect.any(String),
+                hasMoreItems: true,
+                totalCount: 20
+            }
+        });
+
+        const lastPageResult = await listFolders({ limit: 6, after: listResult3.meta.cursor });
 
         expect(lastPageResult).toMatchObject({
             data: [{ slug: "folder-18" }, { slug: "folder-19" }],
