@@ -112,3 +112,72 @@ export const WithOptions: Story = {
 export const WithActions: Story = {
     args: Default.args
 };
+
+export const Documentation: Story = {
+    render: args => {
+        return <Card {...args} />;
+    },
+    args: {
+        title: "Card title goes here",
+        description: "Card description goes here",
+        children: <>This is card content. Anything can go in here.</>,
+        actions: (
+            <>
+                <Button variant={"secondary"} text={"Cancel"} />
+                <Button variant={"primary"} text={"Confirm"} />
+            </>
+        ),
+        padding: "standard",
+        elevation: "sm",
+        borderRadius: "md",
+        options: (
+            <IconButton
+                variant={"ghost"}
+                icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                size={"sm"}
+                iconSize={"lg"}
+                onClick={() => alert("Custom action button clicked.")}
+            />
+        )
+    },
+    argTypes: {
+        title: {
+            description: "The title displayed at the top of the card",
+            control: "text"
+        },
+        description: {
+            description: "A description displayed below the title",
+            control: "text"
+        },
+        children: {
+            description:
+                "The main content of the card. Please refer to the example code above for details on usage.",
+            control: "none"
+        },
+        actions: {
+            description:
+                "Buttons or other interactive elements displayed at the bottom of the card. Please refer to the example code above for details on usage.",
+            control: "none"
+        },
+        options: {
+            description:
+                "Additional options or actions displayed in the top-right corner. Please refer to the example code above for details on usage.",
+            control: "none"
+        },
+        padding: {
+            description: "Controls the amount of padding inside the card",
+            control: "select",
+            options: ["none", "standard", "comfortable"]
+        },
+        elevation: {
+            description: "Controls the shadow depth of the card",
+            control: "select",
+            options: ["none", "xs", "sm", "md", "lg", "xl"]
+        },
+        borderRadius: {
+            description: "Controls the roundness of the card corners",
+            control: "select",
+            options: ["none", "sm", "md", "lg"]
+        }
+    }
+};

@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta, Controls } from '@storybook/blocks';
 
 import * as CardStories from './Card.stories';
 
@@ -8,13 +8,95 @@ import * as CardStories from './Card.stories';
 
 A Card component in design systems is a versatile UI element used to encapsulate content and actions about a single subject. It serves as a modular container that can include images, text, links, buttons, and other interactive elements. Cards are designed to present information in a concise and organized manner, making it easier for users to scan and interact with multiple pieces of content.
 
-<Canvas of={CardStories.Default} />
-
 ## Usage
 
+```tsx
+import React from 'react';
+import { Card, Button, IconButton, Icon } from '@webiny/admin-ui';
+import { ReactComponent as MoreVertical } from "@webiny/icons/more_vert.svg";
+
+const CardExample = () => {
+    return (
+        <Card
+            title="Card title"
+            description="Card description"
+            padding="standard"
+            elevation="sm"
+            borderRadius="md"
+            actions={
+                <>
+                    <Button variant="secondary" text="Cancel" />
+                    <Button variant="primary" text="Confirm" />
+                </>
+            }
+            options={
+                <IconButton
+                    variant={"ghost"}
+                    icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={() => alert("Custom action button clicked.")}
+                />
+            }
+        >
+            This is card content. Anything can go in here.
+        </Card>
+    );
+};
+
+export default CardExample;
 ```
-import { Card } from '@webiny/admin-ui';
-```
+
+<Canvas of={CardStories.Documentation} source={ { code: `
+import React from 'react';
+import { Card, Button, IconButton, Icon } from '@webiny/admin-ui';
+import { ReactComponent as MoreVertical } from "@webiny/icons/more_vert.svg";
+
+const CardExample = () => {
+    return (
+        <Card
+            title="Card title"
+            description="Card description"
+            padding="standard"
+            elevation="sm"
+            borderRadius="md"
+            actions={
+                <>
+                    <Button variant="secondary" text="Cancel" />
+                    <Button variant="primary" text="Confirm" />
+                </>
+            }
+            options={
+                <IconButton
+                    variant={"ghost"}
+                    icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={() => alert("Custom action button clicked.")}
+                />
+            }
+        >
+            This is card content. Anything can go in here.
+        </Card>
+    );
+};
+
+export default CardExample;
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Card/Card.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={CardStories.Documentation} />
 
 ## Anatomy
 
@@ -41,6 +123,3 @@ Depending on the content type and card usage, there are three basic paddings opt
 ### Stacked
 
 <img src="/images/storybook/card/stacked.png" alt="Stacked"/>
-
-
-
