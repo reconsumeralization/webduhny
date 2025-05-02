@@ -1,11 +1,14 @@
 import { FunnelModel } from "./FunnelModel";
-import { FunnelSubmissionFieldModel } from "./FunnelSubmissionFieldModel";
+import {
+    FunnelSubmissionFieldModel,
+    FunnelSubmissionFieldModelDto
+} from "./FunnelSubmissionFieldModel";
 import { createObjectHash } from "../createObjectHash";
 import { FunnelConditionRulesEvaluator } from "./FunnelConditionRulesEvaluator";
 
 export interface FunnelSubmissionModelDto {
-    fields?: Record<string, any>;
-    activeStep?: string;
+    fields: Record<string, FunnelSubmissionFieldModelDto>;
+    activeStep: string;
 }
 
 export interface FunnelEntryValidationResult {
@@ -30,14 +33,14 @@ export class FunnelSubmissionModel {
     fields: Record<string, FunnelSubmissionFieldModel>;
     activeStepId: string;
 
-    constructor(funnel: FunnelModel, funnelEntryDto: FunnelSubmissionModelDto = {}) {
+    constructor(funnel: FunnelModel, funnelSubmissionDto?: FunnelSubmissionModelDto) {
         this.funnel = funnel;
-        this.activeStepId = funnelEntryDto.activeStep || funnel.steps[0].id;
+        this.activeStepId = funnelSubmissionDto?.activeStep || funnel.steps[0].id;
         this.fields = funnel.fields.reduce((acc, field) => {
             acc[field.fieldId] = new FunnelSubmissionFieldModel(
                 this,
                 field,
-                funnelEntryDto.fields?.[field.fieldId] || {}
+                funnelSubmissionDto?.fields[field.fieldId]
             );
             return acc;
         }, {} as Record<string, FunnelSubmissionFieldModel>);
@@ -49,7 +52,7 @@ export class FunnelSubmissionModel {
             fields: Object.values(this.fields).reduce((acc, field) => {
                 acc[field.definition.fieldId] = field.toDto();
                 return acc;
-            }, {} as Record<string, any>)
+            }, {} as Record<string, FunnelSubmissionFieldModelDto>)
         };
     }
 
@@ -60,7 +63,7 @@ export class FunnelSubmissionModel {
     setData(data: Record<string, any>) {
         Object.keys(data).forEach(key => {
             if (this.fields[key]) {
-                this.fields[key].value = data[key];
+                this.fields[key].value.value = data[key];
             }
         });
     }

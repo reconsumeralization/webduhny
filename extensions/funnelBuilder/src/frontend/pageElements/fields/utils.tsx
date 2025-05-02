@@ -5,19 +5,30 @@ import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import { useContainer } from "../container/ContainerProvider";
 import { FunnelSubmissionFieldModel } from "../../../shared/models/FunnelSubmissionFieldModel";
 import styled from "@emotion/styled";
+import { FunnelFieldValueModelDto } from "../../../shared/models/FunnelFieldValueModel";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 
-export const createInitialFieldData = (fieldType: string, extra: Record<string, any> = {}) => {
+export interface CreateInitialFieldDataParams<TValue = unknown, TExtra = Record<string, any>> {
+    type: string;
+    value: FunnelFieldValueModelDto<TValue>;
+    extra: TExtra;
+}
+
+export const createInitialFieldData = <TValue = unknown, TExtra = Record<string, any>>(
+    params: CreateInitialFieldDataParams<TValue, TExtra>
+) => {
+    const { type, value, extra } = params;
     return {
         id: getRandomId(),
         fieldId: getRandomId(),
-        type: fieldType,
+        type,
         label: "",
         helpText: "",
         validators: [],
+        value,
         extra
-    } as Omit<FunnelFieldDefinitionModelDto, "stepId">;
+    } as Omit<FunnelFieldDefinitionModelDto<TValue, TExtra>, "stepId">;
 };
 
 const NotWithinFunnelBuilderContainer = styled.div`

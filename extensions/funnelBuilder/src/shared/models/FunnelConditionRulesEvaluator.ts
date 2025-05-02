@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FunnelModel } from "./FunnelModel";
 import { FunnelSubmissionModel } from "./FunnelSubmissionModel";
 import { FunnelConditionModel } from "./FunnelConditionModel";

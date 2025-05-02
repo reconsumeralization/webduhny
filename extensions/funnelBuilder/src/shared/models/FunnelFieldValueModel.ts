@@ -7,11 +7,19 @@ export interface FunnelFieldValueModelDto<TValue = unknown> {
 
 export class FunnelFieldValueModel<TValue = unknown> {
     type: string;
-    value: TValue
+    value: TValue;
 
     constructor(dto: FunnelFieldValueModelDto<TValue>) {
         this.type = dto.type;
         this.value = dto.value;
+    }
+
+    isEmpty() {
+        return !this.value;
+    }
+
+    exists() {
+        return !this.isEmpty();
     }
 
     toDto(): FunnelFieldValueModelDto<TValue> {
@@ -34,8 +42,10 @@ export class FunnelFieldValueModel<TValue = unknown> {
         return FunnelFieldValueModel.fromDto(this.toDto());
     }
 
-    static fromDto<TValue = unknown>(dto: FunnelFieldValueModelDto<TValue>): FunnelFieldValueModel<TValue> {
+    static fromDto<TValue = unknown>(
+        dto: FunnelFieldValueModelDto<TValue>
+    ): FunnelFieldValueModel<TValue> {
         // Could not import the module directly because of circular dependency.
-        return require("./fields/fieldFactory").fieldFromDto(dto);
+        return require("./fieldValues/fieldValueFactory").fieldValueFromDto(dto);
     }
 }

@@ -29,6 +29,10 @@ describe("Funnel Submissions", () => {
                             }
                         }
                     ],
+                    value: {
+                        value: "",
+                        type: "string"
+                    },
                     extra: {}
                 },
                 {
@@ -48,6 +52,10 @@ describe("Funnel Submissions", () => {
                             }
                         }
                     ],
+                    value: {
+                        value: "",
+                        type: "string"
+                    },
                     extra: {}
                 },
                 {
@@ -69,6 +77,10 @@ describe("Funnel Submissions", () => {
                             }
                         }
                     ],
+                    value: {
+                        value: "",
+                        type: "string"
+                    },
                     extra: {}
                 },
                 {
@@ -78,7 +90,6 @@ describe("Funnel Submissions", () => {
                     type: "text",
                     label: "Location",
                     helpText: "Location",
-                    defaultValue: 'Earth',
                     validators: [
                         {
                             type: "required",
@@ -92,8 +103,12 @@ describe("Funnel Submissions", () => {
                             }
                         }
                     ],
+                    value: {
+                        value: "Earth",
+                        type: "string"
+                    },
                     extra: {}
-                },
+                }
             ],
             conditionRules: [
                 {
@@ -202,7 +217,10 @@ describe("Funnel Submissions", () => {
         submissionResult = funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
-            data: {},
+            data: {
+                email: "",
+                location: "Earth"
+            },
             errors: { email: "Value is required." },
             success: false
         });
@@ -239,13 +257,28 @@ describe("Funnel Submissions", () => {
             activeStep: "step2",
             fields: {
                 email: {
-                    value: "john@example.com"
+                    value: {
+                        type: "string",
+                        value: "john@example.com"
+                    }
                 },
                 firstName: {
-                    value: "John"
+                    value: {
+                        type: "string",
+                        value: "John"
+                    }
                 },
                 lastName: {
-                    value: "Doe"
+                    value: {
+                        type: "string",
+                        value: "Doe"
+                    }
+                },
+                location: {
+                    value: {
+                        type: "string",
+                        value: "Earth"
+                    }
                 }
             }
         });

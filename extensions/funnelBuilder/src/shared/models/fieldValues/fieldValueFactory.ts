@@ -1,5 +1,5 @@
-import { TextFieldValue } from "./TextFieldValue";
-import { TextArrayFieldValue } from "./TextArrayFieldValue";
+import { StringFieldValue } from "./StringFieldValue";
+import { StringArrayFieldValue } from "./StringArrayFieldValue";
 
 import {
     type FunnelFieldValueModel,
@@ -8,11 +8,11 @@ import {
 
 const registry: Record<string, (dto: FunnelFieldValueModelDto<any>) => FunnelFieldValueModel<any>> =
     {
-        text: dto => new TextFieldValue(dto),
-        textArray: dto => new TextArrayFieldValue(dto),
+        string: dto => new StringFieldValue(dto),
+        stringArray: dto => new StringArrayFieldValue(dto),
     };
 
-export function fieldFromDto(dto: FunnelFieldValueModelDto<unknown>): FunnelFieldValueModel<unknown> {
+export function fieldValueFromDto(dto: FunnelFieldValueModelDto<unknown>): FunnelFieldValueModel<unknown> {
     const create = registry[dto.type];
     if (!create) {
         throw new Error(`Unknown field value type: ${dto.type}`);

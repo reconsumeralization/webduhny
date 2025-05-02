@@ -5,6 +5,7 @@ import type { Renderer } from "@webiny/app-page-builder-elements/types";
 import { createFieldElementType } from "../../../shared/constants";
 import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../../pageElements/fields/utils";
 import { ElementToolbarPreview } from "../../pageElements/ElementToolbarPreview";
+import { FunnelFieldValueModelDto } from "../../../shared/models/FunnelFieldValueModel";
 
 export interface PbEditorFunnelFieldPageElementPluginProps {
     fieldType: string;
@@ -12,6 +13,7 @@ export interface PbEditorFunnelFieldPageElementPluginProps {
     name: string;
     description: string;
     icon: React.ReactNode;
+    value: FunnelFieldValueModelDto;
     extraFieldData: Record<string, any>;
 }
 
@@ -55,7 +57,11 @@ export const PbEditorFunnelFieldPageElementPlugin = (
                 return {
                     type: pbElementType,
                     elements: [],
-                    data: createInitialFieldData(fieldType, extraFieldData),
+                    data: createInitialFieldData({
+                        type: fieldType,
+                        value: props.value,
+                        extra: extraFieldData
+                    }),
                     ...options
                 };
             }}

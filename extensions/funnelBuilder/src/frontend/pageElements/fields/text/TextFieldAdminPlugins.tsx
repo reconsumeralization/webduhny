@@ -13,6 +13,7 @@ export const TextFieldAdminPlugins = () => {
             <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={TextFieldRenderer} />
             <PbEditorFunnelFieldPageElementPlugin
                 fieldType={"text"}
+                value={{ type: "string", value: "" }}
                 renderer={TextFieldRenderer}
                 name={"Short Text"}
                 description={"Titles, names, single line input"}

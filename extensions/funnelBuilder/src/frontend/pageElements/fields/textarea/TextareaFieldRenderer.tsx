@@ -34,7 +34,7 @@ export const TextareaFieldRenderer = createFieldRenderer(props => {
     const { validate, validation, value, onChange } = useBind({
         name: field.fieldId,
         validators,
-        defaultValue: field.defaultValue
+        defaultValue: field.value.value
     });
 
     const onBlur = (ev: React.SyntheticEvent) => {

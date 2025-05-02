@@ -12,7 +12,7 @@ export const TextareaFieldSettings = () => {
                 </Bind>
             </Cell>
             <Cell span={12}>
-                <Bind name={"extra.defaultValue"}>
+                <Bind name={"value.value"}>
                     <Input
                         rows={4}
                         label={"Default value"}

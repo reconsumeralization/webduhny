@@ -1,11 +1,12 @@
 import { FunnelFieldDefinitionModel } from "./FunnelFieldDefinitionModel";
 import { FunnelSubmissionModel } from "./FunnelSubmissionModel";
+import { FunnelFieldValueModel } from "./FunnelFieldValueModel";
 
-export interface FunnelEntryFieldModelDto {
-    value: any;
+export interface FunnelSubmissionFieldModelDto<TValue = unknown> {
+    value: FunnelFieldValueModel<TValue>;
 }
 
-export type FunnelEntryFieldValidationResult =
+export type FunnelSubmissionFieldValidationResult =
     | {
           isValid: true;
           errorMessage: null;
@@ -15,37 +16,41 @@ export type FunnelEntryFieldValidationResult =
           errorMessage: string;
       };
 
-export class FunnelSubmissionFieldModel {
+export class FunnelSubmissionFieldModel<TValue = unknown> {
     submission: FunnelSubmissionModel;
-    definition: FunnelFieldDefinitionModel;
-    value: any;
+    definition: FunnelFieldDefinitionModel<TValue>;
+    value: FunnelFieldValueModel<TValue>;
 
     constructor(
         funnelSubmission: FunnelSubmissionModel,
-        funnelFieldDefinition: FunnelFieldDefinitionModel,
-        funnelEntryFieldDto: FunnelEntryFieldModelDto
+        funnelFieldDefinition: FunnelFieldDefinitionModel<TValue>,
+        funnelSubmissionFieldDto?: FunnelSubmissionFieldModelDto<TValue>
     ) {
         this.submission = funnelSubmission;
         this.definition = funnelFieldDefinition;
-        this.value = funnelEntryFieldDto.value;
+        if (funnelSubmissionFieldDto?.value) {
+            this.value = FunnelFieldValueModel.fromDto(funnelSubmissionFieldDto?.value);
+        } else {
+            this.value = this.definition.value.clone();
+        }
     }
 
-    toDto(): FunnelEntryFieldModelDto {
+    toDto(): FunnelSubmissionFieldModelDto {
         return {
             value: this.value
         };
     }
 
     static fromDto(
-        funnelEntry: FunnelSubmissionModel,
+        funnelSubmission: FunnelSubmissionModel,
         funnelFieldDefinition: FunnelFieldDefinitionModel,
-        dto: FunnelEntryFieldModelDto
+        dto: FunnelSubmissionFieldModelDto
     ): FunnelSubmissionFieldModel {
-        return new FunnelSubmissionFieldModel(funnelEntry, funnelFieldDefinition, dto);
+        return new FunnelSubmissionFieldModel(funnelSubmission, funnelFieldDefinition, dto);
     }
 
     getValue() {
-        return this.value;
+        return this.value.value;
     }
 
     get disabled() {
@@ -61,11 +66,11 @@ export class FunnelSubmissionFieldModel {
         );
     }
 
-    validate(): FunnelEntryFieldValidationResult {
+    validate(): FunnelSubmissionFieldValidationResult {
         const validators = this.definition.validators;
 
         for (const validator of validators) {
-            if (!validator.isValid(this.value)) {
+            if (!validator.isValid(this.value.value)) {
                 return {
                     isValid: false,
                     errorMessage: validator.getErrorMessage()

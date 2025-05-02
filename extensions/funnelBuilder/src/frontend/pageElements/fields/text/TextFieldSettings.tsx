@@ -12,7 +12,7 @@ export const TextFieldSettings = () => {
                 </Bind>
             </Cell>
             <Cell span={12}>
-                <Bind name={"defaultValue"}>
+                <Bind name={"value.value"}>
                     <Input label={"Default value"} description={"Default value (optional)"} />
                 </Bind>
             </Cell>

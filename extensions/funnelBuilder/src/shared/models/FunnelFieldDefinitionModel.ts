@@ -3,7 +3,7 @@ import { validatorFromDto } from "./validators/validatorFactory";
 import { createObjectHash } from "../createObjectHash";
 import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "./FunnelFieldValueModel";
 
-export interface FunnelFieldDefinitionModelDto<TExtra = any, TFieldValue = unknown> {
+export interface FunnelFieldDefinitionModelDto<TValue = unknown, TExtra = Record<string, any>> {
     id: string;
     fieldId: string;
     stepId: string;
@@ -11,25 +11,35 @@ export interface FunnelFieldDefinitionModelDto<TExtra = any, TFieldValue = unkno
     label: string;
     helpText: string;
     validators: FieldValidatorDto[];
-    defaultValue: FunnelFieldValueModelDto<TFieldValue>;
+
+    // Defines the value type the field carries. Optionally, it allows
+    // for default value assignment (for example, for checkboxes).
+    value: FunnelFieldValueModelDto<TValue>;
     extra: TExtra;
 }
 
-export class FunnelFieldDefinitionModel<TExtra = any, TFieldValue = unknown> {
+export class FunnelFieldDefinitionModel<
+    TValue = unknown,
+    TExtra extends Record<string, any> = Record<string, any>
+> {
     id: string;
     type: string;
     stepId: string;
     fieldId: string;
     label: string;
     helpText: string;
-    defaultValue: FunnelFieldValueModel<TFieldValue>;
     validators: AbstractValidator[];
-    extra: any; // todo
+
+    // Defines the value type the field carries. Optionally, it allows
+    // for default value assignment (for example, for checkboxes).
+    value: FunnelFieldValueModel<TValue>;
+
+    extra: TExtra;
 
     // Meta fields.
     supportedValidatorTypes: string[] = ["required"];
 
-    constructor(dto: FunnelFieldDefinitionModelDto<TExtra, TFieldValue>) {
+    constructor(dto: FunnelFieldDefinitionModelDto<TValue, TExtra>) {
         this.id = dto.id;
         this.fieldId = dto.fieldId;
         this.stepId = dto.stepId;
@@ -37,11 +47,13 @@ export class FunnelFieldDefinitionModel<TExtra = any, TFieldValue = unknown> {
         this.label = dto.label;
         this.helpText = dto.helpText;
         this.validators = dto.validators?.map(validatorFromDto) ?? [];
-        this.defaultValue = FunnelFieldValueModel.fromDto<TFieldValue>(dto.defaultValue)
-        this.extra = dto.extra ?? {};
+        this.value = FunnelFieldValueModel.fromDto<TValue>(
+            dto.value as FunnelFieldValueModelDto<TValue>
+        );
+        this.extra = (dto.extra ?? {}) as TExtra;
     }
 
-    toDto(): FunnelFieldDefinitionModelDto {
+    toDto(): FunnelFieldDefinitionModelDto<TValue> {
         return {
             id: this.id,
             fieldId: this.fieldId,
@@ -50,19 +62,23 @@ export class FunnelFieldDefinitionModel<TExtra = any, TFieldValue = unknown> {
             label: this.label,
             helpText: this.helpText,
             validators: this.validators.map(v => v.toDto()),
-            defaultValue: this.defaultValue.toDto(),
+            value: this.value.toDto(),
             extra: this.extra
         };
     }
 
-    populate(dto: Partial<FunnelFieldDefinitionModelDto>) {
+    populate(dto: Partial<FunnelFieldDefinitionModelDto<TValue>>) {
         this.fieldId = dto.fieldId || this.fieldId;
         this.stepId = dto.stepId || this.stepId;
         this.type = dto.type || this.type;
         this.label = dto.label || this.label;
         this.helpText = dto.helpText || this.helpText;
         this.validators = dto.validators?.map(validatorFromDto) ?? this.validators;
-        this.extra = dto.extra ?? this.extra;
+
+        if (dto.value) {
+            this.value = FunnelFieldValueModel.fromDto<TValue>(dto.value);
+        }
+        this.extra = (dto.extra ?? this.extra) as TExtra;
     }
 
     getChecksum(): string {
