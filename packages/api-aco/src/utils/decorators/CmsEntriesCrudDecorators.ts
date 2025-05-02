@@ -1,16 +1,8 @@
 import { AcoContext } from "~/types";
 import { ROOT_FOLDER } from "~/constants";
-import { filterEntriesByFolderFactory } from "./filterEntriesByFolderFactory";
+import { ListEntriesFactory } from "./ListEntriesFactory";
+import { FilterEntriesByFolderFactory } from "./FilterEntriesByFolderFactory";
 import { decorateIfModelAuthorizationEnabled } from "./decorateIfModelAuthorizationEnabled";
-import { extractFolderIds } from "~/utils/decorators/extractFolderIds";
-import { createFolderType } from "~/utils/decorators/createFolderType";
-import type {
-    CmsEntry,
-    CmsEntryListParams,
-    CmsEntryMeta,
-    CmsEntryValues
-} from "@webiny/api-headless-cms/types";
-import { hasRootFolderId } from "~/utils/decorators/hasRootFolderId";
 
 type Context = Pick<AcoContext, "aco" | "cms">;
 
@@ -29,74 +21,12 @@ export class CmsEntriesCrudDecorators {
         const context = this.context;
         const folderLevelPermissions = context.aco.folderLevelPermissions;
 
-        const filterEntriesByFolder = filterEntriesByFolderFactory(folderLevelPermissions);
+        const filterEntriesByFolder = new FilterEntriesByFolderFactory(folderLevelPermissions);
+        const listEntriesHandler = new ListEntriesFactory(folderLevelPermissions);
 
         decorateIfModelAuthorizationEnabled(context.cms, "listEntries", async (...allParams) => {
             const [decoratee, model, initialParams] = allParams;
-            const limit = initialParams?.limit || 50;
-            const where = initialParams?.where;
-            const params = { ...initialParams, limit };
-            const folderType = createFolderType(model);
-            const hasRootFolder = hasRootFolderId({ model, where });
-
-            if (hasRootFolder) {
-                return await decoratee(model, params);
-            }
-
-            const folderIds = extractFolderIds({ where });
-            const flps = await (folderIds.length === 0
-                ? folderLevelPermissions.listFolderLevelPermissions({
-                      where: { type: folderType, path_startsWith: ROOT_FOLDER }
-                  })
-                : Promise.all(
-                      folderIds.map(folderId =>
-                          folderLevelPermissions.getFolderLevelPermission(folderId)
-                      )
-                  ).then(results => results.flat()));
-
-            if (flps.length === 0) {
-                return await decoratee(model, params);
-            }
-
-            const resultEntries: CmsEntry<CmsEntryValues>[] = [];
-
-            let totalCount = 0;
-            let hasMoreItems = true;
-            let cursor: string | null = null;
-            let fetchedAll = false;
-
-            let afterCursor = params.after;
-
-            while (!fetchedAll) {
-                const queryParams: CmsEntryListParams = { ...params, after: afterCursor };
-                const [entries, currentMeta] = await decoratee(model, queryParams);
-
-                if (totalCount === 0) {
-                    totalCount = currentMeta.totalCount;
-                }
-
-                for (const entry of entries) {
-                    const folderId = entry.values?.location?.folderId || entry.location?.folderId;
-
-                    const currentFlp = flps.find(flp => flp.id === folderId);
-
-                    if (currentFlp && (await folderLevelPermissions.canReadFolder(currentFlp))) {
-                        resultEntries.push(entry);
-                    } else {
-                        totalCount--;
-                    }
-                }
-
-                if (!currentMeta.hasMoreItems || resultEntries.length >= limit) {
-                    fetchedAll = true;
-                    hasMoreItems = currentMeta.hasMoreItems;
-                    cursor = currentMeta.cursor;
-                } else {
-                    afterCursor = currentMeta.cursor;
-                }
-            }
-
-            return [resultEntries, { totalCount, hasMoreItems, cursor } as CmsEntryMeta];
+            return await listEntriesHandler.execute({ decoratee, model, initialParams });
         });
 
         decorateIfModelAuthorizationEnabled(
@@ -104,74 +34,7 @@ export class CmsEntriesCrudDecorators {
             "listLatestEntries",
             async (...allParams) => {
                 const [decoratee, model, initialParams] = allParams;
-                const limit = initialParams?.limit || 50;
-                const where = initialParams?.where;
-                const params = { ...initialParams, limit };
-                const folderType = createFolderType(model);
-                const hasRootFolder = hasRootFolderId({ model, where });
-
-                if (hasRootFolder) {
-                    return await decoratee(model, params);
-                }
-
-                const folderIds = extractFolderIds({ where });
-                const flps = await (folderIds.length === 0
-                    ? folderLevelPermissions.listFolderLevelPermissions({
-                          where: { type: folderType, path_startsWith: ROOT_FOLDER }
-                      })
-                    : Promise.all(
-                          folderIds.map(folderId =>
-                              folderLevelPermissions.getFolderLevelPermission(folderId)
-                          )
-                      ).then(results => results.flat()));
-
-                if (flps.length === 0) {
-                    return await decoratee(model, params);
-                }
-
-                const resultEntries: CmsEntry<CmsEntryValues>[] = [];
-
-                let totalCount = 0;
-                let hasMoreItems = true;
-                let cursor: string | null = null;
-                let fetchedAll = false;
-
-                let afterCursor = params.after;
-
-                while (!fetchedAll) {
-                    const queryParams: CmsEntryListParams = { ...params, after: afterCursor };
-                    const [entries, currentMeta] = await decoratee(model, queryParams);
-
-                    if (totalCount === 0) {
-                        totalCount = currentMeta.totalCount;
-                    }
-
-                    for (const entry of entries) {
-                        const folderId =
-                            entry.values?.location?.folderId || entry.location?.folderId;
-
-                        const currentFlp = flps.find(flp => flp.id === folderId);
-
-                        if (
-                            currentFlp &&
-                            (await folderLevelPermissions.canReadFolder(currentFlp))
-                        ) {
-                            resultEntries.push(entry);
-                        } else {
-                            totalCount--;
-                        }
-                    }
-
-                    if (!currentMeta.hasMoreItems || resultEntries.length >= limit) {
-                        fetchedAll = true;
-                        hasMoreItems = currentMeta.hasMoreItems;
-                        cursor = currentMeta.cursor;
-                    } else {
-                        afterCursor = currentMeta.cursor;
-                    }
-                }
-
-                return [resultEntries, { totalCount, hasMoreItems, cursor } as CmsEntryMeta];
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -180,74 +43,7 @@ export class CmsEntriesCrudDecorators {
             "listPublishedEntries",
             async (...allParams) => {
                 const [decoratee, model, initialParams] = allParams;
-                const limit = initialParams?.limit || 50;
-                const where = initialParams?.where;
-                const params = { ...initialParams, limit };
-                const folderType = createFolderType(model);
-                const hasRootFolder = hasRootFolderId({ model, where });
-
-                if (hasRootFolder) {
-                    return await decoratee(model, params);
-                }
-
-                const folderIds = extractFolderIds({ where });
-                const flps = await (folderIds.length === 0
-                    ? folderLevelPermissions.listFolderLevelPermissions({
-                          where: { type: folderType, path_startsWith: ROOT_FOLDER }
-                      })
-                    : Promise.all(
-                          folderIds.map(folderId =>
-                              folderLevelPermissions.getFolderLevelPermission(folderId)
-                          )
-                      ).then(results => results.flat()));
-
-                if (flps.length === 0) {
-                    return await decoratee(model, params);
-                }
-
-                const resultEntries: CmsEntry<CmsEntryValues>[] = [];
-
-                let totalCount = 0;
-                let hasMoreItems = true;
-                let cursor: string | null = null;
-                let fetchedAll = false;
-
-                let afterCursor = params.after;
-
-                while (!fetchedAll) {
-                    const queryParams: CmsEntryListParams = { ...params, after: afterCursor };
-                    const [entries, currentMeta] = await decoratee(model, queryParams);
-
-                    if (totalCount === 0) {
-                        totalCount = currentMeta.totalCount;
-                    }
-
-                    for (const entry of entries) {
-                        const folderId =
-                            entry.values?.location?.folderId || entry.location?.folderId;
-
-                        const currentFlp = flps.find(flp => flp.id === folderId);
-
-                        if (
-                            currentFlp &&
-                            (await folderLevelPermissions.canReadFolder(currentFlp))
-                        ) {
-                            resultEntries.push(entry);
-                        } else {
-                            totalCount--;
-                        }
-                    }
-
-                    if (!currentMeta.hasMoreItems || resultEntries.length >= limit) {
-                        fetchedAll = true;
-                        hasMoreItems = currentMeta.hasMoreItems;
-                        cursor = currentMeta.cursor;
-                    } else {
-                        afterCursor = currentMeta.cursor;
-                    }
-                }
-
-                return [resultEntries, { totalCount, hasMoreItems, cursor } as CmsEntryMeta];
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -256,74 +52,7 @@ export class CmsEntriesCrudDecorators {
             "listDeletedEntries",
             async (...allParams) => {
                 const [decoratee, model, initialParams] = allParams;
-                const limit = initialParams?.limit || 50;
-                const where = initialParams?.where;
-                const params = { ...initialParams, limit };
-                const folderType = createFolderType(model);
-                const hasRootFolder = hasRootFolderId({ model, where });
-
-                if (hasRootFolder) {
-                    return await decoratee(model, params);
-                }
-
-                const folderIds = extractFolderIds({ where });
-                const flps = await (folderIds.length === 0
-                    ? folderLevelPermissions.listFolderLevelPermissions({
-                          where: { type: folderType, path_startsWith: ROOT_FOLDER }
-                      })
-                    : Promise.all(
-                          folderIds.map(folderId =>
-                              folderLevelPermissions.getFolderLevelPermission(folderId)
-                          )
-                      ).then(results => results.flat()));
-
-                if (flps.length === 0) {
-                    return await decoratee(model, params);
-                }
-
-                const resultEntries: CmsEntry<CmsEntryValues>[] = [];
-
-                let totalCount = 0;
-                let hasMoreItems = true;
-                let cursor: string | null = null;
-                let fetchedAll = false;
-
-                let afterCursor = params.after;
-
-                while (!fetchedAll) {
-                    const queryParams: CmsEntryListParams = { ...params, after: afterCursor };
-                    const [entries, currentMeta] = await decoratee(model, queryParams);
-
-                    if (totalCount === 0) {
-                        totalCount = currentMeta.totalCount;
-                    }
-
-                    for (const entry of entries) {
-                        const folderId =
-                            entry.values?.location?.folderId || entry.location?.folderId;
-
-                        const currentFlp = flps.find(flp => flp.id === folderId);
-
-                        if (
-                            currentFlp &&
-                            (await folderLevelPermissions.canReadFolder(currentFlp))
-                        ) {
-                            resultEntries.push(entry);
-                        } else {
-                            totalCount--;
-                        }
-                    }
-
-                    if (!currentMeta.hasMoreItems || resultEntries.length >= limit) {
-                        fetchedAll = true;
-                        hasMoreItems = currentMeta.hasMoreItems;
-                        cursor = currentMeta.cursor;
-                    } else {
-                        afterCursor = currentMeta.cursor;
-                    }
-                }
-
-                return [resultEntries, { totalCount, hasMoreItems, cursor } as CmsEntryMeta];
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -369,7 +98,7 @@ export class CmsEntriesCrudDecorators {
 
                 const entries = await decoratee(model, ids);
 
-                return filterEntriesByFolder(entries);
+                return filterEntriesByFolder.execute(entries);
             }
         );
 
@@ -380,7 +109,7 @@ export class CmsEntriesCrudDecorators {
                 const [decoratee, model, ids] = allParams;
 
                 const entries = await decoratee(model, ids);
-                return filterEntriesByFolder(entries);
+                return filterEntriesByFolder.execute(entries);
             }
         );
 
