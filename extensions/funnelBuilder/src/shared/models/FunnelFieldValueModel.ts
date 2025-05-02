@@ -13,6 +13,8 @@ export class FunnelFieldValueModel<
     array: boolean;
     value: TValue;
 
+    supportedConditionOperators: string[] = [];
+
     constructor(dto: FunnelFieldValueModelDto<TValue>) {
         super();
         this.type = dto.type;

@@ -1,3 +1,5 @@
+import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "./FunnelConditionOperatorModel";
+
 export type FunnelOperator =
     | "eq"
     | "neq"
@@ -11,14 +13,13 @@ export type FunnelOperator =
 export interface FunnelConditionModelDto {
     id: string;
     sourceFieldId: string; // the field whose value we're checking
-    operator: FunnelOperator; // the operator to use for comparison
-    value: any;
+    operator: FunnelConditionOperatorModelDto; // the operator to use for comparison
 }
 
 export class FunnelConditionModel {
     id: string;
     sourceFieldId: string;
-    operator: FunnelOperator;
+    operator: FunnelConditionOperatorModel;
     value: any;
 
     constructor(dto: FunnelConditionModelDto) {
