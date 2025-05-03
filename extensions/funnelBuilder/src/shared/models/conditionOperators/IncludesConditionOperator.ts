@@ -4,17 +4,17 @@ import {
 } from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
-type FieldValue = FunnelFieldValueModel<string | number>;
+type FieldValue = FunnelFieldValueModel<string | number | boolean>;
 
 interface IncludesConditionOperatorExtraParams {
-    value?: string;
+    value?: string | number | boolean;
 }
 
 export class IncludesConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     IncludesConditionOperatorExtraParams
 > {
-    override supportedFieldValues = ["string", "number"];
+    override supportedFieldValues = ["string", "stringArray", "number", "numberArray", "booleanArray"];
 
     constructor(dto: FunnelConditionOperatorModelDto<IncludesConditionOperatorExtraParams>) {
         super({
@@ -28,11 +28,11 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
     }
 
     override evaluate(value: FieldValue): boolean {
-        if (!this.params.extra.value) {
-            return true;
+        if (!value.exists()) {
+            return false;
         }
 
-        if (!value.exists()) {
+        if (!this.params.extra.value) {
             return false;
         }
 
@@ -40,6 +40,6 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
             return Array.isArray(value.value) && value.value.includes(this.params.extra.value);
         }
 
-        return String(value.value).includes(this.params.extra.value);
+        return String(value.value).includes(String(this.params.extra.value));
     }
 }

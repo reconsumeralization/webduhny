@@ -14,7 +14,7 @@ export class NotIncludesConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     NotIncludesConditionOperatorExtraParams
 > {
-    override supportedFieldValues = ["string", "number"];
+    override supportedFieldValues = ["string", "stringArray", "number", "numberArray"];
 
     constructor(dto: FunnelConditionOperatorModelDto<NotIncludesConditionOperatorExtraParams>) {
         super({
@@ -28,11 +28,11 @@ export class NotIncludesConditionOperator extends FunnelConditionOperatorModel<
     }
 
     override evaluate(value: FieldValue): boolean {
-        if (!this.params.extra.value) {
+        if (!value.exists()) {
             return true;
         }
 
-        if (!value.exists()) {
+        if (!this.params.extra.value) {
             return false;
         }
 
@@ -40,6 +40,6 @@ export class NotIncludesConditionOperator extends FunnelConditionOperatorModel<
             return !Array.isArray(value.value) || !value.value.includes(this.params.extra.value);
         }
 
-        return !String(value.value).includes(this.params.extra.value);
+        return !String(value.value).includes(String(this.params.extra.value));
     }
 }
