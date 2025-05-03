@@ -3,7 +3,5 @@ import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "../FunnelFieldV
 export class StringFieldValue extends FunnelFieldValueModel<string> {
     constructor(dto: FunnelFieldValueModelDto<string>) {
         super({ ...dto, type: "string" });
-
-        this.supportedConditionOperators = ["minLength", "maxLength"];
     }
 }

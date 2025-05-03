@@ -2,20 +2,21 @@ import { AbstractValidator, FieldValidatorDto } from "./validators/AbstractValid
 import { validatorFromDto } from "./validators/validatorFactory";
 import { createObjectHash } from "../createObjectHash";
 import { FunnelFieldValueModel, FunnelFieldValueModelDto } from "./FunnelFieldValueModel";
+import { getRandomId } from "../getRandomId";
 
 export interface FunnelFieldDefinitionModelDto<TValue = unknown, TExtra = Record<string, any>> {
-    id: string;
-    fieldId: string;
+    id?: string;
+    fieldId?: string;
     stepId: string;
     type: string;
-    label: string;
-    helpText: string;
-    validators: FieldValidatorDto[];
+    label?: string;
+    helpText?: string;
+    validators?: FieldValidatorDto[];
 
     // Defines the value type the field carries. Optionally, it allows
     // for default value assignment (for example, for checkboxes).
-    value: FunnelFieldValueModelDto<TValue>;
-    extra: TExtra;
+    value?: FunnelFieldValueModelDto<TValue>;
+    extra?: TExtra;
 }
 
 export class FunnelFieldDefinitionModel<
@@ -41,12 +42,12 @@ export class FunnelFieldDefinitionModel<
     fieldValueType: string = '';
 
     constructor(dto: FunnelFieldDefinitionModelDto<TValue, TExtra>) {
-        this.id = dto.id;
-        this.fieldId = dto.fieldId;
+        this.id = dto.id || getRandomId();
+        this.fieldId = dto.fieldId || getRandomId();
         this.stepId = dto.stepId;
         this.type = dto.type;
-        this.label = dto.label;
-        this.helpText = dto.helpText;
+        this.label = dto.label || '';
+        this.helpText = dto.helpText || '';
         this.validators = dto.validators?.map(validatorFromDto) ?? [];
         this.value = FunnelFieldValueModel.fromDto<TValue>(
             dto.value as FunnelFieldValueModelDto<TValue>

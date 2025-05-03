@@ -1,14 +1,5 @@
 import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "./FunnelConditionOperatorModel";
-
-export type FunnelOperator =
-    | "eq"
-    | "neq"
-    | "gt"
-    | "gte"
-    | "lt"
-    | "lte"
-    | "includes"
-    | "notIncludes";
+import { AbstractModel } from "./AbstractModel";
 
 export interface FunnelConditionModelDto {
     id: string;
@@ -16,17 +7,16 @@ export interface FunnelConditionModelDto {
     operator: FunnelConditionOperatorModelDto; // the operator to use for comparison
 }
 
-export class FunnelConditionModel {
+export class FunnelConditionModel extends AbstractModel<FunnelConditionOperatorModelDto> {
     id: string;
     sourceFieldId: string;
     operator: FunnelConditionOperatorModel;
-    value: any;
 
     constructor(dto: FunnelConditionModelDto) {
+        super();
         this.id = dto.id;
         this.sourceFieldId = dto.sourceFieldId;
-        this.operator = dto.operator;
-        this.value = dto.value;
+        this.operator = FunnelConditionOperatorModel.fromDto(dto.operator);
     }
 
     toDto(): FunnelConditionModelDto {
@@ -34,7 +24,6 @@ export class FunnelConditionModel {
             id: this.id,
             sourceFieldId: this.sourceFieldId,
             operator: this.operator,
-            value: this.value
         };
     }
 

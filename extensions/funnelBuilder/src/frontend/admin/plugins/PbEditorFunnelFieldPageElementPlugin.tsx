@@ -5,7 +5,6 @@ import type { Renderer } from "@webiny/app-page-builder-elements/types";
 import { createFieldElementType } from "../../../shared/constants";
 import { createInitialFieldData, FUB_PAGE_ELEMENT_GROUP } from "../../pageElements/fields/utils";
 import { ElementToolbarPreview } from "../../pageElements/ElementToolbarPreview";
-import { FunnelFieldValueModelDto } from "../../../shared/models/FunnelFieldValueModel";
 
 export interface PbEditorFunnelFieldPageElementPluginProps {
     fieldType: string;
@@ -13,8 +12,6 @@ export interface PbEditorFunnelFieldPageElementPluginProps {
     name: string;
     description: string;
     icon: React.ReactNode;
-    value: FunnelFieldValueModelDto;
-    extraFieldData: Record<string, any>;
 }
 
 export const PbEditorFunnelFieldPageElementPlugin = (
@@ -22,6 +19,8 @@ export const PbEditorFunnelFieldPageElementPlugin = (
 ) => {
     const fieldType = props.fieldType;
     const pbElementType = createFieldElementType(fieldType);
+
+
     return (
         <PbEditorPageElementPlugin
             elementType={pbElementType}
@@ -53,15 +52,11 @@ export const PbEditorFunnelFieldPageElementPlugin = (
             onCreate={OnCreateActions.OPEN_SETTINGS}
             // `create` function creates the initial data for the page element.
             create={options => {
-                const extraFieldData = structuredClone(props.extraFieldData);
+
                 return {
                     type: pbElementType,
                     elements: [],
-                    data: createInitialFieldData({
-                        type: fieldType,
-                        value: props.value,
-                        extra: extraFieldData
-                    }),
+                    data: createInitialFieldData(fieldType),
                     ...options
                 };
             }}

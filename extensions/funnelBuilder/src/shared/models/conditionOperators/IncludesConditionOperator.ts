@@ -35,7 +35,7 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
     }
 
     override evaluate(value: FieldValue): boolean {
-        if (!value.exists()) {
+        if (!value.hasValue()) {
             return false;
         }
 

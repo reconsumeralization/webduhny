@@ -14,9 +14,15 @@ export interface FunnelConditionOperatorModelDto<TExtra = Record<string, any>> {
     params?: ConditionOperatorParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
-export class FunnelConditionOperatorModel<TExtra = Record<string, any>, TValue = FunnelFieldValueModel> extends AbstractModel<FunnelConditionOperatorModelDto<TExtra>> {
+export class FunnelConditionOperatorModel<
+    TValue = FunnelFieldValueModel,
+    TExtra = Record<string, any>
+> extends AbstractModel<FunnelConditionOperatorModelDto<TExtra>> {
     id: string;
     params: ConditionOperatorParams<TExtra>;
+
+    static id = '';
+    static supportedFieldValues: string[] = [];
 
     constructor(dto: FunnelConditionOperatorModelDto) {
         super();
@@ -34,4 +40,10 @@ export class FunnelConditionOperatorModel<TExtra = Record<string, any>, TValue =
         return { id: this.id, params: this.params };
     }
 
+    static fromDto<TValue = unknown, TExtra = Record<string, any>>(
+        dto: FunnelConditionOperatorModelDto<TExtra>
+    ): FunnelConditionOperatorModel<TValue, TExtra> {
+        // Could not import the module directly because of circular dependency.
+        return require("./conditionOperators/conditionOperatorFactory").conditionOperatorFromDto(dto);
+    }
 }

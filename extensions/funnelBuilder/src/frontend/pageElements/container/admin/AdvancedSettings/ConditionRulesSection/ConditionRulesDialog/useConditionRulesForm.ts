@@ -1,4 +1,4 @@
-import { BindComponentRenderPropOnChange, useBind, useForm } from "@webiny/form";
+import { useBind, useForm } from "@webiny/form";
 import { getRandomId } from "../../../../../../../shared/getRandomId";
 import { FunnelModelDto } from "../../../../../../../shared/models/FunnelModel";
 import { FunnelConditionRuleModelDto } from "../../../../../../../shared/models/FunnelConditionRuleModel";
@@ -6,10 +6,7 @@ import {
     FunnelConditionGroupModelDto,
     LogicalOperator
 } from "../../../../../../../shared/models/FunnelConditionGroupModel";
-import {
-    FunnelConditionModelDto,
-    FunnelOperator
-} from "../../../../../../../shared/models/FunnelConditionModel";
+import { FunnelConditionModelDto } from "../../../../../../../shared/models/FunnelConditionModel";
 import { FunnelConditionActionModelDto } from "../../../../../../../shared/models/FunnelConditionActionModel";
 
 type ConditionRulesDto = FunnelConditionRuleModelDto[];
@@ -99,8 +96,7 @@ export const useConditionRulesForm = () => {
                     groupInRule.items.push({
                         id: getRandomId(),
                         sourceFieldId: "",
-                        operator: "eq",
-                        value: ""
+                        operator: { id: "empty" }
                     } as FunnelConditionModelDto);
                     break;
                 }
@@ -140,7 +136,6 @@ export const useConditionRulesForm = () => {
                     if (conditionInItems && "sourceFieldId" in conditionInItems) {
                         conditionInItems.sourceFieldId = condition.sourceFieldId;
                         conditionInItems.operator = condition.operator;
-                        conditionInItems.value = condition.value;
                     }
 
                     break;

@@ -146,8 +146,7 @@ describe("Funnel Submissions", () => {
                             {
                                 id: "condition1",
                                 sourceFieldId: "firstName",
-                                operator: "eq",
-                                value: ""
+                                operator: { id: "eq", params: { extra: { value: "weird-value" } } }
                             }
                         ]
                     },
@@ -195,6 +194,12 @@ describe("Funnel Submissions", () => {
             }
         });
 
+        // Pass a short value for `firstName` field.
+        funnelSubmission.setData({
+            firstName: "weird-value",
+            lastName: "D"
+        });
+
         expect(funnelSubmission.getField("lastName").disabled).toBe(true);
 
         // Pass a short value for `firstName` field.
@@ -202,6 +207,8 @@ describe("Funnel Submissions", () => {
             firstName: "J",
             lastName: "D"
         });
+
+        expect(funnelSubmission.getField("lastName").disabled).toBe(false);
 
         submissionResult = funnelSubmission.submitActiveStep();
 
@@ -281,43 +288,41 @@ describe("Funnel Submissions", () => {
 
         const dto = funnelSubmission.toDto();
         expect(dto).toEqual({
-            "activeStep": "step2",
-            "fields": {
-                "colors": {
-                    "value": {
-                        "array": true,
-                        "type": "string",
-                        "value": [
-                            "red"
-                        ]
+            activeStep: "step2",
+            fields: {
+                colors: {
+                    value: {
+                        array: true,
+                        type: "string",
+                        value: ["red"]
                     }
                 },
-                "email": {
-                    "value": {
-                        "array": false,
-                        "type": "string",
-                        "value": "john@example.com"
+                email: {
+                    value: {
+                        array: false,
+                        type: "string",
+                        value: "john@example.com"
                     }
                 },
-                "firstName": {
-                    "value": {
-                        "array": false,
-                        "type": "string",
-                        "value": "John"
+                firstName: {
+                    value: {
+                        array: false,
+                        type: "string",
+                        value: "John"
                     }
                 },
-                "lastName": {
-                    "value": {
-                        "array": false,
-                        "type": "string",
-                        "value": "Doe"
+                lastName: {
+                    value: {
+                        array: false,
+                        type: "string",
+                        value: "Doe"
                     }
                 },
-                "location": {
-                    "value": {
-                        "array": false,
-                        "type": "string",
-                        "value": "Earth"
+                location: {
+                    value: {
+                        array: false,
+                        type: "string",
+                        value: "Earth"
                     }
                 }
             }

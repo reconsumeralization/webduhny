@@ -33,6 +33,6 @@ export class LteConditionOperator extends FunnelConditionOperatorModel<
             return false;
         }
 
-        return value.exists() && value.value <= this.params.extra.threshold;
+        return value.hasValue() && value.value <= this.params.extra.threshold;
     }
 }

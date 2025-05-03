@@ -13,15 +13,10 @@ export const TextFieldAdminPlugins = () => {
             <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={TextFieldRenderer} />
             <PbEditorFunnelFieldPageElementPlugin
                 fieldType={"text"}
-                value={{ type: "string", value: "" }}
                 renderer={TextFieldRenderer}
                 name={"Short Text"}
                 description={"Titles, names, single line input"}
                 icon={<TextIcon />}
-                extraFieldData={{
-                    inputType: "",
-                    placeholderText: ""
-                }}
             />
 
             <PbEditorFunnelFieldSettingsPlugin fieldType={"text"} renderer={TextFieldSettings} />

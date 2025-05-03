@@ -13,8 +13,6 @@ export class FunnelFieldValueModel<
     array: boolean;
     value: TValue;
 
-    supportedConditionOperators: string[] = [];
-
     constructor(dto: FunnelFieldValueModelDto<TValue>) {
         super();
         this.type = dto.type;
@@ -26,7 +24,7 @@ export class FunnelFieldValueModel<
         }
     }
 
-    exists() {
+    hasValue() {
         if (this.array) {
             return Array.isArray(this.value) && this.value.length > 0;
         }
@@ -35,7 +33,7 @@ export class FunnelFieldValueModel<
     }
 
     isEmpty() {
-        return !this.exists();
+        return !this.hasValue();
     }
 
     toDto(): FunnelFieldValueModelDto<TValue> {

@@ -157,6 +157,8 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                                     });
                                 }}
                             >
+                                {/*TODO: filter based on field value type*/}
+                                {/*TODO: add value input renderers*/}
                                 <option value="eq">equals</option>
                                 <option value="neq">not equals</option>
                                 <option value="gt">greater than</option>

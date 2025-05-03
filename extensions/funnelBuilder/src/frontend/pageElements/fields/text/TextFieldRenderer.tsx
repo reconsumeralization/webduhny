@@ -57,7 +57,6 @@ export const TextFieldRenderer = createFieldRenderer(props => {
                     onChange={e => onChange(e.target.value)}
                     value={value || ""}
                     placeholder={field.extra.placeholderText}
-                    type={field.extra.inputType}
                     name={field.fieldId}
                     id={field.fieldId}
                 />

@@ -13,6 +13,6 @@ export class RequiredValidator extends AbstractValidator {
     }
 
     isValid(value: FunnelFieldValueModel) {
-        return value.exists();
+        return value.hasValue();
     }
 }

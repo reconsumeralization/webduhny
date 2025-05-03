@@ -80,35 +80,10 @@ export class FunnelConditionRulesEvaluator {
     private evaluateCondition(condition: FunnelConditionModel): boolean {
         // Get the field from the submission
         const field = this.funnelSubmission.getField(condition.sourceFieldId);
-
-        // If the field doesn't exist, return false
         if (!field) {
             return false;
         }
 
-        // Get the field value
-        const fieldValue = field.getValue();
-
-        // Compare the field value with the condition value using the specified operator
-        switch (condition.operator) {
-            case "eq":
-                return fieldValue === condition.value;
-            case "neq":
-                return fieldValue !== condition.value;
-            case "gt":
-                return fieldValue > condition.value;
-            case "gte":
-                return fieldValue >= condition.value;
-            case "lt":
-                return fieldValue < condition.value;
-            case "lte":
-                return fieldValue <= condition.value;
-            case "includes":
-                return Array.isArray(fieldValue) && fieldValue.includes(condition.value);
-            case "notIncludes":
-                return Array.isArray(fieldValue) && !fieldValue.includes(condition.value);
-            default:
-                return false;
-        }
+        return condition.operator.evaluate(field.value)
     }
 }

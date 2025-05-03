@@ -15,6 +15,6 @@ export class NotEmptyConditionOperator extends FunnelConditionOperatorModel {
     }
 
     override evaluate(value: FunnelFieldValueModel): boolean {
-        return value.exists();
+        return value.hasValue();
     }
 }

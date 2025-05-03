@@ -13,12 +13,10 @@ export const CheckboxGroupFieldAdminPlugins = () => {
             <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={CheckboxGroupFieldRenderer} />
             <PbEditorFunnelFieldPageElementPlugin
                 fieldType={"checkboxGroup"}
-                value={{ type: "stringArray" }}
                 renderer={CheckboxGroupFieldRenderer}
                 name={"CheckboxGroup"}
                 description={"Choose one or more options"}
                 icon={<TextIcon />}
-                extraFieldData={{ placeholderText: "", rows: 4 }}
             />
 
             <PbEditorFunnelFieldSettingsPlugin
