@@ -4,11 +4,15 @@ import {
 } from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
+type FieldValue = FunnelFieldValueModel<number>;
+
 interface GtConditionOperatorExtraParams {
     threshold?: number;
 }
 
-export class GtConditionOperator extends FunnelConditionOperatorModel<GtConditionOperatorExtraParams, FunnelFieldValueModel<number>> {
+export class GtConditionOperator extends FunnelConditionOperatorModel<FieldValue, GtConditionOperatorExtraParams> {
+    override supportedFieldValues = ["number"];
+
     constructor(dto: FunnelConditionOperatorModelDto<GtConditionOperatorExtraParams>) {
         super({
             id: "gt",
@@ -20,7 +24,7 @@ export class GtConditionOperator extends FunnelConditionOperatorModel<GtConditio
         });
     }
 
-    override evaluate(value: FunnelFieldValueModel<number>): boolean {
+    override evaluate(value: FieldValue): boolean {
         if (!this.params.extra.threshold) {
             return true;
         }
