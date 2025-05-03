@@ -1,4 +1,7 @@
-import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
+import {
+    FunnelConditionOperatorModel,
+    FunnelConditionOperatorModelDto
+} from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 type FieldValue = FunnelFieldValueModel<number>;
@@ -7,7 +10,10 @@ interface LteConditionOperatorExtraParams {
     threshold?: number;
 }
 
-export class LteConditionOperator extends FunnelConditionOperatorModel<FieldValue, LteConditionOperatorExtraParams> {
+export class LteConditionOperator extends FunnelConditionOperatorModel<
+    FieldValue,
+    LteConditionOperatorExtraParams
+> {
     override supportedFieldValues = ["number"];
 
     constructor(dto: FunnelConditionOperatorModelDto<LteConditionOperatorExtraParams>) {
@@ -23,7 +29,7 @@ export class LteConditionOperator extends FunnelConditionOperatorModel<FieldValu
 
     override evaluate(value: FieldValue): boolean {
         if (!this.params.extra.threshold) {
-            return true;
+            return false;
         }
 
         return value.exists() && value.value <= this.params.extra.threshold;

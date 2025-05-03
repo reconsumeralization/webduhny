@@ -1,9 +1,19 @@
-import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
+import {
+    FunnelConditionOperatorModel,
+    FunnelConditionOperatorModelDto
+} from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 type FieldValue = FunnelFieldValueModel<number>;
 
-export class GteConditionOperator extends FunnelConditionOperatorModel<FieldValue, GteConditionOperatorExtraParams> {
+interface GteConditionOperatorExtraParams {
+    threshold?: number;
+}
+
+export class GteConditionOperator extends FunnelConditionOperatorModel<
+    FieldValue,
+    GteConditionOperatorExtraParams
+> {
     override supportedFieldValues = ["number"];
 
     constructor(dto: FunnelConditionOperatorModelDto<GteConditionOperatorExtraParams>) {
@@ -19,13 +29,9 @@ export class GteConditionOperator extends FunnelConditionOperatorModel<FieldValu
 
     override evaluate(value: FieldValue): boolean {
         if (!this.params.extra.threshold) {
-            return true;
+            return false;
         }
 
         return value.exists() && value.value >= this.params.extra.threshold;
     }
-}
-
-interface GteConditionOperatorExtraParams {
-    threshold?: number;
 }

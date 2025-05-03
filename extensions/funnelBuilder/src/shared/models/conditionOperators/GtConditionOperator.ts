@@ -10,7 +10,10 @@ interface GtConditionOperatorExtraParams {
     threshold?: number;
 }
 
-export class GtConditionOperator extends FunnelConditionOperatorModel<FieldValue, GtConditionOperatorExtraParams> {
+export class GtConditionOperator extends FunnelConditionOperatorModel<
+    FieldValue,
+    GtConditionOperatorExtraParams
+> {
     override supportedFieldValues = ["number"];
 
     constructor(dto: FunnelConditionOperatorModelDto<GtConditionOperatorExtraParams>) {
@@ -26,7 +29,7 @@ export class GtConditionOperator extends FunnelConditionOperatorModel<FieldValue
 
     override evaluate(value: FieldValue): boolean {
         if (!this.params.extra.threshold) {
-            return true;
+            return false;
         }
 
         return value.exists() && value.value > this.params.extra.threshold;
