@@ -1,11 +1,21 @@
-import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
+import {
+    FunnelConditionOperatorModel,
+    FunnelConditionOperatorModelDto
+} from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
+type FieldValue = FunnelFieldValueModel<string | number>;
+
 interface NeqConditionOperatorExtraParams {
-    value?: any;
+    value?: string | number | boolean;
 }
 
-export class NeqConditionOperator extends FunnelConditionOperatorModel<NeqConditionOperatorExtraParams, FunnelFieldValueModel<string | number>> {
+export class NeqConditionOperator extends FunnelConditionOperatorModel<
+    FieldValue,
+    NeqConditionOperatorExtraParams
+> {
+    override supportedFieldValues = ["string", "number", "boolean"];
+
     constructor(dto: FunnelConditionOperatorModelDto<NeqConditionOperatorExtraParams>) {
         super({
             id: "neq",
@@ -17,11 +27,7 @@ export class NeqConditionOperator extends FunnelConditionOperatorModel<NeqCondit
         });
     }
 
-    override evaluate(value: FunnelFieldValueModel): boolean {
-        if (!this.params.extra.value) {
-            return true;
-        }
-
+    override evaluate(value: FieldValue): boolean {
         return value.exists() && value.value !== this.params.extra.value;
     }
 }
