@@ -3,12 +3,30 @@ import {
     type FunnelConditionOperatorModelDto
 } from "../FunnelConditionOperatorModel";
 import { GteConditionOperator } from "./GteConditionOperator";
+import { GtConditionOperator } from "./GtConditionOperator";
+import { LtConditionOperator } from "./LtConditionOperator";
+import { LteConditionOperator } from "./LteConditionOperator";
+import { EqConditionOperator } from "./EqConditionOperator";
+import { NeqConditionOperator } from "./NeqConditionOperator";
+import { IncludesConditionOperator } from "./IncludesConditionOperator";
+import { NotIncludesConditionOperator } from "./NotIncludesConditionOperator";
+import { EmptyConditionOperator } from "./EmptyConditionOperator";
+import { NotEmptyConditionOperator } from "./NotEmptyConditionOperator";
 
 const registry: Record<
     string,
     (dto: FunnelConditionOperatorModelDto<any>) => FunnelConditionOperatorModel<any>
 > = {
-    gte: dto => new GteConditionOperator(dto)
+    empty: dto => new EmptyConditionOperator(),
+    eq: dto => new EqConditionOperator(dto),
+    gt: dto => new GtConditionOperator(dto),
+    gte: dto => new GteConditionOperator(dto),
+    includes: dto => new IncludesConditionOperator(dto),
+    lt: dto => new LtConditionOperator(dto),
+    lte: dto => new LteConditionOperator(dto),
+    neq: dto => new NeqConditionOperator(dto),
+    notEmpty: dto => new NotEmptyConditionOperator(),
+    notIncludes: dto => new NotIncludesConditionOperator(dto)
 };
 
 export function conditionOperatorFromDto(
