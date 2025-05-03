@@ -2,7 +2,7 @@ import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from ".
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 export class EmptyConditionOperator extends FunnelConditionOperatorModel<{}> {
-    constructor(dto: FunnelConditionOperatorModelDto<{}>) {
+    constructor() {
         super({
             id: "empty",
             params: {
