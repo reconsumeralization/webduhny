@@ -1,7 +1,9 @@
-import { FunnelConditionOperatorModel, FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
+import { FunnelConditionOperatorModel } from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
-export class EmptyConditionOperator extends FunnelConditionOperatorModel<{}> {
+export class EmptyConditionOperator extends FunnelConditionOperatorModel {
+    override supportedFieldValues = ["*"];
+
     constructor() {
         super({
             id: "empty",
