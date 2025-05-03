@@ -2,7 +2,8 @@ import { FunnelConditionOperatorModel } from "../FunnelConditionOperatorModel";
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 export class NotEmptyConditionOperator extends FunnelConditionOperatorModel {
-    override supportedFieldValues = ["*"];
+    static override supportedFieldValues = ["*"];
+    static override id = "notEmpty";
 
     constructor() {
         super({

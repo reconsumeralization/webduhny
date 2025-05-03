@@ -14,7 +14,8 @@ export class EqConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     FunnelFieldValueModel
 > {
-    override supportedFieldValues = ["string", "number", "boolean"];
+    static override supportedFieldValues = ["string", "number", "boolean"];
+    static override id = "eq";
 
     constructor(dto: FunnelConditionOperatorModelDto<EqConditionOperatorExtraParams>) {
         super({

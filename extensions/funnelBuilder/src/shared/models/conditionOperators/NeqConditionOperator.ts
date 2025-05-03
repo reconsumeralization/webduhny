@@ -14,7 +14,8 @@ export class NeqConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     NeqConditionOperatorExtraParams
 > {
-    override supportedFieldValues = ["string", "number", "boolean"];
+    static override supportedFieldValues = ["string", "number", "boolean"];
+    static override id = "neq";
 
     constructor(dto: FunnelConditionOperatorModelDto<NeqConditionOperatorExtraParams>) {
         super({

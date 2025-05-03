@@ -14,7 +14,8 @@ export class GteConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     GteConditionOperatorExtraParams
 > {
-    override supportedFieldValues = ["number"];
+    static override supportedFieldValues = ["number"];
+    static override id = "gte";
 
     constructor(dto: FunnelConditionOperatorModelDto<GteConditionOperatorExtraParams>) {
         super({
