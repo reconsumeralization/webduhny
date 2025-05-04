@@ -1,5 +1,5 @@
 import { Entity, Table } from "@webiny/db-dynamodb/toolbox";
-import { DynamoDBDocument } from "../../../aws-sdk/src/client-dynamodb";
+import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { deleteItem, getClean, put, queryAllClean } from "@webiny/db-dynamodb";
 
 import { WebinyError } from "@webiny/error";
