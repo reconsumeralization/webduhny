@@ -158,7 +158,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
     it("should update a root folder's permissions", async () => {
         const context = await handler();
         const createFlp = new CreateFlp(context);
-        const updateFlp = new UpdateFlp({ context });
+        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         const folder = {
             type,
@@ -180,7 +180,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
             ]
         };
 
-        await updateFlp.execute(updatedFolder as unknown as Folder);
+        await getUpdateFlpInstance().execute(updatedFolder as unknown as Folder);
 
         const flp = await context.aco.flp.get(folder.id);
         expect(flp).toMatchObject({
@@ -280,7 +280,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
     it("should update a folder's permissions and propagate to direct child", async () => {
         const context = await handler();
         const createFlp = new CreateFlp(context);
-        const updateFlp = new UpdateFlp({ context });
+        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         // Create parent folder
         const parentFolder = {
@@ -315,7 +315,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
             ]
         };
 
-        await updateFlp.execute(updatedParentFolder as unknown as Folder);
+        await getUpdateFlpInstance().execute(updatedParentFolder as unknown as Folder);
 
         // Check parent folder
         const parentFlp = await context.aco.flp.get(parentFolder.id);

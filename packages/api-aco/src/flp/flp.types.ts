@@ -73,18 +73,38 @@ export interface OnFlpAfterDeleteTopicParams {
     flp: FolderLevelPermission;
 }
 
+export interface OnFlpBatchBeforeUpdateTopicParams {
+    items: Array<{
+        original: FolderLevelPermission;
+        input: UpdateFlpParams;
+    }>;
+}
+
+export interface OnFlpBatchAfterUpdateTopicParams {
+    items: Array<{
+        original: FolderLevelPermission;
+        flp: FolderLevelPermission;
+        input: UpdateFlpParams;
+    }>;
+}
+
 export interface AcoFolderLevelPermissionsCrud {
     list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
     get(id: string): Promise<FolderLevelPermission>;
     create(params: CreateFlpParams): Promise<FolderLevelPermission>;
     update(id: string, data: UpdateFlpParams): Promise<FolderLevelPermission>;
     delete(id: string): Promise<boolean>;
+    batchUpdate(
+        items: Array<{ id: string; data: UpdateFlpParams }>
+    ): Promise<FolderLevelPermission[]>;
     onFlpBeforeCreate: Topic<OnFlpBeforeCreateTopicParams>;
     onFlpAfterCreate: Topic<OnFlpAfterCreateTopicParams>;
     onFlpBeforeUpdate: Topic<OnFlpBeforeUpdateTopicParams>;
     onFlpAfterUpdate: Topic<OnFlpAfterUpdateTopicParams>;
     onFlpBeforeDelete: Topic<OnFlpBeforeDeleteTopicParams>;
     onFlpAfterDelete: Topic<OnFlpAfterDeleteTopicParams>;
+    onFlpBatchBeforeUpdate: Topic<OnFlpBatchBeforeUpdateTopicParams>;
+    onFlpBatchAfterUpdate: Topic<OnFlpBatchAfterUpdateTopicParams>;
 }
 
 /********
@@ -117,12 +137,20 @@ export type StorageOperationsDeleteFlpParams = {
     flp: FolderLevelPermission;
 };
 
+export interface StorageOperationsBatchUpdateFlpParams {
+    items: Array<{
+        original: FolderLevelPermission;
+        data: UpdateFlpParams;
+    }>;
+}
+
 export interface AcoFolderLevelPermissionsStorageOperations {
     list(params: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]>;
     get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission>;
     create(params: StorageOperationsCreateFlpParams): Promise<FolderLevelPermission>;
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
     delete(params: StorageOperationsDeleteFlpParams): Promise<void>;
+    batchUpdate(params: StorageOperationsBatchUpdateFlpParams): Promise<FolderLevelPermission[]>;
 }
 
 /********

@@ -1,7 +1,7 @@
 import { WebinyError } from "@webiny/error";
 import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
-import type { AcoContext, Folder, FolderLevelPermission } from "~/types";
+import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from "~/types";
 
 interface UpdateFlpParams {
     context: AcoContext;
@@ -10,11 +10,20 @@ interface UpdateFlpParams {
     handleTimeout?: (updated: string[]) => void;
 }
 
+interface FlpUpdateData {
+    parentId: string;
+    slug: string;
+    path: string;
+    permissions: FolderPermission[];
+}
+
 export class UpdateFlp {
     private context: AcoContext;
-    private readonly updated: Set<string> = new Set();
     private readonly isCloseToTimeout?: () => boolean;
     private readonly handleTimeout?: (updated: string[]) => void;
+
+    private readonly updated: Set<string> = new Set();
+    private readonly flpsToUpdate: Map<string, FlpUpdateData> = new Map();
 
     constructor(params: UpdateFlpParams) {
         this.context = params.context;
@@ -36,15 +45,13 @@ export class UpdateFlp {
             const flp = await this.getFlp(folder.id);
             const parentFlp = folder.parentId ? await this.getFlp(folder.parentId) : null;
 
-            // Update the current folder
-            const updatedFlp = await this.context.aco.flp.update(folder.id, {
+            // Add the root folder to the update collection
+            this.flpsToUpdate.set(folder.id, {
                 slug: folder.slug,
                 parentId: folder.parentId ?? ROOT_FOLDER,
                 path: this.getPath(folder.slug, parentFlp?.path),
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
-
-            this.setUpdated(folder.id);
 
             // Get direct children and process each branch completely
             const directChildren = await this.listDirectChildren(flp);
@@ -53,9 +60,14 @@ export class UpdateFlp {
                     this.handleTimeout?.(this.getUpdated());
                     return;
                 }
-                await this.processBranch(child, updatedFlp);
+                await this.collectBranchForUpdate(child, flp);
             }
+
+            // Execute batch update
+            await this.executeBatchUpdate();
         } catch (error) {
+            // Clear the update collection in case of error
+            this.flpsToUpdate.clear();
             throw WebinyError.from(error, {
                 message: "Error while updating FLP",
                 code: "ERROR_UPDATING_FLP_USE_CASE"
@@ -63,14 +75,32 @@ export class UpdateFlp {
         }
     }
 
-    private async processBranch(flp: FolderLevelPermission, parentFlp: FolderLevelPermission) {
+    private async collectBranchForUpdate(
+        flp: FolderLevelPermission,
+        parentFlp: FolderLevelPermission
+    ) {
         if (this.isUpdated(flp.id)) {
             return;
         }
 
-        const updated = await this.context.aco.flp.update(flp.id, {
-            path: this.getPath(flp.slug, parentFlp.path),
-            permissions: Permissions.create(flp.permissions, parentFlp)
+        // Get the parent's permissions from the update collection if available
+        const parentUpdateData = this.flpsToUpdate.get(parentFlp.id);
+        const currentParentFlp = parentUpdateData
+            ? {
+                  ...parentFlp,
+                  parentId: parentUpdateData.parentId,
+                  slug: parentUpdateData.slug,
+                  path: parentUpdateData.path,
+                  permissions: parentUpdateData.permissions
+              }
+            : parentFlp;
+
+        // Add the FLP to the update collection with inherited permissions
+        this.flpsToUpdate.set(flp.id, {
+            slug: flp.slug,
+            parentId: flp.parentId,
+            path: this.getPath(flp.slug, currentParentFlp.path),
+            permissions: Permissions.create(flp.permissions, currentParentFlp)
         });
 
         this.setUpdated(flp.id);
@@ -82,7 +112,39 @@ export class UpdateFlp {
                 this.handleTimeout?.(this.getUpdated());
                 return;
             }
-            await this.processBranch(child, updated);
+            // Pass the current FLP as the parent for the child
+            await this.collectBranchForUpdate(child, flp);
+        }
+    }
+
+    private async executeBatchUpdate() {
+        try {
+            const items = Array.from(this.flpsToUpdate.entries()).map(
+                ([id, { slug, parentId, path, permissions }]) => {
+                    return {
+                        id,
+                        data: {
+                            slug,
+                            parentId,
+                            path,
+                            permissions
+                        }
+                    };
+                }
+            );
+
+            await this.context.aco.flp.batchUpdate(items);
+        } catch (error) {
+            throw WebinyError.from(error, {
+                message: "Error while executing batch update of FLPs",
+                code: "BATCH_UPDATE_FLP_ERROR",
+                data: {
+                    items: Array.from(this.flpsToUpdate.keys())
+                }
+            });
+        } finally {
+            // Clear the update collection after the batch update
+            this.flpsToUpdate.clear();
         }
     }
 

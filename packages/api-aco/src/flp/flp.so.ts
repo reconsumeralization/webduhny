@@ -1,6 +1,7 @@
 import { Entity, Table } from "@webiny/db-dynamodb/toolbox";
 import { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { deleteItem, getClean, put, queryAllClean } from "@webiny/db-dynamodb";
+import { createEntityWriteBatch } from "@webiny/db-dynamodb/utils/entity/EntityWriteBatch";
 
 import { WebinyError } from "@webiny/error";
 import type {
@@ -10,8 +11,10 @@ import type {
     StorageOperationsDeleteFlpParams,
     StorageOperationsGetFlpParams,
     StorageOperationsListFlpsParams,
-    StorageOperationsUpdateFlpParams
+    StorageOperationsUpdateFlpParams,
+    StorageOperationsBatchUpdateFlpParams
 } from "~/flp/flp.types";
+import { executeWithRetry } from "@webiny/utils";
 
 interface StorageOperationsConfig {
     documentClient: DynamoDBDocument;
@@ -187,6 +190,49 @@ class FolderLevelPermissionsStorageOperations
                 message: "Could not delete folder level permission.",
                 code: "DELETE_FLP_ERROR",
                 data: { keys, flp }
+            });
+        }
+    }
+
+    async batchUpdate({
+        items
+    }: StorageOperationsBatchUpdateFlpParams): Promise<FolderLevelPermission[]> {
+        try {
+            const batch = createEntityWriteBatch({
+                entity: this.entity
+            });
+
+            const updatedItems: FolderLevelPermission[] = [];
+
+            for (const { original, data } of items) {
+                const keys = {
+                    ...this.createKeys(original),
+                    ...this.createGsiKeys(original)
+                };
+
+                const updatedData = {
+                    ...original,
+                    ...data
+                };
+
+                batch.put({
+                    ...keys,
+                    data: updatedData
+                });
+
+                updatedItems.push(updatedData);
+            }
+
+            await executeWithRetry(async () => {
+                return await batch.execute();
+            });
+
+            return updatedItems;
+        } catch (err) {
+            throw WebinyError.from(err, {
+                message: "Could not batch update folder level permissions.",
+                code: "BATCH_UPDATE_FLP_ERROR",
+                data: { items }
             });
         }
     }

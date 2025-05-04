@@ -11,6 +11,8 @@ import {
     type OnFlpBeforeCreateTopicParams,
     type OnFlpBeforeDeleteTopicParams,
     type OnFlpBeforeUpdateTopicParams,
+    type OnFlpBatchBeforeUpdateTopicParams,
+    type OnFlpBatchAfterUpdateTopicParams,
     type UpdateFlpParams
 } from "~/types";
 
@@ -34,6 +36,13 @@ export const createFlpCrudMethods = ({
     // delete
     const onFlpBeforeDelete = createTopic<OnFlpBeforeDeleteTopicParams>("aco.onFlpBeforeDelete");
     const onFlpAfterDelete = createTopic<OnFlpAfterDeleteTopicParams>("aco.onFlpAfterDelete");
+    // batch update
+    const onFlpBatchBeforeUpdate = createTopic<OnFlpBatchBeforeUpdateTopicParams>(
+        "aco.onFlpBatchBeforeUpdate"
+    );
+    const onFlpBatchAfterUpdate = createTopic<OnFlpBatchAfterUpdateTopicParams>(
+        "aco.onFlpBatchAfterUpdate"
+    );
 
     return {
         onFlpBeforeCreate,
@@ -42,6 +51,8 @@ export const createFlpCrudMethods = ({
         onFlpAfterUpdate,
         onFlpBeforeDelete,
         onFlpAfterDelete,
+        onFlpBatchBeforeUpdate,
+        onFlpBatchAfterUpdate,
         async create(params: CreateFlpParams) {
             await onFlpBeforeCreate.publish({ input: params });
             const flp = await storageOperations.flp.create({
@@ -56,6 +67,45 @@ export const createFlpCrudMethods = ({
             const flp = await storageOperations.flp.update({ original, data });
             await onFlpAfterUpdate.publish({ original, input: { id, data }, flp });
             return flp;
+        },
+        async batchUpdate(items: Array<{ id: string; data: UpdateFlpParams }>) {
+            // First get all original items
+            const originals = await Promise.all(
+                items.map(async ({ id }) => {
+                    const original = await this.get(id);
+                    return { id, original };
+                })
+            );
+
+            // Prepare items for batch update
+            const batchItems = originals.map(({ id, original }) => ({
+                original,
+                data: items.find(item => item.id === id)!.data
+            }));
+
+            // Publish before update event
+            await onFlpBatchBeforeUpdate.publish({
+                items: batchItems.map(({ original, data }) => ({
+                    original,
+                    input: data
+                }))
+            });
+
+            // Execute batch update
+            const updatedItems = await storageOperations.flp.batchUpdate({
+                items: batchItems
+            });
+
+            // Publish after update event
+            await onFlpBatchAfterUpdate.publish({
+                items: batchItems.map(({ original }, index) => ({
+                    original,
+                    flp: updatedItems[index],
+                    input: items[index].data
+                }))
+            });
+
+            return updatedItems;
         },
         async delete(id: string) {
             const flp = await this.get(id);
