@@ -137,7 +137,6 @@ export type ICreateFlpTaskParams = ITaskRunParams<AcoContext, ICreateFlpTaskInpu
 
 export interface IUpdateFlpTaskInput {
     folder: Folder;
-    original: Folder;
     updated?: string[];
 }
 

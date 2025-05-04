@@ -28,7 +28,7 @@ class UpdateFlpTask {
                     if (isAborted()) {
                         return response.aborted();
                     }
-                    await useCase.execute(input.folder, input.original);
+                    await useCase.execute(input.folder);
                     return response.done("Task done: FLP record updated.");
                 } catch (error) {
                     return response.error(error);

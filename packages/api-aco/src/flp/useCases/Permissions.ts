@@ -11,26 +11,28 @@ export class Permissions {
         const folderPermissions = permissions ?? [];
 
         // No permissions from the parent, let's return the permissions provided by the folder.
-        if (!parentFlp) {
+        if (!parentFlp || !parentFlp.permissions?.length) {
             return folderPermissions;
         }
 
-        const { id: parentId, permissions: parentPermissions = [] } = parentFlp;
+        const { id: parentId, permissions: parentPermissions } = parentFlp;
 
-        // Remove all previously inherited permissions (from this specific parent)
+        // Remove all previously inherited permissions
         const cleanedPermissions = folderPermissions.filter(
-            p => p.inheritedFrom !== `parent:${parentId}`
+            p => !p.inheritedFrom?.startsWith("parent:")
         );
 
         // Store the `target` values from the current cleaned permissions.
         // These will be used to exclude inherited permissions that target the same entities as the current folder's permissions.
         const permissionsTargets = new Set(cleanedPermissions.map(p => p.target));
 
+        // Get inherited permissions from parent, preserving the original inheritance chain
         const inheritedPermissions = parentPermissions
             .filter(p => !permissionsTargets.has(p.target))
             .map(p => ({
                 ...p,
-                inheritedFrom: `parent:${parentId}`
+                // If the permission was already inherited, keep its original source
+                inheritedFrom: p.inheritedFrom || `parent:${parentId}`
             }));
 
         return [...cleanedPermissions, ...inheritedPermissions];

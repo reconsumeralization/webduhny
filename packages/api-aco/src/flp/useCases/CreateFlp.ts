@@ -25,19 +25,7 @@ export class CreateFlp {
             let parentFlp: IFolderLevelPermission | undefined = undefined;
 
             if (parentId) {
-                const parent = await this.context.aco.flp.get(parentId);
-
-                if (!parent) {
-                    throw new WebinyError(
-                        `Cannot find parent FLP record with id ${parentId}.`,
-                        "ERROR_CREATE_FLP_USE_CASE_CANNOT_GET_PARENT_FLP_FROM_FOLDER",
-                        {
-                            folder
-                        }
-                    );
-                }
-
-                parentFlp = parent;
+                parentFlp = await this.context.aco.flp.get(parentId);
             }
 
             await this.context.aco.flp.create({

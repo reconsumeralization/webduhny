@@ -23,39 +23,66 @@ export class UpdateFlp {
         this.handleTimeout = params.handleTimeout;
     }
 
-    async execute(folder: Folder, original: Folder) {
+    async execute(folder: Folder) {
         try {
-            if (!folder || !original) {
+            if (!folder) {
                 throw new WebinyError(
-                    "Missing `data` or `folder`, I can't update the FLP record.",
+                    "Missing `folder`, I can't update the FLP record.",
                     "ERROR_UPDATING_FLP_USE_CASE_FOLDER_NOT_PROVIDED",
-                    { folder, original }
+                    { folder }
                 );
             }
 
             const flp = await this.getFlp(folder.id);
             const parentFlp = folder.parentId ? await this.getFlp(folder.parentId) : null;
 
+            // Update the current folder
             const updatedFlp = await this.context.aco.flp.update(folder.id, {
+                slug: folder.slug,
                 parentId: folder.parentId ?? ROOT_FOLDER,
                 path: this.getPath(folder.slug, parentFlp?.path),
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
 
-            const children = await this.listDirectChildren(flp);
+            this.setUpdated(folder.id);
 
-            for (const child of children) {
+            // Get direct children and process each branch completely
+            const directChildren = await this.listDirectChildren(flp);
+            for (const child of directChildren) {
                 if (this.isCloseToTimeout?.()) {
                     this.handleTimeout?.(this.getUpdated());
                     return;
                 }
-                await this.executeRecursive(child, updatedFlp);
+                await this.processBranch(child, updatedFlp);
             }
         } catch (error) {
             throw WebinyError.from(error, {
                 message: "Error while updating FLP",
                 code: "ERROR_UPDATING_FLP_USE_CASE"
             });
+        }
+    }
+
+    private async processBranch(flp: FolderLevelPermission, parentFlp: FolderLevelPermission) {
+        if (this.isUpdated(flp.id)) {
+            return;
+        }
+
+        const updated = await this.context.aco.flp.update(flp.id, {
+            path: this.getPath(flp.slug, parentFlp.path),
+            permissions: Permissions.create(flp.permissions, parentFlp)
+        });
+
+        this.setUpdated(flp.id);
+
+        // Process all children of this folder before moving to siblings
+        const children = await this.listDirectChildren(flp);
+        for (const child of children) {
+            if (this.isCloseToTimeout?.()) {
+                this.handleTimeout?.(this.getUpdated());
+                return;
+            }
+            await this.processBranch(child, updated);
         }
     }
 
@@ -69,34 +96,6 @@ export class UpdateFlp {
 
     private isUpdated(id: string) {
         return this.updated.has(id);
-    }
-
-    private async executeRecursive(
-        targetFlp: FolderLevelPermission,
-        parentFlp: FolderLevelPermission
-    ) {
-        if (this.isUpdated(targetFlp.id)) {
-            return;
-        }
-
-        const updatedTargetFlp = await this.context.aco.flp.update(targetFlp.id, {
-            path: this.getPath(targetFlp.slug, parentFlp.path),
-            permissions: Permissions.create(targetFlp.permissions, parentFlp)
-        });
-
-        this.setUpdated(targetFlp.id);
-
-        const children = await this.listDirectChildren(targetFlp);
-
-        for (const child of children) {
-            if (this.isCloseToTimeout?.()) {
-                this.handleTimeout?.(this.getUpdated());
-                return;
-            }
-            await this.executeRecursive(child, updatedTargetFlp);
-        }
-
-        return;
     }
 
     private async listDirectChildren(flp: FolderLevelPermission) {
