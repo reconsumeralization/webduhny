@@ -4,6 +4,7 @@ import { useContainer } from "../container/ContainerProvider";
 import { FunnelSubmissionFieldModel } from "../../../shared/models/FunnelSubmissionFieldModel";
 import styled from "@emotion/styled";
 import { fieldFromDto } from "../../../shared/models/fields/fieldFactory";
+import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 
 export const FUB_PAGE_ELEMENT_GROUP = "funnelBuilder";
 
@@ -16,8 +17,10 @@ const NotWithinFunnelBuilderContainer = styled.div`
     padding: 12px;
 `;
 
-export const createFieldRenderer = (
-    Component: React.ComponentType<{ field: FunnelSubmissionFieldModel }>
+export const createFieldRenderer = <
+    TField extends FunnelFieldDefinitionModel = FunnelFieldDefinitionModel
+>(
+    Component: React.ComponentType<{ field: FunnelSubmissionFieldModel<TField> }>
 ) => {
     return createRenderer(() => {
         const { getElement } = useRenderer();
@@ -32,8 +35,8 @@ export const createFieldRenderer = (
             );
         }
 
-        const field = funnelSubmissionVm.getField(element.data.fieldId);
+        const field = funnelSubmissionVm.getField(element.data.fieldId) ;
 
-        return <Component field={field} />;
+        return <Component field={field as FunnelSubmissionFieldModel<TField>} />;
     });
 };

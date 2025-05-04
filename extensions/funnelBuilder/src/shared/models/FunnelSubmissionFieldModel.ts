@@ -2,8 +2,8 @@ import { FunnelFieldDefinitionModel } from "./FunnelFieldDefinitionModel";
 import { FunnelSubmissionModel } from "./FunnelSubmissionModel";
 import { FunnelFieldValueModel } from "./FunnelFieldValueModel";
 
-export interface FunnelSubmissionFieldModelDto<TValue = unknown> {
-    value: FunnelFieldValueModel<TValue>;
+export interface FunnelSubmissionFieldModelDto<TFieldValue extends FunnelFieldValueModel = FunnelFieldValueModel> {
+    value: TFieldValue;
 }
 
 export type FunnelSubmissionFieldValidationResult =
@@ -16,15 +16,19 @@ export type FunnelSubmissionFieldValidationResult =
           errorMessage: string;
       };
 
-export class FunnelSubmissionFieldModel<TValue = unknown> {
+export class FunnelSubmissionFieldModel<
+    TFunnelFieldDefinitionModel extends FunnelFieldDefinitionModel = FunnelFieldDefinitionModel
+> {
     submission: FunnelSubmissionModel;
-    definition: FunnelFieldDefinitionModel<TValue>;
-    value: FunnelFieldValueModel<TValue>;
+    definition: TFunnelFieldDefinitionModel;
+    value: TFunnelFieldDefinitionModel["value"];
 
     constructor(
         funnelSubmission: FunnelSubmissionModel,
-        funnelFieldDefinition: FunnelFieldDefinitionModel<TValue>,
-        funnelSubmissionFieldDto?: FunnelSubmissionFieldModelDto<TValue>
+        funnelFieldDefinition: TFunnelFieldDefinitionModel,
+        funnelSubmissionFieldDto?: FunnelSubmissionFieldModelDto<
+            TFunnelFieldDefinitionModel["value"]
+        >
     ) {
         this.submission = funnelSubmission;
         this.definition = funnelFieldDefinition;
@@ -35,16 +39,18 @@ export class FunnelSubmissionFieldModel<TValue = unknown> {
         }
     }
 
-    toDto(): FunnelSubmissionFieldModelDto {
+    toDto(): FunnelSubmissionFieldModelDto<TFunnelFieldDefinitionModel["value"]> {
         return {
             value: this.value
         };
     }
 
-    static fromDto(
+    static fromDto<
+        TFunnelFieldDefinitionModel extends FunnelFieldDefinitionModel = FunnelFieldDefinitionModel
+    >(
         funnelSubmission: FunnelSubmissionModel,
         funnelFieldDefinition: FunnelFieldDefinitionModel,
-        dto: FunnelSubmissionFieldModelDto
+        dto: FunnelSubmissionFieldModelDto<TFunnelFieldDefinitionModel["value"]>
     ): FunnelSubmissionFieldModel {
         return new FunnelSubmissionFieldModel(funnelSubmission, funnelFieldDefinition, dto);
     }
@@ -53,7 +59,7 @@ export class FunnelSubmissionFieldModel<TValue = unknown> {
         return this.value.value;
     }
 
-    setValue(value: TValue) {
+    setValue(value: TFunnelFieldDefinitionModel["value"]) {
         this.value.value = value;
     }
 

@@ -6,6 +6,7 @@ import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { createFieldRenderer } from "../utils";
+import { CheckboxGroupField } from "../../../../shared/models/fields/CheckboxGroupField";
 
 export const CheckboxGroup = styled.div`
     align-items: center;
@@ -87,7 +88,7 @@ const checked = ({ option, value }: CheckedParams) => {
     return Array.isArray(value) && value.includes(option.value);
 };
 
-export const CheckboxGroupFieldRenderer = createFieldRenderer(props => {
+export const CheckboxGroupFieldRenderer = createFieldRenderer<CheckboxGroupField>(props => {
     const { definition: field } = props.field;
 
     const validators = useMemo(() => {
@@ -112,7 +113,9 @@ export const CheckboxGroupFieldRenderer = createFieldRenderer(props => {
                         checked={checked({ option, value })}
                         onChange={() => change({ option, value, onChange })}
                     />
-                    <label htmlFor={"checkbox-" + field.fieldId + option.value}>{option.label}</label>
+                    <label htmlFor={"checkbox-" + field.fieldId + option.value}>
+                        {option.label}
+                    </label>
                 </CheckboxGroup>
             ))}
             <FieldErrorMessage isValid={validation.isValid} message={validation.message} />

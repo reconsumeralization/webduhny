@@ -1,28 +1,26 @@
-import { TextField } from "./TextField";
-import { TextareaField } from "./TextareaField";
+import { TextField, TextFieldDto } from "./TextField";
+import { TextareaField, TextareaFieldDto } from "./TextareaField";
 import {
     type FunnelFieldDefinitionModel,
     type FunnelFieldDefinitionModelDto
 } from "../FunnelFieldDefinitionModel";
 import {
     CheckboxGroupField,
-    FunnelCheckboxGroupFieldDefinitionModelDto
+    CheckboxGroupFieldDto
 } from "./CheckboxGroupField";
-import { NumberField } from "./NumberField";
-import { RadioField } from "./RadioField";
+import { NumberField, NumberFieldDto } from "./NumberField";
 
-const registry: Record<string, (dto: FunnelFieldDefinitionModelDto) => FunnelFieldDefinitionModel> =
-    {
-        checkboxGroup: dto => {
-            return new CheckboxGroupField(dto as FunnelCheckboxGroupFieldDefinitionModelDto);
-        },
-        number: dto => new NumberField(dto),
-        radio: dto => new RadioField(dto),
-        textarea: dto => new TextareaField(dto),
-        text: dto => new TextField(dto)
-    };
+const registry = {
+    checkboxGroup: (dto: CheckboxGroupFieldDto) => {
+        return new CheckboxGroupField(dto);
+    },
+    number: (dto: NumberFieldDto) => new NumberField(dto),
+    textarea: (dto: TextareaFieldDto) => new TextareaField(dto),
+    text: (dto: TextFieldDto) => new TextField(dto)
+};
 
 export function fieldFromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
+    // @ts-ignore
     const create = registry[dto.type];
     if (!create) {
         throw new Error(`Unknown field type: ${dto.type}`);

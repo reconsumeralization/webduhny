@@ -21,7 +21,7 @@ export interface FunnelFieldDefinitionModelDto<TValue = unknown, TExtra = Record
 
 export class FunnelFieldDefinitionModel<
     TValue = unknown,
-    TExtra extends Record<string, any> = Record<string, any>
+    TExtra extends Record<string, any> = {}
 > {
     id: string;
     type: string;

@@ -148,17 +148,15 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
 
                             <Select
                                 size={"small"}
-                                value={conditionGroupItem.operator}
+                                value={conditionGroupItem.operator.id}
                                 placeholder={"Select operator..."}
-                                onChange={operator => {
+                                onChange={id => {
                                     return updateCondition(conditionGroup.id, {
                                         ...conditionGroupItem,
-                                        operator
+                                        operator: { id }
                                     });
                                 }}
                             >
-                                {/*TODO: filter based on field value type*/}
-                                {/*TODO: add value input renderers*/}
                                 <option value="eq">equals</option>
                                 <option value="neq">not equals</option>
                                 <option value="gt">greater than</option>
@@ -171,11 +169,18 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
 
                             <Input
                                 size={"small"}
-                                value={conditionGroupItem.value}
+                                value={conditionGroupItem.operator?.params?.extra?.value}
                                 onChange={value => {
                                     return updateCondition(conditionGroup.id, {
                                         ...conditionGroupItem,
-                                        value
+                                        operator: {
+                                            ...conditionGroupItem,
+                                            params: {
+                                                extra: {
+                                                    value: value.target.value
+                                                }
+                                            }
+                                        }
                                     });
                                 }}
                             />

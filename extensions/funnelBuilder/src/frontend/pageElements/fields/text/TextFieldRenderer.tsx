@@ -6,6 +6,7 @@ import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
 import { useBind } from "@webiny/form";
 import { createFieldRenderer } from "../utils";
+import { TextField } from "../../../../shared/models/fields/TextField";
 
 export const StyledInput = styled.input`
     border: 1px solid ${props => props.theme.styles.colors["color5"]};
@@ -24,7 +25,7 @@ export const StyledInput = styled.input`
     }
 `;
 
-export const TextFieldRenderer = createFieldRenderer(props => {
+export const TextFieldRenderer = createFieldRenderer<TextField>(props => {
     const { definition: field } = props.field;
 
     const validators = useMemo(() => {

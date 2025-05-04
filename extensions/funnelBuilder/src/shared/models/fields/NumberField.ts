@@ -1,6 +1,11 @@
-import { FunnelFieldDefinitionModel } from "../FunnelFieldDefinitionModel";
+import {
+    FunnelFieldDefinitionModel,
+    FunnelFieldDefinitionModelDto
+} from "../FunnelFieldDefinitionModel";
 
-export class NumberField extends FunnelFieldDefinitionModel {
+export type NumberFieldDto = FunnelFieldDefinitionModelDto<number>;
+
+export class NumberField extends FunnelFieldDefinitionModel<number> {
     override supportedValidatorTypes = ["required", "gte", "lte"];
     override fieldValueType = "number";
 }

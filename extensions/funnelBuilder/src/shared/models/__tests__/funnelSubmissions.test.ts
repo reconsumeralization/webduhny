@@ -33,7 +33,10 @@ describe("Funnel Submissions", () => {
                         value: "",
                         type: "string"
                     },
-                    extra: {}
+                    "extra": {
+                        "placeholderText": "JEBISE",
+                        "rows": "666"
+                    }
                 },
                 {
                     id: "lastName",
