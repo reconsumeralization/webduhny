@@ -16,10 +16,12 @@ export const StepWebsiteRenderer = createRenderer(() => {
     return (
         <div>
             <Form
+                onChange={data => {
+                    funnelSubmissionVm.setData(data);
+                }}
                 onSubmit={data => {
                     funnelSubmissionVm.setData(data);
                     funnelSubmissionVm.submitActiveStep();
-                    console.log('data', data)
                 }}
             >
                 {() => <Elements element={element} />}

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Dialog, DialogActions, DialogButton, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { Form, FormOnSubmit } from "@webiny/form";
 import { Tab, Tabs } from "@webiny/ui/Tabs";
 import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";

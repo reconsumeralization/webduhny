@@ -23,6 +23,11 @@ const StyledTextarea = styled.textarea`
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         outline: none;
     }
+    
+    &:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+    }
 `;
 
 export const TextareaFieldRenderer = createFieldRenderer<TextareaField>(props => {
@@ -53,6 +58,7 @@ export const TextareaFieldRenderer = createFieldRenderer<TextareaField>(props =>
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             <StyledTextarea
                 onBlur={onBlur}
+                disabled={props.field.disabled}
                 onChange={e => onChange(e.target.value)}
                 value={value || ""}
                 placeholder={field.extra.placeholderText}

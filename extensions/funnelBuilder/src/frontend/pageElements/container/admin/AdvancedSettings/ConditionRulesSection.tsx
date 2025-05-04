@@ -3,7 +3,12 @@ import styled from "@emotion/styled";
 import { ButtonSecondary } from "@webiny/ui/Button";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
 import { useDisclosure } from "../../../../admin/useDisclosure";
-import { useActiveElementId, useElementWithChildren } from "@webiny/app-page-builder/editor";
+import {
+    useActiveElementId,
+    useElementById,
+    useElementWithChildren,
+    useUpdateElement
+} from "@webiny/app-page-builder/editor";
 import { ContainerElementWithChildren } from "../../types";
 import { ConditionRulesDialog } from "./ConditionRulesSection/ConditionRulesDialog";
 import { FunnelModelDto } from "../../../../../shared/models/FunnelModel";
@@ -28,6 +33,9 @@ export const ConditionRulesSection = () => {
 
     const conditionalRulesCount = containerElementWithChildren.data.conditionRules.length;
 
+    const [editorElement] = useElementById(activeElementId);
+    const updateElement = useUpdateElement();
+
     return (
         <Accordion title={"Conditional Rules"} defaultValue={true}>
             <>
@@ -48,9 +56,8 @@ export const ConditionRulesSection = () => {
                     data={conditionRulesDialogData!}
                     onClose={hideConditionRulesDialog}
                     onSubmit={data => {
-                        console.log("dataaaaa", data);
-                        // updateElement({ ...editorElement!, data }, { history: false });
-                        // hideConditionRulesDialog();
+                        updateElement({ ...editorElement!, data }, { history: true });
+                        hideConditionRulesDialog();
                     }}
                 />
             </>

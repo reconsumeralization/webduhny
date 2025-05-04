@@ -8,6 +8,7 @@ import { CheckboxGroupFieldAdminPlugins } from "./frontend/pageElements/fields/c
 import { FunnelBuilderPageElementGroup } from "./frontend/pageElements/FunnelBuilderPageElementGroup";
 import { DecoratedElementControls } from "./frontend/pageElements/ElementControlsDecorator";
 import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators";
+import { ConditionOperatorPlugins } from "./frontend/admin/plugins/conditionOperators";
 
 export const Extension = () => (
     <>
@@ -23,6 +24,7 @@ export const Extension = () => (
 
         {/* Other */}
         <FieldValidatorPlugins />
+        <ConditionOperatorPlugins />
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
     </>

@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ButtonDefault, ButtonIcon, IconButton } from "@webiny/ui/Button";
 import { Select } from "@webiny/ui/Select";
 import { Typography } from "@webiny/ui/Typography";
-import { Input } from "@webiny/ui/Input";
 import styled from "@emotion/styled";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as BasePlusIcon } from "@material-design-icons/svg/outlined/add.svg";
 import { FunnelConditionGroupModelDto } from "../../../../../../../../../shared/models/FunnelConditionGroupModel";
 import { useConditionRulesForm } from "../../useConditionRulesForm";
 import { Tooltip } from "@webiny/ui/Tooltip";
+import { getConditionOperatorsByValueType } from "../../../../../../../../../shared/models/conditionOperators/conditionOperatorFactory";
+import { plugins } from "@webiny/plugins";
+import {
+    PbEditorFunnelConditionOperatorPluginProps,
+    ConditionOperatorParamsComponent
+} from "../../../../../../../../admin/plugins/PbEditorFunnelConditionOperatorPlugin";
+import { Form } from "@webiny/form";
+import {
+    ConditionOperatorParams,
+    FunnelConditionOperatorModelDto
+} from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
 
 const Fieldset = styled.div`
     display: flex;
@@ -46,6 +56,12 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
         addConditionGroup,
         removeConditionGroup
     } = useConditionRulesForm();
+
+    const conditionOperatorPlugins = useMemo(() => {
+        return plugins.byType(
+            "pb-editor-funnel-condition-operator"
+        ) as unknown as PbEditorFunnelConditionOperatorPluginProps[];
+    }, []);
 
     return (
         <div
@@ -126,6 +142,23 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                         );
                     }
 
+                    const fieldDefinition = funnel.fields.find(
+                        f => f.fieldId === conditionGroupItem.sourceFieldId
+                    );
+
+                    const availableConditionOperators = getConditionOperatorsByValueType(
+                        fieldDefinition?.value?.type || ""
+                    );
+
+                    const conditionOperatorPlugin = conditionOperatorPlugins.find(
+                        p => p.operatorClass.id === conditionGroupItem.operator.id
+                    );
+
+                    let ConditionRuleParamsComponent: ConditionOperatorParamsComponent | undefined;
+                    if (conditionOperatorPlugin) {
+                        ConditionRuleParamsComponent = conditionOperatorPlugin.settingsRenderer;
+                    }
+
                     return (
                         <Fieldset key={conditionGroupItem.id}>
                             <Select
@@ -157,33 +190,37 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                                     });
                                 }}
                             >
-                                <option value="eq">equals</option>
-                                <option value="neq">not equals</option>
-                                <option value="gt">greater than</option>
-                                <option value="gte">greater than or equal</option>
-                                <option value="lt">less than</option>
-                                <option value="lte">less than or equal</option>
-                                <option value="includes">includes</option>
-                                <option value="notIncludes">not includes</option>
+                                {availableConditionOperators.map(operator => (
+                                    <option key={operator.id} value={operator.id}>
+                                        {operator.optionLabel}
+                                    </option>
+                                ))}
                             </Select>
 
-                            <Input
-                                size={"small"}
-                                value={conditionGroupItem.operator?.params?.extra?.value}
-                                onChange={value => {
-                                    return updateCondition(conditionGroup.id, {
-                                        ...conditionGroupItem,
-                                        operator: {
+                            {ConditionRuleParamsComponent && (
+                                <Form<ConditionOperatorParams>
+                                    data={conditionGroupItem.operator.params}
+                                    onChange={params => {
+                                        return updateCondition(conditionGroup.id, {
                                             ...conditionGroupItem,
-                                            params: {
-                                                extra: {
-                                                    value: value.target.value
-                                                }
+                                            operator: {
+                                                ...conditionGroupItem.operator,
+                                                params
                                             }
-                                        }
-                                    });
-                                }}
-                            />
+                                        });
+                                    }}
+                                >
+                                    {() => {
+                                        return (
+                                            <>
+                                                {ConditionRuleParamsComponent ? (
+                                                    <ConditionRuleParamsComponent field={fieldDefinition} />
+                                                ) : null}
+                                            </>
+                                        );
+                                    }}
+                                </Form>
+                            )}
 
                             <IconButton
                                 icon={<DeleteIcon />}

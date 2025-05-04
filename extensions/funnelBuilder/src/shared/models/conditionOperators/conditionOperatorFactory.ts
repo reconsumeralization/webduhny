@@ -1,7 +1,4 @@
-import {
-    type FunnelConditionOperatorModel,
-    type FunnelConditionOperatorModelDto
-} from "../FunnelConditionOperatorModel";
+import { type FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
 import { EmptyConditionOperator } from "./EmptyConditionOperator";
 import { EqConditionOperator } from "./EqConditionOperator";
 import { GtConditionOperator } from "./GtConditionOperator";
@@ -26,12 +23,16 @@ const registry = [
     NotIncludesConditionOperator
 ];
 
-export function conditionOperatorFromDto(
-    dto: FunnelConditionOperatorModelDto
-): FunnelConditionOperatorModel<unknown> {
+export const getConditionOperatorsByValueType = (valueType: string) => {
+    return registry.filter(operatorClass => {
+        return operatorClass.supportedFieldValueTypes.includes(valueType);
+    });
+};
+
+export const conditionOperatorFromDto = (dto: FunnelConditionOperatorModelDto) => {
     const OperatorClass = registry.find(operatorClass => operatorClass.id === dto.id);
     if (!OperatorClass) {
         throw new Error(`Unknown condition operator: ${dto.id}`);
     }
     return new OperatorClass(dto);
-}
+};

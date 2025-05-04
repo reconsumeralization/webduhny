@@ -14,8 +14,9 @@ export class NotIncludesConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     NotIncludesConditionOperatorExtraParams
 > {
-    static override supportedFieldValues = ["string", "stringArray", "number", "numberArray"];
+    static override supportedFieldValueTypes = ["string", "stringArray", "number", "numberArray"];
     static override id = "notIncludes";
+    static override optionLabel = "not includes";
 
     constructor(dto: FunnelConditionOperatorModelDto<NotIncludesConditionOperatorExtraParams>) {
         super({

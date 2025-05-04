@@ -14,7 +14,7 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
     FieldValue,
     IncludesConditionOperatorExtraParams
 > {
-    static override supportedFieldValues = [
+    static override supportedFieldValueTypes = [
         "string",
         "stringArray",
         "number",
@@ -22,6 +22,7 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
         "booleanArray"
     ];
     static override id = "includes";
+    static override optionLabel = "includes";
 
     constructor(dto: FunnelConditionOperatorModelDto<IncludesConditionOperatorExtraParams>) {
         super({

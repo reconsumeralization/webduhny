@@ -21,8 +21,11 @@ export class FunnelConditionOperatorModel<
     id: string;
     params: ConditionOperatorParams<TExtra>;
 
-    static id = '';
-    static supportedFieldValues: string[] = [];
+    static id = "";
+
+    // String shown in the conditional rules dialog (in the operators dropdown menu).
+    static optionLabel = "";
+    static supportedFieldValueTypes: string[] = [];
 
     constructor(dto: FunnelConditionOperatorModelDto) {
         super();
@@ -44,6 +47,8 @@ export class FunnelConditionOperatorModel<
         dto: FunnelConditionOperatorModelDto<TExtra>
     ): FunnelConditionOperatorModel<TValue, TExtra> {
         // Could not import the module directly because of circular dependency.
-        return require("./conditionOperators/conditionOperatorFactory").conditionOperatorFromDto(dto);
+        return require("./conditionOperators/conditionOperatorFactory").conditionOperatorFromDto(
+            dto
+        );
     }
 }
