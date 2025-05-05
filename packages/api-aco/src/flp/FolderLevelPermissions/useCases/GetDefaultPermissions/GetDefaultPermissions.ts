@@ -48,8 +48,7 @@ export class GetDefaultPermissions implements IGetDefaultPermissions {
         return [
             {
                 target: `admin:${identity.id}`,
-                level: "public" as FolderAccessLevel,
-                inheritedFrom: null
+                level: "public" as FolderAccessLevel
             }
         ];
     }
