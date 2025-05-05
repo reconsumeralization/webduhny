@@ -4,6 +4,7 @@ import {
     FunnelFieldDefinitionModelDto
 } from "./FunnelFieldDefinitionModel";
 import { FunnelConditionRuleModel, FunnelConditionRuleModelDto } from "./FunnelConditionRuleModel";
+import { SuccessStep } from "./steps/SuccessStep";
 
 export interface FunnelModelDto {
     steps: FunnelStepModelDto[];
@@ -16,19 +17,18 @@ export class FunnelModel {
     steps: FunnelStepModel[] = [];
     conditionRules: FunnelConditionRuleModel[];
 
-    constructor(dto?: FunnelModelDto) {
-        if (!dto) {
-            this.fields = [];
-            this.steps = [new FunnelStepModel()];
-            this.conditionRules = [];
-            return;
+    constructor(dto?: Partial<FunnelModelDto>) {
+        this.fields = dto?.fields?.map(f => FunnelFieldDefinitionModel.fromDto(f)) || [];
+        this.steps = dto?.steps?.map(s => FunnelStepModel.fromDto(s)) || [
+            new FunnelStepModel(),
+            new SuccessStep()
+        ];
+        if (!this.steps.find(step => step.id === "success")) {
+            this.steps.push(new SuccessStep());
         }
 
-        this.fields = dto.fields.map(f => FunnelFieldDefinitionModel.fromDto(f));
-        this.steps = dto.steps.map(s => FunnelStepModel.fromDto(s));
-        this.conditionRules = dto.conditionRules.map(dto =>
-            FunnelConditionRuleModel.fromDto(this, dto)
-        );
+        this.conditionRules =
+            dto?.conditionRules?.map(dto => FunnelConditionRuleModel.fromDto(this, dto)) || [];
     }
 
     // Steps. 👇
@@ -42,6 +42,10 @@ export class FunnelModel {
 
     removeStep(id: string) {
         this.steps = this.steps.filter(step => step.id !== id);
+    }
+
+    getStep(id  :string) {
+        return this.steps.find(step => step.id === id);
     }
 
     // Other methods. 👇

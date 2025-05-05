@@ -26,7 +26,7 @@ export class HideFieldConditionAction extends FunnelConditionActionModel<HideFie
         });
     }
 
-    override getEvaluationStep() {
+    override isApplicable() {
         const field = this.conditionRule.funnel.fields.find(f => {
             return f.id === this.params.extra.targetFieldId;
         });

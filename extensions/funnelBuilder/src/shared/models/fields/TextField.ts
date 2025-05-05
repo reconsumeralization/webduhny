@@ -3,16 +3,16 @@ import {
     FunnelFieldDefinitionModelDto
 } from "../FunnelFieldDefinitionModel";
 
+export type TextFieldDto = Omit<FunnelFieldDefinitionModelDto<string, TextFieldExtra>, "type">;
+
 export interface TextFieldExtra {
     placeholderText: string;
 }
 
-export type TextFieldDto = FunnelFieldDefinitionModelDto<string, TextFieldExtra>;
-
 export class TextField extends FunnelFieldDefinitionModel<string, TextFieldExtra> {
     override supportedValidatorTypes = ["required", "minLength", "maxLength", "pattern"];
 
-    constructor(dto: FunnelFieldDefinitionModelDto<string, TextFieldExtra>) {
+    constructor(dto: TextFieldDto) {
         super({
             ...dto,
             value: { type: "string", array: false, value: dto?.value?.value || "" },

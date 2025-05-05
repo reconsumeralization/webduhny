@@ -28,7 +28,7 @@ export class OnSubmitActivateStepConditionAction extends FunnelConditionActionMo
         });
     }
 
-    override getEvaluationStep() {
+    override isApplicable() {
         const evaluationStep = this.params.extra.evaluationStep;
         return this.conditionRule.funnel.steps.find(s => s.id === evaluationStep);
     }

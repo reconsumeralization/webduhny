@@ -1,8 +1,10 @@
-import { FunnelConditionActionModel } from "../FunnelConditionActionModel";
+import {
+    FunnelConditionActionModel,
+    FunnelConditionActionModelDto
+} from "../FunnelConditionActionModel";
 import { FunnelConditionRuleModel } from "../FunnelConditionRuleModel";
 
 interface OnSubmitEndFunnelConditionActionExtraParams {
-    targetStepId: string;
     evaluationStep: string;
 }
 
@@ -10,13 +12,21 @@ export class OnSubmitEndFunnelConditionAction extends FunnelConditionActionModel
     static override type = "onSubmitEndFunnel";
     static override optionLabel = "End funnel";
 
-    constructor(conditionRule: FunnelConditionRuleModel) {
+    constructor(
+        conditionRule: FunnelConditionRuleModel,
+        dto: FunnelConditionActionModelDto<OnSubmitEndFunnelConditionActionExtraParams>
+    ) {
         super(conditionRule, {
-            type: "onSubmitEndFunnel"
+            type: "onSubmitEndFunnel",
+            params: {
+                extra: {
+                    evaluationStep: dto.params?.extra?.evaluationStep || ""
+                }
+            }
         });
     }
 
-    override getEvaluationStep() {
+    override isApplicable() {
         const evaluationStep = this.params.extra.evaluationStep;
         return this.conditionRule.funnel.steps.find(s => s.id === evaluationStep);
     }

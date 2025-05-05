@@ -1,26 +1,28 @@
-// @ts-nocheck
-import { FunnelModel } from "./FunnelModel";
 import { FunnelSubmissionModel } from "./FunnelSubmissionModel";
 import { FunnelConditionModel } from "./FunnelConditionModel";
-import { FunnelConditionGroupModel, ConditionGroupItem } from "./FunnelConditionGroupModel";
+import { ConditionGroupItem, FunnelConditionGroupModel } from "./FunnelConditionGroupModel";
 import { FunnelConditionActionModel } from "./FunnelConditionActionModel";
 
 export class FunnelConditionRulesEvaluator {
-    funnel: FunnelModel;
     funnelSubmission: FunnelSubmissionModel;
 
-    constructor(funnel: FunnelModel, funnelSubmission: FunnelSubmissionModel) {
-        this.funnel = funnel;
+    constructor(funnelSubmission: FunnelSubmissionModel) {
         this.funnelSubmission = funnelSubmission;
     }
 
-    evaluate(): FunnelConditionActionModel[] {
+    evaluateRelatedConditionRules(): FunnelConditionActionModel[] {
         const actions: FunnelConditionActionModel[] = [];
 
-        // Evaluate each condition rule
-        for (const rule of this.funnel.conditionRules) {
-            // If the condition group evaluates to true, add the rule's actions to the list
-            if (this.evaluateConditionGroup(rule.conditionGroup)) {
+        // Evaluate each condition rule.
+        for (const rule of this.funnelSubmission.funnel.conditionRules) {
+            // Check if any of the rule's actions target fields in the active step
+            const ruleHasRelevantActions = rule.actions.some(action => action.isApplicable());
+            if (!ruleHasRelevantActions) {
+                continue;
+            }
+
+            const ruleConditionsSatisfied = this.evaluateConditionGroup(rule.conditionGroup);
+            if (ruleConditionsSatisfied) {
                 actions.push(...rule.actions);
             }
         }
@@ -61,6 +63,6 @@ export class FunnelConditionRulesEvaluator {
             return false;
         }
 
-        return condition.operator.evaluate(field.value)
+        return condition.operator.evaluate(field.value);
     }
 }

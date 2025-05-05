@@ -3,16 +3,16 @@ import {
     FunnelFieldDefinitionModelDto
 } from "../FunnelFieldDefinitionModel";
 
+export type NumberFieldDto = Omit<FunnelFieldDefinitionModelDto<number, NumberFieldExtra>, "type">;
+
 export interface NumberFieldExtra {
     placeholderText: string;
 }
 
-export type NumberFieldDto = FunnelFieldDefinitionModelDto<number, NumberFieldExtra>;
-
 export class NumberField extends FunnelFieldDefinitionModel<number> {
     override supportedValidatorTypes = ["required", "gte", "lte"];
 
-    constructor(dto: FunnelFieldDefinitionModelDto<number, NumberFieldExtra>) {
+    constructor(dto: NumberFieldDto) {
         super({
             ...dto,
             value: { type: "number", array: false, value: dto?.value?.value || 0 },

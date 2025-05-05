@@ -69,7 +69,7 @@ export class FunnelSubmissionFieldModel<
 
     get disabled() {
         // Get the actions from the evaluator
-        const actions = this.submission.evaluateConditionRulesForActiveStep();
+        const actions = this.submission.evaluateRelatedConditionRules();
 
         // Check if any action is to disable this field
         return actions.some(
@@ -81,7 +81,7 @@ export class FunnelSubmissionFieldModel<
 
     get hidden() {
         // Get the actions from the evaluator
-        const actions = this.submission.evaluateConditionRulesForActiveStep();
+        const actions = this.submission.evaluateRelatedConditionRules();
 
         // Check if any action is to disable this field
         return actions.some(

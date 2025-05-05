@@ -20,6 +20,9 @@ const Fieldset = styled.div`
     column-gap: 10px;
     position: relative;
     width: 100%;
+    & webiny-form-container {
+        flex: 1;
+    }
 `;
 
 const Header = styled.div`
@@ -84,15 +87,11 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                     return (
                         <Fieldset key={action.id}>
                             <Select
+                                rootProps={{ style: { width: 200 } }}
                                 size={"small"}
                                 value={action.type}
                                 onChange={type => {
-                                    console.log("acton", action);
-                                    console.log("tpyeeer", type);
-                                    updateAction(rule.id, {
-                                        id: action.id,
-                                        type
-                                    });
+                                    updateAction(rule.id, { id: action.id, type });
                                 }}
                             >
                                 {availableConditionActions.map(action => (
@@ -125,7 +124,6 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                                     }}
                                 </Form>
                             )}
-
                             <IconButton
                                 icon={<DeleteIcon />}
                                 onClick={() => removeAction(rule.id, action.id!)}

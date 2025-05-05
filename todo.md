@@ -11,6 +11,7 @@
 - options list checkbox grp - dbl check!
 - evaluate rules only for current step (extend action class)
 - can't delete field if mentioned in con rules
+- setPrevStep - not index-1 but prev step per cond rules
 
 #### Editor
   - prevent deletion of grid in step el

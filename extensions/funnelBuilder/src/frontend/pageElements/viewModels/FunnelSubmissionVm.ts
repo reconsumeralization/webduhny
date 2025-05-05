@@ -37,7 +37,7 @@ export class FunnelSubmissionVm {
     }
 
     evaluateConditionRulesForActiveStep() {
-        this.funnelSubmission.evaluateConditionRulesForActiveStep();
+        this.funnelSubmission.evaluateRelatedConditionRules();
         this.emitChange();
     }
 

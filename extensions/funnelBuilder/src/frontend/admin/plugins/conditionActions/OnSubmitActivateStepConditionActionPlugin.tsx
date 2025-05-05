@@ -10,8 +10,7 @@ import styled from "@emotion/styled";
 
 const Wrapper = styled.div`
     display: flex;
-    column-gap: 5px;
-    max-width: 500px;
+    column-gap: 10px;
 `;
 
 const ActionSettings: ConditionActionParamsComponent = ({ funnel }) => {

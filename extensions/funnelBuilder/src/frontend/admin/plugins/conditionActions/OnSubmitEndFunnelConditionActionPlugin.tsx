@@ -9,8 +9,8 @@ import { Select } from "@webiny/ui/Select";
 
 const ActionSettings: ConditionActionParamsComponent = ({ funnel }) => {
     return (
-        <Bind name={"extra.targetStepId"}>
-            <Select placeholder={"Select target step..."} size={"small"}>
+        <Bind name={"extra.evaluationStep"}>
+            <Select placeholder={"Evaluate upon submitting step..."} size={"small"}>
                 {funnel.steps.map(step => (
                     <option key={step.id} value={step.id}>
                         {step.title}
