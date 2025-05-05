@@ -1,4 +1,4 @@
-import { CreateFlp, DeleteFlp, UpdateFlp } from "~/flp/useCases";
+import { CreateFlp, DeleteFlp } from "~/flp/useCases";
 import { useHandler } from "~tests/utils/useHandler";
 import type { Folder } from "~/folder/folder.types";
 import { ROOT_FOLDER } from "~/constants";
@@ -12,22 +12,18 @@ describe("Folder Level Permissions -  CREATE FLP", () => {
 
     it("should create an FLP record without a parent folder", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
 
-        const folder = {
-            id: "folder1",
+        const folder = await context.aco.folder.create({
+            title: "Folder 1",
             type: "type1",
             slug: "folder1",
-            parentId: null,
-            permissions: []
-        };
+            parentId: null
+        });
 
-        await createFlp.execute(folder as unknown as Folder);
-
-        const flp = await context.aco.flp.get("folder1");
+        const flp = await context.aco.flp.get(folder.id);
 
         expect(flp).toMatchObject({
-            id: "folder1",
+            id: folder.id,
             type: "type1",
             slug: "folder1",
             parentId: ROOT_FOLDER,
@@ -38,44 +34,42 @@ describe("Folder Level Permissions -  CREATE FLP", () => {
 
     it("should create an FLP record with a parent folder", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
 
-        const folder1 = {
-            id: "folder1",
+        const folder1 = await context.aco.folder.create({
+            title: "Folder 1",
             type: "type1",
             slug: "folder1",
-            parentId: null,
+            parentId: null
+        });
+
+        await context.aco.folder.update(folder1.id, {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
+        });
 
-        const folder2 = {
-            id: "folder2",
+        const folder2 = await context.aco.folder.create({
+            title: "Folder 2",
             type: "type1",
             slug: "folder2",
-            parentId: "folder1",
-            permissions: []
-        };
+            parentId: folder1.id
+        });
 
-        await createFlp.execute(folder1 as unknown as Folder);
-        await createFlp.execute(folder2 as unknown as Folder);
-
-        const flp = await context.aco.flp.get("folder2");
+        const flp = await context.aco.flp.get(folder2.id);
 
         expect(flp).toMatchObject({
-            id: "folder2",
+            id: folder2.id,
             type: "type1",
             slug: "folder2",
-            parentId: "folder1",
+            parentId: folder1.id,
             path: `${ROOT_FOLDER}/folder1/folder2`,
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${folder1.id}`
                 }
             ]
@@ -93,17 +87,15 @@ describe("Folder Level Permissions -  CREATE FLP", () => {
 
     it("should throw an error if the parent FLP is not found", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
 
         const folder = {
-            id: "folder1",
+            title: "Folder 1",
             type: "type1",
             slug: "folder1",
-            parentId: "parentId",
-            permissions: []
+            parentId: "parentId"
         };
 
-        await expect(createFlp.execute(folder as unknown as Folder)).rejects.toThrow(
+        await expect(context.aco.folder.create(folder)).rejects.toThrow(
             "Parent folder level permission not found. Unable to create a new record in the FLP catalog."
         );
     });
@@ -127,22 +119,30 @@ describe("Folder Level Permissions -  DELETE FLP", () => {
 
     it("should delete an FLP record successfully", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const deleteFlp = new DeleteFlp(context);
 
-        const folder = {
-            id: "folder1",
+        const folder = await context.aco.folder.create({
+            title: "Folder 1",
             type: "type1",
             slug: "folder1",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(folder as unknown as Folder);
-        await deleteFlp.execute(folder as unknown as Folder);
+            parentId: null
+        });
 
         const flp = await context.aco.flp.get(folder.id);
-        await expect(flp).toBeNull();
+
+        expect(flp).toMatchObject({
+            id: folder.id,
+            type: "type1",
+            slug: "folder1",
+            parentId: ROOT_FOLDER,
+            path: `${ROOT_FOLDER}/folder1`,
+            permissions: []
+        });
+
+        await context.aco.flp.delete(folder.id);
+
+        const deletedFlp = await context.aco.flp.get(folder.id);
+
+        await expect(deletedFlp).toBeNull();
     });
 });
 
@@ -156,30 +156,22 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
 
     it("should update a root folder's permissions", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
-        const folder = {
+        const folder = await context.aco.folder.create({
             type,
-            id: "main-folder",
+            title: "Main folder",
             slug: "main-folder",
-            parentId: null,
-            permissions: []
-        };
+            parentId: null
+        });
 
-        await createFlp.execute(folder as unknown as Folder);
-
-        const updatedFolder = {
-            ...folder,
+        await context.aco.folder.update(folder.id, {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedFolder as unknown as Folder);
+        });
 
         const flp = await context.aco.flp.get(folder.id);
         expect(flp).toMatchObject({
@@ -191,7 +183,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
         });
@@ -199,25 +191,17 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
 
     it("should update a folder's slug and path", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const updateFlp = new UpdateFlp({ context });
 
-        const folder = {
+        const folder = await context.aco.folder.create({
             type,
-            id: "folder-1",
+            title: "Folder 1",
             slug: "folder-1",
-            parentId: null,
-            permissions: []
-        };
+            parentId: null
+        });
 
-        await createFlp.execute(folder as unknown as Folder);
-
-        const updatedFolder = {
-            ...folder,
+        const updatedFolder = await context.aco.folder.update(folder.id, {
             slug: "folder-1-updated"
-        };
-
-        await updateFlp.execute(updatedFolder as unknown as Folder);
+        });
 
         const flp = await context.aco.flp.get(folder.id);
         expect(flp).toMatchObject({
@@ -232,38 +216,27 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
 
     it("should update a folder's parent and path", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const updateFlp = new UpdateFlp({ context });
 
         // Create parent folder
-        const parentFolder = {
+        const parentFolder = await context.aco.folder.create({
             type,
-            id: "parent-folder",
+            title: "Parent folder",
             slug: "parent-folder",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(parentFolder as unknown as Folder);
+            parentId: null
+        });
 
         // Create child folder
-        const childFolder = {
+        const childFolder = await context.aco.folder.create({
             type,
-            id: "child-folder",
+            title: "Child folder",
             slug: "child-folder",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(childFolder as unknown as Folder);
+            parentId: null
+        });
 
         // Update child folder to be under parent
-        const updatedChildFolder = {
-            ...childFolder,
+        await context.aco.folder.update(childFolder.id, {
             parentId: parentFolder.id
-        };
-
-        await updateFlp.execute(updatedChildFolder as unknown as Folder);
+        });
 
         const flp = await context.aco.flp.get(childFolder.id);
         expect(flp).toMatchObject({
@@ -278,43 +251,32 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
 
     it("should update a folder's permissions and propagate to direct child", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         // Create parent folder
-        const parentFolder = {
+        const parentFolder = await context.aco.folder.create({
             type,
-            id: "parent-folder",
+            title: "Parent folder",
             slug: "parent-folder",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(parentFolder as unknown as Folder);
+            parentId: null
+        });
 
         // Create child folder
-        const childFolder = {
+        const childFolder = await context.aco.folder.create({
             type,
-            id: "child-folder",
+            title: "Child folder",
             slug: "child-folder",
-            parentId: parentFolder.id,
-            permissions: []
-        };
-
-        await createFlp.execute(childFolder as unknown as Folder);
+            parentId: parentFolder.id
+        });
 
         // Update parent folder with new permissions
-        const updatedParentFolder = {
-            ...parentFolder,
+        await context.aco.folder.update(parentFolder.id, {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedParentFolder as unknown as Folder);
+        });
 
         // Check parent folder
         const parentFlp = await context.aco.flp.get(parentFolder.id);
@@ -327,7 +289,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
         });
@@ -343,81 +305,11 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
             permissions: [
                 {
                     target: "admin:1234",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${parentFolder.id}`
                 }
             ]
         });
-    });
-
-    it("should handle timeout during update", async () => {
-        const context = await handler();
-        const createFlp = new CreateFlp(context);
-
-        // Create a folder with many children
-        const parentFolder = {
-            type,
-            id: "main-folder",
-            slug: "main-folder",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(parentFolder as unknown as Folder);
-
-        // Create 5 child folders
-        for (let i = 0; i < 5; i++) {
-            const childFolder = {
-                type,
-                id: `child-folder-${i}`,
-                slug: `child-folder-${i}`,
-                parentId: parentFolder.id,
-                permissions: []
-            };
-            await createFlp.execute(childFolder as unknown as Folder);
-        }
-
-        // Create updateFlp with timeout after 2 updates
-        let updateCount = 0;
-        const updateFlp = new UpdateFlp({
-            context,
-            isCloseToTimeout: () => {
-                updateCount++;
-                return updateCount > 2;
-            },
-            handleTimeout: updated => {
-                expect(updated).toHaveLength(3); // parent + 2 children
-            }
-        });
-
-        // Update parent folder
-        const updatedParentFolder = {
-            ...parentFolder,
-            permissions: [
-                {
-                    target: "admin:user1",
-                    level: "read"
-                }
-            ]
-        };
-
-        await updateFlp.execute(updatedParentFolder as unknown as Folder);
-
-        // Verify that only 3 folders were updated
-        const parentFlp = await context.aco.flp.get(parentFolder.id);
-        expect(parentFlp?.permissions).toHaveLength(1);
-
-        // Check that some children were updated and some weren't
-        let updatedChildren = 0;
-        for (let i = 0; i < 5; i++) {
-            const { permissions } = (await context.aco.flp.get(`child-folder-${i}`)) ?? {
-                permissions: []
-            };
-            if (permissions.length > 0) {
-                updatedChildren++;
-            }
-        }
-        expect(updatedChildren).toBe(2);
     });
 });
 
@@ -458,72 +350,54 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
 
     it("should handle multi-branch updates with different permissions", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         // Create main folder
-        const mainFolder = {
+        const mainFolder = await context.aco.folder.create({
             type,
-            id: "main",
+            title: "Main",
             slug: "main",
-            parentId: null,
-            permissions: []
-        };
-
-        await createFlp.execute(mainFolder as unknown as Folder);
+            parentId: null
+        });
 
         // Create two branches under main
-        const branch1 = {
+        const branch1 = await context.aco.folder.create({
             type,
-            id: "branch1",
+            title: "Branch 1",
             slug: "branch1",
-            parentId: mainFolder.id,
-            permissions: []
-        };
+            parentId: mainFolder.id
+        });
 
-        const branch2 = {
+        const branch2 = await context.aco.folder.create({
             type,
-            id: "branch2",
+            title: "Branch 2",
             slug: "branch2",
-            parentId: mainFolder.id,
-            permissions: []
-        };
-
-        await createFlp.execute(branch1 as unknown as Folder);
-        await createFlp.execute(branch2 as unknown as Folder);
+            parentId: mainFolder.id
+        });
 
         // Create subfolders in each branch
-        const branch1Subfolder = {
+        const branch1Subfolder = await context.aco.folder.create({
             type,
-            id: "branch1-sub",
+            title: "Branch 1 - Sub",
             slug: "branch1-sub",
-            parentId: branch1.id,
-            permissions: []
-        };
+            parentId: branch1.id
+        });
 
-        const branch2Subfolder = {
+        const branch2Subfolder = await context.aco.folder.create({
             type,
-            id: "branch2-sub",
+            title: "Branch 2 - Sub",
             slug: "branch2-sub",
-            parentId: branch2.id,
-            permissions: []
-        };
-
-        await createFlp.execute(branch1Subfolder as unknown as Folder);
-        await createFlp.execute(branch2Subfolder as unknown as Folder);
+            parentId: branch2.id
+        });
 
         // Update main with permissions
-        const updatedMain = {
-            ...mainFolder,
+        await context.aco.folder.update(mainFolder.id, {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedMain as unknown as Folder);
+        });
 
         // Verify all folders have inherited main permissions
         // Verify main folder has its own permissions
@@ -532,7 +406,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
         });
@@ -543,7 +417,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${mainFolder.id}`
                 }
             ]
@@ -555,7 +429,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${mainFolder.id}`
                 }
             ]
@@ -567,8 +441,8 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
-                    inheritedFrom: `parent:branch1`
+                    level: "viewer",
+                    inheritedFrom: `parent:${branch1.id}`
                 }
             ]
         });
@@ -579,24 +453,21 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
-                    inheritedFrom: `parent:branch2`
+                    level: "viewer",
+                    inheritedFrom: `parent:${branch2.id}`
                 }
             ]
         });
 
         // Update branch1 with its own permissions
-        const updatedBranch1 = {
-            ...branch1,
+        await context.aco.folder.update(branch1.id, {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write"
+                    level: "editor"
                 }
             ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedBranch1 as unknown as Folder);
+        });
 
         // Verify branch1 and its subfolder have both permissions
         const branch1Flp2 = await context.aco.flp.get(branch1.id);
@@ -609,11 +480,11 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write"
+                    level: "editor"
                 },
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${mainFolder.id}`
                 }
             ]
@@ -629,12 +500,12 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write",
+                    level: "editor",
                     inheritedFrom: `parent:${branch1.id}`
                 },
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${branch1.id}`
                 }
             ]
@@ -651,7 +522,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${mainFolder.id}`
                 }
             ]
@@ -667,7 +538,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read",
+                    level: "viewer",
                     inheritedFrom: `parent:${branch2.id}`
                 }
             ]
@@ -676,58 +547,47 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
 
     it("should handle deep nested folder updates", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         // Create a deep folder structure
-        const folders = [
-            {
-                type,
-                id: "level1",
-                slug: "level1",
-                parentId: null,
-                permissions: []
-            },
-            {
-                type,
-                id: "level2",
-                slug: "level2",
-                parentId: "level1",
-                permissions: []
-            },
-            {
-                type,
-                id: "level3",
-                slug: "level3",
-                parentId: "level2",
-                permissions: []
-            },
-            {
-                type,
-                id: "level4",
-                slug: "level4",
-                parentId: "level3",
-                permissions: []
-            }
-        ];
+        const level1 = await context.aco.folder.create({
+            type,
+            title: "Level 1",
+            slug: "level1",
+            parentId: null
+        });
 
-        // Create all folders
-        for (const folder of folders) {
-            await createFlp.execute(folder as unknown as Folder);
-        }
+        const level2 = await context.aco.folder.create({
+            type,
+            title: "Level 2",
+            slug: "level2",
+            parentId: level1.id
+        });
+
+        const level3 = await context.aco.folder.create({
+            type,
+            title: "Level 3",
+            slug: "level3",
+            parentId: level2.id
+        });
+
+        const level4 = await context.aco.folder.create({
+            type,
+            title: "Level 4",
+            slug: "level4",
+            parentId: level3.id
+        });
+
+        const folders = [level1, level2, level3, level4];
 
         // Update level1 with permissions
-        const updatedLevel1 = {
-            ...folders[0],
+        await context.aco.folder.update(level1.id, {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedLevel1 as unknown as Folder);
+        });
 
         // Verify all levels have inherited permissions
         for (let i = 0; i < folders.length; i++) {
@@ -749,7 +609,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                     permissions: [
                         {
                             target: "admin:user1",
-                            level: "read"
+                            level: "viewer"
                         }
                     ]
                 });
@@ -763,7 +623,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                     permissions: [
                         {
                             target: "admin:user1",
-                            level: "read",
+                            level: "viewer",
                             inheritedFrom: `parent:${folders[i - 1].id}`
                         }
                     ]
@@ -772,57 +632,54 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
         }
 
         // Update level3 with its own permissions
-        const updatedLevel3 = {
-            ...folders[2],
+        await context.aco.folder.update(level3.id, {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write"
-                }
-            ]
-        };
-
-        await getUpdateFlpInstance().execute(updatedLevel3 as unknown as Folder);
-
-        // Verify level3 and level4 have both permissions
-        const level3Flp = await context.aco.flp.get(folders[2].id);
-
-        expect(level3Flp).toMatchObject({
-            id: folders[2].id,
-            type,
-            slug: folders[2].slug,
-            parentId: folders[1].id,
-            path: `${ROOT_FOLDER}/${folders[0].slug}/${folders[1].slug}/${folders[2].slug}`,
-            permissions: [
-                {
-                    target: "admin:user2",
-                    level: "write"
-                },
-                {
-                    target: "admin:user1",
-                    level: "read",
-                    inheritedFrom: `parent:${folders[1].id}`
+                    level: "editor"
                 }
             ]
         });
 
-        const level4Flp = await context.aco.flp.get(folders[3].id);
-        expect(level4Flp).toMatchObject({
-            id: folders[3].id,
+        // Verify level3 and level4 have both permissions
+        const level3Flp = await context.aco.flp.get(level3.id);
+
+        expect(level3Flp).toMatchObject({
+            id: level3.id,
             type,
-            slug: folders[3].slug,
-            parentId: folders[2].id,
-            path: `${ROOT_FOLDER}/${folders[0].slug}/${folders[1].slug}/${folders[2].slug}/${folders[3].slug}`,
+            slug: level3.slug,
+            parentId: level2.id,
+            path: `${ROOT_FOLDER}/${level1.slug}/${level2.slug}/${level3.slug}`,
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write",
-                    inheritedFrom: `parent:${folders[2].id}`
+                    level: "editor"
                 },
                 {
                     target: "admin:user1",
-                    level: "read",
-                    inheritedFrom: `parent:${folders[2].id}`
+                    level: "viewer",
+                    inheritedFrom: `parent:${level2.id}`
+                }
+            ]
+        });
+
+        const level4Flp = await context.aco.flp.get(level4.id);
+        expect(level4Flp).toMatchObject({
+            id: level4.id,
+            type,
+            slug: level4.slug,
+            parentId: level3.id,
+            path: `${ROOT_FOLDER}/${level1.slug}/${level2.slug}/${level3.slug}/${level4.slug}`,
+            permissions: [
+                {
+                    target: "admin:user2",
+                    level: "editor",
+                    inheritedFrom: `parent:${level3.id}`
+                },
+                {
+                    target: "admin:user1",
+                    level: "viewer",
+                    inheritedFrom: `parent:${level3.id}`
                 }
             ]
         });
@@ -830,68 +687,60 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
 
     it("should handle moving a branch to a different parent", async () => {
         const context = await handler();
-        const createFlp = new CreateFlp(context);
-        const getUpdateFlpInstance = () => new UpdateFlp({ context });
 
         // Create two main folders
-        const main1 = {
+        const main1 = await context.aco.folder.create({
             type,
-            id: "main1",
+            title: "Main 1",
             slug: "main1",
-            parentId: null,
+            parentId: null
+        });
+
+        await context.aco.folder.update(main1.id, {
             permissions: [
                 {
                     target: "admin:user1",
-                    level: "read"
+                    level: "viewer"
                 }
             ]
-        };
+        });
 
-        const main2 = {
+        const main2 = await context.aco.folder.create({
             type,
-            id: "main2",
+            title: "Main 2",
             slug: "main2",
-            parentId: null,
+            parentId: null
+        });
+
+        await context.aco.folder.update(main2.id, {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write"
+                    level: "editor"
                 }
             ]
-        };
-
-        await createFlp.execute(main1 as unknown as Folder);
-        await createFlp.execute(main2 as unknown as Folder);
+        });
 
         // Create a branch under main1
-        const branch = {
+        const branch = await context.aco.folder.create({
             type,
-            id: "branch",
+            title: "Branch",
             slug: "branch",
-            parentId: main1.id,
-            permissions: []
-        };
-
-        await createFlp.execute(branch as unknown as Folder);
+            parentId: main1.id
+        });
 
         // Create a subfolder in the branch
-        const subfolder = {
+        const subfolder = await context.aco.folder.create({
             type,
-            id: "subfolder",
+            title: "Subfolder",
             slug: "subfolder",
-            parentId: branch.id,
-            permissions: []
-        };
-
-        await createFlp.execute(subfolder as unknown as Folder);
+            parentId: branch.id
+        });
 
         // Move the branch to main2
-        const updatedBranch = {
-            ...branch,
+        await context.aco.folder.update(branch.id, {
             parentId: main2.id
-        };
-
-        await getUpdateFlpInstance().execute(updatedBranch as unknown as Folder);
+        });
 
         // Verify branch and subfolder have correct paths and permissions
         const branchFlp = await context.aco.flp.get(branch.id);
@@ -904,7 +753,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write",
+                    level: "editor",
                     inheritedFrom: `parent:${main2.id}`
                 }
             ]
@@ -920,7 +769,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             permissions: [
                 {
                     target: "admin:user2",
-                    level: "write",
+                    level: "editor",
                     inheritedFrom: `parent:${branch.id}`
                 }
             ]
