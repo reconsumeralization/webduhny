@@ -6,7 +6,7 @@ import type {
 export class Permissions {
     public static create(
         permissions?: FolderPermission[],
-        parentFlp?: IFolderLevelPermission | null
+        parentFlp?: Pick<IFolderLevelPermission, "id" | "permissions"> | null
     ): FolderPermission[] {
         const folderPermissions = permissions ?? [];
 
@@ -19,7 +19,7 @@ export class Permissions {
 
         // Remove all previously inherited permissions
         const cleanedPermissions = folderPermissions.filter(
-            p => !p.inheritedFrom?.startsWith("parent:")
+            p => p.inheritedFrom !== `parent:${parentId}`
         );
 
         // Store the `target` values from the current cleaned permissions.
@@ -32,7 +32,7 @@ export class Permissions {
             .map(p => ({
                 ...p,
                 // If the permission was already inherited, keep its original source
-                inheritedFrom: p.inheritedFrom || `parent:${parentId}`
+                inheritedFrom: `parent:${parentId}`
             }));
 
         return [...cleanedPermissions, ...inheritedPermissions];
