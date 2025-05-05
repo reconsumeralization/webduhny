@@ -7,7 +7,7 @@ import {
     type PutCommand,
     type UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
-import type { AllCommandType, ExtendedCommandType } from "~/types.js";
+import type { AllCommandType, ExtendedCommandType, DynamoDBTableType } from "~/types.js";
 
 export interface IManifestData {
     region: string;
@@ -32,10 +32,8 @@ export interface ICommandValueItem {
     SK: string;
     command: ExtendedCommandType;
     tableName: string;
-    tableType: TableType | null;
+    tableType: DynamoDBTableType;
 }
-
-export type TableType = "regular" | "elasticsearch" | "log";
 
 export interface ICommandValue {
     readonly command: AllCommandType;

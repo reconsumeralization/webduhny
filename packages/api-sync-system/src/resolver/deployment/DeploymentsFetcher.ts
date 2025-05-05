@@ -8,6 +8,7 @@ import { WebinyError } from "@webiny/error";
 import { createDeployments } from "./Deployments.js";
 import zod from "zod";
 import { createZodError } from "@webiny/utils/createZodError.js";
+import { createDeployment } from "~/resolver/deployment/Deployment.js";
 
 const deploymentsValidation = zod.array(
     zod.object({
@@ -93,7 +94,7 @@ export class DeploymentsFetcher implements IDeploymentsFetcher {
             throw createZodError(result.error);
         }
         return result.data.map(item => {
-            return {
+            return createDeployment({
                 name: item.name,
                 env: item.env,
                 variant: item.variant,
@@ -107,9 +108,11 @@ export class DeploymentsFetcher implements IDeploymentsFetcher {
                     primaryDynamoDbHashKey: item.primaryDynamoDbHashKey,
                     primaryDynamoDbRangeKey: item.primaryDynamoDbRangeKey,
                     elasticsearchDynamodbTableArn: item.elasticsearchDynamodbTableArn,
-                    elasticsearchDynamodbTableName: item.elasticsearchDynamodbTableName
+                    elasticsearchDynamodbTableName: item.elasticsearchDynamodbTableName,
+                    logDynamodbTableName: item.primaryDynamoDbName,
+                    logDynamodbTableArn: item.primaryDynamoDbArn
                 }
-            };
+            });
         });
     }
 }

@@ -11,6 +11,7 @@ import type {
     DynamoDBDocument
 } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { createMockSystem } from "~tests/mocks/system.js";
+import { DYNAMODB_REGULAR } from "~tests/mocks/constants.js";
 
 describe("createEventHandlerPlugin", () => {
     const tableName = process.env.DB_TABLE as string;
@@ -96,6 +97,7 @@ describe("createEventHandlerPlugin", () => {
                             items: [
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     PK: "pk1",
                                     SK: "sk1",
                                     command: "put"

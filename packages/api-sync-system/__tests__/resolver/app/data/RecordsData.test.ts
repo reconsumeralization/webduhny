@@ -4,6 +4,7 @@ import { createRecordsDataDeploymentTable } from "~/resolver/app/data/RecordsDat
 import { createRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
 import { createMockDeployment } from "~tests/mocks/deployments.js";
 import { createMockSystem } from "~tests/mocks/system.js";
+import { DYNAMODB_REGULAR } from "~tests/mocks/constants.js";
 
 describe("RecordsData", () => {
     const tableName = process.env.DB_TABLE as string;
@@ -15,7 +16,8 @@ describe("RecordsData", () => {
                     deployment: createMockDeployment({ name }),
                     createRecordsDataDeploymentTable(item) {
                         return createRecordsDataDeploymentTable({
-                            name: item.tableName,
+                            name: item.name,
+                            type: item.type,
                             createRecordsDataDeploymentTableItem: ({ item }) => {
                                 return createRecordsDataDeploymentTableItem(item);
                             }
@@ -38,7 +40,8 @@ describe("RecordsData", () => {
                     deployment: createMockDeployment({ name }),
                     createRecordsDataDeploymentTable(item) {
                         return createRecordsDataDeploymentTable({
-                            name: item.tableName,
+                            name: item.name,
+                            type: item.type,
                             createRecordsDataDeploymentTableItem: ({ item }) => {
                                 return createRecordsDataDeploymentTableItem(item);
                             }
@@ -61,7 +64,8 @@ describe("RecordsData", () => {
                     deployment: createMockDeployment({ name }),
                     createRecordsDataDeploymentTable(item) {
                         return createRecordsDataDeploymentTable({
-                            name: item.tableName,
+                            name: item.name,
+                            type: item.type,
                             createRecordsDataDeploymentTableItem: ({ item }) => {
                                 return createRecordsDataDeploymentTableItem(item);
                             }
@@ -79,18 +83,21 @@ describe("RecordsData", () => {
                             items: [
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "put",
                                     PK: "pk1put",
                                     SK: "sk1put"
                                 },
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "delete",
                                     PK: "pk2delete",
                                     SK: "sk2delete"
                                 },
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "delete",
                                     PK: "pk3delete",
                                     SK: "sk3delete"
@@ -109,18 +116,21 @@ describe("RecordsData", () => {
                             items: [
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "put",
                                     PK: "pk4put",
                                     SK: "sk4put"
                                 },
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "delete",
                                     PK: "pk5delete",
                                     SK: "sk5delete"
                                 },
                                 {
                                     tableName,
+                                    tableType: DYNAMODB_REGULAR,
                                     command: "delete",
                                     PK: "pk6delete",
                                     SK: "sk6delete"

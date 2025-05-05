@@ -1,6 +1,6 @@
-import type { TableType } from "~/sync/types.js";
+import type { DynamoDBTableType } from "~/types.js";
 
-export const getTableType = (tableName: string): TableType | null => {
+export const getTableType = (tableName: string): DynamoDBTableType => {
     switch (tableName) {
         case process.env.DB_TABLE:
             return "regular";
@@ -9,6 +9,6 @@ export const getTableType = (tableName: string): TableType | null => {
         case process.env.DB_TABLE_LOG:
             return "log";
         default:
-            return null;
+            return "unknown";
     }
 };

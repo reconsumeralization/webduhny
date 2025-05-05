@@ -35,7 +35,7 @@ export class ResolverApplication implements IResolverApplication {
 
         /**
          * If needed, we can pass down system and table objects all the way to the item.
-         * TODO - determine if required - possibly for modifications?
+         * TODO - determine if required to pass create functions - possibly for modifications?
          */
         const data = createRecordsData({
             createRecordsDataDeployment: name => {
@@ -45,9 +45,10 @@ export class ResolverApplication implements IResolverApplication {
                 }
                 return createRecordsDataDeployment({
                     deployment,
-                    createRecordsDataDeploymentTable: ({ tableName }) => {
+                    createRecordsDataDeploymentTable: ({ name, type }) => {
                         return createRecordsDataDeploymentTable({
-                            name: tableName,
+                            name,
+                            type,
                             createRecordsDataDeploymentTableItem: ({ item }) => {
                                 return createRecordsDataDeploymentTableItem(item);
                             }

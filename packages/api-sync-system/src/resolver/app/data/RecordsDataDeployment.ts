@@ -2,9 +2,11 @@ import type { IRecordsDataDeploymentTable } from "~/resolver/app/data/RecordsDat
 import type { NonEmptyArray } from "@webiny/api/types.js";
 import type { IDetailItem } from "~/sync/handler/types.js";
 import type { IDeployment } from "~/resolver/deployment/types.js";
+import type { DynamoDBTableType } from "~/types.js";
 
 export interface ICreateRecordsDataDeploymentTableCallableParams {
-    tableName: string;
+    name: string;
+    type: DynamoDBTableType;
 }
 
 export interface ICreateRecordsDataDeploymentTableCallable {
@@ -44,7 +46,7 @@ export class RecordsDataDeployment implements IRecordsDataDeployment {
         const { items } = params;
 
         for (const item of items) {
-            const table = this.getTable(item.tableName);
+            const table = this.getTable(item);
 
             table.add({
                 ...item,
@@ -57,12 +59,13 @@ export class RecordsDataDeployment implements IRecordsDataDeployment {
         return this.tables;
     }
 
-    private getTable(tableName: string): IRecordsDataDeploymentTable {
-        const existingTable = this.tables.find(item => item.name === tableName);
+    private getTable(item: IDetailItem): IRecordsDataDeploymentTable {
+        const { tableName: name, tableType: type } = item;
+        const existingTable = this.tables.find(item => item.name === name && item.type === type);
         if (existingTable) {
             return existingTable;
         }
-        const newTable = this.createRecordsDataDeploymentTable({ tableName });
+        const newTable = this.createRecordsDataDeploymentTable({ name, type });
         this.tables.push(newTable);
         return newTable;
     }

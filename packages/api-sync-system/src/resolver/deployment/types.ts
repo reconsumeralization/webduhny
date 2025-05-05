@@ -1,3 +1,5 @@
+import { DynamoDBTableType } from "~/types";
+
 export interface IDeploymentServices {
     s3Id: string;
     s3Arn: string;
@@ -7,6 +9,13 @@ export interface IDeploymentServices {
     primaryDynamoDbRangeKey: string;
     elasticsearchDynamodbTableArn?: string;
     elasticsearchDynamodbTableName?: string;
+    logDynamodbTableArn: string;
+    logDynamodbTableName: string;
+}
+
+export interface IDeploymentTable {
+    arn: string;
+    name: string;
 }
 
 export interface IDeployment {
@@ -16,6 +25,7 @@ export interface IDeployment {
     region: string;
     services: IDeploymentServices;
     version: string;
+    getTable(type: DynamoDBTableType): IDeploymentTable;
 }
 
 export interface IDeployments {

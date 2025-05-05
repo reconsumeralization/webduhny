@@ -38,8 +38,19 @@ export class RecordHandler implements IRecordHandler {
 
         const deployments = data.getDeployments();
         for (const deployment of deployments) {
+            /**
+             * Need to fetch all the records from the source deployment tables.
+             */
+            const items = await this.fetcher.exec({
+                deployment,
+                maxBatchSize: 25,
+                maxRetries: 10,
+                retryDelay: 1000
+            });
+
             const tables = deployment.getTables();
             for (const table of tables) {
+                table.assignItems(items);
                 /**
                  * We will handle the records in bundles.
                  */

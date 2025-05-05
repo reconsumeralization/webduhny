@@ -1,5 +1,5 @@
 import type { IRecordsDataDeploymentTableItem } from "./RecordsDataDeploymentTableItem.js";
-import type { CommandType } from "~/types.js";
+import type { CommandType, DynamoDBTableType } from "~/types.js";
 
 export interface IRecordsDataDeploymentTableBundle {
     items: IRecordsDataDeploymentTableItem[];
@@ -8,6 +8,7 @@ export interface IRecordsDataDeploymentTableBundle {
 
 export interface IRecordsDataDeploymentTable {
     name: string;
+    type: DynamoDBTableType;
     add(item: IRecordsDataDeploymentTableItem): void;
     getItems(): IRecordsDataDeploymentTableItem[];
     /**
@@ -34,17 +35,20 @@ export interface ICreateRecordsDataDeploymentTableParamsCallable {
 
 export interface IRecordsDataDeploymentTableParams {
     name: string;
+    type: DynamoDBTableType;
     createRecordsDataDeploymentTableItem: ICreateRecordsDataDeploymentTableParamsCallable;
 }
 
 export class RecordsDataDeploymentTable implements IRecordsDataDeploymentTable {
     public readonly name: string;
+    public readonly type: DynamoDBTableType;
 
     private readonly createRecordsDataDeploymentTableItem: ICreateRecordsDataDeploymentTableParamsCallable;
     private readonly items: IRecordsDataDeploymentTableItem[] = [];
 
     public constructor(params: IRecordsDataDeploymentTableParams) {
         this.name = params.name;
+        this.type = params.type;
         this.createRecordsDataDeploymentTableItem = params.createRecordsDataDeploymentTableItem;
     }
 

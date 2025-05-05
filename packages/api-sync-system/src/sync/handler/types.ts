@@ -1,5 +1,5 @@
 import type { NonEmptyArray } from "@webiny/api/types";
-import type { ExtendedCommandType } from "~/types.js";
+import type { DynamoDBTableType, ExtendedCommandType } from "~/types.js";
 import type { ISystem } from "../types";
 
 export interface IDetailItem {
@@ -7,10 +7,10 @@ export interface IDetailItem {
     SK: string;
     command: ExtendedCommandType;
     /**
-     * Table name to which the record belongs.
      * There will be multiple tables that will get populated through the system (regular table and elasticsearch for start).
      */
     tableName: string;
+    tableType: DynamoDBTableType;
 }
 
 export interface IDetail {

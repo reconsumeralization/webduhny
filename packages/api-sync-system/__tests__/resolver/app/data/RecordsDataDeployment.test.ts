@@ -7,13 +7,15 @@ import {
     RecordsDataDeployment
 } from "~/resolver/app/data/RecordsDataDeployment.js";
 import * as process from "node:process";
+import { DYNAMODB_REGULAR } from "~tests/mocks/constants.js";
 
 describe("RecordsDataDeployment", () => {
     const tableName = process.env.DB_TABLE as string;
     const createRecordsDataDeploymentTableCallable: ICreateRecordsDataDeploymentTableCallable =
         params => {
             return createRecordsDataDeploymentTable({
-                name: params.tableName,
+                name: params.name,
+                type: params.type,
                 createRecordsDataDeploymentTableItem: ({ item }) => {
                     return createRecordsDataDeploymentTableItem(item);
                 }
@@ -69,13 +71,15 @@ describe("RecordsDataDeployment", () => {
                     command: "put",
                     PK: "pk1",
                     SK: "sk1",
-                    tableName
+                    tableName,
+                    tableType: DYNAMODB_REGULAR
                 },
                 {
                     command: "delete",
                     PK: "pk2",
                     SK: "sk2",
-                    tableName
+                    tableName,
+                    tableType: DYNAMODB_REGULAR
                 }
             ]
         });

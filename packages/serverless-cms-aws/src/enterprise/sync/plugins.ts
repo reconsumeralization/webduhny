@@ -74,7 +74,9 @@ export const createSyncSystemPlugins = (): Plugin[] => {
                 primaryDynamoDbHashKey: core.primaryDynamodbTableHashKey,
                 primaryDynamoDbRangeKey: core.primaryDynamodbTableRangeKey,
                 elasticsearchDynamodbTableArn: core.elasticsearchDynamodbTableArn,
-                elasticsearchDynamodbTableName: core.elasticsearchDynamodbTableName
+                elasticsearchDynamodbTableName: core.elasticsearchDynamodbTableName,
+                logDynamodbTableArn: core.logDynamodbTableArn,
+                logDynamodbTableName: core.logDynamodbTableName
             };
 
             const cmd = new PutCommand({

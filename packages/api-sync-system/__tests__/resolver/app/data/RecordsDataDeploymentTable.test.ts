@@ -3,12 +3,14 @@ import {
     RecordsDataDeploymentTable
 } from "~/resolver/app/data/RecordsDataDeploymentTable.js";
 import { createRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
+import { DYNAMODB_REGULAR } from "~tests/mocks/constants.js";
 
 describe("RecordsDataDeploymentTable", () => {
+    const tableName = process.env.DB_TABLE as string;
     it("should create table via class", () => {
-        const name = "testTable";
         const table = new RecordsDataDeploymentTable({
-            name,
+            name: tableName,
+            type: DYNAMODB_REGULAR,
             createRecordsDataDeploymentTableItem: ({ item }) => {
                 return createRecordsDataDeploymentTableItem(item);
             }
@@ -17,14 +19,15 @@ describe("RecordsDataDeploymentTable", () => {
         expect(table).toEqual({
             createRecordsDataDeploymentTableItem: expect.any(Function),
             items: [],
-            name
+            name: tableName,
+            type: DYNAMODB_REGULAR
         });
     });
 
     it("should create table via function", () => {
-        const name = "testTableFn";
         const table = createRecordsDataDeploymentTable({
-            name,
+            name: tableName,
+            type: DYNAMODB_REGULAR,
             createRecordsDataDeploymentTableItem: ({ item }) => {
                 return createRecordsDataDeploymentTableItem(item);
             }
@@ -33,14 +36,15 @@ describe("RecordsDataDeploymentTable", () => {
         expect(table).toEqual({
             createRecordsDataDeploymentTableItem: expect.any(Function),
             items: [],
-            name
+            name: tableName,
+            type: DYNAMODB_REGULAR
         });
     });
 
     it("should add items to the table", () => {
-        const name = "testTableWithItems";
         const table = createRecordsDataDeploymentTable({
-            name,
+            name: tableName,
+            type: DYNAMODB_REGULAR,
             createRecordsDataDeploymentTableItem: ({ item }) => {
                 return createRecordsDataDeploymentTableItem(item);
             }

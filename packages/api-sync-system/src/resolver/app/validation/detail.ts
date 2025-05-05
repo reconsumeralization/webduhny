@@ -18,6 +18,7 @@ export const createDetailValidation = () => {
                     PK: zod.string(),
                     SK: zod.string(),
                     tableName: zod.string(),
+                    tableType: zod.enum(["regular", "elasticsearch", "log"]),
                     command: zod.enum(["update", "put", "delete"])
                 })
             )
