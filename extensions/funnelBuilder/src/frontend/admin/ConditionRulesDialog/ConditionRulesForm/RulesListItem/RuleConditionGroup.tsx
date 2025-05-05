@@ -5,17 +5,17 @@ import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as BasePlusIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { FunnelConditionGroupModelDto } from "../../../../../../../../../shared/models/FunnelConditionGroupModel";
-import { useConditionRulesForm } from "../../useConditionRulesForm";
+import { Form } from "@webiny/form";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { getConditionOperatorsByValueType } from "../../../../../../../../../shared/models/conditionOperators/conditionOperatorFactory";
 import { plugins } from "@webiny/plugins";
+import { FunnelConditionGroupModelDto } from "../../../../../shared/models/FunnelConditionGroupModel";
+import { useConditionRulesForm } from "../../useConditionRulesForm";
+import { getConditionOperatorsByValueType } from "../../../../../shared/models/conditionOperators/conditionOperatorFactory";
+import { ConditionOperatorParams } from "../../../../../shared/models/FunnelConditionOperatorModel";
 import {
     ConditionOperatorParamsComponent,
     PbEditorFunnelConditionOperatorPluginProps
-} from "../../../../../../../../admin/plugins/PbEditorFunnelConditionOperatorPlugin";
-import { Form } from "@webiny/form";
-import { ConditionOperatorParams } from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
+} from "../../../plugins/PbEditorFunnelConditionOperatorPlugin";
 
 const Fieldset = styled.div`
     display: flex;

@@ -17,12 +17,18 @@ export class FunnelModel {
     conditionRules: FunnelConditionRuleModel[];
 
     constructor(dto?: FunnelModelDto) {
-        this.fields = dto?.fields?.map(f => FunnelFieldDefinitionModel.fromDto(f)) || [];
-        this.steps = dto?.steps?.map(s => FunnelStepModel.fromDto(s)) || [new FunnelStepModel()];
+        if (!dto) {
+            this.fields = [];
+            this.steps = [new FunnelStepModel()];
+            this.conditionRules = [];
+            return;
+        }
 
-        this.conditionRules = dto?.conditionRules
-            ? dto.conditionRules.map(dto => FunnelConditionRuleModel.fromDto(dto))
-            : [];
+        this.fields = dto.fields.map(f => FunnelFieldDefinitionModel.fromDto(f));
+        this.steps = dto.steps.map(s => FunnelStepModel.fromDto(s));
+        this.conditionRules = dto.conditionRules.map(dto =>
+            FunnelConditionRuleModel.fromDto(this, dto)
+        );
     }
 
     // Steps. 👇
@@ -64,10 +70,6 @@ export class FunnelModel {
     }
 
     static fromDto(dto: FunnelModelDto): FunnelModel {
-        return new FunnelModel({
-            fields: dto.fields?.map(s => FunnelFieldDefinitionModel.fromDto(s)),
-            steps: dto.steps?.map(s => FunnelStepModel.fromDto(s)),
-            conditionRules: dto.conditionRules?.map(s => FunnelConditionRuleModel.fromDto(s))
-        });
+        return new FunnelModel(dto);
     }
 }

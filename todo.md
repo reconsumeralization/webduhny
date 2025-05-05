@@ -1,18 +1,18 @@
 ## MH
-- -------------> cond rules
-- cond rule - do not allow 
+- cond rule / field/submission types of rules
 - submission - what happens when I submit the last step?
-- embed test
 - async validators
-- check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - themes
 - docs
 - test in CWP
 - <Form<ConditionOperatorParams> key= needed? b/c of changing types?
 - registry.ts - use classes all the time
-- 
+- added a step, pressed undo, and tabs at the top did not update :|
+- options list checkbox grp - dbl check!
+- evaluate rules only for current step (extend action class)
+- can't delete field if mentioned in con rules
 
-- editor
+#### Editor
   - prevent deletion of grid in step el
   - removed grid in step, can't add it again 
   - edit field dialog reopening?
@@ -37,6 +37,7 @@
 - backend integrity checks for PB page / Funnel sync ensure?
 - } as Omit<FunnelFieldDefinitionModelDto<TValue, TExtra>, "stepId">;
 - default value editing - doesn't reflect in UI unti page refresh
+- check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 
 ## CH/NTH
 - add '~' imports

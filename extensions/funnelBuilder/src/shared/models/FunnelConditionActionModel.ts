@@ -1,5 +1,7 @@
 import { AbstractModel } from "./AbstractModel";
 import { getRandomId } from "../getRandomId";
+import { FunnelConditionRuleModel } from "./FunnelConditionRuleModel";
+import { FunnelStepModel } from "./FunnelStepModel";
 
 export type ConditionActionParams<TExtra = Record<string, any>> = {
     extra: TExtra;
@@ -15,9 +17,10 @@ export interface FunnelConditionActionModelDto<TExtra = Record<string, any>> {
     params?: ConditionActionParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
-export class FunnelConditionActionModel<
-    TExtra = Record<string, any>
-> extends AbstractModel<FunnelConditionActionModelDto<TExtra>> {
+export class FunnelConditionActionModel<TExtra = Record<string, any>> extends AbstractModel<
+    FunnelConditionActionModelDto<TExtra>
+> {
+    conditionRule: FunnelConditionRuleModel;
     id: string;
     type: string;
     params: ConditionActionParams<TExtra>;
@@ -27,8 +30,12 @@ export class FunnelConditionActionModel<
     // String shown in the conditional rules dialog (in the actions dropdown menu).
     static optionLabel = "";
 
-    constructor(dto?: FunnelConditionActionModelDto<TExtra>) {
+    constructor(
+        conditionRule: FunnelConditionRuleModel,
+        dto?: FunnelConditionActionModelDto<TExtra>
+    ) {
         super();
+        this.conditionRule = conditionRule;
         this.id = dto?.id || getRandomId();
         this.type = dto?.type || "";
         this.params = {
@@ -40,11 +47,17 @@ export class FunnelConditionActionModel<
         return { id: this.id, type: this.type, params: this.params };
     }
 
+    getEvaluationStep(): FunnelStepModel | undefined  {
+        return undefined;
+    }
+
     static fromDto<TExtra = Record<string, any>>(
+        conditionRule: FunnelConditionRuleModel,
         dto: FunnelConditionActionModelDto<TExtra>
     ): FunnelConditionActionModel<TExtra> {
         // Could not import the module directly because of circular dependency.
         return require("./conditionActions/conditionActionFactory").conditionActionFromDto(
+            conditionRule,
             dto
         );
     }

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { ButtonSecondary } from "@webiny/ui/Button";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
-import { useDisclosure } from "../../../../admin/useDisclosure";
 import {
     useActiveElementId,
     useElementById,
@@ -10,8 +9,9 @@ import {
     useUpdateElement
 } from "@webiny/app-page-builder/editor";
 import { ContainerElementWithChildren } from "../../types";
-import { ConditionRulesDialog } from "./ConditionRulesSection/ConditionRulesDialog";
 import { FunnelModelDto } from "../../../../../shared/models/FunnelModel";
+import { useDisclosure } from "../../../../admin/useDisclosure";
+import { ConditionRulesDialog } from "../../../../admin/ConditionRulesDialog";
 
 const EditConditionRulesButton = styled(ButtonSecondary)`
     display: block;

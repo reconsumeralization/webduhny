@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormOnSubmit } from "@webiny/form";
 import { Dialog, DialogActions, DialogButton, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { ClassNames } from "@emotion/react";
-import { FunnelModelDto } from "../../../../../../shared/models/FunnelModel";
+import { FunnelModelDto } from "../../shared/models/FunnelModel";
 import { ConditionRulesForm } from "./ConditionRulesDialog/ConditionRulesForm";
 
 const dialogContentCss = {

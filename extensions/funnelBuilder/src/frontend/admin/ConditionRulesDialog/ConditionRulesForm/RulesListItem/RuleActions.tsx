@@ -5,14 +5,14 @@ import { Typography } from "@webiny/ui/Typography";
 import styled from "@emotion/styled";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as PlusIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { useConditionRulesForm } from "../../useConditionRulesForm";
-import { FunnelConditionRuleModelDto } from "../../../../../../../../../shared/models/FunnelConditionRuleModel";
-import { listConditionActions } from "../../../../../../../../../shared/models/conditionActions/conditionActionFactory";
-import { ConditionActionParamsComponent } from "../../../../../../../../admin/plugins/PbEditorFunnelConditionActionPlugin";
 import { plugins } from "@webiny/plugins";
-import { PbEditorFunnelConditionActionPluginProps } from "../../../../../../../../admin/plugins/PbEditorFunnelConditionActionPlugin";
 import { Form } from "@webiny/form";
-import { ConditionOperatorParams } from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
+import { useConditionRulesForm } from "../../useConditionRulesForm";
+import { FunnelConditionRuleModelDto } from "../../../../../shared/models/FunnelConditionRuleModel";
+import { listConditionActions } from "../../../../../shared/models/conditionActions/conditionActionFactory";
+import { ConditionOperatorParams } from "../../../../../shared/models/FunnelConditionOperatorModel";
+import { ConditionActionParamsComponent } from "../../../plugins/PbEditorFunnelConditionActionPlugin";
+import { PbEditorFunnelConditionActionPluginProps } from "../../../plugins/PbEditorFunnelConditionActionPlugin";
 
 const Fieldset = styled.div`
     display: flex;
@@ -87,7 +87,7 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                                 size={"small"}
                                 value={action.type}
                                 onChange={type => {
-                                    console.log('acton', action)
+                                    console.log("acton", action);
                                     console.log("tpyeeer", type);
                                     updateAction(rule.id, {
                                         id: action.id,

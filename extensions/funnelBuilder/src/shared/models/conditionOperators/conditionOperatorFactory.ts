@@ -1,4 +1,7 @@
-import { type FunnelConditionOperatorModelDto } from "../FunnelConditionOperatorModel";
+import {
+    FunnelConditionOperatorModel,
+    type FunnelConditionOperatorModelDto
+} from "../FunnelConditionOperatorModel";
 import { EmptyConditionOperator } from "./EmptyConditionOperator";
 import { EqConditionOperator } from "./EqConditionOperator";
 import { GtConditionOperator } from "./GtConditionOperator";
@@ -21,7 +24,7 @@ const registry = [
     NeqConditionOperator,
     NotEmptyConditionOperator,
     NotIncludesConditionOperator
-];
+] as Array<typeof FunnelConditionOperatorModel>;
 
 export const getConditionOperatorsByValueType = (valueType: string) => {
     return registry.filter(operatorClass => {

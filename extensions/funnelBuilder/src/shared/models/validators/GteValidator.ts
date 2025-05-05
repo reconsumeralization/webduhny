@@ -7,13 +7,13 @@ interface GteValidatorExtraParams {
 }
 
 export class GteValidator extends AbstractValidator<GteValidatorExtraParams> {
-    constructor(params: FieldValidatorParamsDto<GteValidatorExtraParams> = {}) {
+    constructor(dto: FieldValidatorParamsDto<GteValidatorExtraParams> = {}) {
         super({
             type: "gte",
             params: {
-                errorMessage: params.errorMessage || "Value is too small.",
+                errorMessage: dto.errorMessage || "Value is too small.",
                 extra: {
-                    threshold: params.extra?.threshold
+                    threshold: dto.extra?.threshold
                 }
             }
         });

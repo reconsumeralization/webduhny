@@ -7,6 +7,7 @@ import {
     FunnelConditionActionModelDto
 } from "./FunnelConditionActionModel";
 import { getRandomId } from "../getRandomId";
+import { FunnelModel } from "./FunnelModel";
 
 export interface FunnelConditionRuleModelDto {
     id: string;
@@ -16,16 +17,18 @@ export interface FunnelConditionRuleModelDto {
 }
 
 export class FunnelConditionRuleModel {
+    funnel: FunnelModel;
     id: string;
     // Root condition group.
     conditionGroup: FunnelConditionGroupModel;
     actions: FunnelConditionActionModel[];
 
-    constructor(dto?: FunnelConditionRuleModelDto) {
+    constructor(funnel: FunnelModel, dto?: FunnelConditionRuleModelDto) {
+        this.funnel = funnel;
         this.id = dto?.id || getRandomId();
         this.conditionGroup = new FunnelConditionGroupModel(dto?.conditionGroup);
         this.actions = (dto?.actions || []).map(action => {
-            return FunnelConditionActionModel.fromDto(action);
+            return FunnelConditionActionModel.fromDto(this, action);
         });
     }
 
@@ -37,7 +40,7 @@ export class FunnelConditionRuleModel {
         };
     }
 
-    static fromDto(dto: FunnelConditionRuleModelDto) {
-        return new FunnelConditionRuleModel(dto);
+    static fromDto(funnel: FunnelModel, dto: FunnelConditionRuleModelDto) {
+        return new FunnelConditionRuleModel(funnel, dto);
     }
 }

@@ -38,9 +38,6 @@ export const createFieldRenderer = <
         }
 
         const field = funnelSubmissionVm.getField(element.data.fieldId);
-        if (field.hidden) {
-            return null;
-        }
 
         const { validate, validation, value, onChange } = useBind({
             name: field.definition.fieldId,
@@ -49,6 +46,10 @@ export const createFieldRenderer = <
             ),
             defaultValue: field.value.value
         });
+
+        if (field.hidden) {
+            return null;
+        }
 
         return (
             <Component

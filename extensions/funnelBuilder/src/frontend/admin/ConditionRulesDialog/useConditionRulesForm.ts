@@ -1,14 +1,14 @@
 import { useBind, useForm } from "@webiny/form";
-import { getRandomId } from "../../../../../../../shared/getRandomId";
-import { FunnelModelDto } from "../../../../../../../shared/models/FunnelModel";
-import { FunnelConditionRuleModelDto } from "../../../../../../../shared/models/FunnelConditionRuleModel";
+import { getRandomId } from "../../../shared/getRandomId";
+import { FunnelModelDto } from "../../../shared/models/FunnelModel";
+import { FunnelConditionRuleModelDto } from "../../../shared/models/FunnelConditionRuleModel";
+import { FunnelConditionModelDto } from "../../../shared/models/FunnelConditionModel";
+import { FunnelConditionActionModelDto } from "../../../shared/models/FunnelConditionActionModel";
+import { DisableFieldConditionAction } from "../../../shared/models/conditionActions/DisableFieldConditionAction";
 import {
     FunnelConditionGroupModelDto,
     LogicalOperator
-} from "../../../../../../../shared/models/FunnelConditionGroupModel";
-import { FunnelConditionModelDto } from "../../../../../../../shared/models/FunnelConditionModel";
-import { FunnelConditionActionModelDto } from "../../../../../../../shared/models/FunnelConditionActionModel";
-import { DisableFieldConditionAction } from "../../../../../../../shared/models/conditionActions/DisableFieldConditionAction";
+} from "../../../shared/models/FunnelConditionGroupModel";
 
 type ConditionRulesDto = FunnelConditionRuleModelDto[];
 
@@ -234,7 +234,7 @@ export const useConditionRulesForm = () => {
                 return rules;
             }
 
-            rule.actions.push(new DisableFieldConditionAction().toDto());
+            rule.actions.push({ type: DisableFieldConditionAction.type });
 
             return rules;
         });

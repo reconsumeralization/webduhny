@@ -69,8 +69,8 @@ export class FunnelVm {
         this.emitChange();
     }
 
-    removeStep(id: string) {
-        this.funnel.steps = this.funnel.steps.filter(step => step.id !== id);
+    removeStep(stepId: string) {
+        this.funnel.removeStep(stepId);
         this.emitChange();
     }
 

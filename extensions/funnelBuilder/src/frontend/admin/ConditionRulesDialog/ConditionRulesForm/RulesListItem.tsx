@@ -3,7 +3,7 @@ import { IconButton } from "@webiny/ui/Button";
 import { AccordionItem } from "@webiny/ui/Accordion";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { useConditionRulesForm } from "../useConditionRulesForm";
-import { FunnelConditionRuleModelDto } from "../../../../../../../../shared/models/FunnelConditionRuleModel";
+import { FunnelConditionRuleModelDto } from "../../../../shared/models/FunnelConditionRuleModel";
 import { RuleConditionGroup } from "./RulesListItem/RuleConditionGroup";
 import { RuleActions } from "./RulesListItem/RuleActions";
 
