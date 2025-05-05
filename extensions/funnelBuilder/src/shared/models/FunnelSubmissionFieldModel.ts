@@ -1,8 +1,12 @@
 import { FunnelFieldDefinitionModel } from "./FunnelFieldDefinitionModel";
 import { FunnelSubmissionModel } from "./FunnelSubmissionModel";
 import { FunnelFieldValueModel } from "./FunnelFieldValueModel";
+import { DisableFieldConditionAction } from "./conditionActions/DisableFieldConditionAction";
+import { HideFieldConditionAction } from "./conditionActions/HideFieldConditionAction";
 
-export interface FunnelSubmissionFieldModelDto<TFieldValue extends FunnelFieldValueModel = FunnelFieldValueModel> {
+export interface FunnelSubmissionFieldModelDto<
+    TFieldValue extends FunnelFieldValueModel = FunnelFieldValueModel
+> {
     value: TFieldValue;
 }
 
@@ -70,9 +74,20 @@ export class FunnelSubmissionFieldModel<
         // Check if any action is to disable this field
         return actions.some(
             action =>
-                action.type === "disableField" &&
-                action.target.type === "field" &&
-                action.target.id === this.definition.fieldId
+                action.type === DisableFieldConditionAction.type &&
+                action.params.extra.targetFieldId === this.definition.fieldId
+        );
+    }
+
+    get hidden() {
+        // Get the actions from the evaluator
+        const actions = this.submission.evaluateConditionRulesFieldsForActiveStep();
+
+        // Check if any action is to disable this field
+        return actions.some(
+            action =>
+                action.type === HideFieldConditionAction.type &&
+                action.params.extra.targetFieldId === this.definition.fieldId
         );
     }
 

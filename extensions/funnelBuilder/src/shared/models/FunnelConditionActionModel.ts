@@ -1,48 +1,51 @@
+import { AbstractModel } from "./AbstractModel";
 import { getRandomId } from "../getRandomId";
 
-export type FunnelConditionActionType =
-    | "disableField"
-    | "enableField"
-    | "showField"
-    | "hideField"
-    | "onSubmitActivateStep"
-    | "onSubmitEnd";
-
-export type FunnelConditionActionTarget = {
-    id: string;
-    type: "field"; // Only "field" target type is supported for now.
+export type ConditionActionParams<TExtra = Record<string, any>> = {
+    extra: TExtra;
 };
 
-export interface FunnelConditionActionModelDto {
-    id: string;
-    type: FunnelConditionActionType;
-    target: FunnelConditionActionTarget;
-    params: Record<string, any>;
+export type ConditionActionParamsDto<TExtra = Record<string, any>> = Partial<
+    ConditionActionParams<TExtra>
+>;
+
+export interface FunnelConditionActionModelDto<TExtra = Record<string, any>> {
+    id?: string;
+    type: string;
+    params?: ConditionActionParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
-export class FunnelConditionActionModel {
+export class FunnelConditionActionModel<
+    TExtra = Record<string, any>
+> extends AbstractModel<FunnelConditionActionModelDto<TExtra>> {
     id: string;
-    type: FunnelConditionActionType;
-    target: FunnelConditionActionTarget;
-    params: Record<string, any>;
+    type: string;
+    params: ConditionActionParams<TExtra>;
 
-    constructor(dto?: FunnelConditionActionModelDto) {
+    static type = "";
+
+    // String shown in the conditional rules dialog (in the actions dropdown menu).
+    static optionLabel = "";
+
+    constructor(dto?: FunnelConditionActionModelDto<TExtra>) {
+        super();
         this.id = dto?.id || getRandomId();
-        this.type = dto?.type ?? "disableField";
-        this.target = dto?.target ?? { id: "", type: "field" };
-        this.params = dto?.params ?? {};
-    }
-
-    toDto(): FunnelConditionActionModelDto {
-        return {
-            id: this.id,
-            type: this.type,
-            target: this.target,
-            params: this.params
+        this.type = dto?.type || "";
+        this.params = {
+            extra: (dto?.params?.extra || {}) as TExtra
         };
     }
 
-    static fromDto(dto: FunnelConditionActionModelDto) {
-        return new FunnelConditionActionModel(dto);
+    toDto(): FunnelConditionActionModelDto<TExtra> {
+        return { id: this.id, type: this.type, params: this.params };
+    }
+
+    static fromDto<TExtra = Record<string, any>>(
+        dto: FunnelConditionActionModelDto<TExtra>
+    ): FunnelConditionActionModel<TExtra> {
+        // Could not import the module directly because of circular dependency.
+        return require("./conditionActions/conditionActionFactory").conditionActionFromDto(
+            dto
+        );
     }
 }

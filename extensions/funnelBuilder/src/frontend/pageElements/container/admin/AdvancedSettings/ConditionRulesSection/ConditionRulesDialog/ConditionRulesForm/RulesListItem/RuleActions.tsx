@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ButtonDefault, ButtonIcon, IconButton } from "@webiny/ui/Button";
 import { Select } from "@webiny/ui/Select";
 import { Typography } from "@webiny/ui/Typography";
@@ -7,6 +7,12 @@ import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outline
 import { ReactComponent as PlusIcon } from "@material-design-icons/svg/outlined/add.svg";
 import { useConditionRulesForm } from "../../useConditionRulesForm";
 import { FunnelConditionRuleModelDto } from "../../../../../../../../../shared/models/FunnelConditionRuleModel";
+import { listConditionActions } from "../../../../../../../../../shared/models/conditionActions/conditionActionFactory";
+import { ConditionActionParamsComponent } from "../../../../../../../../admin/plugins/PbEditorFunnelConditionActionPlugin";
+import { plugins } from "@webiny/plugins";
+import { PbEditorFunnelConditionActionPluginProps } from "../../../../../../../../admin/plugins/PbEditorFunnelConditionActionPlugin";
+import { Form } from "@webiny/form";
+import { ConditionOperatorParams } from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
 
 const Fieldset = styled.div`
     display: flex;
@@ -36,6 +42,14 @@ export interface RuleActionsProps {
 export const RuleActions = ({ rule }: RuleActionsProps) => {
     const { funnel, addAction, removeAction, updateAction } = useConditionRulesForm();
 
+    const conditionActionPlugins = useMemo(() => {
+        return plugins.byType(
+            "pb-editor-funnel-condition-action"
+        ) as unknown as PbEditorFunnelConditionActionPluginProps[];
+    }, []);
+
+    const availableConditionActions = listConditionActions();
+
     return (
         <div
             style={{
@@ -57,53 +71,68 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                     </Typography>
                 </NoActionsMessage>
             ) : (
-                rule.actions.map((action, actionIndex) => (
-                    <Fieldset key={actionIndex}>
-                        <Select
-                            size={"small"}
-                            value={action.type}
-                            onChange={value =>
-                                updateAction(rule.id, {
-                                    ...action,
-                                    type: value
-                                })
-                            }
-                        >
-                            <option value="disableField">Disable Field</option>
-                            <option value="enableField">Enable Field</option>
-                            <option value="showField">Show Field</option>
-                            <option value="hideField">Hide Field</option>
-                            <option value="onSubmitActivateStep">Go to step</option>
-                            <option value="onSubmitEnd">End funnel</option>
-                        </Select>
+                rule.actions.map((action, actionIndex) => {
+                    const conditionActionPlugin = conditionActionPlugins.find(
+                        p => p.actionClass.type === action.type
+                    );
 
-                        {action.type !== "onSubmitActivateStep" &&
-                            action.type !== "onSubmitEnd" && (
-                                <Select
-                                    placeholder={"Select target..."}
-                                    size={"small"}
-                                    value={action.target.id}
-                                    onChange={fieldId =>
-                                        updateAction(rule.id, {
+                    let ConditionActionParamsComponent: ConditionActionParamsComponent | undefined;
+                    if (conditionActionPlugin) {
+                        ConditionActionParamsComponent = conditionActionPlugin.settingsRenderer;
+                    }
+
+                    return (
+                        <Fieldset key={action.id}>
+                            <Select
+                                size={"small"}
+                                value={action.type}
+                                onChange={type => {
+                                    console.log('acton', action)
+                                    console.log("tpyeeer", type);
+                                    updateAction(rule.id, {
+                                        id: action.id,
+                                        type
+                                    });
+                                }}
+                            >
+                                {availableConditionActions.map(action => (
+                                    <option key={action.type} value={action.type}>
+                                        {action.optionLabel}
+                                    </option>
+                                ))}
+                            </Select>
+
+                            {ConditionActionParamsComponent && (
+                                <Form<ConditionOperatorParams>
+                                    data={action.params}
+                                    onChange={params => {
+                                        return updateAction(rule.id, {
                                             ...action,
-                                            target: { type: "field", id: fieldId }
-                                        })
-                                    }
+                                            params
+                                        });
+                                    }}
                                 >
-                                    {funnel.fields.map(field => (
-                                        <option key={field.id} value={field.fieldId}>
-                                            {field.label}
-                                        </option>
-                                    ))}
-                                </Select>
+                                    {() => {
+                                        return (
+                                            <>
+                                                {ConditionActionParamsComponent ? (
+                                                    <ConditionActionParamsComponent
+                                                        funnel={funnel}
+                                                    />
+                                                ) : null}
+                                            </>
+                                        );
+                                    }}
+                                </Form>
                             )}
 
-                        <IconButton
-                            icon={<DeleteIcon />}
-                            onClick={() => removeAction(rule.id, action.id)}
-                        />
-                    </Fieldset>
-                ))
+                            <IconButton
+                                icon={<DeleteIcon />}
+                                onClick={() => removeAction(rule.id, action.id!)}
+                            />
+                        </Fieldset>
+                    );
+                })
             )}
         </div>
     );

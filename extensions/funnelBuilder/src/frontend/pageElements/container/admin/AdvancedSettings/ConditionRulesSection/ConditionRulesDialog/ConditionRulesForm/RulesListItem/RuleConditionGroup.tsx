@@ -11,14 +11,11 @@ import { Tooltip } from "@webiny/ui/Tooltip";
 import { getConditionOperatorsByValueType } from "../../../../../../../../../shared/models/conditionOperators/conditionOperatorFactory";
 import { plugins } from "@webiny/plugins";
 import {
-    PbEditorFunnelConditionOperatorPluginProps,
-    ConditionOperatorParamsComponent
+    ConditionOperatorParamsComponent,
+    PbEditorFunnelConditionOperatorPluginProps
 } from "../../../../../../../../admin/plugins/PbEditorFunnelConditionOperatorPlugin";
 import { Form } from "@webiny/form";
-import {
-    ConditionOperatorParams,
-    FunnelConditionOperatorModelDto
-} from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
+import { ConditionOperatorParams } from "../../../../../../../../../shared/models/FunnelConditionOperatorModel";
 
 const Fieldset = styled.div`
     display: flex;
@@ -214,7 +211,7 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                                         return (
                                             <>
                                                 {ConditionRuleParamsComponent ? (
-                                                    <ConditionRuleParamsComponent field={fieldDefinition} />
+                                                    <ConditionRuleParamsComponent funnel={funnel} field={fieldDefinition} />
                                                 ) : null}
                                             </>
                                         );

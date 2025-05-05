@@ -9,6 +9,7 @@ import { FunnelBuilderPageElementGroup } from "./frontend/pageElements/FunnelBui
 import { DecoratedElementControls } from "./frontend/pageElements/ElementControlsDecorator";
 import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators";
 import { ConditionOperatorPlugins } from "./frontend/admin/plugins/conditionOperators";
+import { ConditionActionPlugins } from "./frontend/admin/plugins/conditionActions";
 
 export const Extension = () => (
     <>
@@ -25,6 +26,7 @@ export const Extension = () => (
         {/* Other */}
         <FieldValidatorPlugins />
         <ConditionOperatorPlugins />
+        <ConditionActionPlugins/>
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
     </>

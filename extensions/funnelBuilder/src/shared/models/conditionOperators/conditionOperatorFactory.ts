@@ -25,7 +25,10 @@ const registry = [
 
 export const getConditionOperatorsByValueType = (valueType: string) => {
     return registry.filter(operatorClass => {
-        return operatorClass.supportedFieldValueTypes.includes(valueType);
+        return (
+            operatorClass.supportedFieldValueTypes.includes("*") ||
+            operatorClass.supportedFieldValueTypes.includes(valueType)
+        );
     });
 };
 

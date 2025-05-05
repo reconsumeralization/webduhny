@@ -8,6 +8,7 @@ import {
 } from "../../../../../../../shared/models/FunnelConditionGroupModel";
 import { FunnelConditionModelDto } from "../../../../../../../shared/models/FunnelConditionModel";
 import { FunnelConditionActionModelDto } from "../../../../../../../shared/models/FunnelConditionActionModel";
+import { DisableFieldConditionAction } from "../../../../../../../shared/models/conditionActions/DisableFieldConditionAction";
 
 type ConditionRulesDto = FunnelConditionRuleModelDto[];
 
@@ -233,15 +234,7 @@ export const useConditionRulesForm = () => {
                 return rules;
             }
 
-            rule.actions.push({
-                id: getRandomId(),
-                type: "disableField",
-                target: {
-                    id: "",
-                    type: "field"
-                },
-                params: {}
-            });
+            rule.actions.push(new DisableFieldConditionAction().toDto());
 
             return rules;
         });
@@ -269,13 +262,11 @@ export const useConditionRulesForm = () => {
             }
 
             const ruleAction = rule.actions.find(current => current.id === action.id);
-
             if (!ruleAction) {
                 return rules;
             }
 
             ruleAction.type = action.type;
-            ruleAction.target = action.target;
             ruleAction.params = action.params;
 
             return rules;

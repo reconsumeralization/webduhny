@@ -27,7 +27,7 @@ export class FunnelConditionOperatorModel<
     static optionLabel = "";
     static supportedFieldValueTypes: string[] = [];
 
-    constructor(dto: FunnelConditionOperatorModelDto) {
+    constructor(dto: FunnelConditionOperatorModelDto<TExtra>) {
         super();
         this.id = dto.id;
         this.params = {
