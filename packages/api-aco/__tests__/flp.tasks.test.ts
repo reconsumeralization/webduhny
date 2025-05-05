@@ -560,7 +560,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             {
                 target: "admin:user1",
                 level: "read",
-                inheritedFrom: `parent:${mainFolder.id}`
+                inheritedFrom: `parent:${branch1Flp1.id}`
             }
         ]);
 
@@ -570,7 +570,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             {
                 target: "admin:user1",
                 level: "read",
-                inheritedFrom: `parent:${mainFolder.id}`
+                inheritedFrom: `parent:${branch2Flp1.id}`
             }
         ]);
 
@@ -624,7 +624,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                 {
                     target: "admin:user1",
                     level: "read",
-                    inheritedFrom: `parent:${mainFolder.id}`
+                    inheritedFrom: `parent:${branch1.id}`
                 }
             ]
         });
@@ -657,7 +657,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                 {
                     target: "admin:user1",
                     level: "read",
-                    inheritedFrom: `parent:${mainFolder.id}`
+                    inheritedFrom: `parent:${branch2.id}`
                 }
             ]
         });
@@ -753,7 +753,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                         {
                             target: "admin:user1",
                             level: "read",
-                            inheritedFrom: `parent:${folders[0].id}`
+                            inheritedFrom: `parent:${folders[i - 1].id}`
                         }
                     ]
                 });
@@ -790,7 +790,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                 {
                     target: "admin:user1",
                     level: "read",
-                    inheritedFrom: `parent:${folders[0].id}`
+                    inheritedFrom: `parent:${folders[1].id}`
                 }
             ]
         });
@@ -811,7 +811,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                 {
                     target: "admin:user1",
                     level: "read",
-                    inheritedFrom: `parent:${folders[0].id}`
+                    inheritedFrom: `parent:${folders[2].id}`
                 }
             ]
         });
@@ -910,7 +910,7 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
                 {
                     target: "admin:user2",
                     level: "write",
-                    inheritedFrom: `parent:${main2.id}`
+                    inheritedFrom: `parent:${branch.id}`
                 }
             ]
         });
