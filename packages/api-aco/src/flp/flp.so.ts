@@ -148,15 +148,15 @@ class FolderLevelPermissionsStorageOperations
         data: inputData,
         original
     }: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission> {
-        const keys = {
-            ...this.createKeys(original),
-            ...this.createGsiKeys(original)
-        };
-
         try {
             const data = {
                 ...original,
                 ...inputData
+            };
+
+            const keys = {
+                ...this.createKeys(data),
+                ...this.createGsiKeys(data)
             };
 
             await put({
@@ -172,7 +172,7 @@ class FolderLevelPermissionsStorageOperations
             throw WebinyError.from(err, {
                 message: "Could not update folder level permission.",
                 code: "UPDATE_FLP_ERROR",
-                data: { keys, inputData, original }
+                data: { inputData, original }
             });
         }
     }
