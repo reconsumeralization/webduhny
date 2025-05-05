@@ -53,10 +53,13 @@ export class UpdateFlp {
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
 
+            this.setUpdated(flp.id);
+
             // Get direct children and process each branch completely
             const directChildren = await this.listDirectChildren(flp);
             for (const child of directChildren) {
                 if (this.isCloseToTimeout?.()) {
+                    await this.executeBatchUpdate();
                     this.handleTimeout?.(this.getUpdated());
                     return;
                 }
@@ -68,6 +71,7 @@ export class UpdateFlp {
         } catch (error) {
             // Clear the update collection in case of error
             this.flpsToUpdate.clear();
+            this.updated.clear();
             throw WebinyError.from(error, {
                 message: "Error while updating FLP",
                 code: "ERROR_UPDATING_FLP_USE_CASE"
@@ -109,6 +113,7 @@ export class UpdateFlp {
         const children = await this.listDirectChildren(flp);
         for (const child of children) {
             if (this.isCloseToTimeout?.()) {
+                await this.executeBatchUpdate();
                 this.handleTimeout?.(this.getUpdated());
                 return;
             }
