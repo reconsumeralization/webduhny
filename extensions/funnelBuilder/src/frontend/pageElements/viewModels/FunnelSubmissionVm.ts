@@ -36,6 +36,11 @@ export class FunnelSubmissionVm {
         this.emitChange();
     }
 
+    evaluateConditionRulesForActiveStep() {
+        this.funnelSubmission.evaluateConditionRulesForActiveStep();
+        this.emitChange();
+    }
+
     get activeStepIndex() {
         return this.funnelSubmission.getActiveStepIndex();
     }

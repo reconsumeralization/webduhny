@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
 import { Form } from "@webiny/form";
 import { useContainer } from "../../container/ContainerProvider";
@@ -9,6 +9,11 @@ export const StepWebsiteRenderer = createRenderer(() => {
     const element = getElement<StepElementData>();
 
     const { funnelSubmissionVm } = useContainer();
+
+    useEffect(() => {
+        funnelSubmissionVm.evaluateConditionRulesForActiveStep()
+    }, []);
+
     if (funnelSubmissionVm.activeStepId !== element.data.step.id) {
         return null;
     }

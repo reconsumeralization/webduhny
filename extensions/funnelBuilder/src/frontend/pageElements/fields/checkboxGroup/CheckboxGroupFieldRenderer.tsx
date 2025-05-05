@@ -5,7 +5,7 @@ import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
-import { createFieldRenderer } from "../utils";
+import { createFieldRenderer } from "../createFieldRenderer";
 import { CheckboxGroupField } from "../../../../shared/models/fields/CheckboxGroupField";
 
 export const CheckboxGroup = styled.div`
@@ -37,23 +37,6 @@ export const CheckboxButton = styled.input`
     & + label {
         margin-left: 10px;
         padding-top: 2px;
-    }
-`;
-
-export const StyledInput = styled.input`
-    border: 1px solid ${props => props.theme.styles.colors["color5"]};
-    background-color: ${props => props.theme.styles.colors["color5"]};
-    width: 100%;
-    padding: 10px;
-    border-radius: ${props => props.theme.styles.borderRadius};
-    box-sizing: border-box;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    ${props => props.theme.styles.typography.paragraphs.stylesById("paragraph1")};
-
-    &:focus {
-        border-color: ${props => props.theme.styles.colors["color2"]};
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        outline: none;
     }
 `;
 
@@ -89,24 +72,22 @@ const checked = ({ option, value }: CheckedParams) => {
 };
 
 export const CheckboxGroupFieldRenderer = createFieldRenderer<CheckboxGroupField>(props => {
-    const { definition: field } = props.field;
-
-    const validators = useMemo(() => {
-        return field.validators.map(validator => validator.validate.bind(validator));
-    }, [field.validators]);
-
-    const { validation, value, onChange } = useBind({
-        name: field.fieldId,
-        validators
-    });
+    const {
+        validation,
+        value,
+        onChange,
+        isDisabled,
+        field: { definition: field }
+    } = props;
 
     return (
-        <Field>
+        <Field disabled={isDisabled}>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             {(field.extra.options || []).map((option: any) => (
                 <CheckboxGroup key={option.value}>
                     <CheckboxButton
+                        disabled={isDisabled}
                         name={field.fieldId}
                         type="checkbox"
                         id={"checkbox-" + field.fieldId + option.value}

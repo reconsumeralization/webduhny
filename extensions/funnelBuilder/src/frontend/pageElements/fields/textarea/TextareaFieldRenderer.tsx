@@ -1,11 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import styled from "@emotion/styled";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";
 import { Field } from "../components/Field";
-import { useBind } from "@webiny/form";
-import { createFieldRenderer } from "../utils";
+import { createFieldRenderer } from "../createFieldRenderer";
 import { TextareaField } from "../../../../shared/models/fields/TextareaField";
 
 const StyledTextarea = styled.textarea`
@@ -23,42 +22,33 @@ const StyledTextarea = styled.textarea`
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         outline: none;
     }
-    
-    &:disabled {
-        opacity: 0.75;
-        cursor: not-allowed;
-    }
 `;
 
 export const TextareaFieldRenderer = createFieldRenderer<TextareaField>(props => {
-    const { definition: field } = props.field;
+    const {
+        validate,
+        validation,
+        value,
+        onChange,
+        isDisabled,
+        field: { definition: field }
+    } = props;
 
-    const validators = useMemo(() => {
-        return field.validators.map(validator => validator.validate.bind(validator));
-    }, [field.validators]);
-
-    const { validate, validation, value, onChange } = useBind({
-        name: field.fieldId,
-        validators,
-        defaultValue: field.value.value
-    });
-
-    const onBlur = (ev: React.SyntheticEvent) => {
-        if (validate) {
-            // Since we are accessing event in an async operation, we need to persist it.
-            // See https://reactjs.org/docs/events.html#event-pooling.
+    const onBlur = useCallback(
+        (ev: React.SyntheticEvent) => {
             ev.persist();
             validate();
-        }
-    };
+        },
+        [validate]
+    );
 
     return (
-        <Field>
+        <Field disabled={isDisabled}>
             <FieldLabel field={field} />
             {field.helpText && <FieldHelperMessage>{field.helpText}</FieldHelperMessage>}
             <StyledTextarea
+                disabled={isDisabled}
                 onBlur={onBlur}
-                disabled={props.field.disabled}
                 onChange={e => onChange(e.target.value)}
                 value={value || ""}
                 placeholder={field.extra.placeholderText}

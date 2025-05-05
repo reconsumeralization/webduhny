@@ -39,7 +39,6 @@ export class FunnelFieldDefinitionModel<
 
     // Meta fields.
     supportedValidatorTypes: string[] = [];
-    fieldValueType: string = '';
 
     constructor(dto: FunnelFieldDefinitionModelDto<TValue, TExtra>) {
         this.id = dto.id || getRandomId();

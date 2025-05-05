@@ -9,6 +9,8 @@
 - docs
 - test in CWP
 - <Form<ConditionOperatorParams> key= needed? b/c of changing types?
+- registry.ts - use classes all the time
+- 
 
 - editor
   - prevent deletion of grid in step el

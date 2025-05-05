@@ -33,9 +33,9 @@ describe("Funnel Submissions", () => {
                         value: "",
                         type: "string"
                     },
-                    "extra": {
-                        "placeholderText": "JEBISE",
-                        "rows": "666"
+                    extra: {
+                        placeholderText: "This needs to be a long text.",
+                        rows: "10"
                     }
                 },
                 {
@@ -116,7 +116,7 @@ describe("Funnel Submissions", () => {
                     id: "colors",
                     fieldId: "colors",
                     stepId: "step2",
-                    type: "text",
+                    type: "checkboxGroup",
                     label: "Colors",
                     helpText: "Colors",
                     validators: [
@@ -127,8 +127,7 @@ describe("Funnel Submissions", () => {
                     ],
                     value: {
                         value: [],
-                        array: true,
-                        type: "string"
+                        type: "stringArray"
                     },
                     extra: {
                         options: [
@@ -157,12 +156,10 @@ describe("Funnel Submissions", () => {
                         {
                             id: "action1",
                             type: "disableField",
-                            target: {
-                                type: "field",
-                                id: "lastName"
-                            },
                             params: {
-                                fieldId: "lastName"
+                                extra: {
+                                    targetFieldId: "lastName"
+                                }
                             }
                         }
                     ]
@@ -171,6 +168,13 @@ describe("Funnel Submissions", () => {
         });
 
         const funnelSubmission = new FunnelSubmissionModel(funnel);
+
+        let funnelFinished: boolean = false;
+        funnelSubmission.onFinish(data => {
+            funnelFinished = true;
+        });
+
+        funnelSubmission.start();
 
         funnelSubmission.setData({
             firstName: "",
@@ -289,6 +293,8 @@ describe("Funnel Submissions", () => {
 
         funnelSubmission.submitActiveStep();
 
+        expect(funnelFinished).toBe(true);
+
         const dto = funnelSubmission.toDto();
         expect(dto).toEqual({
             activeStep: "step2",
@@ -296,7 +302,7 @@ describe("Funnel Submissions", () => {
                 colors: {
                     value: {
                         array: true,
-                        type: "string",
+                        type: "stringArray",
                         value: ["red"]
                     }
                 },

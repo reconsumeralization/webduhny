@@ -2,8 +2,8 @@ import { AbstractModel } from "./AbstractModel";
 
 export interface FunnelFieldValueModelDto<TValue = unknown> {
     type: string;
-    value?: TValue;
     array?: boolean;
+    value?: TValue;
 }
 
 export class FunnelFieldValueModel<

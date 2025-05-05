@@ -16,6 +16,10 @@ export interface FunnelEntryValidationResult {
     errors: Record<string, string>;
 }
 
+export type FunnelSubmissionData = Record<string,any>;
+
+export type OnFinishedListener= (data: FunnelSubmissionData) => void | Promise<void>;
+
 export type FunnelSubmissionStepSubmissionResult =
     | {
           success: true;
@@ -32,6 +36,7 @@ export class FunnelSubmissionModel {
     funnel: FunnelModel;
     fields: Record<string, FunnelSubmissionFieldModel>;
     activeStepId: string;
+    private onFinishListeners: Set<OnFinishedListener> = new Set();
 
     constructor(funnel: FunnelModel, funnelSubmissionDto?: FunnelSubmissionModelDto) {
         this.funnel = funnel;
@@ -66,6 +71,23 @@ export class FunnelSubmissionModel {
                 this.fields[key].value.value = data[key];
             }
         });
+    }
+
+    start() {
+        this.evaluateConditionRulesForActiveStep();
+    }
+
+    onFinish(listener: OnFinishedListener) {
+        this.onFinishListeners.add(listener);
+        return () => {
+            this.onFinishListeners.delete(listener);
+        };
+    }
+
+    finish() {
+        for (const listener of this.onFinishListeners) {
+            listener(this.getData());
+        }
     }
 
     getData() {
@@ -115,6 +137,8 @@ export class FunnelSubmissionModel {
         if (!this.isLastStep()) {
             this.activateNextStep();
         }
+
+        this.finish()
 
         return {
             success: true,
@@ -197,7 +221,7 @@ export class FunnelSubmissionModel {
         return createObjectHash(this.toDto());
     }
 
-    evaluateConditionRulesFieldsForActiveStep() {
+    evaluateConditionRulesForActiveStep() {
         // Evaluate condition rules for the active step fields.
         const activeStep = this.getActiveStep();
         if (!activeStep) {
@@ -206,6 +230,8 @@ export class FunnelSubmissionModel {
 
         // Create a new evaluator and get the actions for the active step
         const evaluator = new FunnelConditionRulesEvaluator(this.funnel, this);
-        return evaluator.evaluateForActiveStep();
+
+        // TODO: add method that evaluates conditions that apply actions to active step.
+        return evaluator.evaluate();
     }
 }

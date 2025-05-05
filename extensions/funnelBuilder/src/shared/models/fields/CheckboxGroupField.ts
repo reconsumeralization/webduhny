@@ -7,15 +7,20 @@ export interface CheckboxGroupFieldExtra {
     options: Array<{ value: string; label: string }>;
 }
 
-export type CheckboxGroupFieldDto = FunnelFieldDefinitionModelDto<
-    string,
-    CheckboxGroupFieldExtra
->;
+export type CheckboxGroupFieldDto = FunnelFieldDefinitionModelDto<string[], CheckboxGroupFieldExtra>;
 
 export class CheckboxGroupField extends FunnelFieldDefinitionModel<
-    string,
+    string[],
     CheckboxGroupFieldExtra
 > {
     override supportedValidatorTypes = ["required"];
-    override fieldValueType = "stringArray";
+
+    constructor(dto: FunnelFieldDefinitionModelDto<string[], CheckboxGroupFieldExtra>) {
+        super({
+            ...dto,
+            value: { type: "stringArray", array: true, value: dto?.value?.value || [] },
+            type: "checkboxGroup",
+            extra: dto.extra || { options: [] }
+        });
+    }
 }
