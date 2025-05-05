@@ -102,11 +102,15 @@ class FolderLevelPermissionsStorageOperations
             });
 
             if (!entry) {
-                throw new WebinyError("Could not find folder level permission.", "GET_FLP_ERROR", {
-                    tenant,
-                    locale,
-                    id
-                });
+                throw new WebinyError(
+                    "Could not find folder level permission.",
+                    "GET_FLP_NOT_FOUND_ERROR",
+                    {
+                        tenant,
+                        locale,
+                        id
+                    }
+                );
             }
 
             return entry?.data || null;

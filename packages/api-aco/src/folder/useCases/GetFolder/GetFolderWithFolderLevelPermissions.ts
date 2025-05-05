@@ -17,7 +17,10 @@ export class GetFolderWithFolderLevelPermissions implements IGetFolder {
         const flp = await this.folderLevelPermissions.getFolderLevelPermission(folder.id);
 
         // Let's check if the current user has read access level.
-        const canAccessFolder = await this.folderLevelPermissions.canReadFolder(flp);
+        const canAccessFolder = await this.folderLevelPermissions.canAccessFolder({
+            flp,
+            rwd: "r"
+        });
 
         if (!canAccessFolder) {
             throw new NotAuthorizedError();

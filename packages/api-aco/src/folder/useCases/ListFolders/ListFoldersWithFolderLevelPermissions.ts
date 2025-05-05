@@ -47,7 +47,10 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
                     return null;
                 }
 
-                const canAccessFolder = await this.folderLevelPermissions.canReadFolder(flp);
+                const canAccessFolder = await this.folderLevelPermissions.canAccessFolder({
+                    flp,
+                    rwd: "r"
+                });
 
                 if (!canAccessFolder) {
                     return null;

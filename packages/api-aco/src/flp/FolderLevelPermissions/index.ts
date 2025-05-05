@@ -114,10 +114,6 @@ export class FolderLevelPermissions {
         }
     }
 
-    public async canReadFolder(flp: FolderLevelPermission) {
-        return await this.canAccessFolder({ flp, rwd: "r" });
-    }
-
     public async canManageFolderContent(flp: FolderLevelPermission) {
         if (!this.canUseFolderLevelPermissions() || !this.isAuthorizationEnabledGateway.execute()) {
             return true;
