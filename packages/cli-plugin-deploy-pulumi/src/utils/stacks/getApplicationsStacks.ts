@@ -52,11 +52,6 @@ export const getApplicationsStacks = (params: IGetStacksParams): IApplicationSta
                 const { env, variant } = splitStackName(part);
 
                 if (variants && variant && !variants.includes(variant)) {
-                    console.log({
-                        env,
-                        variants,
-                        variant
-                    });
                     return null;
                 }
 
