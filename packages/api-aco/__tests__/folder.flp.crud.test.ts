@@ -527,10 +527,10 @@ describe("Folder Level Permissions", () => {
                     {
                         target: "admin:2",
                         level: "public",
-                        inheritedFrom: null
+                        inheritedFrom: "public"
                     }
                 ],
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 canManagePermissions: false
             },
             {
@@ -540,10 +540,10 @@ describe("Folder Level Permissions", () => {
                     {
                         target: "admin:2",
                         level: "public",
-                        inheritedFrom: null
+                        inheritedFrom: "public"
                     }
                 ],
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 canManagePermissions: false
             }
         ]);

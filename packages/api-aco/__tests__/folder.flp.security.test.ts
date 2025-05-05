@@ -70,14 +70,14 @@ describe("Folder Level Permissions - Security Checks", () => {
                 parentId: null,
                 permissions: [
                     {
-                        inheritedFrom: null,
+                        inheritedFrom: "public",
                         level: "public",
                         target: "admin:2"
                     }
                 ],
                 canManageStructure: true,
                 canManagePermissions: false,
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 slug: "folder-1"
             },
             {
@@ -85,14 +85,14 @@ describe("Folder Level Permissions - Security Checks", () => {
                 parentId: null,
                 permissions: [
                     {
-                        inheritedFrom: null,
+                        inheritedFrom: "public",
                         level: "public",
                         target: "admin:2"
                     }
                 ],
                 canManageStructure: true,
                 canManagePermissions: false,
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 slug: "folder-2"
             },
             {
@@ -100,14 +100,14 @@ describe("Folder Level Permissions - Security Checks", () => {
                 parentId: null,
                 permissions: [
                     {
-                        inheritedFrom: null,
+                        inheritedFrom: "public",
                         level: "public",
                         target: "admin:2"
                     }
                 ],
                 canManageStructure: true,
                 canManagePermissions: false,
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 slug: "folder-3"
             },
             {
@@ -115,14 +115,14 @@ describe("Folder Level Permissions - Security Checks", () => {
                 parentId: null,
                 permissions: [
                     {
-                        inheritedFrom: null,
+                        inheritedFrom: "public",
                         level: "public",
                         target: "admin:2"
                     }
                 ],
                 canManageStructure: true,
                 canManagePermissions: false,
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 slug: "folder-4"
             }
         ]);
@@ -273,12 +273,12 @@ describe("Folder Level Permissions - Security Checks", () => {
             })
         ).resolves.toMatchObject({
             canManagePermissions: false,
-            hasNonInheritedPermissions: true,
+            hasNonInheritedPermissions: false,
             id: folderA.id,
             parentId: null,
             permissions: [
                 {
-                    inheritedFrom: null,
+                    inheritedFrom: "public",
                     level: "public",
                     target: "admin:2"
                 }
@@ -475,12 +475,12 @@ describe("Folder Level Permissions - Security Checks", () => {
                 canManagePermissions: false,
                 canManageStructure: true,
                 canManageContent: true,
-                hasNonInheritedPermissions: true,
+                hasNonInheritedPermissions: false,
                 permissions: [
                     {
                         target: "admin:2",
                         level: "public",
-                        inheritedFrom: null
+                        inheritedFrom: "public"
                     }
                 ]
             }

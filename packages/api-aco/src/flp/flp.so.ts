@@ -204,23 +204,23 @@ class FolderLevelPermissionsStorageOperations
 
             const updatedItems: FolderLevelPermission[] = [];
 
-            for (const { original, data } of items) {
-                const keys = {
-                    ...this.createKeys(original),
-                    ...this.createGsiKeys(original)
+            for (const { original, data: inputData } of items) {
+                const data = {
+                    ...original,
+                    ...inputData
                 };
 
-                const updatedData = {
-                    ...original,
-                    ...data
+                const keys = {
+                    ...this.createKeys(data),
+                    ...this.createGsiKeys(data)
                 };
 
                 batch.put({
                     ...keys,
-                    data: updatedData
+                    data
                 });
 
-                updatedItems.push(updatedData);
+                updatedItems.push(data);
             }
 
             await executeWithRetry(async () => {
