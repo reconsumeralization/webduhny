@@ -17,7 +17,6 @@ export class DeleteFlp {
                     { folder }
                 );
             }
-
             await this.context.aco.flp.delete(folder.id);
         } catch (error) {
             throw WebinyError.from(error, {

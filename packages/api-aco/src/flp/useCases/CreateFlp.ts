@@ -22,10 +22,17 @@ export class CreateFlp {
             }
 
             const { id, type, slug, parentId, permissions } = folder;
-            let parentFlp: IFolderLevelPermission | undefined = undefined;
+            let parentFlp: IFolderLevelPermission | null = null;
 
             if (parentId) {
                 parentFlp = await this.context.aco.flp.get(parentId);
+
+                if (!parentFlp) {
+                    throw new WebinyError(
+                        "Parent folder level permission not found. Unable to create a new record in the FLP catalog.",
+                        "ERROR_CREATE_FLP_USE_CASE_PARENT_FLP_NOT_FOUND"
+                    );
+                }
             }
 
             await this.context.aco.flp.create({

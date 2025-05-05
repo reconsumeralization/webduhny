@@ -12,9 +12,9 @@ export class DeleteFolderWithFolderLevelPermissions implements IDeleteFolder {
     }
 
     async execute(params: DeleteFolderParams) {
-        const flp = await this.folderLevelPermissions.getFolderLevelPermission(params.id);
+        const permissions = await this.folderLevelPermissions.getFolderLevelPermissions(params.id);
         await this.folderLevelPermissions.ensureCanAccessFolder({
-            flp,
+            permissions,
             rwd: "d"
         });
         await this.decoretee.execute(params);

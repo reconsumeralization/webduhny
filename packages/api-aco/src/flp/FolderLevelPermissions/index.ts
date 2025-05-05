@@ -49,7 +49,6 @@ export class FolderLevelPermissions {
 
     constructor(params: CreateFolderLevelPermissionsParams) {
         this.crud = params.crud;
-
         this.getWcpGateway = new GetWcpGatewayFromContext(params.context);
         this.getIdentityGateway = new GetIdentityGatewayFromContext(params.context);
         this.listPermissionsGateway = new ListPermissionsGatewayFromContext(params.context);
@@ -119,7 +118,7 @@ export class FolderLevelPermissions {
             return true;
         }
 
-        return await this.canAccessFolderContent({ flp, rwd: "w" });
+        return await this.canAccessFolderContent({ permissions: flp.permissions, rwd: "w" });
     }
 
     public async canManageFolderStructure(flp: FolderLevelPermission) {
@@ -127,7 +126,7 @@ export class FolderLevelPermissions {
             return true;
         }
 
-        return await this.canAccessFolder({ flp, rwd: "w" });
+        return await this.canAccessFolder({ permissions: flp.permissions, rwd: "w" });
     }
 
     public async canManageFolderPermissions(flp: FolderLevelPermission) {
@@ -139,7 +138,11 @@ export class FolderLevelPermissions {
             return true;
         }
 
-        return await this.canAccessFolder({ flp, rwd: "w", managePermissions: true });
+        return await this.canAccessFolder({
+            permissions: flp.permissions,
+            rwd: "w",
+            managePermissions: true
+        });
     }
 
     public getDefaultPermissions(permissions: FolderPermission[]) {
@@ -167,19 +170,15 @@ export class FolderLevelPermissions {
 
         return Promise.all(
             flps.map(async flp => ({
-                ...flp,
+                id: flp.id,
                 permissions: await this.getDefaultPermissions(flp.permissions)
             }))
         );
     }
 
-    public async getFolderLevelPermission(id: string) {
+    public async getFolderLevelPermissions(id: string) {
         const getFolderLevelPermissionUseCase = new GetFolderPermission(this.crud.get);
         const flp = await getFolderLevelPermissionUseCase.execute(id);
-
-        return {
-            ...flp,
-            permissions: await this.getDefaultPermissions(flp.permissions)
-        };
+        return await this.getDefaultPermissions(flp?.permissions ?? []);
     }
 }

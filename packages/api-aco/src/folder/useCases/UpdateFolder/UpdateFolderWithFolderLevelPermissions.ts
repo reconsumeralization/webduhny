@@ -21,11 +21,11 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
     async execute(id: string, params: UpdateFolderParams) {
         const original = await this.getOperation({ id });
-        const originalFlp = await this.folderLevelPermissions.getFolderLevelPermission(id);
+        const originalPermissions = await this.folderLevelPermissions.getFolderLevelPermissions(id);
 
         // Let's ensure current identity's permission allows the update operation.
         await this.folderLevelPermissions.ensureCanAccessFolder({
-            flp: originalFlp,
+            permissions: originalPermissions,
             rwd: "w"
         });
 
@@ -35,10 +35,7 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
 
         // Check if the user still has access to the folder with the provided permissions.
         const stillHasAccess = await this.folderLevelPermissions.canAccessFolder({
-            flp: {
-                ...originalFlp,
-                permissions
-            },
+            permissions,
             rwd: "w"
         });
 
@@ -67,17 +64,14 @@ export class UpdateFolderWithFolderLevelPermissions implements IUpdateFolder {
         // Parent change is not allowed if the user doesn't have access to the new parent.
         if (params.parentId && params.parentId !== original.parentId) {
             try {
-                // Getting the parent folder FLP will throw an error if the user doesn't have access.
-                const parentFlp = await this.folderLevelPermissions.getFolderLevelPermission(
-                    params.parentId
-                );
+                // Getting the parent folder permissions will throw an error if the user doesn't have access.
+                const parentPermissions =
+                    await this.folderLevelPermissions.getFolderLevelPermissions(params.parentId);
 
-                if (parentFlp) {
-                    await this.folderLevelPermissions.ensureCanAccessFolder({
-                        flp: parentFlp,
-                        rwd: "r"
-                    });
-                }
+                await this.folderLevelPermissions.ensureCanAccessFolder({
+                    permissions: parentPermissions,
+                    rwd: "r"
+                });
             } catch (e) {
                 if (e instanceof NotAuthorizedError) {
                     throw new WError(

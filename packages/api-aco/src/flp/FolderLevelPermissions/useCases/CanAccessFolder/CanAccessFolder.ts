@@ -8,9 +8,7 @@ export class CanAccessFolder implements ICanAccessFolder {
         this.getIdentityGateway = getIdentityGateway;
     }
 
-    async execute(params: CanAccessFolderParams) {
-        const permissions = params.flp?.permissions || [];
-
+    async execute({ permissions = [], rwd, managePermissions }: CanAccessFolderParams) {
         if (!permissions.length) {
             return true;
         }
@@ -26,13 +24,13 @@ export class CanAccessFolder implements ICanAccessFolder {
 
         const { level } = currentIdentityPermission;
 
-        if (params.managePermissions) {
+        if (managePermissions) {
             return level === "owner";
         }
 
         // Checking for "write" or "delete" access. Allow only if the
         // user is an owner or the folder is public (no FLP assigned).
-        if (params.rwd !== "r") {
+        if (rwd !== "r") {
             return level === "owner" || level === "public";
         }
 

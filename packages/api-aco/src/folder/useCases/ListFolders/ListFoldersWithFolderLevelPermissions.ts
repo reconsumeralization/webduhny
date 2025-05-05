@@ -1,12 +1,12 @@
 import type { Folder, ListFoldersParams } from "~/folder/folder.types";
 import type { IListFolders } from "./IListFolders";
 import { FolderLevelPermissions } from "~/flp";
-import type { FolderLevelPermission as IFolderLevelPermission } from "~/flp/flp.types";
+import type { FolderPermission } from "~/flp/flp.types";
 import { ROOT_FOLDER } from "~/constants";
 import type { ListMeta } from "~/types";
 
 export class ListFoldersWithFolderLevelPermissions implements IListFolders {
-    private flpCatalog: Map<string, IFolderLevelPermission> = new Map();
+    private flpCatalog: Map<string, FolderPermission[]> = new Map();
     private folderLevelPermissions: FolderLevelPermissions;
     private readonly decoretee: IListFolders;
 
@@ -26,15 +26,16 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
             }
         });
 
-        rootFlps.forEach(flp => this.setFlp(flp.id, flp));
+        rootFlps.forEach(flp => this.setFlp(flp.id, flp.permissions));
 
         // Fetch FLP for folders not already in the catalog.
         await Promise.all(
             folders.map(async folder => {
                 if (!this.hasFlp(folder.id)) {
-                    const currentFolderFlp =
-                        await this.folderLevelPermissions.getFolderLevelPermission(folder.id);
-                    this.setFlp(currentFolderFlp.id, currentFolderFlp);
+                    const permissions = await this.folderLevelPermissions.getFolderLevelPermissions(
+                        folder.id
+                    );
+                    this.setFlp(folder.id, permissions);
                 }
             })
         );
@@ -42,13 +43,13 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
         // Filter folders based on permissions.
         const foldersWithPermissions = await Promise.all(
             folders.map(async folder => {
-                const flp = this.getFlp(folder.id);
-                if (!flp) {
+                const permissions = this.getFlp(folder.id);
+                if (!permissions) {
                     return null;
                 }
 
                 const canAccessFolder = await this.folderLevelPermissions.canAccessFolder({
-                    flp,
+                    permissions,
                     rwd: "r"
                 });
 
@@ -56,7 +57,7 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
                     return null;
                 }
 
-                const folderWithFlp = { ...folder, permissions: flp.permissions };
+                const folderWithFlp = { ...folder, permissions };
                 return canAccessFolder ? folderWithFlp : null;
             })
         );
@@ -72,7 +73,7 @@ export class ListFoldersWithFolderLevelPermissions implements IListFolders {
         return this.flpCatalog.get(id);
     }
 
-    private setFlp(id: string, flp: IFolderLevelPermission) {
-        this.flpCatalog.set(id, flp);
+    private setFlp(id: string, permissions: FolderPermission[]) {
+        this.flpCatalog.set(id, permissions);
     }
 }

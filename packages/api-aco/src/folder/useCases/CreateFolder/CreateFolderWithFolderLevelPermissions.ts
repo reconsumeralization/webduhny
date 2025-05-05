@@ -2,7 +2,6 @@ import type { ICreateFolder } from "./ICreateFolder";
 import type { CreateFolderParams } from "~/folder/folder.types";
 import { NotAuthorizedError } from "@webiny/api-security";
 import { FolderLevelPermissions } from "~/flp";
-import WError from "@webiny/error";
 
 export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
     private folderLevelPermissions: FolderLevelPermissions;
@@ -16,22 +15,11 @@ export class CreateFolderWithFolderLevelPermissions implements ICreateFolder {
     async execute(params: CreateFolderParams) {
         let canCreateFolder: boolean;
         if (params.parentId) {
-            const parentFlp = await this.folderLevelPermissions.getFolderLevelPermission(
+            const permissions = await this.folderLevelPermissions.getFolderLevelPermissions(
                 params.parentId
             );
-
-            if (!parentFlp) {
-                throw new WError(
-                    "Failed to retrieve folder level permissions (FLP) for the specified folder.",
-                    "CREATE_FOLDER_WITH_FLP_ERROR",
-                    {
-                        params
-                    }
-                );
-            }
-
             canCreateFolder = await this.folderLevelPermissions.canAccessFolder({
-                flp: parentFlp,
+                permissions,
                 rwd: "w"
             });
         } else {

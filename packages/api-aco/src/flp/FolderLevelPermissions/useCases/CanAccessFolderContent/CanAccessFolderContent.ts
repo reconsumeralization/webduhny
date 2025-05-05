@@ -11,10 +11,8 @@ export class CanAccessFolderContent implements ICanAccessFolderContent {
         this.getIdentityGateway = getIdentityGateway;
     }
 
-    async execute(params: CanAccessFolderContentParams) {
+    async execute({ permissions = [], rwd }: CanAccessFolderContentParams) {
         const identity = this.getIdentityGateway.execute();
-
-        const permissions = params.flp?.permissions || [];
 
         const currentIdentityPermission = permissions.find(p => {
             return p.target === `admin:${identity.id}`;
@@ -26,7 +24,7 @@ export class CanAccessFolderContent implements ICanAccessFolderContent {
 
         // If the user is not an owner and we're checking for "write" or
         // "delete" access, then we can immediately return false.
-        if (params.rwd !== "r") {
+        if (rwd !== "r") {
             const { level } = currentIdentityPermission;
             return level !== "viewer";
         }

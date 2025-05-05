@@ -42,8 +42,10 @@ export class UpdateFlp {
                 );
             }
 
-            const flp = await this.getFlp(folder.id);
-            const parentFlp = folder.parentId ? await this.getFlp(folder.parentId) : null;
+            const flp = await this.getFlp(folder);
+            const parentFlp = folder.parentId
+                ? await this.context.aco.flp.get(folder.parentId)
+                : null;
 
             // Add the root folder to the update collection
             this.flpsToUpdate.set(folder.id, {
@@ -174,8 +176,23 @@ export class UpdateFlp {
         });
     }
 
-    private async getFlp(id: string) {
-        return await this.context.aco.flp.get(id);
+    private async getFlp({ id, type, parentId, slug, permissions }: Folder) {
+        const flp = await this.context.aco.flp.get(id);
+
+        if (!flp) {
+            const parentFlp = parentId ? await this.context.aco.flp.get(parentId) : null;
+
+            return {
+                id,
+                type,
+                slug,
+                parentId: parentId ?? ROOT_FOLDER,
+                path: this.getPath(slug, parentFlp?.path),
+                permissions: Permissions.create(permissions, parentFlp)
+            };
+        }
+
+        return flp;
     }
 
     private getPath(slug: string, parentPath?: string) {

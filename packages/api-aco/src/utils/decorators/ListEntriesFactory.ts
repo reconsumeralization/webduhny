@@ -7,7 +7,7 @@ import {
     type CmsModel
 } from "@webiny/api-headless-cms/types";
 import { hasRootFolderId } from "~/utils/decorators/hasRootFolderId";
-import type { FolderLevelPermission } from "~/flp/flp.types";
+import type { FolderPermission } from "~/flp/flp.types";
 
 interface ListEntriesFactoryCallbackParams {
     decoratee: <T extends CmsEntryValues = CmsEntryValues>(
@@ -20,11 +20,11 @@ interface ListEntriesFactoryCallbackParams {
 
 export class ListEntriesFactory {
     private readonly folderLevelPermissions: FolderLevelPermissions;
-    private readonly flpCache: Map<string, any>;
+    private readonly permissionsCache: Map<string, FolderPermission[]>;
 
     constructor(folderLevelPermissions: FolderLevelPermissions) {
         this.folderLevelPermissions = folderLevelPermissions;
-        this.flpCache = new Map();
+        this.permissionsCache = new Map();
     }
 
     public async execute({
@@ -69,11 +69,11 @@ export class ListEntriesFactory {
                     continue;
                 }
 
-                const flp = await this.getFolderLevelPermission(folderId);
+                const permissions = await this.getPermissions(folderId);
 
                 // If no FLP exists for the folder, the entry is accessible
                 // This means the folder doesn't have any permission restrictions
-                if (!flp) {
+                if (!permissions.length) {
                     resultEntries.push(entry);
                     continue;
                 }
@@ -81,7 +81,7 @@ export class ListEntriesFactory {
                 // Check if user has read permission for the folder
                 if (
                     await this.folderLevelPermissions.canAccessFolderContent({
-                        flp,
+                        permissions,
                         rwd: "r"
                     })
                 ) {
@@ -104,24 +104,13 @@ export class ListEntriesFactory {
         return [resultEntries, { totalCount, hasMoreItems, cursor } as CmsEntryMeta];
     }
 
-    private async getFolderLevelPermission(
-        folderId: string
-    ): Promise<FolderLevelPermission | null> {
-        try {
-            if (this.flpCache.has(folderId)) {
-                return this.flpCache.get(folderId);
-            }
-
-            const flp = await this.folderLevelPermissions.getFolderLevelPermission(folderId);
-            this.flpCache.set(folderId, flp);
-            return flp;
-        } catch (error) {
-            // Handle case where permission doesn't exist
-            if (error.code === "GET_FLP_NOT_FOUND_ERROR") {
-                return null;
-            }
-
-            throw error;
+    private async getPermissions(folderId: string): Promise<FolderPermission[]> {
+        if (this.permissionsCache.has(folderId)) {
+            return this.permissionsCache.get(folderId) ?? [];
         }
+
+        const permissions = await this.folderLevelPermissions.getFolderLevelPermissions(folderId);
+        this.permissionsCache.set(folderId, permissions);
+        return permissions;
     }
 }

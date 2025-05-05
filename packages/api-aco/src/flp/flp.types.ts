@@ -11,8 +11,6 @@ export interface FolderPermission {
 }
 
 export interface FolderLevelPermission {
-    tenant: string;
-    locale: string;
     id: string;
     parentId: string;
     slug: string;
@@ -90,7 +88,7 @@ export interface OnFlpBatchAfterUpdateTopicParams {
 
 export interface AcoFolderLevelPermissionsCrud {
     list(params: ListFlpsParams): Promise<FolderLevelPermission[]>;
-    get(id: string): Promise<FolderLevelPermission>;
+    get(id: string): Promise<FolderLevelPermission | null>;
     create(params: CreateFlpParams): Promise<FolderLevelPermission>;
     update(id: string, data: UpdateFlpParams): Promise<FolderLevelPermission>;
     delete(id: string): Promise<boolean>;
@@ -119,34 +117,46 @@ export interface StorageOperationsListFlpsParams {
 }
 
 export interface StorageOperationsGetFlpParams {
+    id: string;
     tenant: string;
     locale: string;
-    id: string;
 }
 
 export type StorageOperationsCreateFlpParams = {
-    data: FolderLevelPermission;
+    data: FolderLevelPermission & {
+        tenant: string;
+        locale: string;
+    };
 };
 
 export type StorageOperationsUpdateFlpParams = {
     original: FolderLevelPermission;
-    data: UpdateFlpParams;
+    data: UpdateFlpParams & {
+        tenant: string;
+        locale: string;
+    };
 };
 
 export type StorageOperationsDeleteFlpParams = {
-    flp: FolderLevelPermission;
+    flp: FolderLevelPermission & {
+        tenant: string;
+        locale: string;
+    };
 };
 
 export interface StorageOperationsBatchUpdateFlpParams {
     items: Array<{
         original: FolderLevelPermission;
-        data: UpdateFlpParams;
+        data: UpdateFlpParams & {
+            tenant: string;
+            locale: string;
+        };
     }>;
 }
 
 export interface AcoFolderLevelPermissionsStorageOperations {
     list(params: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]>;
-    get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission>;
+    get(params: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null>;
     create(params: StorageOperationsCreateFlpParams): Promise<FolderLevelPermission>;
     update(params: StorageOperationsUpdateFlpParams): Promise<FolderLevelPermission>;
     delete(params: StorageOperationsDeleteFlpParams): Promise<void>;
@@ -175,3 +185,10 @@ export interface IDeleteFlpTaskInput {
 }
 
 export type IDeleteFlpTaskParams = ITaskRunParams<AcoContext, IDeleteFlpTaskInput>;
+
+export interface ISyncFlpTaskInput {
+    type: string;
+    folderId?: string;
+}
+
+export type ISyncFlpTaskParams = ITaskRunParams<AcoContext, ISyncFlpTaskInput>;

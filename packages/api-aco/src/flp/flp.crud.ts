@@ -15,6 +15,7 @@ import {
     type OnFlpBatchAfterUpdateTopicParams,
     type UpdateFlpParams
 } from "~/types";
+import { WebinyError } from "@webiny/error";
 
 export interface CreateFlpCrudMethodsParams {
     getLocale: () => I18NLocale;
@@ -63,27 +64,52 @@ export const createFlpCrudMethods = ({
         },
         async update(id: string, data: UpdateFlpParams) {
             const original = await this.get(id);
+            if (!original) {
+                throw new WebinyError(
+                    `Folder level permission with id "${id}" not found.`,
+                    "GET_ITEM_UPDATE_FLP_ERROR",
+                    {
+                        id,
+                        data
+                    }
+                );
+            }
             await onFlpBeforeUpdate.publish({ original, input: { id, data } });
-            const flp = await storageOperations.flp.update({ original, data });
+            const flp = await storageOperations.flp.update({
+                original,
+                data: {
+                    ...data,
+                    tenant: getTenant().id,
+                    locale: getLocale().code
+                }
+            });
             await onFlpAfterUpdate.publish({ original, input: { id, data }, flp });
             return flp;
         },
         async batchUpdate(items: Array<{ id: string; data: UpdateFlpParams }>) {
-            // First get all original items
-            const originals = await Promise.all(
-                items.map(async ({ id }) => {
-                    const original = await this.get(id);
-                    return { id, original };
-                })
-            );
+            const batchItems = (
+                await Promise.all(
+                    items.map(async ({ id, data }) => {
+                        const original = await this.get(id);
+                        if (!original) {
+                            return null;
+                        }
+                        return {
+                            original,
+                            data: {
+                                ...data,
+                                tenant: getTenant().id,
+                                locale: getLocale().code
+                            }
+                        };
+                    })
+                )
+            ).filter((item): item is NonNullable<typeof item> => item !== null);
 
-            // Prepare items for batch update
-            const batchItems = originals.map(({ id, original }) => ({
-                original,
-                data: items.find(item => item.id === id)!.data
-            }));
+            if (batchItems.length === 0) {
+                return [];
+            }
 
-            // Publish before update event
             await onFlpBatchBeforeUpdate.publish({
                 items: batchItems.map(({ original, data }) => ({
                     original,
@@ -91,12 +117,10 @@ export const createFlpCrudMethods = ({
                 }))
             });
 
-            // Execute batch update
             const updatedItems = await storageOperations.flp.batchUpdate({
                 items: batchItems
             });
 
-            // Publish after update event
             await onFlpBatchAfterUpdate.publish({
                 items: batchItems.map(({ original }, index) => ({
                     original,
@@ -109,8 +133,23 @@ export const createFlpCrudMethods = ({
         },
         async delete(id: string) {
             const flp = await this.get(id);
+            if (!flp) {
+                throw new WebinyError(
+                    `Folder level permission with id "${id}" not found.`,
+                    "GET_ITEM_DELETE_FLP_ERROR",
+                    {
+                        id
+                    }
+                );
+            }
             await onFlpBeforeDelete.publish({ flp });
-            await storageOperations.flp.delete({ flp });
+            await storageOperations.flp.delete({
+                flp: {
+                    ...flp,
+                    tenant: getTenant().id,
+                    locale: getLocale().code
+                }
+            });
             await onFlpAfterDelete.publish({ flp });
             return true;
         },

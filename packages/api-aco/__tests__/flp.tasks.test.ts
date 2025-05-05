@@ -104,7 +104,7 @@ describe("Folder Level Permissions -  CREATE FLP", () => {
         };
 
         await expect(createFlp.execute(folder as unknown as Folder)).rejects.toThrow(
-            "Could not find folder level permission."
+            "Parent folder level permission not found. Unable to create a new record in the FLP catalog."
         );
     });
 });
@@ -141,9 +141,8 @@ describe("Folder Level Permissions -  DELETE FLP", () => {
         await createFlp.execute(folder as unknown as Folder);
         await deleteFlp.execute(folder as unknown as Folder);
 
-        await expect(context.aco.flp.get("folder1")).rejects.toThrow(
-            "Could not find folder level permission."
-        );
+        const flp = await context.aco.flp.get(folder.id);
+        await expect(flp).toBeNull();
     });
 });
 
@@ -406,13 +405,15 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
 
         // Verify that only 3 folders were updated
         const parentFlp = await context.aco.flp.get(parentFolder.id);
-        expect(parentFlp.permissions).toHaveLength(1);
+        expect(parentFlp?.permissions).toHaveLength(1);
 
         // Check that some children were updated and some weren't
         let updatedChildren = 0;
         for (let i = 0; i < 5; i++) {
-            const childFlp = await context.aco.flp.get(`child-folder-${i}`);
-            if (childFlp.permissions.length > 0) {
+            const { permissions } = (await context.aco.flp.get(`child-folder-${i}`)) ?? {
+                permissions: []
+            };
+            if (permissions.length > 0) {
                 updatedChildren++;
             }
         }
@@ -527,52 +528,62 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
         // Verify all folders have inherited main permissions
         // Verify main folder has its own permissions
         const mainFlp = await context.aco.flp.get(mainFolder.id);
-        expect(mainFlp.permissions).toMatchObject([
-            {
-                target: "admin:user1",
-                level: "read"
-            }
-        ]);
+        expect(mainFlp).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:user1",
+                    level: "read"
+                }
+            ]
+        });
 
         // Verify branch1 inherited permissions from main
         const branch1Flp1 = await context.aco.flp.get(branch1.id);
-        expect(branch1Flp1.permissions).toMatchObject([
-            {
-                target: "admin:user1",
-                level: "read",
-                inheritedFrom: `parent:${mainFolder.id}`
-            }
-        ]);
+        expect(branch1Flp1).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:user1",
+                    level: "read",
+                    inheritedFrom: `parent:${mainFolder.id}`
+                }
+            ]
+        });
 
         // Verify branch2 inherited permissions from main
         const branch2Flp1 = await context.aco.flp.get(branch2.id);
-        expect(branch2Flp1.permissions).toMatchObject([
-            {
-                target: "admin:user1",
-                level: "read",
-                inheritedFrom: `parent:${mainFolder.id}`
-            }
-        ]);
+        expect(branch2Flp1).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:user1",
+                    level: "read",
+                    inheritedFrom: `parent:${mainFolder.id}`
+                }
+            ]
+        });
 
         // Verify branch1 subfolder inherited permissions from branch1
         const branch1SubFlp1 = await context.aco.flp.get(branch1Subfolder.id);
-        expect(branch1SubFlp1.permissions).toMatchObject([
-            {
-                target: "admin:user1",
-                level: "read",
-                inheritedFrom: `parent:${branch1Flp1.id}`
-            }
-        ]);
+        expect(branch1SubFlp1).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:user1",
+                    level: "read",
+                    inheritedFrom: `parent:branch1`
+                }
+            ]
+        });
 
         // Verify branch2 subfolder inherited permissions from branch2
         const branch2SubFlp1 = await context.aco.flp.get(branch2Subfolder.id);
-        expect(branch2SubFlp1.permissions).toMatchObject([
-            {
-                target: "admin:user1",
-                level: "read",
-                inheritedFrom: `parent:${branch2Flp1.id}`
-            }
-        ]);
+        expect(branch2SubFlp1).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:user1",
+                    level: "read",
+                    inheritedFrom: `parent:branch2`
+                }
+            ]
+        });
 
         // Update branch1 with its own permissions
         const updatedBranch1 = {

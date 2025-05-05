@@ -30,6 +30,21 @@ interface CreateEntityParams {
     name: string;
 }
 
+interface CreateKeysParams {
+    tenant: string;
+    locale: string;
+    id: string;
+}
+
+interface CreateGsiKeysParams {
+    tenant: string;
+    locale: string;
+    id: string;
+    type: string;
+    path: string;
+    parentId: string;
+}
+
 class FolderLevelPermissionsStorageOperations
     implements IAcoFolderLevelPermissionsStorageOperations
 {
@@ -94,7 +109,7 @@ class FolderLevelPermissionsStorageOperations
         tenant,
         locale,
         id
-    }: StorageOperationsGetFlpParams): Promise<FolderLevelPermission> {
+    }: StorageOperationsGetFlpParams): Promise<FolderLevelPermission | null> {
         try {
             const entry = await getClean<{ data: FolderLevelPermission }>({
                 entity: this.entity,
@@ -102,18 +117,10 @@ class FolderLevelPermissionsStorageOperations
             });
 
             if (!entry) {
-                throw new WebinyError(
-                    "Could not find folder level permission.",
-                    "GET_FLP_NOT_FOUND_ERROR",
-                    {
-                        tenant,
-                        locale,
-                        id
-                    }
-                );
+                return null;
             }
 
-            return entry?.data || null;
+            return entry.data;
         } catch (err) {
             throw WebinyError.from(err, {
                 message: "Could not load folder level permission.",
@@ -299,22 +306,12 @@ class FolderLevelPermissionsStorageOperations
         });
     };
 
-    private createKeys = ({
-        id,
-        tenant,
-        locale
-    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale">) => ({
+    private createKeys = ({ id, tenant, locale }: CreateKeysParams) => ({
         PK: `T#${tenant}#L#${locale}#FLP#${id}`,
         SK: `A`
     });
 
-    private createGsiKeys = ({
-        tenant,
-        locale,
-        type,
-        path,
-        parentId
-    }: Pick<FolderLevelPermission, "id" | "tenant" | "locale" | "type" | "path" | "parentId">) => ({
+    private createGsiKeys = ({ tenant, locale, type, path, parentId }: CreateGsiKeysParams) => ({
         GSI1_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
         GSI1_SK: path,
         GSI2_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
