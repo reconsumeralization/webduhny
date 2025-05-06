@@ -8,6 +8,13 @@ import type { DropElementActionArgsType } from "@webiny/app-page-builder/editor/
 import type { EventActionCallable } from "@webiny/app-page-builder/types";
 import { Snackbar } from "@webiny/ui/Snackbar";
 import { useDisclosure } from "../../useDisclosure";
+import {
+    CONTAINER_ELEMENT_ID,
+    isButtonElementType,
+    isContainerElementType,
+    isFieldElementType
+} from "../../../../shared/constants";
+import { ElementTreeTraverser } from "../../ElementTreeTraverser";
 
 export interface Handler {
     name: string;
@@ -20,6 +27,8 @@ export interface Handler {
     }) => Promise<any>;
 }
 
+const DO_NOTHING = { actions: [] };
+
 export const OverrideDropElementActionPlugin = () => {
     const {
         open: showSnackbar,
@@ -30,16 +39,76 @@ export const OverrideDropElementActionPlugin = () => {
 
     return (
         <>
-        <PbEditorOverrideActionHandlerPlugin
-            action={"drop-element"}
-            onEditorMount={handler => {
-                return handler.on(DropElementActionEvent, (async (...params) => {
-                    const [state, , args] = params;
+            <PbEditorOverrideActionHandlerPlugin
+                action={"drop-element"}
+                onEditorMount={handler => {
+                    const traverser = new ElementTreeTraverser();
 
-                    return dropElementAction(...params);
-                }) as EventActionCallable<DropElementActionArgsType>);
-            }}
-        />
+                    return handler.on(DropElementActionEvent, (async (...params) => {
+                        const [state, , args] = params;
+                        if (!args) {
+                            return DO_NOTHING;
+                        }
+
+                        const { target, source } = args;
+
+                        // 1. Handle field drops.
+                        if (isFieldElementType(source.type) || isButtonElementType(source.type)) {
+                            // 1. Check if the field has been droped within the container element.
+                            const containerElement = await state.getElementById(
+                                CONTAINER_ELEMENT_ID
+                            );
+
+                            const containerWithDescendants = await state.getElementTree({
+                                element: containerElement
+                            });
+
+                            let isDroppedWithinContainer = false;
+                            traverser.traverse(containerWithDescendants, element => {
+                                const isTargetElement = element.id === target.id;
+                                if (isTargetElement) {
+                                    // The fact that we found the target within the container
+                                    // tells us that the field was also dropped within it.
+                                    isDroppedWithinContainer = true;
+                                    return false;
+                                }
+
+                                return;
+                            });
+
+                            if (!isDroppedWithinContainer) {
+                                showSnackbar("Cannot drop fields outside of the funnel container.");
+                                return DO_NOTHING;
+                            }
+
+                            // 2. Check if the field has been dropped within the success (last) step.
+                            const lastStepElementWithDescendants = containerWithDescendants.elements[
+                                containerElement.elements.length - 1
+                            ];
+
+                            let isDroppedWithinTheLastStep = false;
+                            traverser.traverse(lastStepElementWithDescendants, element => {
+                                const isTargetElement = element.id === target.id;
+                                if (isTargetElement) {
+                                    // The fact that we found the target within the container
+                                    // tells us that the field was also dropped within it.
+                                    isDroppedWithinTheLastStep = true;
+                                    return false;
+                                }
+
+                                return;
+                            });
+
+                            if (isDroppedWithinTheLastStep) {
+                                showSnackbar("Cannot drop fields within the success page.");
+                                return DO_NOTHING;
+                            }
+                        }
+
+                        return dropElementAction(...params);
+                    }) as EventActionCallable<DropElementActionArgsType>);
+                }}
+            />
             <Snackbar
                 message={snackbarMessage}
                 open={snackbarShown}

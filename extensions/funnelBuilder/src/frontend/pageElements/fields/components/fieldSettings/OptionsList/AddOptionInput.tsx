@@ -1,6 +1,5 @@
 import React from "react";
 import { Input } from "@webiny/ui/Input";
-import trim from "lodash/trim";
 import { BindComponentRenderPropValidation, Form } from "@webiny/form";
 import { FieldOption } from "./types";
 
@@ -46,7 +45,7 @@ export const AddOptionInput = ({
                                         const result = await validate();
                                         if (result !== false) {
                                             onChange("");
-                                            onAdd(trim(value));
+                                            onAdd(value.trim());
                                         }
                                     }
                                 }}

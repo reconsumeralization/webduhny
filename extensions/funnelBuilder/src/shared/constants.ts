@@ -21,6 +21,11 @@ export const isStepElementType = (type?: string) => {
     return type === STEP_ELEMENT_TYPE;
 };
 
+export const isButtonElementType = (type?: string) => {
+    return type === BUTTON_ELEMENT_TYPE;
+};
+
 export const CONTAINER_ELEMENT_TYPE = createElementType("container");
 export const CONTAINER_ELEMENT_ID = createElementType("container");
 export const STEP_ELEMENT_TYPE = createElementType("step");
+export const BUTTON_ELEMENT_TYPE = createElementType("button");

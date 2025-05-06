@@ -8,20 +8,15 @@
 - remove hack (pb elements plugin Pavel discovered)
 - test in CWP
 - docs
-- deps updates
-- snackbars in action overrides
 
 #### Editor
-  - can't delete field if mentioned in con rules
   - edit field dialog reopening?
   - prevent parent block deletion
   - moving steps needed
   - deleting steps - delete all children within it
   - when adding tab, should be activated immediately
   - deleting a step if focused causes a blank canvas
-  - ======> missing form comp in hiearchy - ensure fields can only be dropped within container
   - esc doesn't work on dialogs sometimes (if not focused correctly)
-  - can't drop fields into success page
   - added a step, pressed undo, and tabs at the top did not update :|
 
 ## SH

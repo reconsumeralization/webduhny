@@ -11,7 +11,6 @@ import { useDisclosure } from "../../useDisclosure";
 import { ElementTreeTraverser } from "../../ElementTreeTraverser";
 import {
     CONTAINER_ELEMENT_ID,
-    CONTAINER_ELEMENT_TYPE,
     isContainerElementType,
     isFieldElementType,
     isStepElementType
@@ -63,6 +62,8 @@ export const OverrideDeleteElementActionPlugin = () => {
                             const containerElement = await state.getElementById(
                                 CONTAINER_ELEMENT_ID
                             );
+
+                            // A bit primitive check, but it works.
                             const conditionRulesJsonString = JSON.stringify(
                                 containerElement.data.conditionRules
                             );
@@ -73,6 +74,8 @@ export const OverrideDeleteElementActionPlugin = () => {
                                 );
                                 return DO_NOTHING;
                             }
+
+                            // TODO: update FIELDS IN CONTAINER!!!!
 
                             return deleteElementAction(...params);
                         }
@@ -100,7 +103,6 @@ export const OverrideDeleteElementActionPlugin = () => {
                             return;
                         });
 
-                        console.log('preventDeletion', preventDeletion)
                         if (preventDeletion) {
                             showSnackbar(message);
                             return DO_NOTHING;

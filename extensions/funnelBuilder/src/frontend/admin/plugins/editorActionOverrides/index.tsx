@@ -5,8 +5,8 @@ import { OverrideDeleteElementActionPlugin } from "./OverrideDeleteElementAction
 export const PbEditorOverrideEventActionPlugins = () => {
     return (
         <>
-            <OverrideDropElementActionPlugin />
             <OverrideDeleteElementActionPlugin/>
+            <OverrideDropElementActionPlugin />
         </>
     );
 };
