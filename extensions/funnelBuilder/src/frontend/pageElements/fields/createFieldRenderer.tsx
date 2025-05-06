@@ -6,8 +6,11 @@ import { FunnelSubmissionFieldModel } from "../../../shared/models/FunnelSubmiss
 import { FunnelFieldDefinitionModel } from "../../../shared/models/FunnelFieldDefinitionModel";
 import { FormComponentProps, useBind } from "@webiny/form";
 
-const NotWithinFunnelBuilderContainer = styled.div`
+const Error = styled.div`
     padding: 12px;
+    strong {
+        font-weight: 600;
+    }
 `;
 
 export interface FieldRendererProps<
@@ -29,22 +32,19 @@ export const createFieldRenderer = <
 
         const { funnelSubmissionVm } = useContainer();
 
-        if (!funnelSubmissionVm || !funnelSubmissionVm.fieldExists(element.data.fieldId)) {
-            return (
-                <NotWithinFunnelBuilderContainer>
-                    Field not located within the Funnel Builder container.
-                </NotWithinFunnelBuilderContainer>
-            );
+        if (!funnelSubmissionVm) {
+            return <Error>Field not located within the Funnel Builder container.</Error>;
         }
 
         const field = funnelSubmissionVm.getField(element.data.fieldId);
+        if (!field) {
+            return <Error>Field <strong>{element.data.fieldId}</strong> not found in the funnel.</Error>;
+        }
 
         const { validate, validation, value, onChange } = useBind({
             name: field.definition.fieldId,
-            validators: field.definition.validators.map(validator =>
-                validator.validate.bind(validator)
-            ),
-            defaultValue: field.value.value
+            validators: field.ensureValid.bind(field),
+            defaultValue: field.getRawValue()
         });
 
         if (field.hidden) {

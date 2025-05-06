@@ -112,4 +112,11 @@ export class FunnelSubmissionFieldModel<
             errorMessage: null
         };
     }
+
+    async ensureValid() {
+        const result = await this.validate();
+        if (!result.isValid) {
+            throw new Error(result.errorMessage);
+        }
+    }
 }
