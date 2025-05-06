@@ -10,8 +10,6 @@ export const useStepsActions = () => {
 
     const deleteStep = useCallback(
         (containerElementWithChildren: ContainerElementWithChildren, stepId: string) => {
-            console.log("containerElementWithChildren", containerElementWithChildren);
-            console.log("stepId", stepId);
             updateElement(
                 {
                     ...containerElementWithChildren,
@@ -38,18 +36,27 @@ export const useStepsActions = () => {
                 title: "New Page"
             };
 
+            // We insert the step before the last one. We always keep the last step as
+            // the last one because that's the success page step.
+            const lastStepIndex = containerElementWithChildren.data.steps.length - 1;
+
             updateElement(
                 {
                     ...containerElementWithChildren,
                     data: {
                         ...containerElementWithChildren.data,
-                        steps: [...containerElementWithChildren.data.steps, initialStepData]
+                        steps: [
+                            ...containerElementWithChildren.data.steps.slice(0, lastStepIndex),
+                            initialStepData,
+                            ...containerElementWithChildren.data.steps.slice(lastStepIndex)
+                        ]
                     },
 
                     // @ts-ignore Incompatible types. Ignoring for now.
                     elements: [
-                        ...containerElementWithChildren.elements,
-                        createStepElement(initialStepData)
+                        ...containerElementWithChildren.elements.slice(0, lastStepIndex),
+                        createStepElement(initialStepData),
+                        ...containerElementWithChildren.elements.slice(lastStepIndex)
                     ]
                 },
                 { history: false }

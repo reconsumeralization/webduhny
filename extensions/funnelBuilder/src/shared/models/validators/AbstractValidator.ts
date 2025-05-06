@@ -36,12 +36,12 @@ export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
         return { type: this.type, params: this.params };
     }
 
-    validate(value: any) {
-        const isValid = this.isValid(value);
+    async validate(value: any): Promise<void> {
+        const isValid = await this.isValid(value);
         if (!isValid) {
             throw new Error(this.getErrorMessage());
         }
     }
 
-    abstract isValid(value: FunnelFieldValueModel): boolean;
+    abstract isValid(value: FunnelFieldValueModel): boolean | Promise<boolean>;
 }

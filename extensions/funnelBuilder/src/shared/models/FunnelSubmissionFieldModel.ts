@@ -60,6 +60,10 @@ export class FunnelSubmissionFieldModel<
     }
 
     getValue() {
+        return this.value;
+    }
+
+    getRawValue() {
         return this.value.value;
     }
 
@@ -75,7 +79,7 @@ export class FunnelSubmissionFieldModel<
         return actions.some(
             action =>
                 action.type === DisableFieldConditionAction.type &&
-                action.params.extra.targetFieldId === this.definition.fieldId
+                action.params.extra.targetFieldId === this.definition.id
         );
     }
 
@@ -87,14 +91,15 @@ export class FunnelSubmissionFieldModel<
         return actions.some(
             action =>
                 action.type === HideFieldConditionAction.type &&
-                action.params.extra.targetFieldId === this.definition.fieldId
+                action.params.extra.targetFieldId === this.definition.id
         );
     }
 
-    validate(): FunnelSubmissionFieldValidationResult {
+    async validate(): Promise<FunnelSubmissionFieldValidationResult> {
         const validators = this.definition.validators;
+
         for (const validator of validators) {
-            if (!validator.isValid(this.value)) {
+            if (!(await validator.isValid(this.value))) {
                 return {
                     isValid: false,
                     errorMessage: validator.getErrorMessage()

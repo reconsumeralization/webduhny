@@ -32,7 +32,7 @@ describe("Condition Rules", () => {
                             {
                                 id: "cg1-c1",
                                 sourceFieldId: "lastName",
-                                operator: { id: "eq", params: { extra: { value: "magic" } } }
+                                operator: { type: "eq", params: { extra: { value: "magic" } } }
                             }
                         ]
                     },
@@ -58,12 +58,12 @@ describe("Condition Rules", () => {
         });
 
         submission1.setData({ firstName: "first-name" });
-        submission1.submitActiveStep();
+        await submission1.submitActiveStep();
 
         expect(submission1.getActiveStep().id).toBe("step2");
 
         submission1.setData({ lastName: "magic" });
-        submission1.submitActiveStep();
+        await submission1.submitActiveStep();
 
         expect(submission1.isSuccessStep()).toBe(true);
         expect(submission1Finished).toBe(true);
@@ -75,12 +75,12 @@ describe("Condition Rules", () => {
         });
 
         submission2.setData({ firstName: "first-name" });
-        submission2.submitActiveStep();
+        await submission2.submitActiveStep();
 
         expect(submission2.getActiveStep().id).toBe("step2");
 
         submission2.setData({ lastName: "last-name" });
-        submission2.submitActiveStep();
+        await submission2.submitActiveStep();
 
         expect(submission2.getActiveStep().id).toBe("step3");
         expect(submission2.isSuccessStep()).toBe(false);
@@ -111,7 +111,7 @@ describe("Condition Rules", () => {
                             {
                                 id: "cg1-c1",
                                 sourceFieldId: "lastName",
-                                operator: { id: "eq", params: { extra: { value: "magic" } } }
+                                operator: { type: "eq", params: { extra: { value: "magic" } } }
                             }
                         ]
                     },
@@ -138,12 +138,12 @@ describe("Condition Rules", () => {
         });
 
         submission1.setData({ firstName: "first-name" });
-        submission1.submitActiveStep();
+        await submission1.submitActiveStep();
 
         expect(submission1.getActiveStep().id).toBe("step2");
 
         submission1.setData({ lastName: "magic" });
-        submission1.submitActiveStep();
+        await submission1.submitActiveStep();
 
         expect(submission1.getActiveStep().id).toBe("step4");
         expect(submission1.isSuccessStep()).toBe(false);
@@ -156,12 +156,12 @@ describe("Condition Rules", () => {
         });
 
         submission2.setData({ firstName: "first-name" });
-        submission2.submitActiveStep();
+        await submission2.submitActiveStep();
 
         expect(submission2.getActiveStep().id).toBe("step2");
 
         submission2.setData({ lastName: "last-name" });
-        submission2.submitActiveStep();
+        await submission2.submitActiveStep();
 
         expect(submission2.getActiveStep().id).toBe("step3");
         expect(submission2.isSuccessStep()).toBe(false);

@@ -106,17 +106,19 @@ export const StepsListSection = () => {
                     items={containerElementWithChildren.elements}
                     strategy={verticalListSortingStrategy}
                 >
-                    {containerElementWithChildren.elements.map(element => (
-                        <StepsListItem
-                            key={element.id}
-                            element={element}
-                            canDeleteStep={canDeleteSteps}
-                            onDeleteStep={() => {
-                                const stepId = element.data.step.id;
-                                deleteStep(stepId);
-                            }}
-                        />
-                    ))}
+                    {containerElementWithChildren.elements
+                        .filter(e => e.data.step.id !== "success")
+                        .map(element => (
+                            <StepsListItem
+                                key={element.id}
+                                element={element}
+                                canDeleteStep={canDeleteSteps}
+                                onDeleteStep={() => {
+                                    const stepId = element.data.step.id;
+                                    deleteStep(stepId);
+                                }}
+                            />
+                        ))}
                     <AddPageButton onClick={createStep}>
                         <ButtonIcon icon={<AddIcon />} /> Add page
                     </AddPageButton>

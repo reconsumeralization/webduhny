@@ -5,9 +5,8 @@ import { useContainer } from "../../container/ContainerProvider";
 import { StepElementData } from "../types";
 
 export const StepWebsiteRenderer = createRenderer(() => {
-    const { getElement, meta } = useRenderer();
+    const { getElement } = useRenderer();
     const element = getElement<StepElementData>();
-
     const { funnelSubmissionVm } = useContainer();
 
     useEffect(() => {

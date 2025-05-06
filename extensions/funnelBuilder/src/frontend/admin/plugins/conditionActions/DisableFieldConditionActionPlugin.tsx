@@ -12,7 +12,7 @@ const ActionSettings: ConditionActionParamsComponent = ({ funnel }) => {
         <Bind name={"extra.targetFieldId"}>
             <Select placeholder={"Select target field..."} size={"small"}>
                 {funnel.fields.map(field => (
-                    <option key={field.id} value={field.fieldId}>
+                    <option key={field.id} value={field.id}>
                         {field.label}
                     </option>
                 ))}

@@ -13,6 +13,11 @@ export class FunnelSubmissionVm {
         this.funnelSubmission = new FunnelSubmissionModel(funnel);
     }
 
+    start() {
+        this.funnelSubmission.start();
+        this.emitChange();
+    }
+
     getField(fieldId: string) {
         return this.funnelSubmission.getField(fieldId);
     }

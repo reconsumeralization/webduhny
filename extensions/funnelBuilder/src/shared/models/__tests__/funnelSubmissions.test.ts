@@ -181,7 +181,7 @@ describe("Funnel Submissions", () => {
             lastName: "D"
         });
 
-        let submissionResult = funnelSubmission.submitActiveStep();
+        let submissionResult = await funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
             data: { firstName: "", lastName: "D" },
@@ -192,7 +192,7 @@ describe("Funnel Submissions", () => {
             success: false
         });
 
-        let validationResult = funnelSubmission.validateActiveStep();
+        let validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: false,
             errors: {
@@ -217,7 +217,7 @@ describe("Funnel Submissions", () => {
 
         expect(funnelSubmission.getField("lastName").disabled).toBe(false);
 
-        submissionResult = funnelSubmission.submitActiveStep();
+        submissionResult = await funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
             data: { firstName: "J", lastName: "D" },
@@ -228,7 +228,7 @@ describe("Funnel Submissions", () => {
             success: false
         });
 
-        validationResult = funnelSubmission.validateActiveStep();
+        validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: false,
             errors: {
@@ -242,7 +242,7 @@ describe("Funnel Submissions", () => {
         // Pass valid values for both `firstName` and `lastName`.
         funnelSubmission.setData({ firstName: "John", lastName: "Doe" });
 
-        submissionResult = funnelSubmission.submitActiveStep();
+        submissionResult = await funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
             data: { firstName: "John", lastName: "Doe" },
@@ -254,7 +254,7 @@ describe("Funnel Submissions", () => {
 
         expect(funnelSubmission.getActiveStepIndex()).toEqual(1);
 
-        submissionResult = funnelSubmission.submitActiveStep();
+        submissionResult = await funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
             data: {
@@ -266,7 +266,7 @@ describe("Funnel Submissions", () => {
             success: false
         });
 
-        validationResult = funnelSubmission.validateActiveStep();
+        validationResult = await funnelSubmission.validateActiveStep();
 
         expect(validationResult).toEqual({
             isValid: false,
@@ -275,7 +275,7 @@ describe("Funnel Submissions", () => {
 
         funnelSubmission.setData({ email: "john@example", colors: ["red"] });
 
-        validationResult = funnelSubmission.validateActiveStep();
+        validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             errors: { email: "Value must be a valid email address." },
             isValid: false
@@ -285,13 +285,13 @@ describe("Funnel Submissions", () => {
             email: "john@example.com"
         });
 
-        validationResult = funnelSubmission.validateActiveStep();
+        validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: true,
             errors: {}
         });
 
-        funnelSubmission.submitActiveStep();
+        await funnelSubmission.submitActiveStep();
 
         expect(funnelFinished).toBe(true);
 

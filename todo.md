@@ -1,8 +1,7 @@
 ## MH
-- async validators
+- ====> async validators
 - themes
 - <Form<ConditionOperatorParams> key= needed? b/c of changing types?
-- ====> options list checkbox grp - dbl check!
 - can't delete field if mentioned in con rules
 - setPrevStep - not index-1 but prev step per cond rules
 - test prev btn

@@ -107,7 +107,7 @@ export class FunnelSubmissionModel {
 
     getData() {
         return Object.values(this.fields).reduce((acc, field) => {
-            acc[field.definition.fieldId] = field.getValue();
+            acc[field.definition.fieldId] = field.getRawValue();
             return acc;
         }, {} as Record<string, any>);
     }
@@ -115,19 +115,19 @@ export class FunnelSubmissionModel {
     getDataForActiveStep() {
         const activeStepFields = this.getFieldsForActiveStep();
         return activeStepFields.reduce((acc, field) => {
-            acc[field.definition.fieldId] = field.getValue();
+            acc[field.definition.fieldId] = field.getRawValue();
             return acc;
         }, {} as Record<string, any>);
     }
 
-    validate() {
+    async validate() {
         const validationResult: FunnelEntryValidationResult = {
             isValid: true,
             errors: {}
         };
 
         for (const field of Object.values(this.fields)) {
-            const fieldValidation = field.validate();
+            const fieldValidation = await field.validate();
             if (!fieldValidation.isValid) {
                 validationResult.isValid = false;
                 validationResult.errors[field.definition.fieldId] = fieldValidation.errorMessage;
@@ -137,8 +137,8 @@ export class FunnelSubmissionModel {
         return validationResult;
     }
 
-    submitActiveStep(): FunnelSubmissionStepSubmissionResult {
-        const validationResult = this.validateActiveStep();
+    async submitActiveStep(): Promise<FunnelSubmissionStepSubmissionResult> {
+        const validationResult = await this.validateActiveStep();
         const data = this.getDataForActiveStep();
 
         if (!validationResult.isValid) {
@@ -196,7 +196,7 @@ export class FunnelSubmissionModel {
         return success();
     }
 
-    validateActiveStep() {
+    async validateActiveStep() {
         const activeStepFields = this.getFieldsForActiveStep();
         const validationResult: FunnelEntryValidationResult = {
             isValid: true,
@@ -204,7 +204,7 @@ export class FunnelSubmissionModel {
         };
 
         for (const field of activeStepFields) {
-            const fieldValidation = field.validate();
+            const fieldValidation = await field.validate();
             if (!fieldValidation.isValid) {
                 validationResult.isValid = false;
                 validationResult.errors[field.definition.fieldId] = fieldValidation.errorMessage;

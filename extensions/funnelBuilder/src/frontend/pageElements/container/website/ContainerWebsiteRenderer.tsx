@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-elements";
-import { ContainerProvider } from "../ContainerProvider";
+import { ContainerProvider, useContainer } from "../ContainerProvider";
+
+export const ContainerAdmin = () => {
+    const { getElement, meta } = useRenderer();
+    const element = getElement();
+    const { funnelSubmissionVm } = useContainer();
+
+    useEffect(() => {
+        funnelSubmissionVm.start();
+    });
+    return (
+        <>
+            <Elements element={element} />
+        </>
+    );
+};
 
 export const ContainerWebsiteRenderer = createRenderer(() => {
-    const { getElement } = useRenderer();
-    const element = getElement();
-
     return (
         <ContainerProvider>
-            <Elements element={element} />
+            <ContainerAdmin />
         </ContainerProvider>
     );
 });
