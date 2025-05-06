@@ -42,11 +42,4 @@ export const executeSetPrimaryVariantCommand = async (
     }
 
     await connection.deploy();
-
-    console.log(
-        JSON.stringify({
-            primary,
-            secondary
-        })
-    );
 };
