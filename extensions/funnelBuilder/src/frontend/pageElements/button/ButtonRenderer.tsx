@@ -32,9 +32,9 @@ export const ButtonRenderer = createRenderer(props => {
     const buttonLabel = useMemo(() => {
         switch (action) {
             case "previousStep":
-                return "Previous page";
+                return "Back";
             default:
-                return "Submit page";
+                return "Next";
         }
     }, [action]);
 
