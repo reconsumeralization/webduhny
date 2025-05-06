@@ -16,6 +16,7 @@ export const getListFoldersUseCases = (params: ListFoldersUseCasesParams) => {
     );
 
     return {
-        listFoldersUseCase
+        listFoldersUseCase,
+        listFoldersUseCaseWithoutPermissions: listFolders
     };
 };

@@ -28,6 +28,7 @@ export interface ListFoldersParams {
     sort?: ListSort;
     limit?: number;
     after?: string | null;
+    disablePermissions?: boolean;
 }
 
 export type ListAllFoldersParams = Omit<ListFoldersParams, "limit" | "after">;
@@ -109,7 +110,7 @@ export interface OnFolderAfterDeleteTopicParams {
 }
 
 export interface AcoFolderCrud {
-    get(id: string): Promise<Folder>;
+    get(id: string, disablePermissions?: boolean): Promise<Folder>;
 
     list(params: ListFoldersParams): Promise<[Folder[], ListMeta]>;
 

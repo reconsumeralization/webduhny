@@ -1,6 +1,7 @@
 import { createTopic } from "@webiny/pubsub";
 import {
     AcoFolderCrud,
+    type ListFoldersParams,
     OnFolderAfterCreateTopicParams,
     OnFolderAfterDeleteTopicParams,
     OnFolderAfterUpdateTopicParams,
@@ -49,12 +50,12 @@ export const createFolderCrudMethods = ({
     const onFolderAfterDelete =
         createTopic<OnFolderAfterDeleteTopicParams>("aco.onFolderAfterDelete");
 
-    const { getFolderUseCase } = getGetFolderUseCase({
+    const { getFolderUseCase, getFolderUseCaseWithoutPermissions } = getGetFolderUseCase({
         getOperation: storageOperations.folder.getFolder,
         folderLevelPermissions
     });
 
-    const { listFoldersUseCase } = getListFoldersUseCases({
+    const { listFoldersUseCase, listFoldersUseCaseWithoutPermissions } = getListFoldersUseCases({
         listOperation: storageOperations.folder.listFolders,
         folderLevelPermissions
     });
@@ -105,16 +106,24 @@ export const createFolderCrudMethods = ({
         onFolderBeforeDelete,
         onFolderAfterDelete,
 
-        async get(id) {
+        async get(id, disablePermissions) {
+            // If permissions are disabled, execute the use case without applying folder-level permissions logic, returning the raw folder data from the database.
+            if (disablePermissions) {
+                return await getFolderUseCaseWithoutPermissions.execute({ id });
+            }
             return await getFolderUseCase.execute({ id });
         },
 
-        async list(params) {
+        async list({ disablePermissions, ...params }: ListFoldersParams) {
+            // If permissions are disabled, execute the use case without applying folder-level permissions logic, returning the raw folder data from the database.
+            if (disablePermissions) {
+                return await listFoldersUseCaseWithoutPermissions.execute(params);
+            }
             return await listFoldersUseCase.execute(params);
         },
 
         async listAll(params) {
-            return await listFoldersUseCase.execute({
+            return await this.list({
                 ...params,
                 limit: FIXED_FOLDER_LISTING_LIMIT
             });

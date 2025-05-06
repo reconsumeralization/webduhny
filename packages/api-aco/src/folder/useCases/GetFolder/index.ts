@@ -16,6 +16,7 @@ export const getGetFolderUseCase = (params: GetFolderUseCasesParams) => {
     );
 
     return {
-        getFolderUseCase
+        getFolderUseCase,
+        getFolderUseCaseWithoutPermissions: getFolder
     };
 };
