@@ -12,7 +12,7 @@ import {
     SearchRecordItem
 } from "~/types";
 import { useAcoApp, useNavigateFolder } from "~/hooks";
-import { useGetDescendantFolders, useListFolders } from "~/features";
+import { useGetDescendantFolders, useGetFolderHierarchy } from "~/features";
 import { FoldersContext } from "~/contexts/folders";
 import { SearchRecordsContext } from "~/contexts/records";
 import { sortTableItems, validateOrGetDefaultDbSort } from "~/sorting";
@@ -121,7 +121,11 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { identity } = useSecurity();
     const { currentFolderId } = useNavigateFolder();
     const { folderIdPath, folderIdInPath } = useAcoApp();
-    const { folders: originalFolders, loading: foldersLoading } = useListFolders();
+    const {
+        folders: originalFolders,
+        loading: foldersLoading,
+        getFolderHierarchy
+    } = useGetFolderHierarchy();
     const { getDescendantFolders } = useGetDescendantFolders();
     const folderContext = useContext(FoldersContext);
     const searchContext = useContext(SearchRecordsContext);
@@ -148,9 +152,7 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
      * We don't call `listRecords` directly, instead we call `setState` making it the only driver to fetch records from the apis.
      */
     useEffect(() => {
-        if (!currentFolderId) {
-            return;
-        }
+        getFolderHierarchy(currentFolderId ?? ROOT_FOLDER);
 
         setState(state => {
             return {

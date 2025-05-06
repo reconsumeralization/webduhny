@@ -13,7 +13,11 @@ import { Node } from "../Node";
 import { NodePreview } from "../NodePreview";
 import { Placeholder } from "../Placeholder";
 import { createInitialOpenList, createTreeData } from "./utils";
-import { useGetFolderLevelPermission, useUpdateFolder } from "~/features";
+import {
+    useGetFolderLevelPermission,
+    useListFoldersByParentIds,
+    useUpdateFolder
+} from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { FolderProvider } from "~/contexts/folder";
@@ -36,6 +40,8 @@ export const List = ({
     const { updateFolder } = useUpdateFolder();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
+    const { listFoldersByParentIds } = useListFoldersByParentIds();
+
     const { showSnackbar } = useSnackbar();
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
     const [initialOpenList, setInitialOpenList] = useState<undefined | InitialOpen>();
@@ -90,8 +96,13 @@ export const List = ({
         []
     );
 
-    const handleChangeOpen = (folderIds: string[]) => {
+    const handleChangeOpen = async (folderIds: string[]) => {
         setOpenFolderIds([ROOT_FOLDER, ...folderIds]);
+
+        const removedListParentIds = new Set([ROOT_FOLDER, "0"]);
+        const filteredFolderIds = folderIds.filter(item => !removedListParentIds.has(item));
+
+        await listFoldersByParentIds(filteredFolderIds);
     };
 
     const canDrag = useCallback(

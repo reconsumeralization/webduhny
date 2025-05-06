@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { useGetFolderLevelPermission, useListFolders } from "~/features";
+import { useGetFolderHierarchy, useGetFolderLevelPermission } from "~/features";
 import { CreateButton } from "./ButtonCreate";
 import { Empty } from "./Empty";
 import { Loader } from "./Loader";
@@ -29,7 +29,7 @@ export const FolderTree = ({
     onFolderClick,
     rootFolderLabel
 }: FolderTreeProps) => {
-    const { loading, folders } = useListFolders();
+    const { folders, loading } = useGetFolderHierarchy();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
 
@@ -47,7 +47,7 @@ export const FolderTree = ({
     }, [folders]);
 
     const renderList = () => {
-        if (loading.INIT || loading.LIST) {
+        if (loading.INIT || loading.LIST || loading["root"]) {
             return <Loader />;
         }
 

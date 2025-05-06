@@ -1,39 +1,34 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { ListFoldersGqlGateway } from "./ListFoldersGqlGateway";
-import { ListFolders } from "./ListFolders";
+import { ListFoldersByParentIdsGqlGateway } from "./ListFoldersByParentIdsGqlGateway";
+import { ListFoldersByParentIds } from "./ListFoldersByParentIds";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 import { FolderItem } from "~/types";
 
-export const useListFolders = () => {
+export const useListFoldersByParentIds = () => {
     const client = useApolloClient();
     const type = useFoldersType();
     const fields = useGetFolderGraphQLSelection();
-    const gateway = new ListFoldersGqlGateway(client, fields);
+    const gateway = new ListFoldersByParentIdsGqlGateway(client, fields);
 
     const [vm, setVm] = useState<{
         folders: FolderItem[];
-        loading: Record<string, boolean>;
     }>({
-        folders: [],
-        loading: {
-            INIT: true
-        }
+        folders: []
     });
 
-    const {
-        useCase,
-        folders: foldersCache,
-        loading
-    } = useMemo(() => {
-        return ListFolders.getInstance(type, gateway);
+    const { useCase, folders: foldersCache } = useMemo(() => {
+        return ListFoldersByParentIds.getInstance(type, gateway);
     }, [type, gateway]);
 
-    const listFolders = useCallback(() => {
-        return useCase.execute();
-    }, [useCase]);
+    const listFoldersByParentIds = useCallback(
+        (parentIds?: string[]) => {
+            return useCase.execute({ parentIds });
+        },
+        [useCase]
+    );
 
     useEffect(() => {
         return autorun(() => {
@@ -46,19 +41,8 @@ export const useListFolders = () => {
         });
     }, [foldersCache]);
 
-    useEffect(() => {
-        return autorun(() => {
-            const loadingState = loading.get();
-
-            setVm(vm => ({
-                ...vm,
-                loading: loadingState
-            }));
-        });
-    }, [loading]);
-
     return {
         ...vm,
-        listFolders
+        listFoldersByParentIds
     };
 };

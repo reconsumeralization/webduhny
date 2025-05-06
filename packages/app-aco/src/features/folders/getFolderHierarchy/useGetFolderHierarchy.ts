@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { ListFoldersGqlGateway } from "./ListFoldersGqlGateway";
-import { ListFolders } from "./ListFolders";
+import { GetFolderHierarchyGqlGateway } from "./GetFolderHierarchyGqlGateway";
+import { GetFolderHierarchy } from "./GetFolderHierarchy";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 import { FolderItem } from "~/types";
 
-export const useListFolders = () => {
+export const useGetFolderHierarchy = () => {
     const client = useApolloClient();
     const type = useFoldersType();
     const fields = useGetFolderGraphQLSelection();
-    const gateway = new ListFoldersGqlGateway(client, fields);
+    const gateway = new GetFolderHierarchyGqlGateway(client, fields);
 
     const [vm, setVm] = useState<{
         folders: FolderItem[];
@@ -28,12 +28,15 @@ export const useListFolders = () => {
         folders: foldersCache,
         loading
     } = useMemo(() => {
-        return ListFolders.getInstance(type, gateway);
+        return GetFolderHierarchy.getInstance(type, gateway);
     }, [type, gateway]);
 
-    const listFolders = useCallback(() => {
-        return useCase.execute();
-    }, [useCase]);
+    const getFolderHierarchy = useCallback(
+        (id: string) => {
+            return useCase.execute({ id });
+        },
+        [useCase]
+    );
 
     useEffect(() => {
         return autorun(() => {
@@ -50,6 +53,8 @@ export const useListFolders = () => {
         return autorun(() => {
             const loadingState = loading.get();
 
+            console.log("loading", loadingState);
+
             setVm(vm => ({
                 ...vm,
                 loading: loadingState
@@ -59,6 +64,6 @@ export const useListFolders = () => {
 
     return {
         ...vm,
-        listFolders
+        getFolderHierarchy
     };
 };
