@@ -187,7 +187,7 @@ export interface IDeleteFlpTaskInput {
 export type IDeleteFlpTaskParams = ITaskRunParams<AcoContext, IDeleteFlpTaskInput>;
 
 export interface ISyncFlpTaskInput {
-    type: string;
+    type?: string;
     folderId?: string;
 }
 

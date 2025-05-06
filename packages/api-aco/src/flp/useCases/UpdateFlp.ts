@@ -90,16 +90,11 @@ export class UpdateFlp {
         }
 
         // Get the parent's permissions from the update collection if available
-        const parentUpdateData = this.flpsToUpdate.get(parentFlp.id);
-        const currentParentFlp = parentUpdateData
-            ? {
-                  ...parentFlp,
-                  parentId: parentUpdateData.parentId,
-                  slug: parentUpdateData.slug,
-                  path: parentUpdateData.path,
-                  permissions: parentUpdateData.permissions
-              }
-            : parentFlp;
+        const parentFlpData = this.flpsToUpdate.get(parentFlp.id);
+        const currentParentFlp = {
+            ...parentFlp,
+            ...(parentFlpData && { ...parentFlpData })
+        };
 
         // Add the FLP to the update collection with inherited permissions
         this.flpsToUpdate.set(flp.id, {
@@ -167,13 +162,16 @@ export class UpdateFlp {
         return this.updated.has(id);
     }
 
-    private async listDirectChildren(flp: FolderLevelPermission) {
-        return await this.context.aco.flp.list({
+    private async listDirectChildren(flp: FolderLevelPermission): Promise<FolderLevelPermission[]> {
+        const [folders] = await this.context.aco.folder.listAll({
             where: {
                 type: flp.type,
                 parentId: flp.id
-            }
+            },
+            disablePermissions: true
         });
+
+        return await Promise.all(folders.map(folder => this.getFlp(folder)));
     }
 
     private async getFlp({ id, type, parentId, slug, permissions }: Folder) {
@@ -182,14 +180,14 @@ export class UpdateFlp {
         if (!flp) {
             const parentFlp = parentId ? await this.context.aco.flp.get(parentId) : null;
 
-            return {
+            return await this.context.aco.flp.create({
                 id,
                 type,
                 slug,
                 parentId: parentId ?? ROOT_FOLDER,
                 path: this.getPath(slug, parentFlp?.path),
                 permissions: Permissions.create(permissions, parentFlp)
-            };
+            });
         }
 
         return flp;
