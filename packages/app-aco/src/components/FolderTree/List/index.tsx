@@ -14,7 +14,6 @@ import { NodePreview } from "../NodePreview";
 import { Placeholder } from "../Placeholder";
 import { createInitialOpenList, createTreeData } from "./utils";
 import {
-    useGetFolderHierarchy,
     useGetFolderLevelPermission,
     useListFoldersByParentIds,
     useUpdateFolder
@@ -41,8 +40,7 @@ export const List = ({
     const { updateFolder } = useUpdateFolder();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
-    const { listFoldersByParentIds } = useListFoldersByParentIds();
-    const { getIsFolderLoading } = useGetFolderHierarchy();
+    const { listFoldersByParentIds, getIsFolderLoading } = useListFoldersByParentIds();
     const { showSnackbar } = useSnackbar();
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
     const [initialOpenList, setInitialOpenList] = useState<undefined | InitialOpen>();
@@ -115,13 +113,6 @@ export const List = ({
         [canManageStructure]
     );
 
-    const getIsLoading = useCallback(
-        (folder?: FolderItem) => {
-            return getIsFolderLoading(folder?.id);
-        },
-        [getIsFolderLoading]
-    );
-
     const renderNode = useCallback(
         (node: NodeModel<DndFolderItemData>, { depth, isOpen, onToggle }: any) => {
             const folder = folders.find(folder => folder.id === node.id);
@@ -132,7 +123,7 @@ export const List = ({
                         depth={depth}
                         isOpen={isOpen}
                         onToggle={onToggle}
-                        isLoading={getIsLoading(folder)}
+                        isLoading={getIsFolderLoading(folder?.id)}
                         enableActions={enableActions}
                         onClick={onFolderClick}
                     />

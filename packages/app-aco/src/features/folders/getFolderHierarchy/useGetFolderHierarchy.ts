@@ -57,18 +57,6 @@ export const useGetFolderHierarchy = () => {
         });
     }, [foldersCache]);
 
-    // useEffect(() => {
-    //     return autorun(() => {
-    //         const loading = loadingState.get();
-    //         const hasLoading = Object.values(loading).some(Boolean);
-    //         setVm(vm => ({
-    //             ...vm,
-    //             loading,
-    //             hasLoading
-    //         }));
-    //     });
-    // }, [loadingState]);
-
     return {
         ...vm,
         getFolderHierarchy,

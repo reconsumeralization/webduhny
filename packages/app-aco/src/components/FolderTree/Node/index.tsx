@@ -74,8 +74,6 @@ const FolderIndicator = ({ isLoading, isOpen, onToggle }: FolderIndicatorProps) 
         return null;
     }
 
-    // console.log(folder.id, "isOpen", isOpen, "isLoading", isLoading);
-
     if (isLoading) {
         return (
             <LoaderContainer>
@@ -116,9 +114,6 @@ export const Node = ({
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         onClick(folder);
-        if (folder.id !== ROOT_FOLDER) {
-            onToggle(folder.id);
-        }
     };
 
     const id = useMemo(() => {

@@ -6,6 +6,7 @@ import { ListFoldersByParentIds } from "./ListFoldersByParentIds";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 import { FolderItem } from "~/types";
+import { ROOT_FOLDER } from "~/constants";
 
 export const useListFoldersByParentIds = () => {
     const client = useApolloClient();
@@ -19,7 +20,11 @@ export const useListFoldersByParentIds = () => {
         folders: []
     });
 
-    const { useCase, folders: foldersCache } = useMemo(() => {
+    const {
+        useCase,
+        folders: foldersCache,
+        loading: loadingState
+    } = useMemo(() => {
         return ListFoldersByParentIds.getInstance(type, gateway);
     }, [type, gateway]);
 
@@ -28,6 +33,17 @@ export const useListFoldersByParentIds = () => {
             return useCase.execute({ parentIds });
         },
         [useCase]
+    );
+
+    const getIsFolderLoading = useCallback(
+        (action = ROOT_FOLDER) => {
+            if (!loadingState) {
+                return true;
+            }
+
+            return loadingState.isLoading(action);
+        },
+        [loadingState]
     );
 
     useEffect(() => {
@@ -43,6 +59,7 @@ export const useListFoldersByParentIds = () => {
 
     return {
         ...vm,
-        listFoldersByParentIds
+        listFoldersByParentIds,
+        getIsFolderLoading
     };
 };
