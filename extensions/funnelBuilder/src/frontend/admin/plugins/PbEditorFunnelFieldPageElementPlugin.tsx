@@ -20,7 +20,6 @@ export const PbEditorFunnelFieldPageElementPlugin = (
     const fieldType = props.fieldType;
     const pbElementType = createFieldElementType(fieldType);
 
-
     return (
         <PbEditorPageElementPlugin
             elementType={pbElementType}
@@ -52,7 +51,6 @@ export const PbEditorFunnelFieldPageElementPlugin = (
             onCreate={OnCreateActions.OPEN_SETTINGS}
             // `create` function creates the initial data for the page element.
             create={options => {
-
                 return {
                     type: pbElementType,
                     elements: [],

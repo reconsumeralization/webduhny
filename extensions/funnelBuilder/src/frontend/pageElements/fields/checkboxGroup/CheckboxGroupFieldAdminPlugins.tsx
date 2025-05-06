@@ -10,7 +10,10 @@ import { ReactComponent as TextIcon } from "@material-design-icons/svg/outlined/
 export const CheckboxGroupFieldAdminPlugins = () => {
     return (
         <>
-            <PbRenderElementPlugin elementType={ELEMENT_TYPE} renderer={CheckboxGroupFieldRenderer} />
+            <PbRenderElementPlugin
+                elementType={ELEMENT_TYPE}
+                renderer={CheckboxGroupFieldRenderer}
+            />
             <PbEditorFunnelFieldPageElementPlugin
                 fieldType={"checkboxGroup"}
                 renderer={CheckboxGroupFieldRenderer}

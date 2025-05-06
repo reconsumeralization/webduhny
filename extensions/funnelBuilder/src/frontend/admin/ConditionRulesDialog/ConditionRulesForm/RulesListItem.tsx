@@ -24,7 +24,7 @@ export const RulesListItem = ({ rule }: RulesListItemProps) => {
             conditionsCount === 1 ? "condition," : "conditions,",
             actionsCount || "no",
             actionsCount === 1 ? "action" : "actions"
-        ].join(' ');
+        ].join(" ");
     }, [conditionsCount, actionsCount]);
 
     return (

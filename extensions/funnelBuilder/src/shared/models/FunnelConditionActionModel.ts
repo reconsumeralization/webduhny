@@ -47,7 +47,7 @@ export class FunnelConditionActionModel<TExtra = Record<string, any>> extends Ab
         return { id: this.id, type: this.type, params: this.params };
     }
 
-    isApplicable(): FunnelStepModel | undefined  {
+    isApplicable(): FunnelStepModel | undefined {
         return undefined;
     }
 

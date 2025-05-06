@@ -7,6 +7,8 @@ interface LteValidatorExtraParams {
 }
 
 export class LteValidator extends AbstractValidator<LteValidatorExtraParams> {
+    static override type: string = "lte";
+
     constructor(params: FieldValidatorParamsDto<LteValidatorExtraParams> = {}) {
         super({
             type: "lte",

@@ -20,7 +20,7 @@ export class HideFieldConditionAction extends FunnelConditionActionModel<HideFie
             type: "hideField",
             params: {
                 extra: {
-                    targetFieldId: dto.params?.extra?.targetFieldId || ''
+                    targetFieldId: dto.params?.extra?.targetFieldId || ""
                 }
             }
         });

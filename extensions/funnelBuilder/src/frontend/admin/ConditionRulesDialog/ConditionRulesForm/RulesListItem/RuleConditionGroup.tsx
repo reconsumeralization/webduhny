@@ -211,7 +211,10 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                                         return (
                                             <>
                                                 {ConditionRuleParamsComponent ? (
-                                                    <ConditionRuleParamsComponent funnel={funnel} field={fieldDefinition} />
+                                                    <ConditionRuleParamsComponent
+                                                        funnel={funnel}
+                                                        field={fieldDefinition}
+                                                    />
                                                 ) : null}
                                             </>
                                         );

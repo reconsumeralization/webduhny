@@ -7,6 +7,8 @@ interface MaxLengthValidatorExtraParams {
 }
 
 export class MaxLengthValidator extends AbstractValidator<MaxLengthValidatorExtraParams> {
+    static override type: string = "maxLength";
+
     constructor(params: FieldValidatorParamsDto<MaxLengthValidatorExtraParams> = {}) {
         super({
             type: "maxLength",

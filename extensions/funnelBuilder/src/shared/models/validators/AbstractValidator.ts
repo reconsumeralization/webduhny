@@ -11,10 +11,12 @@ export type FieldValidatorParamsDto<TExtra = Record<string, any>> = Partial<
 
 export interface FieldValidatorDto<TExtraParams = Record<string, any>> {
     type: string;
-    params?: FieldValidatorParamsDto<TExtraParams>; // Additional parameters for the validator.
+    params: FieldValidatorParamsDto<TExtraParams>; // Additional parameters for the validator.
 }
 
 export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
+    static type: string = "";
+
     type: string;
     params: FieldValidatorParams<TExtraParams>;
 

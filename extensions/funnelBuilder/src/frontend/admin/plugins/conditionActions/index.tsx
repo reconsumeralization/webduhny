@@ -9,8 +9,8 @@ export const ConditionActionPlugins = () => {
         <>
             <DisableFieldConditionActionPlugin />
             <HideFieldConditionActionPlugin />
-            <OnSubmitActivateStepConditionActionPlugin/>
-            <OnSubmitEndFunnelConditionActionPlugin/>
+            <OnSubmitActivateStepConditionActionPlugin />
+            <OnSubmitEndFunnelConditionActionPlugin />
         </>
     );
 };

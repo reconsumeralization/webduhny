@@ -165,9 +165,7 @@ describe("Validator From DTO", () => {
         validationResult = funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: true,
-            errors: {
-
-            }
+            errors: {}
         });
     });
 });

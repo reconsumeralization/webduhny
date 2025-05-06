@@ -9,6 +9,8 @@ interface PatternValidatorExtraParams {
 }
 
 export class PatternValidator extends AbstractValidator<PatternValidatorExtraParams> {
+    static override type: string = "pattern";
+
     constructor(params: FieldValidatorParamsDto<PatternValidatorExtraParams> = {}) {
         super({
             type: "pattern",

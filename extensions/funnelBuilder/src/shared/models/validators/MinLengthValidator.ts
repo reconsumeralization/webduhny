@@ -7,6 +7,8 @@ interface MinLengthValidatorExtraParams {
 }
 
 export class MinLengthValidator extends AbstractValidator<MinLengthValidatorExtraParams> {
+    static override type: string = "minLength";
+
     constructor(params: FieldValidatorParamsDto<MinLengthValidatorExtraParams> = {}) {
         super({
             type: "minLength",

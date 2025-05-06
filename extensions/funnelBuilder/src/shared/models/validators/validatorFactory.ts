@@ -1,24 +1,11 @@
-import { RequiredValidator } from "./RequiredValidator";
-import { GteValidator } from "./GteValidator";
-import { AbstractValidator, FieldValidatorDto } from "./AbstractValidator";
-import { LteValidator } from "./LteValidator";
-import { MaxLengthValidator } from "./MaxLengthValidator";
-import { MinLengthValidator } from "./MinLengthValidator";
-import { PatternValidator } from "./PatternValidator";
+import { FieldValidatorDto } from "./AbstractValidator";
 
-const registry: Record<string, (dto: FieldValidatorDto) => AbstractValidator> = {
-    gte: dto => new GteValidator(dto.params),
-    lte: dto => new LteValidator(dto.params),
-    maxLength: dto => new MaxLengthValidator(dto.params),
-    minLength: dto => new MinLengthValidator(dto.params),
-    pattern: dto => new PatternValidator(dto.params),
-    required: dto => new RequiredValidator(dto.params)
-};
+import { registry } from "./registry";
 
-export function validatorFromDto(dto: FieldValidatorDto): AbstractValidator {
-    const create = registry[dto.type];
-    if (!create) {
-        throw new Error(`Unknown validator type: ${dto.type}`);
+export const validatorFromDto = (dto: FieldValidatorDto) => {
+    const ValidatorClass = registry.find(validatorClass => validatorClass.type === dto.type);
+    if (!ValidatorClass) {
+        throw new Error(`Unknown validator: ${dto.type}`);
     }
-    return create(dto);
-}
+    return new ValidatorClass(dto.params);
+};

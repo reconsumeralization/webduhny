@@ -22,7 +22,7 @@ export class FunnelConditionModel extends AbstractModel<FunnelConditionModelDto>
         this.sourceFieldId = dto?.sourceFieldId || "";
         this.operator = dto?.operator
             ? FunnelConditionOperatorModel.fromDto(dto.operator)
-            : new FunnelConditionOperatorModel()
+            : new FunnelConditionOperatorModel();
     }
 
     toDto(): FunnelConditionModelDto {

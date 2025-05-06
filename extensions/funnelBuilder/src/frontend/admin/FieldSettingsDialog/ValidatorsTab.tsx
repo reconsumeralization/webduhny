@@ -50,7 +50,7 @@ export const ValidatorsTab = ({ field }: ValidatorsTabProps) => {
             } else {
                 // We're immediately transforming the validator type to a DTO because we need
                 // to use DTOs as form data. Form data cannot be a class (model) instance.
-                const newValidator = validatorFromDto({ type: validatorType }).toDto();
+                const newValidator = validatorFromDto({ type: validatorType, params: {} }).toDto();
                 updateValidatorsValue([...validatorsValue, newValidator]);
             }
         },

@@ -7,6 +7,8 @@ interface GteValidatorExtraParams {
 }
 
 export class GteValidator extends AbstractValidator<GteValidatorExtraParams> {
+    static override type: string = "gte";
+
     constructor(dto: FieldValidatorParamsDto<GteValidatorExtraParams> = {}) {
         super({
             type: "gte",

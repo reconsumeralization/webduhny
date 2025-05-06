@@ -19,10 +19,7 @@ export interface FunnelFieldDefinitionModelDto<TValue = unknown, TExtra = Record
     extra?: TExtra;
 }
 
-export class FunnelFieldDefinitionModel<
-    TValue = unknown,
-    TExtra extends Record<string, any> = {}
-> {
+export class FunnelFieldDefinitionModel<TValue = unknown, TExtra extends Record<string, any> = {}> {
     id: string;
     type: string;
     stepId: string;
@@ -45,8 +42,8 @@ export class FunnelFieldDefinitionModel<
         this.fieldId = dto.fieldId || getRandomId();
         this.stepId = dto.stepId;
         this.type = dto.type;
-        this.label = dto.label || '';
-        this.helpText = dto.helpText || '';
+        this.label = dto.label || "";
+        this.helpText = dto.helpText || "";
         this.validators = dto.validators?.map(validatorFromDto) ?? [];
         this.value = FunnelFieldValueModel.fromDto<TValue>(
             dto.value as FunnelFieldValueModelDto<TValue>

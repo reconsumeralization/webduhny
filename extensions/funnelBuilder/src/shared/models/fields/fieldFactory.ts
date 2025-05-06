@@ -4,10 +4,7 @@ import {
     type FunnelFieldDefinitionModel,
     type FunnelFieldDefinitionModelDto
 } from "../FunnelFieldDefinitionModel";
-import {
-    CheckboxGroupField,
-    CheckboxGroupFieldDto
-} from "./CheckboxGroupField";
+import { CheckboxGroupField, CheckboxGroupFieldDto } from "./CheckboxGroupField";
 import { NumberField, NumberFieldDto } from "./NumberField";
 
 const registry = {

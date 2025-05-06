@@ -26,7 +26,7 @@ export const Extension = () => (
         {/* Other */}
         <FieldValidatorPlugins />
         <ConditionOperatorPlugins />
-        <ConditionActionPlugins/>
+        <ConditionActionPlugins />
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
     </>

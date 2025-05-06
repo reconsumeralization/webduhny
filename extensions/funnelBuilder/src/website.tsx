@@ -17,6 +17,6 @@ export const Extension = () => (
         {/* Fields. */}
         <TextFieldWebsitePlugins />
         <TextareaFieldWebsitePlugins />
-        <CheckboxGroupFieldWebsitePlugins/>
+        <CheckboxGroupFieldWebsitePlugins />
     </>
 );

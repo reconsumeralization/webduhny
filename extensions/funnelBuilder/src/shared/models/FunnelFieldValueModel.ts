@@ -6,9 +6,9 @@ export interface FunnelFieldValueModelDto<TValue = unknown> {
     value?: TValue;
 }
 
-export class FunnelFieldValueModel<
-    TValue = unknown
-> extends AbstractModel<FunnelFieldValueModelDto> {
+export class FunnelFieldValueModel<TValue = unknown> extends AbstractModel<FunnelFieldValueModelDto> {
+    static type: string = "";
+
     type: string;
     array: boolean;
     value: TValue;

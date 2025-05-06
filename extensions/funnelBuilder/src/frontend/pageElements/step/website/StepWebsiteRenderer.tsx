@@ -11,7 +11,7 @@ export const StepWebsiteRenderer = createRenderer(() => {
     const { funnelSubmissionVm } = useContainer();
 
     useEffect(() => {
-        funnelSubmissionVm.evaluateConditionRulesForActiveStep()
+        funnelSubmissionVm.evaluateConditionRulesForActiveStep();
     }, []);
 
     if (funnelSubmissionVm.activeStepId !== element.data.step.id) {

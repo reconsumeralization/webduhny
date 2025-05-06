@@ -30,7 +30,7 @@ export class FunnelConditionOperatorModel<
 
     constructor(dto?: Partial<FunnelConditionOperatorModelDto<TExtra>>) {
         super();
-        this.type = dto?.type || '';
+        this.type = dto?.type || "";
         this.params = {
             extra: (dto?.params?.extra || {}) as TExtra
         };

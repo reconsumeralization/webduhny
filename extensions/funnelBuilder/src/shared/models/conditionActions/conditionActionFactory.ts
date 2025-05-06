@@ -1,25 +1,12 @@
-import {
-    FunnelConditionActionModel,
-    type FunnelConditionActionModelDto
-} from "../FunnelConditionActionModel";
-import { DisableFieldConditionAction } from "./DisableFieldConditionAction";
-import { HideFieldConditionAction } from "./HideFieldConditionAction";
-import { OnSubmitActivateStepConditionAction } from "./OnSubmitActivateStepConditionAction";
-import { OnSubmitEndFunnelConditionAction } from "./OnSubmitEndFunnelConditionAction";
+import { type FunnelConditionActionModelDto } from "../FunnelConditionActionModel";
 import { FunnelConditionRuleModel } from "../FunnelConditionRuleModel";
-
-const registry = [
-    DisableFieldConditionAction,
-    HideFieldConditionAction,
-    OnSubmitActivateStepConditionAction,
-    OnSubmitEndFunnelConditionAction
-] as Array<typeof FunnelConditionActionModel>;
+import { registry } from "./registry";
 
 export const listConditionActions = () => registry;
 
 export const conditionActionFromDto = (
     conditionRule: FunnelConditionRuleModel,
-    dto: FunnelConditionActionModelDto
+    dto: FunnelConditionActionModelDto<any>
 ) => {
     const ActionClass = registry.find(actionClass => actionClass.type === dto.type);
     if (!ActionClass) {

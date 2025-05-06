@@ -51,7 +51,7 @@ export class FunnelVm {
     }
 
     getFieldByFieldId(fieldId: string) {
-        return this.funnel.fields.find(field =>field.fieldId === fieldId);
+        return this.funnel.fields.find(field => field.fieldId === fieldId);
     }
 
     getFieldsForActiveStep() {

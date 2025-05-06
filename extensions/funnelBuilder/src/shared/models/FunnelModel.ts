@@ -44,7 +44,7 @@ export class FunnelModel {
         this.steps = this.steps.filter(step => step.id !== id);
     }
 
-    getStep(id  :string) {
+    getStep(id: string) {
         return this.steps.find(step => step.id === id);
     }
 
