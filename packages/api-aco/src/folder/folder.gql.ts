@@ -7,8 +7,8 @@ import { resolve } from "~/utils/resolve";
 import { compress } from "~/utils/compress";
 
 import { AcoContext, Folder } from "~/types";
-import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 import type { FolderLevelPermission } from "~/flp/flp.types";
+import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 
 export const createFoldersSchema = (params: CreateFolderTypeDefsParams) => {
     const folderGraphQL = new GraphQLSchemaPlugin<AcoContext>({
@@ -54,6 +54,7 @@ export const createFoldersSchema = (params: CreateFolderTypeDefsParams) => {
                 },
                 listFoldersCompressed: async (_, args: any, context) => {
                     return resolve(async () => {
+                        ensureAuthentication(context);
                         const [entries] = await context.aco.folder.list(args);
 
                         const folders = entries.map(folder => ({
@@ -78,6 +79,16 @@ export const createFoldersSchema = (params: CreateFolderTypeDefsParams) => {
 
                         return compress(folders);
                     });
+                },
+                getFolderHierarchy: async (_, args: any, context) => {
+                    try {
+                        return resolve(() => {
+                            ensureAuthentication(context);
+                            return context.aco.folder.getFolderHierarchy(args);
+                        });
+                    } catch (e) {
+                        return new ErrorResponse(e);
+                    }
                 },
                 listFolderLevelPermissionsTargets: async (_, args: any, context) => {
                     try {

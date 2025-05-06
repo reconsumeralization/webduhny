@@ -16,7 +16,8 @@ import {
     getGetFolderUseCase,
     getListFolderLevelPermissionsTargets,
     getListFoldersUseCases,
-    getUpdateFolderUseCase
+    getUpdateFolderUseCase,
+    getGetFolderHierarchyUseCases
 } from "~/folder/useCases";
 import { type AcoContext, CreateAcoParams, Folder } from "~/types";
 
@@ -57,6 +58,12 @@ export const createFolderCrudMethods = ({
 
     const { listFoldersUseCase, listFoldersUseCaseWithoutPermissions } = getListFoldersUseCases({
         listOperation: storageOperations.folder.listFolders,
+        folderLevelPermissions
+    });
+
+    const { getFolderHierarchyUseCase } = getGetFolderHierarchyUseCases({
+        listOperation: storageOperations.folder.listFolders,
+        getOperation: storageOperations.folder.getFolder,
         folderLevelPermissions
     });
 
@@ -127,6 +134,10 @@ export const createFolderCrudMethods = ({
                 ...params,
                 limit: FIXED_FOLDER_LISTING_LIMIT
             });
+        },
+
+        async getFolderHierarchy(params) {
+            return await getFolderHierarchyUseCase.execute(params);
         },
 
         async create(data) {

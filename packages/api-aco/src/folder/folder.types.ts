@@ -20,7 +20,9 @@ export interface Folder {
 
 export interface ListFoldersWhere {
     type: string;
+    id_not_in?: string[];
     parentId?: string | null;
+    parentId_in?: string[];
 }
 
 export interface ListFoldersParams {
@@ -32,6 +34,16 @@ export interface ListFoldersParams {
 }
 
 export type ListAllFoldersParams = Omit<ListFoldersParams, "limit" | "after">;
+
+export interface GetFolderHierarchyParams {
+    type: string;
+    id: string;
+}
+
+export interface GetFolderHierarchyResponse {
+    parents: Folder[];
+    siblings: Folder[];
+}
 
 export type CreateFolderParams = Pick<Folder, "title" | "slug" | "type" | "parentId">;
 
@@ -127,6 +139,8 @@ export interface AcoFolderCrud {
     delete(id: string): Promise<boolean>;
 
     getAncestors(folder: Folder): Promise<Folder[]>;
+
+    getFolderHierarchy(params: GetFolderHierarchyParams): Promise<GetFolderHierarchyResponse>;
 
     /**
      * @deprecated use `getAncestors` instead

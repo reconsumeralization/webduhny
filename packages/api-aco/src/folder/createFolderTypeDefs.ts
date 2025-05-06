@@ -93,7 +93,8 @@ export const createFolderTypeDefs = (params: CreateFolderTypeDefsParams): string
         
         input FoldersListWhereInput {
             type: String!
-            parentId: String
+            parentId: ID
+            parentId_in: [ID]
             createdBy: ID
         }
         
@@ -110,6 +111,16 @@ export const createFolderTypeDefs = (params: CreateFolderTypeDefsParams): string
 
         type FoldersListCompressedResponse {
             data: CompressedResponse
+            error: AcoError
+        }
+        
+        type FoldersHierarchyData {
+            parents: [Folder]
+            siblings: [Folder]
+        }
+
+        type FoldersHierarchyResponse {
+            data: FoldersHierarchyData
             error: AcoError
         }
 
@@ -151,7 +162,7 @@ export const createFolderTypeDefs = (params: CreateFolderTypeDefsParams): string
                 after: String
                 sort: AcoSort
             ): FoldersListCompressedResponse
-
+            getFolderHierarchy(type: String!, id: ID!): FoldersHierarchyResponse
             listFolderLevelPermissionsTargets: FolderLevelPermissionsTargetsListResponse
         }
 
