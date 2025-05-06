@@ -8,6 +8,10 @@ export default {
     name: "pb-editor-page-element-settings-save",
     type: "pb-editor-page-element-settings",
     renderAction() {
-        return <></>;
+        return (
+            <SaveAction>
+                <Action tooltip={"Save selected"} icon={<FavoriteIcon />} />
+            </SaveAction>
+        );
     }
 } as PbEditorPageElementSettingsPlugin;
