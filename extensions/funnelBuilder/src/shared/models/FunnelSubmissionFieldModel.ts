@@ -96,6 +96,13 @@ export class FunnelSubmissionFieldModel<
     }
 
     async validate(): Promise<FunnelSubmissionFieldValidationResult> {
+        if (this.hidden || this.disabled) {
+            return {
+                isValid: true,
+                errorMessage: null
+            };
+        }
+
         const validators = this.definition.validators;
 
         for (const validator of validators) {

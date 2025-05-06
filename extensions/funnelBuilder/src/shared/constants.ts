@@ -21,6 +21,10 @@ export const isStepElementType = (type?: string) => {
     return type === STEP_ELEMENT_TYPE;
 };
 
+export const isSuccessStepElementType = (elementId?: string) => {
+    return elementId === SUCCESS_STEP_ELEMENT_ID;
+};
+
 export const isButtonElementType = (type?: string) => {
     return type === BUTTON_ELEMENT_TYPE;
 };
@@ -28,4 +32,6 @@ export const isButtonElementType = (type?: string) => {
 export const CONTAINER_ELEMENT_TYPE = createElementType("container");
 export const CONTAINER_ELEMENT_ID = createElementType("container");
 export const STEP_ELEMENT_TYPE = createElementType("step");
+export const SUCCESS_STEP_ELEMENT_ID = "success";
+
 export const BUTTON_ELEMENT_TYPE = createElementType("button");

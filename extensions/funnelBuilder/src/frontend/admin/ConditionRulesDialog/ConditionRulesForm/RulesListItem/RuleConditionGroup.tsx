@@ -140,7 +140,7 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                     }
 
                     const fieldDefinition = funnel.fields.find(
-                        f => f.fieldId === conditionGroupItem.sourceFieldId
+                        f => f.id === conditionGroupItem.sourceFieldId
                     );
 
                     const availableConditionOperators = getConditionOperatorsByValueType(

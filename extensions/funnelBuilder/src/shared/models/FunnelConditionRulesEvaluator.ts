@@ -58,7 +58,7 @@ export class FunnelConditionRulesEvaluator {
 
     private evaluateCondition(condition: FunnelConditionModel): boolean {
         // Get the field from the submission
-        const field = this.funnelSubmission.getField(condition.sourceFieldId);
+        const field = this.funnelSubmission.getFieldById(condition.sourceFieldId);
         if (!field) {
             return false;
         }

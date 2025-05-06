@@ -7,6 +7,7 @@ import { OnSubmitActivateStepConditionAction } from "../../../../shared/models/c
 import { Bind } from "@webiny/form";
 import { Select } from "@webiny/ui/Select";
 import styled from "@emotion/styled";
+import { isSuccessStepElementType } from "../../../../shared/constants";
 
 const Wrapper = styled.div`
     display: flex;
@@ -14,20 +15,23 @@ const Wrapper = styled.div`
 `;
 
 const ActionSettings: ConditionActionParamsComponent = ({ funnel }) => {
+    const funnelSteps = funnel.steps.filter(step => !isSuccessStepElementType(step.id));
+
     return (
         <Wrapper>
             <Bind name={"extra.targetStepId"}>
                 <Select placeholder={"Select target step..."} size={"small"}>
-                    {funnel.steps.map(step => (
-                        <option key={step.id} value={step.id}>
-                            {step.title}
-                        </option>
-                    ))}
+                    {funnelSteps
+                        .map(step => (
+                            <option key={step.id} value={step.id}>
+                                {step.title}
+                            </option>
+                        ))}
                 </Select>
             </Bind>
             <Bind name={"extra.evaluationStep"}>
                 <Select placeholder={"Evaluate upon submitting step..."} size={"small"}>
-                    {funnel.steps.map(step => (
+                    {funnelSteps.map(step => (
                         <option key={step.id} value={step.id}>
                             {step.title}
                         </option>

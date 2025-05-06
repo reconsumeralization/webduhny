@@ -70,7 +70,7 @@ export class FunnelSubmissionModel {
             fields: Object.values(this.fields).reduce((acc, field) => {
                 acc[field.definition.fieldId] = field.toDto();
                 return acc;
-            }, {} as Record<string, FunnelSubmissionFieldModelDto>)
+            }, {} as Record<string, FunnelSubmissionFieldModelDto>),
         };
     }
 
@@ -165,6 +165,7 @@ export class FunnelSubmissionModel {
         };
 
         const activeActions = this.conditionRules.applicableActions;
+        console.log('activeActions', activeActions)
         if (!activeActions.length) {
             this.activateNextStep();
             return success();
@@ -217,6 +218,10 @@ export class FunnelSubmissionModel {
     // Fields-related methods. 👇
     getField(fieldId: string) {
         return this.fields[fieldId];
+    }
+
+    getFieldById(id: string) {
+        return Object.values(this.fields).find(field => field.definition.id === id);
     }
 
     fieldExists(fieldId: string) {
@@ -333,7 +338,7 @@ export class FunnelSubmissionModel {
 
     // Other methods. 👇
     getChecksum() {
-        return createObjectHash(this.toDto());
+        return createObjectHash(this.conditionRules.applicableActions) + createObjectHash(this.toDto());
     }
 
     evaluateRelatedConditionRules() {

@@ -30,6 +30,6 @@ export class EqConditionOperator extends FunnelConditionOperatorModel<
     }
 
     override evaluate(value: FieldValue): boolean {
-        return value.hasValue() && value.value === this.params.extra.value;
+        return value.value === this.params.extra.value;
     }
 }
