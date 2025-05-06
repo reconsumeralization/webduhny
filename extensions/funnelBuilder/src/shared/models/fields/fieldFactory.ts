@@ -1,26 +1,12 @@
-import { TextField, TextFieldDto } from "./TextField";
-import { TextareaField, TextareaFieldDto } from "./TextareaField";
-import {
-    type FunnelFieldDefinitionModel,
-    type FunnelFieldDefinitionModelDto
-} from "../FunnelFieldDefinitionModel";
-import { CheckboxGroupField, CheckboxGroupFieldDto } from "./CheckboxGroupField";
-import { NumberField, NumberFieldDto } from "./NumberField";
+import { FunnelFieldDefinitionModelDto } from "../FunnelFieldDefinitionModel";
+import { registry } from "./registry";
 
-const registry = {
-    checkboxGroup: (dto: CheckboxGroupFieldDto) => {
-        return new CheckboxGroupField(dto);
-    },
-    number: (dto: NumberFieldDto) => new NumberField(dto),
-    textarea: (dto: TextareaFieldDto) => new TextareaField(dto),
-    text: (dto: TextFieldDto) => new TextField(dto)
-};
-
-export function fieldFromDto(dto: FunnelFieldDefinitionModelDto): FunnelFieldDefinitionModel {
-    // @ts-ignore
-    const create = registry[dto.type];
-    if (!create) {
-        throw new Error(`Unknown field type: ${dto.type}`);
+export const fieldFromDto = (dto: FunnelFieldDefinitionModelDto<any, any>) => {
+    const FieldDefinitionClass = registry.find(
+        fieldDefinitionClass => fieldDefinitionClass.type === dto.type
+    );
+    if (!FieldDefinitionClass) {
+        throw new Error(`Unknown field: ${dto.type}`);
     }
-    return create(dto);
-}
+    return new FieldDefinitionClass(dto);
+};
