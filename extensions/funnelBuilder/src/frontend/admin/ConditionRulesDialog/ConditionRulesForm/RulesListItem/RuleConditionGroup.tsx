@@ -148,7 +148,7 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                     );
 
                     const conditionOperatorPlugin = conditionOperatorPlugins.find(
-                        p => p.operatorClass.id === conditionGroupItem.operator.id
+                        p => p.operatorClass.type === conditionGroupItem.operator.type
                     );
 
                     let ConditionRuleParamsComponent: ConditionOperatorParamsComponent | undefined;
@@ -178,17 +178,17 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
 
                             <Select
                                 size={"small"}
-                                value={conditionGroupItem.operator.id}
+                                value={conditionGroupItem.operator.type}
                                 placeholder={"Select operator..."}
-                                onChange={id => {
+                                onChange={(type: string) => {
                                     return updateCondition(conditionGroup.id, {
                                         ...conditionGroupItem,
-                                        operator: { id }
+                                        operator: { type }
                                     });
                                 }}
                             >
                                 {availableConditionOperators.map(operator => (
-                                    <option key={operator.id} value={operator.id}>
+                                    <option key={operator.type} value={operator.type}>
                                         {operator.optionLabel}
                                     </option>
                                 ))}

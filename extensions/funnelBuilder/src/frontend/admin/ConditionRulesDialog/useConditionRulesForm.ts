@@ -97,7 +97,7 @@ export const useConditionRulesForm = () => {
                     groupInRule.items.push({
                         id: getRandomId(),
                         sourceFieldId: "",
-                        operator: { id: "empty" }
+                        operator: { type: "empty" }
                     } as FunnelConditionModelDto);
                     break;
                 }
@@ -234,7 +234,11 @@ export const useConditionRulesForm = () => {
                 return rules;
             }
 
-            rule.actions.push({ type: DisableFieldConditionAction.type });
+            rule.actions.push({
+                id: getRandomId(),
+                type: DisableFieldConditionAction.type,
+                params: {}
+            });
 
             return rules;
         });

@@ -15,12 +15,12 @@ export class EqConditionOperator extends FunnelConditionOperatorModel<
     EqConditionOperatorExtraParams
 > {
     static override supportedFieldValueTypes = ["string", "number", "boolean"];
-    static override id = "eq";
+    static override type = "eq";
     static override optionLabel = "equals";
 
     constructor(dto: FunnelConditionOperatorModelDto<EqConditionOperatorExtraParams>) {
         super({
-            id: "eq",
+            type: "eq",
             params: {
                 extra: {
                     value: dto.params?.extra?.value

@@ -91,7 +91,7 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                                 size={"small"}
                                 value={action.type}
                                 onChange={type => {
-                                    updateAction(rule.id, { id: action.id, type });
+                                    updateAction(rule.id, { id: action.id, type, params: {} });
                                 }}
                             >
                                 {availableConditionActions.map(action => (

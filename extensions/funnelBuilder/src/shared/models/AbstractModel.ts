@@ -1,4 +1,4 @@
-import {createObjectHash} from "../createObjectHash";
+import { createObjectHash } from "../createObjectHash";
 
 export abstract class AbstractModel<TDto> {
     abstract toDto(): TDto;

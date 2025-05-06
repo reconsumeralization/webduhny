@@ -15,11 +15,11 @@ export class GtConditionOperator extends FunnelConditionOperatorModel<
     GtConditionOperatorExtraParams
 > {
     static override supportedFieldValueTypes = ["number"];
-    static override id = "gt";
+    static override type = "gt";
     static override optionLabel = "greater than";
     constructor(dto: FunnelConditionOperatorModelDto<GtConditionOperatorExtraParams>) {
         super({
-            id: "gt",
+            type: "gt",
             params: {
                 extra: {
                     threshold: dto.params?.extra?.threshold

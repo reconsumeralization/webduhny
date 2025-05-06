@@ -12,6 +12,7 @@
 - evaluate rules only for current step (extend action class)
 - can't delete field if mentioned in con rules
 - setPrevStep - not index-1 but prev step per cond rules
+- plus last tab
 
 #### Editor
   - prevent deletion of grid in step el
@@ -39,7 +40,8 @@
 - } as Omit<FunnelFieldDefinitionModelDto<TValue, TExtra>, "stepId">;
 - default value editing - doesn't reflect in UI unti page refresh
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
-
+- DTO objects also contain all fields, constructors can then partialize them
+ 
 ## CH/NTH
 - add '~' imports
 - PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.

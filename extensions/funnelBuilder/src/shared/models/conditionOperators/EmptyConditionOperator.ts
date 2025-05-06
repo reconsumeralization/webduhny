@@ -3,12 +3,12 @@ import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 export class EmptyConditionOperator extends FunnelConditionOperatorModel {
     static override supportedFieldValueTypes = ["*"];
-    static override id = "empty";
+    static override type = "empty";
     static override optionLabel = "is empty";
 
     constructor() {
         super({
-            id: "empty",
+            type: "empty",
             params: {
                 extra: {}
             }

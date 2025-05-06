@@ -12,9 +12,9 @@ export type ConditionActionParamsDto<TExtra = Record<string, any>> = Partial<
 >;
 
 export interface FunnelConditionActionModelDto<TExtra = Record<string, any>> {
-    id?: string;
+    id: string;
     type: string;
-    params?: ConditionActionParamsDto<TExtra>; // Additional parameters for the validator.
+    params: ConditionActionParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
 export class FunnelConditionActionModel<TExtra = Record<string, any>> extends AbstractModel<
@@ -32,7 +32,7 @@ export class FunnelConditionActionModel<TExtra = Record<string, any>> extends Ab
 
     constructor(
         conditionRule: FunnelConditionRuleModel,
-        dto?: FunnelConditionActionModelDto<TExtra>
+        dto?: Partial<FunnelConditionActionModelDto<TExtra>>
     ) {
         super();
         this.conditionRule = conditionRule;

@@ -15,12 +15,12 @@ export class LtConditionOperator extends FunnelConditionOperatorModel<
     LtConditionOperatorExtraParams
 > {
     static override supportedFieldValueTypes = ["number"];
-    static override id = "lt"
+    static override type = "lt"
     static override optionLabel = "lower than";
 
     constructor(dto: FunnelConditionOperatorModelDto<LtConditionOperatorExtraParams>) {
         super({
-            id: "lt",
+            type: "lt",
             params: {
                 extra: {
                     threshold: dto.params?.extra?.threshold

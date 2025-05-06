@@ -21,12 +21,12 @@ export class IncludesConditionOperator extends FunnelConditionOperatorModel<
         "numberArray",
         "booleanArray"
     ];
-    static override id = "includes";
+    static override type = "includes";
     static override optionLabel = "includes";
 
     constructor(dto: FunnelConditionOperatorModelDto<IncludesConditionOperatorExtraParams>) {
         super({
-            id: "includes",
+            type: "includes",
             params: {
                 extra: {
                     value: dto.params?.extra?.value

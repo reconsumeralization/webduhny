@@ -36,9 +36,9 @@ export const getConditionOperatorsByValueType = (valueType: string) => {
 };
 
 export const conditionOperatorFromDto = (dto: FunnelConditionOperatorModelDto) => {
-    const OperatorClass = registry.find(operatorClass => operatorClass.id === dto.id);
+    const OperatorClass = registry.find(operatorClass => operatorClass.type === dto.type);
     if (!OperatorClass) {
-        throw new Error(`Unknown condition operator: ${dto.id}`);
+        throw new Error(`Unknown condition operator: ${dto.type}`);
     }
     return new OperatorClass(dto);
 };

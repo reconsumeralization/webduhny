@@ -297,7 +297,7 @@ describe("Funnel Submissions", () => {
 
         const dto = funnelSubmission.toDto();
         expect(dto).toEqual({
-            activeStep: "step2",
+            activeStep: "success",
             fields: {
                 colors: {
                     value: {

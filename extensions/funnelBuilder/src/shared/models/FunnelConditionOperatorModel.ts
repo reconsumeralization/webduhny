@@ -1,5 +1,6 @@
 import { AbstractModel } from "./AbstractModel";
 import { FunnelFieldValueModel } from "./FunnelFieldValueModel";
+import { getRandomId } from "../getRandomId";
 
 export type ConditionOperatorParams<TExtra = Record<string, any>> = {
     extra: TExtra;
@@ -10,7 +11,7 @@ export type ConditionOperatorParamsDto<TExtra = Record<string, any>> = Partial<
 >;
 
 export interface FunnelConditionOperatorModelDto<TExtra = Record<string, any>> {
-    id: string;
+    type: string;
     params?: ConditionOperatorParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
@@ -18,29 +19,29 @@ export class FunnelConditionOperatorModel<
     TValue = FunnelFieldValueModel,
     TExtra = Record<string, any>
 > extends AbstractModel<FunnelConditionOperatorModelDto<TExtra>> {
-    id: string;
+    type: string;
     params: ConditionOperatorParams<TExtra>;
 
-    static id = "";
+    static type = "";
 
     // String shown in the conditional rules dialog (in the operators dropdown menu).
     static optionLabel = "";
     static supportedFieldValueTypes: string[] = [];
 
-    constructor(dto: FunnelConditionOperatorModelDto<TExtra>) {
+    constructor(dto?: Partial<FunnelConditionOperatorModelDto<TExtra>>) {
         super();
-        this.id = dto.id;
+        this.type = dto?.type || '';
         this.params = {
-            extra: (dto.params?.extra || {}) as TExtra
+            extra: (dto?.params?.extra || {}) as TExtra
         };
     }
 
     evaluate(value: TValue) {
-        return false;
+        return true;
     }
 
     toDto(): FunnelConditionOperatorModelDto<TExtra> {
-        return { id: this.id, params: this.params };
+        return { type: this.type, params: this.params };
     }
 
     static fromDto<TValue = unknown, TExtra = Record<string, any>>(
