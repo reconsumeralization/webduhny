@@ -42,8 +42,7 @@ export const List = ({
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
     const { listFoldersByParentIds } = useListFoldersByParentIds();
-    const { loading } = useGetFolderHierarchy();
-
+    const { getIsFolderLoading } = useGetFolderHierarchy();
     const { showSnackbar } = useSnackbar();
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
     const [initialOpenList, setInitialOpenList] = useState<undefined | InitialOpen>();
@@ -53,13 +52,17 @@ export const List = ({
         if (folders) {
             setTreeData(createTreeData(folders, focusedFolderId, hiddenFolderIds));
         }
-    }, [folders, focusedFolderId]);
+    }, [folders, focusedFolderId, hiddenFolderIds]);
+
+    const memoCreateInitialOpenList = useCallback(
+        (focusedFolderId?: string) => {
+            return createInitialOpenList(folders, openFolderIds, focusedFolderId);
+        },
+        [folders, openFolderIds]
+    );
 
     useEffect(() => {
-        if (!folders) {
-            return;
-        }
-        setInitialOpenList(createInitialOpenList(folders, openFolderIds, focusedFolderId));
+        setInitialOpenList(memoCreateInitialOpenList(focusedFolderId));
     }, [focusedFolderId]);
 
     const handleDrop = async (
@@ -99,9 +102,8 @@ export const List = ({
     );
 
     const handleChangeOpen = async (folderIds: string[]) => {
-        setOpenFolderIds([ROOT_FOLDER, ...folderIds]);
-        const removedListParentIds = new Set([ROOT_FOLDER, "0"]);
-        const filteredFolderIds = folderIds.filter(item => !removedListParentIds.has(item));
+        setOpenFolderIds([...new Set([ROOT_FOLDER, ...folderIds])]);
+        const filteredFolderIds = folderIds.filter(item => item !== ROOT_FOLDER && item !== "0");
         await listFoldersByParentIds(filteredFolderIds);
     };
 
@@ -111,6 +113,33 @@ export const List = ({
             return !isRootFolder && canManageStructure(folderId);
         },
         [canManageStructure]
+    );
+
+    const getIsLoading = useCallback(
+        (folder?: FolderItem) => {
+            return getIsFolderLoading(folder?.id);
+        },
+        [getIsFolderLoading]
+    );
+
+    const renderNode = useCallback(
+        (node: NodeModel<DndFolderItemData>, { depth, isOpen, onToggle }: any) => {
+            const folder = folders.find(folder => folder.id === node.id);
+            return (
+                <FolderProvider folder={folder}>
+                    <Node
+                        node={node}
+                        depth={depth}
+                        isOpen={isOpen}
+                        onToggle={onToggle}
+                        isLoading={getIsLoading(folder)}
+                        enableActions={enableActions}
+                        onClick={onFolderClick}
+                    />
+                </FolderProvider>
+            );
+        },
+        [folders, getIsFolderLoading, enableActions, onFolderClick]
     );
 
     return (
@@ -123,24 +152,7 @@ export const List = ({
                     onChangeOpen={ids => handleChangeOpen(ids as string[])}
                     sort={sort}
                     canDrag={item => canDrag(item!.id as string)}
-                    render={(node, { depth, isOpen, onToggle }) => {
-                        const folder = folders.find(folder => folder.id === node.id);
-                        const isLoading = folder && loading[folder.id];
-                        return (
-                            <FolderProvider folder={folder}>
-                                {isLoading}
-                                <Node
-                                    node={node}
-                                    depth={depth}
-                                    isOpen={isOpen}
-                                    isLoading={isLoading}
-                                    enableActions={enableActions}
-                                    onToggle={onToggle}
-                                    onClick={data => onFolderClick(data)}
-                                />
-                            </FolderProvider>
-                        );
-                    }}
+                    render={renderNode}
                     dragPreviewRender={monitorProps => <NodePreview monitorProps={monitorProps} />}
                     classes={{
                         dropTarget: "dropTarget",

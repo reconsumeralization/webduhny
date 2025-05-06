@@ -6,6 +6,7 @@ import { GetFolderHierarchy } from "./GetFolderHierarchy";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 import { FolderItem } from "~/types";
+import { ROOT_FOLDER } from "~/constants";
 
 export const useGetFolderHierarchy = () => {
     const client = useApolloClient();
@@ -15,18 +16,14 @@ export const useGetFolderHierarchy = () => {
 
     const [vm, setVm] = useState<{
         folders: FolderItem[];
-        loading: Record<string, boolean>;
     }>({
-        folders: [],
-        loading: {
-            INIT: true
-        }
+        folders: []
     });
 
     const {
         useCase,
         folders: foldersCache,
-        loading
+        loading: loadingState
     } = useMemo(() => {
         return GetFolderHierarchy.getInstance(type, gateway);
     }, [type, gateway]);
@@ -36,6 +33,17 @@ export const useGetFolderHierarchy = () => {
             return useCase.execute({ id });
         },
         [useCase]
+    );
+
+    const getIsFolderLoading = useCallback(
+        (action = ROOT_FOLDER) => {
+            if (!loadingState) {
+                return true;
+            }
+
+            return loadingState.isLoading(action);
+        },
+        [loadingState]
     );
 
     useEffect(() => {
@@ -49,18 +57,21 @@ export const useGetFolderHierarchy = () => {
         });
     }, [foldersCache]);
 
-    useEffect(() => {
-        return autorun(() => {
-            const loadingState = loading.get();
-            setVm(vm => ({
-                ...vm,
-                loading: loadingState
-            }));
-        });
-    }, [loading]);
+    // useEffect(() => {
+    //     return autorun(() => {
+    //         const loading = loadingState.get();
+    //         const hasLoading = Object.values(loading).some(Boolean);
+    //         setVm(vm => ({
+    //             ...vm,
+    //             loading,
+    //             hasLoading
+    //         }));
+    //     });
+    // }, [loadingState]);
 
     return {
         ...vm,
-        getFolderHierarchy
+        getFolderHierarchy,
+        getIsFolderLoading
     };
 };

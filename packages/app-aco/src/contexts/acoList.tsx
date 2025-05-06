@@ -123,7 +123,7 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { folderIdPath, folderIdInPath } = useAcoApp();
     const {
         folders: originalFolders,
-        loading: foldersLoading,
+        getIsFolderLoading,
         getFolderHierarchy
     } = useGetFolderHierarchy();
     const { getDescendantFolders } = useGetDescendantFolders();
@@ -142,12 +142,8 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { records: originalRecords, loading: recordsLoading, listRecords, meta } = searchContext;
 
     /**
-     * On first mount, call `listFolders` and `setState`, which will either issue a network request, or load folders and records from cache.
+     * On first mount, call `getFolderHierarchy` and `setState`, which will either issue a network request, or load folders and records from cache.
      * We don't need to store the result of it to any local state; that is managed by the context provider.
-     *
-     * IMPORTANT: we check if the folders[type] array exists: the hook can be used from multiple components and
-     * fetch the outdated list from Apollo Cache. Since the state is managed locally, we fetch the folders only
-     * at the first mount.
      *
      * We don't call `listRecords` directly, instead we call `setState` making it the only driver to fetch records from the apis.
      */
@@ -395,7 +391,7 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
         records,
         listTitle,
         isListLoading: Boolean(
-            recordsLoading.INIT || foldersLoading.INIT || recordsLoading.LIST || foldersLoading.LIST
+            recordsLoading.INIT || recordsLoading.LIST || getIsFolderLoading(currentFolderId)
         ),
         isListLoadingMore: Boolean(recordsLoading.LIST_MORE),
         meta,

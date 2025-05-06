@@ -29,7 +29,7 @@ export const FolderTree = ({
     onFolderClick,
     rootFolderLabel
 }: FolderTreeProps) => {
-    const { folders, loading } = useGetFolderHierarchy();
+    const { folders, getIsFolderLoading } = useGetFolderHierarchy();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
 
@@ -47,7 +47,7 @@ export const FolderTree = ({
     }, [folders]);
 
     const renderList = () => {
-        if (loading.INIT || loading.LIST || loading["root"]) {
+        if (getIsFolderLoading()) {
             return <Loader />;
         }
 

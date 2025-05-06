@@ -13,6 +13,14 @@ export class LoadingRepository implements ILoadingRepository {
         return Object.fromEntries(this.loadings);
     }
 
+    hasLoading() {
+        return [...this.loadings.values()].some(Boolean);
+    }
+
+    isLoading(action: string) {
+        return this.loadings.get(action) ?? false;
+    }
+
     async set(action: string, isLoading = true) {
         this.loadings.set(action, isLoading);
     }

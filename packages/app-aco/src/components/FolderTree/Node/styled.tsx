@@ -14,7 +14,7 @@ export const Container = styled("div")<ContainerProps>`
     display: flex;
     align-items: center;
     padding: 4px 0 4px 4px;
-    background: ${props => props.isFocused && "var(--mdc-theme-on-background)"};
+    background: ${props => props.isFocused && !props.isLoading && "var(--mdc-theme-on-background)"};
     color: var(--webiny-theme-color-text-secondary);
     fill: currentColor;
     position: relative;
@@ -53,16 +53,14 @@ export const Content = styled("div")`
     width: 100%;
 `;
 
-type TextProps = {
-    isFocused?: boolean;
-};
-
-export const Text = styled(Typography)<TextProps>`
+export const Text = styled(Typography)`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 24px;
-    font-weight: ${props => (props.isFocused ? 600 : 400)};
+    &.focused {
+        font-weight: 600;
+    }
 `;
 
 export const LoaderContainer = styled("div")`

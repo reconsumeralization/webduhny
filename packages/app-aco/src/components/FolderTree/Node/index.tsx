@@ -74,6 +74,8 @@ const FolderIndicator = ({ isLoading, isOpen, onToggle }: FolderIndicatorProps) 
         return null;
     }
 
+    // console.log(folder.id, "isOpen", isOpen, "isLoading", isLoading);
+
     if (isLoading) {
         return (
             <LoaderContainer>
