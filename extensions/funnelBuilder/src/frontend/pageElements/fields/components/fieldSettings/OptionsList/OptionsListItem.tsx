@@ -1,10 +1,8 @@
 import React from "react";
 import { Typography } from "@webiny/ui/Typography";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { css } from "emotion";
 import { IconButton } from "@webiny/ui/Button";
 import styled from "@emotion/styled";
-
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
@@ -20,7 +18,6 @@ import {
 import { sortableKeyboardCoordinates, SortableContext } from "@dnd-kit/sortable";
 
 import { Switch } from "@webiny/ui/Switch";
-import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { BindComponent } from "@webiny/form/types";
 import { FieldOption } from "./types";
@@ -30,7 +27,7 @@ const OptionList = styled.ul`
     border: 1px solid var(--mdc-theme-on-background);
 `;
 
-const optionsListItemLeft = css({
+const OptionsListItemLeft = styled.div({
     display: "flex",
     justifyContent: "left",
     alignItems: "center",
@@ -45,7 +42,7 @@ const optionsListItemLeft = css({
     }
 });
 
-const optionsListItemRight = css({
+const OptionsListItemRight = styled.div({
     display: "flex",
     justifyContent: "right",
     alignItems: "center"
@@ -110,10 +107,8 @@ export type SortableContextItemsProp = (
       }
 )[];
 
-export type FieldOptionWithId = FieldOption & { id?: number };
-
 interface SortableContainerWrapperProps {
-    optionsValue: FieldOptionWithId[];
+    optionsValue: FieldOption[];
     children: React.ReactNode;
     onDragEnd: (event: DragEndEvent) => void;
 }
@@ -142,14 +137,13 @@ export const SortableContainerContextProvider = ({
 type OptionsListItemProps = {
     multiple: boolean;
     dragHandle: React.ReactNode;
-    option: { label: string; value: string; id?: number };
+    option: { label: string; value: string; id: string };
     Bind: BindComponent;
     deleteOption: () => void;
-    editOption: () => void;
 };
 
 export const OptionsListItem = (props: OptionsListItemProps) => {
-    const { multiple, dragHandle, Bind, option, deleteOption, editOption } = props;
+    const { multiple, dragHandle, Bind, option, deleteOption } = props;
 
     const { attributes, listeners, setNodeRef, transform } = useSortable({ id: option.id || "" });
     const style = {
@@ -159,7 +153,7 @@ export const OptionsListItem = (props: OptionsListItemProps) => {
     return (
         <>
             <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-                <div className={optionsListItemLeft}>
+                <OptionsListItemLeft>
                     <Tooltip
                         placement={"bottom"}
                         content={<span>Drag to rearrange the order</span>}
@@ -170,13 +164,12 @@ export const OptionsListItem = (props: OptionsListItemProps) => {
                         <Typography use={"subtitle1"}>{option.label}</Typography>
                         <Typography use={"caption"}>{option.value}</Typography>
                     </div>
-                </div>
+                </OptionsListItemLeft>
             </div>
-            <div className={optionsListItemRight}>
-                <IconButton icon={<EditIcon />} onClick={editOption} />
+            <OptionsListItemRight>
                 <IconButton icon={<DeleteIcon />} onClick={deleteOption} />
 
-                <Bind name={"settings.defaultValue"}>
+                <Bind name={"value.value"}>
                     {({ onChange, value }) => (
                         <Tooltip placement={"bottom"} content={<span>Set as default value</span>}>
                             <DefaultValueSwitch
@@ -188,7 +181,7 @@ export const OptionsListItem = (props: OptionsListItemProps) => {
                         </Tooltip>
                     )}
                 </Bind>
-            </div>
+            </OptionsListItemRight>
         </>
     );
 };

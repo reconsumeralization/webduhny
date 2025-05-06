@@ -9,7 +9,7 @@ export type CheckboxGroupFieldDto = Omit<
 >;
 
 export interface CheckboxGroupFieldExtra {
-    options: Array<{ value: string; label: string }>;
+    options: Array<{ id: string; value: string; label: string }>;
 }
 
 export class CheckboxGroupField extends FunnelFieldDefinitionModel<

@@ -1,15 +1,15 @@
 ## MH
-- ======= async validators
+- async validators
 - themes
 - <Form<ConditionOperatorParams> key= needed? b/c of changing types?
-- ======== registry.ts - use classes all the time
-- options list checkbox grp - dbl check!
+- ====> options list checkbox grp - dbl check!
 - can't delete field if mentioned in con rules
 - setPrevStep - not index-1 but prev step per cond rules
+- test prev btn
 ---
 - test in CWP
 - docs
-
+- deps updates
 
 #### Editor
   - prevent deletion of grid in step el
@@ -41,15 +41,16 @@
 - default value editing - doesn't reflect in UI unti page refresh
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - DTO objects also contain all fields, constructors can then partialize them
- 
+- setting default values for checkbox group is not immediately reflected in editor (refresh req)
+
 
 ## CH/NTH
-- plus last tab
 - add '~' imports
-- PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
 - validators - array validator
 - MODELS - AbstractModel
 - radio input quickly? 
 
 ## WH
+- plus last tab
+- PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
 - optional validators  
