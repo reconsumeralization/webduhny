@@ -30,6 +30,7 @@ export class ListFoldersByParentIds {
         const useCase = new ListFoldersByParentIdsUseCase(repositoryWithLoadedCache);
         const useCaseWithLoading = new ListFoldersByParentIdsUseCaseWithLoading(
             loadingRepository,
+            loadedCache,
             useCase
         );
 

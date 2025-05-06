@@ -52,9 +52,6 @@ export const useGetFolderHierarchy = () => {
     useEffect(() => {
         return autorun(() => {
             const loadingState = loading.get();
-
-            console.log("loading", loadingState);
-
             setVm(vm => ({
                 ...vm,
                 loading: loadingState

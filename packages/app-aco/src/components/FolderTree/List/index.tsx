@@ -14,6 +14,7 @@ import { NodePreview } from "../NodePreview";
 import { Placeholder } from "../Placeholder";
 import { createInitialOpenList, createTreeData } from "./utils";
 import {
+    useGetFolderHierarchy,
     useGetFolderLevelPermission,
     useListFoldersByParentIds,
     useUpdateFolder
@@ -41,6 +42,7 @@ export const List = ({
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
     const { listFoldersByParentIds } = useListFoldersByParentIds();
+    const { loading } = useGetFolderHierarchy();
 
     const { showSnackbar } = useSnackbar();
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
@@ -98,10 +100,8 @@ export const List = ({
 
     const handleChangeOpen = async (folderIds: string[]) => {
         setOpenFolderIds([ROOT_FOLDER, ...folderIds]);
-
         const removedListParentIds = new Set([ROOT_FOLDER, "0"]);
         const filteredFolderIds = folderIds.filter(item => !removedListParentIds.has(item));
-
         await listFoldersByParentIds(filteredFolderIds);
     };
 
@@ -125,13 +125,15 @@ export const List = ({
                     canDrag={item => canDrag(item!.id as string)}
                     render={(node, { depth, isOpen, onToggle }) => {
                         const folder = folders.find(folder => folder.id === node.id);
-
+                        const isLoading = folder && loading[folder.id];
                         return (
                             <FolderProvider folder={folder}>
+                                {isLoading}
                                 <Node
                                     node={node}
                                     depth={depth}
                                     isOpen={isOpen}
+                                    isLoading={isLoading}
                                     enableActions={enableActions}
                                     onToggle={onToggle}
                                     onClick={data => onFolderClick(data)}
