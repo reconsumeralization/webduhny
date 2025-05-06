@@ -9,13 +9,23 @@ export const createContainerElement = () => {
         title: "New page"
     };
 
+    const successStepData: FunnelStepModelDto = {
+        id: "success",
+        title: "Success page"
+    };
+
     return {
         id: getRandomId(),
         type: CONTAINER_ELEMENT_TYPE,
 
         // We are immediately creating a grid element inside our new page element.
         // This was users can start adding content to the grid right away.
-        elements: [createStepElement(initialStepData)],
-        data: { settings: {}, fields: [], steps: [initialStepData], conditionRules: [] }
+        elements: [createStepElement(initialStepData), createStepElement(successStepData)],
+        data: {
+            settings: {},
+            fields: [],
+            steps: [initialStepData, successStepData],
+            conditionRules: []
+        }
     };
 };

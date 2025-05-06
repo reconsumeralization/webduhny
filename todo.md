@@ -1,18 +1,15 @@
 ## MH
-- cond rule / field/submission types of rules
-- submission - what happens when I submit the last step?
 - async validators
 - themes
-- docs
-- test in CWP
 - <Form<ConditionOperatorParams> key= needed? b/c of changing types?
 - registry.ts - use classes all the time
-- added a step, pressed undo, and tabs at the top did not update :|
 - options list checkbox grp - dbl check!
-- evaluate rules only for current step (extend action class)
 - can't delete field if mentioned in con rules
 - setPrevStep - not index-1 but prev step per cond rules
-- plus last tab
+---
+- test in CWP
+- docs
+
 
 #### Editor
   - prevent deletion of grid in step el
@@ -29,7 +26,10 @@
   - deleting a step if focused causes a blank canvas
   - missing form comp in hiearchy - ensure fields can only be dropped within container
   - esc doesn't work on dialogs sometimes (if not focused correctly)
- 
+  - can't drop fields into success page
+  - added a step, pressed undo, and tabs at the top did not update :|
+
+
 ## SH
 - remove Form comp in steps?
 - abstract validator remove
@@ -42,7 +42,9 @@
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 - DTO objects also contain all fields, constructors can then partialize them
  
+
 ## CH/NTH
+- plus last tab
 - add '~' imports
 - PbEditorFunnelField: unique?: boolean; // TODO: can be used to ensure only a single instance of the field is added to the form.
 - validators - array validator
