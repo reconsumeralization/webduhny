@@ -20,6 +20,7 @@ export const createStepElement = (initialStepData?: FunnelStepModelDto) => {
                 type: "grid",
                 parent: undefined,
                 data: {
+                    isFunnelStepGrid: true,
                     settings: {
                         width: {
                             desktop: {

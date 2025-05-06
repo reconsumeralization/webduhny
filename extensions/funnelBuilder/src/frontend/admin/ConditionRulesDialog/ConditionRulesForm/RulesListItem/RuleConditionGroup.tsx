@@ -170,7 +170,7 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                                 }}
                             >
                                 {funnel.fields.map(field => (
-                                    <option key={field.id} value={field.fieldId}>
+                                    <option key={field.id} value={field.id}>
                                         {field.label}
                                     </option>
                                 ))}

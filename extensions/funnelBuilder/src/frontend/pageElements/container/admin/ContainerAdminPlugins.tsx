@@ -9,9 +9,6 @@ import { ContainerAdminRenderer } from "./ContainerAdminRenderer";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { createContainerElement } from "../../../../shared/createContainerElement";
 import { CONTAINER_ELEMENT_TYPE } from "../../../../shared/constants";
-import { FUB_PAGE_ELEMENT_GROUP } from "../../fields/utils";
-import { ElementToolbarPreview } from "../../ElementToolbarPreview";
-import { ReactComponent as ContainerIcon } from "@material-design-icons/svg/outlined/view_module.svg";
 
 export const ContainerAdminPlugins = () => (
     <>
@@ -22,19 +19,6 @@ export const ContainerAdminPlugins = () => (
         <PbEditorPageElementPlugin
             elementType={CONTAINER_ELEMENT_TYPE}
             renderer={ContainerAdminRenderer}
-            toolbar={{
-                title: "Container Element",
-                group: FUB_PAGE_ELEMENT_GROUP,
-                preview() {
-                    return (
-                        <ElementToolbarPreview
-                            title={"Container Element"}
-                            icon={<ContainerIcon />}
-                            description={"Container element that can contain other elements."}
-                        />
-                    );
-                }
-            }}
             settings={[
                 "pb-editor-page-element-settings-delete",
                 "pb-editor-page-element-settings-visibility",
@@ -49,7 +33,6 @@ export const ContainerAdminPlugins = () => (
             target={["cell", "block"]}
             onCreate={OnCreateActions.OPEN_SETTINGS}
             create={createContainerElement}
-            canDelete={() => false}
         />
         <PbEditorPageElementAdvancedSettingsPlugin
             elementType={CONTAINER_ELEMENT_TYPE}

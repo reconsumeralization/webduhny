@@ -15,7 +15,7 @@ export const createContainerElement = () => {
     };
 
     return {
-        id: getRandomId(),
+        id: CONTAINER_ELEMENT_TYPE,
         type: CONTAINER_ELEMENT_TYPE,
 
         // We are immediately creating a grid element inside our new page element.

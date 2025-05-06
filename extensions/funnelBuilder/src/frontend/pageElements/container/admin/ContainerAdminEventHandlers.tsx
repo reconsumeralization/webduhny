@@ -7,7 +7,6 @@ import {
 } from "@webiny/app-page-builder/editor";
 import {
     CreateElementActionEvent,
-    DeleteElementActionEvent,
     UpdateElementActionEvent
 } from "@webiny/app-page-builder/editor/recoil/actions";
 import type {
@@ -15,7 +14,6 @@ import type {
     EventActionHandlerCallableArgs
 } from "@webiny/app-page-builder/types";
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
-import type { DeleteElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/deleteElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
 import {
     isContainerElementType,
@@ -82,18 +80,6 @@ export const ContainerAdminEventHandlers = () => {
         [funnelVm]
     );
 
-    const onElementDelete = useCallback(
-        createOnElementEventHandler<DeleteElementActionArgsType>(args => {
-            const { element: deletedElement } = args;
-            if (isFieldElementType(deletedElement.type)) {
-                funnelVm.removeField(deletedElement.data.id);
-            }
-
-            // TODO: Find deleted child inputs and update container.
-        }),
-        [funnelVm]
-    );
-
     const onElementUpdate = useCallback(
         createOnElementEventHandler<UpdateElementActionArgsType>(args => {
             const { element: updatedElement } = args;
@@ -118,12 +104,10 @@ export const ContainerAdminEventHandlers = () => {
     useEffect(() => {
         const offCreateElement = eventHandler.on(CreateElementActionEvent, onElementCreate);
         const offUpdateElement = eventHandler.on(UpdateElementActionEvent, onElementUpdate);
-        const offDeleteElement = eventHandler.on(DeleteElementActionEvent, onElementDelete);
 
         return () => {
             offCreateElement();
             offUpdateElement();
-            offDeleteElement();
         };
     }, [funnelVm]);
 

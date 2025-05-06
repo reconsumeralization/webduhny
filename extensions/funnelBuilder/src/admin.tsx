@@ -10,6 +10,7 @@ import { DecoratedElementControls } from "./frontend/pageElements/ElementControl
 import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators";
 import { ConditionOperatorPlugins } from "./frontend/admin/plugins/conditionOperators";
 import { ConditionActionPlugins } from "./frontend/admin/plugins/conditionActions";
+import { PbEditorOverrideEventActionPlugins } from "./frontend/admin/plugins/editorActionOverrides";
 
 export const Extension = () => (
     <>
@@ -29,5 +30,6 @@ export const Extension = () => (
         <ConditionActionPlugins />
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
+        <PbEditorOverrideEventActionPlugins/>
     </>
 );
