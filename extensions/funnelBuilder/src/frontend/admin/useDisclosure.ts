@@ -2,12 +2,14 @@ import { useCallback, useState } from "react";
 
 export const useDisclosure = <TData = undefined>(isOpenDefault = false) => {
     const [isOpen, defaultSetIsOpen] = useState(isOpenDefault);
-    const [data, setData] = useState<TData>();
+    const [data, setData] = useState<TData | null>(null);
 
     const setIsOpen = useCallback(
         (isOpen: boolean | ((prev: boolean) => boolean), data?: TData) => {
             defaultSetIsOpen(isOpen);
-            setData(data);
+            if (typeof data !== "undefined") {
+                setData(data);
+            }
         },
         []
     );
@@ -16,7 +18,7 @@ export const useDisclosure = <TData = undefined>(isOpenDefault = false) => {
         setIsOpen(true, data);
     }, []);
 
-    const close = useCallback(() => setIsOpen(false, undefined), []);
+    const close = useCallback(() => setIsOpen(false), []);
 
     const toggle = useCallback((toSet?: boolean) => {
         if (typeof toSet === "undefined") {

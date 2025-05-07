@@ -315,6 +315,10 @@ export class FunnelSubmissionModel {
         return this.funnel.steps.length;
     }
 
+    isFirstStep() {
+        return this.getActiveStepIndex() === 0;
+    }
+
     /**
      * Check if the current step is the last step before the success step.
      */

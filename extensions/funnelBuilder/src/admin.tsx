@@ -11,6 +11,7 @@ import { FieldValidatorPlugins } from "./frontend/admin/plugins/fieldValidators"
 import { ConditionOperatorPlugins } from "./frontend/admin/plugins/conditionOperators";
 import { ConditionActionPlugins } from "./frontend/admin/plugins/conditionActions";
 import { PbEditorOverrideEventActionPlugins } from "./frontend/admin/plugins/editorActionOverrides";
+import { ControlsAdminPlugins } from "./frontend/pageElements/controls/ControlsAdminPlugins";
 
 export const Extension = () => (
     <>
@@ -18,6 +19,7 @@ export const Extension = () => (
         <TextFieldAdminPlugins />
         <TextareaFieldAdminPlugins />
         <CheckboxGroupFieldAdminPlugins />
+        <ControlsAdminPlugins />
         <ButtonAdminPlugins />
 
         {/* Container Page Element */}

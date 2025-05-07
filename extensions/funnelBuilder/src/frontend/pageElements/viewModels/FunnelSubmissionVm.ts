@@ -53,6 +53,14 @@ export class FunnelSubmissionVm {
         return this.funnelSubmission.activeStepId;
     }
 
+    isFinalStep() {
+        return this.funnelSubmission.isFinalStep();
+    }
+
+    isFirstStep() {
+        return this.funnelSubmission.isFirstStep();
+    }
+
     subscribe(listener: Listener) {
         this.listeners.add(listener);
         return () => this.listeners.delete(listener);

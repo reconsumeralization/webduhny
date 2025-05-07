@@ -44,7 +44,7 @@ export const FieldSettingsDialog = ({ field, open, onClose, onSubmit }: EditFiel
                                     <DialogContent className={css(dialogContentCss)}>
                                         <Tabs>
                                             <Tab label={"General"}>
-                                                <GeneralTab field={field} />
+                                                <GeneralTab field={field} open={open} />
                                             </Tab>
                                             {field && field.supportedValidatorTypes.length > 0 && (
                                                 <Tab label={"Validators"}>

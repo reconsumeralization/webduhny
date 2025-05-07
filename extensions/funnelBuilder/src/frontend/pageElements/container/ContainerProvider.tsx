@@ -29,7 +29,9 @@ export interface ContainerProviderProps {
 }
 
 // @ts-ignore
-const globalContainer: { current: ContainerContextValue } = { current: createInitialContextValue() };
+const globalContainer: { current: ContainerContextValue } = {
+    current: createInitialContextValue()
+};
 
 export const ContainerProvider = ({
     children,
@@ -54,6 +56,11 @@ export const ContainerProvider = ({
         return new FunnelSubmissionVm(funnelVm.funnel);
     }, [funnelVm.getChecksum()]);
 
+    useSyncExternalStore(
+        funnelSubmissionVm.subscribe.bind(funnelSubmissionVm),
+        funnelSubmissionVm.getChecksum.bind(funnelSubmissionVm)
+    );
+
     const value = useMemo(() => {
         return {
             funnelVm,
@@ -62,7 +69,7 @@ export const ContainerProvider = ({
     }, [funnelVm, funnelSubmissionVm]);
 
     useEffect(() => {
-        Object.assign(globalContainer.current, value)
+        Object.assign(globalContainer.current, value);
     }, [value]);
 
     return (

@@ -13,9 +13,10 @@ import { useContainer } from "../../pageElements/container/ContainerProvider";
 
 interface GeneralTabProps {
     field: FunnelFieldDefinitionModel;
+    open: boolean;
 }
 
-export const GeneralTab = ({}: GeneralTabProps) => {
+export const GeneralTab = ({ open }: GeneralTabProps) => {
     const { setValue, data: field } = useForm();
 
     const { funnelVm } = useContainer();
@@ -31,9 +32,12 @@ export const GeneralTab = ({}: GeneralTabProps) => {
                 return;
             }
 
-            inputRef.current.focus();
-        }, 333);
-    }, []);
+            // On dialog open, we focus the first input field.
+            if (open) {
+                inputRef.current.focus();
+            }
+        }, 150);
+    }, [open]);
 
     const uniqueFieldIdValidator: Validator = useCallback(() => {
         const existingField = funnelVm.getFieldByFieldId(field.fieldId);
