@@ -2,8 +2,8 @@ import { AbstractModel } from "./AbstractModel";
 
 export interface FunnelFieldValueModelDto<TValue = unknown> {
     type: string;
-    array?: boolean;
-    value?: TValue;
+    array: boolean;
+    value: TValue;
 }
 
 export class FunnelFieldValueModel<
@@ -15,11 +15,11 @@ export class FunnelFieldValueModel<
     array: boolean;
     value: TValue;
 
-    constructor(dto: FunnelFieldValueModelDto<TValue>) {
+    constructor(dto?: Partial<FunnelFieldValueModelDto<TValue>>) {
         super();
-        this.type = dto.type;
-        this.array = dto.array || false;
-        if (typeof dto.value !== "undefined") {
+        this.type = dto?.type || ''
+        this.array = dto?.array || false;
+        if (typeof dto?.value !== "undefined") {
             this.value = dto.value;
         } else {
             this.value = this.getDefaultValue() as TValue;

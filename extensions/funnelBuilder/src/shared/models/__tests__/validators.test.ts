@@ -142,7 +142,7 @@ describe("Validator From DTO", () => {
             upperCaseValue: "test"
         });
 
-        let validationResult = funnelSubmission.validateActiveStep();
+        let validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: false,
             errors: {
@@ -162,7 +162,7 @@ describe("Validator From DTO", () => {
             upperCaseValue: "TEST"
         });
 
-        validationResult = funnelSubmission.validateActiveStep();
+        validationResult = await funnelSubmission.validateActiveStep();
         expect(validationResult).toEqual({
             isValid: true,
             errors: {}

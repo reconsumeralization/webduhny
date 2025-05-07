@@ -5,25 +5,23 @@
 - disable next step if form invalid
 - test prev btn
 - revisit containerEvHandlers
-- jest ( { type: "required" },)
+- ====> jest ( { type: "required" },)
+- editor
+  - edit field dialog reopening?
+  - moving steps needed
+  - deleting steps - delete all children within it
+  - when adding tab, should be activated immediately
+  - deleting a step if focused causes a blank canvas
+  - esc doesn't work on dialogs sometimes (if not focused correctly)
+  - undoooooo test - added a step, pressed undo, and tabs at the top did not update :|
+- final tasks
+  - test validators
+  - test cond rules - steps skipping / ending
+  - test in CWP
+  - docs
+  - run linters
 
----
 
-- final tests
-  - validators
-  - cond rules - steps skipping / ending
-- test in CWP
-- docs
-
-#### Editor
-
-- edit field dialog reopening?
-- moving steps needed
-- deleting steps - delete all children within it
-- when adding tab, should be activated immediately
-- deleting a step if focused causes a blank canvas
-- esc doesn't work on dialogs sometimes (if not focused correctly)
-- undoooooo test - added a step, pressed undo, and tabs at the top did not update :|
 
 ## SH
 
