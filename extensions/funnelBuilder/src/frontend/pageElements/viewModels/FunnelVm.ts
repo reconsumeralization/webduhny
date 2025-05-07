@@ -95,6 +95,21 @@ export class FunnelVm {
         return this.funnel.steps.findIndex(step => step.id === this.activeStepId);
     }
 
+    getPreviousStepIndex() {
+        const currentIndex = this.getActiveStepIndex();
+        return currentIndex > 0 ? currentIndex - 1 : -1;
+    }
+
+    getNextStepIndex() {
+        const currentIndex = this.getActiveStepIndex();
+        return currentIndex < this.funnel.steps.length - 1 ? currentIndex + 1 : -1;
+    }
+
+    getAvailableStepIndex() {
+        const currentIndex = this.getActiveStepIndex();
+        return currentIndex < this.funnel.steps.length - 1 ? currentIndex + 1 : -1;
+    }
+
     activateStepIndex(index: number) {
         const step = this.funnel.steps[index];
         if (!step) {
@@ -103,6 +118,26 @@ export class FunnelVm {
 
         this.activeStepId = step.id;
         this.emitChange();
+    }
+
+    activateStep(stepId: string) {
+        const step = this.funnel.steps.find(step => step.id === stepId);
+        if (!step) {
+        console.log('neeeee')
+            return;
+        }
+
+        console.log('ideeee')
+
+        this.activeStepId = step.id;
+        this.emitChange();
+    }
+
+    activateFirstAvailableStep() {
+        const nextStepIndex = this.getAvailableStepIndex();
+        if (nextStepIndex !== -1) {
+            this.activateStepIndex(nextStepIndex);
+        }
     }
 
     // Other methods. 👇

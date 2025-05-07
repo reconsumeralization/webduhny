@@ -54,8 +54,9 @@ export const OverrideDropElementActionPlugin = () => {
                         // 1. Handle field drops.
                         if (isFieldElementType(source.type) || isButtonElementType(source.type)) {
                             // 1. Check if the field has been droped within the container element.
-                            const containerElement =
-                                await state.getElementById(CONTAINER_ELEMENT_ID);
+                            const containerElement = await state.getElementById(
+                                CONTAINER_ELEMENT_ID
+                            );
 
                             const containerWithDescendants = await state.getElementTree({
                                 element: containerElement
@@ -102,6 +103,7 @@ export const OverrideDropElementActionPlugin = () => {
                                 showSnackbar("Cannot drop fields within the success page.");
                                 return DO_NOTHING;
                             }
+
                         }
 
                         return dropElementAction(...params);

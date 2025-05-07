@@ -20,9 +20,7 @@ const Tab = styled.div`
     flex: 1 0;
     align-content: center;
     border-bottom: 2px solid transparent;
-    transition:
-        background-color 300ms,
-        border-bottom 150ms;
+    transition: background-color 300ms, border-bottom 150ms;
     height: 48px;
 
     &:hover {
@@ -82,6 +80,7 @@ export const ContainerAdminRenderer = createRenderer(() => {
     const updateElement = useUpdateElement();
 
     const updateContainerElementData = (data: FunnelModelDto) => {
+        console.log('AJMO CHANGE UPDATE!')
         updateElement(
             {
                 ...element,

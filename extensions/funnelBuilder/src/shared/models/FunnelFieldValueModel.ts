@@ -17,7 +17,7 @@ export class FunnelFieldValueModel<
 
     constructor(dto?: Partial<FunnelFieldValueModelDto<TValue>>) {
         super();
-        this.type = dto?.type || ''
+        this.type = dto?.type || "";
         this.array = dto?.array || false;
         if (typeof dto?.value !== "undefined") {
             this.value = dto.value;

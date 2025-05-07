@@ -28,6 +28,9 @@ export interface ContainerProviderProps {
     updateElementData?: (data: FunnelModelDto) => void;
 }
 
+// @ts-ignore
+const globalContainer: { current: ContainerContextValue } = { current: createInitialContextValue() };
+
 export const ContainerProvider = ({
     children,
     updateElementData = () => undefined
@@ -42,7 +45,7 @@ export const ContainerProvider = ({
 
     useEffect(() => {
         return funnelVm.subscribe(updateElementData);
-    }, [funnelVm.getChecksum(), updateElementData]);
+    }, [funnelVm, updateElementData]);
 
     useSyncExternalStore(funnelVm.subscribe.bind(funnelVm), funnelVm.getChecksum.bind(funnelVm));
 
@@ -50,6 +53,17 @@ export const ContainerProvider = ({
     const funnelSubmissionVm = useMemo(() => {
         return new FunnelSubmissionVm(funnelVm.funnel);
     }, [funnelVm.getChecksum()]);
+
+    const value = useMemo(() => {
+        return {
+            funnelVm,
+            funnelSubmissionVm
+        };
+    }, [funnelVm, funnelSubmissionVm]);
+
+    useEffect(() => {
+        Object.assign(globalContainer.current, value)
+    }, [value]);
 
     return (
         <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
@@ -62,4 +76,8 @@ ContainerProvider.displayName = "ContainerProvider";
 
 export const useContainer = () => {
     return useContext(ContainerContext);
+};
+
+export const getContainerStore = () => {
+    return globalContainer.current;
 };

@@ -54,7 +54,6 @@ export const StepsListSection = () => {
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 onDragEnd={event => {
-                    console.log("event", event);
                     const { active, over } = event;
                     if (active.id === over?.id) {
                         return;

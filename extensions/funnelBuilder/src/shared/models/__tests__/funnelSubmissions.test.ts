@@ -32,7 +32,7 @@ describe("Funnel Submissions", () => {
                     value: {
                         value: "",
                         type: "string",
-                        array: false,
+                        array: false
                     },
                     extra: {
                         placeholderText: "This needs to be a long text.",
@@ -59,7 +59,7 @@ describe("Funnel Submissions", () => {
                     value: {
                         value: "",
                         type: "string",
-                        array: false,
+                        array: false
                     },
                     extra: {}
                 },
@@ -85,7 +85,7 @@ describe("Funnel Submissions", () => {
                     value: {
                         value: "",
                         type: "string",
-                        array: false,
+                        array: false
                     },
                     extra: {}
                 },
@@ -132,7 +132,7 @@ describe("Funnel Submissions", () => {
                     value: {
                         value: [],
                         array: true,
-                        type: "stringArray",
+                        type: "stringArray"
                     },
                     extra: {
                         options: [
@@ -268,7 +268,7 @@ describe("Funnel Submissions", () => {
         submissionResult = await funnelSubmission.submitActiveStep();
 
         expect(submissionResult).toEqual({
-            "message": "Field validation failed.",
+            message: "Field validation failed.",
             data: {
                 colors: [],
                 email: "",
@@ -309,7 +309,7 @@ describe("Funnel Submissions", () => {
 
         const dto = funnelSubmission.toDto();
         expect(dto).toEqual({
-            "activeStepId": "success",
+            activeStepId: "success",
             fields: {
                 colors: {
                     value: {

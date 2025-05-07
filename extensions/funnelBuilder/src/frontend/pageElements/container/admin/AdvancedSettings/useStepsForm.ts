@@ -10,6 +10,7 @@ import { getRandomId } from "../../../../../shared/getRandomId";
 import { createStepElement } from "../../../../../shared/createStepElement";
 import { useSnackbar } from "@webiny/app-admin";
 import { FunnelStepModelDto } from "../../../../../shared/models/FunnelStepModel";
+import { getContainerStore } from "../../ContainerProvider";
 
 export const useStepsForm = () => {
     const [activeElementId] = useActiveElementId();
@@ -24,7 +25,8 @@ export const useStepsForm = () => {
 
     const deleteStep = useCallback(
         (stepId: string) => {
-            const hasFields = containerElementWithChildren.data.fields.some(f => {
+            const { funnelVm } = getContainerStore();
+            const hasFields = funnelVm.getFields().some(f => {
                 return f.stepId === stepId;
             });
 
@@ -47,9 +49,12 @@ export const useStepsForm = () => {
                         element => element.data.stepId !== stepId
                     )
                 },
-                { history: false }
+                { history: true }
             );
 
+            setTimeout(() => {
+                funnelVm.activateFirstAvailableStep();
+            }, 100);
             showSnackbar("Step deleted successfully.");
         },
         [containerElementWithChildren, updateElement]
@@ -64,7 +69,6 @@ export const useStepsForm = () => {
                         ...containerElementWithChildren.data,
                         steps: [
                             ...containerElementWithChildren.data.steps.map(existingStep => {
-
                                 if (existingStep.id === step.id) {
                                     return step;
                                 }
@@ -73,7 +77,7 @@ export const useStepsForm = () => {
                         ]
                     }
                 },
-                { history: false }
+                { history: true }
             );
         },
         [containerElementWithChildren, updateElement]
@@ -108,8 +112,14 @@ export const useStepsForm = () => {
                     ...containerElementWithChildren.elements.slice(lastStepIndex)
                 ]
             },
-            { history: false }
+            { history: true }
         );
+
+        setTimeout(() => {
+            // We do this within a timeout, just so we're safe we're dealing with the latest data.
+            const { funnelVm } = getContainerStore();
+            funnelVm.activateStep(initialStepData.id);
+        }, 100);
     }, [containerElementWithChildren, updateElement]);
 
     const moveStep = useCallback(
