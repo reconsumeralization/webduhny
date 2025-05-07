@@ -77,7 +77,7 @@ export const LoadingActionsEnum = {
     update: "UPDATE",
     delete: "DELETE",
     move: "MOVE"
-} as const;
+};
 
 export interface AcoError {
     code: string;

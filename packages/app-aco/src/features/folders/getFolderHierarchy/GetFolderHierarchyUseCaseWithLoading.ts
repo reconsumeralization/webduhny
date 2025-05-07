@@ -3,6 +3,7 @@ import {
     GetFolderHierarchyUseCaseParams,
     IGetFolderHierarchyUseCase
 } from "./IGetFolderHierarchyUseCase";
+import { LoadingActionsEnum } from "~/types";
 
 export class GetFolderHierarchyUseCaseWithLoading implements IGetFolderHierarchyUseCase {
     private loadingRepository: ILoadingRepository;
@@ -14,6 +15,9 @@ export class GetFolderHierarchyUseCaseWithLoading implements IGetFolderHierarchy
     }
 
     async execute(params: GetFolderHierarchyUseCaseParams) {
-        await this.loadingRepository.runCallBack(this.useCase.execute(params), params.id);
+        await this.loadingRepository.runCallBack(
+            this.useCase.execute(params),
+            LoadingActionsEnum.init
+        );
     }
 }

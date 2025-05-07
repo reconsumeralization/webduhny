@@ -5,8 +5,7 @@ import { GetFolderHierarchyGqlGateway } from "./GetFolderHierarchyGqlGateway";
 import { GetFolderHierarchy } from "./GetFolderHierarchy";
 import { FolderDtoMapper } from "./FolderDto";
 import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
-import { FolderItem } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
+import { FolderItem, LoadingActionsEnum } from "~/types";
 
 export const useGetFolderHierarchy = () => {
     const client = useApolloClient();
@@ -36,7 +35,7 @@ export const useGetFolderHierarchy = () => {
     );
 
     const getIsFolderLoading = useCallback(
-        (action = ROOT_FOLDER) => {
+        (action = LoadingActionsEnum.init) => {
             if (!loadingState) {
                 return true;
             }

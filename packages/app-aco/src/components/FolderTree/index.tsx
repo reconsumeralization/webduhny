@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { useGetFolderHierarchy, useGetFolderLevelPermission } from "~/features";
 import { CreateButton } from "./ButtonCreate";
-import { Empty } from "./Empty";
 import { Loader } from "./Loader";
 import { List } from "./List";
 import { Container } from "./styled";
@@ -66,26 +65,17 @@ export const FolderTree = ({
             }
         }
 
-        if (localFolders.length > 0) {
-            return (
-                <AcoWithConfig>
-                    <List
-                        folders={localFolders}
-                        onFolderClick={onFolderClick}
-                        focusedFolderId={focusedFolderId}
-                        hiddenFolderIds={hiddenFolderIds}
-                        enableActions={enableActions}
-                    />
-                    {enableCreate && createButton}
-                </AcoWithConfig>
-            );
-        }
-
         return (
-            <>
-                <Empty />
-                {createButton}
-            </>
+            <AcoWithConfig>
+                <List
+                    folders={localFolders}
+                    onFolderClick={onFolderClick}
+                    focusedFolderId={focusedFolderId}
+                    hiddenFolderIds={hiddenFolderIds}
+                    enableActions={enableActions}
+                />
+                {enableCreate && createButton}
+            </AcoWithConfig>
         );
     };
     return <Container>{renderList()}</Container>;
