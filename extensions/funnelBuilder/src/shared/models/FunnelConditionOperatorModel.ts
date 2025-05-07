@@ -1,18 +1,16 @@
 import { AbstractModel } from "./AbstractModel";
 import { FunnelFieldValueModel } from "./FunnelFieldValueModel";
-import { getRandomId } from "../getRandomId";
 
 export type ConditionOperatorParams<TExtra = Record<string, any>> = {
     extra: TExtra;
 };
 
-export type ConditionOperatorParamsDto<TExtra = Record<string, any>> = Partial<
-    ConditionOperatorParams<TExtra>
->;
+export type ConditionOperatorParamsDto<TExtra = Record<string, any>> =
+    ConditionOperatorParams<TExtra>;
 
 export interface FunnelConditionOperatorModelDto<TExtra = Record<string, any>> {
     type: string;
-    params?: ConditionOperatorParamsDto<TExtra>; // Additional parameters for the validator.
+    params: ConditionOperatorParamsDto<TExtra>; // Additional parameters for the validator.
 }
 
 export class FunnelConditionOperatorModel<

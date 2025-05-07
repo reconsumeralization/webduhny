@@ -32,8 +32,7 @@ export class FunnelSubmissionVm {
     }
 
     submitActiveStep() {
-        this.funnelSubmission.submitActiveStep();
-        this.emitChange();
+        this.funnelSubmission.submitActiveStep().then(this.emitChange.bind(this));
     }
 
     activatePreviousStep() {

@@ -20,6 +20,7 @@ const Fieldset = styled.div`
     column-gap: 10px;
     position: relative;
     width: 100%;
+
     & webiny-form-container {
         flex: 1;
     }
@@ -91,7 +92,11 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                                 size={"small"}
                                 value={action.type}
                                 onChange={type => {
-                                    updateAction(rule.id, { id: action.id, type, params: {} });
+                                    updateAction(rule.id, {
+                                        id: action.id,
+                                        type,
+                                        params: { extra: {} }
+                                    });
                                 }}
                             >
                                 {availableConditionActions.map(action => (

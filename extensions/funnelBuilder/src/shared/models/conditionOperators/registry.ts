@@ -21,4 +21,3 @@ export const registry = [
     NotEmptyConditionOperator,
     NotIncludesConditionOperator
 ];
-

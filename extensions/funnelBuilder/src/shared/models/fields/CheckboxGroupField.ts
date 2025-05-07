@@ -16,7 +16,7 @@ export class CheckboxGroupField extends FunnelFieldDefinitionModel<
     string[],
     CheckboxGroupFieldExtra
 > {
-    static override type: string = "checkboxGroup";
+    static override type = "checkboxGroup";
     override supportedValidatorTypes = ["required"];
 
     constructor(dto: CheckboxGroupFieldDto) {

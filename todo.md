@@ -1,7 +1,6 @@
 ## MH
 - themes
 - =====> <Form<ConditionOperatorParams> key= needed? b/c of changing types?
-- =====> next step works? 
 - setPrevStep - not index-1 but prev step per cond rules
 - disable next step if form invalid
 - test prev btn

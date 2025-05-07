@@ -14,7 +14,7 @@ export interface TextareaFieldExtra {
 }
 
 export class TextareaField extends FunnelFieldDefinitionModel<string, TextareaFieldExtra> {
-    static override type: string = "textarea";
+    static override type = "textarea";
     override supportedValidatorTypes = ["required", "minLength", "maxLength", "pattern"];
 
     constructor(dto: TextareaFieldDto) {

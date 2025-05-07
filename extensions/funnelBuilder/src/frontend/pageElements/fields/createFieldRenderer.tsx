@@ -38,7 +38,11 @@ export const createFieldRenderer = <
 
         const field = funnelSubmissionVm.getField(element.data.fieldId);
         if (!field) {
-            return <Error>Field <strong>{element.data.fieldId}</strong> not found in the funnel.</Error>;
+            return (
+                <Error>
+                    Field <strong>{element.data.fieldId}</strong> not found in the funnel.
+                </Error>
+            );
         }
 
         const { validate, validation, value, onChange } = useBind({

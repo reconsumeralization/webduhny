@@ -51,10 +51,12 @@ export const ContainerProvider = ({
         return new FunnelSubmissionVm(funnelVm.funnel);
     }, [funnelVm.getChecksum()]);
 
-    useSyncExternalStore(
+    const cs = useSyncExternalStore(
         funnelSubmissionVm.subscribe.bind(funnelSubmissionVm),
         funnelSubmissionVm.getChecksum.bind(funnelSubmissionVm)
     );
+
+    console.log("cs", cs);
 
     return (
         <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>

@@ -9,7 +9,8 @@ export const ContainerAdmin = () => {
 
     useEffect(() => {
         funnelSubmissionVm.start();
-    });
+    }, []);
+
     return (
         <>
             <Elements element={element} />

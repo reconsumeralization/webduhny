@@ -237,7 +237,7 @@ export const useConditionRulesForm = () => {
             rule.actions.push({
                 id: getRandomId(),
                 type: DisableFieldConditionAction.type,
-                params: {}
+                params: { extra: {} }
             });
 
             return rules;

@@ -56,11 +56,11 @@ describe("Condition Rules", () => {
         submission1.start();
 
         expect(submission1.getApplicableActions().length).toBe(1);
-        expect(submission1.getField('lastName').disabled).toBe(true);
+        expect(submission1.getField("lastName").disabled).toBe(true);
 
         submission1.setData({ firstName: "correct-first-name" });
         expect(submission1.getApplicableActions().length).toBe(0);
-        expect(submission1.getField('lastName').disabled).toBe(false);
+        expect(submission1.getField("lastName").disabled).toBe(false);
     });
 
     test("onSubmitEndFunnel", async () => {

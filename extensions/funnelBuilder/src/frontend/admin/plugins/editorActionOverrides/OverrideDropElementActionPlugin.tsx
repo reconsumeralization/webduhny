@@ -82,9 +82,10 @@ export const OverrideDropElementActionPlugin = () => {
                             }
 
                             // 2. Check if the field has been dropped within the success (last) step.
-                            const lastStepElementWithDescendants = containerWithDescendants.elements[
-                                containerElement.elements.length - 1
-                            ];
+                            const lastStepElementWithDescendants =
+                                containerWithDescendants.elements[
+                                    containerElement.elements.length - 1
+                                ];
 
                             let isDroppedWithinTheLastStep = false;
                             traverser.traverse(lastStepElementWithDescendants, element => {

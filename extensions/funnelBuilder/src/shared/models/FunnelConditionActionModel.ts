@@ -7,9 +7,7 @@ export type ConditionActionParams<TExtra = Record<string, any>> = {
     extra: TExtra;
 };
 
-export type ConditionActionParamsDto<TExtra = Record<string, any>> = Partial<
-    ConditionActionParams<TExtra>
->;
+export type ConditionActionParamsDto<TExtra = Record<string, any>> = ConditionActionParams<TExtra>;
 
 export interface FunnelConditionActionModelDto<TExtra = Record<string, any>> {
     id: string;

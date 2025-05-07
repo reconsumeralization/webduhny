@@ -2,7 +2,7 @@ import { AbstractValidator, FieldValidatorParamsDto } from "./AbstractValidator"
 import { FunnelFieldValueModel } from "../FunnelFieldValueModel";
 
 export class RequiredValidator extends AbstractValidator {
-    static override type: string = "required";
+    static override type = "required";
 
     constructor(params: FieldValidatorParamsDto = {}) {
         super({

@@ -1,5 +1,5 @@
 export interface FieldOption {
-    id: string
+    id: string;
     value: string;
     label: string;
 }

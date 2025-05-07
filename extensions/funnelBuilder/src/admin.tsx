@@ -30,6 +30,6 @@ export const Extension = () => (
         <ConditionActionPlugins />
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
-        <PbEditorOverrideEventActionPlugins/>
+        <PbEditorOverrideEventActionPlugins />
     </>
 );

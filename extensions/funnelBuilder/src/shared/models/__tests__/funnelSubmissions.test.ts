@@ -148,7 +148,10 @@ describe("Funnel Submissions", () => {
                             {
                                 id: "condition1",
                                 sourceFieldId: "firstName",
-                                operator: { type: "eq", params: { extra: { value: "weird-value" } } }
+                                operator: {
+                                    type: "eq",
+                                    params: { extra: { value: "weird-value" } }
+                                }
                             }
                         ]
                     },

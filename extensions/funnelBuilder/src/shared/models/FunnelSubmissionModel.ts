@@ -12,7 +12,7 @@ import { OnSubmitActivateStepConditionAction } from "./conditionActions/OnSubmit
 
 export interface FunnelSubmissionModelDto {
     fields: Record<string, FunnelSubmissionFieldModelDto>;
-    activeStep: string;
+    activeStepId: string;
 }
 
 export interface FunnelEntryValidationResult {
@@ -27,11 +27,13 @@ export type OnFinishedListener = (data: FunnelSubmissionData) => void | Promise<
 export type FunnelSubmissionStepSubmissionResult =
     | {
           success: true;
+          message: string;
           errors: null;
           data: Record<string, any>;
       }
     | {
           success: false;
+          message: string;
           errors: Record<string, any>;
           data: Record<string, any>;
       };
@@ -48,7 +50,7 @@ export class FunnelSubmissionModel {
 
     constructor(funnel: FunnelModel, funnelSubmissionDto?: FunnelSubmissionModelDto) {
         this.funnel = funnel;
-        this.activeStepId = funnelSubmissionDto?.activeStep || funnel.steps[0].id;
+        this.activeStepId = funnelSubmissionDto?.activeStepId || funnel.steps[0].id;
         this.fields = funnel.fields.reduce((acc, field) => {
             acc[field.fieldId] = new FunnelSubmissionFieldModel(
                 this,
@@ -66,11 +68,11 @@ export class FunnelSubmissionModel {
 
     toDto(): FunnelSubmissionModelDto {
         return {
-            activeStep: this.activeStepId,
+            activeStepId: this.activeStepId,
             fields: Object.values(this.fields).reduce((acc, field) => {
                 acc[field.definition.fieldId] = field.toDto();
                 return acc;
-            }, {} as Record<string, FunnelSubmissionFieldModelDto>),
+            }, {} as Record<string, FunnelSubmissionFieldModelDto>)
         };
     }
 
@@ -138,11 +140,20 @@ export class FunnelSubmissionModel {
     }
 
     async submitActiveStep(): Promise<FunnelSubmissionStepSubmissionResult> {
+        if (this.isSuccessStep()) {
+            return {
+                message: "Cannot submit success step.",
+                success: false,
+                errors: {},
+                data: {}
+            };
+        }
         const validationResult = await this.validateActiveStep();
         const data = this.getDataForActiveStep();
 
         if (!validationResult.isValid) {
             return {
+                message: "Field validation failed.",
                 success: false,
                 errors: validationResult.errors,
                 data
@@ -152,20 +163,22 @@ export class FunnelSubmissionModel {
         // Before activating the next step, we need to evaluate the condition rules.
         this.evaluateRelatedConditionRules();
 
+        const successResult = {
+            message: "",
+            success: true,
+            errors: null,
+            data
+        } as FunnelSubmissionStepSubmissionResult;
+
         const success = () => {
             if (this.isSuccessStep()) {
                 this.finish();
             }
 
-            return {
-                success: true,
-                errors: null,
-                data
-            } as FunnelSubmissionStepSubmissionResult;
+            return successResult;
         };
 
         const activeActions = this.conditionRules.applicableActions;
-        console.log('activeActions', activeActions)
         if (!activeActions.length) {
             this.activateNextStep();
             return success();
@@ -191,8 +204,11 @@ export class FunnelSubmissionModel {
             const step = this.funnel.getStep(activateSpecificStepAction.params.extra.targetStepId);
             if (step) {
                 this.activateStep(step);
+                return success();
             }
         }
+
+        this.activateNextStep();
 
         return success();
     }
@@ -338,7 +354,10 @@ export class FunnelSubmissionModel {
 
     // Other methods. 👇
     getChecksum() {
-        return createObjectHash(this.conditionRules.applicableActions) + createObjectHash(this.toDto());
+        return createObjectHash({
+            applicableActions: this.conditionRules.applicableActions,
+            dto: this.toDto()
+        });
     }
 
     evaluateRelatedConditionRules() {

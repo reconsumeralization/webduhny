@@ -21,12 +21,11 @@ const ActionSettings: ConditionActionParamsComponent = ({ funnel }) => {
         <Wrapper>
             <Bind name={"extra.targetStepId"}>
                 <Select placeholder={"Select target step..."} size={"small"}>
-                    {funnelSteps
-                        .map(step => (
-                            <option key={step.id} value={step.id}>
-                                {step.title}
-                            </option>
-                        ))}
+                    {funnelSteps.map(step => (
+                        <option key={step.id} value={step.id}>
+                            {step.title}
+                        </option>
+                    ))}
                 </Select>
             </Bind>
             <Bind name={"extra.evaluationStep"}>
