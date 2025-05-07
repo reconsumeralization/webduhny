@@ -1,10 +1,7 @@
 import { PbEditorElement } from "@webiny/app-page-builder/types";
 
 export interface StepElementData {
-    step: {
-        id: string;
-        title: string;
-    };
+    stepId: string;
 }
 
 export interface StepElement extends PbEditorElement {

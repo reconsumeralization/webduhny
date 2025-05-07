@@ -13,7 +13,7 @@ export const StepWebsiteRenderer = createRenderer(() => {
         funnelSubmissionVm.evaluateConditionRulesForActiveStep();
     }, []);
 
-    if (funnelSubmissionVm.activeStepId !== element.data.step.id) {
+    if (funnelSubmissionVm.activeStepId !== element.data.stepId) {
         return null;
     }
 

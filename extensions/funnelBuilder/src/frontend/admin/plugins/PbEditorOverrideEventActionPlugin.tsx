@@ -16,7 +16,7 @@ export const PbEditorOverrideActionHandlerPlugin = (props: PbEditorOverrideActio
                 return originalByType<any>(type);
             }
 
-            const originalResult = originalByType<any>(type);
+            const originalResult = originalByType(type);
             const pluginNameToOverride = `pb-editor-event-action-${props.action}`;
             return originalResult.map(plugin => {
                 if (plugin.name !== pluginNameToOverride) {
@@ -24,8 +24,7 @@ export const PbEditorOverrideActionHandlerPlugin = (props: PbEditorOverrideActio
                 }
 
                 return {
-                    type,
-                    name: pluginNameToOverride,
+                    ...plugin,
                     ...props
                 } as PbEditorEventActionPlugin;
             });

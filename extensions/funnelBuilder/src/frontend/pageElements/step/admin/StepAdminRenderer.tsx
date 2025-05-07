@@ -17,7 +17,7 @@ export const StepAdminRenderer = createRenderer(() => {
 
     const { funnelVm } = useContainer();
 
-    if (funnelVm.getActiveStepId() !== element.data.step.id) {
+    if (funnelVm.getActiveStepId() !== element.data.stepId) {
         return null;
     }
 
