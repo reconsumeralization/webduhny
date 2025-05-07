@@ -155,10 +155,10 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     useEffect(() => {
         // The folders collection is empty, it must be the first render, let's load the full hierarchy.
         if (folders.length === 0) {
-            getFolderHierarchy(currentFolderId ?? ROOT_FOLDER);
+            getFolderHierarchy(currentFolderId);
         } else {
             // Otherwise let's load only the current folder sub-tree
-            listFoldersByParentIds([currentFolderId ?? ROOT_FOLDER]);
+            listFoldersByParentIds([currentFolderId]);
         }
 
         setState(state => {
