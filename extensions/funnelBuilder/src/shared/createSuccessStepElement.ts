@@ -1,7 +1,7 @@
 import { getRandomId } from "./getRandomId";
 import { createElementType } from "./constants";
 
-export const createSuccessStepElement = (stepId?: string) => {
+export const createSuccessStepElement = () => {
     return {
         id: getRandomId(),
         type: createElementType("step"),

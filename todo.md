@@ -1,5 +1,4 @@
 ## MH
-- ======> themes
 - controls element
   - setPrevStep - not index-1 but prev step per cond rules
 - revisit containerEvHandlers
@@ -12,7 +11,7 @@
 ### Finals
   - test validators
   - test cond rules - steps skipping / ending
-  - test in CWP
+  - ====> test in CWP
   - docs
   - run linters
 

@@ -9,9 +9,7 @@ export interface ThemeSettingsContextValue {
     themeSettings: ThemeSettings;
 }
 
-const ThemeSettingsContext = React.createContext<ThemeSettingsContextValue | undefined>(
-    undefined
-);
+const ThemeSettingsContext = React.createContext<ThemeSettingsContextValue | undefined>(undefined);
 
 interface ThemeSettingsProps {
     children: React.ReactNode;

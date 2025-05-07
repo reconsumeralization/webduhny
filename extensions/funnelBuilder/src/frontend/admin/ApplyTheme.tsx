@@ -12,7 +12,6 @@ const Logo = styled.img`
 export const ApplyTheme = () => {
     const { themeSettings } = useThemeSettings();
 
-    console.log('themeSettings', themeSettings)
     useEffect(() => {
         if (!themeSettings?.theme) {
             return;

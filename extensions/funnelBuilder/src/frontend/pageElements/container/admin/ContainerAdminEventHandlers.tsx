@@ -61,7 +61,6 @@ export const ContainerAdminEventHandlers = () => {
         createOnElementEventHandler<CreateElementEventActionArgsType>(args => {
             const { element: createdElement } = args;
 
-            console.log("YEAHHHHHH");
             if (!isFieldElementType(createdElement.type)) {
                 return;
             }
@@ -81,13 +80,11 @@ export const ContainerAdminEventHandlers = () => {
         createOnElementEventHandler<UpdateElementActionArgsType>(args => {
             const { element: updatedElement } = args;
             if (isFieldElementType(updatedElement.type)) {
-                console.log("IS FIELD UPDATE!!!!");
                 funnelVm.updateField(updatedElement.data.id, updatedElement.data);
                 return;
             }
 
             if (isContainerElementType(updatedElement.type)) {
-                console.log("IS CONT UPDATE!!!!");
                 funnelVm.funnel.populate(updatedElement.data);
                 return;
             }

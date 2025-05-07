@@ -34,6 +34,6 @@ export const Extension = () => (
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
         <PbEditorOverrideEventActionPlugins />
-        <ThemeSettingsProvider/>
+        <ThemeSettingsProvider />
     </>
 );

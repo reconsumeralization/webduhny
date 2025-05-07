@@ -1,6 +1,5 @@
 import { createGraphQLSchemaPlugin } from "@webiny/api-serverless-cms";
 import { Response, ErrorResponse } from "@webiny/handler-graphql";
-import { ThemeSettings } from "../../shared/types";
 
 export const getThemeSettings = () => {
     return createGraphQLSchemaPlugin({
@@ -20,7 +19,6 @@ export const getThemeSettings = () => {
 
             type ThemeSettings {
                 id: ID
-                name: String
                 theme: ThemeSettingsTheme
             }
 
@@ -36,16 +34,18 @@ export const getThemeSettings = () => {
             Query: {
                 themeSettings: async (_, __, context) => {
                     try {
-                        const themeSettingsModel = await context.cms.getModel("themeSettings");
+                        const themeSettings = await context.security.withoutAuthorization(
+                            async () => {
+                                const themeSettingsModel = await context.cms.getModel(
+                                    "themeSettings"
+                                );
+                                const themeSettingsEntry =
+                                    await context.cms.getSingletonEntryManager(themeSettingsModel);
+                                const settings = await themeSettingsEntry.get();
 
-                        const themeSettings = await context.security.withoutAuthorization(async () => {
-                            const themeSettingsEntry = await context.cms.getSingletonEntryManager(
-                                themeSettingsModel
-                            );
-                            const settings = await themeSettingsEntry.get();
-
-                            return settings.values as ThemeSettings;
-                        });
+                                return settings.values;
+                            }
+                        );
 
                         return new Response(themeSettings);
                     } catch (e) {

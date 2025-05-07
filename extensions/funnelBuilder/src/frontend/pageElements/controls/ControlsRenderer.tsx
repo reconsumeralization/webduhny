@@ -9,30 +9,33 @@ export const Wrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const ControlButton = styled.div<{ disabled?: boolean }>`
-    ${({ theme }) => theme.styles.elements["button"]["primary"]}
-        cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
-    .button-body {
-        width: auto;
-        margin-left: auto;
-        opacity: ${props => (props.disabled ? 0.6 : 1)};
-        pointer-events: ${props => (props.disabled ? "none" : "auto")};
+export const ControlButton = styled.button<{ color: string }>`
+    background: ${props => props.color};
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    color: white;
+
+    & :disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 `;
 
 export const ControlsRenderer = createRenderer(() => {
     const { submit } = useForm();
-    const { funnelSubmissionVm } = useContainer();
+    const { funnelSubmissionVm, theme } = useContainer();
 
     return (
         <Wrapper>
             <ControlButton
+                color={theme.primaryColor}
                 disabled={funnelSubmissionVm.isFirstStep()}
                 onClick={funnelSubmissionVm.activatePreviousStep.bind(funnelSubmissionVm)}
             >
                 <div className={"button-body"}>Previous</div>
             </ControlButton>
-            <ControlButton onClick={submit}>
+            <ControlButton onClick={() => submit()} color={theme.primaryColor}>
                 <div className={"button-body"}>
                     {funnelSubmissionVm.isFinalStep() ? "Finish" : "Next"}
                 </div>

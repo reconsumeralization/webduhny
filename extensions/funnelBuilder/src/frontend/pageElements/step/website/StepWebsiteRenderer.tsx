@@ -13,12 +13,10 @@ export const StepWebsiteRenderer = createRenderer(() => {
         funnelSubmissionVm.evaluateConditionRulesForActiveStep();
     }, []);
 
-    console.log("element.data.stepId, element.data.stepId", element.data.stepId);
     if (funnelSubmissionVm.activeStepId !== element.data.stepId) {
         return null;
     }
 
-    console.log("funnelSubmissionVm", funnelSubmissionVm);
     return (
         <div>
             <Form

@@ -4,12 +4,24 @@ import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
 import { request } from "graphql-request";
-import { getGqlApiUrl, getTenantId } from "@webiny/app-website";
+import { getGqlApiUrl } from "@webiny/app-website";
+import { ThemeSettings } from "../../../shared/types";
 
 interface ContainerContextValue {
     funnelVm: FunnelVm;
     funnelSubmissionVm: FunnelSubmissionVm;
+    theme: ThemeSettings["theme"];
 }
+
+const createDefaultThemeSettings = (): ThemeSettings => {
+    return {
+        theme: {
+            primaryColor: "",
+            secondaryColor: "",
+            logo: ""
+        }
+    };
+};
 
 const createInitialContextValue = (): ContainerContextValue => {
     const funnelVm = new FunnelVm();
@@ -17,7 +29,8 @@ const createInitialContextValue = (): ContainerContextValue => {
 
     return {
         funnelVm,
-        funnelSubmissionVm
+        funnelSubmissionVm,
+        theme: createDefaultThemeSettings()["theme"]
     };
 };
 
@@ -93,25 +106,39 @@ export const ContainerProvider = ({
         Object.assign(globalContainer.current, value);
     }, [value]);
 
-    const { data, error } = useLoader<any, Error>(() => {
+    const { data, error } = useLoader<ThemeSettings, Error>(() => {
         return request(getGqlApiUrl(), GET_THEME_SETTINGS).then(res => {
             if (res.themeSettings.error) {
                 throw new Error(res.themeSettings.error.message);
             }
 
-            return res.themeSettings.data.theme;
+            return res.themeSettings.data;
         });
     });
+
+    const themeSettings = useMemo(() => {
+        if (!data) {
+            return createDefaultThemeSettings();
+        }
+
+        return {
+            theme: {
+                primaryColor: data.theme.primaryColor,
+                secondaryColor: data.theme.secondaryColor,
+                logo: data.theme.logo
+            }
+        } as ThemeSettings;
+    }, [data]);
 
     if (error) {
         console.error("An error occurred while fetching theme settings:", error);
         return <>An error occurred: {error.message}</>;
     }
 
-    console.log("data", data);
-
     return (
-        <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>
+        <ContainerContext.Provider
+            value={{ funnelVm, funnelSubmissionVm, theme: themeSettings.theme }}
+        >
             {children}
         </ContainerContext.Provider>
     );
