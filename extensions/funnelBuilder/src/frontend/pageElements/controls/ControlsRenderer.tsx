@@ -11,11 +11,12 @@ export const Wrapper = styled.div`
 
 export const ControlButton = styled.div<{ disabled?: boolean }>`
     ${({ theme }) => theme.styles.elements["button"]["primary"]}
+        cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
     .button-body {
         width: auto;
         margin-left: auto;
-        opacity: ${props => (props.disabled ? 0.75 : 1)};
-        cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
+        opacity: ${props => (props.disabled ? 0.6 : 1)};
+        pointer-events: ${props => (props.disabled ? "none" : "auto")};
     }
 `;
 

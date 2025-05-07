@@ -15,10 +15,7 @@ import type {
 } from "@webiny/app-page-builder/types";
 import type { CreateElementEventActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/createElement/types";
 import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/updateElement/types";
-import {
-    isContainerElementType,
-    isFieldElementType,
-} from "../../../../shared/constants";
+import { isContainerElementType, isFieldElementType } from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import {
     FunnelFieldDefinitionModel,
@@ -64,7 +61,7 @@ export const ContainerAdminEventHandlers = () => {
         createOnElementEventHandler<CreateElementEventActionArgsType>(args => {
             const { element: createdElement } = args;
 
-            console.log('YEAHHHHHH')
+            console.log("YEAHHHHHH");
             if (!isFieldElementType(createdElement.type)) {
                 return;
             }
@@ -84,13 +81,13 @@ export const ContainerAdminEventHandlers = () => {
         createOnElementEventHandler<UpdateElementActionArgsType>(args => {
             const { element: updatedElement } = args;
             if (isFieldElementType(updatedElement.type)) {
-                console.log('IS FIELD UPDATE!!!!')
+                console.log("IS FIELD UPDATE!!!!");
                 funnelVm.updateField(updatedElement.data.id, updatedElement.data);
                 return;
             }
 
             if (isContainerElementType(updatedElement.type)) {
-                console.log('IS CONT UPDATE!!!!')
+                console.log("IS CONT UPDATE!!!!");
                 funnelVm.funnel.populate(updatedElement.data);
                 return;
             }

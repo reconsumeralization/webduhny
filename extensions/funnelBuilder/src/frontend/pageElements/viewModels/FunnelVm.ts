@@ -123,11 +123,11 @@ export class FunnelVm {
     activateStep(stepId: string) {
         const step = this.funnel.steps.find(step => step.id === stepId);
         if (!step) {
-        console.log('neeeee')
+            console.log("neeeee");
             return;
         }
 
-        console.log('ideeee')
+        console.log("ideeee");
 
         this.activeStepId = step.id;
         this.emitChange();

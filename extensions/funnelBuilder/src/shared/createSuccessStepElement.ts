@@ -156,7 +156,7 @@ export const createSuccessStepElement = (stepId?: string) => {
                                 data: {
                                     text: {
                                         data: {
-                                            text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Thank you for you submission!","type":"text","version":1}],"direction":"ltr","format":"center","indent":0,"type":"paragraph-element","version":1,"textFormat":0,"styles":[{"styleId":"paragraph1","type":"typography"}]}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+                                            text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Thank you for your submission!","type":"text","version":1}],"direction":"ltr","format":"center","indent":0,"type":"paragraph-element","version":1,"textFormat":0,"styles":[{"styleId":"paragraph1","type":"typography"}]}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
                                         }
                                     },
                                     settings: {

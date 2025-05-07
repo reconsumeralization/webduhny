@@ -22,7 +22,7 @@ const Tab = styled.div`
     border-bottom: 2px solid transparent;
     transition: background-color 300ms, border-bottom 150ms;
     height: 48px;
-    
+
     &:hover {
         background-color: #fff8f6;
         cursor: pointer;
@@ -80,7 +80,7 @@ export const ContainerAdminRenderer = createRenderer(() => {
     const updateElement = useUpdateElement();
 
     const updateContainerElementData = (data: FunnelModelDto) => {
-        console.log('AJMO CHANGE UPDATE!')
+        console.log("AJMO CHANGE UPDATE!");
         updateElement(
             {
                 ...element,

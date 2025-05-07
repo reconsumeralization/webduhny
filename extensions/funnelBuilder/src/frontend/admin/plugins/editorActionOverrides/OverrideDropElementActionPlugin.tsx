@@ -103,7 +103,6 @@ export const OverrideDropElementActionPlugin = () => {
                                 showSnackbar("Cannot drop fields within the success page.");
                                 return DO_NOTHING;
                             }
-
                         }
 
                         return dropElementAction(...params);
