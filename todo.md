@@ -4,12 +4,11 @@
 - setPrevStep - not index-1 but prev step per cond rules
 - disable next step if form invalid
 - test prev btn
-- revisit containerEvHandlers
-- ====> jest ( { type: "required" },)
+- =====> revisit containerEvHandlers
 - editor
   - edit field dialog reopening?
-  - moving steps needed
-  - deleting steps - delete all children within it
+  - =====> moving steps dbl check
+  - =====> deleting steps - delete all children within it
   - when adding tab, should be activated immediately
   - deleting a step if focused causes a blank canvas
   - esc doesn't work on dialogs sometimes (if not focused correctly)
@@ -32,7 +31,8 @@
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 
 ## CH/NTH
-
+- remove field data, have fields only contain `fieldId`
+- better distinction id vs fieldId
 - setting default values for checkbox group is not immediately reflected in editor (refresh req)
 - DTO objects also contain all fields, constructors can then partialize them
 - closing edit field dialog has weird animation

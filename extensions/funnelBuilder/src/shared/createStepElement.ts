@@ -1,18 +1,14 @@
 import { getRandomId } from "./getRandomId";
 import { createElementType } from "./constants";
-import { FunnelStepModelDto } from "./models/FunnelStepModel";
 
-export const createStepElement = (initialStepData?: FunnelStepModelDto) => {
+export const createStepElement = (stepId?: string) => {
     return {
         id: getRandomId(),
         type: createElementType("step"),
         parent: undefined,
         data: {
             settings: {},
-            step: initialStepData || {
-                id: getRandomId(),
-                title: "New page"
-            }
+            stepId: stepId || getRandomId()
         },
         elements: [
             {
