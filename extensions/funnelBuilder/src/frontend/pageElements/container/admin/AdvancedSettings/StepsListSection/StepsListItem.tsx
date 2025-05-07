@@ -13,7 +13,6 @@ import { useDisclosure } from "../../../../../admin/useDisclosure";
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as DragIndicatorIcon } from "@material-design-icons/svg/outlined/drag_indicator.svg";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
-import { useUpdateElement } from "@webiny/app-page-builder/editor";
 import { useStepsForm } from "../useStepsForm";
 import { FunnelStepModelDto } from "../../../../../../shared/models/FunnelStepModel";
 

@@ -54,25 +54,22 @@ export const StepsListSection = () => {
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 onDragEnd={event => {
-                    console.log('event', event)
+                    console.log("event", event);
                     const { active, over } = event;
                     if (active.id === over?.id) {
                         return;
                     }
 
-                    const fromIndex = containerElementWithChildren.elements.findIndex(
-                        element => element.id === active.id
-                    );
-                    const toIndex = containerElementWithChildren.elements.findIndex(
-                        element => element.id === over?.id
-                    );
+                    const { steps } = containerElementWithChildren.data;
+                    const fromIndex = steps.findIndex(step => step.id === active.id);
+                    const toIndex = steps.findIndex(step => step.id === over?.id);
 
                     moveStep(fromIndex, toIndex);
                 }}
                 modifiers={[restrictToVerticalAxis]}
             >
                 <SortableContext
-                    items={containerElementWithChildren.elements}
+                    items={containerElementWithChildren.data.steps}
                     strategy={verticalListSortingStrategy}
                 >
                     {containerElementWithChildren.data.steps
