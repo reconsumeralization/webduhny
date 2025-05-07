@@ -46,7 +46,7 @@ export class FunnelVm {
         return this.funnel.fields;
     }
 
-    getField(id: string) {
+    getFieldById(id: string) {
         return this.funnel.fields.find(field => field.id === id);
     }
 

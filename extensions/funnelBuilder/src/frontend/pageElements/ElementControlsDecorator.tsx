@@ -55,7 +55,7 @@ export const DecoratedElementControls = ElementControls.createDecorator(Componen
             return <Component {...props} />;
         }
 
-        const field = funnelVm.getField(element.data.id);
+        const field = funnelVm.getFieldById(element.data.id);
         if (!field) {
             return <Component {...props} />;
         }
