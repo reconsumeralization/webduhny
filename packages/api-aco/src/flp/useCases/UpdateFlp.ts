@@ -5,9 +5,9 @@ import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from
 
 interface UpdateFlpParams {
     context: AcoContext;
-    updated?: string[];
+    queued?: string[];
     isCloseToTimeout?: () => boolean;
-    handleTimeout?: (updated: string[]) => void;
+    handleTimeout?: (queued: string[]) => void;
 }
 
 interface FlpUpdateData {
@@ -22,12 +22,12 @@ export class UpdateFlp {
     private readonly isCloseToTimeout?: () => boolean;
     private readonly handleTimeout?: (updated: string[]) => void;
 
-    private readonly updated: Set<string> = new Set();
+    private readonly queued: Set<string> = new Set();
     private readonly flpsToUpdate: Map<string, FlpUpdateData> = new Map();
 
     constructor(params: UpdateFlpParams) {
         this.context = params.context;
-        this.updated = new Set(params.updated);
+        this.queued = new Set(params.queued);
         this.isCloseToTimeout = params.isCloseToTimeout;
         this.handleTimeout = params.handleTimeout;
     }
@@ -55,14 +55,16 @@ export class UpdateFlp {
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
 
-            this.setUpdated(flp.id);
+            // Let's set the FLP as in queue
+            this.setQueued(flp.id);
 
             // Get direct children and process each branch completely
             const directChildren = await this.listDirectChildren(flp);
+
             for (const child of directChildren) {
                 if (this.isCloseToTimeout?.()) {
                     await this.executeBatchUpdate();
-                    this.handleTimeout?.(this.getUpdated());
+                    this.handleTimeout?.(this.getQueuedList());
                     return;
                 }
                 await this.collectBranchForUpdate(child, flp);
@@ -73,7 +75,7 @@ export class UpdateFlp {
         } catch (error) {
             // Clear the update collection in case of error
             this.flpsToUpdate.clear();
-            this.updated.clear();
+            this.queued.clear();
             throw WebinyError.from(error, {
                 message: "Error while updating FLP",
                 code: "ERROR_UPDATING_FLP_USE_CASE"
@@ -85,7 +87,7 @@ export class UpdateFlp {
         flp: FolderLevelPermission,
         parentFlp: FolderLevelPermission
     ) {
-        if (this.isUpdated(flp.id)) {
+        if (this.isQueued(flp.id)) {
             return;
         }
 
@@ -104,14 +106,16 @@ export class UpdateFlp {
             permissions: Permissions.create(flp.permissions, currentParentFlp)
         });
 
-        this.setUpdated(flp.id);
+        // Add the FLP to the queue list so we don't fetch it again
+        this.setQueued(flp.id);
 
         // Process all children of this folder before moving to siblings
         const children = await this.listDirectChildren(flp);
+
         for (const child of children) {
             if (this.isCloseToTimeout?.()) {
                 await this.executeBatchUpdate();
-                this.handleTimeout?.(this.getUpdated());
+                this.handleTimeout?.(this.getQueuedList());
                 return;
             }
             // Pass the current FLP as the parent for the child
@@ -147,19 +151,26 @@ export class UpdateFlp {
         } finally {
             // Clear the update collection after the batch update
             this.flpsToUpdate.clear();
+
+            //Let's remove all the updated FLPs ids from the queue cache
+            this.clearQueuedList();
         }
     }
 
-    private getUpdated() {
-        return Array.from(this.updated);
+    private getQueuedList() {
+        return Array.from(this.queued);
     }
 
-    private setUpdated(id: string) {
-        this.updated.add(id);
+    private setQueued(id: string) {
+        this.queued.add(id);
     }
 
-    private isUpdated(id: string) {
-        return this.updated.has(id);
+    private isQueued(id: string) {
+        return this.queued.has(id);
+    }
+
+    private clearQueuedList() {
+        return this.queued.clear();
     }
 
     private async listDirectChildren(flp: FolderLevelPermission): Promise<FolderLevelPermission[]> {

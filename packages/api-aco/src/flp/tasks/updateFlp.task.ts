@@ -19,9 +19,9 @@ class UpdateFlpTask {
 
                 const useCase = new UpdateFlp({
                     context,
-                    updated: input.updated,
+                    queued: input.queued,
                     isCloseToTimeout: isCloseToTimeout,
-                    handleTimeout: (updated: string[]) => response.continue({ ...input, updated })
+                    handleTimeout: (queued: string[]) => response.continue({ ...input, queued })
                 });
 
                 try {
