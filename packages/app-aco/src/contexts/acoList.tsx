@@ -12,7 +12,11 @@ import {
     SearchRecordItem
 } from "~/types";
 import { useAcoApp, useNavigateFolder } from "~/hooks";
-import { useGetDescendantFolders, useGetFolderHierarchy } from "~/features";
+import {
+    useGetDescendantFolders,
+    useGetFolderHierarchy,
+    useListFoldersByParentIds
+} from "~/features";
 import { FoldersContext } from "~/contexts/folders";
 import { SearchRecordsContext } from "~/contexts/records";
 import { sortTableItems, validateOrGetDefaultDbSort } from "~/sorting";
@@ -127,6 +131,7 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
         getFolderHierarchy
     } = useGetFolderHierarchy();
     const { getDescendantFolders } = useGetDescendantFolders();
+    const { listFoldersByParentIds } = useListFoldersByParentIds();
     const folderContext = useContext(FoldersContext);
     const searchContext = useContext(SearchRecordsContext);
 
@@ -148,7 +153,13 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
      * We don't call `listRecords` directly, instead we call `setState` making it the only driver to fetch records from the apis.
      */
     useEffect(() => {
-        getFolderHierarchy(currentFolderId ?? ROOT_FOLDER);
+        // The folders collection is empty, it must be the first render, let's load the full hierarchy.
+        if (folders.length === 0) {
+            getFolderHierarchy(currentFolderId ?? ROOT_FOLDER);
+        } else {
+            // Otherwise let's load only the current folder sub-tree
+            listFoldersByParentIds([currentFolderId ?? ROOT_FOLDER]);
+        }
 
         setState(state => {
             return {
