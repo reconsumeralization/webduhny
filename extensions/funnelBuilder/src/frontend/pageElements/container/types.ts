@@ -7,19 +7,13 @@ export interface PbEditorElementWithChildren extends PbEditorElement {
 
 export interface StepElement extends PbEditorElement {
     data: {
-        step: {
-            id: string;
-            title: string;
-        };
+        stepId: string;
     };
 }
 
 export interface StepElementWithChildren extends PbEditorElement {
     data: {
-        step: {
-            id: string;
-            title: string;
-        };
+        stepId: string;
     };
     elements: PbEditorElementWithChildren[];
 }
