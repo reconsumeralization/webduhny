@@ -4,6 +4,7 @@
 - setPrevStep - not index-1 but prev step per cond rules
 - disable next step if form invalid
 - test prev btn
+- when deleting a field, it's not cleared up from funnel
 - =====> revisit containerEvHandlers
 - editor
   - edit field dialog reopening?

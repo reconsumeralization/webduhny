@@ -1,19 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { StepElement } from "../../../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Icon } from "../Icon";
 import { Input } from "@webiny/ui/Input";
 import { Bind, Form } from "@webiny/form";
-import { useDisclosure } from "../../../../../admin/useDisclosure";
 import { validation } from "@webiny/validation";
+import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
+import { useDisclosure } from "../../../../../admin/useDisclosure";
 
 // Icons.
 import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
 import { ReactComponent as DragIndicatorIcon } from "@material-design-icons/svg/outlined/drag_indicator.svg";
 import { ReactComponent as EditIcon } from "@material-design-icons/svg/outlined/edit.svg";
 import { useUpdateElement } from "@webiny/app-page-builder/editor";
+import { useStepsForm } from "../useStepsForm";
+import { FunnelStepModelDto } from "../../../../../../shared/models/FunnelStepModel";
 
 const ListItemStyled = styled.div`
     display: flex;
@@ -43,32 +45,32 @@ const StyledDragIcon = styled(DragIndicatorIcon)`
 `;
 
 interface StepsListItemProps {
-    element: StepElement;
-    canDeleteStep: boolean;
-    onDeleteStep: () => void;
+    step: FunnelStepModelDto;
 }
 
-export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsListItemProps) => {
+export const StepsListItem = ({ step }: StepsListItemProps) => {
     const {
         open: showTitleInput,
         close: hideEditTitleInput,
         isOpen: isTitleInputShown
     } = useDisclosure();
 
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: element.id
+    const { showConfirmation } = useConfirmationDialog({
+        title: "Remove step",
+        message: <p>Are you sure you want to remove this step?</p>
     });
 
-    const updateElement = useUpdateElement();
+    const { updateStep, deleteStep, canDeleteSteps } = useStepsForm();
+
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: step.id
+    });
+
     const submitTitleForm = (data: { title: string }) => {
-        const elementClone = structuredClone(element);
-        elementClone.data.step.title = data.title;
-
-        updateElement({
-            ...elementClone,
-            elements: elementClone.elements
+        updateStep({
+            ...step,
+            title: data.title
         });
-
         hideEditTitleInput();
     };
 
@@ -77,13 +79,14 @@ export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsLis
         transition
     };
 
-    const pageTitle = element.data.step.title;
-
     return (
         <ListItemStyled ref={setNodeRef} style={style}>
             <PageTitleContainer>
                 {isTitleInputShown ? (
-                    <Form<{ title: string }> data={{ title: pageTitle }} onSubmit={submitTitleForm}>
+                    <Form<{ title: string }>
+                        data={{ title: step.title }}
+                        onSubmit={submitTitleForm}
+                    >
                         {({ submit }) => (
                             <Bind name={"title"} validators={validation.create("required")}>
                                 <Input
@@ -108,7 +111,7 @@ export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsLis
                     </Form>
                 ) : (
                     <>
-                        {pageTitle}
+                        {step.title}
                         <Icon size={20} element={<EditIcon />} onClick={() => showTitleInput()} />
                     </>
                 )}
@@ -116,7 +119,13 @@ export const StepsListItem = ({ element, canDeleteStep, onDeleteStep }: StepsLis
 
             <IconsContainer>
                 <Icon element={<StyledDragIcon />} {...attributes} {...listeners} />
-                <Icon disabled={!canDeleteStep} element={<DeleteIcon />} onClick={onDeleteStep} />
+                <Icon
+                    disabled={!canDeleteSteps}
+                    element={<DeleteIcon />}
+                    onClick={() => {
+                        showConfirmation(async () => deleteStep(step.id));
+                    }}
+                />
             </IconsContainer>
         </ListItemStyled>
     );

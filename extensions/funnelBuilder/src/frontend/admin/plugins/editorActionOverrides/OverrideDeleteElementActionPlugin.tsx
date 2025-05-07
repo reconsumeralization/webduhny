@@ -16,7 +16,6 @@ import {
     isStepElementType
 } from "../../../../shared/constants";
 import { ContainerElement } from "../../../pageElements/container/types";
-import { useContainerStore } from "../../../pageElements/container/ContainerProvider";
 
 const DO_NOTHING = { actions: [] };
 
@@ -27,8 +26,6 @@ export const OverrideDeleteElementActionPlugin = () => {
         isOpen: snackbarShown,
         data: snackbarMessage
     } = useDisclosure<string>();
-
-    const {getStore} = useContainerStore();
 
     return (
         <>
@@ -67,7 +64,7 @@ export const OverrideDeleteElementActionPlugin = () => {
                                 CONTAINER_ELEMENT_ID
                             )) as ContainerElement;
 
-                            // A bit primitive check, but it works.
+                            // Might not be performant, but it works / is good enough.
                             const conditionRulesJsonString = JSON.stringify(
                                 containerElement.data.conditionRules
                             );
@@ -80,9 +77,26 @@ export const OverrideDeleteElementActionPlugin = () => {
                                 return DO_NOTHING;
                             }
 
-                            getStore().funnelVm.removeField(fieldId);
-                            console.log('after deet', getStore().funnelVm.getFields());
-                            return deleteElementAction(...params);
+                            const result = await deleteElementAction(...params);
+
+                            if (result.state?.elements) {
+                                result.state.elements = {
+                                    ...result.state.elements,
+
+                                    // Update container (remove field from `fields` array).
+                                    [containerElement.id]: {
+                                        ...containerElement,
+                                        data: {
+                                            ...containerElement.data,
+                                            fields: containerElement.data.fields.filter(
+                                                field => field.id !== fieldId
+                                            )
+                                        }
+                                    }
+                                };
+                            }
+
+                            return result;
                         }
 
                         // 4. Prevent deleting elements that contain the funnel container or a field.

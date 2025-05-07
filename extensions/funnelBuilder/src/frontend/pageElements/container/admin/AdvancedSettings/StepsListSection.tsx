@@ -1,8 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { useActiveElementId, useElementWithChildren } from "@webiny/app-page-builder/editor";
 import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { useSnackbar } from "@webiny/app-admin";
 import { StepsListItem } from "./StepsListSection/StepsListItem";
 
 // Sorting.
@@ -20,13 +18,12 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
-import { ContainerElementWithChildren } from "../../types";
 
 // Icons.
 import { ReactComponent as AddIcon } from "@material-design-icons/svg/outlined/add.svg";
-import { useStepsActions } from "./useStepsActions";
+import { useStepsForm } from "./useStepsForm";
+import { isSuccessStepElementType } from "../../../../../shared/constants";
 
 const StyledAccordion = styled(Accordion)`
     overflow: hidden;
@@ -42,48 +39,7 @@ const AddPageButton = styled(ButtonSecondary)`
 `;
 
 export const StepsListSection = () => {
-    const [activeElementId] = useActiveElementId();
-    const containerElementWithChildren = useElementWithChildren(
-        activeElementId!
-    ) as ContainerElementWithChildren;
-
-    const { showSnackbar } = useSnackbar();
-    const { showConfirmation } = useConfirmationDialog({
-        title: "Remove step",
-        message: <p>Are you sure you want to remove this step?</p>
-    });
-
-    const stepsActions = useStepsActions();
-
-    const deleteStep = useCallback(
-        (stepId: string) => {
-            showConfirmation(async () => {
-                stepsActions.deleteStep(containerElementWithChildren, stepId);
-                showSnackbar("Step deleted successfully.");
-            });
-        },
-        [containerElementWithChildren]
-    );
-
-    const createStep = useCallback(() => {
-        stepsActions.createStep(containerElementWithChildren);
-    }, [containerElementWithChildren]);
-
-    function moveStep(event: any) {
-        const { active, over } = event;
-        if (active.id === over.id) {
-            return;
-        }
-
-        const srcStepIndex = containerElementWithChildren.elements.findIndex(
-            element => element.id === active.id
-        );
-        const targetStepIndex = containerElementWithChildren.elements.findIndex(
-            element => element.id === over.id
-        );
-
-        stepsActions.moveStep(containerElementWithChildren, srcStepIndex, targetStepIndex);
-    }
+    const { containerElementWithChildren, createStep, moveStep } = useStepsForm();
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -92,32 +48,37 @@ export const StepsListSection = () => {
         })
     );
 
-    const canDeleteSteps = containerElementWithChildren.elements.length > 1;
-
     return (
         <StyledAccordion title={"Pages"} defaultValue={true}>
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
-                onDragEnd={moveStep}
+                onDragEnd={event => {
+                    console.log('event', event)
+                    const { active, over } = event;
+                    if (active.id === over?.id) {
+                        return;
+                    }
+
+                    const fromIndex = containerElementWithChildren.elements.findIndex(
+                        element => element.id === active.id
+                    );
+                    const toIndex = containerElementWithChildren.elements.findIndex(
+                        element => element.id === over?.id
+                    );
+
+                    moveStep(fromIndex, toIndex);
+                }}
                 modifiers={[restrictToVerticalAxis]}
             >
                 <SortableContext
                     items={containerElementWithChildren.elements}
                     strategy={verticalListSortingStrategy}
                 >
-                    {containerElementWithChildren.elements
-                        .filter(e => e.data.step.id !== "success")
-                        .map(element => (
-                            <StepsListItem
-                                key={element.id}
-                                element={element}
-                                canDeleteStep={canDeleteSteps}
-                                onDeleteStep={() => {
-                                    const stepId = element.data.step.id;
-                                    deleteStep(stepId);
-                                }}
-                            />
+                    {containerElementWithChildren.data.steps
+                        .filter(step => !isSuccessStepElementType(step.id))
+                        .map(step => (
+                            <StepsListItem step={step} key={step.id} />
                         ))}
                     <AddPageButton onClick={createStep}>
                         <ButtonIcon icon={<AddIcon />} /> Add page
