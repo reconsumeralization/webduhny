@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useMemo, useSyncExternalStore } from "react";
-import { useRenderer } from "@webiny/app-page-builder-elements";
+import { useLoader, useRenderer } from "@webiny/app-page-builder-elements";
 import { FunnelVm } from "../viewModels/FunnelVm";
 import { FunnelModelDto } from "../../../shared/models/FunnelModel";
 import { FunnelSubmissionVm } from "../viewModels/FunnelSubmissionVm";
+import { request } from "graphql-request";
+import { getGqlApiUrl, getTenantId } from "@webiny/app-website";
 
 interface ContainerContextValue {
     funnelVm: FunnelVm;
@@ -28,10 +30,29 @@ export interface ContainerProviderProps {
     updateElementData?: (data: FunnelModelDto) => void;
 }
 
-// @ts-ignore
 const globalContainer: { current: ContainerContextValue } = {
     current: createInitialContextValue()
 };
+
+const GET_THEME_SETTINGS = /* GraphQL */ `
+    query GetThemeSettings {
+        themeSettings {
+            data {
+                id
+                theme {
+                    primaryColor
+                    secondaryColor
+                    logo
+                }
+            }
+            error {
+                code
+                message
+                data
+            }
+        }
+    }
+`;
 
 export const ContainerProvider = ({
     children,
@@ -71,6 +92,23 @@ export const ContainerProvider = ({
     useEffect(() => {
         Object.assign(globalContainer.current, value);
     }, [value]);
+
+    const { data, error } = useLoader<any, Error>(() => {
+        return request(getGqlApiUrl(), GET_THEME_SETTINGS).then(res => {
+            if (res.themeSettings.error) {
+                throw new Error(res.themeSettings.error.message);
+            }
+
+            return res.themeSettings.data.theme;
+        });
+    });
+
+    if (error) {
+        console.error("An error occurred while fetching theme settings:", error);
+        return <>An error occurred: {error.message}</>;
+    }
+
+    console.log("data", data);
 
     return (
         <ContainerContext.Provider value={{ funnelVm, funnelSubmissionVm }}>

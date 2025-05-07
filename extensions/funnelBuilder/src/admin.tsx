@@ -12,6 +12,7 @@ import { ConditionOperatorPlugins } from "./frontend/admin/plugins/conditionOper
 import { ConditionActionPlugins } from "./frontend/admin/plugins/conditionActions";
 import { PbEditorOverrideEventActionPlugins } from "./frontend/admin/plugins/editorActionOverrides";
 import { ControlsAdminPlugins } from "./frontend/pageElements/controls/ControlsAdminPlugins";
+import { ThemeSettingsProvider } from "./frontend/admin/ThemeSettingsProvider";
 
 export const Extension = () => (
     <>
@@ -33,5 +34,6 @@ export const Extension = () => (
         <FunnelBuilderPageElementGroup />
         <DecoratedElementControls />
         <PbEditorOverrideEventActionPlugins />
+        <ThemeSettingsProvider/>
     </>
 );
