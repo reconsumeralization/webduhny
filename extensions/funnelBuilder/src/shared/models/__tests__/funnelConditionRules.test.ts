@@ -126,7 +126,7 @@ describe("Condition Rules", () => {
         let submission2Finished = false;
         const submission2 = new FunnelSubmissionModel(funnel);
         submission2.onFinish(() => {
-            submission1Finished = true;
+            submission2Finished = true;
         });
 
         submission2.setData({ firstName: "first-name" });

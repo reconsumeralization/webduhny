@@ -19,8 +19,11 @@ export interface FunnelFieldDefinitionModelDto<TValue = unknown, TExtra = Record
     extra?: TExtra;
 }
 
-export class FunnelFieldDefinitionModel<TValue = unknown, TExtra extends Record<string, any> = {}> {
-    static type: string = "";
+export class FunnelFieldDefinitionModel<
+    TValue = unknown,
+    TExtra extends Record<string, any> = Record<string, any>
+> {
+    static type = "";
 
     id: string;
     type: string;

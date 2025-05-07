@@ -2,7 +2,7 @@ import { FunnelModel } from "../FunnelModel";
 import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
 
 describe("Funnel Submissions", () => {
-    test("test", async () => {
+    test("e2e test", async () => {
         const funnel = new FunnelModel({
             steps: [
                 { id: "step1", title: "Step 1" },
@@ -46,7 +46,7 @@ describe("Funnel Submissions", () => {
                     label: "Last Name",
                     helpText: "Enter your last name",
                     validators: [
-                        { type: "required" },
+                        { type: "required", params: {} },
                         {
                             type: "minLength",
                             params: {
@@ -172,8 +172,8 @@ describe("Funnel Submissions", () => {
 
         const funnelSubmission = new FunnelSubmissionModel(funnel);
 
-        let funnelFinished: boolean = false;
-        funnelSubmission.onFinish(data => {
+        let funnelFinished = false;
+        funnelSubmission.onFinish(() => {
             funnelFinished = true;
         });
 

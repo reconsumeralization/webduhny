@@ -15,7 +15,7 @@ export interface FieldValidatorDto<TExtraParams = Record<string, any>> {
 }
 
 export abstract class AbstractValidator<TExtraParams = Record<string, any>> {
-    static type: string = "";
+    static type = "";
 
     type: string;
     params: FieldValidatorParams<TExtraParams>;

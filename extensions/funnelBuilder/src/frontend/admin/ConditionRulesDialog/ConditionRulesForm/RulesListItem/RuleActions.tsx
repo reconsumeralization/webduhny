@@ -75,7 +75,7 @@ export const RuleActions = ({ rule }: RuleActionsProps) => {
                     </Typography>
                 </NoActionsMessage>
             ) : (
-                rule.actions.map((action, actionIndex) => {
+                rule.actions.map(action => {
                     const conditionActionPlugin = conditionActionPlugins.find(
                         p => p.actionClass.type === action.type
                     );

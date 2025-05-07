@@ -99,7 +99,7 @@ export const RuleConditionGroup = ({ conditionGroup, depth = 1 }: RuleConditionG
                     </Typography>
                 </NoConditionsMessage>
             ) : (
-                conditionGroup.items.map((conditionGroupItem, conditionIndex) => {
+                conditionGroup.items.map(conditionGroupItem => {
                     const isConditionGroup = "items" in conditionGroupItem;
                     if (isConditionGroup) {
                         return (

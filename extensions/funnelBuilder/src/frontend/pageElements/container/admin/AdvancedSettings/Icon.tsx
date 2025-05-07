@@ -33,3 +33,5 @@ export const Icon = React.forwardRef<HTMLDivElement, IconProps>(({ element, ...p
         </Wrapper>
     );
 });
+
+Icon.displayName = "Icon";

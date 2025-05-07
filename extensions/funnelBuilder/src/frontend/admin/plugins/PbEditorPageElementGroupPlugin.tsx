@@ -13,7 +13,7 @@ export const PbEditorPageElementGroupPlugin =
         pluginType: "pb-editor-page-element-group",
         componentDisplayName: "PbEditorPageElementGroupPlugin",
         mapProps: props => {
-            const { title, icon, emptyView, ...rest } = props;
+            const { title, icon, emptyView } = props;
             return {
                 ...props,
                 group: {

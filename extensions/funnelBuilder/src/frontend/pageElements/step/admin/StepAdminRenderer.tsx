@@ -28,7 +28,7 @@ export const StepAdminRenderer = createRenderer(() => {
     return (
         <div>
             <Form>
-                {/* @ts-ignore */}
+                {/* @ts-ignore Incompatible types. Safe to ignore. */}
                 {() => <Elements element={elementWithChildren} />}
             </Form>
         </div>

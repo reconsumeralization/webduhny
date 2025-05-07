@@ -34,6 +34,7 @@ export class FunnelConditionOperatorModel<
         };
     }
 
+    // eslint-disable-next-line
     evaluate(value: TValue) {
         return true;
     }

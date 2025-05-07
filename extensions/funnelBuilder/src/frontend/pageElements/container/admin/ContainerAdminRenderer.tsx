@@ -20,7 +20,9 @@ const Tab = styled.div`
     flex: 1 0;
     align-content: center;
     border-bottom: 2px solid transparent;
-    transition: background-color 300ms, border-bottom 150ms;
+    transition:
+        background-color 300ms,
+        border-bottom 150ms;
     height: 48px;
 
     &:hover {
@@ -38,7 +40,7 @@ const Tab = styled.div`
 `;
 
 export const ContainerAdmin = () => {
-    const { getElement, meta } = useRenderer();
+    const { getElement } = useRenderer();
     const element = getElement();
     const elementWithChildren = useElementWithChildren(element.id!) as ContainerElementWithChildren;
     const { funnelVm } = useContainer();

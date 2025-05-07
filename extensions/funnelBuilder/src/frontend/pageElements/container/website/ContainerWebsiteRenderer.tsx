@@ -3,7 +3,7 @@ import { createRenderer, Elements, useRenderer } from "@webiny/app-page-builder-
 import { ContainerProvider, useContainer } from "../ContainerProvider";
 
 export const ContainerAdmin = () => {
-    const { getElement, meta } = useRenderer();
+    const { getElement } = useRenderer();
     const element = getElement();
     const { funnelSubmissionVm } = useContainer();
 

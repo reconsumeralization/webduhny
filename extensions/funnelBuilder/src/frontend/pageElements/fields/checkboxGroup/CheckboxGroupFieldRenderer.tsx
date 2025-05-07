@@ -1,6 +1,5 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { useBind } from "@webiny/form";
 import { FieldErrorMessage } from "../components/FieldErrorMessage";
 import { FieldHelperMessage } from "../components/FieldHelperMessage";
 import { FieldLabel } from "../components/FieldLabel";

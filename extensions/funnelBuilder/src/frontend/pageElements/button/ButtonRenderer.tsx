@@ -22,7 +22,7 @@ export const ButtonWrapper = styled.div<ButtonWrapperProps>`
     }
 `;
 
-export const ButtonRenderer = createRenderer(props => {
+export const ButtonRenderer = createRenderer(() => {
     const { submit } = useForm();
     const { funnelSubmissionVm } = useContainer();
     const { getElement } = useRenderer();

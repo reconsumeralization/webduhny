@@ -9,7 +9,7 @@ export interface NumberFieldExtra {
     placeholderText: string;
 }
 
-export class NumberField extends FunnelFieldDefinitionModel<number> {
+export class NumberField extends FunnelFieldDefinitionModel<number, NumberFieldExtra> {
     static override type = "number";
     override supportedValidatorTypes = ["required", "gte", "lte"];
 
