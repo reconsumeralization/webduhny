@@ -74,7 +74,7 @@ export const ContainerAdminEventHandlers = () => {
                 stepId: funnelVm.getActiveStepId()
             } as FunnelFieldDefinitionModelDto);
 
-            const fieldClone = funnelVm.getField(createdElement.data.id)!.clone();
+            const fieldClone = funnelVm.getFieldById(createdElement.data.id)!.clone();
             showFieldSettingsDialog(fieldClone);
         }),
         [funnelVm]
