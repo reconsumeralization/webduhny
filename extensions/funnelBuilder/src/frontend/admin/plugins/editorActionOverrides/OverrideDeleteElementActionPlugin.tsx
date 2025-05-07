@@ -15,6 +15,8 @@ import {
     isFieldElementType,
     isStepElementType
 } from "../../../../shared/constants";
+import { ContainerElement } from "../../../pageElements/container/types";
+import { useContainerStore } from "../../../pageElements/container/ContainerProvider";
 
 const DO_NOTHING = { actions: [] };
 
@@ -25,6 +27,8 @@ export const OverrideDeleteElementActionPlugin = () => {
         isOpen: snackbarShown,
         data: snackbarMessage
     } = useDisclosure<string>();
+
+    const {getStore} = useContainerStore();
 
     return (
         <>
@@ -59,24 +63,25 @@ export const OverrideDeleteElementActionPlugin = () => {
                         // 3. Prevent deletion of fields in specific cases.
                         if (isFieldElementType(element.type)) {
                             // 2.1 Prevent deleting a field if it's mentioned in conditional rules.
-                            const containerElement = await state.getElementById(
+                            const containerElement = (await state.getElementById(
                                 CONTAINER_ELEMENT_ID
-                            );
+                            )) as ContainerElement;
 
                             // A bit primitive check, but it works.
                             const conditionRulesJsonString = JSON.stringify(
                                 containerElement.data.conditionRules
                             );
 
-                            if (conditionRulesJsonString.includes(element.data.id)) {
+                            const fieldId = element.data.id;
+                            if (conditionRulesJsonString.includes(fieldId)) {
                                 showSnackbar(
                                     "Cannot delete this field because it is used in conditional rules."
                                 );
                                 return DO_NOTHING;
                             }
 
-                            // TODO: update FIELDS IN CONTAINER!!!!
-
+                            getStore().funnelVm.removeField(fieldId);
+                            console.log('after deet', getStore().funnelVm.getFields());
                             return deleteElementAction(...params);
                         }
 
