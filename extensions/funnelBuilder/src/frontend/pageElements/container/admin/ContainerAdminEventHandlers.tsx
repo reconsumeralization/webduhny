@@ -18,7 +18,6 @@ import type { UpdateElementActionArgsType } from "@webiny/app-page-builder/edito
 import {
     isContainerElementType,
     isFieldElementType,
-    isStepElementType
 } from "../../../../shared/constants";
 import { useContainer } from "../ContainerProvider";
 import {
@@ -85,7 +84,7 @@ export const ContainerAdminEventHandlers = () => {
         createOnElementEventHandler<UpdateElementActionArgsType>(args => {
             const { element: updatedElement } = args;
             if (isFieldElementType(updatedElement.type)) {
-                console.log('IS FIELD1 UPDATE!!!!')
+                console.log('IS FIELD UPDATE!!!!')
                 funnelVm.updateField(updatedElement.data.id, updatedElement.data);
                 return;
             }

@@ -6,8 +6,6 @@
 - =====> revisit containerEvHandlers
 - editor
   - edit field dialog reopening?
-  - when adding tab, should be activated immediately
-  - deleting a step if focused causes a blank canvas
   - esc doesn't work on dialogs sometimes (if not focused correctly)
   - undoooooo test - added a step, pressed undo, and tabs at the top did not update :|
 - final tasks
@@ -16,8 +14,6 @@
   - test in CWP
   - docs
   - run linters
-
-
 
 ## SH
 - many tabs look bad
