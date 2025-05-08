@@ -1,4 +1,5 @@
 import { WebinyError } from "@webiny/error";
+import { Path } from "./Path";
 import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
 import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from "~/types";
@@ -51,7 +52,7 @@ export class UpdateFlp {
             this.flpsToUpdate.set(folder.id, {
                 slug: folder.slug,
                 parentId: folder.parentId ?? ROOT_FOLDER,
-                path: this.getPath(folder.slug, parentFlp?.path),
+                path: Path.create(folder.slug, parentFlp?.path),
                 permissions: Permissions.create(folder.permissions, parentFlp)
             });
 
@@ -102,7 +103,7 @@ export class UpdateFlp {
         this.flpsToUpdate.set(flp.id, {
             slug: flp.slug,
             parentId: flp.parentId,
-            path: this.getPath(flp.slug, currentParentFlp.path),
+            path: Path.create(flp.slug, currentParentFlp.path),
             permissions: Permissions.create(flp.permissions, currentParentFlp)
         });
 
@@ -196,19 +197,11 @@ export class UpdateFlp {
                 type,
                 slug,
                 parentId: parentId ?? ROOT_FOLDER,
-                path: this.getPath(slug, parentFlp?.path),
+                path: Path.create(slug, parentFlp?.path),
                 permissions: Permissions.create(permissions, parentFlp)
             });
         }
 
         return flp;
-    }
-
-    private getPath(slug: string, parentPath?: string) {
-        if (parentPath) {
-            return `${parentPath}/${slug}`;
-        }
-
-        return `${ROOT_FOLDER}/${slug}`;
     }
 }

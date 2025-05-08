@@ -1,4 +1,5 @@
 import { WebinyError } from "@webiny/error";
+import { Path } from "./Path";
 import { Permissions } from "./Permissions";
 import type { FolderLevelPermission as IFolderLevelPermission } from "~/flp/flp.types";
 import type { Folder } from "~/folder/folder.types";
@@ -40,7 +41,7 @@ export class CreateFlp {
                 type,
                 slug,
                 parentId: parentId ?? ROOT_FOLDER,
-                path: this.getPath(slug, parentFlp?.path),
+                path: Path.create(slug, parentFlp?.path),
                 permissions: Permissions.create(permissions, parentFlp)
             });
         } catch (error) {
@@ -49,13 +50,5 @@ export class CreateFlp {
                 code: "ERROR_CREATE_FLP_USE_CASE"
             });
         }
-    }
-
-    private getPath(slug: string, parentPath?: string) {
-        if (parentPath) {
-            return `${parentPath}/${slug}`;
-        }
-
-        return `${ROOT_FOLDER}/${slug}`;
     }
 }
