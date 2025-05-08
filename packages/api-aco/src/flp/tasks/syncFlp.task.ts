@@ -80,6 +80,7 @@ class SyncFlpTask {
                      *  - list all root folders
                      *  - update the FLP records for the found folders and all its descendants.
                      */
+                    // TODO: add a * to run this useCase
                     const tenants = await context.tenancy.listTenants();
                     await context.tenancy.withEachTenant(tenants, async tenant => {
                         // Reloading locales for the current tenant to ensure the correct data is available before proceeding.
@@ -94,7 +95,7 @@ class SyncFlpTask {
 
                             // List all non-private models for the current locale.
                             const models = await context.security.withoutAuthorization(
-                                async () => await context.cms.listModels({ includePrivate: false })
+                                async () => await context.cms.listModels()
                             );
 
                             for (const model of models) {
