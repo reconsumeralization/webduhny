@@ -18,7 +18,13 @@
       "apps/api/pageBuilder/import/*",
       "apps/api/pageBuilder/export/*",
       "extensions/theme",
+      "extensions/envIndicator",
+      "extensions/newPageWizard",
+      "extensions/systemNotificationBanner/systemNotificationBannerAdmin",
+      "extensions/systemNotificationBanner/systemNotificationBannerApi",
+      "extensions/smart-cms-extensions",
       "scripts/buildPackages",
+      "scripts/dependencyTracer",
       "scripts/prepublishOnly"
     ]
   },
