@@ -15874,6 +15874,7 @@ __metadata:
   resolution: "@webiny/migrations@workspace:packages/migrations"
   dependencies:
     "@elastic/elasticsearch": "npm:7.12.0"
+    "@webiny/api": "npm:0.0.0"
     "@webiny/api-elasticsearch": "npm:0.0.0"
     "@webiny/api-headless-cms": "npm:0.0.0"
     "@webiny/api-headless-cms-ddb-es": "npm:0.0.0"

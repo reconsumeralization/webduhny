@@ -43,6 +43,57 @@ class SyncFlpTask {
                     }
 
                     /**
+                     *  Full update required. We need to:
+                     *
+                     *  - list cms models to collect their types, together with the default ones [PB_PAGE_TYPE, FM_FILE_TYPE]
+                     *  - list all root folders
+                     *  - update the FLP records for the found folders and all its descendants.
+                     */
+                    if (input.type && input.type === "*") {
+                        // Some folder types are fixed: pages and files.
+                        const folderTypes = [PB_PAGE_TYPE, FM_FILE_TYPE];
+
+                        // List all non-private models for the current locale.
+                        const models = await context.security.withoutAuthorization(
+                            async () => await context.cms.listModels()
+                        );
+
+                        for (const model of models) {
+                            folderTypes.push(`cms:${model.modelId}`);
+                        }
+
+                        for (const folderType of folderTypes) {
+                            const [folders] = await context.aco.folder.list({
+                                where: {
+                                    type: folderType,
+                                    parentId: null
+                                },
+                                disablePermissions: true
+                            });
+
+                            for (const folder of folders) {
+                                await context.tasks.trigger<IUpdateFlpTaskInput>({
+                                    definition: UPDATE_FLP_TASK_ID,
+                                    input: {
+                                        folder
+                                    }
+                                });
+                            }
+
+                            await store.addInfoLog({
+                                message: `FLP Update task triggered for type ${folderType}`,
+                                data: {
+                                    type: folderType
+                                }
+                            });
+                        }
+
+                        return response.done(
+                            `Task completed successfully: all FLP records have been queued to be synchronized.`
+                        );
+                    }
+
+                    /**
                      * `type` provided in the task input. We need to:
                      *
                      * - list all root folders for the provided type
@@ -71,69 +122,8 @@ class SyncFlpTask {
                         );
                     }
 
-                    /**
-                     *  Full update required: Neither type nor folderId were provided. We need to:
-                     *
-                     *  - iterate through all the tenants
-                     *  - iterate through all the locales in the tenant
-                     *  - list cms models to collect their types, together with the default ones [PB_PAGE_TYPE, FM_FILE_TYPE]
-                     *  - list all root folders
-                     *  - update the FLP records for the found folders and all its descendants.
-                     */
-                    // TODO: add a * to run this useCase
-                    const tenants = await context.tenancy.listTenants();
-                    await context.tenancy.withEachTenant(tenants, async tenant => {
-                        // Reloading locales for the current tenant to ensure the correct data is available before proceeding.
-                        await context.i18n.reloadLocales();
-
-                        // Fetch all locales for the tenant.
-                        const locales = context.i18n.getLocales();
-
-                        await context.i18n.withEachLocale(locales, async locale => {
-                            // Some folder types are fixed: pages and files.
-                            const folderTypes = [PB_PAGE_TYPE, FM_FILE_TYPE];
-
-                            // List all non-private models for the current locale.
-                            const models = await context.security.withoutAuthorization(
-                                async () => await context.cms.listModels()
-                            );
-
-                            for (const model of models) {
-                                folderTypes.push(`cms:${model.modelId}`);
-                            }
-
-                            for (const folderType of folderTypes) {
-                                const [folders] = await context.aco.folder.list({
-                                    where: {
-                                        type: folderType,
-                                        parentId: null
-                                    },
-                                    disablePermissions: true
-                                });
-
-                                for (const folder of folders) {
-                                    await context.tasks.trigger<IUpdateFlpTaskInput>({
-                                        definition: UPDATE_FLP_TASK_ID,
-                                        input: {
-                                            folder
-                                        }
-                                    });
-                                }
-
-                                await store.addInfoLog({
-                                    message: `FLP Update task triggered for TYPE: ${folderType} / TENANT: ${tenant.name} / LOCALE: ${locale.code}`,
-                                    data: {
-                                        tenant: tenant.id,
-                                        locale: locale.code,
-                                        type: folderType
-                                    }
-                                });
-                            }
-                        });
-                    });
-
-                    return response.done(
-                        `Task completed successfully: all FLP records have been queued to be synchronized.`
+                    return response.error(
+                        "Invalid input: please provide either `type` or `folderId`."
                     );
                 } catch (error) {
                     return response.error(error);
