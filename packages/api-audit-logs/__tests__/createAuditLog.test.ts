@@ -3,9 +3,11 @@ import { AuditAction } from "~/types";
 import { useHandler } from "./helpers/useHandler";
 import { ActionType } from "~/config";
 import { AUDIT_LOGS_TYPE } from "~/app/contants";
-import { compressor } from "~/utils/compressor";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 
 describe("create audit log", () => {
+    const client = getDocumentClient();
+
     const audit: AuditAction = {
         app: {
             app: "cms",
@@ -66,13 +68,44 @@ describe("create audit log", () => {
                 timestamp: expect.any(Date),
                 entityId,
                 message,
-                data: await compressor.compress(JSON.stringify(data))
+                data: JSON.stringify(data)
             },
             location: {
                 folderId: "root"
             },
             tags: [],
             type: "AuditLogs"
+        });
+
+        const scanned = await client.scan({
+            TableName: process.env.DB_TABLE
+        });
+
+        console.log({
+            scanned
+        });
+
+        // @ts-expect-error
+        const partitionKey = `T#root#L#en-US#CMS#CME#CME#wby-aco-${result!.id}`;
+
+        const raw = await client.get({
+            TableName: process.env.DB_TABLE,
+            Key: {
+                PK: partitionKey,
+                SK: "L"
+            }
+        });
+
+        expect(raw).toMatchObject({
+            Item: {
+                PK: partitionKey,
+                SK: "L",
+                values: {
+                    "object@data": {
+                        "text@data": expect.stringMatching(`{"compression":"gzip","value":`)
+                    }
+                }
+            }
         });
     });
 
@@ -116,6 +149,28 @@ describe("create audit log", () => {
             },
             tags: [],
             type: "AuditLogs"
+        });
+
+        const partitionKey = `T#root#L#en-US#CMS#CME#CME#wby-aco-${result!.entryId}`;
+
+        const raw = await client.get({
+            TableName: process.env.DB_TABLE,
+            Key: {
+                PK: partitionKey,
+                SK: "L"
+            }
+        });
+
+        expect(raw).toMatchObject({
+            Item: {
+                PK: partitionKey,
+                SK: "L",
+                values: {
+                    "object@data": {
+                        "text@data": expect.stringMatching(`{"compression":"gzip","value":`)
+                    }
+                }
+            }
         });
     });
 });

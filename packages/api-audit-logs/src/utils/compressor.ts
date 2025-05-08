@@ -28,11 +28,11 @@ class GzipCompression implements Compressor {
         try {
             const result = JSON.parse(data);
             if (!result?.compression) {
-                return false;
+                return true;
             }
             compression = result.compression;
         } catch {
-            return false;
+            return true;
         }
         /**
          * If already compressed, skip this.

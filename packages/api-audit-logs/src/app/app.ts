@@ -14,7 +14,7 @@ const toDate = (value: string | Date) => {
     }
 };
 
-const decompressData = (entry: SearchRecord<any>): SearchRecord<any> => {
+const decompressData = async (entry: SearchRecord<any>): Promise<SearchRecord<any>> => {
     if (!entry.data?.data) {
         return entry;
     }
@@ -23,7 +23,7 @@ const decompressData = (entry: SearchRecord<any>): SearchRecord<any> => {
         data: {
             ...entry.data,
             timestamp: toDate(entry.data.timestamp),
-            data: compressor.decompress(entry.data.data)
+            data: await compressor.decompress(entry.data.data)
         }
     };
 };
@@ -104,8 +104,8 @@ export const createApp = (): IAcoAppRegisterParams => {
             return decompressData(entry);
         },
         onEntryList: async entries => {
-            return Promise.all(
-                entries.map(entry => {
+            return await Promise.all(
+                entries.map(async entry => {
                     return decompressData(entry);
                 })
             );
