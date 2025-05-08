@@ -64,12 +64,10 @@ class FolderLevelPermissionsStorageOperations
         where: { tenant, locale, type, path_startsWith, parentId }
     }: StorageOperationsListFlpsParams): Promise<FolderLevelPermission[]> {
         try {
-            const partitionKey = `T#${tenant}#L#${locale}#AT#${type}#FLP`;
-
             if (parentId) {
                 const entries = await queryAllClean<{ data: FolderLevelPermission }>({
                     entity: this.entity,
-                    partitionKey,
+                    partitionKey: `T#${tenant}#L#${locale}#FLP`,
                     options: {
                         index: "GSI2",
                         eq: parentId
@@ -81,7 +79,7 @@ class FolderLevelPermissionsStorageOperations
             if (path_startsWith) {
                 const entries = await queryAllClean<{ data: FolderLevelPermission }>({
                     entity: this.entity,
-                    partitionKey,
+                    partitionKey: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
                     options: {
                         index: "GSI1",
                         beginsWith: path_startsWith
@@ -314,7 +312,7 @@ class FolderLevelPermissionsStorageOperations
     private createGsiKeys = ({ tenant, locale, type, path, parentId }: CreateGsiKeysParams) => ({
         GSI1_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
         GSI1_SK: path,
-        GSI2_PK: `T#${tenant}#L#${locale}#AT#${type}#FLP`,
+        GSI2_PK: `T#${tenant}#L#${locale}#FLP`,
         GSI2_SK: parentId
     });
 }
