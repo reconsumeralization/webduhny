@@ -109,6 +109,8 @@ export default DialogExample;
 
 ### Controlled Visibility
 
+Controlled Visibility demonstrates how to manually control the open/close state of the Dialog component from the outside, using React useState. Here we are following the “controlled component” pattern, where the visibility (open state) of the Dialog is not managed internally by the component itself, but instead controlled by the parent using React state.
+
 <Canvas of={DialogStories.ControlledVisibility} source={ { code: `
 import React, { useState } from "react";
 import { Dialog, Button } from "@webiny/admin-ui";
