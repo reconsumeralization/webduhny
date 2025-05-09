@@ -181,12 +181,12 @@ export const Documentation: Story = {
         },
         transformValue: {
             description:
-                "Function to transform the numeric values to display text. Please refer to the example above for more details.",
+                "Function to transform the numeric values to display text. Please refer to the example code for details on usage.",
             control: "none"
         },
         validation: {
             description:
-                "Object containing validation state and message. Please refer to the example above for more details.",
+                "Object containing validation state and message. Please refer to the example code for details on usage.",
             control: "none"
         },
         onValuesChange: {

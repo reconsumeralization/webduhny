@@ -373,8 +373,9 @@ export const Documentation: Story = {
             control: "object"
         },
         validation: {
-            description: "Validation state and message",
-            control: "object"
+            description:
+                "Validation state and message. Please refer to the example code for details on usage.",
+            control: "none"
         },
         onSelectItem: {
             description:

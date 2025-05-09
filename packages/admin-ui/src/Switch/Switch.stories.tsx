@@ -165,7 +165,7 @@ export const Documentation: Story = {
         },
         validation: {
             description:
-                "Object containing validation state and message. Please refer to the example above for more details.",
+                "Object containing validation state and message. Please refer to the example code for details on usage.",
             control: "none"
         },
         onChange: {
