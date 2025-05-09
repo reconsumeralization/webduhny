@@ -46,7 +46,9 @@ export const createSearchRecordOperations = (
                 }
             });
 
-            return [entries.map(pickEntryFieldValues<SearchRecord<any>>), meta];
+            const items = entries.map(pickEntryFieldValues<SearchRecord<any>>);
+
+            return [items, meta];
         },
         async listTags(model, params) {
             const { where } = params;
