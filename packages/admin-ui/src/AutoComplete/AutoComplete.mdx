@@ -90,7 +90,21 @@ const TimezoneSelector = () => {
         />
     );
 };
+
+export default TimezoneSelector;
+
 ` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/AutoComplete/AutoComplete.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
 />
 
 <Controls of={AutoCompleteStories.Documentation}/>
