@@ -266,7 +266,7 @@ export const Documentation: Story = {
         },
         validation: {
             description:
-                "Validation state and error message. Please refer to the example code above for details on usage.",
+                "Validation state and error message. Please refer to the example code for details on usage.",
             control: "none"
         },
         validate: {

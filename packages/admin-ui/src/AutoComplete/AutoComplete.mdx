@@ -10,48 +10,6 @@ The Input component is a user interface element that allows users to enter textu
 
 ## Usage
 
-```tsx
-import React, { useState } from "react";
-import { AutoComplete } from "@webiny/admin-ui";
-
-const TimezoneSelector = () => {
-    const [value, setValue] = useState("");
-    const [validation, setValidation] = useState({ isValid: true, message: "" });
-
-    const handleValueChange = (newValue: string) => {
-        setValue(newValue);
-
-        if (!newValue) {
-            setValidation({ isValid: false, message: "This field is required" });
-        } else {
-            setValidation({ isValid: true, message: "" });
-        }
-    };
-
-    const timezones = [
-        "Eastern Standard Time (EST)",
-        "Central Standard Time (CST)",
-        "Pacific Standard Time (PST)",
-        "Greenwich Mean Time (GMT)"
-    ];
-
-    return (
-        <AutoComplete
-            label="Time Zone"
-            required={true}
-            description="Select your timezone from the list"
-            placeholder="Select timezone..."
-            options={timezones}
-            value={value}
-            onValueChange={handleValueChange}
-            validation={validation}
-        />
-    );
-};
-
-export default TimezoneSelector;
-```
-
 <Canvas of={AutoCompleteStories.Documentation} source={ { code: `
 import React, { useState } from "react";
 import { AutoComplete } from "@webiny/admin-ui";
@@ -108,6 +66,48 @@ export default TimezoneSelector;
 />
 
 <Controls of={AutoCompleteStories.Documentation}/>
+
+```tsx
+import React, { useState } from "react";
+import { AutoComplete } from "@webiny/admin-ui";
+
+const TimezoneSelector = () => {
+    const [value, setValue] = useState("");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleValueChange = (newValue: string) => {
+        setValue(newValue);
+
+        if (!newValue) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    const timezones = [
+        "Eastern Standard Time (EST)",
+        "Central Standard Time (CST)",
+        "Pacific Standard Time (PST)",
+        "Greenwich Mean Time (GMT)"
+    ];
+
+    return (
+        <AutoComplete
+            label="Time Zone"
+            required={true}
+            description="Select your timezone from the list"
+            placeholder="Select timezone..."
+            options={timezones}
+            value={value}
+            onValueChange={handleValueChange}
+            validation={validation}
+        />
+    );
+};
+
+export default TimezoneSelector;
+```
 
 ## Anatomy
 

@@ -10,6 +10,62 @@ The Input component is a form control that allows users to enter and edit text. 
 
 ## Usage
 
+<Canvas of={InputStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+
+import { Input } from "@webiny/admin-ui";
+
+const InputExample = () => {
+    const [value, setValue] = useState("");
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleValidation = () => {
+        if (!value.trim()) {
+            setValidation({ isValid: false, message: "This field is required" });
+        } else if (value.trim().length < 3) {
+            setValidation({ isValid: false, message: "Must be at least 3 characters long" });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <div>
+            <Input
+                type="text"
+                label="Full Name"
+                description="Enter your full name as it appears on your ID"
+                note="This will be used for official documentation"
+                placeholder="Enter your full name"
+                required={true}
+                value={value}
+                validation={validation}
+                onChange={newValue => setValue(newValue)}
+                onBlur={handleValidation}
+                onEnter={handleValidation}
+            />
+        </div>
+    );
+};
+
+export default InputExample;
+
+` } }
+    additionalActions={[
+        {
+            title: 'Open in GitHub',
+            onClick: () => {
+                window.open(
+                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Input/Input.tsx',
+                    '_blank'
+                );
+            },
+        }
+    ]}
+/>
+
+<Controls of={InputStories.Documentation}/>
+
 ```jsx
 import React, { useState } from "react";
 
@@ -50,61 +106,6 @@ const InputExample = () => {
 
 export default InputExample;
 ```
-
-<Canvas of={InputStories.Documentation} source={ { code: `
-import React, { useState } from "react";
-
-import { Input } from "@webiny/admin-ui";
-
-const InputExample = () => {
-    const [value, setValue] = useState("");
-    const [validation, setValidation] = useState({ isValid: true, message: "" });
-
-    const handleValidation = () => {
-        if (!value.trim()) {
-            setValidation({ isValid: false, message: "This field is required" });
-        } else if (value.trim().length < 3) {
-            setValidation({ isValid: false, message: "Must be at least 3 characters long" });
-        } else {
-            setValidation({ isValid: true, message: "" });
-        }
-    };
-
-    return (
-        <div>
-            <Input
-                type="text"
-                label="Full Name"
-                description="Enter your full name as it appears on your ID"
-                note="This will be used for official documentation"
-                placeholder="Enter your full name"
-                required={true}
-                value={value}
-                validation={validation}
-                onChange={newValue => setValue(newValue)}
-                onBlur={handleValidation}
-                onEnter={handleValidation}
-            />
-        </div>
-    );
-};
-
-export default InputExample;
-` } }
-    additionalActions={[
-        {
-            title: 'Open in GitHub',
-            onClick: () => {
-                window.open(
-                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Input/Input.tsx',
-                    '_blank'
-                );
-            },
-        }
-    ]}
-/>
-
-<Controls of={InputStories.Documentation}/>
 
 ## Examples
 

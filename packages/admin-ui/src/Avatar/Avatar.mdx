@@ -10,6 +10,39 @@ The Avatar component is a UI element that displays a user’s profile image, ini
 
 ## Usage
 
+<Canvas of={AvatarStories.Documentation} source={ { code: `
+import React from "react";
+import { Avatar } from "@webiny/admin-ui";
+
+const AvatarExample = () => {
+    return (
+        <Avatar
+            image={<Avatar.Image src="https://i.pravatar.cc/300" alt="User" />}
+            fallback={<Avatar.Fallback>JD</Avatar.Fallback>}
+            size="md"
+            variant="strong"
+        />
+    );
+};
+
+export default AvatarExample;
+
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Avatar/Avatar.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={AvatarStories.Documentation} />
+
 ```tsx
 import React from "react";
 import { Avatar } from "@webiny/admin-ui";
@@ -27,38 +60,6 @@ const AvatarExample = () => {
 
 export default AvatarExample;
 ```
-
-<Canvas of={AvatarStories.Documentation} source={ { code: `
-import React from "react";
-import { Avatar } from "@webiny/admin-ui";
-
-const AvatarExample = () => {
-    return (
-        <Avatar
-            image={<Avatar.Image src="https://i.pravatar.cc/300" alt="User" />}
-            fallback={<Avatar.Fallback>JD</Avatar.Fallback>}
-            size="md"
-            variant="strong"
-        />
-    );
-};
-
-export default AvatarExample;
-` } }
-        additionalActions={[
-            {
-                title: 'Open in GitHub',
-                onClick: () => {
-                    window.open(
-                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Avatar/Avatar.tsx',
-                        '_blank'
-                    );
-                },
-            }
-        ]}
-/>
-
-<Controls of={AvatarStories.Documentation} />
 
 ## Example
 
@@ -80,6 +81,7 @@ const AvatarExample = () => {
 };
 
 export default AvatarExample;
+
 ` } }
 />
 

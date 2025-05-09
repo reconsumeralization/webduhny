@@ -10,49 +10,6 @@ Checkboxes allow users to select multiple items from a list of individual items,
 
 ## Usage
 
-```tsx
-import React, { useState } from "react";
-
-import { CheckboxGroup } from "@webiny/admin-ui";
-
-const CheckboxGroupExample = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
-    const [validation, setValidation] = useState({ isValid: true, message: "" });
-
-    const handleChange = (newValues: string[]) => {
-        setSelectedValues(newValues);
-
-        // Simple required validation
-        if (!newValues || newValues.length === 0) {
-            setValidation({ isValid: false, message: "Please select at least one option." });
-        } else {
-            setValidation({ isValid: true, message: "" });
-        }
-    };
-
-    return (
-        <div>
-            <CheckboxGroup
-                label="Select your preferences"
-                description="Choose one or more options."
-                note="Note: You can select multiple values."
-                required={true}
-                items={[
-                    { label: "Value 1", value: "value-1" },
-                    { label: "Value 2", value: "value-2" },
-                    { label: "Value 3", value: "value-3" }
-                ]}
-                value={selectedValues}
-                onChange={handleChange}
-                validation={validation}
-            />
-        </div>
-    );
-};
-
-export default CheckboxGroupExample;
-```
-
 <Canvas of={CheckboxGroupStories.Documentation} source={ { code:
 `// Code for a Checkbox Group
 
@@ -96,6 +53,7 @@ const CheckboxGroupExample = () => {
 };
 
 export default CheckboxGroupExample;
+
 ` } }
         additionalActions={[
             {
@@ -111,6 +69,49 @@ export default CheckboxGroupExample;
 />
 
 <Controls of={CheckboxGroupStories.Documentation} exclude={"onChange"}/>
+
+```tsx
+import React, { useState } from "react";
+
+import { CheckboxGroup } from "@webiny/admin-ui";
+
+const CheckboxGroupExample = () => {
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+    const handleChange = (newValues: string[]) => {
+        setSelectedValues(newValues);
+
+        // Simple required validation
+        if (!newValues || newValues.length === 0) {
+            setValidation({ isValid: false, message: "Please select at least one option." });
+        } else {
+            setValidation({ isValid: true, message: "" });
+        }
+    };
+
+    return (
+        <div>
+            <CheckboxGroup
+                label="Select your preferences"
+                description="Choose one or more options."
+                note="Note: You can select multiple values."
+                required={true}
+                items={[
+                    { label: "Value 1", value: "value-1" },
+                    { label: "Value 2", value: "value-2" },
+                    { label: "Value 3", value: "value-3" }
+                ]}
+                value={selectedValues}
+                onChange={handleChange}
+                validation={validation}
+            />
+        </div>
+    );
+};
+
+export default CheckboxGroupExample;
+```
 
 ## Anatomy
 

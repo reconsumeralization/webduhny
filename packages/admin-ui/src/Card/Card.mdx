@@ -10,6 +10,58 @@ A Card component in design systems is a versatile UI element used to encapsulate
 
 ## Usage
 
+<Canvas of={CardStories.Documentation} source={ { code: `
+import React from 'react';
+import { Card, Button, IconButton, Icon } from '@webiny/admin-ui';
+import { ReactComponent as MoreVertical } from "@webiny/icons/more_vert.svg";
+
+const CardExample = () => {
+    return (
+        <Card
+            title="Card title"
+            description="Card description"
+            padding="standard"
+            elevation="sm"
+            borderRadius="md"
+            actions={
+                <>
+                    <Button variant="secondary" text="Cancel" />
+                    <Button variant="primary" text="Confirm" />
+                </>
+            }
+            options={
+                <IconButton
+                    variant={"ghost"}
+                    icon={<Icon icon={<MoreVertical />} label={"More options"} />}
+                    size={"sm"}
+                    iconSize={"lg"}
+                    onClick={() => alert("Custom action button clicked.")}
+                />
+            }
+        >
+            This is card content. Anything can go in here.
+        </Card>
+    );
+};
+
+export default CardExample;
+
+` } }
+        additionalActions={[
+            {
+                title: 'Open in GitHub',
+                onClick: () => {
+                    window.open(
+                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Card/Card.tsx',
+                        '_blank'
+                    );
+                },
+            }
+        ]}
+/>
+
+<Controls of={CardStories.Documentation} />
+
 ```tsx
 import React from 'react';
 import { Card, Button, IconButton, Icon } from '@webiny/admin-ui';
@@ -47,56 +99,6 @@ const CardExample = () => {
 export default CardExample;
 ```
 
-<Canvas of={CardStories.Documentation} source={ { code: `
-import React from 'react';
-import { Card, Button, IconButton, Icon } from '@webiny/admin-ui';
-import { ReactComponent as MoreVertical } from "@webiny/icons/more_vert.svg";
-
-const CardExample = () => {
-    return (
-        <Card
-            title="Card title"
-            description="Card description"
-            padding="standard"
-            elevation="sm"
-            borderRadius="md"
-            actions={
-                <>
-                    <Button variant="secondary" text="Cancel" />
-                    <Button variant="primary" text="Confirm" />
-                </>
-            }
-            options={
-                <IconButton
-                    variant={"ghost"}
-                    icon={<Icon icon={<MoreVertical />} label={"More options"} />}
-                    size={"sm"}
-                    iconSize={"lg"}
-                    onClick={() => alert("Custom action button clicked.")}
-                />
-            }
-        >
-            This is card content. Anything can go in here.
-        </Card>
-    );
-};
-
-export default CardExample;
-` } }
-        additionalActions={[
-            {
-                title: 'Open in GitHub',
-                onClick: () => {
-                    window.open(
-                        'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Card/Card.tsx',
-                        '_blank'
-                    );
-                },
-            }
-        ]}
-/>
-
-<Controls of={CardStories.Documentation} />
 
 ## Anatomy
 

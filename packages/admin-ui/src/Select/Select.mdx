@@ -10,6 +10,52 @@ The Select component is a user interface element that allows users to choose one
 
 ## Usage
 
+<Canvas of={SelectStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+
+import { Select } from "@webiny/admin-ui";
+
+const SelectExample = () => {
+    const [value, setValue] = useState("");
+
+    return (
+        <Select
+            label="Time Zone"
+            description="Select your preferred time zone"
+            note="This setting will affect how times are displayed throughout the application"
+            required={true}
+            options={[
+                { value: "EST", label: "Eastern Standard Time (UTC-5)" },
+                { value: "CST", label: "Central Standard Time (UTC-6)" },
+                { value: "PST", label: "Pacific Standard Time (UTC-8)" },
+                { value: "GMT", label: "Greenwich Mean Time (UTC+0)" },
+                { value: "CET", label: "Central European Time (UTC+1)" },
+                { value: "IST", label: "India Standard Time (UTC+5:30)" }
+            ]}
+            value={value}
+            onChange={setValue}
+        />
+    );
+};
+
+export default SelectExample;
+
+`} }
+    additionalActions={[
+        {
+            title: 'Open in GitHub',
+            onClick: () => {
+                window.open(
+                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Select/Select.tsx',
+                    '_blank'
+                );
+            },
+        }
+    ]}
+/>
+
+<Controls of={SelectStories.Documentation} exclude={["onChange", "onOpenChange"]}/>
+
 ```jsx
 import React, { useState } from "react";
 
@@ -40,51 +86,6 @@ const SelectExample = () => {
 
 export default SelectExample;
 ```
-
-<Canvas of={SelectStories.Documentation} source={ { code: `
-import React, { useState } from "react";
-
-import { Select } from "@webiny/admin-ui";
-
-const SelectExample = () => {
-    const [value, setValue] = useState("");
-
-    return (
-        <Select
-            label="Time Zone"
-            description="Select your preferred time zone"
-            note="This setting will affect how times are displayed throughout the application"
-            required={true}
-            options={[
-                { value: "EST", label: "Eastern Standard Time (UTC-5)" },
-                { value: "CST", label: "Central Standard Time (UTC-6)" },
-                { value: "PST", label: "Pacific Standard Time (UTC-8)" },
-                { value: "GMT", label: "Greenwich Mean Time (UTC+0)" },
-                { value: "CET", label: "Central European Time (UTC+1)" },
-                { value: "IST", label: "India Standard Time (UTC+5:30)" }
-            ]}
-            value={value}
-            onChange={setValue}
-        />
-    );
-};
-
-export default SelectExample;`
-} }
-    additionalActions={[
-        {
-            title: 'Open in GitHub',
-            onClick: () => {
-                window.open(
-                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Select/Select.tsx',
-                    '_blank'
-                );
-            },
-        }
-    ]}
-/>
-
-<Controls of={SelectStories.Documentation} exclude={["onChange", "onOpenChange"]}/>
 
 ## Anatomy
 

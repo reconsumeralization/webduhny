@@ -177,7 +177,7 @@ export const Documentation: Story = {
     argTypes: {
         options: {
             description:
-                "AutoComplete Options - Please refer to the example code above for details on usage."
+                "AutoComplete Options - Please refer to the example code for details on usage."
         },
         label: {
             description: "Label text for the autocomplete field",

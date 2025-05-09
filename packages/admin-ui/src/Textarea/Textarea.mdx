@@ -10,6 +10,45 @@ The Textarea component is a multi-line text input field that enables users to en
 
 ## Usage
 
+<Canvas of={TextareaStories.Documentation} source={ { code: `
+import React, { useState } from "react";
+
+import { Textarea } from "@webiny/admin-ui";
+
+const TextareaExample = () => {
+    const [value, setValue] = useState("");
+
+    return (
+        <Textarea
+            label="Message"
+            description="Enter your feedback or message"
+            note="Please be specific and provide relevant details"
+            placeholder="Type your message here..."
+            required={true}
+            value={value}
+            onChange={newValue => setValue(newValue)}
+        />
+    );
+};
+
+export default TextareaExample;
+
+`} }
+    additionalActions={[
+        {
+            title: 'Open in GitHub',
+            onClick: () => {
+                window.open(
+                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Textarea/Textarea.tsx',
+                    '_blank'
+                );
+            },
+        }
+    ]}
+/>
+
+<Controls of={TextareaStories.Documentation}/>
+
 ```jsx
 import React, { useState } from "react";
 
@@ -33,44 +72,6 @@ const TextareaExample = () => {
 
 export default TextareaExample;
 ```
-
-<Canvas of={TextareaStories.Documentation} source={ { code: `
-import React, { useState } from "react";
-
-import { Textarea } from "@webiny/admin-ui";
-
-const TextareaExample = () => {
-    const [value, setValue] = useState("");
-
-    return (
-        <Textarea
-            label="Message"
-            description="Enter your feedback or message"
-            note="Please be specific and provide relevant details"
-            placeholder="Type your message here..."
-            required={true}
-            value={value}
-            onChange={newValue => setValue(newValue)}
-        />
-    );
-};
-
-export default TextareaExample;`
-} }
-    additionalActions={[
-        {
-            title: 'Open in GitHub',
-            onClick: () => {
-                window.open(
-                    'https://github.com/webiny/webiny-js/blob/feat/new-admin-ui/packages/admin-ui/src/Textarea/Textarea.tsx',
-                    '_blank'
-                );
-            },
-        }
-    ]}
-/>
-
-<Controls of={TextareaStories.Documentation}/>
 
 ## Examples
 
