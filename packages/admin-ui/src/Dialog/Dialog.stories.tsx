@@ -233,3 +233,83 @@ export const WithTabs: Story = {
         )
     }
 };
+
+export const Documentation: Story = {
+    render: args => {
+        const [open, setOpen] = useState(false);
+
+        return (
+            <>
+                <Button variant="primary" text="Open Dialog" onClick={() => setOpen(true)} />
+
+                <Dialog {...args} open={open} onOpenChange={open => setOpen(open)} />
+            </>
+        );
+    },
+    args: {
+        title: "Dialog Title",
+        description: "A short dialog description.",
+        showCloseButton: true,
+        dismissible: true,
+        bodyPadding: true,
+        info: (
+            <>
+                Learn more about this <a href={"#"}>here</a>.
+            </>
+        ),
+        children: (
+            <>
+                This is the dialog content area. You can place any content here including forms,
+                text, images, or other components.
+            </>
+        ),
+        actions: (
+            <>
+                <Dialog.CancelButton />
+                <Dialog.ConfirmButton />
+            </>
+        )
+    },
+    argTypes: {
+        title: {
+            description: "Title displayed in the header",
+            control: "text"
+        },
+        description: {
+            description: "Description displayed below the title",
+            control: "text"
+        },
+        showCloseButton: {
+            description:
+                "Show close button, please refer to the 'Without Close Button' example below for details.",
+            control: "boolean",
+            defaultValue: true
+        },
+        dismissible: {
+            description:
+                "Allow dialog to be dismissed by clicking outside or pressing Escape, please refer to the 'Prevent Outside Dismiss' example below for details.",
+            control: "boolean",
+            defaultValue: true
+        },
+        bodyPadding: {
+            description: "Add padding to the Dialog body.",
+            control: "boolean",
+            defaultValue: true
+        },
+        info: {
+            description:
+                "Additional info displayed below the description, please refer to the example below for details.",
+            control: "none"
+        },
+        children: {
+            description:
+                "Content of the dialog, please refer to the 'With Dropdown Menu' and ''With Tabs' example below for details.",
+            control: "none"
+        },
+        actions: {
+            description:
+                "Actions displayed in the footer, please refer to the code example for details.",
+            control: "none"
+        }
+    }
+};
