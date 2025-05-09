@@ -139,7 +139,7 @@ export const useHandler = (params: Params) => {
             createPageBuilderContext({
                 storageOperations
             }),
-            createAco(),
+            createAco({ documentClient }),
             createAcoPageBuilderContext(),
             prerenderingHookPlugins(),
             prerenderingServicePlugins({
