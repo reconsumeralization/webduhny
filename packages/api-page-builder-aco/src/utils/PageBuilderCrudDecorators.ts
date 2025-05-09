@@ -41,9 +41,11 @@ export class PageBuilderCrudDecorators {
             const page = await originalPbGetPage(pageId, options);
             const pageSearchRecord = await context.pageBuilderAco.app.search.get(page.pid);
             if (pageSearchRecord && pageSearchRecord.location.folderId !== "root") {
-                const folder = await context.aco.folder.get(pageSearchRecord.location.folderId);
+                const { permissions } = await context.aco.folder.get(
+                    pageSearchRecord.location.folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "r"
                 });
             }
@@ -54,9 +56,9 @@ export class PageBuilderCrudDecorators {
         const originalPbCreatePage = context.pageBuilder.createPage.bind(context.pageBuilder);
         context.pageBuilder.createPage = async (category, meta) => {
             if (meta?.location?.folderId && meta.location.folderId !== "root") {
-                const folder = await context.aco.folder.get(meta.location.folderId);
+                const { permissions } = await context.aco.folder.get(meta.location.folderId);
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "w"
                 });
             }
@@ -69,9 +71,11 @@ export class PageBuilderCrudDecorators {
             const page = await originalPbGetPage(pageId);
             const pageSearchRecord = await context.pageBuilderAco.app.search.get(page.pid);
             if (pageSearchRecord && pageSearchRecord.location.folderId !== "root") {
-                const folder = await context.aco.folder.get(pageSearchRecord.location.folderId);
+                const { permissions } = await context.aco.folder.get(
+                    pageSearchRecord.location.folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "w"
                 });
             }
@@ -85,9 +89,11 @@ export class PageBuilderCrudDecorators {
 
             const pageSearchRecord = await context.pageBuilderAco.app.search.get(page.pid);
             if (pageSearchRecord && pageSearchRecord.location.folderId !== "root") {
-                const folder = await context.aco.folder.get(pageSearchRecord.location.folderId);
+                const { permissions } = await context.aco.folder.get(
+                    pageSearchRecord.location.folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "d"
                 });
             }
