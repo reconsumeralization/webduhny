@@ -34,5 +34,8 @@
   "devDependencies": {
     "@types/lodash": "^4.17.13",
     "@types/object-hash": "^2.2.1"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
