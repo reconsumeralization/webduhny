@@ -3,9 +3,9 @@ import { PluginsContainer } from "@webiny/plugins";
 import type { PluginCollection } from "@webiny/plugins/types";
 import { Benchmark } from "~/Benchmark";
 import { BenchmarkPlugin } from "~/plugins/BenchmarkPlugin";
-import type { ICompressor } from "@webiny/utils/compression/Compressor.js";
+import type { ICompressor } from "@webiny/utils/compression/Compressor";
 import { createDefaultCompressor } from "@webiny/utils";
-import { CompressorPlugin } from "~/plugins/CompressorPlugin.js";
+import { CompressorPlugin } from "~/plugins/CompressorPlugin";
 
 interface Waiter {
     targets: string[];
@@ -52,7 +52,9 @@ export class Context implements ContextInterface {
         this.plugins.register(
             new BenchmarkPlugin(this.benchmark),
             new CompressorPlugin({
-                context: this
+                getCompressor: () => {
+                    return this.compressor;
+                }
             })
         );
     }

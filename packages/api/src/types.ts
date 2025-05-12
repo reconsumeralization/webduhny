@@ -1,5 +1,5 @@
 import { PluginsContainer } from "@webiny/plugins";
-import { ICompressor } from "@webiny/utils/compression/Compressor.js";
+import { ICompressor } from "@webiny/utils/compression/Compressor";
 
 export type GenericRecord<K extends PropertyKey = PropertyKey, V = any> = Record<K, V>;
 

@@ -6,6 +6,7 @@ export interface ICompressedValue {
 }
 
 export abstract class CompressionPlugin extends Plugin {
+    public static override type: string = "utils.compression";
     public abstract canCompress(data: any): boolean;
     public abstract compress(data: any): Promise<ICompressedValue>;
     public abstract canDecompress(data: ICompressedValue | unknown): boolean;

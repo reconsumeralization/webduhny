@@ -10,7 +10,7 @@ import { createIdentifier } from "@webiny/utils";
 import { validateSameIdentity } from "~/utils/validateSameIdentity";
 import type { ILockEntryUseCase } from "~/abstractions/ILockEntryUseCase";
 import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
-import type { Security } from "@webiny/api-security/types.js";
+import type { Security } from "@webiny/api-security/types";
 
 export interface IUpdateEntryLockUseCaseParams {
     readonly getLockRecordUseCase: IGetLockRecordUseCase;

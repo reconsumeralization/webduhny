@@ -2,7 +2,7 @@ import WebinyError from "@webiny/error";
 import { mdbid } from "@webiny/utils";
 import { IAcoApp } from "@webiny/api-aco/types";
 import { AuditAction, AuditLog, AuditLogsContext } from "~/types";
-import type { GenericRecord } from "@webiny/api/types.js";
+import type { GenericRecord } from "@webiny/api/types";
 
 interface AuditLogPayload extends Omit<AuditLog, "id" | "data"> {
     data: Record<string, any>;

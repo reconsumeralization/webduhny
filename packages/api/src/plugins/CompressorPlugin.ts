@@ -1,25 +1,21 @@
-import { Plugin } from "@webiny/plugins/Plugin.js";
-import { ICompressor } from "@webiny/utils/compression/Compressor.js";
-import type { Context } from "~/types.js";
+import { Plugin } from "@webiny/plugins/Plugin";
+import { ICompressor } from "@webiny/utils/compression/Compressor";
 
 export interface ICompressorPluginParams {
-    context: Context;
+    getCompressor(): ICompressor;
 }
 
 /**
  * Should never be initialized outside the api package.
  */
 export class CompressorPlugin extends Plugin {
+    public override readonly name: string = "context.compressor";
     public static override type: string = "context.compressor";
 
-    private readonly context: Context;
+    public readonly getCompressor: () => ICompressor;
 
     public constructor(params: ICompressorPluginParams) {
         super();
-        this.context = params.context;
-    }
-
-    public getCompressor(): ICompressor {
-        return this.context.compressor;
+        this.getCompressor = params.getCompressor;
     }
 }

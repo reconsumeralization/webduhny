@@ -3,8 +3,8 @@ import { AuditAction } from "~/types";
 import { useHandler } from "./helpers/useHandler";
 import { ActionType } from "~/config";
 import { AUDIT_LOGS_TYPE } from "~/app/contants";
-import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
-import { parseIdentifier } from "@webiny/utils/parseIdentifier.js";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index";
+import { parseIdentifier } from "@webiny/utils/parseIdentifier";
 
 describe("create audit log", () => {
     const client = getDocumentClient();
