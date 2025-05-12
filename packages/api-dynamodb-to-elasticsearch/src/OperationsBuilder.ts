@@ -4,7 +4,10 @@ import { unmarshall } from "~/marshall";
 import { ICompressor } from "@webiny/utils/compression/Compressor";
 
 interface RecordDynamoDbImage {
-    data: Record<string, any>;
+    data: {
+        compression: string;
+        value: string;
+    };
     ignore?: boolean;
     index: string;
 }
