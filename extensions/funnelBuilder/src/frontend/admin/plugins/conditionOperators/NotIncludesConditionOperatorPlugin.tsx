@@ -3,7 +3,7 @@ import {
     PbEditorFunnelConditionOperatorPlugin,
     ConditionOperatorParamsComponent
 } from "../PbEditorFunnelConditionOperatorPlugin";
-import { EqConditionOperator } from "../../../../shared/models/conditionOperators/EqConditionOperator";
+import { NotIncludesConditionOperator } from "../../../../shared/models/conditionOperators/NotIncludesConditionOperator";
 import { Input } from "@webiny/ui/Input";
 import { Bind } from "@webiny/form";
 import styled from "@emotion/styled";
@@ -16,20 +16,16 @@ const OperatorSettings: ConditionOperatorParamsComponent = () => {
     return (
         <Wrapper>
             <Bind name={"extra.value"}>
-                <Input
-                    rootProps={{ style: { width: 200 } }}
-                    size={"small"}
-                    placeholder={"Enter value"}
-                />
+                <Input rootProps={{ style: { width: 200 } }} size={"small"} placeholder={"Value"} />
             </Bind>
         </Wrapper>
     );
 };
 
-export const EqConditionOperatorPlugin = () => {
+export const NotIncludesConditionOperatorPlugin = () => {
     return (
         <PbEditorFunnelConditionOperatorPlugin
-            operatorClass={EqConditionOperator}
+            operatorClass={NotIncludesConditionOperator}
             settingsRenderer={OperatorSettings}
         />
     );

@@ -3,7 +3,7 @@ import {
     PbEditorFunnelConditionOperatorPlugin,
     ConditionOperatorParamsComponent
 } from "../PbEditorFunnelConditionOperatorPlugin";
-import { EqConditionOperator } from "../../../../shared/models/conditionOperators/EqConditionOperator";
+import { IncludesConditionOperator } from "../../../../shared/models/conditionOperators/IncludesConditionOperator";
 import { Input } from "@webiny/ui/Input";
 import { Bind } from "@webiny/form";
 import styled from "@emotion/styled";
@@ -26,10 +26,10 @@ const OperatorSettings: ConditionOperatorParamsComponent = () => {
     );
 };
 
-export const EqConditionOperatorPlugin = () => {
+export const IncludesConditionOperatorPlugin = () => {
     return (
         <PbEditorFunnelConditionOperatorPlugin
-            operatorClass={EqConditionOperator}
+            operatorClass={IncludesConditionOperator}
             settingsRenderer={OperatorSettings}
         />
     );
