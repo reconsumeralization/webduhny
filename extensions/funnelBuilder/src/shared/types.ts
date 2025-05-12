@@ -2,7 +2,7 @@ export interface PbPageElement<TData extends Record<string, any> = Record<string
     id: string;
     type: string;
     elements: PbPageElement[];
-    data: TData
+    data: TData;
 }
 
 export interface PbPage {

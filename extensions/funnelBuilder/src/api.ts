@@ -10,6 +10,6 @@ export const createExtension = () => {
         createThemeSettingsModel(),
         getThemeSettings(),
         validatePageDataIntegrity(),
-        setInitialPageContent(),
+        setInitialPageContent()
     ];
 };

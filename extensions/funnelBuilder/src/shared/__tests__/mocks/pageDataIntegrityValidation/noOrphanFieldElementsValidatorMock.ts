@@ -222,11 +222,7 @@ export const noOrphanFieldElementsValidatorMock = {
                                                 ]
                                             }
                                         ],
-                                        path: [
-                                            "1k547ym",
-                                            "fub-container",
-                                            "e2tj2b6"
-                                        ]
+                                        path: ["1k547ym", "fub-container", "e2tj2b6"]
                                     }
                                 ],
                                 path: ["1k547ym", "fub-container"]
@@ -321,8 +317,7 @@ export const noOrphanFieldElementsValidatorMock = {
                                                                     type: "icon",
                                                                     name: "fa6_solid_check",
                                                                     value: '<path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7l233.4-233.3c12.5-12.5 32.8-12.5 45.3 0z"/>',
-                                                                    category:
-                                                                        "Interfaces",
+                                                                    category: "Interfaces",
                                                                     width: 448,
                                                                     color: "#7ed321"
                                                                 },
@@ -330,8 +325,7 @@ export const noOrphanFieldElementsValidatorMock = {
                                                                 width: 50
                                                             },
                                                             settings: {
-                                                                horizontalAlign:
-                                                                    "center",
+                                                                horizontalAlign: "center",
                                                                 margin: {
                                                                     desktop: {
                                                                         all: "0px"
@@ -360,8 +354,7 @@ export const noOrphanFieldElementsValidatorMock = {
                                                             text: {
                                                                 desktop: {
                                                                     type: "heading",
-                                                                    alignment:
-                                                                        "left",
+                                                                    alignment: "left",
                                                                     tag: "h1"
                                                                 },
                                                                 data: {
@@ -430,11 +423,7 @@ export const noOrphanFieldElementsValidatorMock = {
                                                 ]
                                             }
                                         ],
-                                        path: [
-                                            "1k547ym",
-                                            "fub-container",
-                                            "znvruk7"
-                                        ]
+                                        path: ["1k547ym", "fub-container", "znvruk7"]
                                     }
                                 ],
                                 path: ["1k547ym", "fub-container"]
@@ -455,4 +444,4 @@ export const noOrphanFieldElementsValidatorMock = {
     dataBindings: [],
     dataSources: [],
     __typename: "PbPage"
-}
+};
