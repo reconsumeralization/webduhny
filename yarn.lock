@@ -12947,7 +12947,6 @@ __metadata:
     dataloader: "npm:^2.2.2"
     jest: "npm:^29.7.0"
     jest-dynalite: "npm:^3.6.1"
-    jsonpack: "npm:^1.1.5"
     lodash: "npm:^4.17.21"
     prettier: "npm:^2.8.8"
     rimraf: "npm:^6.0.1"
@@ -12973,7 +12972,6 @@ __metadata:
     dot-prop: "npm:^6.0.1"
     jest: "npm:^29.7.0"
     jest-dynalite: "npm:^3.6.1"
-    jsonpack: "npm:^1.1.5"
     lodash: "npm:^4.17.21"
     typescript: "npm:5.3.3"
   languageName: unknown
