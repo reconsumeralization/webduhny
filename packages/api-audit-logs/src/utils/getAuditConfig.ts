@@ -33,11 +33,12 @@ const createAuditLog = async (params: CreateAuditLogParams) => {
                 data: payloadData
             }
         };
+        const data = await compressor.compress(entry.data.data);
         await app.search.create({
             ...entry,
             data: {
                 ...entry.data,
-                data: await compressor.compress(entry.data.data)
+                data: JSON.stringify(data)
             }
         });
         return entry;

@@ -1,5 +1,5 @@
 import { CompressionPlugin, type ICompressedValue } from "../CompressionPlugin";
-import { compress as gzip, decompress as ungzip } from "~/compression/gzip.js";
+import { compress as gzip, decompress as ungzip } from "~/compression/gzip";
 
 const GZIP = "gzip";
 const TO_STORAGE_ENCODING = "base64";
@@ -16,9 +16,7 @@ export class GzipCompression extends CompressionPlugin {
     public override name = "utils.compression.gzip";
 
     public override canCompress(data: any): boolean {
-        if (typeof data !== "object") {
-            return false;
-        } else if (!!data.compression) {
+        if (!!data?.compression) {
             return false;
         }
         return true;
@@ -34,9 +32,7 @@ export class GzipCompression extends CompressionPlugin {
     }
 
     public override canDecompress(data: Partial<ICompressedValue>): boolean {
-        if (typeof data !== "object") {
-            return false;
-        } else if (!data?.compression) {
+        if (!data?.compression) {
             return false;
         }
 

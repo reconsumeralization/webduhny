@@ -1,7 +1,7 @@
+import type { AcoContext } from "@webiny/api-aco/types";
 import { IAcoAppRegisterParams, SearchRecord } from "@webiny/api-aco/types";
 import { AUDIT_LOGS_TYPE } from "./contants";
 import { NotAuthorizedError } from "@webiny/api-security";
-import type { AcoContext } from "@webiny/api-aco/types";
 
 const toDate = (value: string | Date) => {
     if (value instanceof Date) {
@@ -27,7 +27,7 @@ const decompressData = async (
         data: {
             ...entry.data,
             timestamp: toDate(entry.data.timestamp),
-            data: await context.compressor.decompress(entry.data.data)
+            data: await context.compressor.decompress(JSON.parse(entry.data.data))
         }
     };
 };
