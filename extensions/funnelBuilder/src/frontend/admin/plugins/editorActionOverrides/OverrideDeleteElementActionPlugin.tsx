@@ -77,6 +77,8 @@ export const OverrideDeleteElementActionPlugin = () => {
                                 return DO_NOTHING;
                             }
 
+                            // Delete the field. Within a single state update, we
+                            // remove the field from the container and delete the element.
                             const result = await deleteElementAction(...params);
 
                             if (result.state?.elements) {
@@ -127,6 +129,7 @@ export const OverrideDeleteElementActionPlugin = () => {
                             return DO_NOTHING;
                         }
 
+                        // None of the above conditions were met, so we can proceed with the deletion.
                         return deleteElementAction(...params);
                     }) as EventActionCallable<DeleteElementActionArgsType>);
                 }}
