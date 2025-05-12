@@ -35,6 +35,7 @@ import {
     SubmissionElasticsearchSortModifierPlugin
 } from "~/plugins";
 import { createIndexTaskPlugin } from "~/tasks/createIndexTaskPlugin";
+import { CompressorPlugin } from "@webiny/api";
 
 const reservedFields = ["PK", "SK", "index", "data", "TYPE", "__type", "GSI1_PK", "GSI1_SK"];
 
@@ -174,7 +175,8 @@ export const createFormBuilderStorageOperations: FormBuilderStorageOperationsFac
                 SubmissionElasticsearchBodyModifierPlugin.type,
                 SubmissionElasticsearchFieldPlugin.type,
                 SubmissionElasticsearchQueryModifierPlugin.type,
-                SubmissionElasticsearchSortModifierPlugin.type
+                SubmissionElasticsearchSortModifierPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);

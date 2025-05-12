@@ -1,11 +1,7 @@
-import {
-    IDecompressor,
-    IOperations,
-    IOperationsBuilder,
-    IOperationsBuilderBuildParams
-} from "./types";
+import { IOperations, IOperationsBuilder, IOperationsBuilderBuildParams } from "./types";
 import { Operations, OperationType } from "~/Operations";
 import { unmarshall } from "~/marshall";
+import { ICompressor } from "@webiny/utils/compression/Compressor.js";
 
 interface RecordDynamoDbImage {
     data: Record<string, any>;
@@ -19,14 +15,14 @@ interface RecordDynamoDbKeys {
 }
 
 export interface IOperationsBuilderParams {
-    decompressor: IDecompressor;
+    compressor: ICompressor;
 }
 
 export class OperationsBuilder implements IOperationsBuilder {
-    private readonly decompressor: IDecompressor;
+    private readonly compressor: ICompressor;
 
     public constructor(params: IOperationsBuilderParams) {
-        this.decompressor = params.decompressor;
+        this.compressor = params.compressor;
     }
 
     public async build(params: IOperationsBuilderBuildParams): Promise<IOperations> {
@@ -94,7 +90,7 @@ export class OperationsBuilder implements IOperationsBuilder {
                 /**
                  * We must decompress the data that is going into the Elasticsearch.
                  */
-                const data = await this.decompressor.decompress(newImage.data);
+                const data = await this.compressor.decompress(newImage.data);
                 /**
                  * No point in writing null or undefined data into the Elasticsearch.
                  * This might happen on some error while decompressing. We will log it.

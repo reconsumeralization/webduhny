@@ -47,6 +47,7 @@ import {
     PageElementDynamoDbFieldPlugin,
     PageTemplateDynamoDbFieldPlugin
 } from "~/plugins";
+import { CompressorPlugin } from "@webiny/api";
 
 export * from "./plugins";
 
@@ -170,7 +171,8 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 PageBlockDynamoDbFieldPlugin.type,
                 PageDynamoDbFieldPlugin.type,
                 PageElementDynamoDbFieldPlugin.type,
-                PageTemplateDynamoDbFieldPlugin.type
+                PageTemplateDynamoDbFieldPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);

@@ -1,6 +1,5 @@
 import { createDynamoDBEventHandler, timerFactory } from "@webiny/handler-aws";
 import { Context } from "~/types";
-import { Decompressor } from "~/Decompressor";
 import { OperationsBuilder } from "~/OperationsBuilder";
 import { executeWithRetry } from "~/executeWithRetry";
 
@@ -20,12 +19,8 @@ export const createEventHandler = () => {
             return null;
         }
 
-        const decompressor = new Decompressor({
-            plugins: context.plugins
-        });
-
         const builder = new OperationsBuilder({
-            decompressor
+            compressor: context.compressor
         });
 
         const operations = await builder.build({

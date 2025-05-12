@@ -21,6 +21,7 @@ import {
 } from "~/plugins";
 import { ValueFilterPlugin } from "@webiny/db-dynamodb/plugins/definitions/ValueFilterPlugin";
 import { StorageOperationsCmsModelPlugin, StorageTransformPlugin } from "@webiny/api-headless-cms";
+import { CompressorPlugin } from "@webiny/api";
 
 export * from "./plugins";
 
@@ -90,7 +91,8 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 CmsEntryFieldSortingPlugin.type,
                 ValueFilterPlugin.type,
                 StorageOperationsCmsModelPlugin.type,
-                StorageTransformPlugin.type
+                StorageTransformPlugin.type,
+                CompressorPlugin.type
             ];
             /**
              * Collect all required plugins from parent context.

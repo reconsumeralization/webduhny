@@ -33,8 +33,4 @@ export interface IOperations {
     delete(params: IDeleteOperationParams): void;
 }
 
-export interface IDecompressor {
-    decompress(data: GenericRecord): Promise<GenericRecord | null>;
-}
-
 export interface Context extends ElasticsearchContext, Pick<LoggerContext, "logger"> {}

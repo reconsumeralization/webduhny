@@ -68,6 +68,7 @@ import {
     SearchPublishedPagesPlugin
 } from "./plugins";
 import { createIndexTaskPlugin } from "~/tasks/createIndexTaskPlugin";
+import { CompressorPlugin } from "@webiny/api";
 
 export * from "./plugins";
 
@@ -237,7 +238,8 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 PageElementDynamoDbElasticFieldPlugin.type,
                 SearchLatestPagesPlugin.type,
                 SearchPagesPlugin.type,
-                SearchPublishedPagesPlugin.type
+                SearchPublishedPagesPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);
