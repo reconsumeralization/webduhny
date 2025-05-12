@@ -9,11 +9,6 @@ export interface ICompressorParams {
 
 export interface ICompressor {
     /**
-     * Adds a new compression plugin to the compressor.
-     * It can also replace an existing one, by name.
-     */
-    addPlugin(plugin: CompressionPlugin): void;
-    /**
      * Compresses the given data using the first plugin that can compress it.
      */
     compress<T = unknown>(data: T): Promise<T | ICompressedValue>;
@@ -24,20 +19,14 @@ export interface ICompressor {
 }
 
 class Compressor implements ICompressor {
-    private readonly plugins: CompressionPlugin[];
+    private readonly _plugins: PluginsContainer;
 
-    public constructor(params: ICompressorParams) {
-        this.plugins = params.plugins.byType<CompressionPlugin>(CompressionPlugin.type);
+    private get plugins(): CompressionPlugin[] {
+        return this._plugins.byType<CompressionPlugin>(CompressionPlugin.type).reverse();
     }
 
-    public addPlugin(plugin: CompressionPlugin) {
-        const index = this.plugins.findIndex(p => p.name === plugin.name);
-        if (index === -1) {
-            this.plugins.push(plugin);
-            return;
-        }
-
-        this.plugins[index] = plugin;
+    public constructor(params: ICompressorParams) {
+        this._plugins = params.plugins;
     }
 
     public async compress<T = unknown>(data: T): Promise<T | ICompressedValue> {
@@ -77,10 +66,8 @@ class Compressor implements ICompressor {
 
 const plugins = new PluginsContainer([createGzipCompression(), createJsonpackCompression()]);
 
-const createDefaultCompressor = () => {
+export const createDefaultCompressor = () => {
     return new Compressor({
         plugins
     });
 };
-
-export const defaultCompressor = createDefaultCompressor();

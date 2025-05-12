@@ -1,8 +1,10 @@
-import { Context as ContextInterface } from "~/types";
+import type { Context as ContextInterface } from "~/types";
 import { PluginsContainer } from "@webiny/plugins";
-import { PluginCollection } from "@webiny/plugins/types";
+import type { PluginCollection } from "@webiny/plugins/types";
 import { Benchmark } from "~/Benchmark";
 import { BenchmarkPlugin } from "~/plugins/BenchmarkPlugin";
+import type { ICompressor } from "@webiny/utils/compression/Compressor.js";
+import { createDefaultCompressor } from "@webiny/utils";
 
 interface Waiter {
     targets: string[];
@@ -30,6 +32,8 @@ export class Context implements ContextInterface {
     public readonly plugins: PluginsContainer;
     public readonly WEBINY_VERSION: string;
     public readonly benchmark: Benchmark;
+
+    public readonly compressor: ICompressor = createDefaultCompressor();
 
     private readonly waiters: Waiter[] = [];
 
