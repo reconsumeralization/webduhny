@@ -1,3 +1,4 @@
+export * from "./BackgroundTaskService";
 export * from "./dynamoDb";
 export * from "./elasticsearch";
 export * from "./forEachTenantLocale";
