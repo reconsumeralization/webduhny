@@ -26,7 +26,7 @@ class GzipCompression extends CompressionPlugin {
         /**
          * If already compressed, skip this.
          */
-        if (data.compression) {
+        if (!!data?.compression) {
             if (data.compression !== "GZIP") {
                 console.log(`Data is already compressed with "${data.compression}".`);
             }
@@ -34,6 +34,7 @@ class GzipCompression extends CompressionPlugin {
         }
         return true;
     }
+
     public async compress(data: any) {
         const value = await gzip(JSON.stringify(data));
 
@@ -44,7 +45,7 @@ class GzipCompression extends CompressionPlugin {
     }
 
     public canDecompress(data: CompressedData | Record<string, any>): boolean {
-        if (!data || !data.compression) {
+        if (!data?.compression) {
             return false;
         } else if (data.compression !== GZIP) {
             console.log(
