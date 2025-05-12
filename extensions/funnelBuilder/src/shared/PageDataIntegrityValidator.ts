@@ -18,6 +18,8 @@ export type PageDataIntegrityValidatorResult =
     | PageDataIntegrityValidatorSuccess;
 
 export class PageDataIntegrityValidator {
+    static PAGE_DATA_INTEGRITY_VALIDATION_ERROR = "PAGE_DATA_INTEGRITY_VALIDATION_ERROR";
+
     static validate(page: PbPage): PageDataIntegrityValidatorResult {
         const errors = registry
             .map(ValidatorClass => {
@@ -47,12 +49,5 @@ export class PageDataIntegrityValidator {
             errorMessage: null,
             data: null
         };
-    }
-
-    static ensureValid(page: PbPage) {
-        const error = this.validate(page);
-        if (error) {
-            throw error;
-        }
     }
 }

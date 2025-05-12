@@ -1,8 +1,9 @@
 ## MH
+
 - revisit containerEvHandlers
-- backend integrity checks for PB page / Funnel sync ensure?
-  
+
 ## SH
+
 - edit field dialog still shows up twice? maybe related to bg save?
 - undoooooo test - added a step, pressed undo, and tabs at the top did not update :|
 - many tabs look bad
@@ -10,6 +11,7 @@
 - check loading of 3rd party fields? how's that gonna look like in models / fieldsDto?
 
 ## CH/NTH
+
 - default value editing - doesn't reflect in UI unti page refresh
 - esc doesn't work on dialogs sometimes (if not focused correctly)
 - remove field data, have fields only contain `fieldId`
