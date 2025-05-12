@@ -43,6 +43,12 @@ class Compressor implements ICompressor {
 
     public async compress<T = unknown>(data: T): Promise<T | ICompressedValue> {
         for (const plugin of this.plugins) {
+            /**
+             * We can skip compressing with disable plugin.
+             */
+            if (plugin.name && this.disabled.has(plugin.name)) {
+                continue;
+            }
             if (plugin.canCompress(data) === false) {
                 continue;
             }

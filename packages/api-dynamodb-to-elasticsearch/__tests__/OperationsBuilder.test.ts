@@ -3,9 +3,12 @@ import { createDefaultCompressor } from "@webiny/utils";
 import { DynamoDBRecord } from "@webiny/handler-aws/types";
 import { marshall } from "~/marshall";
 import { OperationType } from "~/Operations";
+import { PluginsContainer } from "@webiny/plugins";
 
 describe("OperationsBuilder", () => {
-    const compressor = createDefaultCompressor();
+    const compressor = createDefaultCompressor({
+        plugins: new PluginsContainer()
+    });
 
     it("should build an insert operation", async () => {
         const builder = new OperationsBuilder({
