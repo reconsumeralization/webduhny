@@ -1,4 +1,4 @@
-import { TextField, TextFieldDto } from "../../fields/TextField";
+import { TextField, TextFieldDto } from "../../models/fields/TextField";
 
 export const createFirstNameFieldDto = (dto: TextFieldDto) => {
     return new TextField({
@@ -8,6 +8,7 @@ export const createFirstNameFieldDto = (dto: TextFieldDto) => {
         helpText: "Enter your first name",
         validators: [],
         value: {
+            array: false,
             value: "",
             type: "string"
         },

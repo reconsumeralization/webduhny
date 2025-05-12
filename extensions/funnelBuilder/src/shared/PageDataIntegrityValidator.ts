@@ -25,7 +25,11 @@ export class PageDataIntegrityValidator {
                     ValidatorClass.validate(page);
                     return undefined;
                 } catch (error) {
-                    return error;
+                    return {
+                        message: error.message,
+                        validator: ValidatorClass.id,
+                        data: error.cause
+                    };
                 }
             })
             .filter(Boolean);
@@ -34,14 +38,7 @@ export class PageDataIntegrityValidator {
             return {
                 isValid: false,
                 errorMessage: "Page data integrity validation failed.",
-                data: {
-                    errors: errors.map((error: Error) => {
-                        return {
-                            message: error.message,
-                            cause: error.cause,
-                        };
-                    })
-                }
+                data: { errors }
             };
         }
 

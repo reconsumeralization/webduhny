@@ -1,4 +1,4 @@
-import { TextField, TextFieldDto } from "../../fields/TextField";
+import { TextField, TextFieldDto } from "../../models/fields/TextField";
 
 export const createEmailFieldDto = (dto: TextFieldDto) => {
     return new TextField({
@@ -8,6 +8,7 @@ export const createEmailFieldDto = (dto: TextFieldDto) => {
         helpText: "Enter your email address",
         value: {
             value: "",
+            array: false,
             type: "string"
         },
         ...dto

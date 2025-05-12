@@ -28,7 +28,7 @@ export class NoOrphanContainerFieldsValidator {
             const hasOrphanFields = orphanFields.length > 0;
             if (hasOrphanFields) {
                 throw new Error("Orphan fields found.", {
-                    cause: orphanFields
+                    cause: { orphanFields }
                 });
             }
         });

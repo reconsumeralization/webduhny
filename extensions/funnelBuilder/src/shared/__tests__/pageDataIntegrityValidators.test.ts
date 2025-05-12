@@ -10,8 +10,11 @@ describe("Page Data Integrity Validators", () => {
             data: {
                 errors: [
                     {
-                        cause: ["orphanField-123abc"],
-                        message: "Orphan fields found."
+                        data: {
+                            orphanFields: ["orphanField-123abc"]
+                        },
+                        message: "Orphan fields found.",
+                        validator: "NoOrphanContainerFieldsValidator"
                     }
                 ]
             },
@@ -26,8 +29,11 @@ describe("Page Data Integrity Validators", () => {
             data: {
                 errors: [
                     {
-                        cause: ["jhos45r"],
-                        message: "Orphan fields found."
+                        data: {
+                            orphanFields: ["jhos45r"]
+                        },
+                        message: "Orphan fields found.",
+                        validator: "NoOrphanFieldElementsValidator"
                     }
                 ]
             },
@@ -42,7 +48,8 @@ describe("Page Data Integrity Validators", () => {
             data: {
                 errors: [
                     {
-                        message: "Container element not found."
+                        message: "Container element not found.",
+                        validator: "ContainerElementExists"
                     }
                 ]
             },

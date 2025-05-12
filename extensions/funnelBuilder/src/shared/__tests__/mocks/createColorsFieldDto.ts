@@ -1,4 +1,4 @@
-import { CheckboxGroupField, CheckboxGroupFieldDto } from "../../fields/CheckboxGroupField";
+import { CheckboxGroupField, CheckboxGroupFieldDto } from "../../models/fields/CheckboxGroupField";
 
 export const createColorsFieldDto = (dto: CheckboxGroupFieldDto) => {
     return new CheckboxGroupField({
@@ -8,13 +8,14 @@ export const createColorsFieldDto = (dto: CheckboxGroupFieldDto) => {
         helpText: "Colors",
         value: {
             value: [],
+            array: true,
             type: "stringArray"
         },
         extra: {
             options: [
-                { value: "red", label: "Red" },
-                { value: "green", label: "Green" },
-                { value: "blue", label: "Blue" }
+                { id: "redXyz123", value: "red", label: "Red" },
+                { id: "greenXyz123", value: "green", label: "Green" },
+                { id: "blueXyz123", value: "blue", label: "Blue" }
             ]
         },
         ...dto
