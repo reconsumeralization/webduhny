@@ -1,8 +1,8 @@
-import { validatorFromDto } from "../validators/validatorFactory";
-import { MinLengthValidator } from "../validators/MinLengthValidator";
-import { RequiredValidator } from "../validators/RequiredValidator";
-import { FunnelModel } from "../FunnelModel";
-import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
+import { validatorFromDto } from "../models/validators/validatorFactory";
+import { MinLengthValidator } from "../models/validators/MinLengthValidator";
+import { RequiredValidator } from "../models/validators/RequiredValidator";
+import { FunnelModel } from "../models/FunnelModel";
+import { FunnelSubmissionModel } from "../models/FunnelSubmissionModel";
 
 describe("Validator From DTO", () => {
     test("ensure validator is correctly instantiated with no params", async () => {

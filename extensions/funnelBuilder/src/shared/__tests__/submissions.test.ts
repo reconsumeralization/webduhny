@@ -1,5 +1,5 @@
-import { FunnelModel } from "../FunnelModel";
-import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
+import { FunnelModel } from "../models/FunnelModel";
+import { FunnelSubmissionModel } from "../models/FunnelSubmissionModel";
 
 describe("Funnel Submissions", () => {
     test("e2e test", async () => {

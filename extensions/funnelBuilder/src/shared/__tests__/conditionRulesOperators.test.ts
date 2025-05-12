@@ -1,8 +1,8 @@
-import { FunnelModel } from "../FunnelModel";
-import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
+import { FunnelModel } from "../models/FunnelModel";
+import { FunnelSubmissionModel } from "../models/FunnelSubmissionModel";
 import { createFirstNameFieldDto } from "./mocks/createFirstNameFieldDto";
 import { createLastNameFieldDto } from "./mocks/createLastNameFieldDto";
-import { DisableFieldConditionAction } from "../conditionActions/DisableFieldConditionAction";
+import { DisableFieldConditionAction } from "../models/conditionActions/DisableFieldConditionAction";
 
 describe("Condition Rules", () => {
     test("neq Operator", async () => {

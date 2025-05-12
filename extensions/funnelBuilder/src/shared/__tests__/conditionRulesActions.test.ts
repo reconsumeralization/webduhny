@@ -1,11 +1,11 @@
-import { FunnelModel } from "../FunnelModel";
-import { FunnelSubmissionModel } from "../FunnelSubmissionModel";
+import { FunnelModel } from "../models/FunnelModel";
+import { FunnelSubmissionModel } from "../models/FunnelSubmissionModel";
 import { createFirstNameFieldDto } from "./mocks/createFirstNameFieldDto";
 import { createLastNameFieldDto } from "./mocks/createLastNameFieldDto";
 import { createEmailFieldDto } from "./mocks/createEmailFieldDto";
 import { createColorsFieldDto } from "./mocks/createColorsFieldDto";
-import { OnSubmitEndFunnelConditionAction } from "../conditionActions/OnSubmitEndFunnelConditionAction";
-import { OnSubmitActivateStepConditionAction } from "../conditionActions/OnSubmitActivateStepConditionAction";
+import { OnSubmitEndFunnelConditionAction } from "../models/conditionActions/OnSubmitEndFunnelConditionAction";
+import { OnSubmitActivateStepConditionAction } from "../models/conditionActions/OnSubmitActivateStepConditionAction";
 
 describe("Condition Rules", () => {
     test("onSubmitEndFunnel action", async () => {

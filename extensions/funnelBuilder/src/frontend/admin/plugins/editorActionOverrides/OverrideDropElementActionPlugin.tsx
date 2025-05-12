@@ -5,11 +5,11 @@ import {
     DropElementActionEvent
 } from "@webiny/app-page-builder/editor/recoil/actions";
 import type { DropElementActionArgsType } from "@webiny/app-page-builder/editor/recoil/actions/dropElement/types";
-import type { EventActionCallable } from "@webiny/app-page-builder/types";
+import type { EventActionCallable, PbEditorElementTree } from "@webiny/app-page-builder/types";
 import { Snackbar } from "@webiny/ui/Snackbar";
 import { useDisclosure } from "../../useDisclosure";
 import { CONTAINER_ELEMENT_ID, isFunnelElement } from "../../../../shared/constants";
-import { ElementTreeTraverser } from "../../ElementTreeTraverser";
+import { ElementTreeTraverser } from "../../../../shared/ElementTreeTraverser";
 
 export interface Handler {
     name: string;
@@ -37,7 +37,8 @@ export const OverrideDropElementActionPlugin = () => {
             <PbEditorOverrideActionHandlerPlugin
                 action={"drop-element"}
                 onEditorMount={handler => {
-                    const traverser = new ElementTreeTraverser();
+                    // @ts-ignore Type incompatibility. Safe to ignore.
+                    const traverser = new ElementTreeTraverser<PbEditorElementTree>();
 
                     return handler.on(DropElementActionEvent, (async (...params) => {
                         const [state, , args] = params;

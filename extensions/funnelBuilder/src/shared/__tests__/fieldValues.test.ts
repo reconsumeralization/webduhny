@@ -1,5 +1,5 @@
-import { fieldValueFromDto } from "../fieldValues/fieldValueFactory";
-import { StringArrayFieldValue } from "../fieldValues/StringArrayFieldValue";
+import { fieldValueFromDto } from "../models/fieldValues/fieldValueFactory";
+import { StringArrayFieldValue } from "../models/fieldValues/StringArrayFieldValue";
 
 describe("Value From DTO", () => {
     test("ensure field values are correctly instantiated with no params", async () => {

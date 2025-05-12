@@ -1,4 +1,4 @@
-import { FunnelModel } from "../FunnelModel";
+import { FunnelModel } from "../models/FunnelModel";
 
 describe("Funnel Steps", () => {
     test("should always have success step", async () => {
