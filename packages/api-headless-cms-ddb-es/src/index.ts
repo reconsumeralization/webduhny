@@ -15,10 +15,7 @@ import { createSystemEntity } from "~/definitions/system";
 import { createElasticsearchIndex } from "~/elasticsearch/createElasticsearchIndex";
 import { PluginsContainer } from "@webiny/plugins";
 import { createGroupsStorageOperations } from "~/operations/group";
-import {
-    CompressionPlugin,
-    ElasticsearchQueryBuilderOperatorPlugin
-} from "@webiny/api-elasticsearch";
+import { ElasticsearchQueryBuilderOperatorPlugin } from "@webiny/api-elasticsearch";
 import { elasticsearchIndexPlugins } from "./elasticsearch/indices";
 import { deleteElasticsearchIndex } from "./elasticsearch/deleteElasticsearchIndex";
 import {
@@ -154,8 +151,6 @@ export const createStorageOperations: StorageOperationsFactory = params => {
              * This way we do not need to register plugins in the storage plugins contains.
              */
             const types: string[] = [
-                // Elasticsearch
-                CompressionPlugin.type,
                 ElasticsearchQueryBuilderOperatorPlugin.type,
                 // Headless CMS
                 "cms-model-field-to-graphql",

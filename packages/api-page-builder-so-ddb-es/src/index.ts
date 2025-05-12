@@ -1,13 +1,12 @@
 import dynamoDbValueFilters from "@webiny/db-dynamodb/plugins/filters";
 import { PluginsContainer } from "@webiny/plugins";
-import {
-    CompressionPlugin,
-    ElasticsearchQueryBuilderOperatorPlugin
-} from "@webiny/api-elasticsearch";
+
+import { ElasticsearchQueryBuilderOperatorPlugin } from "@webiny/api-elasticsearch";
 
 import { ENTITIES, StorageOperationsFactory } from "~/types";
 import { createTable } from "~/definitions/table";
 import { createElasticsearchTable } from "~/definitions/tableElasticsearch";
+
 import { elasticsearchIndexPlugins } from "~/elasticsearch/indices";
 import { createElasticsearchIndex } from "~/elasticsearch/createElasticsearchIndex";
 
@@ -220,8 +219,6 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 tags: ["es", entities.pagesEs.name]
             });
             const types: string[] = [
-                // Elasticsearch
-                CompressionPlugin.type,
                 ElasticsearchQueryBuilderOperatorPlugin.type,
                 // Page Builder
                 BlockCategoryDynamoDbElasticFieldPlugin.type,

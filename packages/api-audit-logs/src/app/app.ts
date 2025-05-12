@@ -1,7 +1,7 @@
 import { IAcoAppRegisterParams, SearchRecord } from "@webiny/api-aco/types";
 import { AUDIT_LOGS_TYPE } from "./contants";
-import { compressor } from "~/utils/compressor";
 import { NotAuthorizedError } from "@webiny/api-security";
+import type { AcoContext } from "@webiny/api-aco/types.js";
 
 const toDate = (value: string | Date) => {
     if (value instanceof Date) {
@@ -14,16 +14,20 @@ const toDate = (value: string | Date) => {
     }
 };
 
-const decompressData = async (entry: SearchRecord<any>): Promise<SearchRecord<any>> => {
+const decompressData = async (
+    entry: SearchRecord<any>,
+    context: Pick<AcoContext, "compressor">
+): Promise<SearchRecord<any>> => {
     if (!entry.data?.data) {
         return entry;
     }
+
     return {
         ...entry,
         data: {
             ...entry.data,
             timestamp: toDate(entry.data.timestamp),
-            data: await compressor.decompress(entry.data.data)
+            data: await context.compressor.decompress(entry.data.data)
         }
     };
 };
@@ -100,13 +104,13 @@ export const createApp = (): IAcoAppRegisterParams => {
                 label: "Initiator"
             }
         ],
-        onEntry: async entry => {
-            return decompressData(entry);
+        onEntry: async (entry, context) => {
+            return decompressData(entry, context);
         },
-        onEntryList: async entries => {
+        onEntryList: async (entries, context) => {
             return await Promise.all(
                 entries.map(async entry => {
-                    return decompressData(entry);
+                    return decompressData(entry, context);
                 })
             );
         },

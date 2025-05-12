@@ -8,6 +8,8 @@ export interface ICompressorParams {
 }
 
 export interface ICompressor {
+    disable(name: string): void;
+    enable(name: string): void;
     /**
      * Compresses the given data using the first plugin that can compress it.
      */
@@ -21,12 +23,22 @@ export interface ICompressor {
 class Compressor implements ICompressor {
     private readonly _plugins: PluginsContainer;
 
+    private readonly disabled: Set<string> = new Set();
+
     private get plugins(): CompressionPlugin[] {
         return this._plugins.byType<CompressionPlugin>(CompressionPlugin.type).reverse();
     }
 
     public constructor(params: ICompressorParams) {
         this._plugins = params.plugins;
+    }
+
+    public disable(name: string): void {
+        this.disabled.add(name);
+    }
+
+    public enable(name: string): void {
+        this.disabled.delete(name);
     }
 
     public async compress<T = unknown>(data: T): Promise<T | ICompressedValue> {
@@ -64,9 +76,9 @@ class Compressor implements ICompressor {
     }
 }
 
-const plugins = new PluginsContainer([createGzipCompression(), createJsonpackCompression()]);
-
-export const createDefaultCompressor = () => {
+export const createDefaultCompressor = (params: ICompressorParams) => {
+    const { plugins } = params;
+    plugins.register([createJsonpackCompression(), createGzipCompression()]);
     return new Compressor({
         plugins
     });

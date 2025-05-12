@@ -33,8 +33,7 @@ export class Context implements ContextInterface {
     public readonly plugins: PluginsContainer;
     public readonly WEBINY_VERSION: string;
     public readonly benchmark: Benchmark;
-
-    public readonly compressor: ICompressor = createDefaultCompressor();
+    public readonly compressor: ICompressor;
 
     private readonly waiters: Waiter[] = [];
 
@@ -47,6 +46,9 @@ export class Context implements ContextInterface {
          * Also, register the plugin to have benchmark accessible via plugins container.
          */
         this.benchmark = new Benchmark();
+        this.compressor = createDefaultCompressor({
+            plugins: this.plugins
+        });
         this.plugins.register(
             new BenchmarkPlugin(this.benchmark),
             new CompressorPlugin({

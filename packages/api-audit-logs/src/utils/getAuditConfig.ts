@@ -2,7 +2,7 @@ import WebinyError from "@webiny/error";
 import { mdbid } from "@webiny/utils";
 import { IAcoApp } from "@webiny/api-aco/types";
 import { AuditAction, AuditLog, AuditLogsContext } from "~/types";
-import { compressor } from "~/utils/compressor";
+import type { GenericRecord } from "@webiny/api/types.js";
 
 interface AuditLogPayload extends Omit<AuditLog, "id" | "data"> {
     data: Record<string, any>;
@@ -15,6 +15,8 @@ interface CreateAuditLogParams {
 
 const createAuditLog = async (params: CreateAuditLogParams) => {
     const { app, payload } = params;
+
+    const compressor = app.context.compressor;
 
     const payloadData = JSON.stringify(payload.data);
 
@@ -55,6 +57,8 @@ interface CreateOrMergeAuditLogParams {
 
 const createOrMergeAuditLog = async (params: CreateOrMergeAuditLogParams) => {
     const { app, payload, delay } = params;
+
+    const compressor = app.context.compressor;
     // Get the latest audit log of this entry.
     const [records] = await app.search.list({
         where: {
@@ -74,9 +78,9 @@ const createOrMergeAuditLog = async (params: CreateOrMergeAuditLogParams) => {
 
         // Check if the latest audit log is saved within delay range.
         if (newLogDate - existingLogDate < delay * 1000) {
-            const existingLogData = await compressor.decompress(
-                existingLog.data as unknown as string
-            );
+            const existingLogData = (await compressor.decompress(
+                existingLog.data
+            )) as unknown as GenericRecord;
             // Update latest audit log with new "after" payload.
             const beforePayloadData = JSON.parse(existingLogData?.data.data)?.before;
             const afterPayloadData = payload.data?.after;
