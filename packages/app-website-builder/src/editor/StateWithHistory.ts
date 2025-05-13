@@ -18,7 +18,7 @@ export class StateWithHistory<TState extends GenericRecord = GenericRecord>
     private readonly history: EditorHistory;
     private state: State<TState>;
     private previousState: TState | undefined;
-    private stateListeners: Array<(event: StateChangeEvent) => void> = [];
+    private stateListeners: Array<(event: StateChangeEvent<TState>) => void> = [];
     private timeTravel = true;
 
     constructor(initialState: TState) {
@@ -118,7 +118,7 @@ export class StateWithHistory<TState extends GenericRecord = GenericRecord>
         };
     }
 
-    private executeStateListeners(event: StateChangeEvent) {
+    private executeStateListeners(event: StateChangeEvent<TState>) {
         this.stateListeners.forEach(listener => {
             listener(event);
         });

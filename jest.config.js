@@ -82,6 +82,7 @@ const jestConfig = process.argv.findIndex(arg => arg.endsWith("jest.config.js"))
 const runByPath = process.argv.findIndex(arg => arg === "--runTestsByPath");
 const isIntellij = process.argv.some(param => param.endsWith("jest-intellij-reporter.js"));
 
+const p = process.argv;
 let packageName = "";
 if (jestConfig > -1) {
     packageName = getPackageNameFromPath(process.argv[jestConfig + 1]);

@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import { ColorPicker } from "@webiny/ui/ColorPicker/index.js";
+import React, { useCallback, useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import Monaco from "@monaco-editor/react";
 import styled from "@emotion/styled";
 import { CommandPriority } from "~/editor/CommandBus.js";
-import { DocumentRenderer } from "~/sandbox/Content.js";
+import { Messenger } from "~/messenger/index.js";
 import { createCommand } from "../editor/createCommand.js";
 import type { HistorySnapshot } from "../editor/HistorySnapshot.js";
 import { Editor } from "../editor/Editor.js";
 import { ButtonPrimary, ButtonSecondary } from "@webiny/ui/Button/index.js";
 import { DocumentEditorContext } from "~/editor/DocumentEditor.js";
+import { ConnectEditorToPreview } from "./ConnectEditorToPreview.js";
+import mockPage1 from "./mocks/mockPage1.js";
 
 const Container = styled.div`
     display: flex;
@@ -37,6 +40,7 @@ const DocumentContainer = styled.div`
     margin: 20px;
     box-sizing: border-box;
     width: calc(100vw - 80px);
+    min-height: 450px;
     background-color: white;
 `;
 
@@ -113,17 +117,29 @@ const MonacoEditor = styled(Monaco)`
 `;
 
 const demoCode = `
-// editor.updateDocument(document => {
-//     document.properties.title = "123"
-// })
+editor.updateDocument(document => {
+    document.elements["4ETOAnHNei7"] = {
+      "type": "Webiny/Element",
+      "id": "4ETOAnHNei7",
+      "component": {
+        "name": "Webiny/Text",
+        "options": {
+          "text": "Hello!"
+        }
+      }
+    }
+})
 `;
 
 const ON_DROP = createCommand<string>("ON_DROP");
+
+const iframeUrl = "http://localhost:3000/page-1?wb.preview=true";
 
 export const DocumentEditorSandbox = observer(() => {
     const documentState = editor.getDocumentState();
     const editorState = editor.getEditorState();
     const codeRef = useRef(demoCode);
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     useEffect(() => {
         const dropHandler1 = editor.registerCommand(
@@ -155,14 +171,9 @@ export const DocumentEditorSandbox = observer(() => {
             CommandPriority.HIGH
         );
 
-        const stateChange1 = editor.onDocumentStateChange(event => {
-            console.info("Persisting data...", event);
-        });
-
         return () => {
             dropHandler1();
             dropHandler2();
-            stateChange1();
         };
     }, []);
 
@@ -188,7 +199,6 @@ export const DocumentEditorSandbox = observer(() => {
     const currentSnapshotIndex = history.getActiveSnapshotIndex();
     const isLatestSnapshot = currentSnapshotIndex === availableSnapshots - 1;
     const isOldestSnapshot = currentSnapshotIndex === 0;
-    const elements = documentState.read().elements;
 
     const monacoValue = `// Editor State\n${JSON.stringify(
         editorState.toJson(),
@@ -200,6 +210,30 @@ export const DocumentEditorSandbox = observer(() => {
         2
     )}\n\n// History\n\n${formatSnapshots(history.getSnapshots(), history.getActiveSnapshotIndex())}
     \n// Snapshot Changes\n${JSON.stringify(history.getCurrentSnapshot().getChanges(), null, 2)}`;
+
+    const onConnected = useCallback((messenger: Messenger) => {
+        // @ts-ignore temp
+        window["messenger"] = messenger;
+        setTimeout(() => {
+            messenger.send("document.set", mockPage1);
+        }, 2000);
+
+        editor.onDocumentStateChange(event => {
+            if (event.reason === "update") {
+                messenger.send("document.patch", event.diff);
+            } else {
+                messenger.send("document.set", event.state);
+            }
+        });
+    }, []);
+
+    const color = documentState.read().elements["4ETOAnHNei7"].component.options.color || "#23dafa";
+
+    const onColorChange = (color: string) => {
+        window["messenger"].send(`element.patch.4ETOAnHNei7`, {
+            "component.options.color": color
+        });
+    };
 
     return (
         <DocumentEditorContext.Provider value={editor}>
@@ -236,8 +270,16 @@ export const DocumentEditorSandbox = observer(() => {
                     />
                 </Column>
             </Container>
+            <ConnectEditorToPreview iframeRef={iframeRef} onConnected={onConnected} />
+
             <DocumentContainer>
-                <DocumentRenderer elements={elements} />
+                <ColorPicker value={color} onChange={onColorChange} />
+                <iframe
+                    style={{ height: "100%", width: "100%", minHeight: "inherit" }}
+                    src={iframeUrl}
+                    ref={iframeRef}
+                    sandbox="allow-scripts allow-pointer-lock allow-same-origin allow-popups allow-modals allow-forms"
+                />
             </DocumentContainer>
         </DocumentEditorContext.Provider>
     );

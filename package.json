@@ -23,6 +23,7 @@
       "extensions/systemNotificationBanner/systemNotificationBannerAdmin",
       "extensions/systemNotificationBanner/systemNotificationBannerApi",
       "extensions/smart-cms-extensions",
+      "nextjs",
       "scripts/buildPackages",
       "scripts/dependencyTracer",
       "scripts/prepublishOnly"

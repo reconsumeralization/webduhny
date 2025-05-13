@@ -49,7 +49,7 @@ export class Editor<TDocument extends Record<string, any> = Record<string, any>>
         return this.documentState;
     }
 
-    onDocumentStateChange(listener: StateChangeListener) {
+    onDocumentStateChange(listener: StateChangeListener<TDocument>) {
         return this.documentState.onStateChange(listener);
     }
 }
