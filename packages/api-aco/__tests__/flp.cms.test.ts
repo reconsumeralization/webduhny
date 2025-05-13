@@ -433,19 +433,6 @@ describe("Folder Level Permissions - CMS GraphQL API", () => {
                     })
             );
         }
-
-        // Set identity B as owner of the folder. CRUD should now be allowed.
-        await gqlIdentityA.aco.updateFolder({
-            id: folder.id,
-            data: {
-                permissions: [
-                    {
-                        target: `admin:${identityC.id}`,
-                        level: "owner"
-                    }
-                ]
-            }
-        });
     });
 
     it("as a user with 'viewer' access to a folder, I should not be able to create, update, or delete content in it", async () => {

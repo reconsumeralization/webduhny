@@ -317,7 +317,7 @@ describe("Folder Level Permissions - File Manager GraphQL API", () => {
             );
         }
 
-        // Only identity B (and identity A, the owner) can see the folder and its files.
+        // Let's update the folder: identity A assigns `no-access` level to identity B
         await gqlIdentityA.aco.updateFolder({
             id: folder.id,
             data: {
