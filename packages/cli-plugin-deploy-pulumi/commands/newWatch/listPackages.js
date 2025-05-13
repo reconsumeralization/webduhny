@@ -7,6 +7,9 @@ const listPackages = async ({ inputs }) => {
     if (inputs.package) {
         packagesList = Array.isArray(inputs.package) ? [...inputs.package] : [inputs.package];
 
+        // Also split by commas.
+        packagesList = packagesList.map(item => item.split(",")).flat();
+
         // When providing packages manually, we also allow providing names of Webiny packages
         // without the `@webiny` scope. In that case, we need to add the scope to the package name.
         const webinyPrefixedPackagesToAdd = [];
