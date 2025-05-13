@@ -4,7 +4,7 @@ import type { PluginCollection } from "@webiny/plugins/types";
 import { Benchmark } from "~/Benchmark";
 import { BenchmarkPlugin } from "~/plugins/BenchmarkPlugin";
 import type { ICompressor } from "@webiny/utils/compression/Compressor";
-import { createDefaultCompressor } from "@webiny/utils";
+import { createDefaultCompressor } from "@webiny/utils/compression";
 import { CompressorPlugin } from "~/plugins/CompressorPlugin";
 
 interface Waiter {

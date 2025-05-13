@@ -1,4 +1,4 @@
-import { createDefaultCompressor } from "@webiny/utils";
+import { createDefaultCompressor } from "@webiny/utils/compression";
 import { PluginsContainer } from "@webiny/plugins";
 import { Context } from "@webiny/api";
 

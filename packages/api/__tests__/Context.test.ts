@@ -2,7 +2,7 @@ import { CompressorPlugin, Context } from "~/index";
 import { Context as ContextInterface } from "~/types";
 import { Benchmark } from "~/Benchmark";
 import { BenchmarkPlugin } from "~/plugins/BenchmarkPlugin";
-import { GzipCompression, JsonpackCompression } from "@webiny/utils";
+import { GzipCompression, JsonpackCompression } from "@webiny/utils/compression";
 import { PluginsContainer } from "@webiny/plugins";
 
 interface DummyContextInterface extends ContextInterface {
