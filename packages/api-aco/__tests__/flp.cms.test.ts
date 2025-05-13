@@ -343,7 +343,7 @@ describe("Folder Level Permissions - CMS GraphQL API", () => {
             );
         }
 
-        // Identity B (role `no-access`) cannot access to folder or entries inside it.
+        // Identity B (role `no-access`) cannot access the folder or CRUD entries inside it.
         await gqlIdentityA.aco.updateFolder({
             id: folder.id,
             data: {
