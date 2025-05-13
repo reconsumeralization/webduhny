@@ -54,6 +54,7 @@ describe("5.43.0-001 DDB + ES", () => {
 
         await elasticsearchClient.indices.deleteAll();
     });
+
     afterEach(async () => {
         await elasticsearchClient.indices.deleteAll();
     });
@@ -67,11 +68,9 @@ describe("5.43.0-001 DDB + ES", () => {
                 .filter(item => item.PK === `T#${tenant}#I18N#L`)
                 .map(locale => locale.code) as string[];
 
-            console.log(locales);
-
             for (const locale of locales) {
                 await esCreateIndex({
-                    elasticsearchClient: elasticsearchClient,
+                    elasticsearchClient,
                     tenant,
                     locale,
                     type: ACO_FOLDER_MODEL_ID,
