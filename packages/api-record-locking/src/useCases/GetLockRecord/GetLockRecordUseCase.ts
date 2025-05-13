@@ -6,8 +6,8 @@ import type { IRecordLockingLockRecord, IRecordLockingModelManager } from "~/typ
 import { NotFoundError } from "@webiny/handler-graphql";
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
 import { createIdentifier } from "@webiny/utils";
-import type { ConvertEntryToLockRecordCb } from "~/useCases/types.js";
-import type { Security } from "@webiny/api-security/types.js";
+import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
+import type { Security } from "@webiny/api-security/types";
 
 export interface IGetLockRecordUseCaseParams {
     getManager(): Promise<IRecordLockingModelManager>;

@@ -15,10 +15,7 @@ import { createFormStorageOperations } from "~/operations/form";
 import { createElasticsearchTable } from "~/definitions/tableElasticsearch";
 import { PluginsContainer } from "@webiny/plugins";
 import { createElasticsearchEntity } from "~/definitions/elasticsearch";
-import {
-    CompressionPlugin,
-    ElasticsearchQueryBuilderOperatorPlugin
-} from "@webiny/api-elasticsearch";
+import { ElasticsearchQueryBuilderOperatorPlugin } from "@webiny/api-elasticsearch";
 import { elasticsearchIndexPlugins } from "~/elasticsearch/indices";
 import { createElasticsearchIndex } from "~/elasticsearch/createElasticsearchIndex";
 import { FormBuilderContext } from "@webiny/api-form-builder/types";
@@ -35,6 +32,7 @@ import {
     SubmissionElasticsearchSortModifierPlugin
 } from "~/plugins";
 import { createIndexTaskPlugin } from "~/tasks/createIndexTaskPlugin";
+import { CompressorPlugin } from "@webiny/api";
 
 const reservedFields = ["PK", "SK", "index", "data", "TYPE", "__type", "GSI1_PK", "GSI1_SK"];
 
@@ -161,8 +159,6 @@ export const createFormBuilderStorageOperations: FormBuilderStorageOperationsFac
             });
 
             const types: string[] = [
-                // Elasticsearch
-                CompressionPlugin.type,
                 ElasticsearchQueryBuilderOperatorPlugin.type,
                 // Form Builder
                 FormDynamoDbFieldPlugin.type,
@@ -174,7 +170,8 @@ export const createFormBuilderStorageOperations: FormBuilderStorageOperationsFac
                 SubmissionElasticsearchBodyModifierPlugin.type,
                 SubmissionElasticsearchFieldPlugin.type,
                 SubmissionElasticsearchQueryModifierPlugin.type,
-                SubmissionElasticsearchSortModifierPlugin.type
+                SubmissionElasticsearchSortModifierPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);

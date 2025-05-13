@@ -44,7 +44,7 @@ export class AcoApp implements IAcoApp {
                 if (!this.onEntry) {
                     return result;
                 }
-                return (await this.onEntry(result)) as SearchRecord<TData>;
+                return (await this.onEntry(result, this.context)) as SearchRecord<TData>;
             },
             update: async <TData extends GenericSearchData = GenericSearchData>(
                 id: string,
@@ -59,7 +59,7 @@ export class AcoApp implements IAcoApp {
                 if (!this.onEntry) {
                     return result;
                 }
-                return (await this.onEntry(result)) as SearchRecord<TData>;
+                return (await this.onEntry(result, this.context)) as SearchRecord<TData>;
             },
             move: async (id: string, folderId?: string) => {
                 await this.execOnAnyRequest("move");
@@ -71,7 +71,7 @@ export class AcoApp implements IAcoApp {
                 if (!result || !this.onEntry) {
                     return result;
                 }
-                return (await this.onEntry(result)) as SearchRecord<TData>;
+                return (await this.onEntry(result, this.context)) as SearchRecord<TData>;
             },
             list: async <TData extends GenericSearchData = GenericSearchData>(
                 params: ListSearchRecordsParams
@@ -83,7 +83,7 @@ export class AcoApp implements IAcoApp {
                     return result;
                 }
                 const [entries, meta] = result;
-                const items = (await onEntryList(entries)) as SearchRecord<TData>[];
+                const items = (await onEntryList(entries, this.context)) as SearchRecord<TData>[];
                 return [items, meta];
             },
             delete: async (id: string): Promise<boolean> => {

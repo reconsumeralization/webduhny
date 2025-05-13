@@ -15,7 +15,7 @@ import { validateSameIdentity } from "~/utils/validateSameIdentity";
 import { NotAuthorizedError } from "@webiny/api-security";
 import type { IKickOutCurrentUserUseCase } from "~/abstractions/IKickOutCurrentUserUseCase";
 import { NotFoundError } from "@webiny/handler-graphql";
-import type { Security } from "@webiny/api-security/types.js";
+import type { Security } from "@webiny/api-security/types";
 
 export interface IUnlockEntryUseCaseParams {
     readonly getLockRecordUseCase: IGetLockRecordUseCase;

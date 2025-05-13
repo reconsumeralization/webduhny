@@ -5,8 +5,6 @@
     { "path": "../app/tsconfig.build.json" },
     { "path": "../app-aco/tsconfig.build.json" },
     { "path": "../app-admin/tsconfig.build.json" },
-    { "path": "../form/tsconfig.build.json" },
-    { "path": "../plugins/tsconfig.build.json" },
     { "path": "../app-headless-cms/tsconfig.build.json" },
     { "path": "../app-security/tsconfig.build.json" },
     { "path": "../app-wcp/tsconfig.build.json" },

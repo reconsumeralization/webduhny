@@ -1,13 +1,12 @@
 import dynamoDbValueFilters from "@webiny/db-dynamodb/plugins/filters";
 import { PluginsContainer } from "@webiny/plugins";
-import {
-    CompressionPlugin,
-    ElasticsearchQueryBuilderOperatorPlugin
-} from "@webiny/api-elasticsearch";
+
+import { ElasticsearchQueryBuilderOperatorPlugin } from "@webiny/api-elasticsearch";
 
 import { ENTITIES, StorageOperationsFactory } from "~/types";
 import { createTable } from "~/definitions/table";
 import { createElasticsearchTable } from "~/definitions/tableElasticsearch";
+
 import { elasticsearchIndexPlugins } from "~/elasticsearch/indices";
 import { createElasticsearchIndex } from "~/elasticsearch/createElasticsearchIndex";
 
@@ -68,6 +67,7 @@ import {
     SearchPublishedPagesPlugin
 } from "./plugins";
 import { createIndexTaskPlugin } from "~/tasks/createIndexTaskPlugin";
+import { CompressorPlugin } from "@webiny/api";
 
 export * from "./plugins";
 
@@ -219,8 +219,6 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 tags: ["es", entities.pagesEs.name]
             });
             const types: string[] = [
-                // Elasticsearch
-                CompressionPlugin.type,
                 ElasticsearchQueryBuilderOperatorPlugin.type,
                 // Page Builder
                 BlockCategoryDynamoDbElasticFieldPlugin.type,
@@ -237,7 +235,8 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 PageElementDynamoDbElasticFieldPlugin.type,
                 SearchLatestPagesPlugin.type,
                 SearchPagesPlugin.type,
-                SearchPublishedPagesPlugin.type
+                SearchPublishedPagesPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);

@@ -16,10 +16,7 @@ import prerenderingServicePlugins from "@webiny/api-prerendering-service-aws/cli
 import dbPlugins from "@webiny/handler-db";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import dynamoDbPlugins from "@webiny/db-dynamodb/plugins";
-import elasticsearchClientContext, {
-    createElasticsearchClient,
-    createGzipCompression
-} from "@webiny/api-elasticsearch";
+import elasticsearchClientContext, { createElasticsearchClient } from "@webiny/api-elasticsearch";
 import { createFileManagerContext, createFileManagerGraphQL } from "@webiny/api-file-manager";
 import { createFileManagerStorageOperations } from "@webiny/api-file-manager-ddb";
 import logsPlugins from "@webiny/handler-logs";
@@ -113,7 +110,6 @@ export const handler = createHandler({
                 elasticsearch: elasticsearchClient
             })
         }),
-        createGzipCompression(),
         createApwGraphQL(),
         createApwPageBuilderContext({
             storageOperations: createApwSaStorageOperations({ documentClient })
