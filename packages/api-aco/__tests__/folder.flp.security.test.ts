@@ -675,7 +675,7 @@ describe("Folder Level Permissions - Security Checks", () => {
         });
     });
 
-    it("as a `no-access` user, it should no be able to access the folder", async () => {
+    it("as a `no-access` user, it should not be able to access the folder", async () => {
         // Let's create a couple folder.
         const folderA = await acoIdentityA
             .createFolder({
