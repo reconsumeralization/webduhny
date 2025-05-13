@@ -5,7 +5,7 @@ import { createAppModule, PulumiApp, PulumiAppModule } from "@webiny/pulumi";
 
 import { createLambdaRole, getCommonLambdaEnvVariables } from "../lambdaUtils";
 import { CoreOutput, VpcConfig } from "../common";
-import { ApiGraphql } from "~/apps";
+import { ApiBackgroundTask, ApiGraphql } from "~/apps";
 import { LAMBDA_RUNTIME } from "~/constants";
 import { getEnvVariableAwsRegion } from "~/env/awsRegion";
 
@@ -16,6 +16,7 @@ export const ApiMigration = createAppModule({
     config(app: PulumiApp) {
         const core = app.getModule(CoreOutput);
         const graphql = app.getModule(ApiGraphql);
+        const backgroundTask = app.getModule(ApiBackgroundTask);
 
         const role = createLambdaRole(app, {
             name: "migration-lambda-role",
@@ -51,6 +52,35 @@ export const ApiMigration = createAppModule({
                     })) as Record<string, any>
                 },
                 vpcConfig: app.getModule(VpcConfig).functionVpcConfig
+            }
+        });
+
+        // Add IAM policy to allow states:StartExecution for the background task Step Function
+        const stepFunctionPolicy = app.addResource(aws.iam.Policy, {
+            name: "migration-lambda-step-function-policy",
+            config: {
+                policy: {
+                    Version: "2012-10-17",
+                    Statement: [
+                        {
+                            Effect: "Allow",
+                            Action: ["states:StartExecution"],
+                            Resource: [
+                                pulumi.interpolate`${backgroundTask.stepFunction.output.arn}`,
+                                pulumi.interpolate`${backgroundTask.stepFunction.output.arn}/*`
+                            ]
+                        }
+                    ]
+                }
+            }
+        });
+
+        // Attach policy to the Lambda role
+        app.addResource(aws.iam.RolePolicyAttachment, {
+            name: "migration-lambda-attach-step-function-policy",
+            config: {
+                role: role.output.name,
+                policyArn: stepFunctionPolicy.output.arn
             }
         });
 
