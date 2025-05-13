@@ -735,7 +735,7 @@ describe("Folder Level Permissions - Security Checks", () => {
             ]
         });
 
-        // The owner user should be able to see the newly created user, together with the `no-access` permission.
+        // The owner user should be able to see the newly created folder, together with the `no-access` permission.
         await expect(
             acoIdentityA.getFolder({ id: folderA.id }).then(([result]) => {
                 return result.data.aco.getFolder.data;
