@@ -6,12 +6,12 @@ import {
     insertDynamoDbTestData as insertTestData,
     logTestNameBeforeEachTest
 } from "~tests/utils";
-import { Flp_5_43_0_001 } from "~/migrations/5.43.0/001";
-import { insertTestFolders } from "./insertTestFolders";
-import { createLocalesData, createTenantsData } from "./common";
+import { Flp_5_43_0_001 } from "~/migrations/5.43.0/001/ddb";
+import { insertTestFolders } from "../insertTestFolders";
+import { createLocalesData, createTenantsData } from "../common";
 
-import { BackgroundTaskService } from "~/utils/BackgroundTaskService";
-jest.mock("~/utils/BackgroundTaskService", () => {
+import { StepFunctionService } from "@webiny/tasks/service/StepFunctionServicePlugin";
+jest.mock("@webiny/tasks/service/StepFunctionServicePlugin", () => {
     const sendMock = jest.fn().mockResolvedValue({
         tenant: "mockTenant",
         locale: "mockLocale",
@@ -21,15 +21,15 @@ jest.mock("~/utils/BackgroundTaskService", () => {
         input: { type: "*" }
     });
 
-    const BackgroundTaskService = jest.fn().mockImplementation(() => ({
+    const StepFunctionService = jest.fn().mockImplementation(() => ({
         send: sendMock
     }));
 
     // Explicitly mock the prototype's send method
-    BackgroundTaskService.prototype.send = sendMock;
+    StepFunctionService.prototype.send = sendMock;
 
     return {
-        BackgroundTaskService,
+        StepFunctionService,
         __esModule: true,
         sendMock // Export the mock for testing
     };
@@ -38,7 +38,7 @@ jest.mock("~/utils/BackgroundTaskService", () => {
 jest.retryTimes(0);
 jest.setTimeout(900000);
 
-describe("5.43.0-001", () => {
+describe("5.43.0-001 - DDB", () => {
     const table = getPrimaryDynamoDbTable();
 
     logTestNameBeforeEachTest();
@@ -103,14 +103,13 @@ describe("5.43.0-001", () => {
         expect(grouped.skipped.length).toBe(0);
         expect(grouped.notApplicable.length).toBe(0);
 
-        expect(BackgroundTaskService).toHaveBeenCalledWith(table);
-        expect(BackgroundTaskService.prototype.send).toHaveBeenCalledTimes(5);
-        expect(BackgroundTaskService.prototype.send).toHaveBeenCalledWith({
-            definitionId: "acoSyncFlp",
-            input: { type: "*" },
-            localeCode: expect.stringMatching(/^(en-US|fr-FR|de-DE)$/),
-            taskName: "5_43_0_001_sync_folder_flp",
-            tenantId: expect.stringMatching(/^(root|otherTenant)$/)
-        });
+        expect(StepFunctionService.prototype.send).toHaveBeenCalledTimes(5);
+        expect(StepFunctionService.prototype.send).toHaveBeenCalledWith(
+            {
+                definitionId: "acoSyncFlp",
+                id: expect.any(String)
+            },
+            0
+        );
     });
 });

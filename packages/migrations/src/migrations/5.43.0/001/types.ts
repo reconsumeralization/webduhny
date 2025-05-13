@@ -42,3 +42,12 @@ export interface CmsEntry<TValues = CmsEntryValues> {
         [key: string]: any;
     };
 }
+
+export interface TaskEntryEventPayload {
+    tenant: string;
+    locale: string;
+    id: string;
+    definitionId: string;
+    name: string;
+    input: Record<string, any>;
+}
