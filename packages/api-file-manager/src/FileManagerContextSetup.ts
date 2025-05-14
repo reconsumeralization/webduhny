@@ -14,7 +14,7 @@ import { CmsFilesStorage } from "~/cmsFileStorage/CmsFilesStorage";
 import { CmsModelModifierPlugin } from "~/modelModifier/CmsModelModifier";
 import { CmsModelPlugin, isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { FilesPermissions } from "~/createFileManager/permissions/FilesPermissions";
-import { SettingsPermissions } from "~/createFileManager/permissions/SettingsPermissions.js";
+import { SettingsPermissions } from "~/createFileManager/permissions/SettingsPermissions";
 
 export class FileManagerContextSetup {
     private readonly context: FileManagerContext;
