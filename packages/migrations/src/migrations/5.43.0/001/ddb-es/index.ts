@@ -256,7 +256,7 @@ export class Flp_5_43_0_001 implements DataMigration {
                 items: ddbItems
             });
 
-            batchWriteAll({
+            await batchWriteAll({
                 table: this.ddbEsEntryEntity.table,
                 items: ddbEsItems
             });
