@@ -1,7 +1,7 @@
 ## MH
 
 - revisit containerEvHandlers
-
+- prevent dragging of container and steps
 ## SH
 
 - edit field dialog still shows up twice? maybe related to bg save?
