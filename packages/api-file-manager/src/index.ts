@@ -1,10 +1,10 @@
 import { ContextPlugin } from "@webiny/api";
-import { FileManagerConfig } from "~/createFileManager";
-import { FileManagerContext } from "~/types";
+import type { FileManagerContext } from "~/types";
 import { FileManagerContextSetup } from "./FileManagerContextSetup";
-import { setupAssetDelivery, AssetDeliveryParams } from "./delivery/setupAssetDelivery";
+import { AssetDeliveryParams, setupAssetDelivery } from "./delivery/setupAssetDelivery";
 import { createGraphQLSchemaPlugin } from "./graphql";
 import { applyThreatScanning } from "./enterprise/applyThreatScanning";
+import type { FileManagerConfig } from "./createFileManager/types";
 
 export * from "./modelModifier/CmsModelModifier";
 export * from "./plugins";
