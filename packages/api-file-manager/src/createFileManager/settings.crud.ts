@@ -1,6 +1,6 @@
 import { createTopic } from "@webiny/pubsub";
-import { FileManagerSettings, SettingsCRUD } from "~/types";
-import { FileManagerConfig } from "~/createFileManager/index";
+import type { FileManagerSettings, SettingsCRUD } from "~/types";
+import type { FileManagerConfig } from "./types";
 import zod from "zod";
 import { createZodError } from "@webiny/utils";
 
@@ -51,8 +51,12 @@ const updateDataModelValidation = zod.object({
 
 export const createSettingsCrud = ({
     storageOperations,
-    getTenantId
-}: FileManagerConfig): SettingsCRUD => {
+    getTenantId,
+    settingsPermissions
+}: Pick<
+    FileManagerConfig,
+    "storageOperations" | "getTenantId" | "settingsPermissions"
+>): SettingsCRUD => {
     return {
         onSettingsBeforeUpdate: createTopic("fileManager.onSettingsBeforeUpdate"),
         onSettingsAfterUpdate: createTopic("fileManager.onSettingsAfterUpdate"),
@@ -60,6 +64,8 @@ export const createSettingsCrud = ({
             return storageOperations.settings.get({ tenant: getTenantId() });
         },
         async createSettings(data) {
+            await settingsPermissions.ensure();
+
             const results = createDataModelValidation.safeParse(data);
             if (!results.success) {
                 throw createZodError(results.error);
@@ -73,6 +79,7 @@ export const createSettingsCrud = ({
             });
         },
         async updateSettings(data) {
+            await settingsPermissions.ensure();
             const results = updateDataModelValidation.safeParse(data);
             if (!results.success) {
                 throw createZodError(results.error);
@@ -118,6 +125,7 @@ export const createSettingsCrud = ({
             return result;
         },
         async deleteSettings() {
+            await settingsPermissions.ensure();
             await storageOperations.settings.delete({ tenant: getTenantId() });
 
             return true;

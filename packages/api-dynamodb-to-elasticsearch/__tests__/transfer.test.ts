@@ -2,10 +2,9 @@ import { createEventHandler, OperationType } from "~/index";
 import { createElasticsearchClient } from "@webiny/project-utils/testing/elasticsearch/createClient";
 // @ts-expect-error
 import { createMockApiLog } from "@webiny/project-utils/testing/mockApiLog";
-import { ElasticsearchContext } from "@webiny/api-elasticsearch/types";
-import { Context, LambdaContext, Reply, Request } from "@webiny/handler-aws/types";
+import { LambdaContext, Reply, Request } from "@webiny/handler-aws/types";
 import { marshall } from "@webiny/aws-sdk/client-dynamodb";
-import { PluginsContainer } from "@webiny/plugins";
+import { createMockContext } from "~tests/mocks/context";
 
 describe("transfer data", () => {
     it("should transfer data from event to elasticsearch", async () => {
@@ -13,11 +12,11 @@ describe("transfer data", () => {
 
         const elasticsearch = createElasticsearchClient();
 
-        const context = {
+        const context = createMockContext({
             elasticsearch,
-            logger: createMockApiLog(),
-            plugins: new PluginsContainer()
-        } as unknown as ElasticsearchContext & Context;
+            logger: createMockApiLog()
+        });
+
         /**
          * Register index which is going to get created, so it can be deleted after the test.
          */

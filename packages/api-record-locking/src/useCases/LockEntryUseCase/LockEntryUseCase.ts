@@ -12,7 +12,7 @@ import type { IIsEntryLockedUseCase } from "~/abstractions/IIsEntryLocked";
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
 import { NotFoundError } from "@webiny/handler-graphql";
 import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
-import type { Security, SecurityIdentity } from "@webiny/api-security/types.js";
+import type { Security, SecurityIdentity } from "@webiny/api-security/types";
 
 export interface ILockEntryUseCaseParams {
     isEntryLockedUseCase: IIsEntryLockedUseCase;

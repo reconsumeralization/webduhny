@@ -28,10 +28,15 @@ export class CanAccessFolder implements ICanAccessFolder {
             return level === "owner";
         }
 
+        // If the user has a `no-access` level, they are explicitly denied access to the current folder.
+        if (level === "no-access") {
+            return false;
+        }
+
         // Checking for "write" or "delete" access. Allow only if the
-        // user is an owner or the folder is public (no FLP assigned).
+        // user is has `owner` or `editor` level or the folder is public (no FLP assigned).
         if (rwd !== "r") {
-            return level === "owner" || level === "public";
+            return level === "owner" || level === "editor" || level === "public";
         }
 
         return true;

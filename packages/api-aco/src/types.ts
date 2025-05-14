@@ -131,10 +131,12 @@ export interface IAcoApp {
 }
 // TODO: determine correct type
 export type IAcoAppOnEntry<T extends GenericSearchData = GenericSearchData> = (
-    entry: SearchRecord<T>
+    entry: SearchRecord<T>,
+    context: AcoContext
 ) => Promise<SearchRecord<T>>;
 export type IAcoAppOnEntryList<T extends GenericSearchData = GenericSearchData> = (
-    entry: SearchRecord<T>[]
+    entries: SearchRecord<T>[],
+    context: AcoContext
 ) => Promise<SearchRecord<T>[]>;
 export type AcoRequestAction = "create" | "update" | "delete" | "move" | "fetch";
 export type IAcoAppOnAnyRequest = (context: AcoContext, action: AcoRequestAction) => Promise<void>;

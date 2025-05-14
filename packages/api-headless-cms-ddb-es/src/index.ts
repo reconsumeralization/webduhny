@@ -15,10 +15,7 @@ import { createSystemEntity } from "~/definitions/system";
 import { createElasticsearchIndex } from "~/elasticsearch/createElasticsearchIndex";
 import { PluginsContainer } from "@webiny/plugins";
 import { createGroupsStorageOperations } from "~/operations/group";
-import {
-    CompressionPlugin,
-    ElasticsearchQueryBuilderOperatorPlugin
-} from "@webiny/api-elasticsearch";
+import { ElasticsearchQueryBuilderOperatorPlugin } from "@webiny/api-elasticsearch";
 import { elasticsearchIndexPlugins } from "./elasticsearch/indices";
 import { deleteElasticsearchIndex } from "./elasticsearch/deleteElasticsearchIndex";
 import {
@@ -36,6 +33,7 @@ import { CmsEntryFilterPlugin } from "~/plugins/CmsEntryFilterPlugin";
 import { StorageOperationsCmsModelPlugin, StorageTransformPlugin } from "@webiny/api-headless-cms";
 import { createElasticsearchIndexesOnLocaleAfterCreate } from "~/operations/system/indexes";
 import { createIndexTaskPluginTest } from "~/tasks/createIndexTaskPlugin";
+import { CompressorPlugin } from "@webiny/api";
 
 export * from "./plugins";
 
@@ -153,8 +151,6 @@ export const createStorageOperations: StorageOperationsFactory = params => {
              * This way we do not need to register plugins in the storage plugins contains.
              */
             const types: string[] = [
-                // Elasticsearch
-                CompressionPlugin.type,
                 ElasticsearchQueryBuilderOperatorPlugin.type,
                 // Headless CMS
                 "cms-model-field-to-graphql",
@@ -168,7 +164,8 @@ export const createStorageOperations: StorageOperationsFactory = params => {
                 CmsElasticsearchModelFieldPlugin.type,
                 StorageOperationsCmsModelPlugin.type,
                 StorageTransformPlugin.type,
-                CmsEntryElasticsearchValuesModifier.type
+                CmsEntryElasticsearchValuesModifier.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);
