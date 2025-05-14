@@ -21,7 +21,7 @@ import { PageTemplatesPermissions } from "~/graphql/crud/permissions/PageTemplat
 import { PageBlocksPermissions } from "~/graphql/crud/permissions/PageBlocksPermissions";
 import { GzipContentCompressionPlugin, JsonpackContentCompressionPlugin } from "~/plugins";
 import { createDataSourcesContext } from "~/dataSources/context/createDataSourcesContext";
-import { SettingsPermissions } from "~/graphql/crud/permissions/SettingsPermissions.js";
+import { SettingsPermissions } from "~/graphql/crud/permissions/SettingsPermissions";
 
 export interface CreateCrudParams {
     storageOperations: PageBuilderStorageOperations;
