@@ -45,7 +45,7 @@ export class Deployment implements IDeployment {
             case "log":
                 return {
                     name: this.services.logDynamodbTableName,
-                    arn: this.services.logDynamodbTableName,
+                    arn: this.services.logDynamodbTableArn,
                     type
                 };
             default:
