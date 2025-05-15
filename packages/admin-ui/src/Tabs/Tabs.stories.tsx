@@ -220,7 +220,6 @@ export const Documentation: Story = {
         spacing: "lg",
         separator: true,
         defaultValue: "account",
-        value: "account",
         tabs: [
             <Tabs.Tab
                 key={"account"}
