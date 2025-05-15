@@ -118,7 +118,7 @@ export class Flp_5_43_0_001 implements DataMigration {
                     getLocale: () => localeCode
                 });
 
-                const startTaskExecution = async () => async () => {
+                const startTaskExecution = async () => {
                     const result = await service.send(
                         {
                             definitionId: event.definitionId,
