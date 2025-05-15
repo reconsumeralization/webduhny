@@ -7,16 +7,26 @@ export const createPutCommandHandlerPlugin = () => {
             return command === "put";
         },
         handle: async params => {
+            const {
+                storer,
+                targetTable,
+                sourceTable,
+                targetDeployment,
+                sourceDeployment,
+                items,
+                bundle
+            } = params;
             const handler = new PutCommandHandler({
-                plugins: params.plugins,
-                fetcher: params.fetcher,
-                storer: params.storer
+                storer: storer
             });
 
             return handler.handle({
-                bundle: params.bundle,
-                table: params.table,
-                deployment: params.deployment
+                bundle,
+                targetTable,
+                targetDeployment,
+                sourceTable,
+                sourceDeployment,
+                items
             });
         }
     });

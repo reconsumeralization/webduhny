@@ -1,45 +1,56 @@
 import { Plugin } from "@webiny/plugins";
-import type { GenericRecord } from "@webiny/api/types.js";
-import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
-import { IRecordsDataDeploymentTable } from "../app/data/RecordsDataDeploymentTable.js";
+import type { ITable } from "~/sync/types.js";
+import type { IDeployment } from "~/resolver/deployment/types.js";
+import type { IStoreItem } from "~/resolver/app/storer/types.js";
 
-export interface ITransformRecordPluginConfigTransformCallableParams<
-    I = unknown,
-    O = GenericRecord
-> {
-    record: GenericRecord<string, I>;
-    deployment: IRecordsDataDeployment;
-    table: IRecordsDataDeploymentTable;
-    next: () => Promise<O>;
+export interface ITransformRecordPluginConfigTransformCallableParams {
+    record: IStoreItem;
+    sourceDeployment: IDeployment;
+    targetDeployment: IDeployment;
+    sourceTable: ITable;
+    targetTable: ITable;
+    next: () => Promise<IStoreItem>;
 }
 
-export interface ITransformRecordPluginConfigTransformCallable<I = unknown, O = GenericRecord> {
-    (params: ITransformRecordPluginConfigTransformCallableParams<I, O>): Promise<O>;
+export interface ITransformRecordPluginConfigCanTransformCallableParams {
+    from: Omit<IDeployment, "getTable">;
+    to: Omit<IDeployment, "getTable">;
 }
 
-export interface ITransformRecordPluginConfig<I = unknown, O = GenericRecord> {
-    transform: ITransformRecordPluginConfigTransformCallable<I, O>;
+export interface ITransformRecordPluginConfigCanTransformCallable {
+    (params: ITransformRecordPluginConfigCanTransformCallableParams): boolean;
 }
 
-export class TransformRecordPlugin<I = unknown, O = GenericRecord> extends Plugin {
+export interface ITransformRecordPluginConfigTransformCallable {
+    (params: ITransformRecordPluginConfigTransformCallableParams): Promise<IStoreItem>;
+}
+
+export interface ITransformRecordPluginConfig {
+    canTransform: ITransformRecordPluginConfigCanTransformCallable;
+    transform: ITransformRecordPluginConfigTransformCallable;
+}
+
+export class TransformRecordPlugin extends Plugin {
     public static override type: string = "syncSystem.transformRecordPlugin";
 
-    private readonly config: ITransformRecordPluginConfig<I, O>;
+    private readonly config: ITransformRecordPluginConfig;
 
-    public constructor(config: ITransformRecordPluginConfig<I, O>) {
+    public constructor(config: ITransformRecordPluginConfig) {
         super();
         this.config = config;
     }
 
-    public transform(params: ITransformRecordPluginConfigTransformCallableParams<I>): Promise<O> {
+    public canTransform(params: ITransformRecordPluginConfigCanTransformCallableParams): boolean {
+        return this.config.canTransform(params);
+    }
+
+    public transform(
+        params: ITransformRecordPluginConfigTransformCallableParams
+    ): Promise<IStoreItem> {
         return this.config.transform(params);
     }
 }
 
-export const createTransformRecordPlugin = <I = unknown, O = GenericRecord>(
-    transform: ITransformRecordPluginConfigTransformCallable<I, O>
-) => {
-    return new TransformRecordPlugin<I, O>({
-        transform
-    });
+export const createTransformRecordPlugin = (config: ITransformRecordPluginConfig) => {
+    return new TransformRecordPlugin(config);
 };

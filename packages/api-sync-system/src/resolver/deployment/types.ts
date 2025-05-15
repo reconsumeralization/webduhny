@@ -1,4 +1,6 @@
 import { DynamoDBTableType } from "~/types";
+import { SemVer } from "semver";
+import { ITable } from "~/sync/types";
 
 export interface IDeploymentServices {
     s3Id: string;
@@ -13,19 +15,14 @@ export interface IDeploymentServices {
     logDynamodbTableName: string;
 }
 
-export interface IDeploymentTable {
-    arn: string;
-    name: string;
-}
-
 export interface IDeployment {
     name: string;
     env: string;
     variant: string | undefined;
     region: string;
     services: IDeploymentServices;
-    version: string;
-    getTable(type: DynamoDBTableType): IDeploymentTable;
+    version: SemVer;
+    getTable(type: DynamoDBTableType): ITable;
 }
 
 export interface IDeployments {

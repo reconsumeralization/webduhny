@@ -46,6 +46,12 @@ export interface ICommand<Result extends ICommandValue = ICommandValue> {
     convert(input: IDynamoDbCommand): Result;
 }
 
+export interface ITable {
+    name: string;
+    arn: string;
+    type: DynamoDBTableType;
+}
+
 export interface ISystem {
     name: string;
     env: string;

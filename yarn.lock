@@ -14869,6 +14869,7 @@ __metadata:
     jest-dynalite: "npm:^3.6.1"
     lodash: "npm:^4.17.21"
     rimraf: "npm:^6.0.1"
+    semver: "npm:^7.6.3"
     typescript: "npm:5.3.3"
     zod: "npm:^3.23.8"
   languageName: unknown

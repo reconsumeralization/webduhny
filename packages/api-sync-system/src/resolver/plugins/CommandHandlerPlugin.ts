@@ -1,25 +1,12 @@
 import { Plugin } from "@webiny/plugins";
 import type { CommandType } from "~/types.js";
-import type {
-    IRecordsDataDeploymentTable,
-    IRecordsDataDeploymentTableBundle
-} from "~/resolver/app/data/RecordsDataDeploymentTable.js";
-import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
-import type { IFetcher } from "~/resolver/app/fetcher/types.js";
-import type { IStorer } from "~/resolver/app/storer/types.js";
-import type { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin.js";
-
-export interface ICommandHandlerPluginCallableParams {
-    deployment: IRecordsDataDeployment;
-    table: IRecordsDataDeploymentTable;
-    bundle: IRecordsDataDeploymentTableBundle;
-    fetcher: IFetcher;
-    storer: IStorer;
-    plugins: TransformRecordPlugin[];
-}
+import type { IStoreItem, IStorer } from "~/resolver/app/storer/types.js";
+import type { IDeployment } from "~/resolver/deployment/types.js";
+import type { ITable } from "~/sync/types.js";
+import type { IBundle } from "~/resolver/app/bundler/types.js";
 
 export interface ICommandHandlerPluginCallable {
-    (params: ICommandHandlerPluginCallableParams): Promise<void>;
+    (params: ICommandHandlerPluginHandleParams): Promise<void>;
 }
 
 export interface ICommandHandlerPluginCanHandleCallable {
@@ -27,12 +14,13 @@ export interface ICommandHandlerPluginCanHandleCallable {
 }
 
 export interface ICommandHandlerPluginHandleParams {
-    deployment: IRecordsDataDeployment;
-    table: IRecordsDataDeploymentTable;
-    bundle: IRecordsDataDeploymentTableBundle;
-    fetcher: IFetcher;
+    bundle: IBundle;
     storer: IStorer;
-    plugins: TransformRecordPlugin[];
+    items: IStoreItem[];
+    sourceDeployment: IDeployment;
+    sourceTable: ITable;
+    targetDeployment: IDeployment;
+    targetTable: ITable;
 }
 
 export interface ICommandHandlerPluginParams {
@@ -57,11 +45,12 @@ export class CommandHandlerPlugin extends Plugin {
     public async handle(params: ICommandHandlerPluginHandleParams): Promise<void> {
         return await this.config.handle({
             bundle: params.bundle,
-            deployment: params.deployment,
-            table: params.table,
-            fetcher: params.fetcher,
             storer: params.storer,
-            plugins: params.plugins
+            items: params.items,
+            sourceDeployment: params.sourceDeployment,
+            sourceTable: params.sourceTable,
+            targetDeployment: params.targetDeployment,
+            targetTable: params.targetTable
         });
     }
 }

@@ -1,7 +1,7 @@
-import type { IRecordsData } from "~/resolver/app/data/RecordsData.js";
+import type { IIngestorResult } from "~/resolver/app/ingestor/types.js";
 
 export interface IRecordHandlerHandleParams {
-    data: IRecordsData;
+    data: IIngestorResult;
 }
 
 export interface IRecordHandler {

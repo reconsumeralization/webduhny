@@ -9,6 +9,7 @@ import { createDeployments } from "./Deployments.js";
 import zod from "zod";
 import { createZodError } from "@webiny/utils/createZodError.js";
 import { createDeployment } from "~/resolver/deployment/Deployment.js";
+import { SemVer } from "semver";
 
 const deploymentsValidation = zod.array(
     zod.object({
@@ -99,7 +100,7 @@ export class DeploymentsFetcher implements IDeploymentsFetcher {
                 env: item.env,
                 variant: item.variant,
                 region: item.region,
-                version: item.version,
+                version: new SemVer(item.version),
                 services: {
                     s3Id: item.s3Id,
                     s3Arn: item.s3Arn,

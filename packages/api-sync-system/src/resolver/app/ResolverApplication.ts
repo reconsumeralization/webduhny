@@ -5,11 +5,9 @@ import type {
 import { createRecordsValidation } from "./RecordsValidation.js";
 import { convertException } from "@webiny/utils";
 import type { IRecordHandler } from "./abstractions/RecordHandler.js";
-import { createRecordsData } from "~/resolver/app/data/RecordsData.js";
-import { createRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
-import { createRecordsDataDeploymentTable } from "~/resolver/app/data/RecordsDataDeploymentTable.js";
-import { createRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
 import type { IDeployments } from "~/resolver/deployment/types.js";
+import { createIngestor } from "./ingestor/Ingestor.js";
+import { createIngestorResult } from "~/resolver/app/ingestor/IngestorResult.js";
 
 export interface IResolverApplicationParams {
     recordHandler: IRecordHandler;
@@ -33,32 +31,16 @@ export class ResolverApplication implements IResolverApplication {
             throw result.error;
         }
 
-        /**
-         * If needed, we can pass down system and table objects all the way to the item.
-         * TODO - determine if required to pass create functions - possibly for modifications?
-         */
-        const data = createRecordsData({
-            createRecordsDataDeployment: name => {
-                const deployment = this.deployments.get(name);
-                if (!deployment) {
-                    throw new Error(`Deployment "${name}" not found.`);
-                }
-                return createRecordsDataDeployment({
-                    deployment,
-                    createRecordsDataDeploymentTable: ({ name, type }) => {
-                        return createRecordsDataDeploymentTable({
-                            name,
-                            type,
-                            createRecordsDataDeploymentTableItem: ({ item }) => {
-                                return createRecordsDataDeploymentTableItem(item);
-                            }
-                        });
-                    }
-                });
+        const ingestor = createIngestor({
+            createIngestorResult: () => {
+                return createIngestorResult();
+            },
+            getSource: name => {
+                return this.deployments.get(name);
             }
         });
 
-        await data.ingest({
+        const data = await ingestor.ingest({
             records: result.records
         });
 

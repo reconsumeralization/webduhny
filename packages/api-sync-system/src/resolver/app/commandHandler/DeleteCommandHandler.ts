@@ -1,46 +1,48 @@
-import type { IRecordsDataDeployment } from "~/resolver/app/data/RecordsDataDeployment.js";
-import type {
-    IRecordsDataDeploymentTable,
-    IRecordsDataDeploymentTableBundle
-} from "~/resolver/app/data/RecordsDataDeploymentTable.js";
-import type { IFetcher } from "../fetcher/types";
-import type { IStorer } from "../storer/types";
+import type { IStoreItem, IStorer } from "../storer/types";
+import type { IDeployment } from "~/resolver/deployment/types.js";
+import type { ITable } from "~/sync/types.js";
+import type { IBundle } from "~/resolver/app/bundler/types.js";
 
 export interface IDeleteCommandHandlerHandleParams {
-    deployment: IRecordsDataDeployment;
-    table: IRecordsDataDeploymentTable;
-    bundle: IRecordsDataDeploymentTableBundle;
+    sourceDeployment: IDeployment;
+    sourceTable: ITable;
+    targetDeployment: IDeployment;
+    targetTable: ITable;
+    items: IStoreItem[];
+    bundle: IBundle;
 }
 
 export interface IDeleteCommandHandlerParams {
-    fetcher: IFetcher;
     storer: IStorer;
 }
 
 export class DeleteCommandHandler {
-    private readonly fetcher: IFetcher;
     private readonly storer: IStorer;
 
     public constructor(params: IDeleteCommandHandlerParams) {
-        this.fetcher = params.fetcher;
         this.storer = params.storer;
     }
-    public async handle(config: IDeleteCommandHandlerHandleParams): Promise<void> {
-        const { deployment, table, bundle } = config;
+    public async handle(params: IDeleteCommandHandlerHandleParams): Promise<void> {
+        const { targetDeployment, targetTable, items, bundle } = params;
 
-        const { items } = await this.fetcher.exec({ deployment, table, bundle });
+        const result = items
+            .map(item => {
+                if (!item.PK || !item.SK) {
+                    return null;
+                }
+                return {
+                    PK: item.PK,
+                    SK: item.SK
+                };
+            })
+            .filter((item): item is IStoreItem => {
+                return !item;
+            });
 
-        const result = items.map(item => {
-            return {
-                PK: item.PK,
-                SK: item.SK
-            };
-        });
-
-        await this.storer.exec({
-            deployment,
-            table,
+        await this.storer.store({
+            deployment: targetDeployment,
             bundle,
+            table: targetTable,
             items: result
         });
     }

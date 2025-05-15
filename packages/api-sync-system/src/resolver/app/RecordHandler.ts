@@ -3,31 +3,48 @@ import { CommandHandlerPlugin } from "../plugins/CommandHandlerPlugin.js";
 import { convertException } from "@webiny/utils";
 import type { CommandType } from "~/types.js";
 import type { PluginsContainer } from "@webiny/plugins";
-import { TransformRecordPlugin } from "../plugins/TransformRecordPlugin.js";
 import type { IFetcher } from "~/resolver/app/fetcher/types.js";
-import type { IStorer } from "~/resolver/app/storer/types.js";
+import type { IStoreItem, IStorer } from "~/resolver/app/storer/types.js";
+import type { IBundle, IBundler } from "~/resolver/app/bundler/types.js";
+import { SourceDataContainer } from "~/resolver/app/data/SourceDataContainer.js";
+import type { IDeployment, IDeployments } from "~/resolver/deployment/types.js";
+import type { ITransformHandler } from "~/resolver/app/transform/TransformHandler.js";
+import type { ITable } from "~/sync/types.js";
 
 export interface IRecordHandlerParams {
     fetcher: IFetcher;
     storer: IStorer;
     plugins: PluginsContainer;
+    commandBundler: IBundler;
+    tableBundler: IBundler;
+    deployments: IDeployments;
+    transformHandler: ITransformHandler;
+}
+
+interface IFindTargetTableParams {
+    bundle: IBundle;
+    targetDeployment: IDeployment;
 }
 
 export class RecordHandler implements IRecordHandler {
     private readonly plugins: PluginsContainer;
     private readonly commandHandlerPlugins: CommandHandlerPlugin[];
-    private readonly transformRecordPlugins: TransformRecordPlugin[];
     private readonly fetcher: IFetcher;
     private readonly storer: IStorer;
+    private readonly commandBundler: IBundler;
+    private readonly tableBundler: IBundler;
+    private readonly deployments: IDeployments;
+    private readonly transformHandler: ITransformHandler;
 
     public constructor(params: IRecordHandlerParams) {
         this.plugins = params.plugins;
         this.fetcher = params.fetcher;
         this.storer = params.storer;
+        this.commandBundler = params.commandBundler;
+        this.tableBundler = params.tableBundler;
+        this.deployments = params.deployments;
+        this.transformHandler = params.transformHandler;
 
-        this.transformRecordPlugins = this.plugins.byType<TransformRecordPlugin>(
-            TransformRecordPlugin.type
-        );
         this.commandHandlerPlugins = this.plugins.byType<CommandHandlerPlugin>(
             CommandHandlerPlugin.type
         );
@@ -36,44 +53,133 @@ export class RecordHandler implements IRecordHandler {
     public async handle(params: IRecordHandlerHandleParams): Promise<void> {
         const { data } = params;
 
-        const deployments = data.getDeployments();
-        for (const deployment of deployments) {
+        const sources = this.tableBundler.bundle({
+            items: data.getItems()
+        });
+
+        const container = SourceDataContainer.create();
+
+        for (const bundle of sources.getBundles()) {
             /**
              * Need to fetch all the records from the source deployment tables.
              */
-            const items = await this.fetcher.exec({
-                deployment,
+            const { items, error } = await this.fetcher.exec({
+                deployment: bundle.source,
+                table: bundle.table,
+                items: bundle.items,
                 maxBatchSize: 25,
                 maxRetries: 10,
                 retryDelay: 1000
             });
-
-            const tables = deployment.getTables();
-            for (const table of tables) {
-                table.assignItems(items);
-                /**
-                 * We will handle the records in bundles.
-                 */
-                const bundles = table.bundle();
-
-                for (const bundle of bundles) {
-                    try {
-                        const commandHandler = this.getCommandHandler(bundle.command);
-                        await commandHandler.handle({
-                            deployment,
-                            table,
-                            bundle,
-                            plugins: this.transformRecordPlugins,
-                            storer: this.storer,
-                            fetcher: this.fetcher
-                        });
-                    } catch (ex) {
-                        console.error("Could not handle a bundle.");
-                        console.log(convertException(ex));
-                        // TODO determine what should we do with the error.
-                    }
-                }
+            if (error) {
+                console.error(
+                    `Could not fetch records from the source table (${bundle.source.name} / ${bundle.table.name}). More info in next log line.`
+                );
+                console.log(convertException(error));
+                continue;
             }
+            container.merge(items);
+
+            // const bundles = deployment.createBundles({
+            //     items
+            // });
+            //
+            // const tables = deployment.getTables();
+            // for (const table of tables) {
+            //     table.assignItems(items);
+            //     /**
+            //      * We will handle the records in bundles.
+            //      */
+            //     const bundles = table.bundle();
+            //
+            //     for (const bundle of bundles) {
+            //         try {
+            //             const commandHandler = this.getCommandHandler(bundle.command);
+            //             await commandHandler.handle({
+            //                 deployment,
+            //                 table,
+            //                 bundle,
+            //                 plugins: this.transformRecordPlugins,
+            //                 storer: this.storer,
+            //                 fetcher: this.fetcher
+            //             });
+            //         } catch (ex) {
+            //             console.error("Could not handle a bundle.");
+            //             console.log(convertException(ex));
+            //             // TODO determine what should we do with the error.
+            //         }
+            //     }
+            // }
+        }
+        /**
+         * We can now handle the records by going through all the items bundled by command, in correct order.
+         */
+        const bundlesByCommand = this.commandBundler.bundle({
+            items: data.getItems()
+        });
+        for (const bundle of bundlesByCommand.getBundles()) {
+            const deployments = this.deployments.without(bundle.source);
+            for (const targetDeployment of deployments.all()) {
+                const input = bundle.items
+                    .map(item => {
+                        const result = container.get({
+                            PK: item.PK,
+                            SK: item.SK,
+                            table: bundle.table,
+                            source: bundle.source
+                        });
+
+                        return result?.data;
+                    })
+                    .filter((item): item is IStoreItem => !!item);
+
+                const targetTable = this.findTargetTable({
+                    bundle,
+                    targetDeployment
+                });
+                if (!targetTable) {
+                    console.error(
+                        `Could not find target table for source table "${bundle.table.name}" in deployment "${bundle.source.name}".`
+                    );
+                    continue;
+                }
+
+                const { items } = await this.transformHandler.transform({
+                    items: input,
+                    sourceDeployment: bundle.source,
+                    sourceTable: bundle.table,
+                    targetDeployment: targetDeployment,
+                    targetTable: targetTable
+                });
+
+                let commandHandler: CommandHandlerPlugin;
+                try {
+                    commandHandler = this.getCommandHandler(bundle.command);
+                } catch (ex) {
+                    console.error(ex.message);
+                    continue;
+                }
+
+                await commandHandler.handle({
+                    bundle,
+                    storer: this.storer,
+                    items,
+                    sourceDeployment: bundle.source,
+                    sourceTable: bundle.table,
+                    targetDeployment: targetDeployment,
+                    targetTable: targetTable
+                });
+            }
+        }
+    }
+
+    private findTargetTable(params: IFindTargetTableParams): ITable | null {
+        const { bundle, targetDeployment } = params;
+
+        try {
+            return targetDeployment.getTable(bundle.table.type);
+        } catch (ex) {
+            return null;
         }
     }
 

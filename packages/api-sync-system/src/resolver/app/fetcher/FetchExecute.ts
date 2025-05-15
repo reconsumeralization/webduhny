@@ -1,9 +1,12 @@
 import type { GenericRecord } from "@webiny/api/types";
 import { BatchGetCommand, type DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import lodashChunk from "lodash/chunk";
-import type { IRecordsDataDeploymentTableItem } from "~/resolver/app/data/RecordsDataDeploymentTableItem.js";
 import { convertException } from "@webiny/utils";
-import { IFetchExecute, type IFetchExecuteExecuteParams } from "./types";
+import {
+    IFetchExecute,
+    type IFetchExecuteExecuteParams,
+    type IFetchExecuteExecuteParamsItem
+} from "./types";
 
 export interface IFetchExecuteParams {
     maxBatchSize?: number;
@@ -40,8 +43,8 @@ export class FetchExecute implements IFetchExecute {
     }
 
     public async execute<T = GenericRecord>(params: IFetchExecuteExecuteParams) {
-        const { client, table, bundle } = params;
-        const batches = lodashChunk(bundle.items, this.maxBatchSize);
+        const { client, table, records: items } = params;
+        const batches = lodashChunk(items, this.maxBatchSize);
 
         const results: T[] = [];
         for (const batch of batches) {
@@ -102,7 +105,7 @@ export class FetchExecute implements IFetchExecute {
         });
     }
 
-    private getKeys(items: IRecordsDataDeploymentTableItem[]): IKeys[] {
+    private getKeys(items: IFetchExecuteExecuteParamsItem[]): IKeys[] {
         return items.map(item => {
             return {
                 PK: item.PK,

@@ -1,49 +1,98 @@
 import type { IStorer, IStorerExecParams } from "./types";
-import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
-import type { IDeployment, IDeployments } from "~/resolver/deployment/types.js";
-import { createStoreExecute } from "~/resolver/app/storer/StoreExecute.js";
+import { BatchWriteCommand, type DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import type { IDeployment } from "~/resolver/deployment/types.js";
+import { convertException } from "@webiny/utils/exception.js";
+import lodashChunk from "lodash/chunk";
 
 export interface IStorerParamsCreateDocumentClientCallable {
     (deployment: Pick<IDeployment, "region">): Pick<DynamoDBDocument, "send">;
 }
 
 export interface IStorerParams {
+    maxBatchSize?: number;
+    maxRetries?: number;
+    retryDelay?: number;
     createDocumentClient: IStorerParamsCreateDocumentClientCallable;
-    deployments: IDeployments;
 }
 
 export class Storer implements IStorer {
+    private readonly maxBatchSize: number;
+    private readonly maxRetries: number;
+    private readonly retryDelay: number;
+    private retryCount = 0;
     private readonly createDocumentClient: IStorerParamsCreateDocumentClientCallable;
-    private readonly deployments: IDeployments;
 
     public constructor(params: IStorerParams) {
+        this.maxBatchSize = params.maxBatchSize || 25;
+        this.maxRetries = params.maxRetries || 10;
+        this.retryDelay = params.retryDelay || 1000;
         this.createDocumentClient = params.createDocumentClient;
-        this.deployments = params.deployments;
     }
 
-    public async exec(params: IStorerExecParams): Promise<void> {
+    public async store(params: IStorerExecParams): Promise<void> {
         const { deployment, table, bundle, items } = params;
+        const client = this.createDocumentClient({
+            region: deployment.region
+        });
 
-        const deployments = this.deployments.without(deployment.deployment);
-        if (deployments.hasAny() === false) {
-            console.error("No deployments found which need to be synced.");
-            console.log("Please check your deployed and connected deployments.");
-            return;
-        }
-        const storeExecute = createStoreExecute({});
+        const batches = lodashChunk(items, this.maxBatchSize);
 
-        for (const deployment of deployments.all()) {
-            const client = this.createDocumentClient({
-                region: deployment.region
-            });
-            await storeExecute.execute({
-                deployment,
-                table: table.name,
-                bundle,
-                items,
-                client
-            });
+        const requestType = bundle.command === "delete" ? "DeleteRequest" : "PutRequest";
+        const requestTypeKey = bundle.command === "delete" ? "Key" : "Item";
+
+        for (const batch of batches) {
+            let cmd: BatchWriteCommand | undefined = undefined;
+            this.resetRetries();
+            do {
+                cmd = new BatchWriteCommand({
+                    RequestItems: {
+                        [table.name]: batch.map(item => {
+                            return {
+                                [requestType]: {
+                                    [requestTypeKey]: item
+                                }
+                            };
+                        })
+                    }
+                });
+                try {
+                    const result = await client.send(cmd);
+
+                    if (!result.UnprocessedItems?.[table.name]) {
+                        cmd = undefined;
+                        this.resetRetries();
+                        continue;
+                    }
+                    cmd = new BatchWriteCommand({
+                        RequestItems: result.UnprocessedItems
+                    });
+                } catch (ex) {
+                    if (this.retryCount < this.maxRetries) {
+                        await this.waitRetry();
+                        continue;
+                    }
+                    console.error("Error executing batch write command.");
+                    console.log(convertException(ex));
+                    throw new Error("Batch write command failed");
+                }
+            } while (cmd);
         }
+    }
+    private async sleep(): Promise<void> {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, this.retryDelay);
+        });
+    }
+
+    private async waitRetry(): Promise<void> {
+        this.retryCount++;
+        return await this.sleep();
+    }
+
+    private resetRetries(): void {
+        this.retryCount = 0;
     }
 }
 

@@ -10,6 +10,11 @@ import type {
     DynamoDBClientConfig,
     DynamoDBDocument
 } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import { createBundler } from "~/resolver/app/bundler/Bundler.js";
+import { createBundles } from "~/resolver/app/bundler/Bundles.js";
+import { createCommandBundle } from "~/resolver/app/bundler/CommandBundle.js";
+import { createTableBundle } from "~/resolver/app/bundler/TableBundle.js";
+import { TransformHandler } from "~/resolver/app/transform/TransformHandler.js";
 
 export interface ICreateEventHandlerPluginParams {
     tableName: string | undefined;
@@ -46,17 +51,37 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
             const deployments = await deploymentsFetcher.fetch();
 
             const storer = createStorer({
-                deployments,
                 createDocumentClient: deployment => {
                     return createDocumentClient({
                         region: deployment.region
                     });
                 }
             });
+
+            const transformHandler = new TransformHandler({
+                plugins: context.plugins
+            });
+
             const recordHandler = createRecordHandler({
                 plugins: context.plugins,
                 fetcher,
-                storer
+                storer,
+                deployments,
+                transformHandler,
+                commandBundler: createBundler({
+                    createBundles: () => {
+                        return createBundles({
+                            createBundle: createCommandBundle
+                        });
+                    }
+                }),
+                tableBundler: createBundler({
+                    createBundles: () => {
+                        return createBundles({
+                            createBundle: createTableBundle
+                        });
+                    }
+                })
             });
             const app = createResolverApp({
                 recordHandler,
