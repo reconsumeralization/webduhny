@@ -1,6 +1,11 @@
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { PutCommand } from "@webiny/aws-sdk/client-dynamodb";
 import type { IDeployment } from "~/resolver/deployment/types.js";
+import { Deployment } from "~/resolver/deployment/Deployment.js";
+import { SemVer } from "semver";
+import { version } from "@webiny/cli/package.json";
+
+const currentVersion = new SemVer(version);
 
 export interface ICreateDeploymentParams {
     client: DynamoDBDocument;
@@ -19,7 +24,10 @@ export const storeDeployment = async (params: ICreateDeploymentParams) => {
                 SK: `default`,
                 GSI1_PK: "DEPLOYMENTS",
                 GSI1_SK: `${item.env}#${item.variant || "unknown"}`,
-                item
+                item: {
+                    ...item,
+                    version: item.version ? item.version.format() : undefined
+                }
             }
         })
     );
@@ -30,7 +38,7 @@ export interface ICreateMockDeploymentItem {
     env: string;
     variant?: string;
     region: string;
-    version: string;
+    version: SemVer;
     s3Id: string;
     s3Arn: string;
     primaryDynamoDbArn: string;
@@ -39,6 +47,8 @@ export interface ICreateMockDeploymentItem {
     primaryDynamoDbRangeKey: string;
     elasticsearchDynamodbTableArn?: string;
     elasticsearchDynamodbTableName?: string;
+    logDynamodbTableArn: string;
+    logDynamodbTableName: string;
 }
 
 export const createMockDeploymentData = (item: Partial<ICreateMockDeploymentItem> = {}) => {
@@ -47,7 +57,7 @@ export const createMockDeploymentData = (item: Partial<ICreateMockDeploymentItem
         env: "test",
         variant: "test",
         region: "us-east-1",
-        version: "0.0.0",
+        version: currentVersion,
         s3Id: "s3Id",
         s3Arn: "s3Arn",
         primaryDynamoDbArn: "primaryDynamoDbArn",
@@ -56,6 +66,8 @@ export const createMockDeploymentData = (item: Partial<ICreateMockDeploymentItem
         primaryDynamoDbRangeKey: "primaryDynamoDbRangeKey",
         elasticsearchDynamodbTableArn: "elasticsearchDynamodbTableArn",
         elasticsearchDynamodbTableName: "elasticsearchDynamodbTableName",
+        logDynamodbTableArn: "logDynamodbTableArn",
+        logDynamodbTableName: "logDynamodbTableName",
         ...item
     };
 };
@@ -64,10 +76,20 @@ export const createMockDeployment = (
     input: Partial<ICreateMockDeploymentItem> = {}
 ): IDeployment => {
     const item = createMockDeploymentData(input);
-    return {
+
+    return new Deployment({
         ...item,
         services: {
-            ...item
+            s3Id: item.s3Id,
+            s3Arn: item.s3Arn,
+            primaryDynamoDbArn: item.primaryDynamoDbArn,
+            primaryDynamoDbName: item.primaryDynamoDbName,
+            primaryDynamoDbHashKey: item.primaryDynamoDbHashKey,
+            primaryDynamoDbRangeKey: item.primaryDynamoDbRangeKey,
+            elasticsearchDynamodbTableArn: item.elasticsearchDynamodbTableArn,
+            elasticsearchDynamodbTableName: item.elasticsearchDynamodbTableName,
+            logDynamodbTableArn: item.logDynamodbTableArn,
+            logDynamodbTableName: item.logDynamodbTableName
         }
-    };
+    });
 };

@@ -4,7 +4,7 @@ import { createMockSystem } from "~tests/mocks/system.js";
 
 export const createMockSQSEventRecord = (input: Partial<SQSRecord> = {}): SQSRecord => {
     const attributes: SQSRecordAttributes = {
-        AWSTraceHeader: "tracerHeade",
+        AWSTraceHeader: "tracerHeader",
         ApproximateReceiveCount: "0",
         SentTimestamp: "1234",
         SenderId: "1234",
