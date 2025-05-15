@@ -8,6 +8,7 @@
     { "path": "../aws-sdk" },
     { "path": "../error" },
     { "path": "../handler-aws" },
+    { "path": "../utils" },
     { "path": "../plugins" }
   ],
   "compilerOptions": {
@@ -29,6 +30,8 @@
       "@webiny/error": ["../error/src"],
       "@webiny/handler-aws/*": ["../handler-aws/src/*"],
       "@webiny/handler-aws": ["../handler-aws/src"],
+      "@webiny/utils/*": ["../utils/src/*"],
+      "@webiny/utils": ["../utils/src"],
       "@webiny/plugins/*": ["../plugins/src/*"],
       "@webiny/plugins": ["../plugins/src"]
     },

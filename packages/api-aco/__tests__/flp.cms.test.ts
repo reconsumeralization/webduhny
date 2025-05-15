@@ -6,7 +6,7 @@ const identityA: SecurityIdentity = { id: "1", type: "admin", displayName: "A" }
 const identityB: SecurityIdentity = { id: "2", type: "admin", displayName: "B" };
 const identityC: SecurityIdentity = { id: "3", type: "admin", displayName: "C" };
 
-describe("Folder Level Permissions - File Manager GraphQL API", () => {
+describe("Folder Level Permissions - CMS GraphQL API", () => {
     const gqlIdentityA = useGraphQlHandler({ identity: identityA });
 
     test.todo("as a user without FM permissions, I should not be able to CRUD content");
@@ -301,6 +301,137 @@ describe("Folder Level Permissions - File Manager GraphQL API", () => {
                         return response.data.deleteBasicTestModel;
                     })
             ).resolves.toMatchObject({ data: true, error: null });
+        }
+    });
+
+    test("as a user, I should not be able to CRUD content in an inaccessible folder (no-access level)", async () => {
+        const gqlIdentityA = useGraphQlHandler({ identity: identityA });
+        const gqlIdentityB = useGraphQlHandler({
+            identity: identityB,
+            permissions: [{ name: "cms.*" }]
+        });
+        const modelGroup = await gqlIdentityA.cms.createTestModelGroup();
+        const model = await gqlIdentityA.cms.createBasicModel({ modelGroup: modelGroup.id });
+
+        const folder = await gqlIdentityA.aco
+            .createFolder({
+                data: {
+                    title: "Folder A",
+                    slug: "folder-a",
+                    type: `cms:${model.modelId}`
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        const entries = [];
+        for (let i = 1; i <= 4; i++) {
+            entries.push(
+                await gqlIdentityA.cms
+                    .createEntry(model, {
+                        data: {
+                            title: `Test-${i}`,
+                            wbyAco_location: {
+                                folderId: folder.id
+                            }
+                        }
+                    })
+                    .then(([response]) => {
+                        return response.data.createBasicTestModel.data;
+                    })
+            );
+        }
+
+        // Identity B (role `no-access`) cannot access the folder or CRUD entries inside it.
+        await gqlIdentityA.aco.updateFolder({
+            id: folder.id,
+            data: {
+                permissions: [
+                    {
+                        target: `admin:${identityB.id}`,
+                        level: "no-access"
+                    }
+                ]
+            }
+        });
+
+        // Getting content in the folder should be forbidden for identity B.
+        for (let i = 0; i < entries.length; i++) {
+            const createdEntry = entries[i];
+            await expectNotAuthorized(
+                gqlIdentityB.cms
+                    .getEntry(model, { revision: createdEntry.id })
+                    .then(([response]) => {
+                        return response.data.getBasicTestModel;
+                    })
+            );
+        }
+
+        // Listing content in the folder should be forbidden for identity B.
+        await expect(
+            gqlIdentityB.cms
+                .listEntries(model, {
+                    where: {
+                        wbyAco_location: {
+                            folderId: folder.id
+                        }
+                    }
+                })
+                .then(([response]) => {
+                    return response.data.listBasicTestModels;
+                })
+        ).resolves.toEqual({
+            data: [],
+            error: null,
+            meta: {
+                cursor: null,
+                hasMoreItems: false,
+                totalCount: 0
+            }
+        });
+
+        // Creating content in the folder should be forbidden for identity B.
+        await expectNotAuthorized(
+            gqlIdentityB.cms
+                .createEntry(model, {
+                    data: {
+                        title: `Test-5`,
+                        wbyAco_location: {
+                            folderId: folder.id
+                        }
+                    }
+                })
+                .then(([response]) => {
+                    return response.data.createBasicTestModel;
+                })
+        );
+
+        // Updating content in the folder should be forbidden for identity B.
+        for (let i = 0; i < entries.length; i++) {
+            const createdEntry = entries[i];
+            await expectNotAuthorized(
+                gqlIdentityB.cms
+                    .updateEntry(model, {
+                        revision: createdEntry.id,
+                        data: { title: createdEntry.title + "-update" }
+                    })
+                    .then(([response]) => {
+                        return response.data.updateBasicTestModel;
+                    })
+            );
+        }
+
+        // Deleting a file in the folder should be forbidden for identity C.
+        for (let i = 0; i < entries.length; i++) {
+            const createdEntry = entries[i];
+            await expectNotAuthorized(
+                gqlIdentityB.cms
+                    .deleteEntry(model, { revision: createdEntry.id })
+                    .then(([response]) => {
+                        return response.data.deleteBasicTestModel;
+                    })
+            );
         }
     });
 

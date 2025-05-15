@@ -9,7 +9,7 @@ import type { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase
 import { createLockRecordDatabaseId } from "~/utils/lockRecordDatabaseId";
 import { createIdentifier } from "@webiny/utils";
 import type { ConvertEntryToLockRecordCb } from "~/useCases/types";
-import type { Security } from "@webiny/api-security/types.js";
+import type { Security } from "@webiny/api-security/types";
 
 export interface IUnlockEntryRequestUseCaseParams {
     getLockRecordUseCase: IGetLockRecordUseCase;

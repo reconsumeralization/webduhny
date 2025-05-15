@@ -8,7 +8,7 @@ import {
 export { CmsIdentity } from "@webiny/app-headless-cms-common/types";
 export * from "~/graphql/records/types";
 export * from "~/table.types";
-export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
+export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
 
 export interface FolderPermission {
     target: `admin:${string}` | `team:${string}`;

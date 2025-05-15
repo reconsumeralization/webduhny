@@ -1,5 +1,5 @@
 import { createHandler } from "@webiny/handler-aws";
-import elasticsearchClientContextPlugin, { createGzipCompression } from "@webiny/api-elasticsearch";
+import elasticsearchClientContextPlugin from "@webiny/api-elasticsearch";
 import { createEventHandler } from "@webiny/api-dynamodb-to-elasticsearch";
 import { getDocumentClient } from "@webiny/aws-sdk/client-dynamodb";
 import { createLogger } from "@webiny/api-log";
@@ -20,7 +20,6 @@ export const handler = createHandler({
         elasticsearchClientContextPlugin({
             endpoint: `https://${process.env.ELASTIC_SEARCH_ENDPOINT}`
         }),
-        createGzipCompression(),
         createEventHandler()
     ],
     options: {

@@ -251,14 +251,13 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
             });
 
             const cloudfront = app.addModule(ApiCloudfront);
+            const backgroundTask = app.addModule(ApiBackgroundTask);
             const migration = app.addModule(ApiMigration);
 
             const domains = app.getParam(projectAppParams.domains);
             if (domains) {
                 applyCustomDomain(cloudfront, domains);
             }
-
-            const backgroundTask = app.addModule(ApiBackgroundTask);
 
             app.addOutputs({
                 region: aws.config.region,

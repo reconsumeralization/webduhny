@@ -2,7 +2,7 @@ import { Topic } from "@webiny/pubsub/types";
 import { ITaskRunParams } from "@webiny/tasks/types";
 import { type AcoContext, type Folder } from "~/types";
 
-export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
+export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
 
 export interface FolderPermission {
     target: string;

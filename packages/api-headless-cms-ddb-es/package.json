@@ -37,7 +37,6 @@
     "@webiny/plugins": "0.0.0",
     "@webiny/utils": "0.0.0",
     "dataloader": "^2.2.2",
-    "jsonpack": "^1.1.5",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

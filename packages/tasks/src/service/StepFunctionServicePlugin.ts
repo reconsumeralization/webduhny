@@ -1,19 +1,15 @@
-import {
-    ITaskService,
-    ITaskServiceCreatePluginParams,
-    ITaskServiceTask,
-    TaskServicePlugin
-} from "~/plugins";
+import type { ITaskService, ITaskServiceCreatePluginParams, ITaskServiceTask } from "~/plugins";
+import { TaskServicePlugin } from "~/plugins";
 import {
     createStepFunctionClient,
     DescribeExecutionCommandOutput,
     describeExecutionFactory,
     triggerStepFunctionFactory
 } from "@webiny/aws-sdk/client-sfn";
-import { ITaskEventInput } from "~/handler/types";
+import type { ITaskEventInput } from "~/handler/types";
 import { generateAlphaNumericId } from "@webiny/utils";
 import { ServiceDiscovery } from "@webiny/api";
-import { ITask } from "~/types";
+import type { ITask } from "~/types";
 
 export type IStepFunctionServiceFetchResult = DescribeExecutionCommandOutput;
 
@@ -21,7 +17,7 @@ export interface IDetailWrapper<T> {
     detail: T;
 }
 
-class StepFunctionService implements ITaskService {
+export class StepFunctionService implements ITaskService {
     private readonly getTenant: () => string;
     private readonly getLocale: () => string;
     private readonly trigger: ReturnType<typeof triggerStepFunctionFactory>;

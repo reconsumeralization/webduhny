@@ -289,6 +289,111 @@ describe("Folder Level Permissions - File Manager GraphQL API", () => {
         }
     });
 
+    test("as a user, I should not be able to CRUD files in an inaccessible folder (no-access level)", async () => {
+        const folder = await gqlIdentityA.aco
+            .createFolder({
+                data: {
+                    title: "Folder A",
+                    slug: "folder-a",
+                    type: FOLDER_TYPE
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        const createdFiles = [];
+        for (let i = 1; i <= 4; i++) {
+            createdFiles.push(
+                await gqlIdentityA.fm
+                    .createFile({
+                        data: createSampleFileData({
+                            location: { folderId: folder.id }
+                        })
+                    })
+                    .then(([response]) => {
+                        return response.data.fileManager.createFile.data;
+                    })
+            );
+        }
+
+        // Let's update the folder: identity A assigns `no-access` level to identity B
+        await gqlIdentityA.aco.updateFolder({
+            id: folder.id,
+            data: {
+                permissions: [
+                    {
+                        target: `admin:${identityB.id}`,
+                        level: "no-access"
+                    }
+                ]
+            }
+        });
+
+        // Getting files in the folder should be forbidden for identity B.
+        for (let i = 0; i < createdFiles.length; i++) {
+            const createdFile = createdFiles[i];
+            await expectNotAuthorized(
+                gqlIdentityB.fm.getFile({ id: createdFile.id }).then(([response]) => {
+                    return response.data.fileManager.getFile;
+                })
+            );
+        }
+
+        // Listing files in the folder should be forbidden for identity B.
+        await expect(
+            gqlIdentityB.fm.listFiles().then(([response]) => {
+                return response.data.fileManager.listFiles;
+            })
+        ).resolves.toEqual({
+            data: [],
+            error: null,
+            meta: {
+                cursor: null,
+                hasMoreItems: false,
+                totalCount: 0
+            }
+        });
+
+        // Creating a file in the folder should be forbidden for identity B.
+        await expectNotAuthorized(
+            gqlIdentityB.fm
+                .createFile({
+                    data: createSampleFileData({
+                        location: { folderId: folder.id }
+                    })
+                })
+                .then(([response]) => {
+                    return response.data.fileManager.createFile;
+                })
+        );
+
+        // Updating a file in the folder should be forbidden for identity B.
+        for (let i = 0; i < createdFiles.length; i++) {
+            const createdFile = createdFiles[i];
+            await expectNotAuthorized(
+                gqlIdentityB.fm
+                    .updateFile({
+                        id: createdFile.id,
+                        data: { name: createdFile.name + "-update" }
+                    })
+                    .then(([response]) => {
+                        return response.data.fileManager.updateFile;
+                    })
+            );
+        }
+
+        // Deleting a file in the folder should be forbidden for identity B.
+        for (let i = 0; i < createdFiles.length; i++) {
+            const createdFile = createdFiles[i];
+            await expectNotAuthorized(
+                gqlIdentityB.fm.deleteFile({ id: createdFile.id }).then(([response]) => {
+                    return response.data.fileManager.deleteFile;
+                })
+            );
+        }
+    });
+
     test("as a user, I should not be able to delete folders that have content they cannot see", async () => {
         const folderA = await gqlIdentityA.aco
             .createFolder({

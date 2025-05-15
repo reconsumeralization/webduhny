@@ -1,18 +1,18 @@
 import { OperationsBuilder } from "~/OperationsBuilder";
-import { Decompressor } from "~/Decompressor";
-import { createPlugins } from "~tests/plugins";
+import { createDefaultCompressor } from "@webiny/utils/compression";
 import { DynamoDBRecord } from "@webiny/handler-aws/types";
 import { marshall } from "~/marshall";
 import { OperationType } from "~/Operations";
+import { PluginsContainer } from "@webiny/plugins";
 
 describe("OperationsBuilder", () => {
-    const decompressor = new Decompressor({
-        plugins: createPlugins()
+    const compressor = createDefaultCompressor({
+        plugins: new PluginsContainer()
     });
 
     it("should build an insert operation", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -56,7 +56,7 @@ describe("OperationsBuilder", () => {
 
     it("should build a delete operation", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -92,7 +92,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if there are no keys", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -121,7 +121,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if there is a missing dynamodb property", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -141,7 +141,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if newImage is marked as ignored", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -170,7 +170,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if there is nothing in the newImage", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -209,7 +209,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if there is no data in the newImage.data", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [
@@ -238,7 +238,7 @@ describe("OperationsBuilder", () => {
 
     it("should skip record if there is no index in the oldImage", async () => {
         const builder = new OperationsBuilder({
-            decompressor
+            compressor
         });
 
         const records: DynamoDBRecord[] = [

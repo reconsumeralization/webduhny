@@ -11,6 +11,11 @@ import { FolderAccessLevel, FolderLevelPermissionsTarget, FolderPermission } fro
 
 const TARGET_LEVELS = [
     {
+        id: "no-access",
+        label: "No Access",
+        description: "Cannot view or modify content"
+    },
+    {
         id: "viewer",
         label: "Viewer",
         description: "Can view content, but not modify it"
@@ -78,13 +83,17 @@ export const ListItemMeta = ({
         return TARGET_LEVELS.find(level => level.id === permission.level)!;
     }, [permission.level]);
 
-    const disabledReason = useMemo(() => {
+    const { isDisabled, tooltipMessage } = useMemo(() => {
+        let message = null;
+        let disabled = false;
+
         if (permission.inheritedFrom?.startsWith("parent:")) {
-            return "Inherited from parent folder.";
+            message = "Inherited from parent folder.";
+            disabled = false; // Still allow interaction, just inform user
         }
 
         if (identity!.id === target.id) {
-            let message = "You can't change your own permissions.";
+            message = "You can't change your own permissions.";
             if (permission.inheritedFrom?.startsWith("team:")) {
                 const team = targetsList.find(t => t.target === permission.inheritedFrom);
                 message += " Access to this folder is managed by a team";
@@ -93,33 +102,33 @@ export const ListItemMeta = ({
                 }
                 message += ".";
             }
-            return message;
+            disabled = true;
         }
 
-        return null;
-    }, [permission]);
+        return { isDisabled: disabled, tooltipMessage: message };
+    }, [permission, identity, target, targetsList]);
 
     const handle = useMemo(() => {
         let handle = (
-            <StyledHandle disabled={!!disabledReason}>
+            <StyledHandle disabled={isDisabled}>
                 <Typography use="body1">{currentLevel.label}</Typography>
                 <More />
             </StyledHandle>
         );
 
-        if (disabledReason) {
-            handle = <Tooltip content={disabledReason}>{handle}</Tooltip>;
+        if (tooltipMessage) {
+            handle = <Tooltip content={tooltipMessage}>{handle}</Tooltip>;
         }
 
         return handle;
-    }, [disabledReason, currentLevel.label]);
+    }, [tooltipMessage, isDisabled, currentLevel.label]);
 
     return (
         <UiListItemMeta>
             <ListActions>
                 <Menu
                     handle={handle}
-                    disabled={!!disabledReason}
+                    disabled={isDisabled}
                     // Should prevent first item from being autofocused, but it doesn't. 🤷‍
                     focusOnOpen={false}
                     // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
@@ -134,6 +143,7 @@ export const ListItemMeta = ({
                                     onUpdatePermission({
                                         permission: {
                                             ...permission,
+                                            inheritedFrom: undefined, // Reset inherited permissions to allow user-defined changes
                                             level: level.id as FolderAccessLevel
                                         }
                                     });

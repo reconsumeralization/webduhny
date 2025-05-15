@@ -58,7 +58,7 @@ describe("storage field path converters enabled", () => {
                     value: expect.any(String)
                 },
                 body: {
-                    compression: "jsonpack",
+                    compression: "gzip",
                     value: expect.any(String)
                 },
                 information: {
@@ -71,7 +71,7 @@ describe("storage field path converters enabled", () => {
                         value: expect.any(String)
                     },
                     subBody: {
-                        compression: "jsonpack",
+                        compression: "gzip",
                         value: expect.any(String)
                     },
                     subInformation: {
@@ -84,7 +84,7 @@ describe("storage field path converters enabled", () => {
                             value: expect.any(String)
                         },
                         subSecondSubBody: {
-                            compression: "jsonpack",
+                            compression: "gzip",
                             value: expect.any(String)
                         }
                     }
@@ -111,7 +111,7 @@ describe("storage field path converters enabled", () => {
                 dateOfBirth: new Date("2020-01-01").toISOString(),
                 description: "Description level 0",
                 body: {
-                    compression: "jsonpack",
+                    compression: "gzip",
                     value: expect.any(String)
                 },
                 information: {
@@ -121,7 +121,7 @@ describe("storage field path converters enabled", () => {
                     subDateOfBirth: new Date("2020-01-02").toISOString(),
                     subDescription: "Description level 1",
                     subBody: {
-                        compression: "jsonpack",
+                        compression: "gzip",
                         value: expect.any(String)
                     },
                     subInformation: {
@@ -131,7 +131,7 @@ describe("storage field path converters enabled", () => {
                         subSecondSubDateOfBirth: new Date("2020-01-03").toISOString(),
                         subSecondSubDescription: "Description level 2",
                         subSecondSubBody: {
-                            compression: "jsonpack",
+                            compression: "gzip",
                             value: expect.any(String)
                         }
                     }
@@ -163,7 +163,7 @@ describe("storage field path converters enabled", () => {
         expect(hits.length).toBe(1);
         const source = hits[0]._source;
         const expectedElasticsearchRecord = {
-            ...createElasticsearchEntryConvertedData().values
+            ...(await createElasticsearchEntryConvertedData()).values
         };
         expect(source.values).toEqual(expectedElasticsearchRecord);
         /**
@@ -181,8 +181,8 @@ describe("storage field path converters enabled", () => {
         });
 
         const expectedDynamoDbRecord = lodashMerge(
-            createElasticsearchEntryConvertedData().values,
-            createElasticsearchEntryConvertedData().rawValues
+            (await createElasticsearchEntryConvertedData()).values,
+            (await createElasticsearchEntryConvertedData()).rawValues
         );
 
         expect(dbResponse?.values).toEqual({
