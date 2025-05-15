@@ -7,7 +7,7 @@ import { StepFunctionService } from "@webiny/tasks/service/StepFunctionServicePl
 import { createDdbEntryEntity } from "../entities/createEntryEntity";
 import { forEachTenantLocale, batchWriteAll } from "~/utils";
 import { ACO_FOLDER_MODEL_ID, TASK_MODEL_ID } from "../constants";
-import { generateAlphaNumericId, parseIdentifier } from "@webiny/utils";
+import { generateAlphaNumericId, parseIdentifier, executeWithRetry } from "@webiny/utils";
 import type { TaskEntryEventPayload } from "../types";
 
 export class Flp_5_43_0_001 implements DataMigration {
@@ -97,17 +97,42 @@ export class Flp_5_43_0_001 implements DataMigration {
                     getLocale: () => localeCode
                 });
 
-                await service.send(
-                    {
-                        definitionId: event.definitionId,
-                        id: event.id
-                    },
-                    0
-                );
+                const startTaskExecution = async () => {
+                    const result = await service.send(
+                        {
+                            definitionId: event.definitionId,
+                            id: event.id
+                        },
+                        0
+                    );
 
-                logger.info(
-                    `Successfully triggered task for tenant ${tenantId} / locale ${localeCode}. FLP records will be synced via background task.`
-                );
+                    if (!result) {
+                        throw new Error(
+                            `Failed to trigger task for tenant ${tenantId} / locale ${localeCode}. Check the above log.`
+                        );
+                    }
+
+                    return result;
+                };
+
+                try {
+                    await executeWithRetry(startTaskExecution, {
+                        onFailedAttempt: async error => {
+                            logger.error(
+                                `Attempt #${error.attemptNumber} failed to trigger task for tenant ${tenantId} / locale ${localeCode}.`
+                            );
+                        }
+                    });
+
+                    logger.info(
+                        `Successfully triggered task for tenant ${tenantId} / locale ${localeCode}. FLP records will be synced via background task.`
+                    );
+                } catch (e) {
+                    logger.error(
+                        `Failed to trigger task for tenant ${tenantId} / locale ${localeCode}. Check the above logs for more info.`,
+                        e
+                    );
+                }
 
                 return true;
             }
