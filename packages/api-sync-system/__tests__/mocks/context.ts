@@ -1,8 +1,6 @@
 import { Context } from "@webiny/api/Context";
 import type { Context as ContextType } from "~/types";
-// @ts-expect-error
-import FastifyReply from "fastify/lib/reply.js";
-import type { Request as FastifyRequest } from "@webiny/handler/types.js";
+import type { Reply as FastifyReply, Request as FastifyRequest } from "@webiny/handler/types.js";
 
 export const createMockContext = () => {
     const request = {} as FastifyRequest;
