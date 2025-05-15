@@ -23,7 +23,6 @@ const createFileList = (size: number = 10): FileItemDto[] => {
 const meta: Meta<typeof MultiFilePickerPrimitive> = {
     title: "Components/Form Primitives/Multi FilePicker",
     component: MultiFilePickerPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onSelectItem: { action: "onSelectItem" },
         onReplaceItem: { action: "onReplaceItem" },

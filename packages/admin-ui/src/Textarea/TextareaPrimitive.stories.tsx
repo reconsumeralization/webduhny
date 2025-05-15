@@ -4,7 +4,6 @@ import { TextareaPrimitive } from "./TextareaPrimitive";
 const meta: Meta<typeof TextareaPrimitive> = {
     title: "Components/Form Primitives/Textarea",
     component: TextareaPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         onEnter: { action: "onEnter" },

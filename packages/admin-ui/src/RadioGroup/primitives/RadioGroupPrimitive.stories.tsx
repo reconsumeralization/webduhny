@@ -7,7 +7,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof RadioGroupPrimitive> = {
     title: "Components/Form Primitives/RadioGroup",
     component: RadioGroupPrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

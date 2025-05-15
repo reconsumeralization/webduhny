@@ -5,9 +5,8 @@ import { Label } from "./Label";
 import { Tooltip } from "~/Tooltip";
 
 const meta: Meta<typeof Label> = {
-    title: "Components/Form Primitives/Label",
+    title: "Components/Form/Label",
     component: Label,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

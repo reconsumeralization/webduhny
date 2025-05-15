@@ -4,7 +4,6 @@ import { CodeEditorPrimitive } from "./CodeEditorPrimitive";
 const meta: Meta<typeof CodeEditorPrimitive> = {
     title: "Components/Form Primitives/CodeEditor",
     component: CodeEditorPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" }
     },

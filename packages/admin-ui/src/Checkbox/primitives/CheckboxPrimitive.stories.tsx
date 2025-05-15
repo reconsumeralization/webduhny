@@ -5,7 +5,6 @@ import { CheckboxPrimitive } from "./CheckboxPrimitive";
 const meta: Meta<typeof CheckboxPrimitive> = {
     title: "Components/Form Primitives/Checkbox",
     component: CheckboxPrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

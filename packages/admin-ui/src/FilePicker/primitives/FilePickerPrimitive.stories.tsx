@@ -22,7 +22,6 @@ const getFile = (): FileItemDto => {
 const meta: Meta<typeof FilePickerPrimitive> = {
     title: "Components/Form Primitives/FilePicker",
     component: FilePickerPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onSelectItem: { action: "onSelectItem" },
         onEditItem: { action: "onEditItem" },

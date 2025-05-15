@@ -6,7 +6,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof SliderPrimitive> = {
     title: "Components/Form Primitives/Slider",
     component: SliderPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onValueChange: { action: "onValueChange" },
         onValueCommit: { action: "onValueCommit" }
