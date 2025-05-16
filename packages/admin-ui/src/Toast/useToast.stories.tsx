@@ -25,9 +25,8 @@ const ToastComponent = (props: ShowToastParams) => {
 };
 
 const meta: Meta<ShowToastParams> = {
-    title: "Hooks/useToast",
+    title: "Components/Toast",
     component: ToastComponent,
-    tags: ["autodocs"],
     parameters: {
         layout: "fullscreen"
     },
@@ -153,5 +152,59 @@ export const withCustomPosition: Story = {
     args: {
         ...Default.args,
         position: "bottom-right"
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        title: "New entry created",
+        description: "Entry has been successfully created",
+        variant: "default",
+        position: "top-right",
+        duration: 6000,
+        dismissible: true,
+        actions: undefined,
+        icon: undefined
+    },
+    argTypes: {
+        title: {
+            description: "Please refer to the 'With Title Component' example below for details."
+        },
+        description: {
+            description:
+                "Please refer to the 'With Description' and 'With Description Component' examples below for details."
+        },
+        variant: {
+            description: "Variant of the toast."
+        },
+        actions: {
+            description: "Please refer to the 'With Actions' example below for details.",
+            control: "none"
+        },
+        icon: {
+            description: "Please refer to the 'With Custom Icon' example below for details.",
+            control: "none"
+        },
+        duration: {
+            description:
+                "Duration in milliseconds before the toast auto-dismisses. Please refer to the 'With Infinite Duration' example below for details.",
+            control: "number"
+        },
+        dismissible: {
+            description: "Please refer to the 'Not Dismissible' example below for details.",
+            control: "none"
+        },
+        position: {
+            description: "Please refer to the 'With Custom Position' example below for details.",
+            control: "select",
+            options: [
+                "top-left",
+                "top-right",
+                "bottom-left",
+                "bottom-right",
+                "top-center",
+                "bottom-center"
+            ]
+        }
     }
 };
