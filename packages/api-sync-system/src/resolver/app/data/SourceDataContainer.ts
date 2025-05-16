@@ -33,7 +33,7 @@ export class SourceDataContainer implements ISourceDataContainer {
 
     public merge(container: ISourceDataContainer): void {
         for (const key in container.items) {
-            const item = this.items[key];
+            const item = container.items[key];
             this.add(item, item.data);
         }
     }

@@ -165,7 +165,7 @@ export class RecordHandler implements IRecordHandler {
 
                 await commandHandler.handle({
                     storer: this.storer,
-                    items,
+                    items: result.items,
                     targetDeployment: targetDeployment,
                     targetTable: targetTable
                 });

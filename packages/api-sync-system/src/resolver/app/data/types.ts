@@ -6,15 +6,15 @@ import type { IStoreItem } from "~/resolver/app/storer/types.js";
 export interface IInputItem {
     PK: string;
     SK: string;
-    table: ITable;
-    source: IDeployment;
+    table: Pick<ITable, "name">;
+    source: Pick<IDeployment, "name">;
 }
 
 export interface IItem {
     PK: string;
     SK: string;
-    table: ITable;
-    source: IDeployment;
+    table: Pick<ITable, "name">;
+    source: Pick<IDeployment, "name">;
     data: IStoreItem | null;
 }
 
