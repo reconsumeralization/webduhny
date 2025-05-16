@@ -4,6 +4,9 @@ import { ReactComponent as MoreIcon } from "@webiny/icons/more_vert.svg";
 import { ReactComponent as OpenIcon } from "@webiny/icons/visibility.svg";
 import { ReactComponent as EditIcon } from "@webiny/icons/edit.svg";
 import { ReactComponent as TrashIcon } from "@webiny/icons/delete.svg";
+import { ReactComponent as UserIcon } from "@webiny/icons/person.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
+import { ReactComponent as HelpIcon } from "@webiny/icons/help.svg";
 import type { Meta, StoryObj } from "@storybook/react";
 import { List, type ListItemProps as BaseListItemProps } from "./List";
 import { Avatar } from "~/Avatar";
@@ -11,7 +14,6 @@ import { Avatar } from "~/Avatar";
 const meta: Meta<typeof List> = {
     title: "Components/List",
     component: List,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     }
@@ -43,8 +45,26 @@ export const Default: Story = {
 
 export const WithTransparentBackground: Story = {
     args: {
-        ...Default.args,
-        background: "transparent"
+        background: "transparent",
+        children: (
+            <>
+                <List.Item
+                    icon={<UserIcon />}
+                    title="User Profile"
+                    description="View and edit your profile information"
+                />
+                <List.Item
+                    icon={<SettingsIcon />}
+                    title="Settings"
+                    description="Configure application settings"
+                />
+                <List.Item
+                    icon={<HelpIcon />}
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                />
+            </>
+        )
     },
     decorators: [
         Story => (
@@ -64,8 +84,26 @@ export const WithBaseBackground: Story = {
 
 export const WithLightBackground: Story = {
     args: {
-        ...Default.args,
-        background: "light"
+        background: "light",
+        children: (
+            <>
+                <List.Item
+                    icon={<UserIcon />}
+                    title="User Profile"
+                    description="View and edit your profile information"
+                />
+                <List.Item
+                    icon={<SettingsIcon />}
+                    title="Settings"
+                    description="Configure application settings"
+                />
+                <List.Item
+                    icon={<HelpIcon />}
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                />
+            </>
+        )
     }
 };
 
@@ -78,8 +116,26 @@ export const WithUnderlineVariant: Story = {
 
 export const WithContainerVariant: Story = {
     args: {
-        ...Default.args,
-        variant: "container"
+        variant: "container",
+        children: (
+            <>
+                <List.Item
+                    icon={<UserIcon />}
+                    title="User Profile"
+                    description="View and edit your profile information"
+                />
+                <List.Item
+                    icon={<SettingsIcon />}
+                    title="Settings"
+                    description="Configure application settings"
+                />
+                <List.Item
+                    icon={<HelpIcon />}
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                />
+            </>
+        )
     },
     decorators: [
         Story => (
@@ -91,21 +147,17 @@ export const WithContainerVariant: Story = {
 };
 
 export const WithDescription: Story = {
-    ...Default,
     args: {
         children: (
             <>
-                <ListItem
-                    index={1}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                <List.Item
+                    title="User Profile"
+                    description="View and edit your profile information"
                 />
-                <ListItem
-                    index={2}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                />
-                <ListItem
-                    index={3}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                <List.Item title="Settings" description="Configure application settings" />
+                <List.Item
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
                 />
             </>
         )
@@ -114,18 +166,34 @@ export const WithDescription: Story = {
 
 export const WithIcon: Story = {
     args: {
-        ...Default.args,
         children: (
             <>
-                <ListItem
-                    index={1}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    icon={<List.Item.Icon icon={<ChartIcon />} label={"Chart"} />}
+                <List.Item icon={<UserIcon />} title="User Profile" />
+                <List.Item icon={<SettingsIcon />} title="Settings" />
+                <List.Item icon={<HelpIcon />} title="Help & Support" />
+            </>
+        )
+    }
+};
+
+export const WithIconsAndDescriptions: Story = {
+    args: {
+        children: (
+            <>
+                <List.Item
+                    icon={<UserIcon />}
+                    title="User Profile"
+                    description="View and edit your profile information"
                 />
-                <ListItem
-                    index={2}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    icon={<List.Item.Icon icon={<ChartIcon />} label={"Chart"} />}
+                <List.Item
+                    icon={<SettingsIcon />}
+                    title="Settings"
+                    description="Configure application settings"
+                />
+                <List.Item
+                    icon={<HelpIcon />}
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
                 />
             </>
         )
@@ -226,53 +294,23 @@ export const WithActions: Story = {
 
 export const WithDisabled: Story = {
     args: {
-        ...WithAvatar.args,
         children: (
             <>
-                <ListItem
-                    disabled={true}
-                    index={1}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    handle={<List.Item.Handle />}
-                    icon={
-                        <Avatar
-                            image={
-                                <Avatar.Image src="https://i.pravatar.cc/300?img=1" alt="@webiny" />
-                            }
-                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
-                        />
-                    }
-                    actions={
-                        <>
-                            <List.Item.Action icon={<EditIcon />} />
-                            <List.Item.Action icon={<TrashIcon />} />
-                            <List.Item.Action.Separator />
-                            <List.Item.Action icon={<OpenIcon />} />
-                            <List.Item.Action icon={<MoreIcon />} />
-                        </>
-                    }
+                <List.Item
+                    title="User Profile"
+                    description="View and edit your profile information"
+                    onClick={() => alert("User Profile clicked")}
                 />
-                <ListItem
-                    index={2}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    handle={<List.Item.Handle />}
-                    icon={
-                        <Avatar
-                            image={
-                                <Avatar.Image src="https://i.pravatar.cc/300?img=2" alt="@webiny" />
-                            }
-                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
-                        />
-                    }
-                    actions={
-                        <>
-                            <List.Item.Action icon={<EditIcon />} />
-                            <List.Item.Action icon={<TrashIcon />} />
-                            <List.Item.Action.Separator />
-                            <List.Item.Action icon={<OpenIcon />} />
-                            <List.Item.Action icon={<MoreIcon />} />
-                        </>
-                    }
+                <List.Item
+                    title="Settings"
+                    description="Configure application settings"
+                    disabled={true}
+                    onClick={() => alert("This alert won't show because the item is disabled")}
+                />
+                <List.Item
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                    onClick={() => alert("Help & Support clicked")}
                 />
             </>
         )
@@ -281,55 +319,131 @@ export const WithDisabled: Story = {
 
 export const WithActivated: Story = {
     args: {
-        ...Default.args,
         children: (
             <>
-                <ListItem
+                <List.Item
+                    title="User Profile"
+                    description="View and edit your profile information"
                     activated={true}
-                    index={1}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    handle={<List.Item.Handle />}
-                    icon={
-                        <Avatar
-                            image={
-                                <Avatar.Image src="https://i.pravatar.cc/300?img=1" alt="@webiny" />
-                            }
-                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
-                        />
-                    }
-                    actions={
-                        <>
-                            <List.Item.Action icon={<EditIcon />} />
-                            <List.Item.Action icon={<TrashIcon />} />
-                            <List.Item.Action.Separator />
-                            <List.Item.Action icon={<OpenIcon />} />
-                            <List.Item.Action icon={<MoreIcon />} />
-                        </>
-                    }
+                    onClick={() => console.log("User Profile clicked")}
                 />
-                <ListItem
-                    index={2}
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    handle={<List.Item.Handle />}
-                    icon={
-                        <Avatar
-                            image={
-                                <Avatar.Image src="https://i.pravatar.cc/300?img=2" alt="@webiny" />
-                            }
-                            fallback={<Avatar.Fallback>W</Avatar.Fallback>}
-                        />
-                    }
-                    actions={
-                        <>
-                            <List.Item.Action icon={<EditIcon />} />
-                            <List.Item.Action icon={<TrashIcon />} />
-                            <List.Item.Action.Separator />
-                            <List.Item.Action icon={<OpenIcon />} />
-                            <List.Item.Action icon={<MoreIcon />} />
-                        </>
-                    }
+                <List.Item
+                    title="Settings"
+                    description="Configure application settings"
+                    onClick={() => console.log("Settings clicked")}
+                />
+                <List.Item
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                    onClick={() => console.log("Help & Support clicked")}
                 />
             </>
         )
+    }
+};
+
+export const WithClickHandlers: Story = {
+    args: {
+        children: (
+            <>
+                <List.Item
+                    title="User Profile"
+                    description="View and edit your profile information"
+                    onClick={() => alert("User Profile clicked")}
+                />
+                <List.Item
+                    title="Settings"
+                    description="Configure application settings"
+                    onClick={() => alert("Settings clicked")}
+                />
+                <List.Item
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                    onClick={() => alert("Help & Support clicked")}
+                />
+            </>
+        )
+    }
+};
+
+export const WithSelectedItem: Story = {
+    render: () => {
+        // Using render function to handle state
+        const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+        return (
+            <List>
+                <List.Item
+                    title="User Profile"
+                    description="View and edit your profile information"
+                    selected={selectedIndex === 0}
+                    onClick={() => setSelectedIndex(0)}
+                />
+                <List.Item
+                    title="Settings"
+                    description="Configure application settings"
+                    selected={selectedIndex === 1}
+                    onClick={() => setSelectedIndex(1)}
+                />
+                <List.Item
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                    selected={selectedIndex === 2}
+                    onClick={() => setSelectedIndex(2)}
+                />
+            </List>
+        );
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        variant: "underline",
+        background: "base",
+        children: (
+            <>
+                <List.Item
+                    icon={<UserIcon />}
+                    title="User Profile"
+                    description="View and edit your profile information"
+                    onClick={() => console.log("User Profile clicked")}
+                />
+                <List.Item
+                    icon={<SettingsIcon />}
+                    title="Settings"
+                    description="Configure application settings"
+                    onClick={() => console.log("Settings clicked")}
+                />
+                <List.Item
+                    icon={<HelpIcon />}
+                    title="Help & Support"
+                    description="Get assistance and view documentation"
+                    onClick={() => console.log("Help & Support clicked")}
+                />
+            </>
+        )
+    },
+    argTypes: {
+        variant: {
+            control: "select",
+            options: ["underline", "container"],
+            description: "The visual style of the list"
+        },
+        background: {
+            control: "select",
+            options: ["base", "light", "transparent"],
+            description: "The background color of the list"
+        },
+        children: {
+            description: "The content of the list. Please refer to the example code for details.",
+            control: "none"
+        }
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: "This example shows a List with icons, titles, descriptions, and click handlers."
+            }
+        }
     }
 };
