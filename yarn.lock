@@ -14859,6 +14859,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.13"
     "@webiny/api": "npm:0.0.0"
     "@webiny/aws-sdk": "npm:0.0.0"
+    "@webiny/cli": "npm:0.0.0"
     "@webiny/error": "npm:0.0.0"
     "@webiny/handler": "npm:0.0.0"
     "@webiny/handler-aws": "npm:0.0.0"

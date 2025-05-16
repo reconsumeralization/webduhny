@@ -1,15 +1,11 @@
 import type { IStoreItem, IStorer } from "../storer/types";
 import type { IDeployment } from "~/resolver/deployment/types.js";
 import type { ITable } from "~/sync/types.js";
-import type { IBundle } from "~/resolver/app/bundler/types.js";
 
 export interface IDeleteCommandHandlerHandleParams {
-    sourceDeployment: IDeployment;
-    sourceTable: ITable;
     targetDeployment: IDeployment;
     targetTable: ITable;
     items: IStoreItem[];
-    bundle: IBundle;
 }
 
 export interface IDeleteCommandHandlerParams {
@@ -23,7 +19,7 @@ export class DeleteCommandHandler {
         this.storer = params.storer;
     }
     public async handle(params: IDeleteCommandHandlerHandleParams): Promise<void> {
-        const { targetDeployment, targetTable, items, bundle } = params;
+        const { targetDeployment, targetTable, items } = params;
 
         const result = items
             .map(item => {
@@ -36,12 +32,12 @@ export class DeleteCommandHandler {
                 };
             })
             .filter((item): item is IStoreItem => {
-                return !item;
+                return !!item;
             });
 
         await this.storer.store({
             deployment: targetDeployment,
-            bundle,
+            command: "delete",
             table: targetTable,
             items: result
         });

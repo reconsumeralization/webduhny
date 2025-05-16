@@ -120,7 +120,10 @@ export class RecordHandler implements IRecordHandler {
         for (const bundle of bundlesByCommand.getBundles()) {
             const deployments = this.deployments.without(bundle.source);
             for (const targetDeployment of deployments.all()) {
-                const input = bundle.items
+                /**
+                 * We need to map keys to actual items from the source deployment.
+                 */
+                const items = bundle.items
                     .map(item => {
                         const result = container.get({
                             PK: item.PK,
@@ -144,8 +147,8 @@ export class RecordHandler implements IRecordHandler {
                     continue;
                 }
 
-                const { items } = await this.transformHandler.transform({
-                    items: input,
+                const result = await this.transformHandler.transform({
+                    items,
                     sourceDeployment: bundle.source,
                     sourceTable: bundle.table,
                     targetDeployment: targetDeployment,
@@ -161,11 +164,8 @@ export class RecordHandler implements IRecordHandler {
                 }
 
                 await commandHandler.handle({
-                    bundle,
                     storer: this.storer,
                     items,
-                    sourceDeployment: bundle.source,
-                    sourceTable: bundle.table,
                     targetDeployment: targetDeployment,
                     targetTable: targetTable
                 });

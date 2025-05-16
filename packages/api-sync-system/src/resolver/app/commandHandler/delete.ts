@@ -12,12 +12,9 @@ export const createDeleteCommandHandlerPlugin = () => {
             });
 
             return handler.handle({
-                bundle: params.bundle,
                 items: params.items,
                 targetTable: params.targetTable,
-                targetDeployment: params.targetDeployment,
-                sourceTable: params.sourceTable,
-                sourceDeployment: params.sourceDeployment
+                targetDeployment: params.targetDeployment
             });
         }
     });

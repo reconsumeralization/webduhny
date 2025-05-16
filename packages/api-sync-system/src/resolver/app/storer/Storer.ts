@@ -1,8 +1,13 @@
 import type { IStorer, IStorerExecParams } from "./types";
-import { BatchWriteCommand, type DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
+import type {
+    BatchWriteCommandInput,
+    DynamoDBDocument
+} from "@webiny/aws-sdk/client-dynamodb/index.js";
+import { BatchWriteCommand } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import type { IDeployment } from "~/resolver/deployment/types.js";
 import { convertException } from "@webiny/utils/exception.js";
 import lodashChunk from "lodash/chunk";
+import type { CommandType } from "~/types.js";
 
 export interface IStorerParamsCreateDocumentClientCallable {
     (deployment: Pick<IDeployment, "region">): Pick<DynamoDBDocument, "send">;
@@ -13,6 +18,11 @@ export interface IStorerParams {
     maxRetries?: number;
     retryDelay?: number;
     createDocumentClient: IStorerParamsCreateDocumentClientCallable;
+}
+
+interface IRequestType {
+    name: "PutRequest" | "DeleteRequest";
+    key: "Item" | "Key";
 }
 
 export class Storer implements IStorer {
@@ -30,31 +40,41 @@ export class Storer implements IStorer {
     }
 
     public async store(params: IStorerExecParams): Promise<void> {
-        const { deployment, table, bundle, items } = params;
+        const { deployment, table, command, items } = params;
+        if (items.length === 0) {
+            return;
+        }
         const client = this.createDocumentClient({
             region: deployment.region
         });
 
-        const batches = lodashChunk(items, this.maxBatchSize);
+        let requestType: IRequestType;
+        try {
+            requestType = this.getRequestType(command);
+        } catch (ex) {
+            console.error("Error getting request type.");
+            console.log(convertException(ex));
+            return;
+        }
 
-        const requestType = bundle.command === "delete" ? "DeleteRequest" : "PutRequest";
-        const requestTypeKey = bundle.command === "delete" ? "Key" : "Item";
+        const batches = lodashChunk(items, this.maxBatchSize);
 
         for (const batch of batches) {
             let cmd: BatchWriteCommand | undefined = undefined;
             this.resetRetries();
             do {
-                cmd = new BatchWriteCommand({
+                const input: BatchWriteCommandInput = {
                     RequestItems: {
                         [table.name]: batch.map(item => {
                             return {
-                                [requestType]: {
-                                    [requestTypeKey]: item
+                                [requestType.name]: {
+                                    [requestType.key]: item
                                 }
                             };
                         })
                     }
-                });
+                };
+                cmd = new BatchWriteCommand(input);
                 try {
                     const result = await client.send(cmd);
 
@@ -78,6 +98,25 @@ export class Storer implements IStorer {
             } while (cmd);
         }
     }
+
+    private getRequestType(command: CommandType): IRequestType {
+        switch (command) {
+            case "put":
+                return {
+                    name: "PutRequest",
+                    key: "Item"
+                };
+
+            case "delete":
+                return {
+                    name: "DeleteRequest",
+                    key: "Key"
+                };
+            default:
+                throw new Error(`Invalid command type: ${command}`);
+        }
+    }
+
     private async sleep(): Promise<void> {
         return new Promise(resolve => {
             setTimeout(() => {

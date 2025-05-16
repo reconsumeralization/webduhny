@@ -93,3 +93,19 @@ export const createMockDeployment = (
         }
     });
 };
+
+export const createMockSourceDeployment = () => {
+    return createMockDeployment({
+        env: "dev",
+        variant: "source",
+        name: "dev#source"
+    });
+};
+
+export const createMockTargetDeployment = () => {
+    return createMockDeployment({
+        env: "dev",
+        variant: "target",
+        name: "dev#target"
+    });
+};

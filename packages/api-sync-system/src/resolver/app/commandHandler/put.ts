@@ -7,25 +7,14 @@ export const createPutCommandHandlerPlugin = () => {
             return command === "put";
         },
         handle: async params => {
-            const {
-                storer,
-                targetTable,
-                sourceTable,
-                targetDeployment,
-                sourceDeployment,
-                items,
-                bundle
-            } = params;
+            const { storer, targetTable, targetDeployment, items } = params;
             const handler = new PutCommandHandler({
                 storer: storer
             });
 
             return handler.handle({
-                bundle,
                 targetTable,
                 targetDeployment,
-                sourceTable,
-                sourceDeployment,
                 items
             });
         }
