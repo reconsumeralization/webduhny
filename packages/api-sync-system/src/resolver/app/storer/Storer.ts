@@ -8,6 +8,7 @@ import type { IDeployment } from "~/resolver/deployment/types.js";
 import { convertException } from "@webiny/utils/exception.js";
 import lodashChunk from "lodash/chunk";
 import type { CommandType } from "~/types.js";
+import { createRetry } from "../utils/Retry";
 
 export interface IStorerParamsCreateDocumentClientCallable {
     (deployment: Pick<IDeployment, "region">): Pick<DynamoDBDocument, "send">;
@@ -29,7 +30,6 @@ export class Storer implements IStorer {
     private readonly maxBatchSize: number;
     private readonly maxRetries: number;
     private readonly retryDelay: number;
-    private retryCount = 0;
     private readonly createDocumentClient: IStorerParamsCreateDocumentClientCallable;
 
     public constructor(params: IStorerParams) {
@@ -61,7 +61,6 @@ export class Storer implements IStorer {
 
         for (const batch of batches) {
             let cmd: BatchWriteCommand | undefined = undefined;
-            this.resetRetries();
             do {
                 const input: BatchWriteCommandInput = {
                     RequestItems: {
@@ -75,26 +74,30 @@ export class Storer implements IStorer {
                     }
                 };
                 cmd = new BatchWriteCommand(input);
-                try {
+
+                const retry = createRetry({
+                    maxRetries: this.maxRetries,
+                    retryDelay: this.retryDelay,
+                    onFail: async ex => {
+                        console.error("Error executing batch write command.");
+                        console.log(convertException(ex));
+                    }
+                });
+
+                return await retry.retry(async () => {
+                    if (!cmd) {
+                        return;
+                    }
                     const result = await client.send(cmd);
 
                     if (!result.UnprocessedItems?.[table.name]) {
                         cmd = undefined;
-                        this.resetRetries();
-                        continue;
+                        return;
                     }
                     cmd = new BatchWriteCommand({
                         RequestItems: result.UnprocessedItems
                     });
-                } catch (ex) {
-                    if (this.retryCount < this.maxRetries) {
-                        await this.waitRetry();
-                        continue;
-                    }
-                    console.error("Error executing batch write command.");
-                    console.log(convertException(ex));
-                    throw new Error("Batch write command failed");
-                }
+                });
             } while (cmd);
         }
     }
@@ -115,23 +118,6 @@ export class Storer implements IStorer {
             default:
                 throw new Error(`Invalid command type: ${command}`);
         }
-    }
-
-    private async sleep(): Promise<void> {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve();
-            }, this.retryDelay);
-        });
-    }
-
-    private async waitRetry(): Promise<void> {
-        this.retryCount++;
-        return await this.sleep();
-    }
-
-    private resetRetries(): void {
-        this.retryCount = 0;
     }
 }
 

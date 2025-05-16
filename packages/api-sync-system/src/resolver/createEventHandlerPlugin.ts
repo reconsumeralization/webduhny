@@ -34,6 +34,8 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
         }
         try {
             const fetcher = createFetcher({
+                maxRetries: 10,
+                retryDelay: 1000,
                 createDocumentClient: deployment => {
                     return createDocumentClient({
                         region: deployment.region

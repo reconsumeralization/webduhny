@@ -67,9 +67,7 @@ export class RecordHandler implements IRecordHandler {
                 deployment: bundle.source,
                 table: bundle.table,
                 items: bundle.items,
-                maxBatchSize: 25,
-                maxRetries: 10,
-                retryDelay: 1000
+                maxBatchSize: 25
             });
             if (error) {
                 console.error(
