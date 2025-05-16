@@ -21,7 +21,6 @@ import { Text } from "~/Text";
 const meta: Meta<typeof DropdownMenu> = {
     title: "Components/Dropdown Menu",
     component: DropdownMenu,
-    tags: ["autodocs"],
     argTypes: {}
 };
 
@@ -293,4 +292,99 @@ export const WithOnOpenChange: Story = {
         )
     },
     argTypes: {}
+};
+
+export const Documentation: Story = {
+    args: {
+        trigger: <Button variant="primary" text={"Open"} />,
+        children: (
+            <>
+                <Label text={"My Account"} />
+                <Item icon={<Item.Icon label={"Profile"} element={<User />} />} text={"Profile"} />
+                <Group>
+                    <Item
+                        icon={<Item.Icon element={<CreditCard />} label={"Billing"} />}
+                        text={"Billing"}
+                    />
+                    <Item
+                        icon={<Item.Icon element={<Settings />} label={"Settings"} />}
+                        text={"Settings"}
+                    />
+                    <Item
+                        icon={<Item.Icon element={<Keyboard />} label={"Keyboard shortcuts"} />}
+                        text={"Keyboard shortcuts"}
+                    />
+                </Group>
+                <Separator />
+                <Group>
+                    <Item icon={<Item.Icon element={<Users />} label={"Team"} />} text={"Team"} />
+                    <Item
+                        icon={<Item.Icon element={<UserPlus />} label={"Invite users"} />}
+                        text={"Invite users"}
+                    >
+                        <Item
+                            icon={<Item.Icon element={<Mail />} label={"Email"} />}
+                            text={"Email"}
+                        />
+                        <Item
+                            icon={<Item.Icon element={<MessageSquare />} label={"Message"} />}
+                            text={"Message"}
+                        />
+                        <Separator />
+                        <Item
+                            icon={<Item.Icon label={"More..."} element={<PlusCircle />} />}
+                            text={"More..."}
+                        />
+                    </Item>
+                    <Item
+                        icon={<Item.Icon label={"New Team"} element={<Plus />} />}
+                        text={"New Team"}
+                    />
+                </Group>
+                <Separator />
+                <Item
+                    icon={<Item.Icon label={"Support"} element={<LifeBuoy />} />}
+                    text={"Support"}
+                />
+                <Item
+                    icon={<Item.Icon label={"API"} element={<Cloud />} />}
+                    text={"API"}
+                    disabled
+                />
+                <Separator />
+                <Item
+                    icon={<Item.Icon label={"Log out"} element={<LogOut />} />}
+                    text={"Log out"}
+                />
+                <Separator />
+                <Label text={"Links"} />
+                <Link
+                    text={"Link 1"}
+                    to={"#link-1"}
+                    icon={<Link.Icon label="Link 1" element={<LinkIcon />} />}
+                />
+                <Link
+                    text={"Link 2"}
+                    to={"#link-2"}
+                    icon={<Link.Icon label="Link 2" element={<LinkIcon />} />}
+                />
+                <Link
+                    text={"Link 3"}
+                    to={"#link-3"}
+                    icon={<Link.Icon label="Link 3" element={<LinkIcon />} />}
+                />
+            </>
+        )
+    },
+    argTypes: {
+        trigger: {
+            description:
+                "The trigger element that opens the menu. Please refer to the example code for details.",
+            control: "none"
+        },
+        children: {
+            description: "The content of the menu. Please refer to the example code for details.",
+            control: "none"
+        }
+    }
 };
