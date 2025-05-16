@@ -245,7 +245,8 @@ export const Documentation: Story = {
                     "Preferences content - This tab contains user preferences. Users can customize the interface, set language preferences, and configure other application settings."
                 }
             />
-        ]
+        ],
+        value: undefined
     },
     argTypes: {
         size: {
