@@ -50,6 +50,7 @@ export const createMockSQSEvent = (): SQSEvent => {
                         items: [
                             {
                                 tableName: process.env.DB_TABLE,
+                                tableType: "regular",
                                 PK: "pk1",
                                 SK: "sk1",
                                 command: "put"

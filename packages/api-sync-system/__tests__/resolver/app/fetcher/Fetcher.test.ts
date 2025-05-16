@@ -104,7 +104,7 @@ describe("Fetcher", () => {
             items: [item1]
         });
 
-        expect(async () => {
+        await expect(async () => {
             return await fetcher.exec({
                 deployment: createMockSourceDeployment(),
                 table: createRegularMockTable(),
