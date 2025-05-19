@@ -127,8 +127,8 @@ describe("DefaultPermissionsMerger", () => {
                 { target: "admin:2", level: "owner" }
             ],
             [
+                { level: "viewer", target: "admin:1" },
                 { level: "owner", target: "admin:2" },
-                { level: "viewer", target: "admin:1" }
             ]
         );
 
@@ -139,8 +139,8 @@ describe("DefaultPermissionsMerger", () => {
                 { target: "admin:2", level: "owner" }
             ],
             [
+                { level: "editor", target: "admin:1" },
                 { level: "owner", target: "admin:2" },
-                { level: "editor", target: "admin:1" }
             ]
         );
     });
@@ -170,12 +170,12 @@ describe("DefaultPermissionsMerger", () => {
         );
 
         expect(result).toEqual([
-            { level: "owner", target: "admin:2" },
             {
                 inheritedFrom: "role:full-access",
                 level: "owner",
                 target: "admin:1"
-            }
+            },
+            { level: "owner", target: "admin:2" },
         ]);
     });
 });

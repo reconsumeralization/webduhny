@@ -13,14 +13,15 @@ export class DefaultPermissionsMerger {
         const hasFullAccess = identityPermissions.some(p => p.name === "*");
         if (hasFullAccess) {
             return [
-                // Remove any permissions related to the full access user,
-                // as these are always superseded by the "owner" permission defined above.
-                ...folderPermissions.filter(p => p.target !== `admin:${identity.id}`),
                 {
                     target: `admin:${identity.id}`,
                     level: "owner" as FolderAccessLevel,
                     inheritedFrom: "role:full-access"
-                }
+                },
+
+                // Remove any permissions related to the full access user,
+                // as these are always superseded by the "owner" permission defined above.
+                ...folderPermissions.filter(p => p.target !== `admin:${identity.id}`)
             ];
         }
 
@@ -40,7 +41,7 @@ export class DefaultPermissionsMerger {
         // we need to pick the one with the highest access level. We also remove
         // other permissions for the same identity.
 
-        // Get distinct levels for the current identity.
+        // Get permissions related to the current identity (admin).
         const currentAdminPermissions = folderPermissions.filter(
             p => p.target === `admin:${identity.id}`
         );
@@ -101,8 +102,9 @@ export class DefaultPermissionsMerger {
         }
 
         // Remove all permissions for the current identity and add the winning one.
-        return folderPermissions
-            .filter(p => p.target !== `admin:${identity.id}`)
-            .concat(resultPermission);
+        return [
+            resultPermission,
+            ...folderPermissions.filter(p => p.target !== `admin:${identity.id}`)
+        ];
     }
 }
