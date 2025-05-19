@@ -1,0 +1,108 @@
+import type { FolderAccessLevel, FolderPermission } from "~/flp/flp.types";
+import { Identity } from "@webiny/api-authentication/types";
+import { SecurityPermission } from "@webiny/api-security/types";
+
+export class DefaultPermissionsMerger {
+    static merge(
+        identity: Identity,
+        identityPermissions: SecurityPermission[],
+        folderPermissions: FolderPermission[]
+    ): FolderPermission[] {
+        // If the user has full access permission, add a specific "owner" permission to the list.
+        // This ensures the user has complete control over the folder.
+        const hasFullAccess = identityPermissions.some(p => p.name === "*");
+        if (hasFullAccess) {
+            return [
+                // Remove any permissions related to the full access user,
+                // as these are always superseded by the "owner" permission defined above.
+                ...folderPermissions.filter(p => p.target !== `admin:${identity.id}`),
+                {
+                    target: `admin:${identity.id}`,
+                    level: "owner" as FolderAccessLevel,
+                    inheritedFrom: "role:full-access"
+                }
+            ];
+        }
+
+        if (folderPermissions.length === 0) {
+            // No permissions provided. This means the folder is public.
+            // Add a specific "public" permission to the list to ensure the folder is accessible to everyone.
+            return [
+                {
+                    target: `admin:${identity.id}`,
+                    level: "public" as FolderAccessLevel,
+                    inheritedFrom: "public"
+                }
+            ];
+        }
+
+        // If there are multiple `admin:${identity.id}` permissions in the array,
+        // we need to pick the one with the highest access level. We also remove
+        // other permissions for the same identity.
+
+        // Get distinct levels for the current identity.
+        const currentAdminPermissions = folderPermissions.filter(
+            p => p.target === `admin:${identity.id}`
+        );
+
+        if (currentAdminPermissions.length === 0) {
+            return folderPermissions;
+        }
+
+        const noAccessPermission = currentAdminPermissions.find(
+            p => p.level === "no-access" && p.target === `admin:${identity.id}`
+        );
+
+        if (noAccessPermission) {
+            // If one of the permissions is `no-access`, then we can immediately return it. This is
+            // because `no-access` is the ultimate level of access, and no other permission can override it.
+            // Remove all permissions for the current identity and add the winning one.
+            const filteredPermissions = folderPermissions.filter(
+                p => p.target !== `admin:${identity.id}`
+            );
+
+            return [...filteredPermissions, noAccessPermission];
+        }
+
+        const [firstAdminPermission, ...restAdminPermissions] = currentAdminPermissions;
+
+        let resultPermission: FolderPermission = firstAdminPermission;
+
+        // Here we're comparing the rest of the permissions with the first one. Levels
+        // that are possible here are: `viewer`, `editor`, and `owner`.
+        for (const currentPermission of restAdminPermissions) {
+            const resultPermissionInheritsFromParent =
+                resultPermission.inheritedFrom?.startsWith("parent:");
+
+            const currentPermissionInheritsFromParent =
+                currentPermission.inheritedFrom?.startsWith("parent:");
+
+            if (resultPermissionInheritsFromParent && !currentPermissionInheritsFromParent) {
+                resultPermission = currentPermission;
+                continue;
+            }
+
+            if (currentPermissionInheritsFromParent && !resultPermissionInheritsFromParent) {
+                continue;
+            }
+
+            // At this point, we're either comparing two permissions with `inheritedFrom` or two without it.
+            // In other words, we're now at a point where we start comparing the levels.
+            if (currentPermission.level === "owner") {
+                resultPermission = currentPermission;
+                continue;
+            }
+
+            if (currentPermission.level === "editor") {
+                if (resultPermission.level === "viewer") {
+                    resultPermission = currentPermission;
+                }
+            }
+        }
+
+        // Remove all permissions for the current identity and add the winning one.
+        return folderPermissions
+            .filter(p => p.target !== `admin:${identity.id}`)
+            .concat(resultPermission);
+    }
+}
