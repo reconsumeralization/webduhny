@@ -44,10 +44,14 @@ export class Permissions {
             });
         }
 
-        // Add current folder permissions that are not present in the parent folder permissions
-        const applicableCurrentFolderPermissions = currentFolderPermissions.filter(
-            permission => !parentFolderPermissions.some(p => p.target === permission.target)
-        );
+        // Add current folder permissions that are not present in the parent folder permissions.
+        const applicableCurrentFolderPermissions = currentFolderPermissions.filter(permission => {
+            const alreadyInInheritedPermissions = permissionsInheritedFromParentFolder.some(
+                p => p.target === permission.target
+            );
+
+            return !alreadyInInheritedPermissions;
+        });
 
         return [...applicableCurrentFolderPermissions, ...permissionsInheritedFromParentFolder];
     }
