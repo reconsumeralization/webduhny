@@ -128,7 +128,7 @@ describe("DefaultPermissionsMerger", () => {
             ],
             [
                 { level: "viewer", target: "admin:1" },
-                { level: "owner", target: "admin:2" },
+                { level: "owner", target: "admin:2" }
             ]
         );
 
@@ -140,7 +140,7 @@ describe("DefaultPermissionsMerger", () => {
             ],
             [
                 { level: "editor", target: "admin:1" },
-                { level: "owner", target: "admin:2" },
+                { level: "owner", target: "admin:2" }
             ]
         );
     });
@@ -175,7 +175,7 @@ describe("DefaultPermissionsMerger", () => {
                 level: "owner",
                 target: "admin:1"
             },
-            { level: "owner", target: "admin:2" },
+            { level: "owner", target: "admin:2" }
         ]);
     });
 });
