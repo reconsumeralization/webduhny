@@ -5,7 +5,7 @@ import { createLambdaContext } from "~tests/mocks/lambdaContext.js";
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 
 describe("createResolverHandler", () => {
-    it("should create a resolver handler and get an error on input becase of no deployments", async () => {
+    it("should create a resolver handler and get an error on input because of no deployments", async () => {
         const handler = createResolverHandler({
             plugins: [],
             createDocumentClient: params => {

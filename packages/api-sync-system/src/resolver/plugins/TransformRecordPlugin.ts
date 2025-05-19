@@ -4,12 +4,11 @@ import type { IDeployment } from "~/resolver/deployment/types.js";
 import type { IStoreItem } from "~/resolver/app/storer/types.js";
 
 export interface ITransformRecordPluginConfigTransformCallableParams {
-    record: IStoreItem;
+    readonly record: IStoreItem;
     sourceDeployment: IDeployment;
     targetDeployment: IDeployment;
     sourceTable: ITable;
     targetTable: ITable;
-    next: () => Promise<IStoreItem>;
 }
 
 export interface ITransformRecordPluginConfigCanTransformCallableParams {
@@ -22,7 +21,10 @@ export interface ITransformRecordPluginConfigCanTransformCallable {
 }
 
 export interface ITransformRecordPluginConfigTransformCallable {
-    (params: ITransformRecordPluginConfigTransformCallableParams): Promise<IStoreItem>;
+    (
+        params: ITransformRecordPluginConfigTransformCallableParams,
+        next: () => Promise<Readonly<IStoreItem>>
+    ): Promise<Readonly<IStoreItem>>;
 }
 
 export interface ITransformRecordPluginConfig {
@@ -45,9 +47,10 @@ export class TransformRecordPlugin extends Plugin {
     }
 
     public transform(
-        params: ITransformRecordPluginConfigTransformCallableParams
-    ): Promise<IStoreItem> {
-        return this.config.transform(params);
+        params: ITransformRecordPluginConfigTransformCallableParams,
+        next: () => Promise<Readonly<IStoreItem>>
+    ): Promise<Readonly<IStoreItem>> {
+        return this.config.transform(params, next);
     }
 }
 

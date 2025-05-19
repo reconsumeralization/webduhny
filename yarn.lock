@@ -14856,6 +14856,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/api-sync-system@workspace:packages/api-sync-system"
   dependencies:
+    "@faker-js/faker": "npm:^9.3.0"
     "@types/lodash": "npm:^4.17.13"
     "@webiny/api": "npm:0.0.0"
     "@webiny/aws-sdk": "npm:0.0.0"

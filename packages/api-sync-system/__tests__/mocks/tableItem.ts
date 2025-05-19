@@ -2,6 +2,7 @@ import type { ITable } from "~/sync/types.js";
 import type { IStoreItem } from "~/resolver/app/storer/types.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb";
 import { PutCommand } from "@webiny/aws-sdk/client-dynamodb";
+import { faker } from "@faker-js/faker";
 
 export interface IStoreMockTableItem {
     client: DynamoDBDocument;
@@ -42,17 +43,25 @@ export const storeMockTableItems = (params: IStoreMockTableItems) => {
 
 export interface ICreateMockTableItemDataParams {
     order: number;
+    size?: "extreme";
 }
 
 export const createMockTableItemData = (params: ICreateMockTableItemDataParams) => {
-    const { order } = params;
+    const { order, size } = params;
     return Object.freeze({
         PK: `T#${order}`,
         SK: `T#${order}`,
         GSI1PK: `GSI#${order}`,
         GSI1SK: `GSI#${order}`,
         values: {
-            name: `Item ${order}`
+            name: `Item ${order}`,
+            description:
+                size === "extreme"
+                    ? faker.string.sample({
+                          min: 307200,
+                          max: 358400
+                      })
+                    : null
         }
     });
 };

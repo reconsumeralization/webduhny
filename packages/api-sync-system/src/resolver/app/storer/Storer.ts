@@ -52,7 +52,7 @@ export class Storer implements IStorer {
         try {
             requestType = this.getRequestType(command);
         } catch (ex) {
-            console.error("Error getting request type.");
+            console.error(`Error getting request type: ${command}.`);
             console.log(convertException(ex));
             return;
         }
@@ -84,7 +84,7 @@ export class Storer implements IStorer {
                     }
                 });
 
-                return await retry.retry(async () => {
+                await retry.retry(async () => {
                     if (!cmd) {
                         return;
                     }

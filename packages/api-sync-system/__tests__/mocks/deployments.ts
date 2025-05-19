@@ -94,18 +94,20 @@ export const createMockDeployment = (
     });
 };
 
-export const createMockSourceDeployment = () => {
+export const createMockSourceDeployment = (params: Partial<ICreateMockDeploymentItem> = {}) => {
     return createMockDeployment({
         env: "dev",
         variant: "source",
-        name: "dev#source"
+        name: "dev#source",
+        ...params
     });
 };
 
-export const createMockTargetDeployment = () => {
+export const createMockTargetDeployment = (params: Partial<ICreateMockDeploymentItem> = {}) => {
     return createMockDeployment({
         env: "dev",
         variant: "target",
-        name: "dev#target"
+        name: "dev#target",
+        ...params
     });
 };

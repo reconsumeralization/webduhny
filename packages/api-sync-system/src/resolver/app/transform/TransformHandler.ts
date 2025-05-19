@@ -2,17 +2,15 @@ import type { ITable } from "~/sync/types";
 import type { IDeployment } from "~/resolver/deployment/types.js";
 import type { PluginsContainer } from "@webiny/plugins/types";
 import { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin.js";
-import { middleware, type MiddlewareCallable } from "@webiny/utils";
+import { middleware } from "./middleware.js";
 import { IStoreItem } from "../storer/types";
-import type { GenericRecord } from "@webiny/api/types.js";
 
-export interface IMiddlewareParams<O = GenericRecord> {
-    record: IStoreItem;
+export interface IMiddlewareParams {
+    readonly record: IStoreItem;
     sourceDeployment: IDeployment;
     targetDeployment: IDeployment;
     sourceTable: ITable;
     targetTable: ITable;
-    next: () => Promise<O>;
 }
 
 export interface ITransformHandlerTransformParams {
@@ -54,26 +52,27 @@ export class TransformHandler implements ITransformHandler {
             });
         });
 
-        const runner = middleware(
+        const runner = middleware<IMiddlewareParams, IStoreItem>(
             plugins.map(plugin => {
-                return async (params: IMiddlewareParams, next: MiddlewareCallable) => {
-                    return plugin.transform({
-                        ...params,
-                        next
-                    });
+                return async (params, next) => {
+                    return await plugin.transform(params, next);
                 };
             })
         );
 
         const results = await Promise.all(
-            items.map(async record => {
-                return runner({
-                    sourceTable,
-                    sourceDeployment,
-                    targetDeployment,
-                    targetTable,
+            items.map(async input => {
+                const record = Object.freeze(input);
+                return await runner(
+                    {
+                        sourceTable,
+                        sourceDeployment,
+                        targetDeployment,
+                        targetTable,
+                        record
+                    },
                     record
-                });
+                );
             })
         );
         return {
