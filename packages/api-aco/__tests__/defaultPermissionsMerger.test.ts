@@ -56,7 +56,7 @@ describe("DefaultPermissionsMerger", () => {
         );
     });
 
-    it("no-access level can be overridden only if an owner level has been assigned", async () => {
+    it("no-access permission cannot be overridden", async () => {
         expectMergeToEqual(
             [
                 { target: "admin:1", level: "no-access" },
@@ -92,9 +92,34 @@ describe("DefaultPermissionsMerger", () => {
                 { level: "no-access", target: "admin:1" }
             ]
         );
+
+        // parent-inherited `no-access` permission also cannot be overridden.
+        expectMergeToEqual(
+            [
+                { target: "admin:1", level: "no-access", inheritedFrom: "parent:xyz" },
+                { target: "admin:1", level: "viewer" },
+                { target: "admin:2", level: "owner" }
+            ],
+            [
+                { level: "owner", target: "admin:2" },
+                { level: "no-access", target: "admin:1", inheritedFrom: "parent:xyz" }
+            ]
+        );
+
+        expectMergeToEqual(
+            [
+                { target: "admin:1", level: "no-access", inheritedFrom: "parent:xyz" },
+                { target: "admin:1", level: "owner" },
+                { target: "admin:2", level: "owner" }
+            ],
+            [
+                { level: "owner", target: "admin:2" },
+                { level: "no-access", target: "admin:1", inheritedFrom: "parent:xyz" }
+            ]
+        );
     });
 
-    it("permissions inherited from parent are overridden by new permissions", async () => {
+    it("permissions inherited from parent can be overridden by new permissions", async () => {
         expectMergeToEqual(
             [
                 { target: "admin:1", level: "editor", inheritedFrom: "parent:xyz" },
@@ -116,32 +141,6 @@ describe("DefaultPermissionsMerger", () => {
             [
                 { level: "owner", target: "admin:2" },
                 { level: "editor", target: "admin:1" }
-            ]
-        );
-    });
-
-    it("parent-inherited `no-access` permission cannot only be overridden by `owner` permission", async () => {
-        expectMergeToEqual(
-            [
-                { target: "admin:1", level: "no-access", inheritedFrom: "parent:xyz" },
-                { target: "admin:1", level: "viewer" },
-                { target: "admin:2", level: "owner" }
-            ],
-            [
-                { level: "owner", target: "admin:2" },
-                { level: "no-access", target: "admin:1", inheritedFrom: "parent:xyz" }
-            ]
-        );
-
-        expectMergeToEqual(
-            [
-                { target: "admin:1", level: "no-access", inheritedFrom: "parent:xyz" },
-                { target: "admin:1", level: "owner" },
-                { target: "admin:2", level: "owner" }
-            ],
-            [
-                { level: "owner", target: "admin:2" },
-                { inheritedFrom: "parent:xyz", level: "no-access", target: "admin:1" }
             ]
         );
     });
