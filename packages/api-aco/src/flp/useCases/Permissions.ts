@@ -49,6 +49,6 @@ export class Permissions {
             permission => !parentFolderPermissions.some(p => p.target === permission.target)
         );
 
-        return [...permissionsInheritedFromParentFolder, ...applicableCurrentFolderPermissions];
+        return [...applicableCurrentFolderPermissions, ...permissionsInheritedFromParentFolder];
     }
 }
