@@ -1,17 +1,14 @@
-import type {
-    FolderLevelPermission as IFolderLevelPermission,
-    FolderPermission
-} from "~/flp/flp.types";
+import type { FolderLevelPermission, FolderPermission } from "~/flp/flp.types";
 
 export class Permissions {
     public static create(
         permissions?: FolderPermission[],
-        parentFlp?: Pick<IFolderLevelPermission, "id" | "permissions"> | null
+        parentFlp?: FolderLevelPermission | null
     ): FolderPermission[] {
         const folderPermissions = permissions ?? [];
 
-        // No permissions from the parent, let's return the permissions provided by the folder.
-        if (!parentFlp || !parentFlp.permissions?.length) {
+        // No parent FLP provided, let's return the permissions from the folder.
+        if (!parentFlp) {
             return folderPermissions;
         }
 

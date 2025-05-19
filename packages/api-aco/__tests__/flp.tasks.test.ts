@@ -310,6 +310,70 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
                 }
             ]
         });
+
+        // Update child folder with its own permissions
+        await context.aco.folder.update(childFolder.id, {
+            permissions: [
+                {
+                    target: "admin:5678",
+                    level: "editor"
+                }
+            ]
+        });
+
+        {
+            // Check child folder
+            const updatedChildFlp = await context.aco.flp.get(childFolder.id);
+            expect(updatedChildFlp).toMatchObject({
+                id: childFolder.id,
+                type,
+                slug: childFolder.slug,
+                parentId: parentFolder.id,
+                permissions: [
+                    {
+                        target: "admin:5678",
+                        level: "editor"
+                    },
+                    {
+                        target: "admin:1234",
+                        level: "viewer",
+                        inheritedFrom: `parent:${parentFolder.id}`
+                    }
+                ]
+            });
+        }
+
+        // Update the parent folder removing all permissions
+        await context.aco.folder.update(parentFolder.id, {
+            permissions: []
+        });
+
+        // Check parent folder
+        const updatedParentFlp = await context.aco.flp.get(parentFolder.id);
+        expect(updatedParentFlp).toMatchObject({
+            id: parentFolder.id,
+            type,
+            slug: parentFolder.slug,
+            parentId: ROOT_FOLDER,
+            permissions: []
+        });
+
+        {
+            // Check child folder
+            const updatedChildFlp = await context.aco.flp.get(childFolder.id);
+            expect(updatedChildFlp).toMatchObject({
+                id: childFolder.id,
+                type,
+                slug: childFolder.slug,
+                parentId: parentFolder.id,
+                permissions: [
+                    {
+                        target: "admin:5678",
+                        level: "editor"
+                    }
+                ]
+            });
+        }
     });
 });
 
