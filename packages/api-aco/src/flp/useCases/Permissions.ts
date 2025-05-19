@@ -19,27 +19,27 @@ export class Permissions {
         // Merge parent and current folder permissions:
         // - current folder permissions take precedence over parent permissions
         // - only if parent permission's level is set to `no-access`, then we ignore the current folder permission
-        const parentInheritedPermissions: FolderPermission[] = [];
+        const permissionsInheritedFromParentFolder: FolderPermission[] = [];
 
-        for (const parentPermission of parentInheritedPermissions) {
-            if (parentPermission.level === "no-access") {
-                parentInheritedPermissions.push({
-                    ...parentPermission,
+        for (const parentFolderPermission of parentFolderPermissions) {
+            if (parentFolderPermission.level === "no-access") {
+                permissionsInheritedFromParentFolder.push({
+                    ...parentFolderPermission,
                     inheritedFrom: `parent:${parentFlp!.id}`
                 });
                 continue;
             }
 
-            const overridePermissionExistsOnCurrentFolder = currentFolderPermissions.some(
-                permission => permission.target === parentPermission.target
+            const currentFolderHasOverridePermission = currentFolderPermissions.some(
+                permission => permission.target === parentFolderPermission.target
             );
 
-            if (overridePermissionExistsOnCurrentFolder) {
+            if (currentFolderHasOverridePermission) {
                 continue;
             }
 
-            parentInheritedPermissions.push({
-                ...parentPermission,
+            permissionsInheritedFromParentFolder.push({
+                ...parentFolderPermission,
                 inheritedFrom: `parent:${parentFlp!.id}`
             });
         }
@@ -49,6 +49,6 @@ export class Permissions {
             permission => !parentFolderPermissions.some(p => p.target === permission.target)
         );
 
-        return [...parentInheritedPermissions, ...applicableCurrentFolderPermissions];
+        return [...permissionsInheritedFromParentFolder, ...applicableCurrentFolderPermissions];
     }
 }
