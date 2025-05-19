@@ -499,13 +499,13 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
             path: `${ROOT_FOLDER}/${mainFolder.slug}/${branch1.slug}/${branch1Subfolder.slug}`,
             permissions: [
                 {
-                    target: "admin:user1",
-                    level: "viewer",
+                    target: "admin:user2",
+                    level: "editor",
                     inheritedFrom: `parent:${branch1.id}`
                 },
                 {
-                    target: "admin:user2",
-                    level: "editor",
+                    target: "admin:user1",
+                    level: "viewer",
                     inheritedFrom: `parent:${branch1.id}`
                 }
             ]

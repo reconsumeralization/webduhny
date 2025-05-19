@@ -291,13 +291,13 @@ describe("Folder Level Permissions - Inheritance", () => {
                     inheritedFrom: "role:full-access"
                 },
                 {
-                    target: "team:test-team-1",
-                    level: "viewer",
+                    target: "team:test-team-2",
+                    level: "no-access",
                     inheritedFrom: `parent:${folderB.id}`
                 },
                 {
-                    target: "team:test-team-2",
-                    level: "no-access",
+                    target: "team:test-team-1",
+                    level: "viewer",
                     inheritedFrom: `parent:${folderB.id}`
                 }
             ]
