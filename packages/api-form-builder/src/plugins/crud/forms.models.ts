@@ -27,7 +27,7 @@ export const FormFieldsModel = zod.object({
         )
         .optional()
         .default([]),
-    settings: zod.object({}).optional().default({})
+    settings: zod.object({}).passthrough().optional().default({})
 });
 
 export const FormStepsModel = zod.object({
