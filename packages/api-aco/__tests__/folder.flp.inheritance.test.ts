@@ -275,7 +275,6 @@ describe("Folder Level Permissions - Inheritance", () => {
             id: folderB.id,
             data: {
                 permissions: [{ level: "no-access", target: `team:test-team-2` }]
-
             }
         });
 
@@ -287,19 +286,19 @@ describe("Folder Level Permissions - Inheritance", () => {
             slug: "folder-c",
             permissions: [
                 {
-                    "target": "admin:1",
-                    "level": "owner",
-                    "inheritedFrom": "role:full-access"
+                    target: "admin:1",
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
                 },
                 {
-                    "target": "team:test-team-1",
-                    "level": "viewer",
-                    "inheritedFrom": `parent:${folderB.id}`
+                    target: "team:test-team-1",
+                    level: "viewer",
+                    inheritedFrom: `parent:${folderB.id}`
                 },
                 {
-                    "target": "team:test-team-2",
-                    "level": "no-access",
-                    "inheritedFrom": `parent:${folderB.id}`
+                    target: "team:test-team-2",
+                    level: "no-access",
+                    inheritedFrom: `parent:${folderB.id}`
                 }
             ]
         });
