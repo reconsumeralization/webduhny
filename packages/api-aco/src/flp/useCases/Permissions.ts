@@ -8,8 +8,9 @@ export class Permissions {
         permissions?: FolderPermission[],
         parentFlp?: Pick<IFolderLevelPermission, "id" | "permissions"> | null
     ): FolderPermission[] {
-        const currentFolderPermissions = permissions ?? [];
         const parentFolderPermissions = parentFlp?.permissions || [];
+        const currentFolderPermissions =
+            permissions?.filter(p => p.inheritedFrom !== `parent:${parentFlp?.id}`) || [];
 
         // If there are no parent folder permissions, we can return the current folder permissions.
         if (!parentFolderPermissions.length) {
