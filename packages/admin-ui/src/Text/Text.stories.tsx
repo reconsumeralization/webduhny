@@ -5,7 +5,6 @@ import { Text } from "./Text";
 const meta: Meta<typeof Text> = {
     title: "Components/Text",
     component: Text,
-    tags: ["autodocs"],
     argTypes: {
         size: { control: "select", options: ["sm", "md", "lg", "xl"] }
     }
@@ -43,5 +42,23 @@ export const TextSm: Story = {
         size: "sm",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        size: "md",
+        children: "Text component example"
+    },
+    argTypes: {
+        size: {
+            description: "The size of the text",
+            control: "select",
+            options: ["sm", "md", "lg", "xl"]
+        },
+        children: {
+            description: "The content of the text",
+            control: "text"
+        }
     }
 };
