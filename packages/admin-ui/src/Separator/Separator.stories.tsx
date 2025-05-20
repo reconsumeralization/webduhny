@@ -7,7 +7,6 @@ import { Text } from "~/Text";
 const meta: Meta<typeof Separator> = {
     title: "Components/Separator",
     component: Separator,
-    tags: ["autodocs"],
     argTypes: {},
     decorators: [
         Story => (
@@ -21,6 +20,58 @@ const meta: Meta<typeof Separator> = {
 export default meta;
 
 type Story = StoryObj<typeof Separator>;
+
+export const Documentation: Story = {
+    args: {
+        variant: "subtle",
+        margin: "lg",
+        orientation: "horizontal",
+        decorative: true
+    },
+    argTypes: {
+        margin: {
+            description: "The margin around the separator.",
+            control: "select",
+            options: ["none", "xs", "sm", "md", "lg", "xl"]
+        },
+        variant: {
+            description: "The visual style variant of the separator.",
+            control: "select",
+            options: ["strong", "subtle", "dimmed", "white", "transparent"]
+        },
+        orientation: {
+            description: "The orientation of the separator.",
+            control: "select",
+            options: ["horizontal", "vertical"]
+        },
+        decorative: {
+            description:
+                "Whether the separator is purely decorative and should be hidden from screen readers.",
+            control: "boolean"
+        }
+    },
+    render: props => {
+        return (
+            <div>
+                <div className="wby-space-y-1">
+                    <Heading level={6}>{"This is a heading."}</Heading>
+                    <Text size="sm" className={"wby-text-neutral-strong"}>
+                        {"This is a short description here"}
+                    </Text>
+                </div>
+                <Separator
+                    margin={props.margin}
+                    variant={props.variant}
+                    orientation={props.orientation}
+                    decorative={props.decorative}
+                />
+                <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
+                    <Text>{"This is text 1."}</Text>
+                </div>
+            </div>
+        );
+    }
+};
 
 export const Default: Story = {
     args: {
@@ -154,9 +205,9 @@ export const MoreMargin: Story = {
                 <div className="wby-flex wby-items-center wby-h-6 wby-text-sm">
                     <Text>{"This is text 1."}</Text>
                     <Separator orientation="vertical" margin={"xl"} />
-                    <Text>{"This is text 1."}</Text>
+                    <Text>{"This is text 2."}</Text>
                     <Separator orientation="vertical" margin={"xl"} />
-                    <Text>{"This is text 1."}</Text>
+                    <Text>{"This is text 3."}</Text>
                 </div>
             </div>
         );
