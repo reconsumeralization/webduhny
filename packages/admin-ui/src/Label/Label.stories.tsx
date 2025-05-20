@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { Label } from "./Label";
 import { Tooltip } from "~/Tooltip";
+import { Input } from "~/Input";
 
 const meta: Meta<typeof Label> = {
     title: "Components/Form/Label",
@@ -21,6 +22,76 @@ const meta: Meta<typeof Label> = {
 
 export default meta;
 type Story = StoryObj<typeof Label>;
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = React.useState("");
+
+        return (
+            <div className="wby-mb-4 wby-space-y-2">
+                <Label {...args} />
+                <Input
+                    id={args.htmlFor}
+                    type="text"
+                    placeholder="e.g. John Michael Doe"
+                    required={args.required}
+                    value={value}
+                    onChange={e => setValue(e.target.value)}
+                />
+            </div>
+        );
+    },
+    args: {
+        text: "Full Name",
+        htmlFor: "full-name",
+        description: "As shown on your government-issued ID",
+        hint: "Include middle name if applicable",
+        required: true,
+        disabled: false,
+        weight: "strong",
+        value: "Label value will be shown here",
+        invalid: false
+    },
+    argTypes: {
+        text: {
+            description: "The text content of the label",
+            control: "text"
+        },
+        htmlFor: {
+            description: "The ID of the form element this label is associated with",
+            control: "text"
+        },
+        description: {
+            description: "Additional descriptive text shown next to the label",
+            control: "text"
+        },
+        hint: {
+            description: "Tooltip hint text that appears on hover",
+            control: "text"
+        },
+        required: {
+            description: "Whether the associated form field is required",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Whether the label should appear disabled",
+            control: "boolean"
+        },
+        weight: {
+            description: "The font weight of the label text",
+            control: "select",
+            options: ["strong", "light"]
+        },
+        value: {
+            description: "Optional value to display on the right side of the label",
+            control: "text"
+        },
+        invalid: {
+            description: "Whether the label should appear in an invalid state",
+            control: "boolean"
+        }
+    }
+};
 
 export const Default: Story = {
     args: {
