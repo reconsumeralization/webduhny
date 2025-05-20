@@ -77,37 +77,6 @@ export class RecordHandler implements IRecordHandler {
                 continue;
             }
             container.merge(items);
-
-            // const bundles = deployment.createBundles({
-            //     items
-            // });
-            //
-            // const tables = deployment.getTables();
-            // for (const table of tables) {
-            //     table.assignItems(items);
-            //     /**
-            //      * We will handle the records in bundles.
-            //      */
-            //     const bundles = table.bundle();
-            //
-            //     for (const bundle of bundles) {
-            //         try {
-            //             const commandHandler = this.getCommandHandler(bundle.command);
-            //             await commandHandler.handle({
-            //                 deployment,
-            //                 table,
-            //                 bundle,
-            //                 plugins: this.transformRecordPlugins,
-            //                 storer: this.storer,
-            //                 fetcher: this.fetcher
-            //             });
-            //         } catch (ex) {
-            //             console.error("Could not handle a bundle.");
-            //             console.log(convertException(ex));
-            //             // TODO determine what should we do with the error.
-            //         }
-            //     }
-            // }
         }
         /**
          * We can now handle the records by going through all the items bundled by command, in correct order.
