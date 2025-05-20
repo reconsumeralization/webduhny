@@ -3,7 +3,7 @@ import type { FolderLevelPermission, FolderPermission } from "~/flp/flp.types";
 export class Permissions {
     public static create(
         permissions?: FolderPermission[],
-        parentFlp?: FolderLevelPermission
+        parentFlp?: FolderLevelPermission | null
     ): FolderPermission[] {
         const parentFolderPermissions = parentFlp?.permissions || [];
         const currentFolderPermissions =
