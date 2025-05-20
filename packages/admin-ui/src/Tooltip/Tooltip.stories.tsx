@@ -1,6 +1,10 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip, Button, Text, Icon } from "@webiny/admin-ui";
+import { Tooltip } from "~/Tooltip";
+import { Button } from "~/Button";
+import { Text } from "~/Text";
+import { Icon } from "~/Icon";
+
 import { ReactComponent as InfoIcon } from "@webiny/icons/info.svg";
 import { ReactComponent as HelpIcon } from "@webiny/icons/help.svg";
 
