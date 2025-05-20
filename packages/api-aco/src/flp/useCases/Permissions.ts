@@ -5,33 +5,51 @@ export class Permissions {
         permissions?: FolderPermission[],
         parentFlp?: FolderLevelPermission | null
     ): FolderPermission[] {
-        const folderPermissions = permissions ?? [];
+        const parentFolderPermissions = parentFlp?.permissions || [];
+        const currentFolderPermissions =
+            permissions?.filter(p => p.inheritedFrom !== `parent:${parentFlp?.id}`) || [];
 
-        // No parent FLP provided, let's return the permissions from the folder.
-        if (!parentFlp) {
-            return folderPermissions;
+        if (!parentFolderPermissions.length) {
+            return currentFolderPermissions;
         }
 
-        const { id: parentId, permissions: parentPermissions } = parentFlp;
+        // Merge parent and current folder permissions:
+        // - current folder permissions take precedence over parent permissions
+        // - only if parent permission's level is set to `no-access`, then we ignore the current folder permission
+        const permissionsInheritedFromParentFolder: FolderPermission[] = [];
 
-        // Remove all previously inherited permissions
-        const cleanedPermissions = folderPermissions.filter(
-            p => p.inheritedFrom !== `parent:${parentId}`
-        );
+        for (const parentFolderPermission of parentFolderPermissions) {
+            if (parentFolderPermission.level === "no-access") {
+                permissionsInheritedFromParentFolder.push({
+                    ...parentFolderPermission,
+                    inheritedFrom: `parent:${parentFlp!.id}`
+                });
+                continue;
+            }
 
-        // Store the `target` values from the current cleaned permissions.
-        // These will be used to exclude inherited permissions that target the same entities as the current folder's permissions.
-        const permissionsTargets = new Set(cleanedPermissions.map(p => p.target));
+            const currentFolderHasOverridePermission = currentFolderPermissions.some(
+                permission => permission.target === parentFolderPermission.target
+            );
 
-        // Get inherited permissions from parent, preserving the original inheritance chain
-        const inheritedPermissions = parentPermissions
-            .filter(p => !permissionsTargets.has(p.target))
-            .map(p => ({
-                ...p,
-                // If the permission was already inherited, keep its original source
-                inheritedFrom: `parent:${parentId}`
-            }));
+            if (currentFolderHasOverridePermission) {
+                continue;
+            }
 
-        return [...cleanedPermissions, ...inheritedPermissions];
+            permissionsInheritedFromParentFolder.push({
+                ...parentFolderPermission,
+                inheritedFrom: `parent:${parentFlp!.id}`
+            });
+        }
+
+        // Add current folder permissions that are not present in the parent folder permissions.
+        const applicableCurrentFolderPermissions = currentFolderPermissions.filter(permission => {
+            const alreadyInInheritedPermissions = permissionsInheritedFromParentFolder.some(
+                p => p.target === permission.target
+            );
+
+            return !alreadyInInheritedPermissions;
+        });
+
+        return [...applicableCurrentFolderPermissions, ...permissionsInheritedFromParentFolder];
     }
 }
