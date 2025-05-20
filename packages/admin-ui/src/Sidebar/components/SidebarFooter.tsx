@@ -5,7 +5,7 @@ const SidebarFooter = ({ children, ...props }: React.HTMLAttributes<HTMLDivEleme
     return (
         <div data-sidebar="footer" {...props}>
             <div className={"wby-px-sm wby-pb-xs"}>
-                <Separator variant={"subtle"} margin={"none"} className={"wby-mb-px"} />
+                <Separator className={"wby-mb-px"} />
             </div>
             {children}
         </div>

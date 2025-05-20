@@ -5,7 +5,7 @@ export const Divider = () => {
     return (
         <div className={"wby-relative wby-my-lg"}>
             <div className={"wby-absolute wby-inset-0 wby-flex wby-items-center"}>
-                <Separator margin={"none"} />
+                <Separator />
             </div>
             <div className={"wby-relative wby-flex wby-justify-center"}>
                 <Text

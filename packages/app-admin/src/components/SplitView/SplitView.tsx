@@ -86,7 +86,7 @@ const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
                 {children}
             </Panel>
             <PanelResizeHandle>
-                <Separator variant={"subtle"} orientation={"vertical"} margin={"none"} />
+                <Separator orientation={"vertical"} />
             </PanelResizeHandle>
         </>
     );

@@ -24,7 +24,7 @@ const HeaderBarBase = ({ start, middle, end }: HeaderBarProps) => {
                     {end}
                 </div>
             </div>
-            <Separator margin={"none"} variant={"subtle"} />
+            <Separator />
         </header>
     );
 };

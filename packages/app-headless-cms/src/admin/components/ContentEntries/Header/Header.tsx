@@ -54,7 +54,7 @@ export const Header = (props: HeaderProps) => {
                     </div>
                 </div>
             </div>
-            <Separator variant={"subtle"} margin={"none"} />
+            <Separator />
         </>
     );
 };

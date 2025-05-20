@@ -59,7 +59,7 @@ export const DrawerHeader = ({
                 </DrawerTitle>
                 {description && <DrawerDescription>{description}</DrawerDescription>}
             </div>
-            {separator && <Separator variant={"dimmed"} margin={"none"} />}
+            {separator && <Separator />}
         </>
     );
 };

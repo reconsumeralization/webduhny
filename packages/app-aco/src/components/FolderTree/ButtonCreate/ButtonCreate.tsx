@@ -18,7 +18,7 @@ export const ButtonCreate = (props: ButtonCreateProps) => {
             onClick={() => showDialog()}
             disabled={props.disabled}
             icon={<Plus />}
-            text={t`Create folder`}
+            text={t`New folder`}
             variant={"secondary"}
             size={"sm"}
         />

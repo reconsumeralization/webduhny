@@ -24,7 +24,7 @@ type Story = StoryObj<typeof Separator>;
 
 export const Default: Story = {
     args: {
-        variant: "subtle",
+        variant: "dimmed",
         margin: "lg"
     },
     render: props => {
@@ -50,7 +50,7 @@ export const Default: Story = {
         },
         variant: {
             control: "select",
-            options: ["strong", "subtle", "dimmed", "white", "transparent"]
+            options: ["transparent", "base", "dimmed", "muted", "strong"]
         }
     }
 };

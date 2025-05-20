@@ -47,7 +47,7 @@ export const Sidebar = ({ folderId }: SidebarProps) => {
                     )}
                 </Text>
             </div>
-            <Separator variant={"subtle"} margin={"none"} />
+            <Separator />
             <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>
                 <div className={"wby-px-sm-extra wby-py-sm"}>
                     <FolderTree
