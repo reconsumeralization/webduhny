@@ -5,8 +5,7 @@ import { Icon } from "./Icon";
 
 const meta: Meta<typeof Icon> = {
     title: "Components/Icon",
-    component: Icon,
-    tags: ["autodocs"]
+    component: Icon
 };
 
 export default meta;
@@ -106,5 +105,53 @@ export const SizeLg: Story = {
     args: {
         ...Default.args,
         size: "lg"
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        ...Default.args,
+        disabled: true
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        icon: <XIcon />,
+        label: "Close icon",
+        size: "md",
+        color: "accent",
+        disabled: false,
+        className: ""
+    },
+    argTypes: {
+        icon: {
+            description:
+                "The SVG icon component to be rendered. Please refer to the example code for details.",
+            control: "none"
+        },
+        label: {
+            description: "Accessible label for the icon (for screen readers)",
+            control: "text"
+        },
+        size: {
+            description: "The size of the icon",
+            control: "select",
+            options: ["xs", "sm", "md", "lg"]
+        },
+        color: {
+            description: "The color of the icon",
+            control: "select",
+            options: ["inherit", "accent", "neutral", "neutral-light", "neutral-strong"]
+        },
+        disabled: {
+            description: "Whether the icon should appear disabled",
+            control: "boolean"
+        },
+        className: {
+            description:
+                "Additional CSS classes to apply to the icon. You can pass multiple classes, separated by commas or spaces.",
+            control: "text"
+        }
     }
 };
