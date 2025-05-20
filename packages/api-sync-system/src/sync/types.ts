@@ -1,4 +1,4 @@
-import { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api/types";
 import {
     type BatchGetCommand,
     type BatchWriteCommand,

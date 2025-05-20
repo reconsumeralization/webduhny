@@ -12,7 +12,7 @@ import type {
 } from "@webiny/aws-sdk/client-eventbridge";
 import { PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
 import { convertException } from "@webiny/utils";
-import { IDetail } from "./types.js";
+import type { IDetail } from "./types.js";
 import { SQS_EVENT_NAME } from "~/constants.js";
 
 export interface IHandlerEventBus {

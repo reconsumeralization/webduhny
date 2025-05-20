@@ -46,14 +46,14 @@ import { createLogger } from "@webiny/api-log";
 
 import scaffoldsPlugins from "./plugins/scaffolds";
 import { extensions } from "./extensions";
-
-const debug = process.env.DEBUG === "true";
-const documentClient = getDocumentClient();
-
 /**
  * #### TESTING sync system
  */
 import { createSyncSystem } from "@webiny/api-sync-system";
+
+const debug = process.env.DEBUG === "true";
+const documentClient = getDocumentClient();
+
 const syncSystem = createSyncSystem({
     documentClient,
     system: {

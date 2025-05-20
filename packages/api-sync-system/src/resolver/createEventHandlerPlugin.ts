@@ -18,7 +18,7 @@ import { TransformHandler } from "~/resolver/app/transform/TransformHandler.js";
 
 export interface ICreateEventHandlerPluginParams {
     tableName: string | undefined;
-    createDocumentClient: (params?: DynamoDBClientConfig) => DynamoDBDocument;
+    createDocumentClient: (params: DynamoDBClientConfig) => DynamoDBDocument;
 }
 /**
  * TODO maybe add logger?
@@ -32,6 +32,12 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
                 message: "Table name variable is not set."
             });
         }
+        console.log("Resolver handler started.");
+        console.log(
+            JSON.stringify({
+                records: event.Records
+            })
+        );
         try {
             const fetcher = createFetcher({
                 maxRetries: 10,
@@ -44,7 +50,9 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
             });
 
             const deploymentsFetcher = createDeploymentsFetcher({
-                client: createDocumentClient(),
+                client: createDocumentClient({
+                    region: process.env.AWS_REGION
+                }),
                 table: tableName
             });
             /**

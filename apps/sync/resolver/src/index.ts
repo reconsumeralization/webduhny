@@ -1,8 +1,12 @@
-import { createResolverHandler } from "@webiny/api-sync-system/resolver";
+import { createResolverHandler } from "@webiny/api-sync-system";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 
 const debug = process.env.DEBUG === "true";
 
 export const handler = createResolverHandler({
     plugins: [],
-    debug
+    debug,
+    createDocumentClient: params => {
+        return getDocumentClient(params);
+    }
 });

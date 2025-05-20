@@ -15,7 +15,7 @@ export type AllowedResolverPlugins = TransformRecordPlugin | CommandHandlerPlugi
 
 export interface ICreateResolverHandlerParams extends HandlerParams {
     plugins: AllowedResolverPlugins[];
-    createDocumentClient: (params?: DynamoDBClientConfig) => DynamoDBDocument;
+    createDocumentClient: (params: DynamoDBClientConfig) => DynamoDBDocument;
     tableName?: string;
 }
 /**

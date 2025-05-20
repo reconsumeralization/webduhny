@@ -14,11 +14,9 @@ export const addServiceManifest = (params: IAddServiceManifestParams) => {
         app.addServiceManifest({
             name: "sync",
             manifest: {
-                sync: {
-                    eventBusArn: syncSystem.eventBusArn,
-                    eventBusName: syncSystem.eventBusName,
-                    region: syncSystem.region
-                }
+                eventBusArn: syncSystem.eventBusArn,
+                eventBusName: syncSystem.eventBusName,
+                region: syncSystem.region
             }
         });
     });

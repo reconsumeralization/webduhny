@@ -19,6 +19,16 @@ export const getManifest = async (params: IGetManifestParams) => {
     try {
         ServiceDiscovery.setDocumentClient(params.documentClient);
         const manifest = await ServiceDiscovery.load();
+        if (!manifest?.sync) {
+            return {
+                /**
+                 * This error will be silent. We do not want to log or throw at this point.
+                 */
+                error: new Error(
+                    "Sync System Manifest not found. Probably Sync System is not turned on."
+                )
+            };
+        }
         const { data, error } = validateManifest.safeParse(manifest);
         if (error) {
             console.error("Sync System: Failed to validate manifest.");

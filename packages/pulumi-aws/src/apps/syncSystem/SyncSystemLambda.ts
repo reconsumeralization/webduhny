@@ -34,7 +34,7 @@ export const SyncSystemLambda = createAppModule({
                 role: role.output.arn,
                 timeout: 900,
                 memorySize: 512,
-                code: createAssetArchive(path.join(app.paths.workspace, "input/build")),
+                code: createAssetArchive(path.join(app.paths.workspace, "resolver/build")),
                 environment: {
                     variables: {
                         DEBUG: String(process.env.DEBUG),

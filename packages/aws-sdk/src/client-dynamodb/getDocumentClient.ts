@@ -50,26 +50,11 @@ const applyDecoration = (client: DynamoDBDocument): DynamoDBDocument => {
     if (!decorateDocumentClientCallable) {
         return client;
     }
-    /**
-     * If client is already decorated, let's skip decoration.
-     */
-    // @ts-expect-error
-    else if (client.__decoratedByWebiny) {
-        return client;
-    }
     // @ts-expect-error
     client.__decoratedByWebiny = true;
     return decorateDocumentClientCallable(client);
 };
 
 export const decorateDocumentClient = (cb: IDecorateDocumentClientCallable): void => {
-    /**
-     * This will probably show during the development phase.
-     */
-    if (decorateDocumentClientCallable) {
-        throw new Error(
-            "Cannot add more than one decoration of the document client. This is internal Webiny method, please do not use it."
-        );
-    }
     decorateDocumentClientCallable = cb;
 };
