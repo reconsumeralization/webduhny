@@ -52,7 +52,6 @@ export class TenantsMigrator {
             }
 
             // Install tenant.
-
         }
     }
 }

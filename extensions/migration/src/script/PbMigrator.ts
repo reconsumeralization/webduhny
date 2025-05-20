@@ -18,8 +18,16 @@ export class PbMigrator extends AbstractMigrator {
     ) {
         super(sourceApiUrl, sourceApiKey, targetApiUrl, targetApiKey, tenantId);
 
-        this.sourceGqlClient = new GqlClient(this.sourceApiUrl + "/graphql", this.sourceApiKey, this.tenantId);
-        this.targetGqlClient = new GqlClient(this.targetApiUrl + "/graphql", this.targetApiKey, this.tenantId);
+        this.sourceGqlClient = new GqlClient(
+            this.sourceApiUrl + "/graphql",
+            this.sourceApiKey,
+            this.tenantId
+        );
+        this.targetGqlClient = new GqlClient(
+            this.targetApiUrl + "/graphql",
+            this.targetApiKey,
+            this.tenantId
+        );
     }
 
     async run() {

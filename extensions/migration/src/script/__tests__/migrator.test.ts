@@ -17,7 +17,13 @@ describe("Migrator Tests2", () => {
             throw new Error("Missing environment variables.");
         }
 
-        const migrator = new Migrator(sourceApiUrl, sourceApiKey, targetApiUrl, targetApiKey, tenantId);
+        const migrator = new Migrator(
+            sourceApiUrl,
+            sourceApiKey,
+            targetApiUrl,
+            targetApiKey,
+            tenantId
+        );
         await migrator.run();
     });
 });

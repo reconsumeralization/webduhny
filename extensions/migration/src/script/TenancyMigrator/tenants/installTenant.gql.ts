@@ -49,4 +49,4 @@
 //     }
 // `;
 
-const IS_PB_INSTALLED 
+const IS_PB_INSTALLED;

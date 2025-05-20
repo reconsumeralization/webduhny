@@ -4,14 +4,13 @@ export const createExtension = () => {
     return [
         createGraphQLSchemaPlugin({
             typeDefs: /* GraphQL */ `
-              type Book {
-                title: String
-                description: String
-              }
-              extend type TenancyMutation {
-                
-                listBooks: [Book]
-              }
+                type Book {
+                    title: String
+                    description: String
+                }
+                extend type TenancyMutation {
+                    listBooks: [Book]
+                }
             `,
             resolvers: {
                 Query: {
