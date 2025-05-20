@@ -67,39 +67,29 @@ export class DefaultPermissionsMerger {
 
         const [firstAdminPermission, ...restAdminPermissions] = currentAdminPermissions;
 
-        let resultPermission: FolderPermission = firstAdminPermission;
+        const resultPermission = restAdminPermissions.reduce((winner, current) => {
+            const winnerInherits = winner.inheritedFrom?.startsWith("parent:");
+            const currentInherits = current.inheritedFrom?.startsWith("parent:");
 
-        // Here we're comparing the rest of the permissions with the first one. Levels
-        // that are possible here are: `viewer`, `editor`, and `owner`.
-        for (const currentPermission of restAdminPermissions) {
-            const resultPermissionInheritsFromParent =
-                resultPermission.inheritedFrom?.startsWith("parent:");
-
-            const currentPermissionInheritsFromParent =
-                currentPermission.inheritedFrom?.startsWith("parent:");
-
-            if (resultPermissionInheritsFromParent && !currentPermissionInheritsFromParent) {
-                resultPermission = currentPermission;
-                continue;
+            if (winnerInherits && !currentInherits) {
+                return current;
             }
-
-            if (currentPermissionInheritsFromParent && !resultPermissionInheritsFromParent) {
-                continue;
+            if (currentInherits && !winnerInherits) {
+                return winner;
             }
 
             // At this point, we're either comparing two permissions with `inheritedFrom` or two without it.
-            // In other words, we're now at a point where we start comparing the levels.
-            if (currentPermission.level === "owner") {
-                resultPermission = currentPermission;
-                continue;
+            // In other words, we're now at a point where we start comparing the levels (owner > editor > viewer).
+            if (current.level === "owner") {
+                return current;
             }
 
-            if (currentPermission.level === "editor") {
-                if (resultPermission.level === "viewer") {
-                    resultPermission = currentPermission;
-                }
+            if (current.level === "editor" && winner.level === "viewer") {
+                return current;
             }
-        }
+
+            return winner;
+        }, firstAdminPermission);
 
         // Remove all permissions for the current identity and add the winning one.
         return [
