@@ -59,7 +59,7 @@ const FormComponent = ({ folder }: FormComponentProps) => {
             const selectedUserOrTeam = value[value.length - 1];
             const newPermission: FolderPermission = {
                 target: selectedUserOrTeam.target,
-                level: "editor"
+                level: "viewer"
             };
 
             // We want to add the new permission to the 2nd position in the array.

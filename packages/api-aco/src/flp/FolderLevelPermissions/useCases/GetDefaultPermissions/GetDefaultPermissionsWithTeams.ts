@@ -21,7 +21,7 @@ export class GetDefaultPermissionsWithTeams implements IGetDefaultPermissions {
         this.decoretee = decoretee;
     }
 
-    async execute(permissions: FolderPermission[]) {
+    async execute(originalPermissions: FolderPermission[]) {
         /**
          * Retrieves the list of teams the current identity belongs to and checks if any of these teams
          * have permissions for the folder. If a team has permissions, the current identity is granted
@@ -29,6 +29,8 @@ export class GetDefaultPermissionsWithTeams implements IGetDefaultPermissions {
          */
         const identity = this.getIdentityGateway.execute();
         const identityTeams: Team[] = (await this.listIdentityTeamsGateway.execute()) ?? [];
+
+        const permissions = [...originalPermissions]; // Clone the original permissions to avoid mutation.
 
         if (identityTeams.length) {
             for (const identityTeam of identityTeams) {
