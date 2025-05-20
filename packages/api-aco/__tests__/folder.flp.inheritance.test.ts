@@ -303,4 +303,160 @@ describe("Folder Level Permissions - Inheritance", () => {
             ]
         });
     });
+
+    it("removing parent permissions should be reflected in child folders", async () => {
+        const folderA = await aco
+            .createFolder({
+                data: {
+                    title: "Folder A",
+                    slug: "folder-a",
+                    type: FOLDER_TYPE,
+                    permissions: [
+                        { level: "viewer", target: `team:test-team-1` },
+                        { level: "editor", target: `team:test-team-2` }
+                    ]
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        const folderB = await aco
+            .createFolder({
+                data: {
+                    title: "Folder B",
+                    slug: "folder-b",
+                    type: FOLDER_TYPE,
+                    parentId: folderA.id,
+                    permissions: [
+                        { level: "viewer", target: `team:test-team-2` },
+                        { level: "editor", target: `team:test-team-1` }
+                    ]
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        const folderC = await aco
+            .createFolder({
+                data: {
+                    title: "Folder C",
+                    slug: "folder-c",
+                    type: FOLDER_TYPE,
+                    parentId: folderB.id,
+                    permissions: [{ level: "owner", target: `team:test-team-2` }]
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        let refetchedFolderC = await aco.getFolder({ id: folderC.id }).then(([response]) => {
+            return response.data.aco.getFolder.data;
+        });
+
+        expect(refetchedFolderC).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:1",
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
+                },
+                {
+                    target: "team:test-team-2",
+                    level: "owner",
+                    inheritedFrom: null
+                },
+                {
+                    target: "team:test-team-1",
+                    level: "editor",
+                    inheritedFrom: `parent:${folderB.id}`
+                }
+            ]
+        });
+
+        await aco.updateFolder({
+            id: folderC.id,
+            data: {
+                permissions: []
+            }
+        });
+
+        refetchedFolderC = await aco.getFolder({ id: folderC.id }).then(([response]) => {
+            return response.data.aco.getFolder.data;
+        });
+
+        expect(refetchedFolderC).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:1",
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
+                },
+                {
+                    target: "team:test-team-2",
+                    level: "viewer",
+                    inheritedFrom: `parent:${folderB.id}`
+                },
+                {
+                    target: "team:test-team-1",
+                    level: "editor",
+                    inheritedFrom: `parent:${folderB.id}`
+                }
+            ]
+        });
+
+        await aco.updateFolder({
+            id: folderB.id,
+            data: {
+                permissions: []
+            }
+        });
+
+        refetchedFolderC = await aco.getFolder({ id: folderC.id }).then(([response]) => {
+            return response.data.aco.getFolder.data;
+        });
+
+        expect(refetchedFolderC).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:1",
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
+                },
+                {
+                    target: "team:test-team-1",
+                    level: "viewer",
+                    inheritedFrom: `parent:${folderB.id}`
+                },
+                {
+                    target: "team:test-team-2",
+                    level: "editor",
+                    inheritedFrom: `parent:${folderB.id}`
+                }
+            ]
+        });
+
+        await aco.updateFolder({
+            id: folderA.id,
+            data: {
+                permissions: []
+            }
+        });
+
+        refetchedFolderC = await aco.getFolder({ id: folderC.id }).then(([response]) => {
+            return response.data.aco.getFolder.data;
+        });
+
+        expect(refetchedFolderC).toMatchObject({
+            permissions: [
+                {
+                    target: "admin:1",
+                    level: "owner",
+                    inheritedFrom: "role:full-access"
+                }
+            ]
+        });
+    });
 });
