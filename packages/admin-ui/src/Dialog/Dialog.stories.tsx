@@ -83,7 +83,11 @@ export const WithDropdownMenu: Story = {
         return (
             <>
                 <DropdownMenu trigger={<Button variant="primary" text={"Open"} />}>
-                    <DropdownMenu.Item content={"Open Dialog"} onClick={() => setOpen(true)} />
+                    <DropdownMenu.Item
+                        text={"Open Dialog"}
+                        content={"Open Dialog"}
+                        onClick={() => setOpen(true)}
+                    />
                 </DropdownMenu>
 
                 <Dialog {...props} open={open} onOpenChange={() => setOpen(false)} />
