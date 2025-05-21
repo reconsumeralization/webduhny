@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Loader } from "./Loader";
 
 const meta: Meta<typeof Loader> = {
-    title: "Components/Loader/Loader",
+    title: "Components/Loader",
     component: Loader,
     parameters: {
         layout: "padded"
@@ -12,6 +12,56 @@ const meta: Meta<typeof Loader> = {
 
 export default meta;
 type Story = StoryObj<typeof Loader>;
+
+export const Documentation: Story = {
+    args: {
+        size: "md",
+        variant: "accent",
+        indeterminate: true,
+        value: 66,
+        min: 0,
+        max: 100,
+        text: "Loading...",
+        className: undefined
+    },
+    argTypes: {
+        size: {
+            description: "Size of the loader",
+            control: "select",
+            options: ["xs", "sm", "md", "lg"]
+        },
+        variant: {
+            description: "Visual style variant of the loader",
+            control: "select",
+            options: ["accent", "subtle", "negative"]
+        },
+        indeterminate: {
+            description: "Whether the loader should show indeterminate progress",
+            control: "boolean"
+        },
+        value: {
+            description: "Current progress value (when not indeterminate)",
+            control: { type: "number", min: 0, max: 100 }
+        },
+        min: {
+            description: "Minimum value for progress calculation",
+            control: "number"
+        },
+        max: {
+            description: "Maximum value for progress calculation",
+            control: "number"
+        },
+        text: {
+            description: "Optional text to display below the loader",
+            control: "text"
+        },
+        className: {
+            description:
+                "Additional CSS class names. You can pass multiple class names, separated by commas or spaces.",
+            control: "none"
+        }
+    }
+};
 
 export const Default: Story = {};
 
