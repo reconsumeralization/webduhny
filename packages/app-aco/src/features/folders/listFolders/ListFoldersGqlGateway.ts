@@ -76,7 +76,6 @@ export class ListFoldersGqlGateway implements IListFoldersGateway {
             title: "Home",
             permissions: [],
             parentId: "0",
-            path: ROOT_FOLDER,
             slug: "",
             createdOn: "",
             createdBy: {

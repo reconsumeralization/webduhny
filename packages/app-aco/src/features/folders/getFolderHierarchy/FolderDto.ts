@@ -8,7 +8,6 @@ export interface FolderDto {
     slug: string;
     type: string;
     parentId: string;
-    path: string;
     permissions: FolderPermission[];
     hasNonInheritedPermissions: boolean;
     canManagePermissions: boolean;
@@ -37,7 +36,6 @@ export class FolderDtoMapper {
             modifiedBy: this.createIdentity(folder.modifiedBy),
             modifiedOn: folder.modifiedOn ?? "",
             parentId: folder.parentId ?? ROOT_FOLDER,
-            path: folder.path,
             permissions: folder.permissions ?? [],
             savedBy: this.createIdentity(folder.savedBy),
             savedOn: folder.savedOn ?? "",

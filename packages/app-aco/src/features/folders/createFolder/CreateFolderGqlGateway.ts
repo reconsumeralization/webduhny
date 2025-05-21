@@ -17,7 +17,6 @@ export interface CreateFolderVariables {
     data: Omit<
         FolderItem,
         | "id"
-        | "path"
         | "createdOn"
         | "createdBy"
         | "savedOn"

@@ -1,5 +1,4 @@
 import { CmsIdentity, FolderPermission } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
 
 export interface FolderData {
     id?: string;
@@ -7,7 +6,6 @@ export interface FolderData {
     slug: string;
     type: string;
     parentId: string | null;
-    path?: string;
     permissions: FolderPermission[];
     hasNonInheritedPermissions?: boolean;
     canManagePermissions?: boolean;
@@ -28,7 +26,6 @@ export class Folder {
     public slug: string;
     public type: string;
     public parentId: string | null;
-    public path: string;
     public permissions: FolderPermission[];
     public hasNonInheritedPermissions?: boolean;
     public canManagePermissions?: boolean;
@@ -48,7 +45,6 @@ export class Folder {
         this.slug = folder.slug;
         this.type = folder.type;
         this.parentId = folder.parentId;
-        this.path = folder.path || `${ROOT_FOLDER}/${folder.slug}`;
         this.permissions = folder.permissions;
         this.hasNonInheritedPermissions = folder.hasNonInheritedPermissions;
         this.canManagePermissions = folder.canManagePermissions;

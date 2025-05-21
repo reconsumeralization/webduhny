@@ -92,7 +92,6 @@ export class GetFolderHierarchyGqlGateway implements IGetFolderHierarchyGateway 
             title: "Home",
             permissions: [],
             parentId: "0",
-            path: ROOT_FOLDER,
             slug: "",
             createdOn: "",
             createdBy: {
