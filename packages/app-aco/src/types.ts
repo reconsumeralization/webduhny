@@ -35,6 +35,7 @@ export interface FolderItem {
     canManageContent: boolean;
     type: string;
     parentId: string | null;
+    path: string;
     createdBy: CmsIdentity;
     createdOn: string;
     savedBy: CmsIdentity;

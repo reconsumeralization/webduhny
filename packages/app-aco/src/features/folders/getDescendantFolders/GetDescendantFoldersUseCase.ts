@@ -20,7 +20,8 @@ export class GetDescendantFoldersUseCase implements IGetDescendantFoldersUseCase
             slug: folder.slug,
             permissions: folder.permissions,
             type: folder.type,
-            parentId: folder.parentId
+            parentId: folder.parentId,
+            path: folder.path
         }));
     }
 }
