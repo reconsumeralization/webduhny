@@ -143,7 +143,7 @@ export class UpdateFlp {
 
             await this.context.aco.flp.batchUpdate(items);
 
-            // Update the child folders with the new path
+            // Update all folders with the new path
             const folderModel = await this.getFolderModel();
             for (const item of items) {
                 const { id, data } = item;
