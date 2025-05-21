@@ -28,11 +28,6 @@ export class TenancyMigrator extends AbstractMigrator {
     }
 
     async run() {
-        // No need to run this in a non-root tenant.
-        if (this.tenantId !== "root") {
-            return;
-        }
-
         const start = Date.now();
         console.log("🌀 Starting Tenants migration...");
 

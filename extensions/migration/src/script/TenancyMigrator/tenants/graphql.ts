@@ -32,6 +32,23 @@ export const CREATE_TENANT = /* GraphQL */ `
     }
 `;
 
+export const INSTALL_TENANT = /* GraphQL */ `
+    ${DATA_FIELDS}
+    ${ERROR_FIELDS}
+    mutation InstallTenant($tenantId: ID!) {
+        tenancy {
+            installTenant(tenantId: $tenantId) {
+                data {
+                    ...DataFields
+                }
+                error {
+                    ...ErrorFields
+                }
+            }
+        }
+    }
+`;
+
 export const LIST_TENANTS = /* GraphQL */ `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}

@@ -1,27 +1,26 @@
-import { createGraphQLSchemaPlugin } from "@webiny/api-serverless-cms";
+import { createGraphQLSchemaPlugin, InstallTenant } from "@webiny/api-serverless-cms";
 
 export const createExtension = () => {
     return [
         createGraphQLSchemaPlugin({
             typeDefs: /* GraphQL */ `
-                type Book {
-                    title: String
-                    description: String
-                }
                 extend type TenancyMutation {
-                    listBooks: [Book]
+                    installTenant(tenantId: ID!): TenantResponse
                 }
             `,
             resolvers: {
-                Query: {
-                    listBooks: async (_, args, context) => {
-                        // In a real life application, these would be loaded from a database.
-                        const books = [
-                            { title: "First book", description: "This is the first book." },
-                            { title: "Second book", description: "This is the second book." }
-                        ];
+                TenancyMutation: {
+                    installTenant: async (_, args, context) => {
+                        const tenant = await context.tenancy.getTenantById(args.tenantId);
+                        if (!tenant) {
+                            throw new Error(`Tenant "${args.tenantId}" not found.`);
+                        }
 
-                        return books;
+                        const installTenant = new InstallTenant(context);
+                        await installTenant.execute(tenant, {
+                            i18n: { defaultLocaleCode: "en-US" }
+                        });
+                        return tenant;
                     }
                 }
             }

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Migrator } from "../../src/Migrator";
+import { Migrator } from "../Migrator";
 
 jest.setTimeout(500_000);
 
