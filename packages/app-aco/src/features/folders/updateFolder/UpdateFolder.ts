@@ -2,6 +2,7 @@ import { loadingRepositoryFactory } from "@webiny/app-utils";
 import { IUpdateFolderUseCase } from "./IUpdateFolderUseCase";
 import { IUpdateFolderGateway } from "./IUpdateFolderGateway";
 import { UpdateFolderRepository } from "./UpdateFolderRepository";
+import { UpdateFolderRepositoryWithPermissionsChange } from "./UpdateFolderRepositoryWithPermissionsChange";
 import { UpdateFolderUseCase } from "./UpdateFolderUseCase";
 import { UpdateFolderUseCaseWithLoading } from "./UpdateFolderUseCaseWithLoading";
 import { UpdateFolderUseCaseWithoutInheritedPermissions } from "./UpdateFolderUseCaseWithoutInheritedPermissions";
@@ -11,8 +12,14 @@ export class UpdateFolder {
     public static getInstance(type: string, gateway: IUpdateFolderGateway): IUpdateFolderUseCase {
         const foldersCache = folderCacheFactory.getCache(type);
         const loadingRepository = loadingRepositoryFactory.getRepository(type);
+
         const repository = new UpdateFolderRepository(foldersCache, gateway);
-        const useCase = new UpdateFolderUseCase(repository);
+        const repositoryWithPermissionsChange = new UpdateFolderRepositoryWithPermissionsChange(
+            foldersCache,
+            repository
+        );
+
+        const useCase = new UpdateFolderUseCase(repositoryWithPermissionsChange);
         const useCaseWithoutInheritedPermissions =
             new UpdateFolderUseCaseWithoutInheritedPermissions(useCase);
         return new UpdateFolderUseCaseWithLoading(
