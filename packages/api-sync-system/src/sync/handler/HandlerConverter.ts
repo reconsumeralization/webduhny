@@ -32,15 +32,6 @@ export class HandlerConverter implements IHandlerConverter {
                 return converter.convert(command);
             }
         }
-        /**
-         * We ALWAYS log unknown commands as we do not know what user will do with the DynamoDB client.
-         */
-        console.error(`Unknown command: ${command.constructor?.name || "unknown"}`);
-        console.log(
-            JSON.stringify({
-                command
-            })
-        );
 
         return this._default;
     }

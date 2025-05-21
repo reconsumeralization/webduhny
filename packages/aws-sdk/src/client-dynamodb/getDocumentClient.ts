@@ -35,11 +35,17 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
     const config = input || DEFAULT_CONFIG;
     const key = createKey(config);
     if (documentClients[key]) {
+        console.log({
+            existingKey: key
+        });
         return applyDecoration(documentClients[key]);
     }
     const client = new DynamoDBClient(config);
 
     const documentClient = DynamoDBDocument.from(client, documentClientConfig);
+    console.log({
+        newKey: key
+    });
 
     return (documentClients[key] = applyDecoration(documentClient));
 };
@@ -48,8 +54,10 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
  */
 const applyDecoration = (client: DynamoDBDocument): DynamoDBDocument => {
     if (!decorateDocumentClientCallable) {
+        console.log("No decoration function provided.");
         return client;
     }
+    console.log("applying decoration");
     // @ts-expect-error
     client.__decoratedByWebiny = true;
     return decorateDocumentClientCallable(client);
@@ -57,4 +65,10 @@ const applyDecoration = (client: DynamoDBDocument): DynamoDBDocument => {
 
 export const decorateDocumentClient = (cb: IDecorateDocumentClientCallable): void => {
     decorateDocumentClientCallable = cb;
+    /**
+     * Decorate already existing clients.
+     */
+    for (const key in documentClients) {
+        cb(documentClients[key]);
+    }
 };

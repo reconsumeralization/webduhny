@@ -21,6 +21,12 @@ export const createSyncSystemHandlerOnRequestPlugin = (
     return createHandlerOnRequest(async (_, __, context) => {
         const { data: manifest, error } = await getManifest(params);
         if (!manifest?.sync?.region || error) {
+            console.log(
+                JSON.stringify({
+                    error,
+                    noManifest: manifest
+                })
+            );
             return;
         }
 

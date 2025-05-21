@@ -408,22 +408,22 @@ export const createHandler = (params: CreateHandlerParams) => {
     /**
      * We need to output the benchmark results at the end of the request in both response and timeout cases
      */
-    app.addHook("onResponse", async () => {
+    app.addHook("onResponse", async (request, reply) => {
         const plugins = app.webiny.plugins.byType<OnRequestResponsePlugin>(
             OnRequestResponsePlugin.type
         );
         for (const plugin of plugins) {
-            await plugin.exec();
+            await plugin.exec(request, reply);
         }
         await context.benchmark.output();
     });
 
-    app.addHook("onTimeout", async () => {
+    app.addHook("onTimeout", async (request, reply) => {
         const plugins = app.webiny.plugins.byType<OnRequestTimeoutPlugin>(
             OnRequestTimeoutPlugin.type
         );
         for (const plugin of plugins) {
-            await plugin.exec();
+            await plugin.exec(request, reply);
         }
         await context.benchmark.output();
     });

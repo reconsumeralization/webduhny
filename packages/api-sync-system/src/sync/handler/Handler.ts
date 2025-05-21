@@ -14,6 +14,7 @@ import { PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
 import { convertException } from "@webiny/utils";
 import type { IDetail } from "./types.js";
 import { SQS_EVENT_NAME } from "~/constants.js";
+import { generateAlphaNumericId } from "@webiny/utils/generateId.js";
 
 export interface IHandlerEventBus {
     name: string;
@@ -28,6 +29,7 @@ export interface IHandlerParams {
 }
 
 export class Handler implements IHandler {
+    public readonly id = generateAlphaNumericId();
     private readonly system: ISystem;
     private readonly client: Pick<EventBridgeClient, "send">;
     private commands: ICommandValue[] = [];

@@ -35,9 +35,15 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
         console.log("Resolver handler started.");
         console.log(
             JSON.stringify({
-                records: event.Records
+                event
             })
         );
+        /**
+         * Just end
+         */
+        if (event.Records) {
+            return;
+        }
         try {
             const fetcher = createFetcher({
                 maxRetries: 10,

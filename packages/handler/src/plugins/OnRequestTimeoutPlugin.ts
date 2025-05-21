@@ -1,7 +1,8 @@
 import { Plugin } from "@webiny/plugins";
+import type { Reply as FastifyReply, Request as FastifyRequest } from "~/types.js";
 
 export interface IOnRequestTimeoutPluginCallable {
-    (): Promise<void>;
+    (request: FastifyRequest, reply: FastifyReply): Promise<void>;
 }
 
 export class OnRequestTimeoutPlugin extends Plugin {
@@ -14,8 +15,8 @@ export class OnRequestTimeoutPlugin extends Plugin {
         this.cb = cb;
     }
 
-    public async exec(): Promise<void> {
-        return this.cb();
+    public async exec(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+        return this.cb(request, reply);
     }
 }
 

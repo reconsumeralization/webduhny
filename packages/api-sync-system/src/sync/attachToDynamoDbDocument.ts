@@ -25,9 +25,10 @@ export const decorateClientWithHandler = (
      * Let's check for the handler and then skip attaching.
      */
     // @ts-expect-error
-    if (client.__webinyHandler) {
+    if (client.__webinyHandler?.id === handler.id) {
         return client;
     }
+
     const originalSend = client.send;
     const originalPut = client.put;
     const originalBatchWrite = client.batchWrite;
@@ -68,7 +69,7 @@ export const decorateClientWithHandler = (
 };
 
 export const attachToDynamoDbDocument = ({ handler }: IAttachToDynamoDbDocumentParams): void => {
-    decorateDocumentClient(client => {
+    return decorateDocumentClient(client => {
         return decorateClientWithHandler({
             handler,
             client
