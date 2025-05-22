@@ -27,6 +27,7 @@ type Story = StoryObj<typeof Link>;
 export const Default: Story = {
     args: {
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -36,6 +37,7 @@ export const LinkXl: Story = {
     args: {
         size: "xl",
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -45,6 +47,7 @@ export const LinkLg: Story = {
     args: {
         size: "lg",
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -54,6 +57,7 @@ export const LinkMd: Story = {
     args: {
         size: "md",
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -63,6 +67,7 @@ export const LinkSm: Story = {
     args: {
         size: "sm",
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -83,6 +88,7 @@ export const InheritedSize: Story = {
     },
     args: {
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -92,6 +98,7 @@ export const WithUnderline: Story = {
     args: {
         underline: true,
         to: "#",
+        target: "_blank",
         children:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus tortor eu sapien interdum rhoncus."
     }
@@ -115,7 +122,8 @@ export const PrimaryNegative: Story = {
     },
     args: {
         ...Default.args,
-        variant: "primary-negative"
+        variant: "primary-negative",
+        target: "_blank"
     }
 };
 
@@ -137,18 +145,20 @@ export const SecondaryNegative: Story = {
     },
     args: {
         ...Default.args,
-        variant: "secondary-negative"
+        variant: "secondary-negative",
+        target: "_blank"
     }
 };
 
 export const Documentation: Story = {
     args: {
-        to: "#",
+        to: "https://www.webiny.com",
         variant: "primary",
         size: "md",
         underline: false,
         disabled: false,
-        children: "This is a link"
+        children: "This is a link",
+        target: "_blank"
     },
     argTypes: {
         to: {
@@ -183,6 +193,12 @@ export const Documentation: Story = {
             description: "The content of the link. It can be any valid React node.",
             control: "text",
             defaultValue: "This is a link"
+        },
+        target: {
+            description: "The target attribute for the link",
+            control: "select",
+            options: ["_blank", "_self", "_parent", "_top"],
+            defaultValue: "_blank"
         }
     }
 };
