@@ -3,6 +3,7 @@ import { FmMigrator } from "./FmMigrator";
 import { PbMigrator } from "./PbMigrator";
 import { TenancyMigrator } from "./TenancyMigrator";
 import { CmsMigrator } from "./CmsMigrator";
+import { SecurityMigrator } from "./SecurityMigrator";
 
 export class Migrator extends AbstractMigrator {
     constructor(
@@ -24,7 +25,8 @@ export class Migrator extends AbstractMigrator {
             // TenancyMigrator
             // FmMigrator,
             // PbMigrator,
-            CmsMigrator,
+            // CmsMigrator,
+            SecurityMigrator,
         ];
 
         for (const MigratorClass of migrators) {
