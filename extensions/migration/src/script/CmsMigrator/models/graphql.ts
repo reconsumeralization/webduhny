@@ -1,49 +1,90 @@
 import { ERROR_FIELDS } from "../utils";
 
 const DATA_FIELDS = /* GraphQL */ `
-    fragment DataFields on CmsMenu {
-        slug
+    fragment DataFields on CmsContentModel {
+        name
+        singularApiName
+        pluralApiName
+        modelId
         description
-        title
-        items
+        group {
+            id
+            slug
+        }
+        icon
         createdOn
+        savedOn
         createdBy {
             id
             displayName
             type
         }
+        fields {
+            id
+            label
+            helpText
+            placeholderText
+            storageId
+            fieldId
+            type
+            multipleValues
+            predefinedValues {
+                enabled
+                values {
+                    label
+                    value
+                }
+            }
+            renderer {
+                name
+            }
+            validation {
+                name
+                message
+                settings
+            }
+            listValidation {
+                name
+                message
+                settings
+            }
+            settings
+        }
+        layout
+        titleFieldId
+        descriptionFieldId
+        imageFieldId
+        tags
+        plugin
     }
 `;
 
-export const CREATE_MENU = /* GraphQL */ `
+export const CREATE_MODEL = /* GraphQL */ `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
-    mutation CreateMenu($data: CmsMenuInput!) {
-        pageBuilder {
-            createMenu(data: $data) {
-                data {
-                    ...DataFields
-                }
-                error {
-                    ...ErrorFields
-                }
+    mutation CmsCreateContentModel($data: CmsContentModelCreateInput!) {
+        createContentModel(data: $data) {
+            data {
+                ...DataFields
             }
+            error {
+                ...ErrorFields
+            }
+            __typename
         }
     }
 `;
 
-export const LIST_MENUS = /* GraphQL */ `
+export const LIST_MODELS = /* GraphQL */ `
     ${DATA_FIELDS}
     ${ERROR_FIELDS}
-    query ListMenus {
-        pageBuilder {
-            listMenus {
-                data {
-                    ...DataFields
-                }
-                error {
-                    ...ErrorFields
-                }
+    query CmsListContentModels {
+        listContentModels {
+            data {
+                ...DataFields
+            }
+            error {
+                ...ErrorFields
             }
         }
     }

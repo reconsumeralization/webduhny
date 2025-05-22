@@ -2,6 +2,7 @@ import { AbstractMigrator } from "./AbstractMigrator";
 import { FmMigrator } from "./FmMigrator";
 import { PbMigrator } from "./PbMigrator";
 import { TenancyMigrator } from "./TenancyMigrator";
+import { CmsMigrator } from "./CmsMigrator";
 
 export class Migrator extends AbstractMigrator {
     constructor(
@@ -20,9 +21,10 @@ export class Migrator extends AbstractMigrator {
         console.log();
 
         const migrators = [
-            TenancyMigrator
+            // TenancyMigrator
             // FmMigrator,
             // PbMigrator,
+            CmsMigrator,
         ];
 
         for (const MigratorClass of migrators) {

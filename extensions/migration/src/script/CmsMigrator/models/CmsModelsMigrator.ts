@@ -1,7 +1,7 @@
-import { CREATE_MENU, LIST_MENUS } from "./graphql";
+import { CREATE_MODEL, LIST_MODELS } from "./graphql";
 import { CmsMigrator } from "../../CmsMigrator";
 
-export class CmsMenusMigrator {
+export class CmsModelsMigrator {
     private readonly cmsMigrator: CmsMigrator;
 
     constructor(cmsMigrator: CmsMigrator) {
@@ -9,46 +9,69 @@ export class CmsMenusMigrator {
     }
 
     async run() {
-        const { sourceGqlClient, targetGqlClient } = this.cmsMigrator;
-        const sourceListMenus = await sourceGqlClient.run(LIST_MENUS).then(res => {
-            return res.pageBuilder.listMenus;
+        const { sourceGqlManageClient, targetGqlManageClient } = this.cmsMigrator;
+        const sourceListModels = await sourceGqlManageClient.run(LIST_MODELS).then(res => {
+            return res.listContentModels;
         });
-        const targetListMenus = await targetGqlClient.run(LIST_MENUS).then(res => {
-            return res.pageBuilder.listMenus;
+        const targetListModels = await targetGqlManageClient.run(LIST_MODELS).then(res => {
+            return res.listContentModels;
         });
 
-        if (sourceListMenus.data.length === 0) {
-            console.log("No menus to migrate.");
+        if (sourceListModels.data.length === 0) {
+            console.log("No models to migrate.");
             return;
         }
 
-        for (const menu of sourceListMenus.data) {
-            const alreadyExists = targetListMenus.data.some(
-                (m: Record<string, any>) => m.slug === menu.slug
-            );
-
-            if (alreadyExists) {
-                console.log(`Menu "${menu.title}" already exists in the target environment.`);
+        for (const sourceModel of sourceListModels.data) {
+            if (sourceModel.plugin) {
+                console.log(`Skipping model "${sourceModel.title}" because it is a plugin model.`);
                 continue;
             }
 
-            console.log(`Migrating menu "${menu.title}"...`);
+            const modelExists = targetListModels.data.find(
+                (m: Record<string, any>) => m.slug === sourceModel.slug
+            );
 
-            // Migrate menu items.
-            const res = await targetGqlClient.run(CREATE_MENU, {
+            if (modelExists) {
+                console.log(
+                    `Model "${sourceModel.name}" already exists in the target environment.`
+                );
+                continue;
+            }
+
+            console.log(`Migrating model "${sourceModel.title}"...`);
+
+            // Migrate model items.
+            const res = await targetGqlManageClient.run(CREATE_MODEL, {
                 data: {
-                    title: menu.title,
-                    description: menu.description,
-                    slug: menu.slug,
-                    items: menu.items,
-                    createdBy: menu.createdBy,
-                    createdOn: menu.createdOn
+                    name: sourceModel.name,
+                    singularApiName: sourceModel.singularApiName,
+                    pluralApiName: sourceModel.pluralApiName,
+                    modelId: sourceModel.modelId,
+                    group: {
+                        id: sourceModel.group.id,
+                        slug: sourceModel.group.slug
+                    },
+                    icon: sourceModel.icon,
+                    description: sourceModel.description,
+                    layout: sourceModel.layout,
+                    fields: sourceModel.fields.map((field: Record<string, any>) => {
+                        return {
+                            ...field,
+                            multipleValues: field.multipleValues || undefined,
+                            predefinedValues: field.predefinedValues || undefined
+                        };
+                    }),
+                    titleFieldId: sourceModel.titleFieldId,
+                    descriptionFieldId: sourceModel.descriptionFieldId,
+                    imageFieldId: sourceModel.imageFieldId,
+                    tags: sourceModel.tags
                 }
             });
 
-            const { error } = res.pageBuilder.createMenu;
+            const { error } = res.createContentModel;
             if (error) {
-                console.log(`Failed to migrate menu "${menu.title}". Error:`, error);
+                console.log(`Failed to migrate model "${sourceModel.title}". Error:`, error);
             }
         }
     }

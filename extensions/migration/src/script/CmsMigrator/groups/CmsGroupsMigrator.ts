@@ -1,4 +1,4 @@
-import { CREATE_CATEGORY, LIST_CATEGORIES } from "./graphql";
+import { CREATE_GROUP, DELETE_GROUP, LIST_GROUPS } from "./graphql";
 import { CmsMigrator } from "../../CmsMigrator";
 
 export class CmsGroupsMigrator {
@@ -9,48 +9,58 @@ export class CmsGroupsMigrator {
     }
 
     async run() {
-        const { sourceGqlClient, targetGqlClient } = this.cmsMigrator;
-        const sourceListCategories = await sourceGqlClient.run(LIST_CATEGORIES).then(res => {
-            return res.pageBuilder.listCategories;
+        const { sourceGqlManageClient, targetGqlManageClient } = this.cmsMigrator;
+        const sourceListGroups = await sourceGqlManageClient.run(LIST_GROUPS).then(res => {
+            return res.listContentModelGroups;
         });
-        const targetListCategories = await targetGqlClient.run(LIST_CATEGORIES).then(res => {
-            return res.pageBuilder.listCategories;
+        const targetListGroups = await targetGqlManageClient.run(LIST_GROUPS).then(res => {
+            return res.listContentModelGroups;
         });
 
-        if (sourceListCategories.data.length === 0) {
-            console.log("No categories to migrate.");
+        if (sourceListGroups.data.length === 0) {
+            console.log("No groups to migrate.");
             return;
         }
 
-        for (const category of sourceListCategories.data) {
-            const alreadyExists = targetListCategories.data.some(
-                (m: Record<string, any>) => m.slug === category.slug
+        for (const sourceGroup of sourceListGroups.data) {
+            const existingTargetGroup = targetListGroups.data.find(
+                (m: Record<string, any>) => m.slug === sourceGroup.slug
             );
 
-            if (alreadyExists) {
-                console.log(
-                    `Category "${category.name}" already exists in the target environment.`
-                );
-                continue;
+            if (existingTargetGroup) {
+                const ungroupedGroupThatNeedsToBeRecreated =
+                    sourceGroup.slug === "ungrouped" && sourceGroup.id !== existingTargetGroup.id;
+                if (ungroupedGroupThatNeedsToBeRecreated) {
+                    // Let's delete the originally created "ungrouped" group in the target environment
+                    // and recreate it with the same ID as the source environment.
+                    await targetGqlManageClient
+                        .run(DELETE_GROUP, { id: existingTargetGroup.id })
+                        .then(res => {
+                            return res.deleteContentModelGroup;
+                        });
+                } else {
+                    console.log(
+                        `Group "${sourceGroup.name}" already exists in the target environment.`
+                    );
+                    continue;
+                }
             }
 
-            console.log(`Migrating category "${category.title}"...`);
+            console.log(`Migrating group "${sourceGroup.title}"...`);
 
-            // Migrate category items.
-            const res = await targetGqlClient.run(CREATE_CATEGORY, {
+            // Migrate group items.
+            const res = await targetGqlManageClient.run(CREATE_GROUP, {
                 data: {
-                    name: category.name,
-                    slug: category.slug,
-                    url: category.url,
-                    layout: category.layout,
-                    createdBy: category.createdBy,
-                    createdOn: category.createdOn
+                    id: sourceGroup.id,
+                    name: sourceGroup.name,
+                    description: sourceGroup.description,
+                    icon: sourceGroup.icon
                 }
             });
 
-            const { error } = res.pageBuilder.createCategory;
+            const { error } = res.contentModelGroup;
             if (error) {
-                console.log(`Failed to migrate category "${category.title}". Error:`, error);
+                console.log(`Failed to migrate group "${sourceGroup.title}". Error:`, error);
             }
         }
     }
