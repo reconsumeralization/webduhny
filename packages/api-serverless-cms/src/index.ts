@@ -61,6 +61,9 @@ export {
     createPrivateModelPlugin,
     createPrivateSingleEntryModelPlugin,
 
+    // Model fields.
+    createModelFieldPlugin,
+
     // Other.
     createStorageTransformPlugin
 } from "@webiny/api-headless-cms";
