@@ -37,7 +37,7 @@ export class SecurityRolesMigrator {
             // Migrate role items.
             const res = await targetGqlClient.run(CREATE_ROLE, {
                 data: {
-                    id: role.id,
+                    // id: role.id,
                     name: role.name,
                     slug: role.slug,
                     description: role.description,

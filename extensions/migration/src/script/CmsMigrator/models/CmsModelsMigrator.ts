@@ -29,7 +29,7 @@ export class CmsModelsMigrator {
             }
 
             const modelExists = targetListModels.data.find(
-                (m: Record<string, any>) => m.slug === sourceModel.slug
+                (m: Record<string, any>) => m.modelId === sourceModel.modelId
             );
 
             if (modelExists) {

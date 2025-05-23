@@ -2,6 +2,7 @@ import { AbstractMigrator } from "./AbstractMigrator";
 import { GqlClient } from "./utils";
 import { CmsGroupsMigrator } from "./CmsMigrator/groups/CmsGroupsMigrator";
 import { CmsModelsMigrator } from "./CmsMigrator/models/CmsModelsMigrator";
+import { CmsEntriesMigrator } from "./CmsMigrator/entries/CmsEntriesMigrator";
 
 export class CmsMigrator extends AbstractMigrator {
     readonly sourceGqlClient: GqlClient;
@@ -51,12 +52,16 @@ export class CmsMigrator extends AbstractMigrator {
 
         const cmsGroupsMigrator = new CmsGroupsMigrator(this);
         const cmsModelsMigrator = new CmsModelsMigrator(this);
+        const cmsEntriesMigrator = new CmsEntriesMigrator(this);
 
         console.log("Migrating model groups...");
-        await cmsGroupsMigrator.run();
+        // await cmsGroupsMigrator.run();
 
         console.log("Migrating models...");
         await cmsModelsMigrator.run();
+
+        console.log("Migrating entries...");
+        await cmsEntriesMigrator.run();
 
         console.log("🟢 Headless CMS migration completed in", Date.now() - start, "ms");
         console.log();
