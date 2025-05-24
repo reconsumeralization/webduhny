@@ -96,7 +96,13 @@ export const createFolderTypeDefs = (params: CreateFolderTypeDefsParams): string
             parentId: ID
             parentId_in: [ID]
             path: String
+            path_not: String
+            path_contains: String
+            path_not_contains: String
+            path_in: [String]
+            path_not_in: [String]
             path_startsWith: String
+            path_not_startsWith: String
             createdBy: ID
         }
         
