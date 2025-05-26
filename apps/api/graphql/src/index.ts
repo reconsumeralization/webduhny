@@ -47,6 +47,7 @@ import { createLogger } from "@webiny/api-log";
 
 import scaffoldsPlugins from "./plugins/scaffolds";
 import { extensions } from "./extensions";
+import { guildPageSettingsBrandApi } from "./plugins/GuildPageSettingsBrandApi"; // GUILD
 
 const debug = process.env.DEBUG === "true";
 const documentClient = getDocumentClient();
@@ -143,7 +144,8 @@ export const handler = createHandler({
 
         // Leave this at the end.
         scaffoldsPlugins(),
-        extensions()
+        extensions(),
+        guildPageSettingsBrandApi
     ],
     debug
 });

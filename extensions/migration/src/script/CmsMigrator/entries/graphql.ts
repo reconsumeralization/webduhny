@@ -101,8 +101,9 @@ const ERROR_FIELD = /* GraphQL */ `
 
 export const createListQuery = (model: CmsContentModel) => {
     return /* GraphQL */ `
-        query CmsEntriesList${model.pluralApiName}($limit: Int, $after: String) {
+        query CmsEntriesList${model.pluralApiName}($where: ${model.singularApiName}ListWhereInput, $limit: Int, $after: String) {
             content: list${model.pluralApiName}(
+            where: $where
             limit: $limit
             after: $after) {
                 data {

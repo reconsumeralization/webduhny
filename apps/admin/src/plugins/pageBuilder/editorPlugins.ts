@@ -72,6 +72,11 @@ import carouselStylesSettings from "@webiny/app-page-builder/editor/plugins/elem
 import responsiveEditorMode from "@webiny/app-page-builder/editor/plugins/responsiveMode";
 // Page settings
 import pageSettingsPlugins from "@webiny/app-page-builder/editor/plugins/pageSettings";
+import {
+    guildPageSettingsBrandEditor,
+    guildPageSettingsBrandEditorWatcher,
+} from 'pages-brand-settings'; // GUILD
+
 // default presets for grid
 import { gridPresets } from "@webiny/app-page-builder/editor/plugins/gridPresets";
 
@@ -151,5 +156,7 @@ export default [
     // Responsive editor mode
     responsiveEditorMode(),
     // Page settings
-    pageSettingsPlugins
+    pageSettingsPlugins,
+    guildPageSettingsBrandEditor, // GUILD
+    guildPageSettingsBrandEditorWatcher, // GUILD
 ];

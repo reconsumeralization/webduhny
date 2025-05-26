@@ -40,6 +40,7 @@ import carouselElement from "@webiny/app-page-builder/render/plugins/elements/ca
  * Page settings plugins (seo, social, etc.).
  */
 import pageSettings from "@webiny/app-page-builder/render/plugins/pageSettings";
+import { guildPageSettingsBrandFields } from 'pages-brand-settings'; // GUILD
 
 /**
  * Page element settings plugins.
@@ -97,6 +98,7 @@ export default [
 
     // Page settings
     pageSettings(),
+    guildPageSettingsBrandFields,
 
     // Page element settings
     align,
