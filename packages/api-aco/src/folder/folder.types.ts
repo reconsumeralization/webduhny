@@ -15,6 +15,7 @@ export interface Folder {
     permissions?: FolderPermission[];
     type: string;
     parentId?: string | null;
+    path: string;
     extensions?: Record<string, any>;
 }
 
@@ -23,6 +24,14 @@ export interface ListFoldersWhere {
     id_not_in?: string[];
     parentId?: string | null;
     parentId_in?: string[];
+    path?: string;
+    path_not?: string;
+    path_contains?: string;
+    path_not_contains?: string;
+    path_in?: string[];
+    path_not_in?: string[];
+    path_startsWith?: string;
+    path_not_startsWith?: string;
 }
 
 export interface ListFoldersParams {

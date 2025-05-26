@@ -1,7 +1,12 @@
 import { GetAncestors } from "./GetAncestors";
+import type { IListFolders } from "~/folder/useCases/ListFolders/IListFolders";
 
-export const getGetAncestors = () => {
-    const getAncestorsUseCase = new GetAncestors();
+interface GetAncestorsUseCasesParams {
+    listFoldersUseCase: IListFolders;
+}
+
+export const getGetAncestors = (params: GetAncestorsUseCasesParams) => {
+    const getAncestorsUseCase = new GetAncestors(params.listFoldersUseCase);
 
     return {
         getAncestorsUseCase

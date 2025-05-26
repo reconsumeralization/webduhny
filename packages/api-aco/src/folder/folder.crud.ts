@@ -96,7 +96,9 @@ export const createFolderCrudMethods = ({
         }
     });
 
-    const { getAncestorsUseCase } = getGetAncestors();
+    const { getAncestorsUseCase } = getGetAncestors({
+        listFoldersUseCase: listFoldersUseCase
+    });
 
     const { listFolderLevelPermissionsTargetsUseCase } = getListFolderLevelPermissionsTargets({
         context
@@ -153,8 +155,7 @@ export const createFolderCrudMethods = ({
         },
 
         async getAncestors(folder: Folder) {
-            const [folders] = await this.listAll({ where: { type: folder.type } });
-            return getAncestorsUseCase.execute({ folder, folders });
+            return getAncestorsUseCase.execute({ folder });
         },
 
         /**

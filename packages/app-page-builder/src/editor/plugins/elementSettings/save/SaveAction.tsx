@@ -15,7 +15,7 @@ import {
     PbEditorElement
 } from "~/types";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
-import { removeElementId } from "~/editor/helpers";
+import { addElementId, removeElementId } from "~/editor/helpers";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
 import { usePageBlocks } from "~/admin/contexts/AdminPageBuilder/PageBlocks/usePageBlocks";
 
@@ -58,10 +58,12 @@ const SaveAction = ({ children }: { children: React.ReactElement }) => {
 
     const onSubmit = async (formData: SaveElementFormData | SaveBlockFormData) => {
         const pbElement = (await getElementTree({ element })) as PbElement;
-        const newContent = pluginOnSave(removeElementId(pbElement));
 
         if (formData.type === "block") {
-            // We can create a new block, or update an existing one.
+            // We need to create new element IDs when saving a block.
+            const newContent = pluginOnSave(addElementId(pbElement));
+
+            // We can create a new block or update an existing one.
             try {
                 if (formData.overwrite) {
                     await updateBlock({
@@ -89,6 +91,9 @@ const SaveAction = ({ children }: { children: React.ReactElement }) => {
                 </span>
             );
         } else {
+            // When saving a simple element, we remove all element IDs.
+            const newContent = pluginOnSave(removeElementId(pbElement));
+
             const { data: res } = await client.mutate({
                 mutation: CREATE_PAGE_ELEMENT,
                 variables: {

@@ -52,6 +52,12 @@ const parentIdField = () =>
         type: "text"
     });
 
+const pathField = () =>
+    createModelField({
+        label: "Path",
+        type: "text"
+    });
+
 const permissionsField = () =>
     createModelField({
         label: "Permissions",
@@ -147,6 +153,7 @@ export const createFolderModel = () => {
             slugField(),
             typeField(),
             parentIdField(),
+            pathField(),
             permissionsField(),
             extensionsField()
         ]

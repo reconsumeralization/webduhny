@@ -2,7 +2,7 @@ import { Context, IPulumi, IUserCommandInput } from "~/types";
 import { measureDuration } from "~/utils";
 import ora from "ora";
 import { isCI } from "ci-info";
-import { getMustRefreshBeforeDeploy } from "~/utils";
+import { getMustRefreshBeforeDeploy, unsetMustRefreshBeforeDeploy } from "~/utils";
 import {
     createEnvConfiguration,
     withEnv,
@@ -56,6 +56,8 @@ export const executeRefresh = async ({ inputs, context, pulumi }: IExecuteRefres
             spinner.start();
             await subprocess;
         }
+
+        unsetMustRefreshBeforeDeploy(context);
 
         const message = `Pulumi state refreshed in ${getDeploymentDuration()}.`;
 
