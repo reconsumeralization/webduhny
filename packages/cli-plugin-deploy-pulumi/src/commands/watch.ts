@@ -37,6 +37,15 @@ const PULUMI_WATCH_SUPPORTED = os.platform() !== "win32";
 // Note: we are not using `createPulumiCommand` here because this command has a bit specific
 // behaviour which is not encapsulated by `createPulumiCommand`. Maybe we can improve in the future.
 export const watchCommand = async (inputs: IUserCommandInput, context: Context) => {
+    context.info(
+        `With the %s release, we've introduced %s — a major update to the %s command and the overall backend development experience. This feature is currently in beta, but if you're interested in trying it out or learning more, check out the docs: https://webiny.link/local-aws-lambda-development`,
+        "5.41.0",
+        "local AWS Lambda development",
+        "webiny watch"
+    );
+
+    console.log();
+
     // 1. Initial checks for deploy and build commands.
     if (!inputs.folder && !inputs.package) {
         throw new Error(
