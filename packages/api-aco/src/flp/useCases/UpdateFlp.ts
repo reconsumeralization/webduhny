@@ -1,5 +1,5 @@
 import { WebinyError } from "@webiny/error";
-import { Path } from "./Path";
+import { Path } from "~/utils/Path";
 import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
 import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from "~/types";

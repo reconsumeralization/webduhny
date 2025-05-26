@@ -5,10 +5,10 @@ import { CreateAcoStorageOperationsParams } from "~/createAcoStorageOperations";
 import { createListSort } from "~/utils/createListSort";
 import { createOperationsWrapper } from "~/utils/createOperationsWrapper";
 import { pickEntryFieldValues } from "~/utils/pickEntryFieldValues";
+import { Path } from "~/utils/Path";
 import { AcoFolderStorageOperations, Folder } from "./folder.types";
 import { ENTRY_META_FIELDS } from "@webiny/api-headless-cms/constants";
 import { ListSort } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
 
 interface AcoCheckExistingFolderParams {
     params: {
@@ -105,11 +105,7 @@ export const createFolderOperations = (
             }
         }
 
-        if (parentFolder) {
-            return `${parentFolder.path}/${slug}`;
-        }
-
-        return `${ROOT_FOLDER}/${slug}`;
+        return Path.create(slug, parentFolder?.path);
     };
 
     return {

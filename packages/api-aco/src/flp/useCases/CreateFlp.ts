@@ -1,5 +1,5 @@
 import { WebinyError } from "@webiny/error";
-import { Path } from "./Path";
+import { Path } from "~/utils/Path";
 import { Permissions } from "./Permissions";
 import type { FolderLevelPermission as IFolderLevelPermission } from "~/flp/flp.types";
 import type { Folder } from "~/folder/folder.types";
