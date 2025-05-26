@@ -1,6 +1,7 @@
 import { UpdateFolder } from "./UpdateFolder";
 import { folderCacheFactory } from "../cache/FoldersCacheFactory";
 import { Folder } from "../Folder";
+import { FolderPermission } from "@webiny/shared-aco/flp/flp.types";
 
 describe("UpdateFolder", () => {
     const type = "abc";
@@ -129,7 +130,7 @@ describe("UpdateFolder", () => {
 
         {
             // Let's update parentFolder, the change should be propagated to all it's children (childFolder1, childFolder2 and childFolder3).
-            const newPermissions = [{ level: "viewer", target: "admin:123" }];
+            const newPermissions: FolderPermission[] = [{ level: "viewer", target: "admin:123" }];
 
             const gateway = {
                 execute: jest.fn().mockResolvedValue({
@@ -179,7 +180,7 @@ describe("UpdateFolder", () => {
 
         {
             // Let's update childFolder1, the change should be propagated to childFolder2, but not to childFolder3
-            const newPermissions = [{ level: "owner", target: "admin:123" }];
+            const newPermissions: FolderPermission[] = [{ level: "owner", target: "admin:123" }];
 
             const gateway = {
                 execute: jest.fn().mockResolvedValue({
@@ -225,7 +226,7 @@ describe("UpdateFolder", () => {
 
         {
             // Let's remove childFolder1 permissions, the change should be propagated to childFolder2, but not to childFolder3
-            const newPermissions = [];
+            const newPermissions: FolderPermission[] = [];
 
             const gateway = {
                 execute: jest.fn().mockResolvedValue({
