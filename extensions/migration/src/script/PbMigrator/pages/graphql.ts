@@ -53,6 +53,16 @@ export const DATA_FIELDS = /* GraphQL */ `
                     content
                 }
             }
+            brand {
+                buttonColor
+                buttonHoverColor
+                pictogramStrokeColor
+                pictogramCircleColor
+                employerNickname
+                employerFullName
+                employerUuid
+                isTaxGrossUp
+            }
         }
         createdFrom
         createdOn
