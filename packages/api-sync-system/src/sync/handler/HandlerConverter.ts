@@ -32,6 +32,19 @@ export class HandlerConverter implements IHandlerConverter {
                 return converter.convert(command);
             }
         }
+        if (process.env.DEBUG === "true") {
+            console.error(`Unknown command: ${command.constructor?.name || "unknown"}`);
+            if (!command.constructor?.name) {
+                console.error(
+                    "Command is not an instance of a class, it might be a plain object. Stringified command is in next line."
+                );
+                console.log(
+                    JSON.stringify({
+                        command
+                    })
+                );
+            }
+        }
 
         return this._default;
     }

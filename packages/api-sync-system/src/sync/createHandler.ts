@@ -1,7 +1,5 @@
 import { createHandlerConverter } from "~/sync/handler/HandlerConverter.js";
 import { NullCommandValue } from "~/sync/handler/converter/commands/NullCommandValue.js";
-import { createBatchGetCommandConverter } from "~/sync/handler/converter/BatchGetCommandConverter.js";
-import { createGetCommandConverter } from "~/sync/handler/converter/GetCommandConverter.js";
 import { createBatchWriteCommandConverter } from "~/sync/handler/converter/BatchWriteCommandConverter.js";
 import { createPutCommandConverter } from "~/sync/handler/converter/PutCommandConverter.js";
 import { createDeleteCommandConverter } from "~/sync/handler/converter/DeleteCommandConverter.js";
@@ -27,8 +25,6 @@ export const createHandler = (params: ICreateHandlerParams) => {
      * Our converters are in some order I got from my head - the most used commands are first.
      */
     converter.register(commandConverters || []);
-    converter.register(createBatchGetCommandConverter());
-    converter.register(createGetCommandConverter());
     converter.register(createBatchWriteCommandConverter());
     converter.register(createPutCommandConverter());
     converter.register(createDeleteCommandConverter());
