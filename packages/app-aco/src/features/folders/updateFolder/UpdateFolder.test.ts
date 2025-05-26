@@ -89,17 +89,6 @@ describe("UpdateFolder", () => {
     });
 
     it("should propagate permissions to child folders", async () => {
-        const gateway = {
-            execute: jest.fn().mockResolvedValue({
-                id: "parent-folder-id",
-                title: "Parent Folder",
-                slug: "parent-folder",
-                parentId: null,
-                permissions: [{ level: "viewer", target: "admin:123" }],
-                type
-            })
-        };
-
         const parentFolder = Folder.create({
             id: "parent-folder-id",
             title: "Parent Folder",
@@ -127,32 +116,153 @@ describe("UpdateFolder", () => {
             type
         });
 
-        foldersCache.addItems([parentFolder, childFolder1, childFolder2]);
-
-        const updateFolder = UpdateFolder.getInstance(type, gateway);
-
-        await updateFolder.execute({
-            id: "parent-folder-id",
-            title: "Parent Folder",
-            slug: "parent-folder",
-            parentId: null,
-            permissions: [{ level: "viewer", target: "admin:123" }],
+        const childFolder3 = Folder.create({
+            id: "child-folder-id-3",
+            title: "Child Folder 3",
+            slug: "child-folder-3",
+            parentId: parentFolder.id, // <-- This folder is a sibling of childFolder1, not a child
+            permissions: [],
             type
         });
 
-        const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
-        expect(childFolderCache1?.permissions).toContainEqual({
-            level: "viewer",
-            target: "admin:123",
-            inheritedFrom: `parent:${parentFolder.id}`
-        });
+        foldersCache.addItems([parentFolder, childFolder1, childFolder2, childFolder3]);
 
-        const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
-        expect(childFolderCache2?.permissions).toContainEqual({
-            level: "viewer",
-            target: "admin:123",
-            inheritedFrom: `parent:${parentFolder.id}`
-        });
+        {
+            // Let's update parentFolder, the change should be propagated to all it's children (childFolder1, childFolder2 and childFolder3).
+            const newPermissions = [{ level: "viewer", target: "admin:123" }];
+
+            const gateway = {
+                execute: jest.fn().mockResolvedValue({
+                    id: parentFolder.id,
+                    title: parentFolder.title,
+                    slug: parentFolder.slug,
+                    parentId: parentFolder.parentId,
+                    permissions: newPermissions,
+                    type
+                })
+            };
+            const updateFolder = UpdateFolder.getInstance(type, gateway);
+
+            await updateFolder.execute({
+                id: parentFolder.id,
+                title: parentFolder.title,
+                slug: parentFolder.slug,
+                parentId: parentFolder.parentId,
+                permissions: newPermissions,
+                type
+            });
+
+            const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
+            expect(childFolderCache1?.permissions).toEqual([
+                {
+                    ...newPermissions[0],
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }
+            ]);
+
+            const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
+            expect(childFolderCache2?.permissions).toEqual([
+                {
+                    ...newPermissions[0],
+                    inheritedFrom: `parent:${childFolderCache1?.id}`
+                }
+            ]);
+
+            const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
+            expect(childFolderCache3?.permissions).toEqual([
+                {
+                    ...newPermissions[0],
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }
+            ]);
+        }
+
+        {
+            // Let's update childFolder1, the change should be propagated to childFolder2, but not to childFolder3
+            const newPermissions = [{ level: "owner", target: "admin:123" }];
+
+            const gateway = {
+                execute: jest.fn().mockResolvedValue({
+                    id: childFolder1.id,
+                    title: childFolder1.title,
+                    slug: childFolder1.slug,
+                    parentId: childFolder1.parentId,
+                    permissions: newPermissions,
+                    type
+                })
+            };
+            const updateFolder = UpdateFolder.getInstance(type, gateway);
+
+            await updateFolder.execute({
+                id: childFolder1.id,
+                title: childFolder1.title,
+                slug: childFolder1.slug,
+                parentId: childFolder1.parentId,
+                permissions: newPermissions,
+                type
+            });
+
+            const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
+            expect(childFolderCache1?.permissions).toEqual(newPermissions);
+
+            const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
+            expect(childFolderCache2?.permissions).toEqual([
+                {
+                    ...newPermissions[0],
+                    inheritedFrom: `parent:${childFolderCache1?.id}`
+                }
+            ]);
+
+            const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
+            expect(childFolderCache3?.permissions).toEqual([
+                {
+                    target: "admin:123",
+                    level: "viewer",
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }
+            ]);
+        }
+
+        {
+            // Let's remove childFolder1 permissions, the change should be propagated to childFolder2, but not to childFolder3
+            const newPermissions = [];
+
+            const gateway = {
+                execute: jest.fn().mockResolvedValue({
+                    id: childFolder1.id,
+                    title: childFolder1.title,
+                    slug: childFolder1.slug,
+                    parentId: childFolder1.parentId,
+                    permissions: newPermissions,
+                    type
+                })
+            };
+            const updateFolder = UpdateFolder.getInstance(type, gateway);
+
+            await updateFolder.execute({
+                id: childFolder1.id,
+                title: childFolder1.title,
+                slug: childFolder1.slug,
+                parentId: childFolder1.parentId,
+                permissions: newPermissions,
+                type
+            });
+
+            const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
+            expect(childFolderCache1?.permissions).toEqual(newPermissions);
+
+            const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
+            expect(childFolderCache2?.permissions).toEqual(newPermissions);
+
+            const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
+            expect(childFolderCache3?.permissions).toEqual([
+                {
+                    target: "admin:123",
+                    level: "viewer",
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }
+            ]);
+        }
     });
 
     it("should handle gateway errors gracefully", async () => {

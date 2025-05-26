@@ -39,26 +39,36 @@ export class UpdateFolderRepositoryWithPermissionsChange implements IUpdateFolde
         this.updateChildrenPermissionsRecursively(directChildren, folder);
     }
 
-    private listDirectChildren(folder: Folder) {
-        return this.cache.getItems().filter(f => f.parentId === folder.id);
-    }
-
     private updateChildrenPermissionsRecursively(children: Folder[], parentFolder: Folder) {
         for (const child of children) {
+            let updatedChild: Folder | undefined;
+
             this.cache.updateItems(f => {
                 if (f.id === child.id) {
-                    return Folder.create({
+                    const permissions = Permissions.create(f.permissions, parentFolder);
+                    const updated = Folder.create({
                         ...f,
-                        permissions: Permissions.create(f.permissions, parentFolder)
+                        permissions
                     });
+
+                    // We are updating the folder in the cache with new permissions, but also storing a copy locally to use for its children.
+                    updatedChild = updated;
+                    return updated;
                 }
                 return f;
             });
 
-            const grandChildren = this.listDirectChildren(child);
-            if (grandChildren.length) {
-                this.updateChildrenPermissionsRecursively(grandChildren, parentFolder);
+            // Use the updated child (with new permissions) as the parent for its children
+            if (updatedChild) {
+                const grandChildren = this.listDirectChildren(updatedChild);
+                if (grandChildren.length) {
+                    this.updateChildrenPermissionsRecursively(grandChildren, updatedChild);
+                }
             }
         }
+    }
+
+    private listDirectChildren(folder: Folder) {
+        return this.cache.getItems().filter(f => f.parentId === folder.id);
     }
 }
