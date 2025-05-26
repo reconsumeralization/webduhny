@@ -1,11 +1,9 @@
 ## MH
-- entries
-- custom settings check?
 - folders
-- published + draft scenario?
-- 
+
 ## SH
 - preserve `id` for roles
+- already exists? entries check
 
 ## Docs
 - system roles won't have IDs preserved (np)

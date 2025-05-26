@@ -1,5 +1,4 @@
-import { createGraphQLSchemaPlugin, InstallTenant,  } from "@webiny/api-serverless-cms";
-import { CmsGraphQLSchemaPlugin, createCmsGraphQLSchemaPlugin } from "@webiny/api-headless-cms";
+import { createGraphQLSchemaPlugin, InstallTenant } from "@webiny/api-serverless-cms";
 
 export const createExtension = () => {
     return [

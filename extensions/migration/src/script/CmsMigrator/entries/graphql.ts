@@ -6,7 +6,7 @@ export function createFieldsList(model: CmsContentModel): string {
             return `${field.fieldId} { modelId id }`;
         }
 
-        if (field.type === 'object') {
+        if (field.type === "object") {
             return `${field.fieldId} { ${createFieldsList(field.settings)} }`;
         }
         return field.fieldId;
@@ -99,9 +99,11 @@ const ERROR_FIELD = /* GraphQL */ `
     }
 `;
 
-export const createListQuery = (model: CmsContentModel) => {
+export const createListEntriesQuery = (model: CmsContentModel) => {
     return /* GraphQL */ `
-        query CmsEntriesList${model.pluralApiName}($where: ${model.singularApiName}ListWhereInput, $limit: Int, $after: String) {
+        query CmsEntriesList${model.pluralApiName}($where: ${
+        model.singularApiName
+    }ListWhereInput, $limit: Int, $after: String) {
             content: list${model.pluralApiName}(
             where: $where
             limit: $limit
@@ -121,13 +123,55 @@ export const createListQuery = (model: CmsContentModel) => {
         }
     `;
 };
+export const createListPublishedEntriesQuery = (model: CmsContentModel) => {
+    return /* GraphQL */ `
+        query GetPublishedContentEntries($entries: [CmsModelEntryInput!]!) {
+            content: getPublishedContentEntries(entries: $entries) {
+                data {
+                    id
+                    entryId
+                }
+            }
+        }
+    `;
+};
 
-export const createCreateMutation = (model: CmsContentModel) => {
+export const createGetEntryQuery = (model: CmsContentModel) => {
+    return /* GraphQL */ `
+        query CmsEntriesGet${model.singularApiName}($revision: ID, $entryId: ID) {
+            content: get${model.singularApiName}(revision: $revision, entryId: $entryId) {
+                data {
+                    ${SOURCE_SYS_FIELDS}
+                    ${createFieldsList(model)}
+                }
+                error ${ERROR_FIELD}
+            }
+        }
+    `;
+};
+
+export const createCreateEntryMutation = (model: CmsContentModel) => {
     return /* GraphQL */ `
         mutation CmsEntriesCreate${model.singularApiName}($data: ${
         model.singularApiName
     }Input!, $options: CreateCmsEntryOptionsInput) {
             content: create${model.singularApiName}(data: $data, options: $options) {
+                data {
+                    ${TARGET_SYS_FIELDS}
+                    ${createFieldsList(model)}
+                }
+                error ${ERROR_FIELD}
+            }
+        }
+    `;
+};
+
+export const createCreateEntryFromMutation = (model: CmsContentModel) => {
+    return /* GraphQL */ `
+        mutation CmsEntriesCreate${model.singularApiName}From($revision: ID!, $data: ${
+        model.singularApiName
+    }Input!, $options: CreateRevisionCmsEntryOptionsInput) {
+            content: create${model.singularApiName}From(revision: $revision, data: $data, options: $options) {
                 data {
                     ${TARGET_SYS_FIELDS}
                     ${createFieldsList(model)}
