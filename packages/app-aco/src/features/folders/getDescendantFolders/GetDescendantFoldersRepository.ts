@@ -1,7 +1,7 @@
 import { IGetDescendantFoldersRepository } from "./IGetDescendantFoldersRepository";
 import { ListCache } from "../cache";
 import { Folder } from "../Folder";
-import { ROOT_FOLDER } from "@webiny/shared-aco";
+import { ROOT_FOLDER } from "~/constants";
 
 export class GetDescendantFoldersRepository implements IGetDescendantFoldersRepository {
     private readonly cache: ListCache<Folder>;

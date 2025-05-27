@@ -3,7 +3,7 @@ import {
     IListFoldersByParentIdsUseCase,
     ListFoldersByParentIdsUseCaseParams
 } from "./IListFoldersByParentIdsUseCase";
-import { ROOT_FOLDER } from "@webiny/shared-aco";
+import { ROOT_FOLDER } from "~/constants";
 
 export class ListFoldersByParentIdsUseCase implements IListFoldersByParentIdsUseCase {
     private repository: IListFoldersByParentIdsRepository;

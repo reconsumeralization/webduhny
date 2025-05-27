@@ -1,5 +1,5 @@
-import { ROOT_FOLDER } from "@webiny/shared-aco";
 import { CmsIdentity, FolderPermission } from "~/types";
+import { ROOT_FOLDER } from "~/constants";
 
 export interface FolderData {
     id?: string;

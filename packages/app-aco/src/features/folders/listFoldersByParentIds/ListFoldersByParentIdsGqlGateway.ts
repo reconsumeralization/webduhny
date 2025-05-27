@@ -1,11 +1,11 @@
 import ApolloClient from "apollo-client";
-import { ROOT_FOLDER } from "@webiny/shared-aco";
 import gql from "graphql-tag";
 import {
     IListFoldersByParentIdsGateway,
     ListFoldersByParentIdsGatewayParams
 } from "./IListFoldersByParentIdsGateway";
 import { AcoError, FolderItem } from "~/types";
+import { ROOT_FOLDER } from "~/constants";
 
 export interface ListFoldersByParentIdsResponse {
     aco: {

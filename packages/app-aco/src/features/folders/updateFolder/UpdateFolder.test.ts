@@ -2,7 +2,7 @@ import { UpdateFolder } from "./UpdateFolder";
 import { folderCacheFactory } from "../cache/FoldersCacheFactory";
 import { Folder } from "../Folder";
 import { FolderPermission } from "@webiny/shared-aco/flp/flp.types";
-import { ROOT_FOLDER } from "@webiny/shared-aco";
+import { ROOT_FOLDER } from "~/constants";
 
 describe("UpdateFolder", () => {
     const type = "abc";
