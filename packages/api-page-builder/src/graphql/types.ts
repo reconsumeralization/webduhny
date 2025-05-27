@@ -922,6 +922,10 @@ export interface PageSecurityPermission extends PbSecurityPermission {
     pw: string;
 }
 
+export interface SettingsSecurityPermission extends PbSecurityPermission {
+    name: "pb.settings";
+}
+
 // Page Builder lifecycle events.
 export interface PageBeforeRenderEvent extends Pick<RenderParams, "paths" | "tags"> {
     args: {

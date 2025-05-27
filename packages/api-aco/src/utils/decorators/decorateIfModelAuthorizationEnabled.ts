@@ -1,4 +1,5 @@
 import { CmsModel, HeadlessCms } from "@webiny/api-headless-cms/types";
+import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 
 /**
  * This type matches any function that has a CmsModel as the first parameter.
@@ -32,6 +33,10 @@ const modelAuthorizationDisabled = (model: CmsModel) => {
     return model.authorization === false;
 };
 
+const isFolderModel = (model: CmsModel) => {
+    return model.modelId === FOLDER_MODEL_ID;
+};
+
 export const decorateIfModelAuthorizationEnabled = <
     /**
      * This allows us to only have an auto-complete of `ModelCallable` methods.
@@ -50,6 +55,10 @@ export const decorateIfModelAuthorizationEnabled = <
     const decoratee = root[method].bind(root) as ModelCallable;
     root[method] = ((...params: Parameters<ModelMethods<HeadlessCms>[M]>) => {
         const [model, ...rest] = params;
+        if (isFolderModel(model)) {
+            return decoratee(model, ...rest);
+        }
+
         if (modelAuthorizationDisabled(model)) {
             return decoratee(model, ...rest);
         }

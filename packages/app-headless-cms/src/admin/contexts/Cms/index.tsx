@@ -5,38 +5,38 @@ import { CircularProgress } from "@webiny/ui/Progress";
 import { config as appConfig } from "@webiny/app/config";
 import { CmsContentEntry, CmsContentEntryRevision, CmsErrorResponse, CmsModel } from "~/types";
 import {
-    CmsEntryPublishMutationResponse,
-    CmsEntryPublishMutationVariables,
-    createReadQuery,
-    createCreateMutation,
-    createCreateFromMutation,
-    createUpdateMutation,
-    createDeleteMutation,
-    createPublishMutation,
-    createUnpublishMutation,
-    CmsEntryCreateMutationResponse,
-    CmsEntryCreateMutationVariables,
-    CmsEntryUpdateMutationResponse,
-    CmsEntryUpdateMutationVariables,
-    CmsEntryDeleteMutationResponse,
-    CmsEntryDeleteMutationVariables,
-    CmsEntryUnpublishMutationResponse,
-    CmsEntryUnpublishMutationVariables,
-    CmsEntryCreateFromMutationResponse,
-    CmsEntryCreateFromMutationVariables,
-    CmsEntryGetQueryResponse,
-    CmsEntryGetQueryVariables,
-    createReadSingletonQuery,
-    CmsEntryGetSingletonQueryResponse,
-    createUpdateSingletonMutation,
-    CmsEntryUpdateSingletonMutationResponse,
-    CmsEntryUpdateSingletonMutationVariables,
-    createRevisionsQuery,
     CmsEntriesListRevisionsQueryResponse,
     CmsEntriesListRevisionsQueryVariables,
-    createBulkActionMutation,
     CmsEntryBulkActionMutationResponse,
-    CmsEntryBulkActionMutationVariables
+    CmsEntryBulkActionMutationVariables,
+    CmsEntryCreateFromMutationResponse,
+    CmsEntryCreateFromMutationVariables,
+    CmsEntryCreateMutationResponse,
+    CmsEntryCreateMutationVariables,
+    CmsEntryDeleteMutationResponse,
+    CmsEntryDeleteMutationVariables,
+    CmsEntryGetQueryResponse,
+    CmsEntryGetQueryVariables,
+    CmsEntryGetSingletonQueryResponse,
+    CmsEntryPublishMutationResponse,
+    CmsEntryPublishMutationVariables,
+    CmsEntryUnpublishMutationResponse,
+    CmsEntryUnpublishMutationVariables,
+    CmsEntryUpdateMutationResponse,
+    CmsEntryUpdateMutationVariables,
+    CmsEntryUpdateSingletonMutationResponse,
+    CmsEntryUpdateSingletonMutationVariables,
+    createBulkActionMutation,
+    createCreateFromMutation,
+    createCreateMutation,
+    createDeleteMutation,
+    createPublishMutation,
+    createReadQuery,
+    createReadSingletonQuery,
+    createRevisionsQuery,
+    createUnpublishMutation,
+    createUpdateMutation,
+    createUpdateSingletonMutation
 } from "@webiny/app-headless-cms-common";
 import { getFetchPolicy } from "~/utils/getFetchPolicy";
 
@@ -146,6 +146,38 @@ export interface BulkActionParams {
     search?: string;
     data?: Record<string, any>;
 }
+
+interface ICatchErrorOnExecuteOptions {
+    message?: string;
+}
+
+const defaultErrorMessage =
+    "The system wasn't able to save the current entry. Please contact your support team to help you resolve this issue.";
+
+const catchErrorOnExecute = async <T = any,>(
+    cb: () => Promise<T>,
+    options?: ICatchErrorOnExecuteOptions
+) => {
+    try {
+        return await cb();
+    } catch (ex) {
+        return {
+            data: {
+                content: {
+                    data: null,
+                    error: {
+                        message: options?.message || defaultErrorMessage,
+                        code: ex.code,
+                        stack: ex.stack,
+                        data: {
+                            ...ex.data
+                        }
+                    }
+                }
+            }
+        };
+    }
+};
 
 export interface CmsContext {
     getApolloClient(locale: string): ApolloClient<any>;
@@ -312,17 +344,25 @@ export const CmsProvider = (props: CmsProviderProps) => {
         },
         createEntry: async ({ model, entry, options }) => {
             const mutation = createCreateMutation(model);
-            const response = await value.apolloClient.mutate<
-                CmsEntryCreateMutationResponse,
-                CmsEntryCreateMutationVariables
-            >({
-                mutation,
-                variables: {
-                    data: entry,
-                    options
+            const response = await catchErrorOnExecute(
+                () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryCreateMutationResponse,
+                        CmsEntryCreateMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            data: entry,
+                            options
+                        },
+                        fetchPolicy: getFetchPolicy(model)
+                    });
                 },
-                fetchPolicy: getFetchPolicy(model)
-            });
+                {
+                    message:
+                        "The system wasn't able to create a new entry. Please contact your support team to help you resolve this issue."
+                }
+            );
 
             if (!response.data) {
                 return {
@@ -346,18 +386,26 @@ export const CmsProvider = (props: CmsProviderProps) => {
         },
         createEntryRevisionFrom: async ({ model, id, input, options }) => {
             const mutation = createCreateFromMutation(model);
-            const response = await value.apolloClient.mutate<
-                CmsEntryCreateFromMutationResponse,
-                CmsEntryCreateFromMutationVariables
-            >({
-                mutation,
-                variables: {
-                    revision: id,
-                    data: input,
-                    options
+            const response = await catchErrorOnExecute(
+                async () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryCreateFromMutationResponse,
+                        CmsEntryCreateFromMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            revision: id,
+                            data: input,
+                            options
+                        },
+                        fetchPolicy: getFetchPolicy(model)
+                    });
                 },
-                fetchPolicy: getFetchPolicy(model)
-            });
+                {
+                    message:
+                        "The system wasn't able to create a new revision of the entry. Please contact your support team to help you resolve this issue."
+                }
+            );
 
             if (!response.data) {
                 return {
@@ -382,17 +430,19 @@ export const CmsProvider = (props: CmsProviderProps) => {
         updateEntryRevision: async ({ model, entry, options }) => {
             const mutation = createUpdateMutation(model);
             const { id, ...input } = entry;
-            const response = await value.apolloClient.mutate<
-                CmsEntryUpdateMutationResponse,
-                CmsEntryUpdateMutationVariables
-            >({
-                mutation,
-                variables: {
-                    revision: id,
-                    data: input,
-                    options
-                },
-                fetchPolicy: getFetchPolicy(model)
+            const response = await catchErrorOnExecute(() => {
+                return value.apolloClient.mutate<
+                    CmsEntryUpdateMutationResponse,
+                    CmsEntryUpdateMutationVariables
+                >({
+                    mutation,
+                    variables: {
+                        revision: id,
+                        data: input,
+                        options
+                    },
+                    fetchPolicy: getFetchPolicy(model)
+                });
             });
 
             if (!response.data) {
@@ -419,16 +469,18 @@ export const CmsProvider = (props: CmsProviderProps) => {
             const mutation = createUpdateSingletonMutation(model);
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { id, ...input } = entry;
-            const response = await value.apolloClient.mutate<
-                CmsEntryUpdateSingletonMutationResponse,
-                CmsEntryUpdateSingletonMutationVariables
-            >({
-                mutation,
-                variables: {
-                    data: input,
-                    options
-                },
-                fetchPolicy: getFetchPolicy(model)
+            const response = await catchErrorOnExecute(() => {
+                return value.apolloClient.mutate<
+                    CmsEntryUpdateSingletonMutationResponse,
+                    CmsEntryUpdateSingletonMutationVariables
+                >({
+                    mutation,
+                    variables: {
+                        data: input,
+                        options
+                    },
+                    fetchPolicy: getFetchPolicy(model)
+                });
             });
 
             if (!response.data) {
@@ -453,15 +505,23 @@ export const CmsProvider = (props: CmsProviderProps) => {
         },
         publishEntryRevision: async ({ model, id }) => {
             const mutation = createPublishMutation(model);
-            const response = await value.apolloClient.mutate<
-                CmsEntryPublishMutationResponse,
-                CmsEntryPublishMutationVariables
-            >({
-                mutation,
-                variables: {
-                    revision: id
+            const response = await catchErrorOnExecute(
+                () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryPublishMutationResponse,
+                        CmsEntryPublishMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            revision: id
+                        }
+                    });
+                },
+                {
+                    message:
+                        "The system wasn't able to publish the current entry. Please contact your support team to help you resolve this issue."
                 }
-            });
+            );
 
             if (!response.data) {
                 const error: CmsErrorResponse = {
@@ -485,15 +545,23 @@ export const CmsProvider = (props: CmsProviderProps) => {
         unpublishEntryRevision: async ({ model, id }) => {
             const mutation = createUnpublishMutation(model);
 
-            const response = await value.apolloClient.mutate<
-                CmsEntryUnpublishMutationResponse,
-                CmsEntryUnpublishMutationVariables
-            >({
-                mutation,
-                variables: {
-                    revision: id
+            const response = await catchErrorOnExecute(
+                () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryUnpublishMutationResponse,
+                        CmsEntryUnpublishMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            revision: id
+                        }
+                    });
+                },
+                {
+                    message:
+                        "The system wasn't able to unpublish the current entry. Please contact your support team to help you resolve this issue."
                 }
-            });
+            );
 
             if (!response.data) {
                 return {
@@ -517,16 +585,24 @@ export const CmsProvider = (props: CmsProviderProps) => {
         },
         deleteEntry: async ({ model, id }) => {
             const mutation = createDeleteMutation(model);
-            const response = await value.apolloClient.mutate<
-                CmsEntryDeleteMutationResponse,
-                CmsEntryDeleteMutationVariables
-            >({
-                mutation,
-                variables: {
-                    revision: id,
-                    permanently: false
+            const response = await catchErrorOnExecute(
+                () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryDeleteMutationResponse,
+                        CmsEntryDeleteMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            revision: id,
+                            permanently: false
+                        }
+                    });
+                },
+                {
+                    message:
+                        "The system wasn't able to delete the current entry. Please contact your support team to help you resolve this issue."
                 }
-            });
+            );
 
             if (!response.data) {
                 const error: CmsErrorResponse = {
@@ -547,18 +623,26 @@ export const CmsProvider = (props: CmsProviderProps) => {
         },
         bulkAction: async ({ model, action, where, search, data }) => {
             const mutation = createBulkActionMutation(model);
-            const response = await value.apolloClient.mutate<
-                CmsEntryBulkActionMutationResponse,
-                CmsEntryBulkActionMutationVariables
-            >({
-                mutation,
-                variables: {
-                    action,
-                    where,
-                    search,
-                    data
+            const response = await catchErrorOnExecute(
+                () => {
+                    return value.apolloClient.mutate<
+                        CmsEntryBulkActionMutationResponse,
+                        CmsEntryBulkActionMutationVariables
+                    >({
+                        mutation,
+                        variables: {
+                            action,
+                            where,
+                            search,
+                            data
+                        }
+                    });
+                },
+                {
+                    message:
+                        "The system wasn't able to perform the bulk action. Please contact your support team to help you resolve this issue."
                 }
-            });
+            );
 
             if (!response.data) {
                 return {

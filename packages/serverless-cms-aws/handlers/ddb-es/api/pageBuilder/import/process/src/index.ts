@@ -12,13 +12,9 @@ import importProcessPlugins from "@webiny/api-page-builder-import-export/import/
 import dbPlugins from "@webiny/handler-db";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import dynamoDbPlugins from "@webiny/db-dynamodb/plugins";
-import elasticSearch, {
-    createElasticsearchClient,
-    createGzipCompression
-} from "@webiny/api-elasticsearch";
+import elasticSearch, { createElasticsearchClient } from "@webiny/api-elasticsearch";
 import { createFileManagerContext } from "@webiny/api-file-manager";
 import { createFileManagerStorageOperations } from "@webiny/api-file-manager-ddb";
-import logsPlugins from "@webiny/handler-logs";
 import fileManagerS3 from "@webiny/api-file-manager-s3";
 import securityPlugins from "./security";
 import { createAco } from "@webiny/api-aco";
@@ -36,9 +32,7 @@ const debug = process.env.DEBUG === "true";
 
 export const handler = createHandler({
     plugins: [
-        createGzipCompression(),
         dynamoDbPlugins(),
-        logsPlugins(),
         elasticSearch(elasticsearchClient),
         dbPlugins({
             table: process.env.DB_TABLE,
@@ -86,7 +80,7 @@ export const handler = createHandler({
         importProcessPlugins({
             handlers: { process: process.env.AWS_LAMBDA_FUNCTION_NAME }
         }),
-        createAco({ useFolderLevelPermissions: false }),
+        createAco({ documentClient, useFolderLevelPermissions: false }),
         createAcoPageBuilderImportExportContext()
     ],
     debug

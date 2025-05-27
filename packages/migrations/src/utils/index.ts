@@ -4,3 +4,4 @@ export * from "./forEachTenantLocale";
 export * from "./createEntity";
 export * from "./createLocaleEntity";
 export * from "./createTenantEntity";
+export * from "./getCompressedData";

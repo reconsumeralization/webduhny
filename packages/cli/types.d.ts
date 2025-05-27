@@ -1,3 +1,5 @@
+import type yargs from "yargs";
+
 /**
  * Rename file to types.ts when switching the package to Typescript.
  */
@@ -10,6 +12,7 @@ export type NonEmptyArray<T> = [T, ...T[]];
  * Not in relation with "@webiny/plugins" package.
  */
 export interface PluginsContainer {
+    register(...args: any[]): void;
     byType<T extends Plugin>(type: T["type"]): T[];
 
     byName<T extends Plugin>(name: T["name"]): T;
@@ -34,11 +37,39 @@ interface Project {
     /**
      * Configurations.
      */
-    config: Record<string, any>;
+    config: {
+        appAliases: {
+            [key: string]: string;
+        }
+        [key: string]: any;
+    };
     /**
      * Root path of the project.
      */
     root: string;
+}
+
+
+export interface IProjectApplicationPackage {
+    name: string;
+    paths: {
+        root: string;
+        relative: string;
+        packageJson: string;
+        config: string;
+    };
+    packageJson: Record<string, any>;
+    get config(): any;
+}
+
+export interface IProjectApplicationConfigCli {
+    watch?: boolean;
+}
+
+export interface IProjectApplicationConfig {
+    appAliases?: Record<string, string>;
+    cli?: IProjectApplicationConfigCli;
+    [key: string]: unknown
 }
 
 export interface ProjectApplication {
@@ -73,7 +104,7 @@ export interface ProjectApplication {
     /**
      * Project application config (exported via `webiny.application.ts` file).
      */
-    config: Record<string, any>;
+    config: IProjectApplicationConfig;
     /**
      * Project application package.json.
      */
@@ -82,16 +113,7 @@ export interface ProjectApplication {
     /**
      * A list of all the packages in the project application.
      */
-    get packages(): Array<{
-        name: string;
-        paths: {
-            root: string;
-            packageJson: string;
-            config: string;
-        };
-        packageJson: Record<string, any>;
-        get config(): any;
-    }>;
+    get packages(): IProjectApplicationPackage[];
 }
 
 /**
@@ -112,6 +134,10 @@ export interface CliContext {
      * All registered plugins.
      */
     plugins: PluginsContainer;
+    /**
+     * Load environment variables from a given file.
+     */
+    loadEnv(filePath: string, options?: {debug?: boolean}): Promise<void>;
     /**
      * All the environment variables.
      */
@@ -166,7 +192,7 @@ export interface CliContext {
      * Only trivial data should be passed here, specific to the current project.
      */
     localStorage: {
-        set: (key: string, value: string) => Record<string, any>;
+        set: (key: string, value: any) => Record<string, any>;
         get: (key: string) => any;
     };
 }
@@ -177,7 +203,7 @@ export interface CliContext {
  * @category Cli
  */
 export interface CliCommandPluginArgs {
-    yargs: any;
+    yargs: typeof yargs;
     context: CliContext;
 }
 
@@ -191,4 +217,18 @@ export interface CliCommandPlugin extends Plugin {
     type: "cli-command";
     name: string;
     create: (args: CliCommandPluginArgs) => void;
+}
+
+export interface CliCommandErrorPluginHandleParams {
+    context: CliContext;
+    error: Error;
+}
+
+export interface CliCommandErrorPluginHandle {
+    (params: CliCommandErrorPluginHandleParams):void;
+}
+
+export interface CliCommandErrorPlugin extends Plugin {
+    type: "cli-command-error";
+    handle: CliCommandErrorPluginHandle;
 }

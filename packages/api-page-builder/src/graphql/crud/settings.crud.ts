@@ -18,6 +18,7 @@ import DataLoader from "dataloader";
 import { createTopic } from "@webiny/pubsub";
 import { createSettingsCreateValidation } from "~/graphql/crud/settings/validation";
 import { createZodError, removeUndefinedValues } from "@webiny/utils";
+import type { SettingsPermissions } from "./permissions/SettingsPermissions";
 
 interface SettingsParams {
     tenant: string;
@@ -37,10 +38,11 @@ export interface CreateSettingsCrudParams {
     storageOperations: PageBuilderStorageOperations;
     getTenantId: () => string;
     getLocaleCode: () => string;
+    settingsPermissions: SettingsPermissions;
 }
 
 export const createSettingsCrud = (params: CreateSettingsCrudParams): SettingsCrud => {
-    const { storageOperations, getLocaleCode, getTenantId } = params;
+    const { storageOperations, getLocaleCode, getTenantId, settingsPermissions } = params;
 
     const settingsDataLoader = new DataLoader<SettingsParams, Settings | null, string>(
         async keys => {
@@ -109,6 +111,8 @@ export const createSettingsCrud = (params: CreateSettingsCrudParams): SettingsCr
         },
 
         async updateSettings(this: PageBuilderContextObject, input) {
+            await settingsPermissions.ensure();
+
             const params = {
                 tenant: getTenantId(),
                 locale: getLocaleCode(),

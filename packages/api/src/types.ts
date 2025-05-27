@@ -1,4 +1,5 @@
 import { PluginsContainer } from "@webiny/plugins";
+import { ICompressor } from "@webiny/utils/compression/Compressor";
 
 export type GenericRecord<K extends PropertyKey = PropertyKey, V = any> = Record<K, V>;
 
@@ -82,6 +83,12 @@ export interface Context {
         obj: string[] | string,
         cb: (context: T) => void
     ) => void;
-
+    /**
+     * Benchmark instance to help determine possible bugs and slow code.
+     */
     benchmark: Benchmark;
+    /**
+     * Compressor instance to compress and decompress the data.
+     */
+    compressor: ICompressor;
 }

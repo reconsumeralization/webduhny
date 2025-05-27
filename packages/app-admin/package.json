@@ -16,7 +16,7 @@
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.6",
     "@iconify/json": "^2.2.142",
-    "@material-design-icons/svg": "^0.14.3",
+    "@material-design-icons/svg": "^0.14.13",
     "@monaco-editor/react": "^4.7.0",
     "@svgr/webpack": "^6.1.1",
     "@types/mime": "^2.0.3",
@@ -72,11 +72,11 @@
     "@types/is-hotkey": "^0.1.10",
     "@types/react-resizable": "^3.0.8",
     "@types/store": "^2.0.2",
+    "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
     "monaco-editor": "^0.52.2",
     "rimraf": "^6.0.1",
-    "ttypescript": "^1.5.15",
-    "typescript": "4.9.5"
+    "typescript": "5.3.3"
   },
   "publishConfig": {
     "access": "public",
@@ -91,6 +91,7 @@
       "dependencies": [
         "@svgr/webpack",
         "@iconify/json",
+        "unicode-emoji-json",
         "@emotion/react",
         "@types/mime",
         "reset-css",

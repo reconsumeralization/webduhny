@@ -5,16 +5,18 @@ import { ReactComponent as FolderShared } from "@material-symbols/svg-400/rounde
 import { ReactComponent as HomeIcon } from "@material-design-icons/svg/filled/home.svg";
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import { MenuActions } from "../MenuActions";
-import { Container, ArrowIcon, FolderIcon, Text, Content } from "./styled";
+import { Container, ArrowIcon, FolderIcon, Text, Content, LoaderContainer } from "./styled";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { parseIdentifier } from "@webiny/utils";
 import { ROOT_FOLDER } from "~/constants";
 import { useFolder } from "~/hooks";
+import { CircularProgress } from "@webiny/ui/Progress";
 
 type NodeProps = {
     node: NodeModel<DndFolderItemData>;
     depth: number;
     isOpen: boolean;
+    isLoading?: boolean;
     enableActions?: boolean;
     onToggle: (id: string | number) => void;
     onClick: (data: FolderItem) => void;
@@ -25,6 +27,7 @@ type FolderProps = {
     isRoot: boolean;
     isOpen: boolean;
     isFocused?: boolean;
+    isLoading?: boolean;
     hasNonInheritedPermissions?: boolean;
     canManagePermissions?: boolean;
 };
@@ -56,7 +59,50 @@ export const FolderNode = ({
     );
 };
 
-export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: NodeProps) => {
+type FolderIndicatorProps = Pick<NodeProps, "isLoading" | "isOpen" | "onToggle">;
+
+const FolderIndicator = ({ isLoading, isOpen, onToggle }: FolderIndicatorProps) => {
+    const { folder } = useFolder();
+    const isRoot = folder.id === ROOT_FOLDER;
+
+    const handleToggle = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onToggle(folder.id);
+    };
+
+    if (isRoot) {
+        return null;
+    }
+
+    if (isLoading) {
+        return (
+            <LoaderContainer>
+                <CircularProgress
+                    size={12}
+                    spinnerWidth={2}
+                    spinnerColor={"#d9d9d9"}
+                    style={{ background: "transparent" }}
+                />
+            </LoaderContainer>
+        );
+    }
+
+    return (
+        <ArrowIcon isOpen={isOpen} onClick={handleToggle}>
+            <ArrowRight />
+        </ArrowIcon>
+    );
+};
+
+export const Node = ({
+    node,
+    depth,
+    isOpen,
+    enableActions,
+    onToggle,
+    onClick,
+    isLoading
+}: NodeProps) => {
     const { folder } = useFolder();
     const isRoot = folder.id === ROOT_FOLDER;
     // Move the placeholder line to the left based on the element depth within the tree.
@@ -65,17 +111,12 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
 
     const dragOverProps = useDragOver(folder.id, isOpen, onToggle);
 
-    const handleToggle = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onToggle(folder.id);
-    };
-
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onClick(folder);
         if (folder.id !== ROOT_FOLDER) {
             onToggle(folder.id);
         }
+        onClick(folder);
     };
 
     const id = useMemo(() => {
@@ -88,14 +129,11 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
     return (
         <Container
             isFocused={!!node.data?.isFocused}
+            isLoading={isLoading}
             style={{ paddingInlineStart: indent }}
             {...dragOverProps}
         >
-            {isRoot ? null : (
-                <ArrowIcon isOpen={isOpen} onClick={handleToggle}>
-                    <ArrowRight />
-                </ArrowIcon>
-            )}
+            <FolderIndicator isLoading={isLoading} isOpen={isOpen} onToggle={onToggle} />
             <Content onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode
                     isRoot={isRoot}

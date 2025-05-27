@@ -3,6 +3,10 @@ import { WebinyError } from "@webiny/error";
 import { IIsEntryLockedUseCase } from "~/abstractions/IIsEntryLocked";
 import { IRecordLockingModelManager } from "~/types";
 import { NotFoundError } from "@webiny/handler-graphql";
+import { createConvert } from "~tests/mocks/createConvert";
+import { createGetSecurity } from "~tests/mocks/createGetSecurity";
+import { createGetManager } from "~tests/mocks/createGetManager";
+import { createGetIdentity } from "~tests/mocks/createGetIdentity";
 
 describe("lock entry use case", () => {
     it("should throw an error on isEntryLockedUseCase.execute", async () => {
@@ -13,9 +17,10 @@ describe("lock entry use case", () => {
                     throw new WebinyError("Trying out an error", "TRYING_OUT_ERROR", {});
                 }
             } as unknown as IIsEntryLockedUseCase,
-            getManager: async () => {
-                return {} as unknown as IRecordLockingModelManager;
-            }
+            getManager: createGetManager(),
+            getSecurity: createGetSecurity(),
+            convert: createConvert(),
+            getIdentity: createGetIdentity()
         });
         try {
             await useCase.execute({
@@ -35,6 +40,9 @@ describe("lock entry use case", () => {
                     throw new NotFoundError();
                 }
             } as unknown as IIsEntryLockedUseCase,
+            getSecurity: createGetSecurity(),
+            convert: createConvert(),
+            getIdentity: createGetIdentity(),
             getManager: async () => {
                 return {
                     create: async () => {

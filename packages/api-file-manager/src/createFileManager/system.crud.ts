@@ -1,20 +1,23 @@
 import { createTopic } from "@webiny/pubsub";
 import { NotAuthorizedError } from "@webiny/api-security";
-import {
+import type {
     FileManagerContextObject,
     FileManagerSettings,
     FileManagerSystem,
     SystemCRUD
 } from "~/types";
 import WebinyError from "@webiny/error";
-import { FileManagerConfig } from "~/createFileManager/index";
+import type { FileManagerConfig } from "~/createFileManager/types";
 
 export const createSystemCrud = ({
     storageOperations,
     getTenantId,
     getIdentity,
     WEBINY_VERSION
-}: FileManagerConfig): SystemCRUD => {
+}: Pick<
+    FileManagerConfig,
+    "storageOperations" | "getTenantId" | "getIdentity" | "WEBINY_VERSION"
+>): SystemCRUD => {
     return {
         onSystemBeforeInstall: createTopic("fileManager.onSystemBeforeInstall"),
         onSystemAfterInstall: createTopic("fileManager.onSystemAfterInstall"),

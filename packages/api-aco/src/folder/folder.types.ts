@@ -1,6 +1,5 @@
-import { ListMeta, ListSort, User } from "~/types";
+import { type FolderPermission, ListMeta, ListSort, User } from "~/types";
 import { Topic } from "@webiny/pubsub/types";
-import { FolderPermission } from "~/utils/FolderLevelPermissions";
 
 export interface Folder {
     id: string;
@@ -16,12 +15,23 @@ export interface Folder {
     permissions?: FolderPermission[];
     type: string;
     parentId?: string | null;
+    path: string;
     extensions?: Record<string, any>;
 }
 
 export interface ListFoldersWhere {
     type: string;
+    id_not_in?: string[];
     parentId?: string | null;
+    parentId_in?: string[];
+    path?: string;
+    path_not?: string;
+    path_contains?: string;
+    path_not_contains?: string;
+    path_in?: string[];
+    path_not_in?: string[];
+    path_startsWith?: string;
+    path_not_startsWith?: string;
 }
 
 export interface ListFoldersParams {
@@ -29,9 +39,20 @@ export interface ListFoldersParams {
     sort?: ListSort;
     limit?: number;
     after?: string | null;
+    disablePermissions?: boolean;
 }
 
 export type ListAllFoldersParams = Omit<ListFoldersParams, "limit" | "after">;
+
+export interface GetFolderHierarchyParams {
+    type: string;
+    id: string;
+}
+
+export interface GetFolderHierarchyResponse {
+    parents: Folder[];
+    siblings: Folder[];
+}
 
 export type CreateFolderParams = Pick<Folder, "title" | "slug" | "type" | "parentId">;
 
@@ -63,6 +84,10 @@ export interface StorageOperationsGetFolderParams {
     slug?: string;
     type?: string;
     parentId?: string | null;
+}
+
+export interface GetFolderParams {
+    id: string;
 }
 
 export type StorageOperationsListFoldersParams = ListFoldersParams;
@@ -106,7 +131,7 @@ export interface OnFolderAfterDeleteTopicParams {
 }
 
 export interface AcoFolderCrud {
-    get(id: string): Promise<Folder>;
+    get(id: string, disablePermissions?: boolean): Promise<Folder>;
 
     list(params: ListFoldersParams): Promise<[Folder[], ListMeta]>;
 
@@ -123,6 +148,8 @@ export interface AcoFolderCrud {
     delete(id: string): Promise<boolean>;
 
     getAncestors(folder: Folder): Promise<Folder[]>;
+
+    getFolderHierarchy(params: GetFolderHierarchyParams): Promise<GetFolderHierarchyResponse>;
 
     /**
      * @deprecated use `getAncestors` instead

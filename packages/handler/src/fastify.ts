@@ -21,7 +21,7 @@ import { HandlerResultPlugin } from "./plugins/HandlerResultPlugin";
 import { HandlerErrorPlugin } from "./plugins/HandlerErrorPlugin";
 import { ModifyFastifyPlugin } from "~/plugins/ModifyFastifyPlugin";
 import { HandlerOnRequestPlugin } from "~/plugins/HandlerOnRequestPlugin";
-import { ResponseHeaders } from "~/ResponseHeaders";
+import { ResponseHeaders, StandardHeaders } from "~/ResponseHeaders";
 import { ModifyResponseHeadersPlugin } from "~/plugins/ModifyResponseHeadersPlugin";
 import { SetDefaultHeaders } from "./PreHandler/SetDefaultHeaders";
 import { PreHandler } from "./PreHandler/PreHandler";
@@ -38,7 +38,8 @@ const modifyResponseHeaders = (app: FastifyInstance, request: Request, reply: Re
         ModifyResponseHeadersPlugin.type
     );
 
-    const headers = ResponseHeaders.create(reply.getHeaders());
+    const replyHeaders = reply.getHeaders() as StandardHeaders;
+    const headers = ResponseHeaders.create(replyHeaders);
 
     modifyHeaders.forEach(plugin => {
         plugin.modify(request, headers);
@@ -70,7 +71,9 @@ export const createHandler = (params: CreateHandlerParams) => {
         PROPPATCH: [],
         SEARCH: [],
         TRACE: [],
-        UNLOCK: []
+        UNLOCK: [],
+        REPORT: [],
+        MKCALENDAR: []
     };
 
     const throwOnDefinedRoute = (
@@ -79,8 +82,9 @@ export const createHandler = (params: CreateHandlerParams) => {
         options?: RouteMethodOptions
     ): void => {
         if (type === "ALL") {
-            const all = Object.keys(definedRoutes).find(key => {
-                const routes = definedRoutes[key as HTTPMethods];
+            const all = Object.keys(definedRoutes).find(k => {
+                const key = k.toUpperCase() as HTTPMethods;
+                const routes = definedRoutes[key];
                 return routes.includes(path);
             });
             if (!all) {
@@ -114,7 +118,8 @@ export const createHandler = (params: CreateHandlerParams) => {
         );
     };
 
-    const addDefinedRoute = (type: HTTPMethods, path: string): void => {
+    const addDefinedRoute = (input: HTTPMethods, path: string): void => {
+        const type = input.toUpperCase() as HTTPMethods;
         if (!definedRoutes[type]) {
             return;
         } else if (definedRoutes[type].includes(path)) {
@@ -136,7 +141,7 @@ export const createHandler = (params: CreateHandlerParams) => {
      * We need to register routes in our system to output headers later on, and disallow route overriding.
      */
     app.addHook("onRoute", route => {
-        const method = route.method;
+        const method = route.method as HTTPMethods | HTTPMethods[];
         if (Array.isArray(method)) {
             for (const m of method) {
                 addDefinedRoute(m, route.path);
@@ -263,6 +268,11 @@ export const createHandler = (params: CreateHandlerParams) => {
     app.addHook("preHandler", async (request, reply) => {
         app.webiny.request = request;
         app.webiny.reply = reply;
+        /**
+         * Default code to 200 - so we do not need to set it again.
+         * Usually we set errors manually when we use reply.send.
+         */
+        reply.code(200);
 
         const handlerOnRequestPlugins = app.webiny.plugins.byType<HandlerOnRequestPlugin>(
             HandlerOnRequestPlugin.type
@@ -311,7 +321,14 @@ export const createHandler = (params: CreateHandlerParams) => {
         return payload;
     });
 
-    app.setErrorHandler<WebinyError>(async (error, request, reply) => {
+    app.setErrorHandler<WebinyError>(async (error, _, reply) => {
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
+        if (reply.sent) {
+            console.warn("Reply already sent, cannot send the result (handler:setErrorHandler).");
+            return reply;
+        }
         return reply
             .status(500)
             .headers({
@@ -329,35 +346,41 @@ export const createHandler = (params: CreateHandlerParams) => {
             );
     });
 
-    app.addHook("onError", async (request, reply, error: any) => {
+    app.addHook("onError", async (_, reply, error: any) => {
         const plugins = app.webiny.plugins.byType<HandlerErrorPlugin>(HandlerErrorPlugin.type);
         /**
          * Log error to cloud, as these can be extremely annoying to debug!
          */
-        console.error("@webiny/handler");
-        console.log({
-            url: request.url,
-            method: request.method,
-            headers: request.headers,
-            body: request.body
-        });
-        console.error(stringifyError(error));
-
-        reply
-            .status(500)
-            .headers({
-                "Cache-Control": "no-store"
-            })
-            .send(
-                /**
-                 * When we are sending the error in the response, we cannot send the whole error object, as it might contain some sensitive data.
-                 */
-                JSON.stringify({
-                    message: error.message,
-                    code: error.code,
-                    data: error.data
+        console.error("Logging error in @webiny/handler");
+        try {
+            console.error(stringifyError(error));
+        } catch (ex) {
+            console.warn("Could not stringify error:");
+            console.log(error);
+            console.error("Stringify error:", ex);
+        }
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
+        if (!reply.sent) {
+            reply
+                .status(500)
+                .headers({
+                    "Cache-Control": "no-store"
                 })
-            );
+                .send(
+                    /**
+                     * When we are sending the error in the response, we cannot send the whole error object, as it might contain some sensitive data.
+                     */
+                    JSON.stringify({
+                        message: error.message,
+                        code: error.code,
+                        data: error.data
+                    })
+                );
+        } else {
+            console.warn("Reply already sent, cannot send the result (handler:addHook:onError).");
+        }
 
         const handler = middleware(
             plugins.map(pl => {

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Action, IPreHandler } from "~/PreHandler/IPreHandler";
 import { ModifyResponseHeadersPlugin } from "~/plugins/ModifyResponseHeadersPlugin";
-import { ResponseHeaders } from "~/ResponseHeaders";
+import { ResponseHeaders, StandardHeaders } from "~/ResponseHeaders";
 
 export class SendEarlyOptionsResponse implements IPreHandler {
     private readonly plugins: ModifyResponseHeadersPlugin[];
@@ -11,6 +11,9 @@ export class SendEarlyOptionsResponse implements IPreHandler {
     }
 
     async execute(request: FastifyRequest, reply: FastifyReply): Promise<Action> {
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
         if (reply.sent) {
             /**
              * At this point throwing an exception will not do anything with the response. So just log it.
@@ -25,7 +28,7 @@ export class SendEarlyOptionsResponse implements IPreHandler {
             return Action.DONE;
         }
 
-        const headers = ResponseHeaders.create(reply.getHeaders());
+        const headers = ResponseHeaders.create(reply.getHeaders() as StandardHeaders);
 
         this.plugins.forEach(plugin => {
             plugin.modify(request, headers);

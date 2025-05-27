@@ -6,6 +6,7 @@ const DATA_FIELD = (fields: string[] = []) => {
             slug
             type
             parentId
+            path
             permissions {
                 target
                 level

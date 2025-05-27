@@ -37,7 +37,6 @@
     "@webiny/plugins": "0.0.0",
     "@webiny/utils": "0.0.0",
     "dataloader": "^2.2.2",
-    "jsonpack": "^1.1.5",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -58,8 +57,7 @@
     "jest-dynalite": "^3.6.1",
     "prettier": "^2.8.8",
     "rimraf": "^6.0.1",
-    "ttypescript": "^1.5.15",
-    "typescript": "4.9.5"
+    "typescript": "5.3.3"
   },
   "publishConfig": {
     "access": "public",

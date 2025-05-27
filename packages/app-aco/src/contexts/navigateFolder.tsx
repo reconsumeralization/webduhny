@@ -3,7 +3,7 @@ import store from "store";
 import { ROOT_FOLDER } from "~/constants";
 
 export interface NavigateFolderContext {
-    currentFolderId?: string;
+    currentFolderId: string;
     setFolderToStorage: (folderId?: string) => void;
     navigateToListHome: () => void;
     navigateToFolder: (folder?: string) => void;
@@ -80,7 +80,7 @@ export const NavigateFolderProvider = ({
     };
 
     const context: NavigateFolderContext = {
-        currentFolderId: currentFolderId || getFolderFromStorage(),
+        currentFolderId: currentFolderId || getFolderFromStorage() || ROOT_FOLDER,
         setFolderToStorage,
         navigateToListHome,
         navigateToFolder,

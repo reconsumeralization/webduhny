@@ -2,6 +2,7 @@ import { mdbid } from "@webiny/utils";
 import { folderMocks } from "./mocks/folder.mock";
 import { useGraphQlHandler } from "./utils/useGraphQlHandler";
 import { userMock } from "~tests/mocks/user.mock";
+import { ROOT_FOLDER } from "~/constants";
 
 const createSampleFileData = (overrides: Record<string, any> = {}) => {
     const id = mdbid();
@@ -65,6 +66,7 @@ describe("`folder` CRUD", () => {
         expect(folderA).toMatchObject({
             id: folderA.id,
             parentId: null,
+            path: `${ROOT_FOLDER}/${folderMocks.folderA.slug}`,
             createdBy: userMock,
             ...folderMocks.folderA
         });
@@ -78,7 +80,8 @@ describe("`folder` CRUD", () => {
             id: folderB.id,
             createdBy: userMock,
             ...folderMocks.folderB,
-            parentId: folder1.id
+            parentId: folder1.id,
+            path: `${ROOT_FOLDER}/${folder1.slug}/${folderMocks.folderB.slug}`
         });
 
         const [responseC] = await aco.createFolder({ data: folderMocks.folderC });
@@ -86,6 +89,7 @@ describe("`folder` CRUD", () => {
         expect(folderC).toMatchObject({
             id: folderC.id,
             parentId: null,
+            path: `${ROOT_FOLDER}/${folderMocks.folderC.slug}`,
             createdBy: userMock,
             ...folderMocks.folderC
         });
@@ -98,7 +102,8 @@ describe("`folder` CRUD", () => {
             id: folderD.id,
             createdBy: userMock,
             ...folderMocks.folderD,
-            parentId: folder2.id
+            parentId: folder2.id,
+            path: `${ROOT_FOLDER}/${folder2.slug}/${folderMocks.folderD.slug}`
         });
 
         // Let's check whether both of the folder exists, listing them by `type`.
@@ -107,16 +112,19 @@ describe("`folder` CRUD", () => {
             data: [
                 {
                     parentId: null,
+                    path: `${ROOT_FOLDER}/${folderMocks.folderA.slug}`,
                     slug: "folder-a",
                     type: "page"
                 },
                 {
                     parentId: folder1.id,
+                    path: `${ROOT_FOLDER}/${folder1.slug}/${folderMocks.folderB.slug}`,
                     slug: "folder-b",
                     type: "page"
                 },
                 {
                     parentId: null,
+                    path: `${ROOT_FOLDER}/${folderMocks.folderC.slug}`,
                     slug: "folder-c",
                     type: "page"
                 }
@@ -171,7 +179,8 @@ describe("`folder` CRUD", () => {
         const update = {
             title: "Folder B - updated",
             slug: "folder-b-updated",
-            parentId: folder2.id
+            parentId: folder2.id,
+            path: `${ROOT_FOLDER}/${folder2.slug}/folder-b-updated`
         };
 
         const [updateB] = await aco.updateFolder({
@@ -242,6 +251,313 @@ describe("`folder` CRUD", () => {
                 }
             }
         });
+    });
+
+    it("should update folder `path` to both parent and child folders", async () => {
+        const [folderAResponse] = await aco.createFolder({ data: folderMocks.folderA });
+        const folderA = folderAResponse.data.aco.createFolder.data;
+
+        const [folderBResponse] = await aco.createFolder({
+            data: {
+                ...folderMocks.folderB,
+                parentId: folderA.id
+            }
+        });
+        const folderB = folderBResponse.data.aco.createFolder.data;
+
+        const [folderCResponse] = await aco.createFolder({
+            data: {
+                ...folderMocks.folderC,
+                parentId: folderB.id
+            }
+        });
+        const folderC = folderCResponse.data.aco.createFolder.data;
+
+        // Let's check whether the folders exist, listing them by `type`.
+        {
+            const [listResponse] = await aco.listFolders({ where: { type: "page" } });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                },
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        const folderASlugUpdated = folderA.slug + "-updated";
+
+        {
+            // Let's update the "folder-a" slug.
+            await aco.updateFolder({
+                id: folderA.id,
+                data: {
+                    slug: folderASlugUpdated
+                }
+            });
+
+            const [listResponse] = await aco.listFolders({ where: { type: "page" } });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderASlugUpdated}`,
+                    slug: folderASlugUpdated
+                },
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderASlugUpdated}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderASlugUpdated}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        {
+            // Let's move the "folder-b" to the "root" level.
+            await aco.updateFolder({
+                id: folderB.id,
+                data: {
+                    parentId: null
+                }
+            });
+
+            const [listResponse] = await aco.listFolders({ where: { type: "page" } });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderASlugUpdated}`,
+                    slug: folderASlugUpdated
+                },
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        {
+            // Let's move the "folder-a" under "folder-c".
+            await aco.updateFolder({
+                id: folderA.id,
+                data: {
+                    parentId: folderC.id
+                }
+            });
+
+            const [listResponse] = await aco.listFolders({ where: { type: "page" } });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: folderC.id,
+                    path: `${ROOT_FOLDER}/${folderB.slug}/${folderC.slug}/${folderASlugUpdated}`,
+                    slug: folderASlugUpdated
+                },
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+    });
+
+    it("should be able to list folders with `path` filter", async () => {
+        const type = "page";
+
+        const [folderAResponse] = await aco.createFolder({ data: folderMocks.folderA });
+        const folderA = folderAResponse.data.aco.createFolder.data;
+
+        const [folderBResponse] = await aco.createFolder({
+            data: {
+                ...folderMocks.folderB,
+                parentId: folderA.id
+            }
+        });
+        const folderB = folderBResponse.data.aco.createFolder.data;
+
+        const [folderCResponse] = await aco.createFolder({
+            data: {
+                ...folderMocks.folderC,
+                parentId: folderB.id
+            }
+        });
+        const folderC = folderCResponse.data.aco.createFolder.data;
+
+        // Let's query the folder using the exact `path` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: { type, path: `${ROOT_FOLDER}/${folderA.slug}` }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_not` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: { type, path_not: `${ROOT_FOLDER}/${folderA.slug}` }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_contains` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: { type, path_contains: `${folderA.slug}` }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                },
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_not_contains` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: { type, path_not_contains: `${folderB.slug}` }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_in` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: {
+                    type,
+                    path_in: [
+                        `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                        `${ROOT_FOLDER}/${folderA.slug}`
+                    ]
+                }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                },
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                    slug: folderB.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_not_in` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: {
+                    type,
+                    path_not_in: [
+                        `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                        `${ROOT_FOLDER}/${folderA.slug}`
+                    ]
+                }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_startsWith` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: { type, path_startsWith: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}` }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: folderA.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`,
+                    slug: folderB.slug
+                },
+                {
+                    parentId: folderB.id,
+                    path: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}/${folderC.slug}`,
+                    slug: folderC.slug
+                }
+            ]);
+        }
+
+        // Let's query the folder using the `path_not_startsWith` filter.
+        {
+            const [listResponse] = await aco.listFolders({
+                where: {
+                    type,
+                    path_not_startsWith: `${ROOT_FOLDER}/${folderA.slug}/${folderB.slug}`
+                }
+            });
+            expect(listResponse.data.aco.listFolders.data).toMatchObject([
+                {
+                    parentId: null,
+                    path: `${ROOT_FOLDER}/${folderA.slug}`,
+                    slug: folderA.slug
+                }
+            ]);
+        }
     });
 
     it("should NOT delete folder in case has child folders", async () => {

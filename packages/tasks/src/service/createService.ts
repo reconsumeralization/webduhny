@@ -26,7 +26,6 @@ export const createService = (params: ICreateTransport): ITaskService => {
     };
 
     return plugin.createService({
-        context: params.context,
         getTenant,
         getLocale
     });

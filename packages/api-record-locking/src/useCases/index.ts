@@ -11,7 +11,6 @@ import { UnlockEntryUseCase } from "./UnlockEntryUseCase/UnlockEntryUseCase";
 import { UnlockEntryRequestUseCase } from "./UnlockRequestUseCase/UnlockEntryRequestUseCase";
 import { ListAllLockRecordsUseCase } from "./ListAllLockRecordsUseCase/ListAllLockRecordsUseCase";
 import { ListLockRecordsUseCase } from "./ListLockRecordsUseCase/ListLockRecordsUseCase";
-import { isLockedFactory } from "~/utils/isLockedFactory";
 import { UpdateEntryLockUseCase } from "~/useCases/UpdateEntryLock/UpdateEntryLockUseCase";
 import { KickOutCurrentUserUseCase } from "./KickOutCurrentUser/KickOutCurrentUserUseCase";
 import { GetLockedEntryLockRecordUseCase } from "~/useCases/GetLockedEntryLockRecord/GetLockedEntryLockRecordUseCase";
@@ -26,11 +25,13 @@ import type { IUnlockEntryUseCase } from "~/abstractions/IUnlockEntryUseCase";
 import type { IUnlockEntryRequestUseCase } from "~/abstractions/IUnlockEntryRequestUseCase";
 import { convertEntryToLockRecord as baseConvertEntryToLockRecord } from "~/utils/convertEntryToLockRecord";
 import { ConvertEntryToLockRecordCb } from "~/useCases/types";
+import type { Security } from "@webiny/api-security/types";
 
 export interface ICreateUseCasesParams {
     getTimeout: () => number;
     getIdentity: IGetIdentity;
     getManager(): Promise<IRecordLockingModelManager>;
+    getSecurity(): Pick<Security, "withoutAuthorization">;
     hasRecordLockingAccess: IHasRecordLockingAccessCallable;
     getWebsockets: IGetWebsocketsContextCallable;
 }
@@ -50,7 +51,6 @@ export interface ICreateUseCasesResponse {
 export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesResponse => {
     const { getTimeout } = params;
     const timeout = getTimeout();
-    const isLocked = isLockedFactory(timeout);
 
     const convertEntryToLockRecord: ConvertEntryToLockRecordCb = entry => {
         return baseConvertEntryToLockRecord(entry, timeout);
@@ -69,24 +69,25 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
 
     const getLockRecordUseCase = new GetLockRecordUseCase({
         getManager: params.getManager,
+        getSecurity: params.getSecurity,
         convert: convertEntryToLockRecord
     });
 
     const isEntryLockedUseCase = new IsEntryLockedUseCase({
         getLockRecordUseCase,
-        isLocked,
         getIdentity: params.getIdentity
     });
 
     const getLockedEntryLockRecordUseCase = new GetLockedEntryLockRecordUseCase({
         getLockRecordUseCase,
-        isLocked,
         getIdentity: params.getIdentity
     });
 
     const lockEntryUseCase = new LockEntryUseCase({
         isEntryLockedUseCase,
         getManager: params.getManager,
+        getSecurity: params.getSecurity,
+        getIdentity: params.getIdentity,
         convert: convertEntryToLockRecord
     });
 
@@ -94,6 +95,7 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
         getLockRecordUseCase,
         lockEntryUseCase,
         getManager: params.getManager,
+        getSecurity: params.getSecurity,
         getIdentity: params.getIdentity,
         convert: convertEntryToLockRecord
     });
@@ -107,6 +109,7 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
         getLockRecordUseCase,
         kickOutCurrentUserUseCase,
         getManager: params.getManager,
+        getSecurity: params.getSecurity,
         getIdentity: params.getIdentity,
         hasRecordLockingAccess: params.hasRecordLockingAccess
     });
@@ -114,6 +117,7 @@ export const createUseCases = (params: ICreateUseCasesParams): ICreateUseCasesRe
     const unlockEntryRequestUseCase = new UnlockEntryRequestUseCase({
         getLockRecordUseCase,
         getIdentity: params.getIdentity,
+        getSecurity: params.getSecurity,
         getManager: params.getManager,
         convert: convertEntryToLockRecord
     });

@@ -12,13 +12,13 @@ type CreatePluginCallable = (command: "build" | "watch", appName: "admin" | "web
 
 const createPluginCallable: CreatePluginCallable = (command, appName) => {
     return (params, ctx) => {
-        const { env, inputs } = params;
+        const { env, inputs, variant } = params;
         // Just in case, we want to allow users to skip the system requirements check.
         if (inputs.deploymentChecks === false) {
             return;
         }
 
-        const output = getStackOutput({ folder: "apps/api", env });
+        const output = getStackOutput({ folder: "apps/api", env, variant });
         const apiDeployed = output && Object.keys(output).length > 0;
         if (apiDeployed) {
             return;

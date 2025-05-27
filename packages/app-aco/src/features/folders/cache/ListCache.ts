@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
+import unionBy from "lodash/unionBy";
 
 export type Constructor<T> = new (...args: any[]) => T;
 
@@ -56,7 +57,7 @@ export class ListCache<T> implements IListCache<T> {
 
     addItems(items: T[]) {
         runInAction(() => {
-            this.state = [...this.state, ...items];
+            this.state = unionBy(this.state, items, "id");
         });
     }
 

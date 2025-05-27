@@ -3,6 +3,7 @@ import { Typography } from "@webiny/ui/Typography";
 
 type ContainerProps = {
     isFocused: boolean;
+    isLoading?: boolean;
 };
 
 type ArrowIconContainerProps = {
@@ -13,10 +14,12 @@ export const Container = styled("div")<ContainerProps>`
     display: flex;
     align-items: center;
     padding: 4px 0 4px 4px;
-    background: ${props => props.isFocused && "var(--mdc-theme-on-background)"};
+    background: ${props => props.isFocused && !props.isLoading && "var(--mdc-theme-on-background)"};
     color: var(--webiny-theme-color-text-secondary);
     fill: currentColor;
     position: relative;
+    opacity: ${props => (props.isLoading ? 0.5 : 1)};
+    pointer-events: ${props => (props.isLoading ? "none" : "auto")};
     &:hover .folder-tree-menu-action {
         visibility: visible;
     }
@@ -58,4 +61,10 @@ export const Text = styled(Typography)`
     &.focused {
         font-weight: 600;
     }
+`;
+
+export const LoaderContainer = styled("div")`
+    position: relative;
+    height: 24px;
+    width: 26px;
 `;

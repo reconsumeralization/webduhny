@@ -28,7 +28,6 @@ import { PluginCollection } from "@webiny/plugins/types";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import { createEventHandler as createDynamoDBToElasticsearchHandler } from "@webiny/api-dynamodb-to-elasticsearch";
 import elasticsearchClientContextPlugin, {
-    createGzipCompression,
     getElasticsearchOperators
 } from "@webiny/api-elasticsearch";
 import { simulateStream } from "@webiny/project-utils/testing/dynamodb";
@@ -41,7 +40,6 @@ import { configurations as cmsConfigurations } from "@webiny/api-headless-cms-dd
 import { SEARCH_RECORD_MODEL_ID } from "@webiny/api-aco/record/record.model";
 import { FOLDER_MODEL_ID } from "@webiny/api-aco/folder/folder.model";
 import { LambdaContext } from "@webiny/handler-aws/types";
-// @ts-expect-error
 import { createMockApiLogContextPlugin } from "@webiny/project-utils/testing/mockApiLog";
 
 interface Params {
@@ -103,8 +101,7 @@ export const useHandler = (params: Params) => {
             plugins: [
                 elasticsearchClientContext,
                 createMockApiLogContextPlugin(),
-                createDynamoDBToElasticsearchHandler(),
-                createGzipCompression()
+                createDynamoDBToElasticsearchHandler()
             ]
         })
     );
@@ -139,7 +136,7 @@ export const useHandler = (params: Params) => {
             createPageBuilderContext({
                 storageOperations
             }),
-            createAco(),
+            createAco({ documentClient }),
             createAcoPageBuilderContext(),
             prerenderingHookPlugins(),
             prerenderingServicePlugins({

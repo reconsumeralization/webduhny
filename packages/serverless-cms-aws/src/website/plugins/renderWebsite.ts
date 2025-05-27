@@ -5,6 +5,7 @@ import { getStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils";
 export interface IRenderWebsiteParams {
     env: string;
     inputs: IRenderWebsiteParamsInputs;
+    variant: string;
 }
 
 export interface IRenderWebsiteParamsInputs {
@@ -40,7 +41,11 @@ export const renderWebsite = (renderWebsiteParams: RenderWebsiteParams) => {
                 return;
             }
 
-            const coreOutput = getStackOutput({ folder: "apps/core", env: params.env });
+            const coreOutput = getStackOutput({
+                folder: "apps/core",
+                env: params.env,
+                variant: params.variant
+            });
 
             context.info("Issuing a complete website rendering job...");
 

@@ -6,6 +6,9 @@ import { createLockingModel } from "~/crud/model";
 import { isHeadlessCmsReady } from "@webiny/api-headless-cms";
 
 export interface ICreateContextPluginParams {
+    /**
+     * A number of seconds after last activity to wait before the record is automatically unlocked.
+     */
     timeout?: number;
 }
 

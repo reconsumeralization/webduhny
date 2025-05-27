@@ -1,10 +1,14 @@
-const defaultTimeoutInSeconds = 1800;
+const minTimeoutInSeconds = 30;
+const defaultTimeoutInSeconds = 60;
 /**
  * Input is in seconds.
  * Output is milliseconds.
  */
 export const getTimeout = (input: number | undefined) => {
     if (input && input > 0) {
+        if (input < minTimeoutInSeconds) {
+            return minTimeoutInSeconds * 1000;
+        }
         return input * 1000;
     }
     const userDefined = process.env.WEBINY_RECORD_LOCK_TIMEOUT

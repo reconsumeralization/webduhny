@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 import { allWorkspaces } from "../../packages/project-utils/workspaces";
 import { BasicPackages } from "./BasicPackages";
 import { LatestVersionPackages } from "./LatestVersionPackages";
@@ -62,7 +62,10 @@ export const updatePackages = async (params: IUpdatePackagesParams) => {
     await resolutions.addToPackageJson();
 
     const updatePackages = await UpPackages.create({
-        packages: updatable
+        packages: updatable,
+        options: {
+            useCaret: false
+        }
     });
 
     await updatePackages.process();

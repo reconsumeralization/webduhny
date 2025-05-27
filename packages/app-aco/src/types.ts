@@ -8,7 +8,7 @@ import {
 export { CmsIdentity } from "@webiny/app-headless-cms-common/types";
 export * from "~/graphql/records/types";
 export * from "~/table.types";
-export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public";
+export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
 
 export interface FolderPermission {
     target: `admin:${string}` | `team:${string}`;
@@ -68,16 +68,16 @@ export type LoadingActions =
     | "DELETE"
     | "MOVE";
 
-export enum LoadingActionsEnum {
-    init = "INIT",
-    list = "LIST",
-    listMore = "LIST_MORE",
-    get = "GET",
-    create = "CREATE",
-    update = "UPDATE",
-    delete = "DELETE",
-    move = "MOVE"
-}
+export const LoadingActionsEnum = {
+    init: "INIT",
+    list: "LIST",
+    listMore: "LIST_MORE",
+    get: "GET",
+    create: "CREATE",
+    update: "UPDATE",
+    delete: "DELETE",
+    move: "MOVE"
+};
 
 export interface AcoError {
     code: string;

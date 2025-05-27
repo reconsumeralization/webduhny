@@ -2,6 +2,7 @@ import { UnlockEntryUseCase } from "~/useCases/UnlockEntryUseCase/UnlockEntryUse
 import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
 import { WebinyError } from "@webiny/error";
 import { createIdentity } from "~tests/helpers/identity";
+import { createGetSecurity } from "~tests/mocks/createGetSecurity";
 
 describe("unlock entry use case", () => {
     it("should throw an error on unlocking an entry", async () => {
@@ -11,7 +12,10 @@ describe("unlock entry use case", () => {
             getLockRecordUseCase: {
                 execute: async () => {
                     return {
-                        lockedBy: createIdentity()
+                        lockedBy: createIdentity(),
+                        isExpired() {
+                            return false;
+                        }
                     };
                 }
             } as unknown as IGetLockRecordUseCase,
@@ -19,13 +23,14 @@ describe("unlock entry use case", () => {
                 throw new WebinyError("Testing error.", "TESTING_ERROR");
             },
             getIdentity: createIdentity,
-            hasFullAccess: async () => {
-                return true;
-            },
             kickOutCurrentUserUseCase: {
                 async execute(): Promise<void> {
                     return;
                 }
+            },
+            getSecurity: createGetSecurity(),
+            async hasRecordLockingAccess() {
+                return true;
             }
         });
 

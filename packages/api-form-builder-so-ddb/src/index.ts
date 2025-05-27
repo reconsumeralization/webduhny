@@ -14,6 +14,7 @@ import { createSettingsStorageOperations } from "~/operations/settings";
 import { createFormStorageOperations } from "~/operations/form";
 import { PluginsContainer } from "@webiny/plugins";
 import { FormDynamoDbFieldPlugin, FormSubmissionDynamoDbFieldPlugin } from "~/plugins";
+import { CompressorPlugin } from "@webiny/api";
 
 const reservedFields = ["PK", "SK", "index", "data", "TYPE", "__type", "GSI1_PK", "GSI1_SK"];
 
@@ -92,7 +93,8 @@ export const createFormBuilderStorageOperations: FormBuilderStorageOperationsFac
         beforeInit: async context => {
             const types: string[] = [
                 FormDynamoDbFieldPlugin.type,
-                FormSubmissionDynamoDbFieldPlugin.type
+                FormSubmissionDynamoDbFieldPlugin.type,
+                CompressorPlugin.type
             ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);

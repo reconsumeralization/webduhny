@@ -1,7 +1,6 @@
 import path from "path";
 import { ContextPlugin } from "@webiny/api";
 import elasticsearchClientContextPlugin, {
-    createGzipCompression,
     getElasticsearchOperators
 } from "@webiny/api-elasticsearch";
 import { logger } from "../logger";
@@ -73,9 +72,7 @@ export class ElasticsearchClientConfig {
         /**
          * Intercept DocumentClient operations and trigger dynamoToElastic function (almost like a DynamoDB Stream trigger)
          */
-        const gzipCompression = createGzipCompression();
         const simulationContext = new ContextPlugin<ElasticsearchContext>(async context => {
-            context.plugins.register(gzipCompression);
             await elasticsearchClientContext.apply(context);
         });
 
@@ -98,11 +95,7 @@ export class ElasticsearchClientConfig {
             }
         });
 
-        this.plugins = [
-            elasticsearchClientContext,
-            gzipCompression,
-            ...getElasticsearchOperators()
-        ];
+        this.plugins = [elasticsearchClientContext, ...getElasticsearchOperators()];
     }
 
     setOnBeforeEach(name: string, cb: OnBeforeEach) {

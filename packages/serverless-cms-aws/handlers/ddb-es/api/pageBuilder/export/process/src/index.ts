@@ -12,15 +12,11 @@ import exportProcessPlugins from "@webiny/api-page-builder-import-export/export/
 import dbPlugins from "@webiny/handler-db";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import dynamoDbPlugins from "@webiny/db-dynamodb/plugins";
-import elasticSearch, {
-    createElasticsearchClient,
-    createGzipCompression
-} from "@webiny/api-elasticsearch";
+import elasticSearch, { createElasticsearchClient } from "@webiny/api-elasticsearch";
 import { CmsParametersPlugin, createHeadlessCmsContext } from "@webiny/api-headless-cms";
 import { createStorageOperations as createHeadlessCmsStorageOperations } from "@webiny/api-headless-cms-ddb-es";
 import { createFileManagerContext } from "@webiny/api-file-manager";
 import { createFileManagerStorageOperations } from "@webiny/api-file-manager-ddb";
-import logsPlugins from "@webiny/handler-logs";
 import fileManagerS3 from "@webiny/api-file-manager-s3";
 import securityPlugins from "./security";
 
@@ -35,8 +31,6 @@ const debug = process.env.DEBUG === "true";
 export const handler = createHandler({
     plugins: [
         dynamoDbPlugins(),
-        logsPlugins(),
-        createGzipCompression(),
         elasticSearch(elasticsearchClient),
         dbPlugins({
             table: process.env.DB_TABLE,

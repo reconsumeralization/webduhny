@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import { Tooltip } from "@webiny/ui/Tooltip";
-import { useGetFolderLevelPermission, useListFolders } from "~/features";
+import { useGetFolderHierarchy, useGetFolderLevelPermission } from "~/features";
 import { CreateButton } from "./ButtonCreate";
-import { Empty } from "./Empty";
 import { Loader } from "./Loader";
 import { List } from "./List";
 import { Container } from "./styled";
@@ -29,7 +28,7 @@ export const FolderTree = ({
     onFolderClick,
     rootFolderLabel
 }: FolderTreeProps) => {
-    const { loading, folders } = useListFolders();
+    const { folders, getIsFolderLoading } = useGetFolderHierarchy();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
 
@@ -47,7 +46,7 @@ export const FolderTree = ({
     }, [folders]);
 
     const renderList = () => {
-        if (loading.INIT || loading.LIST) {
+        if (getIsFolderLoading()) {
             return <Loader />;
         }
 
@@ -66,26 +65,17 @@ export const FolderTree = ({
             }
         }
 
-        if (localFolders.length > 0) {
-            return (
-                <AcoWithConfig>
-                    <List
-                        folders={localFolders}
-                        onFolderClick={onFolderClick}
-                        focusedFolderId={focusedFolderId}
-                        hiddenFolderIds={hiddenFolderIds}
-                        enableActions={enableActions}
-                    />
-                    {enableCreate && createButton}
-                </AcoWithConfig>
-            );
-        }
-
         return (
-            <>
-                <Empty />
-                {createButton}
-            </>
+            <AcoWithConfig>
+                <List
+                    folders={localFolders}
+                    onFolderClick={onFolderClick}
+                    focusedFolderId={focusedFolderId}
+                    hiddenFolderIds={hiddenFolderIds}
+                    enableActions={enableActions}
+                />
+                {enableCreate && createButton}
+            </AcoWithConfig>
         );
     };
     return <Container>{renderList()}</Container>;

@@ -1,14 +1,10 @@
 import { IsEntryLockedUseCase } from "~/useCases/IsEntryLocked/IsEntryLockedUseCase";
 import { WebinyError } from "@webiny/error";
-import { IRecordLockingLockRecord } from "~/types";
+import type { IRecordLockingLockRecord } from "~/types";
 import { NotFoundError } from "@webiny/handler-graphql";
-import { isLockedFactory } from "~/utils/isLockedFactory";
 import { createIdentity } from "~tests/helpers/identity";
 
 describe("is entry locked use case", () => {
-    const timeout = 600000;
-    const isLocked = isLockedFactory(timeout);
-
     it("should return false if lock record is not found - object param", async () => {
         const useCase = new IsEntryLockedUseCase({
             getLockRecordUseCase: {
@@ -16,7 +12,6 @@ describe("is entry locked use case", () => {
                     throw new NotFoundError();
                 }
             },
-            isLocked,
             getIdentity: createIdentity
         });
 
@@ -34,11 +29,13 @@ describe("is entry locked use case", () => {
                 async execute() {
                     return {
                         lockedOn: new Date("2020-01-01"),
-                        lockedBy: createIdentity()
+                        lockedBy: createIdentity(),
+                        isExpired() {
+                            return false;
+                        }
                     } as unknown as IRecordLockingLockRecord;
                 }
             },
-            isLocked,
             getIdentity: createIdentity
         });
 
@@ -59,7 +56,6 @@ describe("is entry locked use case", () => {
                     throw new WebinyError("Testing error.", "TESTING_ERROR");
                 }
             },
-            isLocked,
             getIdentity: createIdentity
         });
 

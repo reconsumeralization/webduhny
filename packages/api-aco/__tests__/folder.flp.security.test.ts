@@ -1,5 +1,6 @@
 import { useGraphQlHandler } from "./utils/useGraphQlHandler";
 import { SecurityIdentity } from "@webiny/api-security/types";
+import { expectNotAuthorized } from "~tests/utils/expectNotAuthorized";
 
 const FOLDER_TYPE = "test-folders";
 
@@ -672,5 +673,130 @@ describe("Folder Level Permissions - Security Checks", () => {
                 }
             }
         });
+    });
+
+    it("as a `no-access` user, it should not be able to access the folder", async () => {
+        // Let's create a couple folder.
+        const folderA = await acoIdentityA
+            .createFolder({
+                data: {
+                    title: "Folder A",
+                    slug: "folder-a",
+                    type: FOLDER_TYPE
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        const folderB = await acoIdentityA
+            .createFolder({
+                data: {
+                    title: "Folder B",
+                    slug: "folder-b",
+                    type: FOLDER_TYPE
+                }
+            })
+            .then(([response]) => {
+                return response.data.aco.createFolder.data;
+            });
+
+        // Let's update it and assign the `no-access` permission to one of the users.
+        await expect(
+            acoIdentityA
+                .updateFolder({
+                    id: folderA.id,
+                    data: {
+                        permissions: [
+                            {
+                                target: `admin:${identityB.id}`,
+                                level: "no-access"
+                            }
+                        ]
+                    }
+                })
+                .then(([result]) => {
+                    return result.data.aco.updateFolder.data;
+                })
+        ).resolves.toMatchObject({
+            id: folderA.id,
+            parentId: null,
+            permissions: [
+                {
+                    inheritedFrom: "role:full-access",
+                    level: "owner",
+                    target: `admin:${identityA.id}`
+                },
+                {
+                    inheritedFrom: null,
+                    level: "no-access",
+                    target: `admin:${identityB.id}`
+                }
+            ]
+        });
+
+        // The owner user should be able to see the newly created folder, together with the `no-access` permission.
+        await expect(
+            acoIdentityA.getFolder({ id: folderA.id }).then(([result]) => {
+                return result.data.aco.getFolder.data;
+            })
+        ).resolves.toMatchObject({
+            id: folderA.id,
+            parentId: null,
+            permissions: [
+                {
+                    inheritedFrom: "role:full-access",
+                    level: "owner",
+                    target: `admin:${identityA.id}`
+                },
+                {
+                    inheritedFrom: null,
+                    level: "no-access",
+                    target: `admin:${identityB.id}`
+                }
+            ]
+        });
+
+        // The user with `no-access` level should not be able to get the folder with `no-access` permission.
+        await expectNotAuthorized(
+            acoIdentityB.getFolder({ id: folderA.id }).then(([result]) => {
+                return result.data.aco.getFolder;
+            })
+        );
+
+        // But should be able to get or list other folders.
+        await expect(
+            acoIdentityB.getFolder({ id: folderB.id }).then(([result]) => {
+                return result.data.aco.getFolder.data;
+            })
+        ).resolves.toMatchObject({
+            id: folderB.id,
+            parentId: null,
+            permissions: [
+                {
+                    inheritedFrom: "public",
+                    level: "public",
+                    target: `admin:${identityB.id}`
+                }
+            ]
+        });
+
+        await expect(
+            acoIdentityB.listFolders({ where: { type: FOLDER_TYPE } }).then(([result]) => {
+                return result.data.aco.listFolders.data;
+            })
+        ).resolves.toMatchObject([
+            {
+                id: folderB.id,
+                parentId: null,
+                permissions: [
+                    {
+                        inheritedFrom: "public",
+                        level: "public",
+                        target: `admin:${identityB.id}`
+                    }
+                ]
+            }
+        ]);
     });
 });

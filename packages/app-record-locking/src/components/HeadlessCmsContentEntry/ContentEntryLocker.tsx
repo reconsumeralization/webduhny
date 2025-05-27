@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecordLocking } from "~/hooks";
-import type {
-    IIsRecordLockedParams,
-    IRecordLockingIdentity,
-    IRecordLockingLockRecord
-} from "~/types";
+import type { IRecordLockingIdentity, IRecordLockingLockRecord } from "~/types";
 import type { IncomingGenericData } from "@webiny/app-websockets";
 import { useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
 import styled from "@emotion/styled";
 import { CmsContentEntry, CmsModel } from "@webiny/app-headless-cms/types";
+
+const autoUpdateTimeout = 20;
 
 const Bold = styled.span`
     font-weight: 600;
@@ -50,10 +48,11 @@ export const ContentEntryLocker = ({
     model,
     children
 }: IContentEntryLockerProps) => {
-    const { updateEntryLock, unlockEntry, fetchLockedEntryLockRecord, removeEntryLock } =
-        useRecordLocking();
+    const { updateEntryLock, removeEntryLock } = useRecordLocking();
     const websockets = useWebsockets();
     const { showDialog } = useDialogs();
+
+    const entryLockerTimeout = useRef<number | null>(null);
 
     useEffect(() => {
         if (!entry.id) {
@@ -61,21 +60,15 @@ export const ContentEntryLocker = ({
         }
         const { id: entryId } = parseIdentifier(entry.id);
 
-        const removeEntryLockCb = async () => {
-            const record: IIsRecordLockedParams = {
-                id: entryId,
-                $lockingType: model.modelId
-            };
-            removeEntryLock(record);
-            await unlockEntry(record);
-        };
-
         let onMessageSub = websockets.onMessage<IKickOutWebsocketsMessage>(
             `recordLocking.entry.kickOut.${entryId}`,
             async incoming => {
                 const { user } = incoming.data;
                 onDisablePrompt(true);
-                await removeEntryLockCb();
+                removeEntryLock({
+                    id: entryId,
+                    $lockingType: model.modelId
+                });
                 showDialog({
                     title: "Entry was forcefully unlocked!",
                     content: <ForceUnlocked user={user} />,
@@ -102,23 +95,44 @@ export const ContentEntryLocker = ({
             return;
         }
 
-        const record: IIsRecordLockedParams = {
-            id: entry.id,
-            $lockingType: model.modelId
-        };
-        updateEntryLock(record);
+        if (entryLockerTimeout.current) {
+            return;
+        }
 
-        return () => {
-            (async () => {
-                const result = await fetchLockedEntryLockRecord(record);
-                if (result) {
-                    return;
-                }
-                removeEntryLock(record);
-                await unlockEntry(record);
-            })();
+        const updateLock = async () => {
+            const result = await updateEntryLock({
+                id: entry.id,
+                $lockingType: model.modelId
+            });
+            if (result.error) {
+                showDialog({
+                    title: "There was an error while updating the entry lock.",
+                    content: result.error.message,
+                    acceptLabel: "Ok",
+                    onClose: undefined,
+                    cancelLabel: undefined
+                });
+                onEntryUnlocked();
+                return;
+            }
+            createTimeout();
         };
-    }, [entry.id]);
+
+        const createTimeout = () => {
+            entryLockerTimeout.current = window.setTimeout(() => {
+                updateLock();
+            }, autoUpdateTimeout * 1000);
+        };
+
+        updateLock();
+        return () => {
+            if (!entryLockerTimeout.current) {
+                return;
+            }
+            clearTimeout(entryLockerTimeout.current);
+            entryLockerTimeout.current = null;
+        };
+    }, [entry.id, onEntryUnlocked]);
 
     return <>{children}</>;
 };

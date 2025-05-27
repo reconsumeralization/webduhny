@@ -40,11 +40,11 @@ export const ApiGraphql = createAppModule({
             name: "api-lambda-role",
             policy: policy.output
         });
-        policy.config.policy;
 
         const graphql = app.addResource(aws.lambda.Function, {
             name: "graphql",
             config: {
+                description: "Webiny's GraphQL APIs",
                 runtime: LAMBDA_RUNTIME,
                 handler: "handler.handler",
                 role: role.output.arn,
@@ -81,7 +81,7 @@ export const ApiGraphql = createAppModule({
                     .apply(key => key || "SK"),
                 item: pulumi.interpolate`{
               "PK": {"S": "APW#SETTINGS"},
-              "SK": {"S": "${app.params.run.variant || "default"}"},
+              "SK": {"S": "default"},
               "mainGraphqlFunctionArn": {"S": "${graphql.output.arn}"},
               "eventRuleName": {"S": "${params.apwSchedulerEventRule.name}"},
               "eventTargetId": {"S": "${params.apwSchedulerEventTarget.targetId}"}

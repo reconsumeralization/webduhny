@@ -1,4 +1,3 @@
-export * from "./Decompressor";
 export * from "./eventHandler";
 export * from "./execute";
 export * from "./executeWithRetry";
