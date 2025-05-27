@@ -27,10 +27,6 @@ import carousel from "@webiny/app-page-builder/render/plugins/elements/carousel"
 import carouselElement from "@webiny/app-page-builder/render/plugins/elements/carouselElement";
 // Page settings
 import pageSettings from "@webiny/app-page-builder/render/plugins/pageSettings";
-import {
-    guildPageSettingsBrandFields,
-    guildPageSettingsBrandRenderWatcher,
-} from 'pages-brand-settings'; // GUILD
 
 // Element settings
 import align from "@webiny/app-page-builder/render/plugins/elementSettings/align";
@@ -78,8 +74,6 @@ export default [
     carouselElement(),
     // Page settings
     pageSettings(),
-    guildPageSettingsBrandFields,
-    guildPageSettingsBrandRenderWatcher,
     // Element settings
     align,
     animation,
