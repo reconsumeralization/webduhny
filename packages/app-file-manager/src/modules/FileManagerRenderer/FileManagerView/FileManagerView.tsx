@@ -39,6 +39,9 @@ import { Filters } from "./components/Filters";
 import { TagsList } from "~/modules/FileManagerRenderer/FileManagerView/components/TagsList";
 import { ListFilesSort, ListFilesSortItem } from "~/modules/FileManagerApiProvider/graphql";
 import { TableItem } from "~/types";
+import { Heading, Icon } from "@webiny/admin-ui";
+import { ReactComponent as FilterIcon } from "@webiny/icons/filter_list.svg";
+import { ReactComponent as CloseFilterIcon } from "@webiny/icons/filter_list_off.svg";
 
 const t = i18n.ns("app-admin/file-manager/file-manager-view");
 
@@ -302,6 +305,14 @@ const FileManagerView = () => {
         [view.updateFile]
     );
 
+    const toggleFilters = () => {
+        if (view.showingFilters) {
+            view.hideFilters();
+        } else {
+            view.showFilters();
+        }
+    };
+
     return (
         <>
             <Files
@@ -323,32 +334,8 @@ const FileManagerView = () => {
                 {({ getDropZoneProps, browseFiles }) => (
                     <OverlayLayout
                         onExited={view.onClose}
-                        barLeft={<Title title={view.listTitle} />}
+                        barLeft={<Heading level={5}>{"File library"}</Heading>}
                         barMiddle={<SearchWidget />}
-                        barRight={
-                            <>
-                                {view.hasOnSelectCallback && view.selected.length > 0 ? (
-                                    <ButtonPrimary
-                                        flat={true}
-                                        small={true}
-                                        onClick={() => view.onChange(view.selected)}
-                                    >
-                                        {t`Select`} {view.multiple && `(${view.selected.length})`}
-                                    </ButtonPrimary>
-                                ) : (
-                                    renderUploadFileAction({ browseFiles } as BrowseFilesHandler)
-                                )}
-                                <ButtonSecondary
-                                    data-testid={"file-manager.create-folder-button"}
-                                    onClick={onCreateFolder}
-                                    style={{ margin: "0 8px" }}
-                                >
-                                    <ButtonIcon icon={<AddIcon />} />
-                                    {t`New Folder`}
-                                </ButtonSecondary>
-                                <LayoutSwitch />
-                            </>
-                        }
                     >
                         <>
                             <FileDetails
@@ -375,6 +362,43 @@ const FileManagerView = () => {
                                     </LeftSidebar>
                                 </LeftPanel>
                                 <RightPanel span={10}>
+                                    <>
+                                        {view.hasOnSelectCallback && view.selected.length > 0 ? (
+                                            <ButtonPrimary
+                                                flat={true}
+                                                small={true}
+                                                onClick={() => view.onChange(view.selected)}
+                                            >
+                                                {t`Select`}{" "}
+                                                {view.multiple && `(${view.selected.length})`}
+                                            </ButtonPrimary>
+                                        ) : (
+                                            renderUploadFileAction({
+                                                browseFiles
+                                            } as BrowseFilesHandler)
+                                        )}
+                                        <ButtonSecondary
+                                            data-testid={"file-manager.create-folder-button"}
+                                            onClick={onCreateFolder}
+                                            style={{ margin: "0 8px" }}
+                                        >
+                                            <ButtonIcon icon={<AddIcon />} />
+                                            {t`New Folder`}
+                                        </ButtonSecondary>
+                                        <LayoutSwitch />
+                                        <Icon
+                                            label={"Toggle filters"}
+                                            icon={
+                                                view.showingFilters ? (
+                                                    <CloseFilterIcon />
+                                                ) : (
+                                                    <FilterIcon />
+                                                )
+                                            }
+                                            onClick={toggleFilters}
+                                        />
+                                    </>
+
                                     <FileListWrapper
                                         {...getDropZoneProps({
                                             onDragOver: () => view.setDragging(true),
