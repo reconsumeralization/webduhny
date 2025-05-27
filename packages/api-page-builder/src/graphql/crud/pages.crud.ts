@@ -474,7 +474,7 @@ export const createPageCrud = (params: CreatePageCrudParams): PagesCrud => {
 
             const id = createIdentifier({
                 id: pageId,
-                version: 1
+                version
             });
 
             const rawSettings = input.settings || {

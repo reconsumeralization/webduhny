@@ -25,8 +25,8 @@ export class Migrator extends AbstractMigrator {
             // TenancyMigrator
             // SecurityMigrator,
             // FmMigrator,
-            // PbMigrator,
-            CmsMigrator
+            PbMigrator,
+            // CmsMigrator
         ];
 
         for (const MigratorClass of migrators) {

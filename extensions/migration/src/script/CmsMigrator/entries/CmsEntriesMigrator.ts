@@ -84,69 +84,72 @@ export class CmsEntriesMigrator {
                                 error
                             );
                         }
+
+                        continue;
+                    }
+
+                    // Does a published revision exist?
+                    const publishedRevision = sourcePublishedEntryIdsList.find(
+                        (item: Record<string, any>) => item.entryId === sourceEntry.entryId
+                    );
+
+                    if (!publishedRevision) {
+                        const variables = {
+                            data: this.fromSourceToTargetEntryData(sourceEntry)
+                        };
+                        const res = await targetGqlManageClient.run(CREATE_ENTRY, variables);
+
+                        const { error } = res.content;
+                        if (error) {
+                            console.log(
+                                `Failed to migrate entry "${sourceEntry.title}". Error:`,
+                                error
+                            );
+                        }
                     } else {
-                        // Does a published revision exist?
-                        const publishedRevision = sourcePublishedEntryIdsList.find(
-                            (item: Record<string, any>) => item.entryId === sourceEntry.entryId
+                        // If a published revision exists, then we must first create it.
+                        // And then we can create the latest revision as the 2nd revision.
+                        const sourcePublishedRevision = await sourceGqlManageClient
+                            .run(GET_ENTRY, {
+                                revision: publishedRevision.id
+                            })
+                            .then(res => res.content);
+
+                        const publishedRevisionData = this.fromSourceToTargetEntryData(
+                            sourcePublishedRevision.data
+                        );
+                        const publishedEntryVariables = { data: publishedRevisionData };
+                        const publishedRes = await targetGqlManageClient
+                            .run(CREATE_ENTRY, publishedEntryVariables)
+                            .then(res => res.content);
+
+                        const { error: publishedError } = publishedRes;
+                        if (publishedError) {
+                            console.log(
+                                `Failed to migrate entry "${sourceEntry.title}". Error:`,
+                                publishedError
+                            );
+                            continue;
+                        }
+
+                        // Now we can create the latest revision.
+                        const latestRevisionData = this.fromSourceToTargetEntryData(sourceEntry);
+
+                        const latestEntryVariables = {
+                            revision: publishedRes.data.id,
+                            data: latestRevisionData
+                        };
+                        const latestRes = await targetGqlManageClient.run(
+                            CREATE_ENTRY_FROM,
+                            latestEntryVariables
                         );
 
-                        if (!publishedRevision) {
-                            const variables = {
-                                data: this.fromSourceToTargetEntryData(sourceEntry)
-                            };
-                            const res = await targetGqlManageClient.run(CREATE_ENTRY, variables);
-
-                            const { error } = res.content;
-                            if (error) {
-                                console.log(
-                                    `Failed to migrate entry "${sourceEntry.title}". Error:`,
-                                    error
-                                );
-                            }
-                        } else {
-                            // If a published revision exists, then we must first create it.
-                            // And then we can create the latest revision as the 2nd revision.
-                            const sourcePublishedRevision = await sourceGqlManageClient
-                                .run(GET_ENTRY, {
-                                    revision: publishedRevision.id
-                                })
-                                .then(res => res.content);
-
-                            const publishedRevisionData = this.fromSourceToTargetEntryData(
-                                sourcePublishedRevision.data
+                        const { error: latestError } = latestRes.content;
+                        if (latestError) {
+                            console.log(
+                                `Failed to migrate entry "${sourceEntry.title}". Error:`,
+                                latestError
                             );
-                            const publishedEntryVariables = { data: publishedRevisionData };
-                            const publishedRes = await targetGqlManageClient.run(
-                                CREATE_ENTRY,
-                                publishedEntryVariables
-                            ).then(res => res.content);
-
-                            const { error: publishedError } = publishedRes;
-                            if (publishedError) {
-                                console.log(
-                                    `Failed to migrate entry "${sourceEntry.title}". Error:`,
-                                    publishedError
-                                );
-                                continue;
-                            }
-
-                            // Now we can create the latest revision.
-                            const latestRevisionData =
-                                this.fromSourceToTargetEntryData(sourceEntry);
-
-                            const latestEntryVariables = { revision: publishedRes.data.id, data: latestRevisionData };
-                            const latestRes = await targetGqlManageClient.run(
-                                CREATE_ENTRY_FROM,
-                                latestEntryVariables
-                            );
-
-                            const { error: latestError } = latestRes.content;
-                            if (latestError) {
-                                console.log(
-                                    `Failed to migrate entry "${sourceEntry.title}". Error:`,
-                                    latestError
-                                );
-                            }
                         }
                     }
                 }

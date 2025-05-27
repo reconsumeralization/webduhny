@@ -40,10 +40,10 @@ export class CmsMigrator extends AbstractMigrator {
         const cmsEntriesMigrator = new CmsEntriesMigrator(this);
 
         console.log("Migrating model groups...");
-        // await cmsGroupsMigrator.run();
+        await cmsGroupsMigrator.run();
 
         console.log("Migrating models...");
-        // await cmsModelsMigrator.run();
+        await cmsModelsMigrator.run();
 
         console.log("Migrating entries...");
         await cmsEntriesMigrator.run();
