@@ -21,6 +21,16 @@ export default new GraphQLSchemaPlugin<Context>({
             error: TenancyError
         }
 
+        input TmFileInput {
+            id: ID!
+            src: String!
+        }
+
+        type TmFile {
+            id: ID!
+            src: String!
+        }
+
         input GetTenantWhereInput {
             id: ID!
         }
@@ -37,6 +47,7 @@ export default new GraphQLSchemaPlugin<Context>({
             id: ID
             name: String!
             description: String!
+            image: JSON
             tags: [String!]!
             settings: TenantSettingsInput!
         }
@@ -44,6 +55,7 @@ export default new GraphQLSchemaPlugin<Context>({
         input UpdateTenantInput {
             name: String!
             description: String!
+            image: JSON
             tags: [String!]!
             settings: TenantSettingsInput!
         }

@@ -43,10 +43,10 @@ export const TrashBinConfigs = () => {
                 />
                 <Browser.Table.Column
                     name={"actions"}
-                    header={" "}
+                    header={""}
                     cell={<CellActions />}
-                    size={80}
-                    className={"rmwc-data-table__cell--align-end"}
+                    size={56}
+                    className={"wby-text-right"}
                     hideable={false}
                     resizable={false}
                 />

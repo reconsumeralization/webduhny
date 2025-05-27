@@ -13,12 +13,14 @@ export const LOGIN_MT = gql`
                             id
                             name
                             description
+                            image
                             parent
                         }
                         defaultTenant {
                             id
                             name
                             description
+                            image
                             parent
                         }
                         permissions

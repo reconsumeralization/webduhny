@@ -21,7 +21,7 @@ export const Wrapper = styled("div")`
 `;
 
 export const SidebarContainer = styled("div")`
-    height: calc(100vh - 64px);
+    height: calc(100vh - 45px);
     padding: 10px 10px 0;
     overflow-y: scroll;
     background: var(--mdc-theme-surface);

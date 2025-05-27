@@ -1,5 +1,5 @@
 import React from "react";
-import { LocationAction } from "./RestoredItems.styled";
+import { Text } from "@webiny/admin-ui";
 
 export interface RestoreItemsReportMessageProps {
     onLocationClick: () => void;
@@ -7,12 +7,12 @@ export interface RestoreItemsReportMessageProps {
 
 export const RestoreItemsReportMessage = (props: RestoreItemsReportMessageProps) => {
     return (
-        <>
+        <div className={"wby-cursor-pointer"} onClick={() => props.onLocationClick()}>
             Item successfully restored (
-            <LocationAction onClick={() => props.onLocationClick()}>
+            <Text size={"sm"} className={"wby-text-accent-primary wby-underline"}>
                 {"see location"}
-            </LocationAction>
+            </Text>
             ).
-        </>
+        </div>
     );
 };

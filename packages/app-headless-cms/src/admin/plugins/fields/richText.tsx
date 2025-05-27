@@ -1,9 +1,8 @@
 import React from "react";
 import { i18n } from "@webiny/app/i18n";
 import { CmsModelFieldTypePlugin } from "~/types";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ReactComponent as NotesIcon } from "@material-design-icons/svg/outlined/text_snippet.svg";
-import { Input } from "@webiny/ui/Input";
+import { ReactComponent as NotesIcon } from "@webiny/icons/text_snippet.svg";
+import { Grid, Input, Label } from "@webiny/admin-ui";
 import { Bind } from "@webiny/form";
 
 const t = i18n.ns("app-headless-cms/admin/fields");
@@ -31,14 +30,16 @@ const plugin: CmsModelFieldTypePlugin = {
         renderSettings() {
             return (
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Bind name={"placeholderText"}>
                             <Input
-                                label={t`Placeholder text`}
-                                description={t`Placeholder text (optional)`}
+                                label={
+                                    <Label text={t`Placeholder text`} description={t`(optional)`} />
+                                }
+                                size={"lg"}
                             />
                         </Bind>
-                    </Cell>
+                    </Grid.Column>
                 </Grid>
             );
         }

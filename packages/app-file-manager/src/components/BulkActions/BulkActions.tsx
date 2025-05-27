@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ReactComponent as Close } from "@material-design-icons/svg/outlined/close.svg";
+import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Buttons } from "@webiny/app-admin";
 import { IconButton } from "@webiny/ui/Button";

@@ -1,17 +1,18 @@
 import React, { useMemo } from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { observer } from "mobx-react-lite";
 import { useSnackbar } from "@webiny/app-admin";
 import { TrashBinListConfig } from "~/Presentation/configs";
 import { useTrashBin } from "~/Presentation/hooks";
 import { getEntriesLabel } from "../BulkActions";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const BulkActionsDeleteItems = observer(() => {
     const { deleteItem, deleteBulkAction } = useTrashBin();
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = TrashBinListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog } = useDialog();
 
@@ -64,11 +65,14 @@ export const BulkActionsDeleteItems = observer(() => {
         });
 
     return (
-        <IconButton
-            icon={<DeleteIcon />}
-            onAction={openDeleteEntriesDialog}
-            label={`Delete ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Delete ${entriesLabel}`}
+            trigger={
+                <ButtonDefault icon={<DeleteIcon />} onAction={openDeleteEntriesDialog} size={"sm"}>
+                    {"Delete"}
+                </ButtonDefault>
+            }
         />
     );
 });

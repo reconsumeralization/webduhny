@@ -1,22 +1,6 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { Droppable, IsVisibleCallable, OnDropCallable } from "../Droppable";
-
-const InnerDiv = styled("div")({
-    height: 15,
-    width: "100%",
-    zIndex: 3,
-    borderRadius: 0,
-    boxSizing: "border-box",
-    display: "none",
-    border: "1px dashed black",
-    borderSpacing: 5
-});
-
-const BackgroundColorDiv = styled("div")({
-    width: "100%",
-    height: "100%"
-});
+import { cn } from "@webiny/admin-ui";
 
 interface OuterDivProps {
     isOver: boolean;
@@ -24,32 +8,28 @@ interface OuterDivProps {
     last: boolean;
 }
 
-const OuterDiv = styled("div")(
-    {
-        margin: 0,
-        padding: 0,
-        width: "calc(100% + 2px)",
-        zIndex: 10,
-        backgroundColor: "transparent",
-        position: "absolute",
-        display: "flex",
-        justifyContent: "center"
-    },
-    (props: OuterDivProps) => ({
-        [props.last ? "bottom" : "top"]: -15,
-        // @ts-expect-error
-        [InnerDiv]: {
-            borderColor: props.isOver ? "var(--mdc-theme-primary)" : "var(--mdc-theme-secondary)",
-            display: props.isDragging ? "block" : "none",
-            // @ts-expect-error
-            [BackgroundColorDiv]: {
-                opacity: 0.5,
-                backgroundColor: props.isOver
-                    ? "var(--mdc-theme-primary)"
-                    : "var(--mdc-theme-secondary)"
-            }
-        }
-    })
+const OuterDiv = ({ isOver, isDragging, last }: OuterDivProps) => (
+    <div
+        className={cn(
+            "wby-absolute wby-w-full wby-z-10 wby-bg-transparent wby-flex wby-justify-center",
+            last ? "-wby-bottom-md" : "-wby-top-md"
+        )}
+    >
+        <div
+            className={cn(
+                "wby-h-md wby-w-full wby-z-3 wby-border-dashed wby-border-sm wby-hidden",
+                isOver ? "wby-border-accent-default" : "wby-border-success-default",
+                isDragging && "wby-block"
+            )}
+        >
+            <div
+                className={cn(
+                    "wby-w-full wby-h-full wby-opacity-50",
+                    isOver ? "wby-bg-primary-muted" : "wby-bg-success-muted"
+                )}
+            />
+        </div>
+    </div>
 );
 
 export interface HorizontalProps {
@@ -65,7 +45,7 @@ export const Horizontal = ({ last, onDrop, isVisible }: HorizontalProps) => {
                 <div
                     ref={drop}
                     style={{
-                        height: "25px",
+                        height: "16px",
                         width: "100%",
                         position: "absolute",
                         [last ? "bottom" : "top"]: 0,
@@ -74,11 +54,7 @@ export const Horizontal = ({ last, onDrop, isVisible }: HorizontalProps) => {
                     }}
                     data-testid={last ? "fb.editor.dropzone.horizontal-last" : ""}
                 >
-                    <OuterDiv isOver={isOver} isDragging={isDragging} last={!!last}>
-                        <InnerDiv>
-                            <BackgroundColorDiv />
-                        </InnerDiv>
-                    </OuterDiv>
+                    <OuterDiv isOver={isOver} isDragging={isDragging} last={!!last} />
                 </div>
             )}
         </Droppable>

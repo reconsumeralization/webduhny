@@ -5,14 +5,9 @@ import type { IncomingGenericData } from "@webiny/app-websockets";
 import { useWebsockets } from "@webiny/app-websockets";
 import { parseIdentifier } from "@webiny/utils";
 import { useDialogs } from "@webiny/app-admin";
-import styled from "@emotion/styled";
 import { CmsContentEntry, CmsModel } from "@webiny/app-headless-cms/types";
 
 const autoUpdateTimeout = 20;
-
-const Bold = styled.span`
-    font-weight: 600;
-`;
 
 export interface IContentEntryLockerProps {
     entry: CmsContentEntry;
@@ -35,8 +30,8 @@ const ForceUnlocked = ({ user }: IForceUnlockedProps) => {
     return (
         <>
             The entry you were editing was forcefully unlocked by{" "}
-            <Bold>{user.displayName || "Unknown user"}</Bold>. Unfortunately, this means you lost
-            the unsaved changes.
+            <strong>{user.displayName || "Unknown user"}</strong>. Unfortunately, this means you
+            lost the unsaved changes.
         </>
     );
 };

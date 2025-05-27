@@ -41,14 +41,16 @@ export class EntryRepository {
         });
     }
 
-    async getEntryById(modelId: string, id: string) {
-        const entryInCache = this.entries.find(entry => entry.id === id);
+    async getEntryById(modelId: string, entryId: string) {
+        const entryInCache = this.entries.find(entry => entry.entryId === entryId);
 
         if (entryInCache) {
             return entryInCache;
         }
 
-        const response = await this.runWithLoading<EntryReference>(this.gateway.get(modelId, id));
+        const response = await this.runWithLoading<EntryReference>(
+            this.gateway.get(modelId, entryId)
+        );
 
         if (!response) {
             return;

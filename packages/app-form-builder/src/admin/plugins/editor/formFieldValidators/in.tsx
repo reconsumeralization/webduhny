@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
+import { Grid } from "@webiny/admin-ui";
 import { Tags } from "@webiny/ui/Tags";
 import { validation } from "@webiny/validation";
 import { FbBuilderFormFieldValidatorPlugin } from "~/types";
@@ -15,16 +15,11 @@ const plugin: FbBuilderFormFieldValidatorPlugin = {
         defaultMessage: "Value is not allowed.",
         renderSettings({ Bind }) {
             return (
-                <Grid>
-                    <Cell span={12}>
-                        <Bind name={"settings.values"} validators={validation.create("required")}>
-                            <Tags
-                                label={"Allowed values"}
-                                description={"Hit ENTER to add values"}
-                            />
-                        </Bind>
-                    </Cell>
-                </Grid>
+                <Grid.Column span={12}>
+                    <Bind name={"settings.values"} validators={validation.create("required")}>
+                        <Tags label={"Allowed values"} description={"Hit ENTER to add values"} />
+                    </Bind>
+                </Grid.Column>
             );
         }
     }

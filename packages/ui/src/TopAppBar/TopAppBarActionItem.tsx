@@ -1,13 +1,12 @@
 import React from "react";
-import {
-    TopAppBarActionItem as RmwcTopAppBarActionItem,
-    TopAppBarActionItemProps as RmwcTopAppBarActionItemProps
-} from "@rmwc/top-app-bar";
 
-export type TopAppBarActionItemProps = Omit<RmwcTopAppBarActionItemProps, "onChange">;
+export type TopAppBarActionItemProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">;
 
-const TopAppBarActionItem = (props: TopAppBarActionItemProps) => {
-    return <RmwcTopAppBarActionItem {...props} />;
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ */
+const TopAppBarActionItem = ({ children, ...props }: TopAppBarActionItemProps) => {
+    return <div {...props}>{children}</div>;
 };
 
 export { TopAppBarActionItem };

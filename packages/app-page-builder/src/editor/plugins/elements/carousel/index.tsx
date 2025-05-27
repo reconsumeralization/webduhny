@@ -2,7 +2,7 @@ import React from "react";
 import kebabCase from "lodash/kebabCase";
 import styled from "@emotion/styled";
 import { createElement } from "~/editor/helpers";
-import { ReactComponent as CarouselIcon } from "@material-design-icons/svg/round/view_carousel.svg";
+import { ReactComponent as CarouselIcon } from "@webiny/icons/view_carousel.svg";
 import { createInitialPerDeviceSettingValue } from "~/editor/plugins/elementSettings/elementSettingsUtils";
 import { PbEditorPageElementPlugin, PbEditorElementPluginArgs, DisplayMode } from "~/types";
 import Carousel from "./Carousel";

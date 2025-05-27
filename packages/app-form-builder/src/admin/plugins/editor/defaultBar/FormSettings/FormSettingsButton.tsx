@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { IconButton } from "@webiny/ui/Button";
+import { IconButton } from "@webiny/admin-ui";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
 import FormSettings from "./FormSettings";
-
-import { ReactComponent as SettingsIcon } from "./../icons/settings.svg";
 
 const FormSettingsButton = () => {
     const [opened, setOpened] = useState<boolean>(false);
@@ -11,7 +10,7 @@ const FormSettingsButton = () => {
 
     return (
         <>
-            <IconButton onClick={open} icon={<SettingsIcon />} />
+            <IconButton variant={"ghost"} onClick={open} icon={<SettingsIcon />} />
             {opened && <FormSettings onExited={close} />}
         </>
     );

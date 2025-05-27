@@ -1,17 +1,23 @@
 import React from "react";
-import SearchUI from "@webiny/app-admin/components/SearchUI";
-
-import { SearchWrapper } from "./styled";
+import { Icon, Input } from "@webiny/admin-ui";
+import { ReactComponent as SearchIcon } from "@webiny/icons/search.svg";
 
 interface SearchProps {
     value: string;
     onChange: (value: string) => void;
+    placeholder?: string;
 }
 
-export const Search = ({ value, onChange }: SearchProps) => {
+export const Search = ({ value, onChange, placeholder }: SearchProps) => {
     return (
-        <SearchWrapper>
-            <SearchUI value={value} onChange={onChange} />
-        </SearchWrapper>
+        <Input
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            size={"md"}
+            variant={"ghost"}
+            startIcon={<Icon label={"Search"} icon={<SearchIcon />} />}
+            className={"wby-w-full"}
+        />
     );
 };

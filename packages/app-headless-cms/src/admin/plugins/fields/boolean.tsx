@@ -1,10 +1,9 @@
 import React from "react";
-import { ReactComponent as BooleanIcon } from "@material-design-icons/svg/outlined/toggle_on.svg";
+import { ReactComponent as BooleanIcon } from "@webiny/icons/toggle_on.svg";
 import { CmsModelFieldTypePlugin } from "~/types";
 import { i18n } from "@webiny/app/i18n";
-import { Cell, Grid } from "@webiny/ui/Grid";
 import { Bind } from "@webiny/form";
-import { Radio, RadioGroup } from "@webiny/ui/Radio";
+import { Grid, RadioGroup } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields");
 
@@ -17,32 +16,17 @@ const Options = ({ onChange, value: initialValue }: OptionsProps) => {
     const value = initialValue === true || initialValue === "true";
 
     return (
-        <RadioGroup label={"Default value"}>
-            {() => {
-                return (
-                    <>
-                        <div>
-                            <Radio
-                                label="True"
-                                value={value}
-                                onChange={() => {
-                                    onChange(true);
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Radio
-                                label="False"
-                                value={!value}
-                                onChange={() => {
-                                    onChange(false);
-                                }}
-                            />
-                        </div>
-                    </>
-                );
+        <RadioGroup
+            label={"Default value"}
+            value={String(value)}
+            onChange={value => {
+                onChange(value === "true");
             }}
-        </RadioGroup>
+            items={[
+                { value: "true", label: "True" },
+                { value: "false", label: "False" }
+            ]}
+        />
     );
 };
 
@@ -72,13 +56,13 @@ const plugin: CmsModelFieldTypePlugin = {
         renderSettings() {
             return (
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Bind name={"settings.defaultValue"}>
                             {bind => {
                                 return <Options onChange={bind.onChange} value={bind.value} />;
                             }}
                         </Bind>
-                    </Cell>
+                    </Grid.Column>
                 </Grid>
             );
         }

@@ -1,8 +1,7 @@
 import React from "react";
 import get from "lodash/get";
-import { Typography } from "@webiny/ui/Typography";
+import { Text, Scrollbar } from "@webiny/admin-ui";
 import { i18n } from "@webiny/app/i18n";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { ShowDetails } from "../styledComponents";
 import { ListBlockImportExportSubTasksResponse } from "~/admin/graphql/blockImportExport.gql";
 import { PageBuilderImportExportSubTask } from "~/types";
@@ -16,7 +15,7 @@ interface ImportBlocksDetailsProps {
 
 const ImportBlocksDetails = ({ loading, result }: ImportBlocksDetailsProps) => {
     if (loading || !result) {
-        return <Typography use={"caption"}> {t`Loading details...`} </Typography>;
+        return <Text size={"sm"}>{t`Loading details...`}</Text>;
     }
     const subtasks: PageBuilderImportExportSubTask[] = get(
         result,
@@ -31,13 +30,13 @@ const ImportBlocksDetails = ({ loading, result }: ImportBlocksDetailsProps) => {
                         height: 160
                     }}
                 >
-                    <ShowDetails.Label use={"body2"}>{t`Blocks imported:`}</ShowDetails.Label>
+                    <ShowDetails.Label size={"sm"}>{t`Blocks imported:`}</ShowDetails.Label>
                     <ShowDetails.List data-testid={"import-blocks-dialog.show-detail-list"}>
                         {subtasks.map(subtask => {
                             const { block } = subtask.data;
                             return (
                                 <ShowDetails.ListItem key={block.id}>
-                                    <Typography use={"body2"}>{block.name}</Typography>
+                                    <Text size={"sm"}>{block.name}</Text>
                                 </ShowDetails.ListItem>
                             );
                         })}

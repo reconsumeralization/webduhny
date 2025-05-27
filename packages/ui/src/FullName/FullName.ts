@@ -5,7 +5,12 @@ type Props = {
     };
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please implement your own `FullName` component or reach out on Slack.
+ */
 const FullName = (props: Props) => {
+    console.warn("The `FullName` component is deprecated and will be removed in future releases.");
     const { data } = props;
 
     if (!data) {

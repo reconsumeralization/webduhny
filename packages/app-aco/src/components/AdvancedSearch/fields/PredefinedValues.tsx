@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Bind } from "@webiny/form";
-import { Select } from "@webiny/ui/Select";
 import { useInputField } from "~/components";
+import { Select } from "@webiny/admin-ui";
 
 export const PredefinedValues = () => {
     const { name, field } = useInputField();
@@ -19,6 +19,7 @@ export const PredefinedValues = () => {
                     value={value}
                     onChange={data => onChange(data)}
                     validation={validation}
+                    size={"lg"}
                 />
             )}
         </Bind>

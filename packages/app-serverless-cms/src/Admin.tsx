@@ -13,7 +13,7 @@ import { I18NContent } from "@webiny/app-i18n-content";
 import { PageBuilder } from "@webiny/app-page-builder";
 import { FormBuilder } from "@webiny/app-form-builder";
 import { HeadlessCMS } from "@webiny/app-headless-cms";
-import { RMWC } from "@webiny/app-admin-rmwc";
+import { AdminUI } from "@webiny/app-admin-ui";
 import { FileManager } from "@webiny/app-file-manager/app";
 import { GraphQLPlayground } from "@webiny/app-graphql-playground";
 import { AccessManagement } from "@webiny/app-security-access-management";
@@ -47,7 +47,7 @@ const App = (props: AdminProps) => {
 
     return (
         <BaseAdmin createApolloClient={createApolloClient}>
-            <RMWC />
+            <AdminUI />
             <Tenancy />
             <Security />
             <AccessManagement />

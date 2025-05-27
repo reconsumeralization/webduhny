@@ -1,6 +1,7 @@
 import React from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { makeDecoratable, useConfirmationDialog } from "@webiny/app-admin";
+import { Accordion, Tooltip } from "@webiny/admin-ui";
 import { AddTemplateButton } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";
 import { TemplateProvider } from "./TemplateProvider";
@@ -18,7 +19,6 @@ import {
     ParentValueIndexProvider,
     ModelFieldProvider
 } from "~/admin/components/ModelFieldProvider";
-import { makeDecoratable, useConfirmationDialog } from "@webiny/app-admin";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -51,25 +51,24 @@ export const SingleValueItemContainer = makeDecoratable(
     (props: SingleValueItemContainerProps) => {
         const { template, actions, children } = props;
         return (
-            <AccordionItem
+            <Accordion.Item
                 title={template.name}
                 description={template.description}
                 icon={<TemplateIcon icon={template.icon} />}
                 open={true}
                 interactive={false}
                 actions={
-                    <AccordionItem.Actions>
+                    <>
                         {actions ?? null}
-                        <AccordionItem.Action
-                            icon={<DeleteIcon />}
+                        <Accordion.Item.Action
+                            icon={<Tooltip trigger={<DeleteIcon />} content={"Delete"} />}
                             onClick={props.onDelete}
-                            tooltip={"Delete"}
                         />
-                    </AccordionItem.Actions>
+                    </>
                 }
             >
                 {children}
-            </AccordionItem>
+            </Accordion.Item>
         );
     }
 );

@@ -1,8 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { Icon } from "@webiny/ui/Icon";
-import { ListItemGraphic } from "@webiny/ui/List";
-import { MenuItem } from "@webiny/ui/Menu";
-import { Link } from "@webiny/react-router";
+import { DropdownMenu } from "@webiny/admin-ui";
 
 export interface OptionsMenuLinkProps {
     disabled?: boolean;
@@ -11,38 +8,18 @@ export interface OptionsMenuLinkProps {
     to: string;
     target?: HTMLAttributeAnchorTarget;
     ["data-testid"]?: string;
+    className?: string;
 }
 
-const MenuLinkItem = (props: Omit<OptionsMenuLinkProps, "to" | "target">) => {
-    return (
-        <MenuItem disabled={props.disabled ?? false} data-testid={props["data-testid"]}>
-            <ListItemGraphic>
-                <Icon icon={props.icon} />
-            </ListItemGraphic>
-            {props.label}
-        </MenuItem>
-    );
-};
-
 export const OptionsMenuLink = (props: OptionsMenuLinkProps) => {
-    if (props.disabled) {
-        return (
-            <MenuLinkItem
-                icon={props.icon}
-                label={props.label}
-                disabled={props.disabled}
-                data-testid={props["data-testid"]}
-            />
-        );
-    }
-
     return (
-        <Link to={props.to} target={props.target}>
-            <MenuLinkItem
-                icon={props.icon}
-                label={props.label}
-                data-testid={props["data-testid"]}
-            />
-        </Link>
+        <DropdownMenu.Link
+            to={props.to}
+            disabled={props.disabled}
+            data-testid={props["data-testid"]}
+            icon={<DropdownMenu.Item.Icon label={props.label} element={props.icon} />}
+            text={props.label}
+            className={props.className}
+        />
     );
 };

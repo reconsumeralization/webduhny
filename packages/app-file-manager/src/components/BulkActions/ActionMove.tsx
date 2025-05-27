@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ReactComponent as MoveIcon } from "@material-design-icons/svg/outlined/drive_file_move.svg";
+import { ReactComponent as MoveIcon } from "@webiny/icons/drive_file_move.svg";
 import { observer } from "mobx-react-lite";
 import { useMoveToFolderDialog, useNavigateFolder } from "@webiny/app-aco";
 import { FolderItem } from "@webiny/app-aco/types";

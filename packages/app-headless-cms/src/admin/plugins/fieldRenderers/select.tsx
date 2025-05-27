@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { i18n } from "@webiny/app/i18n";
 import { CmsModelFieldRendererPlugin } from "~/types";
-import { Select } from "@webiny/ui/Select";
+import { Select } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/fields/text");
 
@@ -24,7 +24,7 @@ const plugin: CmsModelFieldRendererPlugin = {
 
             return (
                 <Bind defaultValue={defaultOption ? defaultOption.value : undefined}>
-                    {bind => (
+                    {({ value, onChange, ...bind }) => (
                         <Bind.ValidationContainer>
                             <Select
                                 {...bind}
@@ -33,6 +33,14 @@ const plugin: CmsModelFieldRendererPlugin = {
                                 options={options}
                                 placeholder={field.placeholderText}
                                 data-testid={`fr.input.select.${field.label}`}
+                                value={String(value)}
+                                onChange={value => {
+                                    if (field.type === "number") {
+                                        onChange(Number(value));
+                                    } else {
+                                        onChange(String(value));
+                                    }
+                                }}
                             />
                         </Bind.ValidationContainer>
                     )}

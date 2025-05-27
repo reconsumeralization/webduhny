@@ -1,4 +1,6 @@
 import React, { useMemo } from "react";
+import { Button, Grid, Select } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
 import {
     DataList,
@@ -9,16 +11,11 @@ import {
     ListActions,
     ListItemTextSecondary,
     DataListModalOverlay,
-    DataListModalOverlayAction
+    DataListModalOverlayAction,
+    ListItemTextPrimary,
+    LoginIcon
 } from "@webiny/ui/List";
-
-import { ButtonIcon, ButtonSecondary, IconButton } from "@webiny/ui/Button";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
-import { ReactComponent as LoginIcon } from "~/assets/login_black_24dp.svg";
 import { useTenantsList } from "./hooks/useTenantsList";
 import { useTenancy } from "@webiny/app-tenancy";
 import { TenantItem } from "~/types";
@@ -59,17 +56,19 @@ const TenantDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort || ""} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort || ""}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => {
+                                return {
+                                    label,
+                                    value
+                                };
                             })}
-                        </Select>
-                    </Cell>
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -80,9 +79,14 @@ const TenantDataList = () => {
         <DataList
             loading={loading}
             actions={
-                <ButtonSecondary data-testid="new-record-button" onClick={createTenant}>
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Tenant`}
-                </ButtonSecondary>
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
+                    ata-testid="new-record-button"
+                    onClick={createTenant}
+                />
             }
             data={tenants}
             title={t`Tenants`}
@@ -91,27 +95,25 @@ const TenantDataList = () => {
                 <SearchUI
                     value={filter}
                     onChange={setFilter}
-                    inputPlaceholder={t`Search tenants`}
+                    inputPlaceholder={t`Search tenants...`}
+                    dataTestId={"tenants.data-list.search-input"}
                 />
             }
             modalOverlay={tenantsDataListModalOverlay}
-            modalOverlayAction={<DataListModalOverlayAction icon={<FilterIcon />} />}
+            modalOverlayAction={<DataListModalOverlayAction />}
         >
             {({ data }: { data: TenantItem[] }) => (
                 <ScrollList data-testid="default-data-list">
                     {data.map(item => (
                         <ListItem key={item.id} selected={item.id === currentTenantId}>
                             <ListItemText onClick={() => editTenant(item.id)}>
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 
                             <ListItemMeta>
                                 <ListActions>
-                                    <IconButton
-                                        icon={<LoginIcon />}
-                                        onClick={() => setTenant(item.id)}
-                                    />
+                                    <LoginIcon onClick={() => setTenant(item.id)} />
                                     {/* <DeleteIcon
                                         onClick={() => deleteTenant(item)}
                                         data-testid={"default-data-list.delete"}

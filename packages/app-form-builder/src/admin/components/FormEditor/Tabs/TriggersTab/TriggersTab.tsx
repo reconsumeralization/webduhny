@@ -1,7 +1,4 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
-import { Typography } from "@webiny/ui/Typography";
 import { Form } from "@webiny/form";
 import { useFormEditor } from "../../Context";
 import { plugins } from "@webiny/plugins";
@@ -9,12 +6,8 @@ import set from "lodash/set";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { i18n } from "@webiny/app/i18n";
 import { FbEditorTrigger } from "~/types";
+import { Accordion, Icon, Text } from "@webiny/admin-ui";
 const t = i18n.namespace("FormsApp.Editor.TriggersTab");
-
-const Container = styled("div")({
-    padding: "40px 60px",
-    color: "var(--mdc-theme-on-surface)"
-});
 
 export const TriggersTab = () => {
     const { setData, data: formData } = useFormEditor();
@@ -22,16 +15,18 @@ export const TriggersTab = () => {
     const { showSnackbar } = useSnackbar();
 
     return (
-        <Container>
-            <Typography
-                use={"overline"}
-            >{t`Which actions should be taken after submission`}</Typography>
+        <>
+            <Text
+                size={"md"}
+                as={"div"}
+                className={"wby-mb-lg"}
+            >{t`Which actions should be taken after submission`}</Text>
 
             <Accordion>
                 {formEditorTriggerPlugins.map(({ trigger }) => (
-                    <AccordionItem
+                    <Accordion.Item
                         key={trigger.id}
-                        icon={trigger.icon}
+                        icon={<Icon icon={trigger.icon} label={trigger.title} />}
                         title={trigger.title}
                         description={trigger.description}
                     >
@@ -53,9 +48,9 @@ export const TriggersTab = () => {
                                 })
                             }
                         </Form>
-                    </AccordionItem>
+                    </Accordion.Item>
                 ))}
             </Accordion>
-        </Container>
+        </>
     );
 };

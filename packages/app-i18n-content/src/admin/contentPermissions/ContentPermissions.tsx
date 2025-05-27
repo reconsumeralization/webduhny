@@ -1,11 +1,9 @@
 import React, { Fragment, useCallback, useMemo } from "react";
-import { Grid, Cell } from "@webiny/ui/Grid";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
 import { useI18N } from "@webiny/app-i18n/hooks/useI18N";
-import { CheckboxGroup, Checkbox } from "@webiny/ui/Checkbox";
-import { Radio, RadioGroup } from "@webiny/ui/Radio";
 import { I18NSecurityPermission } from "@webiny/app-i18n/types";
+import { CheckboxGroup, Grid, RadioGroup } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-i18n/admin/plugins/permissionRenderer");
 
@@ -67,48 +65,40 @@ export const ContentPermissions = ({ value, onChange }: ContentPermissionsProps)
         >
             {({ data, Bind }) => (
                 <Fragment>
-                    <Grid style={{ padding: "0px !important" }}>
-                        <Cell span={12}>
+                    <Grid>
+                        <Grid.Column span={12}>
                             <Bind name={"level"}>
-                                <RadioGroup label={t`Content can be accessed on:`}>
-                                    {({ getValue, onChange }) => (
-                                        <React.Fragment>
-                                            <Radio
-                                                label={t`All locales`}
-                                                value={getValue("all")}
-                                                onChange={onChange("all")}
-                                            />
-                                            <Radio
-                                                label={t`Specific locales`}
-                                                value={getValue("locales")}
-                                                onChange={onChange("locales")}
-                                            />
-                                        </React.Fragment>
-                                    )}
-                                </RadioGroup>
-                            </Bind>
-                        </Cell>
-                        {data.level === "locales" && (
-                            <Cell span={12}>
-                                <Bind name={"locales"}>
-                                    <CheckboxGroup
-                                        label={t`Available Locales`}
-                                        description={t`The user will be able to access content in the selected locales.`}
-                                    >
-                                        {({ onChange, getValue }) =>
-                                            getLocales().map(({ code }) => (
-                                                <Checkbox
-                                                    key={code + data.level}
-                                                    label={code}
-                                                    value={getValue(code)}
-                                                    onChange={onChange(code)}
-                                                />
-                                            ))
+                                <RadioGroup
+                                    label={t`Content can be accessed on:`}
+                                    items={[
+                                        {
+                                            label: t`All locales`,
+                                            value: "all"
+                                        },
+                                        {
+                                            label: t`Specific locales`,
+                                            value: "locales"
                                         }
-                                    </CheckboxGroup>
-                                </Bind>
-                            </Cell>
-                        )}
+                                    ]}
+                                />
+                            </Bind>
+                        </Grid.Column>
+                        <>
+                            {data.level === "locales" && (
+                                <Grid.Column span={12}>
+                                    <Bind name={"locales"}>
+                                        <CheckboxGroup
+                                            label={t`Available Locales`}
+                                            description={t`The user will be able to access content in the selected locales.`}
+                                            items={getLocales().map(locale => ({
+                                                value: locale.code,
+                                                label: locale.code
+                                            }))}
+                                        />
+                                    </Bind>
+                                </Grid.Column>
+                            )}
+                        </>
                     </Grid>
                 </Fragment>
             )}

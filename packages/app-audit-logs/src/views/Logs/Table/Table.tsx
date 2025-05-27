@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from "react";
 import { format, addMinutes } from "date-fns";
 
-import { ReactComponent as PreviewIcon } from "@material-design-icons/svg/outlined/visibility.svg";
+import { ReactComponent as PreviewIcon } from "@webiny/icons/info.svg";
 import { Columns, DataTable, OnSortingChange, Sorting } from "@webiny/ui/DataTable";
 import { IconButton } from "@webiny/ui/Button";
 import { Tooltip } from "@webiny/ui/Tooltip";

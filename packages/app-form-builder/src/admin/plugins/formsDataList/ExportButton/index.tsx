@@ -1,11 +1,9 @@
 import React from "react";
-import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { i18n } from "@webiny/app/i18n";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as DownloadIcon } from "@webiny/icons/file_download.svg";
 import useExportFormDialog, { ExportFormsDialogProps } from "./useExportFormDialog";
 import useExportFormRevisionSelectorDialog from "./useExportFormRevisionSelectorDialog";
-// assets
-import { ReactComponent as DownloadIcon } from "@material-design-icons/svg/round/download.svg";
 
 const t = i18n.ns("app-form-builder/admin/plugins/editor/defaultBar/exportFormButton");
 
@@ -30,18 +28,23 @@ export const ExportFormsButton = ({ getMultiSelected, ...restProps }: ExportForm
     };
 
     return (
-        <Tooltip content={renderExportFormsTooltip(selected)} placement={"bottom"}>
-            <IconButton
-                data-testid={"export-form-button"}
-                icon={<DownloadIcon />}
-                onClick={() => {
-                    showExportFormRevisionSelectorDialog({
-                        onAccept: () =>
-                            showExportFormInitializeDialog({ ids: selected, ...restProps }),
-                        selected
-                    });
-                }}
-            />
-        </Tooltip>
+        <Tooltip
+            trigger={
+                <IconButton
+                    icon={<DownloadIcon />}
+                    size={"sm"}
+                    variant={"ghost"}
+                    data-testid={"export-template-button"}
+                    onClick={() =>
+                        showExportFormRevisionSelectorDialog({
+                            onAccept: () =>
+                                showExportFormInitializeDialog({ ids: selected, ...restProps }),
+                            selected
+                        })
+                    }
+                />
+            }
+            content={renderExportFormsTooltip(selected)}
+        />
     );
 };

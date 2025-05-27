@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ReactComponent as ExportIcon } from "@material-design-icons/svg/outlined/file_download.svg";
+import { ReactComponent as ExportIcon } from "@webiny/icons/file_download.svg";
 import { observer } from "mobx-react-lite";
 import { PageListConfig } from "~/admin/config/pages";
 import useExportPageRevisionSelectorDialog from "~/editor/plugins/defaultBar/components/ExportPageButton/useExportPageRevisionSelectorDialog";

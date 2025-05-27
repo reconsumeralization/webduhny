@@ -1,11 +1,10 @@
 import * as React from "react";
-import { css } from "emotion";
+import { cn, OverlayLoader } from "@webiny/admin-ui";
 import { Form } from "../../../../components/Form";
 import { DATA_FIELDS } from "~/components/Form/graphql";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { FbErrorResponse, FbFormModel, FbRevisionModel } from "~/types";
-import CircularProgress from "@webiny/ui/Progress/CircularProgress";
 
 interface GetFormQueryResponse {
     formBuilder: {
@@ -33,14 +32,21 @@ const GET_FORM = gql`
     }
 `;
 
-const pageInnerWrapper = css({
-    overflowY: "scroll",
-    overflowX: "hidden",
-    maxHeight: "calc(100vh - 290px)",
-    position: "relative",
-    padding: 25,
-    backgroundColor: "var(--webiny-theme-color-surface, #fff) !important"
-});
+const PageInnerWrapper = ({
+    className,
+    children,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+    <div
+        className={cn(
+            "wby-relative wby-overflow-x-hidden wby-overflow-y-scroll wby-max-h-full wby-p-lg",
+            className
+        )}
+        {...props}
+    >
+        {children}
+    </div>
+);
 
 interface FormPreviewProps {
     revision: FbRevisionModel;
@@ -58,22 +64,26 @@ const FormPreview = ({ revision }: FormPreviewProps) => {
     );
 
     if (loading) {
-        return <CircularProgress />;
+        return (
+            <div style={{ height: "500px" }} className={"wby-relative wby-w-full"}>
+                <OverlayLoader text={"Loading preview..."} />
+            </div>
+        );
     }
 
     if (error) {
         console.error(error.message, error);
         return (
-            <div className={pageInnerWrapper}>
-                Form data could not be loaded. Check browser console for errors.
-            </div>
+            <PageInnerWrapper>
+                {"Form data could not be loaded. Check browser console for errors."}
+            </PageInnerWrapper>
         );
     }
 
     return (
-        <div className={pageInnerWrapper}>
+        <PageInnerWrapper>
             {revision && <Form preview data={data?.formBuilder?.getForm?.data} />}
-        </div>
+        </PageInnerWrapper>
     );
 };
 

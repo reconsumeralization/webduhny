@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import styled from "@emotion/styled";
 import { FormOnSubmit, FormValidation } from "@webiny/form";
 import { makeDecoratable } from "@webiny/app-admin";
 import { CmsContentEntry } from "~/types";
@@ -13,11 +12,6 @@ import {
 import { CustomLayout } from "./CustomLayout";
 import { DefaultLayout } from "./DefaultLayout";
 import { useGoToRevision } from "~/admin/components/ContentEntryForm/useGoToRevision";
-
-const FormWrapper = styled("div")({
-    height: "calc(100vh - 260px)",
-    overflow: "auto"
-});
 
 export interface ContentEntryFormProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -91,13 +85,19 @@ export const ContentEntryForm = makeDecoratable(
             >
                 <ModelProvider model={model}>
                     {header ? header : null}
-                    <FormWrapper {...props} data-testid={"cms-content-form"} ref={formElementRef}>
+                    <div
+                        {...props}
+                        id={"cms-content-form"}
+                        data-element={"cms-content-form"}
+                        data-testid={"cms-content-form"}
+                        ref={formElementRef}
+                    >
                         {formRenderer ? (
                             <CustomLayout model={model} formRenderer={formRenderer} />
                         ) : (
                             <DefaultLayout model={model} />
                         )}
-                    </FormWrapper>
+                    </div>
                 </ModelProvider>
             </ContentEntryFormProvider>
         );

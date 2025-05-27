@@ -6,7 +6,7 @@ import { Link } from "@webiny/react-router";
 import { OptionItem } from "./types";
 import { EntryStatus } from "./EntryStatus";
 import { IconButton } from "@webiny/ui/Button";
-import { css } from "emotion";
+import { css } from "@emotion/css";
 
 const ModelId = styled("span")({
     color: "var(--mdc-theme-text-secondary-on-background) !important"

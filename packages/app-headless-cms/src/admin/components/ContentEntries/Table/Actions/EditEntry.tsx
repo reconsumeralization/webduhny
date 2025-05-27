@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Edit } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as Edit } from "@webiny/icons/edit.svg";
 import { ContentEntryListConfig } from "~/admin/config/contentEntries";
 import { useContentEntriesList, useEntry, usePermission } from "~/admin/hooks";
 

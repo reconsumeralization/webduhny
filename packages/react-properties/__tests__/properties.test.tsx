@@ -40,7 +40,8 @@ const Field = ({ name, label, replace, after, before, remove = false }: FieldPro
     const placeBefore = before !== undefined ? `${id}:field:${before}` : undefined;
 
     const getId = useCallback(
-        (suffix = undefined) => [id, "field", name, suffix].filter(Boolean).join(":"),
+        (suffix: string | undefined = undefined) =>
+            [id, "field", name, suffix].filter(Boolean).join(":"),
         []
     );
     const toReplace = replace !== undefined ? `${id}:field:${replace}` : undefined;
@@ -74,8 +75,24 @@ describe("Test Properties", () => {
         render(view);
 
         expect(onChange).toHaveBeenLastCalledWith([
-            { id: "label", name: "label", value: "Label", parent: "", array: false },
-            { id: expect.any(String), name: "name", value: "basic", parent: "", array: false }
+            {
+                id: "label",
+                name: "label",
+                value: "Label",
+                parent: "",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            },
+            {
+                id: expect.any(String),
+                name: "name",
+                value: "basic",
+                parent: "",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            }
         ]);
     });
 
@@ -96,17 +113,51 @@ describe("Test Properties", () => {
         render(view);
 
         expect(onChange).toHaveBeenLastCalledWith([
-            { id: expect.any(String), name: "name", value: "layout", parent: "1", array: false },
-            { id: expect.any(String), name: "label", value: "Layout", parent: "1", array: false },
-            { id: expect.any(String), name: "name", value: "basic", parent: "2", array: false },
+            {
+                id: expect.any(String),
+                name: "name",
+                value: "layout",
+                parent: "1",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            },
+            {
+                id: expect.any(String),
+                name: "label",
+                value: "Layout",
+                parent: "1",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            },
+            {
+                id: expect.any(String),
+                name: "name",
+                value: "basic",
+                parent: "2",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            },
             {
                 id: expect.any(String),
                 name: "toolbar",
                 value: undefined,
                 parent: "1",
-                array: false
+                array: false,
+                $isFirst: false,
+                $isLast: false
             },
-            { id: "1", name: "group", value: undefined, parent: "", array: false }
+            {
+                id: "1",
+                name: "group",
+                value: undefined,
+                parent: "",
+                array: false,
+                $isFirst: false,
+                $isLast: false
+            }
         ]);
     });
 

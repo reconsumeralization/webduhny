@@ -1,43 +1,25 @@
 import React, { CSSProperties } from "react";
-import styled from "@emotion/styled";
 import { Droppable, DroppableProps, OnDropCallable } from "./../Droppable";
+import { cn, cva } from "@webiny/admin-ui";
 
-interface DroppableFlags {
-    isOver: boolean;
-    isDroppable: boolean;
-}
-
-const getColor = ({ isOver, isDroppable }: DroppableFlags) => {
-    if (isOver) {
-        return "var(--mdc-theme-primary)";
+const droppableContainerVariants = cva(
+    "wby-bg-transparent wby-box-border wby-h-full wby-min-h-[120px] wby-relative wby-user-select-none wby-w-full wby-border-md wby-border-dashed",
+    {
+        variants: {
+            isOver: {
+                true: "wby-border-accent-default wby-text-accent-primary",
+                false: "wby-border-success-default wby-text-success-primary"
+            },
+            isDroppable: {
+                false: "wby-border-success-default wby-text-accent-primary"
+            }
+        },
+        defaultVariants: {
+            isOver: false,
+            isDroppable: true
+        }
     }
-
-    if (!isDroppable) {
-        return "var(--mdc-theme-background)";
-    }
-
-    return "var(--mdc-theme-secondary)";
-};
-
-const Container = styled.div`
-    background-color: transparent;
-    box-sizing: border-box;
-    height: 100%;
-    min-height: 100px;
-    position: relative;
-    user-select: none;
-    width: 100%;
-    border: 2px dashed ${getColor};
-    opacity: 1;
-    > div {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin: 0;
-        color: ${getColor};
-    }
-`;
+);
 
 interface CenterProps {
     type?: string;
@@ -63,9 +45,11 @@ const Center = ({ onDrop, children, style, isDroppable }: CenterProps) => {
                     data-testid={"cms-editor-first-field-area"}
                     {...getInert(isDroppable)}
                 >
-                    <Container isOver={isOver} isDroppable={isDroppable}>
-                        <div>{children}</div>
-                    </Container>
+                    <div className={cn(droppableContainerVariants({ isOver, isDroppable }))}>
+                        <div className="wby-absolute wby-top-1/2 wby-left-1/2 wby-transform wby--translate-x-1/2 wby--translate-y-1/2 wby-m-0">
+                            {children}
+                        </div>
+                    </div>
                 </div>
             )}
         </Droppable>

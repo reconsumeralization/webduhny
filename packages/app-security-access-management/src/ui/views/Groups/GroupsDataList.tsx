@@ -10,7 +10,8 @@ import {
     ListItemMeta,
     ListActions,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
 import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { useRouter } from "@webiny/react-router";
@@ -18,15 +19,11 @@ import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import { LIST_GROUPS, DELETE_GROUP, ListGroupsResponse } from "./graphql";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { deserializeSorters } from "../utils";
 import { Group } from "~/types";
+import { Button, Grid, Select, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
 const t = i18n.ns("app-security/admin/roles/data-list");
 
@@ -120,17 +117,17 @@ export const GroupsDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -144,24 +141,27 @@ export const GroupsDataList = () => {
         <DataList
             title={t`Roles`}
             actions={
-                <ButtonSecondary
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
                     data-testid="new-record-button"
                     onClick={() => history.push("/access-management/roles?new=true")}
-                >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New Role`}
-                </ButtonSecondary>
+                />
             }
             data={groupList}
             loading={listLoading || deleteLoading}
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search Roles`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search roles...`}
+                />
             }
             modalOverlay={groupsDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: Group[] }) => (
@@ -173,7 +173,7 @@ export const GroupsDataList = () => {
                                     history.push(`/access-management/roles?id=${item.id}`)
                                 }
                             >
-                                {item.name}
+                                <ListItemTextPrimary>{item.name}</ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.description}</ListItemTextSecondary>
                             </ListItemText>
 
@@ -181,7 +181,6 @@ export const GroupsDataList = () => {
                                 <ListActions>
                                     {item.system || item.plugin ? (
                                         <Tooltip
-                                            placement={"bottom"}
                                             content={
                                                 <span>
                                                     {item.system
@@ -189,9 +188,8 @@ export const GroupsDataList = () => {
                                                         : t`Cannot delete roles registered via extensions.`}
                                                 </span>
                                             }
-                                        >
-                                            <DeleteIcon disabled />
-                                        </Tooltip>
+                                            trigger={<DeleteIcon disabled />}
+                                        />
                                     ) : (
                                         <DeleteIcon
                                             onClick={() => deleteItem(item)}

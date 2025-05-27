@@ -1,20 +1,9 @@
 import React from "react";
-import { Link } from "@webiny/react-router";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as FbFormIcon } from "@webiny/icons/check_box.svg";
+import { Button, Link } from "@webiny/admin-ui";
 
 import { AdminWelcomeScreenWidgetPlugin } from "@webiny/app-plugin-admin-welcome-screen/types";
-import { ButtonSecondary } from "@webiny/ui/Button";
-import { css } from "emotion";
-
-const linkStyle = css({
-    textDecoration: "none",
-    "&:hover": {
-        textDecoration: "none"
-    }
-});
-
-const buttonStyle = css({
-    margin: "1rem auto 1rem auto"
-});
 
 const plugin: AdminWelcomeScreenWidgetPlugin = {
     type: "admin-welcome-screen-widget",
@@ -22,12 +11,15 @@ const plugin: AdminWelcomeScreenWidgetPlugin = {
     permission: "fb.form",
     widget: {
         cta: (
-            <Link to="/form-builder/forms" className={linkStyle}>
-                <ButtonSecondary className={buttonStyle}>Create a new Form</ButtonSecondary>
-            </Link>
+            <Button
+                text={<Link to="/form-builder/forms">{"Create a new Form"}</Link>}
+                icon={<AddIcon />}
+                asChild
+            />
         ),
         description: "Create forms using a drag and drop interface and track conversions.",
-        title: "Form Builder"
+        title: "Forms",
+        icon: <FbFormIcon />
     }
 };
 export default plugin;

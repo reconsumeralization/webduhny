@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ReactComponent as RestoreIcon } from "@material-design-icons/svg/outlined/restore.svg";
+import { ReactComponent as RestoreIcon } from "@webiny/icons/restore.svg";
 import { observer } from "mobx-react-lite";
 import { useSnackbar } from "@webiny/app-admin";
 import { TrashBinListConfig } from "~/Presentation/configs";
@@ -7,6 +7,7 @@ import { useTrashBin } from "~/Presentation/hooks";
 import { getEntriesLabel } from "../BulkActions";
 import { RestoreItemsReportMessage } from "~/Presentation/components/BulkActions/RestoreItems/RestoreItemsReportMessage";
 import { TrashBinItemDTO } from "~/Domain";
+import { Tooltip } from "@webiny/admin-ui";
 
 export const BulkActionsRestoreItems = observer(() => {
     const { restoreItem, onItemAfterRestore, getRestoredItemById, restoreBulkAction } =
@@ -14,7 +15,7 @@ export const BulkActionsRestoreItems = observer(() => {
     const { showSnackbar } = useSnackbar();
 
     const { useWorker, useButtons, useDialog } = TrashBinListConfig.Browser.BulkAction;
-    const { IconButton } = useButtons();
+    const { ButtonDefault } = useButtons();
     const worker = useWorker();
     const { showConfirmationDialog, showResultsDialog, hideResultsDialog } = useDialog();
 
@@ -81,11 +82,18 @@ export const BulkActionsRestoreItems = observer(() => {
         });
 
     return (
-        <IconButton
-            icon={<RestoreIcon />}
-            onAction={openRestoreEntriesDialog}
-            label={`Restore ${entriesLabel}`}
-            tooltipPlacement={"bottom"}
+        <Tooltip
+            side={"bottom"}
+            content={`Restore ${entriesLabel}`}
+            trigger={
+                <ButtonDefault
+                    icon={<RestoreIcon />}
+                    onAction={openRestoreEntriesDialog}
+                    size={"sm"}
+                >
+                    {"Restore"}
+                </ButtonDefault>
+            }
         />
     );
 });

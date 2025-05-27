@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as PreviewIcon } from "@material-design-icons/svg/round/visibility.svg";
+import { ReactComponent as PreviewIcon } from "@webiny/icons/visibility.svg";
 import { usePage } from "~/pageEditor/hooks/usePage";
 import { usePreviewPage } from "~/admin/hooks/usePreviewPage";
 import { PageEditorConfig } from "~/pageEditor/editorConfig/PageEditorConfig";

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { useContentEntry } from "~/admin/views/contentEntries/hooks";
 import { RevisionListDrawer } from "./RevisionListDrawer";
 import { FullScreenContentEntryHeaderLeft } from "./FullScreenContentEntryHeaderLeft";
@@ -9,6 +8,7 @@ import { FullScreenContentEntryProvider } from "./useFullScreenContentEntry";
 import { ContentEntryEditorConfig } from "~/ContentEntryEditorConfig";
 import { cmsLegacyEntryEditor } from "~/utils/cmsLegacyEntryEditor";
 import { useContentEntryEditorConfig } from "~/admin/config/contentEntries";
+import { HeaderBar, OverlayLoader } from "@webiny/admin-ui";
 
 const { ContentEntry } = ContentEntryEditorConfig;
 
@@ -24,19 +24,17 @@ const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original =>
                 isRevisionListOpen={isRevisionListOpen}
             >
                 <FSE.Container>
-                    <FSE.Header>
-                        <FSE.HeaderContent style={{ width: "33%" }}>
-                            <FullScreenContentEntryHeaderLeft />
-                        </FSE.HeaderContent>
-                        <FSE.HeaderContent>
-                            {/*
-                                Empty div to relocate Entry Form Header via React Portal in full-screen mode.
-                                Ensures layout flexibility without disrupting React context and state.
-                            */}
-                            <div id={"cms-content-entry-header-right"} />
-                        </FSE.HeaderContent>
-                    </FSE.Header>
-                    {loading && <CircularProgress style={{ zIndex: 10 }} />}
+                    <HeaderBar
+                        start={<FullScreenContentEntryHeaderLeft />}
+                        end={
+                            <div
+                                // Empty div to relocate Entry Form Header via React Portal in full-screen mode.
+                                // Ensures layout flexibility without disrupting React context and state.
+                                id={"cms-content-entry-header-right"}
+                            />
+                        }
+                    />
+                    {loading && <OverlayLoader className={"wby-z-10"} />}
                     <FSE.Content>
                         <FSE.ContentFormWrapper>
                             <FSE.ContentFormInner width={width}>
@@ -54,7 +52,7 @@ const FullScreenContentEntryDecorator = ContentEntry.createDecorator(Original =>
 const FullScreenContentEntryFormDecorator = ContentEntry.ContentEntryForm.createDecorator(
     Original => {
         return function ContentEntryForm(props) {
-            return <Original {...props} className={FSE.ContentFormInnerCss} />;
+            return <Original {...props} className={"wby-h-full"} />;
         };
     }
 );

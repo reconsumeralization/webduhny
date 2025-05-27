@@ -1,9 +1,15 @@
-import React, { createContext, useMemo, useState } from "react";
-import classNames from "classnames";
-import { TabBar, Tab as RmwcTab } from "@rmwc/tabs";
+import React, { createContext, PropsWithChildren, useCallback, useMemo, useState } from "react";
+import { Tabs as AdminTabs } from "@webiny/admin-ui";
 import { TabProps } from "./Tab";
 
-export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+const VALUE_PREFIX = "tab-";
+
+export type TabsProps = PropsWithChildren<{
+    /**
+     * Append an ID.
+     */
+    id?: string;
+
     /**
      * Append a class name.
      */
@@ -23,82 +29,62 @@ export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
      * Tab ID for the testing.
      */
     "data-testid"?: string;
-}
-
-const disabledStyles: Record<string, string | number> = {
-    opacity: 0.5,
-    pointerEvents: "none"
-};
+}>;
 
 interface TabItem extends TabProps {
     id: string;
 }
 
-interface TabsContext {
+interface DeprecatedTabsContext {
     addTab(props: TabItem): void;
+
     removeTab(id: string): void;
 }
 
-export const TabsContext = createContext<TabsContext | undefined>(undefined);
+export const DeprecatedTabsContext = createContext<DeprecatedTabsContext | undefined>(undefined);
 
 /**
- * Use Tabs component to display a list of choices, once the handler is triggered.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please use the `Tabs` component from the `@webiny/admin-ui` package instead.
  */
-export const Tabs = ({ children, value, onActivate, className, ...props }: TabsProps) => {
+export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
     const [activeTabIndex, setActiveIndex] = useState(0);
     const [tabs, setTabs] = useState<TabItem[]>([]);
 
     const activeIndex = value !== undefined ? value : activeTabIndex;
 
-    /* We need to generate a key like this to trigger a proper component re-render when child tabs change. */
-    const tabBar = (
-        <TabBar
-            key={tabs.map(tab => tab.id).join(";")}
-            className="webiny-ui-tabs__tab-bar"
-            activeTabIndex={activeIndex}
-            onActivate={evt => {
-                setActiveIndex(evt.detail.index);
-                onActivate && onActivate(evt.detail.index);
-            }}
-        >
-            {tabs.map(item => {
-                if (!item.visible) {
-                    return <RmwcTab tag={"div"} style={{ display: "none" }} key={item.id} />;
-                }
+    const onValueChange = useCallback(
+        (value: string) => {
+            const parts = value.split(VALUE_PREFIX);
+            const index = parseInt(parts[1]);
 
-                const style = item.style || {};
-                if (item.disabled) {
-                    Object.assign(style, disabledStyles);
-                }
+            if (isNaN(index)) {
+                return;
+            }
 
-                return (
-                    <RmwcTab
-                        tag={"div"}
-                        style={style}
-                        key={item.id}
-                        data-testid={item["data-testid"]}
-                        {...(item.icon ? { icon: item.icon } : {})}
-                    >
-                        {item.label}
-                    </RmwcTab>
-                );
-            })}
-        </TabBar>
+            setActiveIndex(index);
+            onActivate && onActivate(index);
+        },
+        [onActivate]
     );
 
-    const content = tabs.filter(Boolean).map((tab, index) => {
-        if (activeIndex === index) {
-            return <div key={index}>{tab.children}</div>;
-        } else {
-            return (
-                <div key={index} style={{ display: "none" }}>
-                    {tab.children}
-                </div>
-            );
-        }
+    /* We need to generate a key like this to trigger a proper component re-render when child tabs change. */
+    const newTabs = tabs.map((tab, index) => {
+        return (
+            <AdminTabs.Tab
+                key={`${VALUE_PREFIX}${index}`}
+                value={`${VALUE_PREFIX}${index}`}
+                trigger={tab.label}
+                content={tab.children}
+                icon={tab.icon}
+                disabled={tab.disabled}
+                visible={tab.visible !== false}
+                data-testid={tab["data-testid"]}
+            />
+        );
     });
 
-    const context: TabsContext = useMemo(
+    const context: DeprecatedTabsContext = useMemo(
         () => ({
             addTab(props) {
                 setTabs(tabs => {
@@ -121,11 +107,20 @@ export const Tabs = ({ children, value, onActivate, className, ...props }: TabsP
     );
 
     return (
-        <div id={props.id} className={classNames("webiny-ui-tabs", className)}>
-            {tabBar}
-            <div className={"webiny-ui-tabs__content mdc-tab-content"}>{content}</div>
-            <TabsContext.Provider value={context}>{children}</TabsContext.Provider>
-        </div>
+        <>
+            <AdminTabs
+                {...props}
+                value={`${VALUE_PREFIX}${activeIndex}`}
+                onValueChange={onValueChange}
+                tabs={newTabs}
+                size={"md"}
+                separator={true}
+                spacing={"lg"}
+            />
+            <DeprecatedTabsContext.Provider value={context}>
+                {props.children}
+            </DeprecatedTabsContext.Provider>
+        </>
     );
 };
 

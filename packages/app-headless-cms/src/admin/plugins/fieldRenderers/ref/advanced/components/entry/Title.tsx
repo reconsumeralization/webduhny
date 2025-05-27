@@ -1,17 +1,18 @@
-import styled from "@emotion/styled";
 import React from "react";
-
-const Content = styled("h3")({
-    fontStyle: "normal",
-    fontWeight: 400,
-    fontSize: 24,
-    lineHeight: "32px",
-    marginBottom: "5px"
-});
+import { cn, Text } from "@webiny/admin-ui";
 
 interface TitleProps {
     title: string;
 }
+
 export const Title = ({ title }: TitleProps) => {
-    return <Content>{title}</Content>;
+    return (
+        <Text
+            size={"sm"}
+            as={"div"}
+            className={cn("wby-truncate wby-w-full wby-text-neutral-primary")}
+        >
+            {title}
+        </Text>
+    );
 };

@@ -1,12 +1,7 @@
 import React, { useMemo } from "react";
-import { ListActions, ListItemMeta as UiListItemMeta } from "@webiny/ui/List";
-import { Menu, MenuDivider, MenuItem } from "@webiny/ui/Menu";
-import { ReactComponent as More } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
-import { ReactComponent as Check } from "@material-design-icons/svg/outlined/check.svg";
-import { Typography } from "@webiny/ui/Typography";
-import styled from "@emotion/styled";
+import { ReactComponent as More } from "@webiny/icons/arrow_drop_down.svg";
+import { Button, DropdownMenu, Text, Tooltip } from "@webiny/admin-ui";
 import { useSecurity } from "@webiny/app-security";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import { FolderAccessLevel, FolderLevelPermissionsTarget, FolderPermission } from "~/types";
 
 const TARGET_LEVELS = [
@@ -31,36 +26,6 @@ const TARGET_LEVELS = [
         description: "Can edit and manage content permissions"
     }
 ];
-
-const StyledHandle = styled.div<{ disabled: boolean }>`
-    display: flex;
-    color: var(--mdc-theme-text-primary-on-background);
-    cursor: pointer;
-    padding: 20px 0 20px 20px;
-    ${({ disabled }) => disabled && `opacity: 0.5; pointer-events: none;`}
-`;
-
-const StyledMenuItem = styled(MenuItem)`
-    display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-
-    div.selected {
-        margin-right: 15px;
-        width: 20px;
-        height: 20px;
-
-        svg {
-            fill: var(--mdc-theme-primary);
-        }
-    }
-
-    div.info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-`;
 
 interface ListItemMetaProps {
     permission: FolderPermission;
@@ -110,61 +75,58 @@ export const ListItemMeta = ({
 
     const handle = useMemo(() => {
         let handle = (
-            <StyledHandle disabled={isDisabled}>
-                <Typography use="body1">{currentLevel.label}</Typography>
-                <More />
-            </StyledHandle>
+            <Button
+                variant={"ghost"}
+                disabled={!!isDisabled}
+                text={currentLevel.label}
+                icon={<More />}
+                iconPosition={"end"}
+            />
         );
 
         if (tooltipMessage) {
-            handle = <Tooltip content={tooltipMessage}>{handle}</Tooltip>;
+            handle = <Tooltip content={tooltipMessage} trigger={handle} />;
         }
 
         return handle;
     }, [tooltipMessage, isDisabled, currentLevel.label]);
 
     return (
-        <UiListItemMeta>
-            <ListActions>
-                <Menu
-                    handle={handle}
-                    disabled={isDisabled}
-                    // Should prevent first item from being autofocused, but it doesn't. 🤷‍
-                    focusOnOpen={false}
-                    // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
-                    portalZIndex={101}
-                >
-                    {TARGET_LEVELS.map(level => (
-                        <StyledMenuItem
-                            key={level.id}
-                            onClick={() => {
-                                // Needed to do this with a short delay because of a visual glitch.
-                                setTimeout(() => {
-                                    onUpdatePermission({
-                                        permission: {
-                                            ...permission,
-                                            inheritedFrom: undefined, // Reset inherited permissions to allow user-defined changes
-                                            level: level.id as FolderAccessLevel
-                                        }
-                                    });
-                                }, 75);
-                            }}
-                        >
-                            <div className="selected">
-                                {currentLevel.id === level.id && <Check />}
-                            </div>
-                            <div className="info">
-                                <Typography use="body1">{level.label}</Typography>
-                                <Typography use="caption">{level.description}</Typography>
-                            </div>
-                        </StyledMenuItem>
-                    ))}
-                    <MenuDivider />
-                    <MenuItem onClick={() => onRemoveAccess({ permission })}>
-                        Remove access
-                    </MenuItem>
-                </Menu>
-            </ListActions>
-        </UiListItemMeta>
+        <DropdownMenu
+            trigger={handle}
+            // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
+            // portalZIndex={101}
+        >
+            {TARGET_LEVELS.map(level => (
+                <DropdownMenu.CheckboxItem
+                    key={level.id}
+                    checked={currentLevel.id === level.id}
+                    text={
+                        <div>
+                            <Text as={"div"}>{level.label}</Text>
+                            <Text as={"div"} size={"sm"} className={"wby-text-neutral-strong"}>
+                                {level.description}
+                            </Text>
+                        </div>
+                    }
+                    onClick={() => {
+                        // Needed to do this with a short delay because of a visual glitch.
+                        setTimeout(() => {
+                            onUpdatePermission({
+                                permission: {
+                                    ...permission,
+                                    level: level.id as FolderAccessLevel
+                                }
+                            });
+                        }, 75);
+                    }}
+                />
+            ))}
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item
+                onClick={() => onRemoveAccess({ permission })}
+                text={"Remove access"}
+            />
+        </DropdownMenu>
     );
 };

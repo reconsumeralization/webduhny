@@ -1,16 +1,12 @@
 import React from "react";
-import { ScrollbarProps, Scrollbars } from "react-custom-scrollbars";
-
-interface Props extends ScrollbarProps {
-    style?: React.CSSProperties;
-    [key: string]: any;
-}
+import { Scrollbar as AdminScrollbar, type ScrollbarProps } from "@webiny/admin-ui";
 
 /**
- * Use Scrollbar component to show vertical or horizontal scrollbars.
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please find out the new `Scrollbar` component props from the `@webiny/admin-ui` package instead.
  */
-const Scrollbar = (props: Props) => {
-    return <Scrollbars {...props} />;
+const Scrollbar = (props: ScrollbarProps) => {
+    return <AdminScrollbar {...props} />;
 };
 
-export { Scrollbar };
+export { Scrollbar, type ScrollbarProps };

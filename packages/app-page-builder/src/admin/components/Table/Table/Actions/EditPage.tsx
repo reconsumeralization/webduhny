@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Edit } from "@material-design-icons/svg/outlined/edit.svg";
+import { ReactComponent as Edit } from "@webiny/icons/edit.svg";
 import { makeDecoratable } from "@webiny/app-admin";
 import { PageListConfig } from "~/admin/config/pages";
 import { usePage } from "~/admin/views/Pages/hooks/usePage";

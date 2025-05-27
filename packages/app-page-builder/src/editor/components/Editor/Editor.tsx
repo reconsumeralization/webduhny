@@ -79,7 +79,7 @@ export const Editor = () => {
         "pb-editor-resizing": isResizing
     };
     return (
-        <div className={classSet(classes)}>
+        <div className={classSet("wby-w-full", classes)}>
             <EditorConfig.Ui.Layout />
             <Dialogs />
             <DragPreview />

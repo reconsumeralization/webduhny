@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { autorun, toJS } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { CircularProgress } from "@webiny/ui/Progress";
+import { OverlayLoader } from "@webiny/admin-ui";
 import { FolderModelDto } from "~/features";
 import { GetFolderModelGqlGateway } from "~/features/folders/getFolderModel/GetFolderModelGqlGateway";
 import { GetFolderModel } from "~/features/folders/getFolderModel/GetFolderModel";
@@ -47,7 +47,7 @@ const acoFolderModelProvider: Decorator<
         }, []);
 
         if (!model) {
-            return <CircularProgress label={"Preparing Folders..."} />;
+            return <OverlayLoader text={"Preparing Folders..."} />;
         }
 
         return (

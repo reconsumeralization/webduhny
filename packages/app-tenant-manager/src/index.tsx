@@ -1,33 +1,50 @@
-import { Compose, LocaleSelector, useWcp } from "@webiny/app-admin";
+import { TenantSelector as BaseTenantSelector, Plugins, useWcp } from "@webiny/app-admin";
 import React, { Fragment, memo } from "react";
 import { AddTenantFormField } from "./components/AddTenantFormField";
-import { CurrentTenantWidget } from "./components/CurrentTenantWidget";
+import { CurrentTenant } from "./components/CurrentTenant";
 import { DomainsModule } from "./modules/domains";
 import { TenantsModule } from "./modules/tenants";
+import { AdminConfig } from "@webiny/app-admin";
+import { useSecurity } from "@webiny/app-security";
 
-const TenantIndicator = (LocaleSelector: React.ComponentType) => {
-    return function TenantIndicator() {
-        return (
-            <Fragment>
-                <CurrentTenantWidget />
-                <LocaleSelector />
-            </Fragment>
-        );
+const { Tenant } = AdminConfig;
+
+const TenantSelector = BaseTenantSelector.createDecorator(() => {
+    return function TenantSelector() {
+        return <CurrentTenant />;
     };
-};
+});
 
-let mounted = 0;
-
-const TenantManagerExtension = () => {
-    // Make sure only a single instance of this component is mounted.
-    // `useEffect` is too slow, because several elements mount at almost the same time.
-    // That's the nature of this component, and we only need this precaution for pre-5.29.0 projects.
-    if (mounted > 0) {
+const TenantNameLogoBase = () => {
+    const { identity } = useSecurity();
+    if (!identity) {
         return null;
     }
 
-    mounted++;
+    const { currentTenant } = identity;
+    if (currentTenant.id === "root") {
+        return null;
+    }
 
+    const { image, name } = currentTenant;
+    return (
+        <AdminConfig.Public>
+            <Tenant>
+                {image && <Tenant.Logo element={<img src={currentTenant.image.src} />} />}
+                <Tenant.Name value={name} />
+            </Tenant>
+        </AdminConfig.Public>
+    );
+};
+
+const TenantNameLogo = () => {
+    return (
+        <Plugins>
+            <TenantNameLogoBase />
+        </Plugins>
+    );
+};
+const TenantManagerExtension = () => {
     const wcp = useWcp();
     if (!wcp.canUseFeature("multiTenancy")) {
         return null;
@@ -35,7 +52,8 @@ const TenantManagerExtension = () => {
 
     return (
         <Fragment>
-            <Compose component={LocaleSelector} with={TenantIndicator} />
+            <TenantNameLogo />
+            <TenantSelector />
             <TenantsModule />
             <DomainsModule />
         </Fragment>
@@ -46,4 +64,4 @@ export const TenantManager: React.ComponentType = memo(TenantManagerExtension);
 
 export { useCurrentTenant } from "./hooks/useCurrentTenant";
 export { IsRootTenant, IsNotRootTenant, IsTenant } from "./components/IsRootTenant";
-export { AddTenantFormField, CurrentTenantWidget };
+export { AddTenantFormField };

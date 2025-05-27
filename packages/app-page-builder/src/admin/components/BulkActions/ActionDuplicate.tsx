@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ReactComponent as Duplicate } from "@material-design-icons/svg/outlined/library_add.svg";
+import { ReactComponent as Duplicate } from "@webiny/icons/library_add.svg";
 import { useRecords } from "@webiny/app-aco";
 import { observer } from "mobx-react-lite";
 import { PageListConfig } from "~/admin/config/pages";

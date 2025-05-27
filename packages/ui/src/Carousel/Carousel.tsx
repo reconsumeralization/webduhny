@@ -1,63 +1,16 @@
 import React from "react";
-import NukaCarousel, { CarouselProps, CarouselRenderControl } from "nuka-carousel";
-import pick from "lodash/pick";
 
-interface Props extends CarouselProps {
-    // slides as set of HTMLElements
+interface Props extends Record<string, any> {
     children: React.ReactNode;
-
-    // render method for the next slide button
-    renderNextSlide?: CarouselRenderControl | null;
-
-    // render method for the previous slide button
-    renderPreviousSlide?: CarouselRenderControl | null;
-
-    // render method for the central navigation
-    renderBottomNav?: CarouselRenderControl | null;
 }
 
-class Carousel extends React.Component<Props> {
-    static defaultProps = {
-        swiping: true,
-        dragging: false,
-        heightMode: "first",
-        easing: "easeExpInOut"
-    };
-
-    static nukaProps = [
-        "children",
-        "afterSlide",
-        "autoplay",
-        "autoplayInterval",
-        "beforeSlide",
-        "dragging",
-        "easing",
-        "heightMode",
-        "pauseOnHover",
-        "slideIndex",
-        "speed",
-        "swiping",
-        "transitionMode"
-    ];
-
-    public override render() {
-        return (
-            <NukaCarousel
-                {...pick(this.props, Carousel.nukaProps)}
-                {...(this.props.renderPreviousSlide
-                    ? { renderCenterLeftControls: this.props.renderPreviousSlide }
-                    : {})}
-                {...(this.props.renderNextSlide
-                    ? { renderCenterRightControls: this.props.renderNextSlide }
-                    : {})}
-                {...(this.props.renderBottomNav
-                    ? { renderBottomCenterControls: this.props.renderBottomNav }
-                    : {})}
-            >
-                {this.props.children}
-            </NukaCarousel>
-        );
-    }
-}
+/**
+ * @deprecated This component is deprecated and will be removed in future releases.
+ * Please implement your own `Carousel` component or reach out on Slack.
+ */
+const Carousel = (props: Props) => {
+    console.warn("The `Carousel` component is deprecated and will be removed in future releases.");
+    return <>{props.children}</>;
+};
 
 export default Carousel;

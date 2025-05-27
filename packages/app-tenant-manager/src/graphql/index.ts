@@ -6,6 +6,7 @@ const fields = /* GraphQL */ `
         id
         name
         description
+        image
         tags
         parent
     }

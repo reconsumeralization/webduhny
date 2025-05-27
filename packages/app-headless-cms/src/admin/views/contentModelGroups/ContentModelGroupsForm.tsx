@@ -1,12 +1,8 @@
 import React, { useCallback } from "react";
-import styled from "@emotion/styled";
+import { ReactComponent as DevicesIcon } from "@webiny/icons/devices_other.svg";
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 import { Form, FormRenderPropParams } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { Input } from "@webiny/ui/Input";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { i18n } from "@webiny/app/i18n";
 import { validation } from "@webiny/validation";
 
@@ -35,12 +31,9 @@ import {
     UpdateCmsGroupMutationResponse,
     UpdateCmsGroupMutationVariables
 } from "./graphql";
+import { Button, Grid, Input, OverlayLoader, Textarea } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-headless-cms/admin/content-model-groups/form");
-const ButtonWrapper = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
 
 interface ContentModelGroupsFormProps {
     canCreate: boolean;
@@ -173,17 +166,18 @@ const ContentModelGroupsForm = ({ canCreate }: ContentModelGroupsFormProps) => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<DevicesIcon />}
                 title={t`Click on the left side list to display group details {message}`({
                     message: canCreate ? "or create a..." : ""
                 })}
                 action={
                     canCreate ? (
-                        <ButtonDefault
+                        <Button
+                            text={t`New Group`}
+                            icon={<AddIcon />}
                             data-testid="new-record-button"
                             onClick={() => history.push("/cms/content-model-groups?new=true")}
-                        >
-                            <ButtonIcon icon={<AddIcon />} /> {t`New Group`}
-                        </ButtonDefault>
+                        />
                     ) : (
                         <></>
                     )
@@ -197,67 +191,75 @@ const ContentModelGroupsForm = ({ canCreate }: ContentModelGroupsFormProps) => {
             {({ data, form, Bind }: FormRenderPropParams<CmsGroup>) => (
                 <SimpleForm data-testid={"pb-content-model-groups-form"}>
                     <SimpleFormHeader title={data.name ? data.name : t`New content model group`} />
-                    {loading && <CircularProgress />}
+                    {loading && <OverlayLoader />}
                     <SimpleFormContent>
                         <Grid>
-                            <Cell span={12}>
+                            <Grid.Column span={12}>
                                 <Bind
                                     name="name"
                                     validators={validation.create("required,maxLength:100")}
                                 >
-                                    <Input data-testid={"cms.form.group.name"} label={t`Name`} />
+                                    <Input
+                                        size={"lg"}
+                                        data-testid={"cms.form.group.name"}
+                                        label={t`Name`}
+                                    />
                                 </Bind>
-                            </Cell>
+                            </Grid.Column>
 
-                            <Cell span={12}>
+                            <Grid.Column span={12}>
                                 <Bind name="icon" validators={validation.create("required")}>
                                     <IconPicker
                                         label={t`Group icon`}
                                         description={t`Icon that will be displayed in the main menu.`}
                                     />
                                 </Bind>
-                            </Cell>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind name="description">
-                                    <Input
+                                    <Textarea
+                                        size={"lg"}
                                         data-testid={"cms.form.group.description"}
                                         rows={5}
                                         label={t`Description`}
                                     />
                                 </Bind>
-                            </Cell>
+                            </Grid.Column>
                         </Grid>
                     </SimpleFormContent>
                     <SimpleFormFooter>
-                        <ButtonWrapper>
-                            <ButtonDefault
-                                onClick={() => history.push("/cms/content-model-groups")}
-                            >{t`Cancel`}</ButtonDefault>
+                        <Button
+                            variant={"secondary"}
+                            text={t`Cancel`}
+                            onClick={() => history.push("/cms/content-model-groups")}
+                        />
 
-                            {canEdit(data, "cms.contentModelGroup") && (
-                                <React.Fragment>
-                                    {!data.plugin ? (
-                                        <ButtonPrimary
-                                            onClick={ev => {
-                                                form.submit(ev);
-                                            }}
+                        {canEdit(data, "cms.contentModelGroup") && (
+                            <React.Fragment>
+                                {!data.plugin ? (
+                                    <Button
+                                        variant={"primary"}
+                                        text={t`Save`}
+                                        onClick={ev => {
+                                            form.submit(ev);
+                                        }}
+                                        data-testid={"cms.form.group.submit"}
+                                    />
+                                ) : (
+                                    <Tooltip
+                                        content={"Content model group is registered via a plugin."}
+                                        placement={"bottom"}
+                                    >
+                                        <Button
+                                            disabled
+                                            variant={"primary"}
+                                            text={t`Save`}
                                             data-testid={"cms.form.group.submit"}
-                                        >{t`Save content model group`}</ButtonPrimary>
-                                    ) : (
-                                        <Tooltip
-                                            content={
-                                                "Content model group is registered via a plugin."
-                                            }
-                                            placement={"bottom"}
-                                        >
-                                            <ButtonPrimary
-                                                disabled
-                                            >{t`Save content model group`}</ButtonPrimary>
-                                        </Tooltip>
-                                    )}
-                                </React.Fragment>
-                            )}
-                        </ButtonWrapper>
+                                        />
+                                    </Tooltip>
+                                )}
+                            </React.Fragment>
+                        )}
                     </SimpleFormFooter>
                 </SimpleForm>
             )}

@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Delete } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as Delete } from "@webiny/icons/delete.svg";
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 import { useFileManagerApi } from "~/modules/FileManagerApiProvider/FileManagerApiContext";
 import { useDeleteFile } from "~/hooks/useDeleteFile";

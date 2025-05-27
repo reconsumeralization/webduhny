@@ -1,35 +1,42 @@
-import styled from "@emotion/styled";
 import React from "react";
+import { cn } from "@webiny/admin-ui";
 
-const Horizontal = styled.div`
-    display: flex;
-    height: calc(100vh - 160px);
-`;
+interface GrowProps {
+    flex: number;
+    className?: string;
+}
 
-const Grow = styled.div<{ flex: number }>`
-    flex: ${({ flex }) => flex};
-    overflow-y: scroll;
-    :last-of-type {
-        border-left: 1px solid var(--mdc-theme-on-background);
-    }
-`;
+const Grow = ({ flex, children, className }: React.PropsWithChildren<GrowProps>) => {
+    return (
+        <div
+            className={cn(
+                "wby-overflow-y-scroll last-of-type:wby-border-l-sm wby-border-neutral-dimmed",
+                className
+            )}
+            style={{ flex }}
+        >
+            {children}
+        </div>
+    );
+};
 
 interface ContentProps {
     children: React.ReactNode;
 }
 
 export const Content = ({ children }: ContentProps) => {
-    return <Horizontal>{children}</Horizontal>;
+    return <div className={"wby-flex wby-h-full"}>{children}</div>;
 };
 
 interface PanelProps {
     flex?: number;
     children: React.ReactNode;
+    className?: string;
 }
 
-const Panel = ({ flex, children }: PanelProps) => {
+const Panel = ({ flex, children, className }: PanelProps) => {
     return (
-        <Grow data-role={"panel"} flex={flex ?? 1}>
+        <Grow data-role={"panel"} flex={flex ?? 1} className={className}>
             {children}
         </Grow>
     );

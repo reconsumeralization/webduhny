@@ -1,11 +1,8 @@
 import React from "react";
-import styled from "@emotion/styled";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
+import { ReactComponent as LocaleIcon } from "@webiny/icons/translate.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Form } from "@webiny/form";
-import { Grid, Cell } from "@webiny/ui/Grid";
-import { ButtonDefault, ButtonIcon, ButtonPrimary } from "@webiny/ui/Button";
-import { Switch } from "@webiny/ui/Switch";
-import { CircularProgress } from "@webiny/ui/Progress";
 import {
     SimpleForm,
     SimpleFormFooter,
@@ -14,16 +11,11 @@ import {
 } from "@webiny/app-admin/components/SimpleForm";
 import { validation } from "@webiny/validation";
 import EmptyView from "@webiny/app-admin/components/EmptyView";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
 import LocaleCodesAutoComplete from "~/admin/components/LocaleCodesAutoComplete";
 import { useLocaleForm } from "./hooks/useLocaleForm";
+import { Button, Grid, OverlayLoader, Switch } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-i18n/admin/locales/form");
-
-const ButtonWrapper = styled("div")({
-    display: "flex",
-    justifyContent: "space-between"
-});
 
 const I18NLocaleForm = () => {
     const { loading, showEmptyView, createLocale, cancelEditing, locale, onSubmit } =
@@ -33,11 +25,15 @@ const I18NLocaleForm = () => {
     if (showEmptyView) {
         return (
             <EmptyView
+                icon={<LocaleIcon />}
                 title={t`Click on the left side list to display locale details or create a...`}
                 action={
-                    <ButtonDefault data-testid="new-record-button" onClick={createLocale}>
-                        <ButtonIcon icon={<AddIcon />} /> {t`New Locale`}
-                    </ButtonDefault>
+                    <Button
+                        text={t`New Locale`}
+                        icon={<AddIcon />}
+                        data-testid="new-record-button"
+                        onClick={createLocale}
+                    />
                 }
             />
         );
@@ -47,11 +43,11 @@ const I18NLocaleForm = () => {
         <Form data-testid={"i18n-locale-form"} data={locale} onSubmit={onSubmit}>
             {({ data, form, Bind }) => (
                 <SimpleForm>
-                    {loading && <CircularProgress />}
+                    {loading && <OverlayLoader />}
                     <SimpleFormHeader title={data.code || t`New locale`} />
                     <SimpleFormContent>
                         <Grid>
-                            <Cell span={12}>
+                            <Grid.Column span={12}>
                                 <Bind name="code" validators={validation.create("required")}>
                                     <LocaleCodesAutoComplete
                                         disabled={Boolean(data.createdOn)}
@@ -60,26 +56,23 @@ const I18NLocaleForm = () => {
                                         description={t`For example: "en-GB"`}
                                     />
                                 </Bind>
-                            </Cell>
-                        </Grid>
-                        <Grid>
-                            <Cell span={12}>
+                            </Grid.Column>
+                            <Grid.Column span={12}>
                                 <Bind name="default">
-                                    <Switch label={t`Default`} />
+                                    <Switch label={t`Default locale`} />
                                 </Bind>
-                            </Cell>
+                            </Grid.Column>
                         </Grid>
                     </SimpleFormContent>
                     <SimpleFormFooter>
-                        <ButtonWrapper>
-                            <ButtonDefault onClick={cancelEditing}>{t`Cancel`}</ButtonDefault>
-                            <ButtonPrimary
-                                onClick={ev => {
-                                    form.submit(ev);
-                                }}
-                                data-testid="l18n.locale.save"
-                            >{t`Save locale`}</ButtonPrimary>
-                        </ButtonWrapper>
+                        <Button variant={"secondary"} text={t`Cancel`} onClick={cancelEditing} />
+                        <Button
+                            text={t`Save`}
+                            onClick={ev => {
+                                form.submit(ev);
+                            }}
+                            data-testid="l18n.locale.save"
+                        />
                     </SimpleFormFooter>
                 </SimpleForm>
             )}

@@ -53,6 +53,10 @@ export const MODEL_FIELDS = `
     singularApiName
     pluralApiName
     savedOn
+    createdBy {
+        id
+        displayName
+    }
     titleFieldId
     descriptionFieldId
     imageFieldId

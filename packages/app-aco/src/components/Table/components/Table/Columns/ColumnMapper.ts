@@ -1,5 +1,5 @@
 import React from "react";
-import { Column as DataTableColumn } from "@webiny/ui/DataTable";
+import type { DataTableColumn } from "@webiny/admin-ui";
 import { Column, ColumnDTO } from "./Column";
 
 export class ColumnMapper {

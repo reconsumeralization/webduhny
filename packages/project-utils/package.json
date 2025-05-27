@@ -33,7 +33,7 @@
     "@webiny/global-config": "0.0.0",
     "@webiny/telemetry": "0.0.0",
     "assert-browserify": "^2.0.0",
-    "babel-loader": "^9.2.1",
+    "babel-loader": "9.2.1",
     "buffer": "^6.0.3",
     "bufferutil": "^4.0.1",
     "camelcase": "^6.3.0",

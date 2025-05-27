@@ -31,6 +31,10 @@
     "cheerio": "^1.0.0-rc.10",
     "srcset": "^4.0.0"
   },
+  "scripts": {
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
+  },
   "devDependencies": {
     "@webiny/project-utils": "0.0.0"
   },

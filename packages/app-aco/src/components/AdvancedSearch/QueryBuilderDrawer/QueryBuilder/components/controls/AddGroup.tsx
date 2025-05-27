@@ -1,6 +1,6 @@
 import React from "react";
-import { ButtonDefault } from "@webiny/ui/Button";
-import { AddGroupInner, ButtonIcon } from "../../Querybuilder.styled";
+import { Button } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
 interface AddGroupProps {
     onClick: () => void;
@@ -8,10 +8,13 @@ interface AddGroupProps {
 
 export const AddGroup = ({ onClick }: AddGroupProps) => {
     return (
-        <AddGroupInner>
-            <ButtonDefault onClick={onClick}>
-                <ButtonIcon /> {"Add new filter group"}
-            </ButtonDefault>
-        </AddGroupInner>
+        <div className={"wby-mt-lg wby-text-center"}>
+            <Button
+                onClick={onClick}
+                text={"Add new filter group"}
+                icon={<AddIcon />}
+                variant={"secondary"}
+            />
+        </div>
     );
 };

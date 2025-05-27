@@ -1,24 +1,18 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { IconButton } from "@webiny/ui/Button";
 import { useRouter } from "@webiny/react-router";
-import { ReactComponent as BackIcon } from "./icons/round-arrow_back-24px.svg";
-
-const BackButtonWrapper = styled.div`
-    margin-left: -10px;
-`;
+import { ReactComponent as BackIcon } from "@webiny/icons/arrow_back.svg";
+import { IconButton } from "@webiny/admin-ui";
 
 const BackButton = React.memo(() => {
     const { history } = useRouter();
 
     return (
-        <BackButtonWrapper>
-            <IconButton
-                data-testid="cms-editor-back-button"
-                onClick={() => history.push(`/cms/content-models`)}
-                icon={<BackIcon />}
-            />
-        </BackButtonWrapper>
+        <IconButton
+            data-testid="cms-editor-back-button"
+            onClick={() => history.push(`/cms/content-models`)}
+            icon={<BackIcon />}
+            variant="ghost"
+        />
     );
 });
 

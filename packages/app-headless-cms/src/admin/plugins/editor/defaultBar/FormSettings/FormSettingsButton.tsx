@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { IconButton } from "@webiny/ui/Button";
 import FormSettings from "./FormSettings";
 
-import { ReactComponent as SettingsIcon } from "./../icons/settings.svg";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/settings.svg";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 const FormSettingsButton = () => {
     const [opened, setOpened] = useState(false);
@@ -11,7 +11,11 @@ const FormSettingsButton = () => {
 
     return (
         <>
-            <IconButton onClick={open} icon={<SettingsIcon />} />
+            <Tooltip
+                content={"View content model settings"}
+                side={"bottom"}
+                trigger={<IconButton onClick={open} icon={<SettingsIcon />} variant={"ghost"} />}
+            />
             {opened && <FormSettings onExited={close} />}
         </>
     );

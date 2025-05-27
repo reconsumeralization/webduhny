@@ -1,11 +1,8 @@
 import React, { ReactNode } from "react";
-
 import { Form, FormOnSubmit, GenericFormData } from "@webiny/form";
 import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
-import { DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
+import { Dialog as UiDialog, DialogActions, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 import { CircularProgress } from "@webiny/ui/Progress";
-
-import { DialogContainer } from "./styled";
 
 interface DialogProps {
     title: ReactNode;
@@ -37,7 +34,7 @@ export const Dialog = ({
     };
 
     return (
-        <DialogContainer open={open} onClose={closeDialog}>
+        <UiDialog open={open} onClose={closeDialog}>
             {open ? (
                 <Form onSubmit={handleSubmit} data={formData}>
                     {({ submit }) => (
@@ -59,6 +56,6 @@ export const Dialog = ({
                     )}
                 </Form>
             ) : null}
-        </DialogContainer>
+        </UiDialog>
     );
 };

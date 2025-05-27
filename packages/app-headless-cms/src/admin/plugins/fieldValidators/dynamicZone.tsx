@@ -7,7 +7,7 @@ import {
     CmsModelFieldValidatorConfig,
     CmsModelFieldValidatorPlugin
 } from "~/types";
-import { ValidatorsList } from "~/admin/components/FieldEditor/EditFieldDialog/ValidatorsList";
+import { ValidatorsList } from "~/admin/components/FieldEditor/EditFieldDialog/ValidationTab/ValidatorsList";
 import { createValidators } from "~/utils/createValidators";
 import { CmsModelFieldValidatorConfigAdapter } from "~/utils/CmsModelFieldValidatorConfigAdapter";
 import { useModelField } from "~/admin/components/ModelFieldProvider";

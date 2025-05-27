@@ -1,10 +1,6 @@
 import React from "react";
-
-import { ReactComponent as AddIcon } from "@material-design-icons/svg/round/add_circle_outline.svg";
-import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
-
-import { AddFilterInner } from "../../Querybuilder.styled";
+import { ReactComponent as AddIcon } from "@webiny/icons/add_circle_outline.svg";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 
 interface AddFilterProps {
     onClick: () => void;
@@ -12,10 +8,12 @@ interface AddFilterProps {
 
 export const AddFilter = ({ onClick }: AddFilterProps) => {
     return (
-        <AddFilterInner>
-            <Tooltip content={"Add new condition"} placement={"bottom"}>
-                <IconButton label={"Add new condition"} icon={<AddIcon />} onClick={onClick} />
-            </Tooltip>
-        </AddFilterInner>
+        <div className={"wby-my-md wby-text-center"}>
+            <Tooltip
+                content={"Add new condition"}
+                side={"bottom"}
+                trigger={<IconButton icon={<AddIcon />} onClick={onClick} variant={"ghost"} />}
+            />
+        </div>
     );
 };

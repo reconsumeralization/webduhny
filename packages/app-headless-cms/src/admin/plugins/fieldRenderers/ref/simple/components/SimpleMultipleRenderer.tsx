@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { BindComponentRenderProp, CmsModelField } from "~/types";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
 import { useContentModels } from "./useContentModels";
 import { useReferences } from "./useReferences";
-import { AddItemParams, RemoveItemParams, SimpleItems } from "./SimpleItems";
+import { CheckboxGroup } from "@webiny/admin-ui";
+import { Loader } from "./Loader";
 
 interface SimpleMultipleRendererProps {
     bind: BindComponentRenderProp<CmsReferenceValue[] | undefined | null>;
@@ -14,7 +15,7 @@ export const SimpleMultipleRenderer = (props: SimpleMultipleRendererProps) => {
     const { field, bind } = props;
 
     const values = useMemo(() => {
-        return Array.isArray(bind.value) ? bind.value : [];
+        return Array.isArray(bind.value) ? bind.value.map(item => item.id) : [];
     }, [bind.value]);
 
     const { models } = useContentModels({
@@ -25,34 +26,41 @@ export const SimpleMultipleRenderer = (props: SimpleMultipleRendererProps) => {
         models
     });
 
-    const addItem = useCallback(
-        (params: AddItemParams) => {
-            bind.onChange([...values, params]);
-        },
-        [bind, values]
-    );
-    const removeItem = useCallback(
-        ({ entryId }: RemoveItemParams) => {
-            bind.onChange(
-                values.filter(value => {
-                    if (!value?.id) {
-                        return false;
-                    }
-                    return value.id.substring(0, entryId.length) !== entryId;
-                })
-            );
-        },
-        [bind, values]
-    );
+    const items = useMemo(() => {
+        if (!references.entries) {
+            return [];
+        }
+
+        return references.entries.map(entry => ({
+            label: entry.title,
+            value: entry.id
+        }));
+    }, [references]);
+
+    if (references.loading) {
+        return <Loader />;
+    }
 
     return (
-        <SimpleItems
-            multiple={true}
-            field={field}
-            values={values}
-            items={references.entries}
-            addItem={addItem}
-            removeItem={removeItem}
+        <CheckboxGroup
+            {...bind}
+            label={field.label}
+            description={field.helpText}
+            value={values}
+            items={items}
+            onChange={(values: string[]) => {
+                const selectedEntryIds = values.map(value => value.split("#")[0]);
+                const selectedItems = references.entries.filter(entry =>
+                    selectedEntryIds.includes(entry.entryId)
+                );
+
+                bind.onChange(
+                    selectedItems.map(({ id, model }) => ({
+                        id,
+                        modelId: model.modelId
+                    }))
+                );
+            }}
         />
     );
 };

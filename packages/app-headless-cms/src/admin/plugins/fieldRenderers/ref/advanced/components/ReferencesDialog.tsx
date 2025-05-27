@@ -1,43 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import styled from "@emotion/styled";
+import React, { useCallback, useEffect, useState } from "react";
 import { Search } from "./Search";
 import { Entry } from "./Entry";
-import { DialogActions, DialogContent as BaseDialogContent } from "~/admin/components/Dialog";
 import { CmsModelField, CmsModelFieldRendererProps } from "~/types";
 import { CmsReferenceValue } from "~/admin/plugins/fieldRenderers/ref/components/types";
-import { ButtonDefault, ButtonPrimary } from "@webiny/ui/Button";
 import { useSnackbar } from "@webiny/app-admin";
 import { parseIdentifier } from "@webiny/utils";
-import { AbsoluteLoader } from "~/admin/plugins/fieldRenderers/ref/advanced/components/Loader";
 import { useEntries } from "~/admin/plugins/fieldRenderers/ref/advanced/hooks/useEntries";
 import { Entries } from "./Entries";
-import { Dialog } from "~/admin/plugins/fieldRenderers/ref/components/dialog/Dialog";
-import { DialogHeader } from "~/admin/plugins/fieldRenderers/ref/components/dialog/DialogHeader";
 import { MultiRefFieldSettings } from "~/admin/plugins/fieldRenderers/ref/advanced/components/AdvancedMultipleReferenceSettings";
-
-const Container = styled("div")({
-    width: "100%",
-    boxSizing: "border-box",
-    padding: "20px"
-});
-
-const Content = styled("div")({
-    display: "flex",
-    flex: "1",
-    flexDirection: "column",
-    position: "relative",
-    width: "100%",
-    minHeight: "20px",
-    boxSizing: "border-box",
-    padding: "20px 0 20px 20px",
-    backgroundColor: "var(--mdc-theme-background)",
-    border: "1px solid var(--mdc-theme-on-background)",
-    overflowX: "hidden"
-});
-
-const DialogContent = styled(BaseDialogContent)({
-    padding: "0 !important"
-});
+import { Dialog, OverlayLoader } from "@webiny/admin-ui";
 
 const isSelected = (entryId: string, values: CmsReferenceValue[]) => {
     if (!entryId) {
@@ -78,6 +49,7 @@ export const ReferencesDialog = (props: ReferencesDialogProps) => {
     } = props;
 
     const [values, setValues] = useState<CmsReferenceValue[]>(initialValues || []);
+    const [searchValue, setSearchValue] = useState<string>("");
     const rendererSettings = getSettings(field);
     const newItemPosition = rendererSettings?.newItemPosition ?? "last";
 
@@ -152,52 +124,42 @@ export const ReferencesDialog = (props: ReferencesDialogProps) => {
         showSnackbar(error);
     }, [error]);
 
-    const debouncedSearch = useRef<number | null>(null);
-
-    const onInput = useCallback((ev: React.BaseSyntheticEvent) => {
-        const value = (String(ev.target.value) || "").trim();
-        if (debouncedSearch.current) {
-            clearTimeout(debouncedSearch.current);
-            debouncedSearch.current = null;
-        }
-        /**
-         * We can safely cast as setTimeout really produces a number.
-         * There is an error while coding because Storm thinks this is NodeJS timeout.
-         */
-        debouncedSearch.current = setTimeout(() => {
-            runSearch(value);
-        }, 200) as unknown as number;
+    const onInput = useCallback((value: string) => {
+        runSearch(value);
+        setSearchValue(value);
     }, []);
 
     return (
         <>
-            <Dialog open={true} onClose={onDialogClose}>
-                <DialogHeader model={contentModel} onClose={onDialogClose} />
-                <DialogContent>
-                    <Container>
-                        <Search onInput={onInput} />
-                        <Content>
-                            {loading && <AbsoluteLoader />}
-                            <Entries entries={entries} loadMore={loadMore}>
-                                {entry => {
-                                    return (
-                                        <Entry
-                                            model={contentModel}
-                                            key={`reference-entry-${entry.id}`}
-                                            entry={entry}
-                                            selected={isSelected(entry.entryId, values)}
-                                            onChange={onChange}
-                                        />
-                                    );
-                                }}
-                            </Entries>
-                        </Content>
-                    </Container>
-                </DialogContent>
-                <DialogActions>
-                    <ButtonDefault onClick={onDialogClose}>Cancel</ButtonDefault>
-                    <ButtonPrimary onClick={onDialogSave}>Save</ButtonPrimary>
-                </DialogActions>
+            <Dialog
+                open={true}
+                onOpenChange={open => !open && onDialogClose()}
+                title={"Select an existing record"}
+                description={`Content model: ${contentModel.name}`}
+                actions={
+                    <>
+                        <Dialog.CancelButton />
+                        <Dialog.ConfirmButton onClick={onDialogSave} text="Save" />
+                    </>
+                }
+            >
+                <>
+                    {loading && <OverlayLoader />}
+                    <Search onChange={onInput} value={searchValue} />
+                    <Entries entries={entries} loadMore={loadMore}>
+                        {entry => {
+                            return (
+                                <Entry
+                                    model={contentModel}
+                                    key={`reference-entry-${entry.id}`}
+                                    entry={entry}
+                                    selected={isSelected(entry.entryId, values)}
+                                    onChange={onChange}
+                                />
+                            );
+                        }}
+                    </Entries>
+                </>
             </Dialog>
         </>
     );

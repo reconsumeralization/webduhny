@@ -1,26 +1,7 @@
 import React from "react";
 import { Buttons } from "@webiny/app-admin";
-import styled from "@emotion/styled";
 import { SaveAction } from "./SaveAction";
-
-const ToolbarGrid = styled.div`
-    padding: 15px;
-    border-bottom: 1px solid var(--mdc-theme-on-background);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const Actions = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const ModelName = styled.div`
-    font-family: var(--mdc-typography-font-family);
-    padding: 10px 0;
-    font-size: 24px;
-`;
+import { Grid, Heading } from "@webiny/admin-ui";
 
 export interface SingletonHeaderProps {
     title: string;
@@ -28,11 +9,19 @@ export interface SingletonHeaderProps {
 
 export const SingletonHeader = ({ title }: SingletonHeaderProps) => {
     return (
-        <ToolbarGrid>
-            <ModelName>{title}</ModelName>
-            <Actions>
-                <Buttons actions={[{ name: "save", element: <SaveAction /> }]} />
-            </Actions>
-        </ToolbarGrid>
+        <div className={"wby-p-md wby-pl-lg wby-border-b-sm wby-border-neutral-dimmed-darker"}>
+            <Grid>
+                <Grid.Column span={9}>
+                    <Heading level={4} className={"wby-truncate"}>
+                        {title}
+                    </Heading>
+                </Grid.Column>
+                <Grid.Column span={3}>
+                    <div className="wby-flex wby-items-center wby-justify-end">
+                        <Buttons actions={[{ name: "save", element: <SaveAction /> }]} />
+                    </div>
+                </Grid.Column>
+            </Grid>
+        </div>
     );
 };

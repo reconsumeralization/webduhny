@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import kebabCase from "lodash/kebabCase";
-import { ReactComponent as TabsIcon } from "@material-design-icons/svg/round/tab.svg";
+import { ReactComponent as TabsIcon } from "@webiny/icons/tab.svg";
 import { createInitialPerDeviceSettingValue } from "~/editor/plugins/elementSettings/elementSettingsUtils";
 import { createElement } from "~/editor/helpers";
 import Tabs from "./Tabs";

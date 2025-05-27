@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { observer } from "mobx-react-lite";
 
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";

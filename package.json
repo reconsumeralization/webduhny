@@ -171,6 +171,7 @@
     "webiny-versions": "node ./scripts/webinyVersions.js",
     "trigger-release": "node ./scripts/release/triggerRelease.js",
     "dispatch-github-event": "node ./scripts/dispatchGitHubEvent.js",
+    "link-workspaces": "node ./scripts/linkWorkspaces.js",
     "lint-staged": "lint-staged",
     "postinstall": "yarn node ./scripts/linkWorkspaces.js",
     "prepublishOnly": "node scripts/prepublishOnly",
@@ -194,7 +195,10 @@
     "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn webiny verify-dependencies",
     "system:build": "yarn && yarn ghawac build && yarn webiny sync-dependencies && yarn build",
     "wby": "./node_modules/.bin/wby",
-    "webiny-ui-build-storybook": "cd packages/ui && cross-env OUT=../../netlify-static yarn build-storybook"
+    "webiny-admin-storybook": "cd packages/admin-ui && yarn storybook",
+    "webiny-admin-storybook-docs": "cd packages/admin-ui && yarn storybook-docs",
+    "webiny-admin-build-storybook": "cd packages/admin-ui && cross-env OUT=../../netlify-static yarn build-storybook",
+    "webiny-admin-import-from-figma": "node packages/admin-ui/scripts/importFromFigma.js"
   },
   "husky": {
     "hooks": {

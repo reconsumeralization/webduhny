@@ -10,7 +10,7 @@ const Divider = styled.div`
 
 const LeftSidebarContainer = styled.div`
     padding: 8px;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 45px);
     background-color: var(--mdc-theme-surface);
     border-right: 1px solid var(--mdc-theme-on-background);
     overflow-y: scroll;

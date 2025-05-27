@@ -1,6 +1,6 @@
 import React from "react";
-import { ButtonDefault } from "@webiny/ui/Button";
-import { Icon } from "./Button.styled";
+import { Button as UIButton, Icon } from "@webiny/admin-ui";
+import { ReactComponent as SettingsIcon } from "@webiny/icons/tune.svg";
 
 export interface ButtonProps {
     onClick: () => void;
@@ -8,8 +8,11 @@ export interface ButtonProps {
 
 export const Button = ({ onClick }: ButtonProps) => {
     return (
-        <ButtonDefault onClick={onClick}>
-            Advanced search filter <Icon />
-        </ButtonDefault>
+        <UIButton
+            onClick={onClick}
+            text={"Advanced search filter"}
+            icon={<Icon label={"Advanced search filter"} icon={<SettingsIcon />} />}
+            variant={"secondary"}
+        />
     );
 };

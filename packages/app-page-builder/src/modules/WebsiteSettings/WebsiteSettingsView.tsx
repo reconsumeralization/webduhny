@@ -1,8 +1,6 @@
 import React, { Fragment } from "react";
 import { CenteredView } from "@webiny/app-admin";
 import { Form } from "@webiny/form";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { CircularProgress } from "@webiny/ui/Progress";
 import {
     SimpleForm,
     SimpleFormContent,
@@ -11,7 +9,8 @@ import {
 } from "@webiny/app-admin/components/SimpleForm";
 import { usePbWebsiteSettings } from "./usePbWebsiteSettings";
 import { WebsiteSettingsConfig } from "~/modules/WebsiteSettings/config/WebsiteSettingsConfig";
-import { Cell, Grid } from "@webiny/ui/Grid";
+
+import { Button, Grid, OverlayLoader } from "@webiny/admin-ui";
 
 export const WebsiteSettingsView = () => {
     const { fetching, saving, settings, saveSettings } = usePbWebsiteSettings();
@@ -22,30 +21,29 @@ export const WebsiteSettingsView = () => {
             <Form data={settings} onSubmit={saveSettings}>
                 {({ submit }) => (
                     <SimpleForm>
-                        {fetching && <CircularProgress label={"Loading settings..."} />}
-                        {saving && <CircularProgress label={"Saving settings..."} />}
-                        {groups.map(group => (
+                        {fetching && <OverlayLoader text={"Loading settings..."} />}
+                        {saving && <OverlayLoader text={"Saving settings..."} />}
+                        {groups.map((group, index) => (
                             <Fragment key={group.name}>
-                                <SimpleFormHeader title={group.label} />
+                                <SimpleFormHeader title={group.label} rounded={index === 0} />
                                 <SimpleFormContent>
                                     <Grid>
                                         {(group.elements || []).map(el => (
-                                            <Cell key={el.name} span={12}>
+                                            <Grid.Column key={el.name} span={12}>
                                                 {el.element}
-                                            </Cell>
+                                            </Grid.Column>
                                         ))}
                                     </Grid>
                                 </SimpleFormContent>
                             </Fragment>
                         ))}
                         <SimpleFormFooter>
-                            <ButtonPrimary
+                            <Button
+                                text={"Save"}
                                 onClick={ev => {
                                     submit(ev);
                                 }}
-                            >
-                                Save
-                            </ButtonPrimary>
+                            />
                         </SimpleFormFooter>
                     </SimpleForm>
                 )}

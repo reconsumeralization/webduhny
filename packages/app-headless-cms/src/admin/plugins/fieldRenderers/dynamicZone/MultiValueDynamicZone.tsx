@@ -1,11 +1,9 @@
 import React from "react";
-import styled from "@emotion/styled";
 import cloneDeep from "lodash/cloneDeep";
-import { Accordion, AccordionItem } from "@webiny/ui/Accordion";
-import { ReactComponent as DeleteIcon } from "@material-design-icons/svg/outlined/delete_outline.svg";
-import { ReactComponent as CloneIcon } from "@material-design-icons/svg/outlined/library_add.svg";
-import { ReactComponent as ArrowUpIcon } from "@material-design-icons/svg/outlined/arrow_drop_up.svg";
-import { ReactComponent as ArrowDownIcon } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
+import { ReactComponent as DeleteIcon } from "@webiny/icons/delete_outline.svg";
+import { ReactComponent as CloneIcon } from "@webiny/icons/library_add.svg";
+import { ReactComponent as ArrowUpIcon } from "@webiny/icons/expand_less.svg";
+import { ReactComponent as ArrowDownIcon } from "@webiny/icons/expand_more.svg";
 import { AddTemplateButton, AddTemplateIcon } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";
 import { ParentFieldProvider, useModelField } from "~/admin/hooks";
@@ -23,10 +21,7 @@ import { makeDecoratable } from "@webiny/react-composition";
 import { TemplateProvider } from "~/admin/plugins/fieldRenderers/dynamicZone/TemplateProvider";
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { useConfirmationDialog } from "@webiny/app-admin";
-
-const BottomMargin = styled.div`
-    margin-bottom: 20px;
-`;
+import { Accordion, Tooltip } from "@webiny/admin-ui";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -51,43 +46,39 @@ export const MultiValueItemContainer = makeDecoratable(
     "MultiValueItemContainer",
     ({ children, ...props }: MultiValueItemContainerProps) => {
         const actions = (
-            <AccordionItem.Actions>
-                <AccordionItem.Action
-                    icon={<ArrowUpIcon />}
-                    tooltip={"Move up"}
+            <>
+                <Accordion.Item.Action
+                    icon={<Tooltip trigger={<ArrowUpIcon />} content={"Move up"} />}
                     onClick={props.onMoveUp}
                     disabled={props.isFirst}
                 />
-                <AccordionItem.Action
-                    icon={<ArrowDownIcon />}
-                    tooltip={"Move down"}
+                <Accordion.Item.Action
+                    icon={<Tooltip trigger={<ArrowDownIcon />} content={"Move down"} />}
                     onClick={props.onMoveDown}
                     disabled={props.isLast}
                 />
-                <AccordionItem.Divider />
+                <Accordion.Item.Action.Separator />
                 {props.actions ? <>{props.actions}</> : null}
-                <AccordionItem.Action
-                    tooltip={"Duplicate"}
-                    icon={<CloneIcon />}
+                <Accordion.Item.Action
+                    icon={<Tooltip trigger={<CloneIcon />} content={"Duplicate"} />}
                     onClick={() => props.onClone(props.value)}
                 />
-                <AccordionItem.Action
-                    icon={<DeleteIcon />}
+                <Accordion.Item.Action
+                    icon={<Tooltip trigger={<DeleteIcon />} content={"Delete"} />}
                     onClick={props.onDelete}
-                    tooltip={"Delete"}
                 />
-            </AccordionItem.Actions>
+            </>
         );
 
         return (
-            <AccordionItem
+            <Accordion.Item
                 title={props.title}
                 description={props.description}
                 icon={props.icon}
                 actions={actions}
             >
                 {children}
-            </AccordionItem>
+            </Accordion.Item>
         );
     }
 );
@@ -261,9 +252,7 @@ export const MultiValueDynamicZone = (props: MultiValueDynamicZoneProps) => {
             {hasValues ? (
                 <AddTemplateIcon onTemplate={onTemplate} />
             ) : (
-                <BottomMargin>
-                    <AddTemplateButton onTemplate={onTemplate} />
-                </BottomMargin>
+                <AddTemplateButton onTemplate={onTemplate} />
             )}
         </>
     );

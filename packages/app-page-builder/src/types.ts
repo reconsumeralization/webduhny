@@ -4,7 +4,6 @@ import { BaseEventAction, EventAction } from "./editor/recoil/eventActions";
 import { PbState } from "./editor/recoil/modules/types";
 import { GenericRecord, Plugin } from "@webiny/app/types";
 import { BindComponent } from "@webiny/form";
-import { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import { Icon } from "@webiny/app-admin/components/IconPicker/types";
 import { FormAPI, FormOnSubmit, FormSetValue, GenericFormData } from "@webiny/form/types";
 import { CoreOptions } from "medium-editor";
@@ -15,6 +14,7 @@ import { Theme } from "@webiny/app-theme/types";
 import { Renderer } from "@webiny/app-page-builder-elements/types";
 import { FolderTableItem, RecordTableItem, SearchRecordItem } from "@webiny/app-aco/table.types";
 import type { SourceType } from "dnd-core";
+import { IconPickerIconDto } from "@webiny/admin-ui";
 
 export type DragObjectWithType = {
     type: SourceType;
@@ -622,24 +622,9 @@ export interface PbEditorPageQueryFieldsPlugin extends Plugin {
     fields: string;
 }
 
-export type PbIcon = {
-    /**
-     * [ pack, icon ], ex: ["fab", "cog"]
-     */
-    id: [IconPrefix, IconName];
-    /**
-     * Icon name
-     */
-    name: string;
-    /**
-     * SVG element
-     */
-    svg: ReactElement;
-};
-
 export type PbIconsPlugin = Plugin & {
     type: "pb-icons";
-    getIcons(): PbIcon[];
+    getIcons(): IconPickerIconDto[];
 };
 
 export type PbEditorToolbarTopPlugin = Plugin & {

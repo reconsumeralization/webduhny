@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import orderBy from "lodash/orderBy";
+import { Avatar, Button, Grid, Select, Tooltip } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
-import { Image } from "@webiny/app/components";
+import { useSecurity } from "@webiny/app-security";
 import {
     DataList,
     ScrollList,
@@ -13,22 +15,17 @@ import {
     ListActions,
     ListItemGraphic,
     DataListModalOverlayAction,
-    DataListModalOverlay
+    DataListModalOverlay,
+    ListItemTextPrimary
 } from "@webiny/ui/List";
-import { ButtonIcon, ButtonSecondary } from "@webiny/ui/Button";
-import { Avatar } from "@webiny/ui/Avatar";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
+import { DeleteIcon } from "@webiny/ui/List/DataList/icons";
 import { useRouter } from "@webiny/react-router";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
 import { useConfirmationDialog } from "@webiny/app-admin/hooks/useConfirmationDialog";
 import SearchUI from "@webiny/app-admin/components/SearchUI";
-import { ReactComponent as AddIcon } from "@webiny/app-admin/assets/icons/add-18px.svg";
-import { ReactComponent as FilterIcon } from "@webiny/app-admin/assets/icons/filter-24px.svg";
 import { DELETE_USER, LIST_USERS } from "./graphql";
 import { deserializeSorters } from "../utils";
 import { UserItem } from "~/UserItem";
-import { DeleteAction } from "./components/DeleteAction";
 
 const t = i18n.ns("app-identity/admin/users/data-list");
 
@@ -58,6 +55,7 @@ interface FilterUsersCallable {
 const UsersDataList = () => {
     const [filter, setFilter] = useState("");
     const [sort, setSort] = useState<string>(SORTERS[0].sorter);
+    const { identity } = useSecurity();
     const { history } = useRouter();
     const { showSnackbar } = useSnackbar();
     const { showConfirmation } = useConfirmationDialog({
@@ -123,17 +121,17 @@ const UsersDataList = () => {
         () => (
             <DataListModalOverlay>
                 <Grid>
-                    <Cell span={12}>
-                        <Select value={sort} onChange={setSort} label={t`Sort by`}>
-                            {SORTERS.map(({ label, sorter }) => {
-                                return (
-                                    <option key={label} value={sorter}>
-                                        {label}
-                                    </option>
-                                );
-                            })}
-                        </Select>
-                    </Cell>
+                    <Grid.Column span={12}>
+                        <Select
+                            value={sort}
+                            onChange={setSort}
+                            label={t`Sort by`}
+                            options={SORTERS.map(({ label, sorter: value }) => ({
+                                label,
+                                value
+                            }))}
+                        />
+                    </Grid.Column>
                 </Grid>
             </DataListModalOverlay>
         ),
@@ -146,28 +144,31 @@ const UsersDataList = () => {
         <DataList
             title={t`Admin Users`}
             actions={
-                <ButtonSecondary
+                <Button
+                    text={t`New`}
+                    icon={<AddIcon />}
+                    size={"sm"}
+                    className={"wby-ml-xs"}
                     data-testid="new-record-button"
                     onClick={() => history.push("/admin-users?new=true")}
-                >
-                    <ButtonIcon icon={<AddIcon />} /> {t`New User`}
-                </ButtonSecondary>
+                />
             }
             data={userList}
             loading={loading}
             search={
-                <SearchUI value={filter} onChange={setFilter} inputPlaceholder={t`Search users`} />
+                <SearchUI
+                    value={filter}
+                    onChange={setFilter}
+                    inputPlaceholder={t`Search users...`}
+                />
             }
             modalOverlay={usersDataListModalOverlay}
             modalOverlayAction={
-                <DataListModalOverlayAction
-                    icon={<FilterIcon />}
-                    data-testid={"default-data-list.filter"}
-                />
+                <DataListModalOverlayAction data-testid={"default-data-list.filter"} />
             }
         >
             {({ data }: { data: UserItem[] }) => (
-                <ScrollList twoLine avatarList data-testid="default-data-list">
+                <ScrollList data-testid="default-data-list">
                     {data.map(item => (
                         <ListItem
                             key={item.id}
@@ -176,24 +177,43 @@ const UsersDataList = () => {
                         >
                             <ListItemGraphic>
                                 <Avatar
-                                    renderImage={props => (
-                                        <Image {...props} transform={{ width: 100 }} />
-                                    )}
-                                    src={item.avatar ? item.avatar.src : item.gravatar}
-                                    fallbackText={item.firstName}
-                                    alt={t`User's avatar.`}
+                                    image={
+                                        <Avatar.Image
+                                            src={item.avatar ? item.avatar.src : item.gravatar}
+                                            alt={item.firstName}
+                                        />
+                                    }
+                                    fallback={
+                                        <Avatar.Fallback delayMs={0}>
+                                            {item.firstName.charAt(0)}
+                                        </Avatar.Fallback>
+                                    }
                                 />
                             </ListItemGraphic>
                             <ListItemText
                                 onClick={() => history.push(`/admin-users?id=${item.id}`)}
                             >
-                                {item.firstName} {item.lastName}
+                                <ListItemTextPrimary>
+                                    {item.firstName} {item.lastName}
+                                </ListItemTextPrimary>
                                 <ListItemTextSecondary>{item.email}</ListItemTextSecondary>
                             </ListItemText>
 
                             <ListItemMeta>
                                 <ListActions>
-                                    <DeleteAction item={item} onClick={() => deleteItem(item)} />
+                                    {identity && identity.id !== item.id ? (
+                                        <DeleteIcon
+                                            onClick={() => deleteItem(item)}
+                                            data-testid={"default-data-list.delete"}
+                                        />
+                                    ) : (
+                                        <Tooltip
+                                            content={
+                                                <span>{t`You can't delete your own user account.`}</span>
+                                            }
+                                            trigger={<DeleteIcon disabled />}
+                                        />
+                                    )}
                                 </ListActions>
                             </ListItemMeta>
                         </ListItem>
