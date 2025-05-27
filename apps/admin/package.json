@@ -20,8 +20,6 @@
     "@webiny/serverless-cms-aws": "0.0.0",
     "core-js": "3.39.0",
     "cross-fetch": "^3.1.5",
-    "page-elements": "1.0.0",
-    "pages-brand-settings": "1.0.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
