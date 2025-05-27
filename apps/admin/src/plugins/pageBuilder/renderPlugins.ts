@@ -27,7 +27,6 @@ import carousel from "@webiny/app-page-builder/render/plugins/elements/carousel"
 import carouselElement from "@webiny/app-page-builder/render/plugins/elements/carouselElement";
 // Page settings
 import pageSettings from "@webiny/app-page-builder/render/plugins/pageSettings";
-
 // Element settings
 import align from "@webiny/app-page-builder/render/plugins/elementSettings/align";
 import animation from "@webiny/app-page-builder/render/plugins/elementSettings/animation";
