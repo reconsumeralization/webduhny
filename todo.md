@@ -7,5 +7,6 @@
 
 ## Docs
 - system roles won't have IDs preserved (np)
-- createdOn/createdBy non preserved sometimes (prolly np)
+- createdOn/createdBy non preserved sometimes (prolly np) 
+  - folders, roles
 - custom fields? (createFieldsList)

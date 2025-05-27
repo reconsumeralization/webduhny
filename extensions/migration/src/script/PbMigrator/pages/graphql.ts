@@ -200,22 +200,49 @@ export const RENDER_PAGE = /* GraphQL */ `
 `;
 
 export const LIST_FOLDERS = /* GraphQL */ `
-    query ListFoldersCompressed($type: String!, $limit: Int!) {
+    query ListFolders($type: String!, $limit: Int) {
         aco {
-            listFoldersCompressed(where: { type: $type }, limit: $limit) {
+            listFolders(where: { type: $type }, limit: $limit) {
                 data {
-                    value
-                    __typename
+                    id
+                    title
+                    slug
+                    parentId
+                    type
+                    savedOn
+                    createdOn
+                    createdBy {
+                        id
+                        displayName
+                    }
                 }
                 error {
                     code
                     data
                     message
-                    __typename
                 }
-                __typename
             }
-            __typename
+        }
+    }
+`;
+
+export const CREATE_FOLDER = /* GraphQL */ `
+    mutation CreateFolder($data: FolderCreateInput!) {
+        aco {
+            createFolder(data: $data) {
+                data {
+                    id
+                    title
+                    slug
+                    type
+                    parentId
+                }
+                error {
+                    code
+                    data
+                    message
+                }
+            }
         }
     }
 `;

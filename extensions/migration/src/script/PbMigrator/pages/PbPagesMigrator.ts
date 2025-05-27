@@ -1,4 +1,12 @@
-import { CREATE_PAGE, LIST_PAGES, RENDER_PAGE, GET_PAGE, GET_PUBLISHED_PAGE } from "./graphql";
+import {
+    CREATE_PAGE,
+    LIST_PAGES,
+    RENDER_PAGE,
+    GET_PAGE,
+    GET_PUBLISHED_PAGE,
+    LIST_FOLDERS,
+    CREATE_FOLDER
+} from "./graphql";
 import { PbMigrator } from "../../PbMigrator";
 
 export class PbPagesMigrator {
@@ -10,6 +18,42 @@ export class PbPagesMigrator {
 
     async run() {
         const { sourceGqlClient } = this.pbMigrator;
+
+        // Recreate folders.
+        const sourceFolders = await sourceGqlClient
+            .run(LIST_FOLDERS, { type: "PbPage", limit: 10_000 })
+            .then(res => {
+                return res.aco.listFolders;
+            });
+
+        if (sourceFolders.error) {
+            console.log("Failed to list source folders:", sourceFolders.error);
+            return;
+        }
+
+        for (const sourceFolder of sourceFolders.data) {
+            const { id, title, slug, parentId, type } = sourceFolder;
+            const variables = {
+                data: {
+                    id: id.split("#")[0], // Extract the ID part after the hash
+                    title,
+                    slug,
+                    parentId,
+                    type
+                }
+            };
+            const createFolderRes = await this.pbMigrator.targetGqlClient.run(
+                CREATE_FOLDER,
+                variables
+            );
+
+            if (createFolderRes.error) {
+                console.log(
+                    `Failed to create folder "${sourceFolder.name}":`,
+                    createFolderRes.error
+                );
+            }
+        }
 
         // Repeat until we have no more pages to migrate.
         let cursor = null;
@@ -51,7 +95,7 @@ export class PbPagesMigrator {
                 }
 
                 await this.migratePage(sourcePublishedPage);
-                await this.migratePage(sourceLatestPage, {skipRender: true});
+                await this.migratePage(sourceLatestPage, { skipRender: true });
             }
         } while (cursor);
     }
@@ -77,6 +121,12 @@ export class PbPagesMigrator {
             settings: sourcePage.settings,
             createdOn: sourcePage.createdOn,
             createdBy: sourcePage.createdBy
+            //
+            // "meta": {
+            //     "location": {
+            //         "folderId": "68353ffe28eb0400886971a2#0001"
+            //     }
+            // }
         };
     }
 
