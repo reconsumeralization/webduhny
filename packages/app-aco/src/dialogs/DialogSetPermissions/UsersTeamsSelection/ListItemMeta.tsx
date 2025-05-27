@@ -83,13 +83,15 @@ export const ListItemMeta = ({
         return TARGET_LEVELS.find(level => level.id === permission.level)!;
     }, [permission.level]);
 
-    const { isDisabled, tooltipMessage } = useMemo(() => {
+    const { isListDisabled, isRemovePermissionDisabled, tooltipMessage } = useMemo(() => {
         let message = null;
         let disabled = false;
+        let removePermissionDisabled = false;
 
         if (permission.inheritedFrom?.startsWith("parent:")) {
             message = "Inherited from parent folder.";
             disabled = false; // Still allow interaction, just inform user
+            removePermissionDisabled = true;
         }
 
         if (identity!.id === target.id) {
@@ -103,14 +105,19 @@ export const ListItemMeta = ({
                 message += ".";
             }
             disabled = true;
+            removePermissionDisabled = true;
         }
 
-        return { isDisabled: disabled, tooltipMessage: message };
+        return {
+            isListDisabled: disabled,
+            isRemovePermissionDisabled: removePermissionDisabled,
+            tooltipMessage: message
+        };
     }, [permission, identity, target, targetsList]);
 
     const handle = useMemo(() => {
         let handle = (
-            <StyledHandle disabled={isDisabled}>
+            <StyledHandle disabled={isListDisabled}>
                 <Typography use="body1">{currentLevel.label}</Typography>
                 <More />
             </StyledHandle>
@@ -121,14 +128,14 @@ export const ListItemMeta = ({
         }
 
         return handle;
-    }, [tooltipMessage, isDisabled, currentLevel.label]);
+    }, [tooltipMessage, isListDisabled, currentLevel.label]);
 
     return (
         <UiListItemMeta>
             <ListActions>
                 <Menu
                     handle={handle}
-                    disabled={isDisabled}
+                    disabled={isListDisabled}
                     // Should prevent first item from being autofocused, but it doesn't. 🤷‍
                     focusOnOpen={false}
                     // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
@@ -160,8 +167,11 @@ export const ListItemMeta = ({
                         </StyledMenuItem>
                     ))}
                     <MenuDivider />
-                    <MenuItem onClick={() => onRemoveAccess({ permission })}>
-                        Remove access
+                    <MenuItem
+                        onClick={() => onRemoveAccess({ permission })}
+                        disabled={isRemovePermissionDisabled}
+                    >
+                        Remove permission
                     </MenuItem>
                 </Menu>
             </ListActions>
