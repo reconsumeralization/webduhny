@@ -6,7 +6,7 @@ import { AcoSearchRecordStorageOperations, SearchRecord } from "./record.types";
 import { CmsModel, UpdateCmsEntryInput } from "@webiny/api-headless-cms/types";
 import { attachAcoRecordPrefix } from "~/utils/acoRecordId";
 import { SEARCH_RECORD_MODEL_ID } from "~/record/record.model";
-import { ENTRY_META_FIELDS } from "@webiny/api-headless-cms/constants";
+import { ENTRY_META_FIELDS, pickEntryMetaFields } from "@webiny/api-headless-cms/constants";
 
 export const createSearchRecordOperations = (
     params: CreateAcoStorageOperationsParams
@@ -75,12 +75,30 @@ export const createSearchRecordOperations = (
 
             return [tags, meta];
         },
-        async createRecord(model, { data: SearchRecordData }) {
-            const { tags = [], data = {}, ...rest } = SearchRecordData;
+        async createRecord(model, { data: searchRecordData }) {
+            const { tags = [], data = {}, ...rest } = searchRecordData;
+
+            // We added this so that if the main record has its meta fields set with
+            // custom values, we can propagate them to the search record as well.
+            const { createdBy, createdOn, modifiedBy, modifiedOn, savedBy, savedOn } =
+                pickEntryMetaFields(data);
+
             const entry = await cms.createEntry(model, {
                 tags,
                 data,
                 ...rest,
+                createdBy,
+                createdOn,
+                modifiedBy,
+                modifiedOn,
+                savedBy,
+                savedOn,
+                revisionCreatedBy: createdBy,
+                revisionCreatedOn: createdOn,
+                revisionModifiedBy: modifiedBy,
+                revisionModifiedOn: modifiedOn,
+                revisionSavedBy: savedBy,
+                revisionSavedOn: savedOn,
                 id: attachAcoRecordPrefix(rest.id)
             });
 

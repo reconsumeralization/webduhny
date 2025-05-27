@@ -1,8 +1,9 @@
 import { WebinyError } from "@webiny/error";
-import { Path } from "./Path";
+import { Path } from "~/utils/Path";
 import { Permissions } from "./Permissions";
 import { ROOT_FOLDER } from "~/constants";
 import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from "~/types";
+import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 
 interface UpdateFlpParams {
     context: AcoContext;
@@ -141,6 +142,14 @@ export class UpdateFlp {
             );
 
             await this.context.aco.flp.batchUpdate(items);
+
+            // Update all folders with the new path
+            const folderModel = await this.getFolderModel();
+            for (const item of items) {
+                const { id, data } = item;
+                // Directly update the folder in CMS storage to bypass any folder update event triggers.
+                await this.context.cms.updateEntry(folderModel, id, { path: data.path });
+            }
         } catch (error) {
             throw WebinyError.from(error, {
                 message: "Error while executing batch update of FLPs",
@@ -203,5 +212,9 @@ export class UpdateFlp {
         }
 
         return flp;
+    }
+
+    private async getFolderModel() {
+        return await this.context.cms.getModel(FOLDER_MODEL_ID);
     }
 }

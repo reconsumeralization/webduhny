@@ -88,11 +88,24 @@ describe("Folder Level Permissions -  CREATE FLP", () => {
     it("should throw an error if the parent FLP is not found", async () => {
         const context = await handler();
 
-        const folder = {
-            title: "Folder 1",
+        const parentFolder = {
+            title: "Parent Folder",
             type: "type1",
-            slug: "folder1",
-            parentId: "parentId"
+            slug: "parent-folder",
+            parentId: null
+        };
+
+        // Let's create the parent folder first
+        const parentFolderResponse = await context.aco.folder.create(parentFolder);
+
+        // Let's delete the parent folder FLP record, this should not happen in real life.
+        await context.aco.flp.delete(parentFolderResponse.id);
+
+        const folder = {
+            title: "Folder",
+            type: "type1",
+            slug: "folder-id",
+            parentId: parentFolderResponse.id
         };
 
         await expect(context.aco.folder.create(folder)).rejects.toThrow(

@@ -61,6 +61,10 @@ export {
     createPrivateModelPlugin,
     createPrivateSingleEntryModelPlugin,
 
+    // Model fields (this is not a plugin factory, hence the missing `Plugin` suffix in the name).
+    createModelField,
+
     // Other.
+    createCmsGraphQLSchemaPlugin,
     createStorageTransformPlugin
 } from "@webiny/api-headless-cms";

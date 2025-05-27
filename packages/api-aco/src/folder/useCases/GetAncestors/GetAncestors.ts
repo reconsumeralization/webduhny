@@ -1,9 +1,19 @@
 import type { GetAncestorsParams, IGetAncestors } from "./IGetAncestors";
 import type { Folder } from "~/folder/folder.types";
+import type { IListFolders } from "~/folder/useCases/ListFolders/IListFolders";
+import { ROOT_FOLDER } from "~/constants";
 
 export class GetAncestors implements IGetAncestors {
+    private listFoldersUseCase: IListFolders;
+
+    constructor(listFoldersUseCase: IListFolders) {
+        this.listFoldersUseCase = listFoldersUseCase;
+    }
+
     public async execute(params: GetAncestorsParams) {
-        const { folder, folders } = params;
+        const { folder } = params;
+
+        const folders = await this.listFolders(folder);
 
         // Create a Map with folders, using folder.id as key
         const folderMap = new Map<string, Folder>();
@@ -46,5 +56,23 @@ export class GetAncestors implements IGetAncestors {
 
         // Recursively find parents for a given folder id
         return findParents([], folder);
+    }
+
+    private async listFolders(folder: Folder) {
+        // Construct paths for all ancestors of the folder
+        const parts = folder.path.split("/").slice(1);
+        const paths = parts.map((_, index) => {
+            return [ROOT_FOLDER, ...parts.slice(0, index + 1)].join("/");
+        });
+
+        // Retrieve all folders that match the specified type and any of the constructed paths
+        const [folders] = await this.listFoldersUseCase.execute({
+            where: {
+                type: folder.type,
+                path_in: paths
+            }
+        });
+
+        return folders;
     }
 }

@@ -260,7 +260,7 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                 extend type PbMutation {
                     createPage(from: ID, category: String, meta: JSON): PbPageResponse
 
-                    createPageV2(data: PbCreatePageV2Input!): PbPageResponse
+                    createPageV2(data: PbCreatePageV2Input!, meta: JSON): PbPageResponse
 
                     # Update page by given ID.
                     updatePage(id: ID!, data: PbUpdatePageInput!): PbPageResponse
@@ -479,8 +479,8 @@ const createBasePageGraphQL = (): GraphQLSchemaPlugin<PbContext> => {
                     },
                     createPageV2: async (_, args: any, context) => {
                         return resolve(() => {
-                            const { data } = args;
-                            return context.pageBuilder.createPageV2(data);
+                            const { data, meta } = args;
+                            return context.pageBuilder.createPageV2(data, meta);
                         });
                     },
 
