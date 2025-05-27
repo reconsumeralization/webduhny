@@ -30,42 +30,40 @@ export class UpdateFolderRepositoryWithPermissionsChange implements IUpdateFolde
             return;
         }
 
-        const directChildren = this.listDirectChildren(folder);
-        if (!directChildren.length) {
-            // If the folder has no direct children, we don't need to update anything.
-            return;
-        }
+        // If the permissions have changed, we need to update the folder and its children.
+        // Starting with the folder itself, inheriting permissions from its parent folder.
+        const parentFolder = this.cache.getItem(f => f.id === folder.parentId);
+        const updatedFolder = this.updateFolderPermissions(folder.id, parentFolder);
 
-        this.updateChildrenPermissionsRecursively(directChildren, folder);
+        // Now we need to update the permissions of all permissions of the folder's children.
+        const directChildren = this.listDirectChildren(updatedFolder);
+        if (directChildren.length) {
+            this.updateChildrenPermissionsRecursively(directChildren, updatedFolder);
+        }
     }
 
     private updateChildrenPermissionsRecursively(children: Folder[], parentFolder: Folder) {
         for (const child of children) {
-            let updatedChild: Folder | undefined;
-
-            this.cache.updateItems(f => {
-                if (f.id === child.id) {
-                    const permissions = Permissions.create(f.permissions, parentFolder);
-                    const updated = Folder.create({
-                        ...f,
-                        permissions
-                    });
-
-                    // We are updating the folder in the cache with new permissions, but also storing a copy locally to use for its children.
-                    updatedChild = updated;
-                    return updated;
-                }
-                return f;
-            });
-
-            // Use the updated child (with new permissions) as the parent for its children
-            if (updatedChild) {
-                const grandChildren = this.listDirectChildren(updatedChild);
-                if (grandChildren.length) {
-                    this.updateChildrenPermissionsRecursively(grandChildren, updatedChild);
-                }
+            const updatedChild = this.updateFolderPermissions(child.id, parentFolder);
+            const grandChildren = this.listDirectChildren(updatedChild);
+            if (grandChildren.length) {
+                this.updateChildrenPermissionsRecursively(grandChildren, updatedChild);
             }
         }
+    }
+
+    private updateFolderPermissions(folderId: string, parentFolder: Folder | undefined): Folder {
+        let updatedFolder: Folder | undefined;
+        this.cache.updateItems(f => {
+            if (f.id === folderId) {
+                const permissions = Permissions.create(f.permissions, parentFolder);
+                updatedFolder = Folder.create({ ...f, permissions });
+                return updatedFolder;
+            }
+            return f;
+        });
+
+        return updatedFolder!;
     }
 
     private listDirectChildren(folder: Folder) {

@@ -129,17 +129,20 @@ describe("UpdateFolder", () => {
 
         foldersCache.addItems([parentFolder, childFolder1, childFolder2, childFolder3]);
 
-        {
-            // Let's update parentFolder, the change should be propagated to all it's children (childFolder1, childFolder2 and childFolder3).
-            const newPermissions: FolderPermission[] = [{ level: "viewer", target: "admin:123" }];
+        // Let's update parentFolder, the change should be propagated to all it's children (childFolder1, childFolder2 and childFolder3).
+        const parentNewPermissions: FolderPermission[] = [
+            { level: "viewer", target: "admin:123" },
+            { level: "viewer", target: "admin:456" }
+        ];
 
+        {
             const gateway = {
                 execute: jest.fn().mockResolvedValue({
                     id: parentFolder.id,
                     title: parentFolder.title,
                     slug: parentFolder.slug,
                     parentId: parentFolder.parentId,
-                    permissions: newPermissions,
+                    permissions: parentNewPermissions,
                     type
                 })
             };
@@ -150,46 +153,46 @@ describe("UpdateFolder", () => {
                 title: parentFolder.title,
                 slug: parentFolder.slug,
                 parentId: parentFolder.parentId,
-                permissions: newPermissions,
+                permissions: parentNewPermissions,
                 type
             });
 
             const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
-            expect(childFolderCache1?.permissions).toEqual([
-                {
-                    ...newPermissions[0],
+            expect(childFolderCache1?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
                     inheritedFrom: `parent:${parentFolder?.id}`
-                }
-            ]);
+                }))
+            );
 
             const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
-            expect(childFolderCache2?.permissions).toEqual([
-                {
-                    ...newPermissions[0],
+            expect(childFolderCache2?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
                     inheritedFrom: `parent:${childFolderCache1?.id}`
-                }
-            ]);
+                }))
+            );
 
             const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
-            expect(childFolderCache3?.permissions).toEqual([
-                {
-                    ...newPermissions[0],
+            expect(childFolderCache3?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
                     inheritedFrom: `parent:${parentFolder?.id}`
-                }
-            ]);
+                }))
+            );
         }
 
-        {
-            // Let's update childFolder1, the change should be propagated to childFolder2, but not to childFolder3
-            const newPermissions: FolderPermission[] = [{ level: "owner", target: "admin:123" }];
+        // Let's update childFolder1, the change should be propagated to childFolder2, but not to childFolder3
+        const child1NewPermissions: FolderPermission[] = [{ level: "owner", target: "admin:123" }];
 
+        {
             const gateway = {
                 execute: jest.fn().mockResolvedValue({
                     id: childFolder1.id,
                     title: childFolder1.title,
                     slug: childFolder1.slug,
                     parentId: childFolder1.parentId,
-                    permissions: newPermissions,
+                    permissions: child1NewPermissions,
                     type
                 })
             };
@@ -200,33 +203,44 @@ describe("UpdateFolder", () => {
                 title: childFolder1.title,
                 slug: childFolder1.slug,
                 parentId: childFolder1.parentId,
-                permissions: newPermissions,
+                permissions: child1NewPermissions,
                 type
             });
 
             const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
-            expect(childFolderCache1?.permissions).toEqual(newPermissions);
+            expect(childFolderCache1?.permissions).toEqual([
+                ...child1NewPermissions,
+                {
+                    ...parentNewPermissions[1],
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }
+            ]);
 
             const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
             expect(childFolderCache2?.permissions).toEqual([
+                ...child1NewPermissions.map(permission => ({
+                    ...permission,
+                    inheritedFrom: `parent:${childFolderCache1?.id}`
+                })),
                 {
-                    ...newPermissions[0],
+                    ...parentNewPermissions[1],
                     inheritedFrom: `parent:${childFolderCache1?.id}`
                 }
             ]);
 
             const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
-            expect(childFolderCache3?.permissions).toEqual([
-                {
-                    target: "admin:123",
-                    level: "viewer",
+            expect(childFolderCache3?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
                     inheritedFrom: `parent:${parentFolder?.id}`
-                }
-            ]);
+                }))
+            );
         }
 
         {
-            // Let's remove childFolder1 permissions, the change should be propagated to childFolder2, but not to childFolder3
+            // Let's remove childFolder1 permissions:
+            // childFolder1 should inherit back permissions from parentFolder,
+            // the change should be propagated to childFolder2, but not to childFolder3
             const newPermissions: FolderPermission[] = [];
 
             const gateway = {
@@ -251,19 +265,28 @@ describe("UpdateFolder", () => {
             });
 
             const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
-            expect(childFolderCache1?.permissions).toEqual(newPermissions);
+            expect(childFolderCache1?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
+                    inheritedFrom: `parent:${parentFolder?.id}`
+                }))
+            );
 
             const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
-            expect(childFolderCache2?.permissions).toEqual(newPermissions);
+            expect(childFolderCache2?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
+                    inheritedFrom: `parent:${childFolderCache1?.id}`
+                }))
+            );
 
             const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
-            expect(childFolderCache3?.permissions).toEqual([
-                {
-                    target: "admin:123",
-                    level: "viewer",
+            expect(childFolderCache3?.permissions).toEqual(
+                parentNewPermissions.map(permission => ({
+                    ...permission,
                     inheritedFrom: `parent:${parentFolder?.id}`
-                }
-            ]);
+                }))
+            );
         }
     });
 
