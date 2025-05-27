@@ -1,7 +1,6 @@
 import { WebinyError } from "@webiny/error";
 import { Path } from "~/utils/Path";
-import { Permissions } from "./Permissions";
-import { ROOT_FOLDER } from "~/constants";
+import { Permissions, ROOT_FOLDER } from "@webiny/shared-aco";
 import type { AcoContext, Folder, FolderLevelPermission, FolderPermission } from "~/types";
 import { FOLDER_MODEL_ID } from "~/folder/folder.model";
 

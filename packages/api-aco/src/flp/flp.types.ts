@@ -5,7 +5,7 @@ import { type AcoContext, type Folder } from "~/types";
 export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
 
 export interface FolderPermission {
-    target: string;
+    target: `admin:${string}` | `team:${string}`;
     level: FolderAccessLevel;
     inheritedFrom?: string;
 }
