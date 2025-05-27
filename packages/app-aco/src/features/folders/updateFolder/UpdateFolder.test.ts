@@ -2,6 +2,7 @@ import { UpdateFolder } from "./UpdateFolder";
 import { folderCacheFactory } from "../cache/FoldersCacheFactory";
 import { Folder } from "../Folder";
 import { FolderPermission } from "@webiny/shared-aco/flp/flp.types";
+import { ROOT_FOLDER } from "@webiny/shared-aco";
 
 describe("UpdateFolder", () => {
     const type = "abc";
@@ -89,7 +90,7 @@ describe("UpdateFolder", () => {
         expect(updatedItem?.parentId).toEqual(null);
     });
 
-    it("should propagate permissions to child folders", async () => {
+    it("should propagate `permissions` changes to child folders", async () => {
         const parentFolder = Folder.create({
             id: "parent-folder-id",
             title: "Parent Folder",
@@ -263,6 +264,124 @@ describe("UpdateFolder", () => {
                     inheritedFrom: `parent:${parentFolder?.id}`
                 }
             ]);
+        }
+    });
+
+    it("should propagate `path` changes to child folders", async () => {
+        const parentFolder = Folder.create({
+            id: "parent-folder-id",
+            title: "Parent Folder",
+            slug: "parent-folder",
+            parentId: null,
+            permissions: [],
+            path: `${ROOT_FOLDER}/parent-folder`,
+            type
+        });
+
+        const childFolder1 = Folder.create({
+            id: "child-folder-id-1",
+            title: "Child Folder 1",
+            slug: "child-folder-1",
+            parentId: parentFolder.id,
+            permissions: [],
+            path: `${ROOT_FOLDER}/parent-folder/child-folder-1`,
+            type
+        });
+
+        const childFolder2 = Folder.create({
+            id: "child-folder-id-2",
+            title: "Child Folder 2",
+            slug: "child-folder-2",
+            parentId: childFolder1.id,
+            permissions: [],
+            path: `${ROOT_FOLDER}/parent-folder/child-folder-1/child-folder-2`,
+            type
+        });
+
+        const childFolder3 = Folder.create({
+            id: "child-folder-id-3",
+            title: "Child Folder 3",
+            slug: "child-folder-3",
+            parentId: parentFolder.id, // <-- This folder is a sibling of childFolder1, not a child
+            permissions: [],
+            path: `${ROOT_FOLDER}/parent-folder/child-folder-3`,
+            type
+        });
+
+        foldersCache.addItems([parentFolder, childFolder1, childFolder2, childFolder3]);
+
+        // Let's update parentFolder, the change should be propagated to all it's children (childFolder1, childFolder2 and childFolder3).
+        const newParentPath: string = `${ROOT_FOLDER}/parent-folder-edit`;
+
+        {
+            const gateway = {
+                execute: jest.fn().mockResolvedValue({
+                    id: parentFolder.id,
+                    title: parentFolder.title,
+                    slug: parentFolder.slug + "-edit",
+                    parentId: parentFolder.parentId,
+                    permissions: parentFolder.permissions,
+                    path: newParentPath,
+                    type
+                })
+            };
+            const updateFolder = UpdateFolder.getInstance(type, gateway);
+
+            await updateFolder.execute({
+                id: parentFolder.id,
+                title: parentFolder.title,
+                slug: parentFolder.slug + "-edit",
+                parentId: parentFolder.parentId,
+                permissions: parentFolder.permissions,
+                type
+            });
+
+            const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
+            expect(childFolderCache1?.path).toEqual(`${newParentPath}/child-folder-1`);
+
+            const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
+            expect(childFolderCache2?.path).toEqual(
+                `${newParentPath}/child-folder-1/child-folder-2`
+            );
+
+            const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
+            expect(childFolderCache3?.path).toEqual(`${newParentPath}/child-folder-3`);
+        }
+
+        // Let's update childFolder1, the change should be propagated to childFolder2, but not to childFolder3
+        const newChildFolder1Path: string = `${newParentPath}/child-folder-1-edit`;
+
+        {
+            const gateway = {
+                execute: jest.fn().mockResolvedValue({
+                    id: childFolder1.id,
+                    title: childFolder1.title,
+                    slug: childFolder1.slug + "-edit",
+                    parentId: childFolder1.parentId,
+                    permissions: childFolder1.permissions,
+                    path: newChildFolder1Path,
+                    type
+                })
+            };
+            const updateFolder = UpdateFolder.getInstance(type, gateway);
+
+            await updateFolder.execute({
+                id: childFolder1.id,
+                title: childFolder1.title,
+                slug: childFolder1.slug + "-edit",
+                parentId: childFolder1.parentId,
+                permissions: childFolder1.permissions,
+                type
+            });
+
+            const childFolderCache1 = foldersCache.getItem(folder => folder.id === childFolder1.id);
+            expect(childFolderCache1?.path).toEqual(newChildFolder1Path);
+
+            const childFolderCache2 = foldersCache.getItem(folder => folder.id === childFolder2.id);
+            expect(childFolderCache2?.path).toEqual(`${newChildFolder1Path}/child-folder-2`);
+
+            const childFolderCache3 = foldersCache.getItem(folder => folder.id === childFolder3.id);
+            expect(childFolderCache3?.path).toEqual(`${newParentPath}/child-folder-3`);
         }
     });
 

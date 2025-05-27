@@ -2,7 +2,7 @@ import ApolloClient from "apollo-client";
 import gql from "graphql-tag";
 import { IListFoldersGateway, ListFoldersGatewayParams } from "./IListFoldersGateway";
 import { AcoError, FolderItem } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
+import { ROOT_FOLDER } from "@webiny/shared-aco";
 
 export interface ListFoldersResponse {
     aco: {
@@ -76,6 +76,7 @@ export class ListFoldersGqlGateway implements IListFoldersGateway {
             title: "Home",
             permissions: [],
             parentId: "0",
+            path: ROOT_FOLDER,
             slug: "",
             createdOn: "",
             createdBy: {

@@ -1,11 +1,11 @@
 import ApolloClient from "apollo-client";
+import { ROOT_FOLDER } from "@webiny/shared-aco";
 import gql from "graphql-tag";
 import {
     IListFoldersByParentIdsGateway,
     ListFoldersByParentIdsGatewayParams
 } from "./IListFoldersByParentIdsGateway";
 import { AcoError, FolderItem } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
 
 export interface ListFoldersByParentIdsResponse {
     aco: {
@@ -81,6 +81,7 @@ export class ListFoldersByParentIdsGqlGateway implements IListFoldersByParentIds
             title: "Home",
             permissions: [],
             parentId: "0",
+            path: ROOT_FOLDER,
             slug: "",
             createdOn: "",
             createdBy: {

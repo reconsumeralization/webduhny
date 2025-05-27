@@ -7,6 +7,7 @@ import { UpdateFolderUseCase } from "./UpdateFolderUseCase";
 import { UpdateFolderUseCaseWithLoading } from "./UpdateFolderUseCaseWithLoading";
 import { UpdateFolderUseCaseWithoutInheritedPermissions } from "./UpdateFolderUseCaseWithoutInheritedPermissions";
 import { folderCacheFactory } from "../cache";
+import { UpdateFolderRepositoryWithPathChange } from "~/features/folders/updateFolder/UpdateFolderRepositoryWithPathChange";
 
 export class UpdateFolder {
     public static getInstance(type: string, gateway: IUpdateFolderGateway): IUpdateFolderUseCase {
@@ -14,9 +15,13 @@ export class UpdateFolder {
         const loadingRepository = loadingRepositoryFactory.getRepository(type);
 
         const repository = new UpdateFolderRepository(foldersCache, gateway);
-        const repositoryWithPermissionsChange = new UpdateFolderRepositoryWithPermissionsChange(
+        const repositoryWithPathChange = new UpdateFolderRepositoryWithPathChange(
             foldersCache,
             repository
+        );
+        const repositoryWithPermissionsChange = new UpdateFolderRepositoryWithPermissionsChange(
+            foldersCache,
+            repositoryWithPathChange
         );
 
         const useCase = new UpdateFolderUseCase(repositoryWithPermissionsChange);
