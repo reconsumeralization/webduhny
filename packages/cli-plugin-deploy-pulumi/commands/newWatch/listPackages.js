@@ -22,6 +22,7 @@ const listPackages = async ({ inputs }) => {
         packagesList.push(...webinyPrefixedPackagesToAdd);
     } else {
         packagesList = await execa("yarn", [
+            "--silent",
             "webiny",
             "workspaces",
             "tree",
@@ -35,6 +36,7 @@ const listPackages = async ({ inputs }) => {
     }
 
     const commandArgs = [
+        "--silent",
         "webiny",
         "workspaces",
         "list",
