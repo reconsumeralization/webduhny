@@ -12,6 +12,7 @@
     { "path": "../plugins" },
     { "path": "../react-properties" },
     { "path": "../react-router" },
+    { "path": "../shared-aco" },
     { "path": "../ui" },
     { "path": "../utils" },
     { "path": "../validation" }
@@ -43,6 +44,8 @@
       "@webiny/react-properties": ["../react-properties/src"],
       "@webiny/react-router/*": ["../react-router/src/*"],
       "@webiny/react-router": ["../react-router/src"],
+      "@webiny/shared-aco/*": ["../shared-aco/src/*"],
+      "@webiny/shared-aco": ["../shared-aco/src"],
       "@webiny/ui/*": ["../ui/src/*"],
       "@webiny/ui": ["../ui/src"],
       "@webiny/utils/*": ["../utils/src/*"],

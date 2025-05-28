@@ -323,6 +323,70 @@ describe("Folder Level Permissions -  UPDATE FLP - Simple", () => {
                 }
             ]
         });
+
+        // Update child folder with its own permissions
+        await context.aco.folder.update(childFolder.id, {
+            permissions: [
+                {
+                    target: "admin:5678",
+                    level: "editor"
+                }
+            ]
+        });
+
+        {
+            // Check child folder
+            const updatedChildFlp = await context.aco.flp.get(childFolder.id);
+            expect(updatedChildFlp).toMatchObject({
+                id: childFolder.id,
+                type,
+                slug: childFolder.slug,
+                parentId: parentFolder.id,
+                permissions: [
+                    {
+                        target: "admin:5678",
+                        level: "editor"
+                    },
+                    {
+                        target: "admin:1234",
+                        level: "viewer",
+                        inheritedFrom: `parent:${parentFolder.id}`
+                    }
+                ]
+            });
+        }
+
+        // Update the parent folder removing all permissions
+        await context.aco.folder.update(parentFolder.id, {
+            permissions: []
+        });
+
+        // Check parent folder
+        const updatedParentFlp = await context.aco.flp.get(parentFolder.id);
+        expect(updatedParentFlp).toMatchObject({
+            id: parentFolder.id,
+            type,
+            slug: parentFolder.slug,
+            parentId: ROOT_FOLDER,
+            permissions: []
+        });
+
+        {
+            // Check child folder
+            const updatedChildFlp = await context.aco.flp.get(childFolder.id);
+            expect(updatedChildFlp).toMatchObject({
+                id: childFolder.id,
+                type,
+                slug: childFolder.slug,
+                parentId: parentFolder.id,
+                permissions: [
+                    {
+                        target: "admin:5678",
+                        level: "editor"
+                    }
+                ]
+            });
+        }
     });
 });
 
@@ -603,6 +667,53 @@ describe("Folder Level Permissions -  UPDATE FLP - Complex", () => {
         });
 
         // Verify all levels have inherited permissions
+        for (let i = 0; i < folders.length; i++) {
+            const folder = folders[i];
+            const flp = await context.aco.flp.get(folder.id);
+
+            const expectedPath = folders
+                .slice(0, i + 1)
+                .map(f => f.slug)
+                .join("/");
+
+            if (i === 0) {
+                expect(flp).toMatchObject({
+                    id: folder.id,
+                    type,
+                    slug: folder.slug,
+                    parentId: ROOT_FOLDER,
+                    path: `${ROOT_FOLDER}/${expectedPath}`,
+                    permissions: [
+                        {
+                            target: "admin:user1",
+                            level: "viewer"
+                        }
+                    ]
+                });
+            } else {
+                expect(flp).toMatchObject({
+                    id: folder.id,
+                    type,
+                    slug: folder.slug,
+                    parentId: folders[i - 1].id,
+                    path: `${ROOT_FOLDER}/${expectedPath}`,
+                    permissions: [
+                        {
+                            target: "admin:user1",
+                            level: "viewer",
+                            inheritedFrom: `parent:${folders[i - 1].id}`
+                        }
+                    ]
+                });
+            }
+        }
+
+        // Update level2 with its empty permissions: it should always inherit permissions from level1 and propagate them down
+        await context.aco.folder.update(level2.id, {
+            permissions: []
+        });
+
+        // Verify level2 has no permissions
         for (let i = 0; i < folders.length; i++) {
             const folder = folders[i];
             const flp = await context.aco.flp.get(folder.id);

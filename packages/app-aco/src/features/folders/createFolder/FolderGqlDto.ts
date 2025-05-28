@@ -11,6 +11,7 @@ export interface FolderGqlDto {
     canManageContent: boolean;
     type: string;
     parentId: string | null;
+    path: string;
     createdBy: CmsIdentity;
     createdOn: string;
     savedBy: CmsIdentity;
