@@ -1,18 +1,21 @@
 import React, { useMemo } from "react";
+import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
+import { cn, Text } from "@webiny/admin-ui";
 import { ReactComponent as Folder } from "@webiny/icons/folder.svg";
 import { ReactComponent as FolderShared } from "@webiny/icons/folder_shared.svg";
 import { ReactComponent as HomeIcon } from "@webiny/icons/home.svg";
-import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
-import { MenuActions } from "../MenuActions";
-import { DndFolderItemData, FolderItem } from "~/types";
 import { parseIdentifier } from "@webiny/utils";
+import { MenuActions } from "../MenuActions";
+import {
+    TreeItem,
+    TreeItemCollapsibleTrigger,
+    TreeItemContent,
+    TreeItemDragIndicator,
+    TreeItemIcon
+} from "./components";
 import { ROOT_FOLDER } from "~/constants";
 import { useFolder } from "~/hooks";
-import { cn, Text } from "@webiny/admin-ui";
-import { TreeItemCollapsibleTrigger } from "./components/TreeItemCollapsibleTrigger";
-import { TreeItem } from "./components/TreeItem";
-import { TreeItemIcon } from "./components/TreeItemIcon";
-import { TreeItemContent } from "./components/TreeItemContent";
+import { DndFolderItemData, FolderItem } from "~/types";
 
 type NodeProps = {
     node: NodeModel<DndFolderItemData>;
@@ -22,6 +25,7 @@ type NodeProps = {
     enableActions?: boolean;
     onToggle: (id: string | number) => void;
     onClick: (data: FolderItem) => void;
+    handleRef: React.Ref<HTMLSpanElement>;
 };
 
 interface FolderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -69,7 +73,8 @@ export const Node = ({
     isLoading,
     enableActions,
     onToggle,
-    onClick
+    onClick,
+    handleRef
 }: NodeProps) => {
     const { folder } = useFolder();
     const isRoot = folder.id === ROOT_FOLDER;
@@ -106,11 +111,14 @@ export const Node = ({
             {...dragOverProps}
         >
             {isRoot ? null : (
-                <TreeItemCollapsibleTrigger
-                    open={isOpen}
-                    loading={isLoading}
-                    onClick={handleToggle}
-                />
+                <>
+                    <TreeItemDragIndicator handleRef={handleRef} />
+                    <TreeItemCollapsibleTrigger
+                        open={isOpen}
+                        loading={isLoading}
+                        onClick={handleToggle}
+                    />
+                </>
             )}
             <TreeItemContent onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode

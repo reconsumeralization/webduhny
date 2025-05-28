@@ -5,7 +5,8 @@ import {
     InitialOpen,
     MultiBackend,
     NodeModel,
-    Tree
+    Tree,
+    type RenderParams
 } from "@minoru/react-dnd-treeview";
 import { useSnackbar } from "@webiny/app-admin";
 import { DndProvider } from "react-dnd";
@@ -109,7 +110,10 @@ export const List = ({
     );
 
     const renderNode = useCallback(
-        (node: NodeModel<DndFolderItemData>, { depth, isOpen, onToggle }: any) => {
+        (
+            node: NodeModel<DndFolderItemData>,
+            { depth, isOpen, onToggle, handleRef }: RenderParams
+        ) => {
             const folder = folders.find(folder => folder.id === node.id);
             return (
                 <FolderProvider folder={folder}>
@@ -121,6 +125,7 @@ export const List = ({
                         isLoading={getIsFolderLoading(folder?.id)}
                         enableActions={enableActions}
                         onClick={onFolderClick}
+                        handleRef={handleRef}
                     />
                 </FolderProvider>
             );
