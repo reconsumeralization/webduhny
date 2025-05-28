@@ -14,7 +14,7 @@ const treeItemVariants = cva(
     {
         variants: {
             active: {
-                true: "wby-bg-neutral-dark/5 wby-font-semibold [&_svg]:!wby-fill-neutral-xstrong"
+                true: "wby-bg-neutral-dark/5 wby-font-semibold"
             }
         }
     }

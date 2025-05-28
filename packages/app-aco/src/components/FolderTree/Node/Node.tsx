@@ -18,6 +18,7 @@ type NodeProps = {
     node: NodeModel<DndFolderItemData>;
     depth: number;
     isOpen: boolean;
+    isLoading?: boolean;
     enableActions?: boolean;
     onToggle: (id: string | number) => void;
     onClick: (data: FolderItem) => void;
@@ -61,7 +62,15 @@ export const FolderNode = ({
     );
 };
 
-export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: NodeProps) => {
+export const Node = ({
+    node,
+    depth,
+    isOpen,
+    isLoading,
+    enableActions,
+    onToggle,
+    onClick
+}: NodeProps) => {
     const { folder } = useFolder();
     const isRoot = folder.id === ROOT_FOLDER;
     // Move the placeholder line to the left based on the element depth within the tree.
@@ -96,7 +105,13 @@ export const Node = ({ node, depth, isOpen, enableActions, onToggle, onClick }: 
             style={{ paddingInlineStart: indent }}
             {...dragOverProps}
         >
-            {isRoot ? null : <TreeItemCollapsibleTrigger open={isOpen} onClick={handleToggle} />}
+            {isRoot ? null : (
+                <TreeItemCollapsibleTrigger
+                    open={isOpen}
+                    loading={isLoading}
+                    onClick={handleToggle}
+                />
+            )}
             <TreeItemContent onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode
                     isRoot={isRoot}
