@@ -34,6 +34,7 @@ export default new GraphQLSchemaPlugin<Context>({
         }
 
         input CreateTenantInput {
+            id: ID
             name: String!
             description: String!
             tags: [String!]!
@@ -98,8 +99,8 @@ export default new GraphQLSchemaPlugin<Context>({
                     await checkPermissions(context);
                     const tenant = context.tenancy.getCurrentTenant();
                     const newTenant = await context.tenancy.createTenant({
-                        ...args.data,
                         id: mdbid(),
+                        ...args.data,
                         parent: tenant.id
                     });
 

@@ -15,8 +15,10 @@ export default new GraphQLSchemaPlugin<SecurityContext>({
         }
 
         input SecurityApiKeyInput {
+            id: ID
             name: String!
             description: String
+            token: String
             permissions: [JSON]!
         }
 

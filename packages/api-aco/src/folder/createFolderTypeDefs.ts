@@ -84,6 +84,9 @@ export const createFolderTypeDefs = (params: CreateFolderTypeDefsParams): string
         ${inputCreateFields.map(f => f.typeDefs).join("\n")}
         
         input FolderCreateInput {
+             # Pass an ID if you want to create a folder with a specific ID.
+             id: ID  
+             
              ${inputCreateFields.map(f => f.fields).join("\n")}
         }
                 
