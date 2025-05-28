@@ -4,17 +4,12 @@ import {
     CmsModelField,
     CmsModelFieldSettings
 } from "@webiny/app-headless-cms-common/types";
+import type { FolderPermission } from "@webiny/shared-aco/types";
 
 export { CmsIdentity } from "@webiny/app-headless-cms-common/types";
+export * from "@webiny/shared-aco/flp/flp.types";
 export * from "~/graphql/records/types";
 export * from "~/table.types";
-export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
-
-export interface FolderPermission {
-    target: `admin:${string}` | `team:${string}`;
-    level: FolderAccessLevel;
-    inheritedFrom?: string;
-}
 
 export interface FolderLevelPermissionsTarget<TMeta = Record<string, any>> {
     id: string;
