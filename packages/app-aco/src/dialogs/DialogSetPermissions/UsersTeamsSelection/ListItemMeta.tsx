@@ -132,7 +132,7 @@ export const ListItemMeta = ({
             <DropdownMenu.Separator />
             <DropdownMenu.Item
                 onClick={() => onRemoveAccess({ permission })}
-                text={"Remove access"}
+                text={"Remove permission"}
                 disabled={isRemovePermissionDisabled}
             />
         </DropdownMenu>
