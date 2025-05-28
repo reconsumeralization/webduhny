@@ -1,23 +1,9 @@
 import { Topic } from "@webiny/pubsub/types";
 import { ITaskRunParams } from "@webiny/tasks/types";
 import { type AcoContext, type Folder } from "~/types";
+import type { FolderLevelPermission, FolderPermission } from "@webiny/shared-aco/flp/flp.types";
 
-export type FolderAccessLevel = "owner" | "viewer" | "editor" | "public" | "no-access";
-
-export interface FolderPermission {
-    target: string;
-    level: FolderAccessLevel;
-    inheritedFrom?: string;
-}
-
-export interface FolderLevelPermission {
-    id: string;
-    parentId: string;
-    slug: string;
-    path: string;
-    permissions: FolderPermission[];
-    type: string;
-}
+export * from "@webiny/shared-aco/flp/flp.types";
 
 /********
  * CRUD operations

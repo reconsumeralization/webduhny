@@ -1,10 +1,9 @@
 import { WebinyError } from "@webiny/error";
 import { Path } from "~/utils/Path";
-import { Permissions } from "./Permissions";
+import { Permissions, ROOT_FOLDER } from "@webiny/shared-aco";
 import type { FolderLevelPermission as IFolderLevelPermission } from "~/flp/flp.types";
 import type { Folder } from "~/folder/folder.types";
 import type { AcoContext } from "~/types";
-import { ROOT_FOLDER } from "~/constants";
 
 export class CreateFlp {
     private context: AcoContext;

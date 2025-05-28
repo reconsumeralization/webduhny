@@ -48,13 +48,15 @@ export const ListItemMeta = ({
         return TARGET_LEVELS.find(level => level.id === permission.level)!;
     }, [permission.level]);
 
-    const { isDisabled, tooltipMessage } = useMemo(() => {
+    const { isListDisabled, isRemovePermissionDisabled, tooltipMessage } = useMemo(() => {
         let message = null;
         let disabled = false;
+        let removePermissionDisabled = false;
 
         if (permission.inheritedFrom?.startsWith("parent:")) {
             message = "Inherited from parent folder.";
             disabled = false; // Still allow interaction, just inform user
+            removePermissionDisabled = true;
         }
 
         if (identity!.id === target.id) {
@@ -68,16 +70,21 @@ export const ListItemMeta = ({
                 message += ".";
             }
             disabled = true;
+            removePermissionDisabled = true;
         }
 
-        return { isDisabled: disabled, tooltipMessage: message };
+        return {
+            isListDisabled: disabled,
+            isRemovePermissionDisabled: removePermissionDisabled,
+            tooltipMessage: message
+        };
     }, [permission, identity, target, targetsList]);
 
     const handle = useMemo(() => {
         let handle = (
             <Button
                 variant={"ghost"}
-                disabled={!!isDisabled}
+                disabled={!!isListDisabled}
                 text={currentLevel.label}
                 icon={<More />}
                 iconPosition={"end"}
@@ -89,7 +96,7 @@ export const ListItemMeta = ({
         }
 
         return handle;
-    }, [tooltipMessage, isDisabled, currentLevel.label]);
+    }, [tooltipMessage, isListDisabled, currentLevel.label]);
 
     return (
         <DropdownMenu
@@ -126,6 +133,7 @@ export const ListItemMeta = ({
             <DropdownMenu.Item
                 onClick={() => onRemoveAccess({ permission })}
                 text={"Remove access"}
+                disabled={isRemovePermissionDisabled}
             />
         </DropdownMenu>
     );
