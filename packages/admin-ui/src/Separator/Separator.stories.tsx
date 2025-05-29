@@ -23,8 +23,8 @@ type Story = StoryObj<typeof Separator>;
 
 export const Documentation: Story = {
     args: {
-        variant: "subtle",
-        margin: "lg",
+        variant: "dimmed",
+        margin: "none",
         orientation: "horizontal",
         decorative: true
     },
@@ -37,7 +37,7 @@ export const Documentation: Story = {
         variant: {
             description: "The visual style variant of the separator.",
             control: "select",
-            options: ["strong", "subtle", "dimmed", "white", "transparent"]
+            options: ["transparent", "base", "dimmed", "muted", "strong"]
         },
         orientation: {
             description: "The orientation of the separator.",
