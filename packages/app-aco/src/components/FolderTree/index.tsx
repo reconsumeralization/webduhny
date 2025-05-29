@@ -64,15 +64,21 @@ export const FolderTree = ({
     }
 
     return (
-        <AcoWithConfig>
-            <List
-                folders={localFolders}
-                onFolderClick={onFolderClick}
-                focusedFolderId={focusedFolderId}
-                hiddenFolderIds={hiddenFolderIds}
-                enableActions={enableActions}
-            />
-            {enableCreate && <div className={"wby-mt-sm-plus wby-ml-xs"}>{createButton}</div>}
-        </AcoWithConfig>
+        <div className="wby-mt-xs wby-mb-lg">
+            <AcoWithConfig>
+                <List
+                    folders={localFolders}
+                    onFolderClick={onFolderClick}
+                    focusedFolderId={focusedFolderId}
+                    hiddenFolderIds={hiddenFolderIds}
+                    enableActions={enableActions}
+                />
+                {enableCreate && (
+                    <div className={"wby-m-xs-plus wby-mt-sm-plus wby-pl-sm-extra"}>
+                        {createButton}
+                    </div>
+                )}
+            </AcoWithConfig>
+        </div>
     );
 };

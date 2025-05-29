@@ -49,7 +49,7 @@ export const Sidebar = ({ folderId }: SidebarProps) => {
             </div>
             <Separator />
             <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>
-                <div className={"wby-px-sm-extra wby-py-sm"}>
+                <div className={"wby-p-xs"}>
                     <FolderTree
                         focusedFolderId={folderId}
                         onFolderClick={data => navigateToFolder(data.id)}
