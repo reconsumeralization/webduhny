@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { RichTextEditor } from "~/RichTextEditor";
+import { RichTextEditor } from "./RichTextEditor";
+import { type RichTextEditorValue } from "./RichTextEditorPrimitive";
 
 const meta: Meta<typeof RichTextEditor> = {
     title: "Components/Form/RichTextEditor",
@@ -15,10 +16,6 @@ const meta: Meta<typeof RichTextEditor> = {
     },
     parameters: {
         layout: "padded"
-    },
-    render: args => {
-        const [value, setValue] = useState(args.value);
-        return <RichTextEditor {...args} value={value} onChange={setValue} />;
     }
 };
 
@@ -83,6 +80,97 @@ export const FullExample: Story = {
         validation: {
             isValid: false,
             message: "This field is required."
+        }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState<RichTextEditorValue | undefined>(args.value);
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setValue(args.value);
+        }, [args.value]);
+
+        const handleChange = (newValue: RichTextEditorValue) => {
+            setValue(newValue);
+
+            // Simple required validation
+            if (args.required && (!newValue || newValue.length === 0)) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && (!value || value.length === 0)) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, value]);
+
+        return (
+            <RichTextEditor
+                {...args}
+                value={value}
+                onChange={handleChange}
+                validation={validation}
+                required={args.required}
+            />
+        );
+    },
+    args: {
+        label: "Content Editor",
+        required: true,
+        disabled: false,
+        description: "Enter the content for your page or post",
+        note: "Use the toolbar to format your text and add media",
+        validation: undefined,
+        value: undefined,
+        onChange: undefined,
+        onReady: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the rich text editor",
+            control: "text"
+        },
+        required: {
+            description: "Makes the field required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the rich text editor when set to true",
+            control: "boolean"
+        },
+        description: {
+            description: "Additional description text below the field",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the field",
+            control: "text"
+        },
+        value: {
+            description: "The editor content",
+            control: "object"
+        },
+        validation: {
+            description: "Object containing validation state and message",
+            control: "object"
+        },
+        onChange: {
+            description: "Function called when the content changes",
+            control: "none"
+        },
+        onReady: {
+            description: "Function called when the editor is ready",
+            control: "none"
         }
     }
 };

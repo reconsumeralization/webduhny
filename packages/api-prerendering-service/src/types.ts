@@ -36,6 +36,7 @@ export interface Render {
     path: string;
     tenant: string;
     locale: string;
+    groupId: string;
     tags?: Tag[];
     files: {
         name: string;
@@ -171,6 +172,7 @@ export interface RenderEvent {
     path: string;
     tenant: string;
     locale: string;
+    groupId: string;
     exclude?: string[];
     tags?: Tag[];
 }

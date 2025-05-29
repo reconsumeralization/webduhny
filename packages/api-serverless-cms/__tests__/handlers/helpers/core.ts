@@ -155,7 +155,7 @@ export const createCore = (params: ICreateCoreParams): ICreateCoreResult => {
             createApwPageBuilderContext({
                 storageOperations: apwScheduleStorage.storageOperations
             }),
-            createAco(),
+            createAco({ documentClient }),
             createAuditLogs(),
             createRecordLocking(),
             createWebsockets(),

@@ -11,6 +11,9 @@ export class SendEarlyOptionsResponse implements IPreHandler {
     }
 
     async execute(request: FastifyRequest, reply: FastifyReply): Promise<Action> {
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
         if (reply.sent) {
             /**
              * At this point throwing an exception will not do anything with the response. So just log it.

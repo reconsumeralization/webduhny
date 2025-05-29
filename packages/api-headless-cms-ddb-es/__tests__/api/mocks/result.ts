@@ -10,7 +10,7 @@ export const createExpectedGetResult = () => {
                 value: expect.any(String)
             },
             body: {
-                compression: "jsonpack",
+                compression: "gzip",
                 value: expect.any(String)
             },
             information: {
@@ -23,7 +23,7 @@ export const createExpectedGetResult = () => {
                     value: expect.any(String)
                 },
                 subBody: {
-                    compression: "jsonpack",
+                    compression: "gzip",
                     value: expect.any(String)
                 },
                 subInformation: {
@@ -36,7 +36,7 @@ export const createExpectedGetResult = () => {
                         value: expect.any(String)
                     },
                     subSecondSubBody: {
-                        compression: "jsonpack",
+                        compression: "gzip",
                         value: expect.any(String)
                     }
                 }

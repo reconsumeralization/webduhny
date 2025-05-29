@@ -42,28 +42,28 @@ export const createFilterCrudMethods = ({ storageOperations }: CreateAcoParams):
         onFilterBeforeDelete,
         onFilterAfterDelete,
         async get(id) {
-            return storageOperations.getFilter({ id });
+            return storageOperations.filter.getFilter({ id });
         },
         async list(params) {
-            return storageOperations.listFilters(params);
+            return storageOperations.filter.listFilters(params);
         },
         async create(data) {
             await onFilterBeforeCreate.publish({ input: data });
-            const filter = await storageOperations.createFilter({ data });
+            const filter = await storageOperations.filter.createFilter({ data });
             await onFilterAfterCreate.publish({ filter });
             return filter;
         },
         async update(id, data) {
-            const original = await storageOperations.getFilter({ id });
+            const original = await storageOperations.filter.getFilter({ id });
             await onFilterBeforeUpdate.publish({ original, input: { id, data } });
-            const filter = await storageOperations.updateFilter({ id, data });
+            const filter = await storageOperations.filter.updateFilter({ id, data });
             await onFilterAfterUpdate.publish({ original, input: { id, data }, filter });
             return filter;
         },
         async delete(id: string) {
-            const filter = await storageOperations.getFilter({ id });
+            const filter = await storageOperations.filter.getFilter({ id });
             await onFilterBeforeDelete.publish({ filter });
-            await storageOperations.deleteFilter({ id });
+            await storageOperations.filter.deleteFilter({ id });
             await onFilterAfterDelete.publish({ filter });
             return true;
         }

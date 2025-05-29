@@ -5,8 +5,10 @@ import { CreateAcoStorageOperationsParams } from "~/createAcoStorageOperations";
 import { createListSort } from "~/utils/createListSort";
 import { createOperationsWrapper } from "~/utils/createOperationsWrapper";
 import { pickEntryFieldValues } from "~/utils/pickEntryFieldValues";
+import { Path } from "~/utils/Path";
 import { AcoFolderStorageOperations, Folder } from "./folder.types";
 import { ENTRY_META_FIELDS } from "@webiny/api-headless-cms/constants";
+import { ListSort } from "~/types";
 
 interface AcoCheckExistingFolderParams {
     params: {
@@ -86,15 +88,41 @@ export const createFolderOperations = (
         });
     };
 
+    const createFolderPath = async ({
+        slug,
+        parentId
+    }: Pick<Folder, "slug" | "parentId">): Promise<string> => {
+        let parentFolder: Folder | null = null;
+
+        if (parentId) {
+            parentFolder = await getFolder({ id: parentId });
+
+            if (!parentFolder) {
+                throw new WebinyError(
+                    "Parent folder not found. Unable to create the folder `path`",
+                    "ERROR_CREATE_FOLDER_PATH_PARENT_FOLDER_NOT_FOUND"
+                );
+            }
+        }
+
+        return Path.create(slug, parentFolder?.path);
+    };
+
     return {
         getFolder,
         listFolders(params) {
             return withModel(async model => {
                 const { sort, where } = params;
 
+                const listSort =
+                    sort ||
+                    ({
+                        title: "ASC"
+                    } as unknown as ListSort);
+
                 const [entries, meta] = await cms.listLatestEntries(model, {
                     ...params,
-                    sort: createListSort(sort),
+                    sort: createListSort(listSort),
                     where: {
                         ...(where || {})
                     }
@@ -115,7 +143,8 @@ export const createFolderOperations = (
 
                 const entry = await cms.createEntry(model, {
                     ...data,
-                    parentId: data.parentId || null
+                    parentId: data.parentId || null,
+                    path: await createFolderPath(data)
                 });
 
                 return pickEntryFieldValues(entry);
@@ -142,7 +171,11 @@ export const createFolderOperations = (
                      *  we don't want to override them with the ones coming from the `original` entry.
                      */
                     ...omit(original, ENTRY_META_FIELDS),
-                    ...data
+                    ...data,
+                    path: await createFolderPath({
+                        slug: slug || original.slug,
+                        parentId: parentId !== undefined ? parentId : original.parentId // parentId can be `null`
+                    })
                 };
 
                 const entry = await cms.updateEntry(model, id, input);

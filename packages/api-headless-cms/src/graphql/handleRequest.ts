@@ -84,6 +84,13 @@ export const handleRequest: HandleRequest = async params => {
             throw ex;
         }
     });
+    /**
+     * IMPORTANT! Do not send anything if reply was already sent.
+     */
+    if (reply.sent) {
+        console.warn("Reply already sent, cannot send the result (api-headless-cms).");
+        return reply;
+    }
 
-    return reply.code(200).send(result);
+    return reply.send(result);
 };

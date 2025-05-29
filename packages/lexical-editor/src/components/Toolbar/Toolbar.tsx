@@ -15,6 +15,7 @@ import { useLexicalEditorConfig } from "~/components/LexicalEditorConfig/Lexical
 import { useDeriveValueFromSelection } from "~/hooks/useCurrentSelection";
 import { useRichTextEditor } from "~/hooks";
 import { isChildOfFloatingToolbar } from "~/utils/isChildOfFloatingToolbar";
+import { HIDE_FLOATING_TOOLBAR } from "~/commands";
 
 interface FloatingToolbarProps {
     anchorElem: HTMLElement;
@@ -126,6 +127,17 @@ const FloatingToolbar: FC<FloatingToolbarProps> = ({ anchorElem, editor }) => {
                     updateTextFormatFloatingToolbar();
                 });
             }),
+
+            editor.registerCommand(
+                HIDE_FLOATING_TOOLBAR,
+                () => {
+                    setTimeout(() => {
+                        setIsVisible(false);
+                    }, 10);
+                    return true;
+                },
+                COMMAND_PRIORITY_LOW
+            ),
 
             editor.registerCommand(
                 SELECTION_CHANGE_COMMAND,

@@ -20,18 +20,84 @@ const meta: Meta<typeof Textarea> = {
 export default meta;
 type Story = StoryObj<typeof Textarea>;
 
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState("");
+
+        return <Textarea {...args} value={value} onChange={newValue => setValue(newValue)} />;
+    },
+    args: {
+        label: "Message",
+        description: "Enter your feedback or message",
+        note: "Please be specific and provide relevant details",
+        placeholder: "Type your message here...",
+        required: true,
+        disabled: false,
+        onChange: undefined,
+        validation: {
+            isValid: true,
+            message: ""
+        },
+        value: "",
+        validate: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the textarea",
+            control: "text"
+        },
+        description: {
+            description: "Additional description text below the textarea",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the textarea",
+            control: "text"
+        },
+        placeholder: {
+            description: "Placeholder text shown when the textarea is empty",
+            control: "text"
+        },
+        required: {
+            description: "Makes the textarea required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the textarea when set to true",
+            control: "boolean"
+        },
+        validation: {
+            description: "Object containing validation state and message",
+            control: "object"
+        },
+        value: {
+            description: "The current value of the textarea",
+            control: "text"
+        },
+        onChange: {
+            description: "Function called when the textarea value changes",
+            control: "none"
+        },
+        validate: {
+            description:
+                "Custom validation function, please refer to **With Validate Function** section below.",
+            control: "none"
+        }
+    }
+};
+
 export const Default: Story = {};
 
 export const WithLabel: Story = {
     args: {
-        label: "Any field label"
+        label: "Message"
     }
 };
 
 export const WithLabelRequired: Story = {
     args: {
         ...Default.args,
-        label: "Any field label",
+        label: "Message",
         required: true
     }
 };
@@ -39,14 +105,14 @@ export const WithLabelRequired: Story = {
 export const WithDescription: Story = {
     args: {
         ...Default.args,
-        description: "Provide the required information for processing your request."
+        description: "Enter your feedback or message in detail"
     }
 };
 
 export const WithNotes: Story = {
     args: {
         ...Default.args,
-        note: "Note: Ensure your selection or input is accurate before proceeding."
+        note: "All messages are reviewed within 24 hours"
     }
 };
 
@@ -63,30 +129,54 @@ export const WithErrors: Story = {
 export const Disabled: Story = {
     args: {
         ...Default.args,
-        label: "Any field label",
+        label: "Message",
         disabled: true
     }
 };
 
 export const WithValidateFunction: Story = {
     render: args => {
-        const [validation, setValidation] = useState<any>({ isValid: true, message: undefined });
+        const [value, setValue] = useState("");
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
 
         const validate = async () => {
-            setValidation({ isValid: false, message: "Any custom error message." });
+            if (!value.trim()) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else if (value.length < 10) {
+                setValidation({
+                    isValid: false,
+                    message: "Message must be at least 10 characters long"
+                });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
         };
 
-        return <Textarea {...args} validate={validate} validation={validation} />;
+        return (
+            <Textarea
+                {...args}
+                value={value}
+                onChange={newValue => setValue(newValue)}
+                validate={validate}
+                validation={validation}
+            />
+        );
+    },
+    args: {
+        ...Default.args,
+        label: "Message",
+        required: true,
+        description: "Enter a message (minimum 10 characters)"
     }
 };
 
 export const FullExample: Story = {
     args: {
         ...Default.args,
-        label: "Any field label",
+        label: "Message",
         required: true,
         description: "Provide the required information for processing your request.",
-        note: "Note: Ensure your selection or input is accurate before proceeding.",
+        note: "Note: Ensure your message is accurate before proceeding.",
         validation: {
             isValid: false,
             message: "This field is required."

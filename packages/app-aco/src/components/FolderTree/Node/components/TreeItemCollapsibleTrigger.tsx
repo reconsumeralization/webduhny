@@ -1,12 +1,21 @@
 import React from "react";
 import { ReactComponent as ChevronRight } from "@webiny/icons/chevron_right.svg";
-import { cn, IconButton, Icon, type IconButtonProps } from "@webiny/admin-ui";
+import { cn, IconButton, Icon, type IconButtonProps, Loader } from "@webiny/admin-ui";
 
 interface TreeItemCollapsibleTriggerProps extends IconButtonProps {
     open?: boolean;
+    loading?: boolean;
 }
 
-const TreeItemCollapsibleTrigger = ({ open, ...props }: TreeItemCollapsibleTriggerProps) => {
+const TreeItemCollapsibleTrigger = ({
+    open,
+    loading,
+    ...props
+}: TreeItemCollapsibleTriggerProps) => {
+    if (loading) {
+        return <Loader size={"xs"} variant={"subtle"} />;
+    }
+
     return (
         <IconButton
             {...props}

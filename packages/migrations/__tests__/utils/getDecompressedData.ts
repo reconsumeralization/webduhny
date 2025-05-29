@@ -1,7 +1,10 @@
-import { createGzipCompression } from "@webiny/api-elasticsearch";
+import { PluginsContainer } from "@webiny/plugins";
+import { createDefaultCompressor } from "@webiny/utils/compression";
+
+const compressor = createDefaultCompressor({
+    plugins: new PluginsContainer()
+});
 
 export const getDecompressedData = async <R = any>(data: any): Promise<R> => {
-    const compression = createGzipCompression();
-
-    return (await compression.decompress(data)) as unknown as R;
+    return await compressor.decompress<R>(data);
 };

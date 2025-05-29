@@ -175,3 +175,53 @@ export const FullExample: Story = {
         );
     }
 };
+
+export const Documentation: Story = {
+    args: {
+        content: "Label",
+        variant: "neutral-base",
+        disabled: false,
+        onDismiss: undefined,
+        dismissIconElement: undefined,
+        dismissIconLabel: undefined
+    },
+    argTypes: {
+        content: {
+            description: "The content of the tag. Please refer to the example code for details.",
+            control: "text"
+        },
+        variant: {
+            description: "The color variant of the tag.",
+            control: "select",
+            options: [
+                "neutral-base",
+                "neutral-light",
+                "neutral-strong",
+                "neutral-dark",
+                "success",
+                "warning",
+                "destructive",
+                "accent"
+            ]
+        },
+        disabled: {
+            description: "Whether the tag is disabled.",
+            control: "boolean"
+        },
+        onDismiss: {
+            description:
+                "Callback function when the tag is dismissed. Please refer to the 'Dismissible Tag' example code for details.",
+            control: "none"
+        },
+        dismissIconElement: {
+            description:
+                "Custom dismiss icon element. Please refer to the 'Custom Dismiss Icon' example code for details.",
+            control: "none"
+        },
+        dismissIconLabel: {
+            description:
+                "Custom dismiss icon label. Please refer to the 'Custom Dismiss Icon' example code for details.",
+            control: "none"
+        }
+    }
+};

@@ -4,17 +4,20 @@ import { SaveTranslatableValues } from "~/translations/ExtractTranslatableValues
 import { PageEditorConfig } from "~/pageEditor";
 import {
     createElementRendererInputsDecorator,
-    CreateTranslatableItem
+    CreateTranslatableItems,
+    NewTranslatableItem
 } from "~/translations/ExtractTranslatableValues/CollectElementValues";
 
-interface ExtractTranslatableValuesProps {
-    createTranslatableItem: CreateTranslatableItem;
+export interface ExtractTranslatableValuesProps {
+    createTranslatableItems: CreateTranslatableItems;
 }
 
+export type { NewTranslatableItem, CreateTranslatableItems };
+
 export const ExtractTranslatableValues = ({
-    createTranslatableItem
+    createTranslatableItems
 }: ExtractTranslatableValuesProps) => {
-    const CollectElementValues = createElementRendererInputsDecorator(createTranslatableItem);
+    const CollectElementValues = createElementRendererInputsDecorator(createTranslatableItems);
 
     return (
         <>

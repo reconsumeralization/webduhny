@@ -4,22 +4,21 @@ import type {
     IGetLockedEntryLockRecordUseCase,
     IGetLockedEntryLockRecordUseCaseExecuteParams
 } from "~/abstractions/IGetLockedEntryLockRecordUseCase";
-import type { IIsLocked } from "~/utils/isLockedFactory";
 
 export interface IGetLockedEntryLockRecordUseCaseParams {
     getLockRecordUseCase: IGetLockRecordUseCase;
-    isLocked: IIsLocked;
     getIdentity: IGetIdentity;
 }
 
+/**
+ * This use case is used to get a lock record for an entry - and the entry is still locked by someone other than the current user.
+ */
 export class GetLockedEntryLockRecordUseCase implements IGetLockedEntryLockRecordUseCase {
     private readonly getLockRecordUseCase: IGetLockRecordUseCase;
-    private readonly isLocked: IIsLocked;
     private readonly getIdentity: IGetIdentity;
 
     public constructor(params: IGetLockedEntryLockRecordUseCaseParams) {
         this.getLockRecordUseCase = params.getLockRecordUseCase;
-        this.isLocked = params.isLocked;
         this.getIdentity = params.getIdentity;
     }
 
@@ -27,13 +26,13 @@ export class GetLockedEntryLockRecordUseCase implements IGetLockedEntryLockRecor
         params: IGetLockedEntryLockRecordUseCaseExecuteParams
     ): Promise<IRecordLockingLockRecord | null> {
         const result = await this.getLockRecordUseCase.execute(params);
-        if (!result?.lockedBy) {
+        if (!result?.lockedBy?.id || result.isExpired()) {
             return null;
         }
         const identity = this.getIdentity();
         if (identity.id === result.lockedBy.id) {
             return null;
         }
-        return this.isLocked(result) ? result : null;
+        return result;
     }
 }

@@ -28,6 +28,7 @@ import { AdminUsersStorageOperations } from "@webiny/api-admin-users/types";
 import createAdminUsersApp from "@webiny/api-admin-users";
 import { createMailerContext } from "@webiny/api-mailer";
 import { NullLicense } from "@webiny/wcp";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 import { createAcoAuditLogsContext } from "~/app";
 
 export interface CreateHandlerCoreParams {
@@ -55,6 +56,7 @@ export const createHandlerCore = (params?: CreateHandlerCoreParams) => {
         setupTenancyAndSecurityGraphQL
     } = params || {};
 
+    const documentClient = getDocumentClient();
     const i18nStorage = getStorageOps("i18n");
     const fileManagerStorage = getStorageOps<FileManagerStorageOperations>("fileManager");
     const pageBuilderStorage = getStorageOps<PageBuilderStorageOperations>("pageBuilder");
@@ -152,7 +154,7 @@ export const createHandlerCore = (params?: CreateHandlerCoreParams) => {
                 storageOperations: formBuilderStorage.storageOperations
             }),
             createHeadlessCmsGraphQL(),
-            createAco(),
+            createAco({ documentClient }),
             createAuditLogs(),
             createAcoAuditLogsContext(),
             plugins,

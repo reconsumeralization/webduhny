@@ -78,6 +78,7 @@ export function FloatingLinkEditor({ editor, isVisible, anchorElem }: FloatingLi
         const rootElement = editor.getRootElement();
 
         if (
+            isVisible &&
             selection !== null &&
             nativeSelection !== null &&
             rootElement !== null &&
@@ -107,7 +108,7 @@ export function FloatingLinkEditor({ editor, isVisible, anchorElem }: FloatingLi
         }
 
         return true;
-    }, [anchorElem, editor]);
+    }, [isVisible, anchorElem, editor]);
 
     const removeLink = () => {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);

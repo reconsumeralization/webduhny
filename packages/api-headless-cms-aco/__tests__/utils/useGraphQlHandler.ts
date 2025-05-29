@@ -22,6 +22,7 @@ import { createTestWcpLicense } from "@webiny/wcp/testing/createTestWcpLicense";
 import { createWcpContext } from "@webiny/api-wcp";
 import { AdminUsersStorageOperations } from "@webiny/api-admin-users/types";
 import { until } from "@webiny/project-utils/testing/helpers/until";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 import {
     CREATE_CONTENT_MODEL,
     CREATE_CONTENT_MODEL_GROUP,
@@ -61,6 +62,7 @@ const defaultIdentity: SecurityIdentity = {
 export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     const { permissions, identity, plugins = [] } = params;
 
+    const documentClient = getDocumentClient();
     const cmsStorage = getStorageOps<HeadlessCmsStorageOperations>("cms");
     const i18nStorage = getStorageOps<any[]>("i18n");
     const adminUsersStorage = getStorageOps<AdminUsersStorageOperations>("adminUsers");
@@ -89,7 +91,7 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
                 storageOperations: cmsStorage.storageOperations
             }),
             createHeadlessCmsGraphQL(),
-            createAco(),
+            createAco({ documentClient }),
             createAcoHcmsContext(),
             plugins
         ],

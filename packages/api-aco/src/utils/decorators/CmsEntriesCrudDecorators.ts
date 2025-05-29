@@ -1,8 +1,7 @@
 import { AcoContext } from "~/types";
-import { createWhere } from "./where";
-import { ROOT_FOLDER } from "./constants";
-import { filterEntriesByFolderFactory } from "./filterEntriesByFolderFactory";
-import { createFolderType } from "./createFolderType";
+import { ROOT_FOLDER } from "~/constants";
+import { ListEntriesFactory } from "./ListEntriesFactory";
+import { FilterEntriesByFolderFactory } from "./FilterEntriesByFolderFactory";
 import { decorateIfModelAuthorizationEnabled } from "./decorateIfModelAuthorizationEnabled";
 
 type Context = Pick<AcoContext, "aco" | "cms">;
@@ -22,43 +21,20 @@ export class CmsEntriesCrudDecorators {
         const context = this.context;
         const folderLevelPermissions = context.aco.folderLevelPermissions;
 
-        const filterEntriesByFolder = filterEntriesByFolderFactory(context, folderLevelPermissions);
+        const filterEntriesByFolder = new FilterEntriesByFolderFactory(folderLevelPermissions);
+        const listEntriesHandler = new ListEntriesFactory(folderLevelPermissions);
 
         decorateIfModelAuthorizationEnabled(context.cms, "listEntries", async (...allParams) => {
-            const [decoratee, model, params] = allParams;
-            const folderType = createFolderType(model);
-            const folders = await folderLevelPermissions.listAllFoldersWithPermissions(folderType);
-
-            const where = createWhere({
-                model,
-                where: params.where,
-                folders
-            });
-            return decoratee(model, {
-                ...params,
-                where
-            });
+            const [decoratee, model, initialParams] = allParams;
+            return await listEntriesHandler.execute({ decoratee, model, initialParams });
         });
 
         decorateIfModelAuthorizationEnabled(
             context.cms,
             "listLatestEntries",
             async (...allParams) => {
-                const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
-
-                const where = createWhere({
-                    model,
-                    where: params?.where || {},
-                    folders
-                });
-                return decoratee(model, {
-                    ...params,
-                    where
-                });
+                const [decoratee, model, initialParams] = allParams;
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -66,21 +42,8 @@ export class CmsEntriesCrudDecorators {
             context.cms,
             "listPublishedEntries",
             async (...allParams) => {
-                const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
-
-                const where = createWhere({
-                    model,
-                    where: params?.where || {},
-                    folders
-                });
-                return decoratee(model, {
-                    ...params,
-                    where
-                });
+                const [decoratee, model, initialParams] = allParams;
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -88,21 +51,8 @@ export class CmsEntriesCrudDecorators {
             context.cms,
             "listDeletedEntries",
             async (...allParams) => {
-                const [decoratee, model, params] = allParams;
-                const folderType = createFolderType(model);
-                const folders = await folderLevelPermissions.listAllFoldersWithPermissions(
-                    folderType
-                );
-
-                const where = createWhere({
-                    model,
-                    where: params?.where || {},
-                    folders
-                });
-                return decoratee(model, {
-                    ...params,
-                    where
-                });
+                const [decoratee, model, initialParams] = allParams;
+                return await listEntriesHandler.execute({ decoratee, model, initialParams });
             }
         );
 
@@ -115,9 +65,9 @@ export class CmsEntriesCrudDecorators {
                 return entry;
             }
 
-            const folder = await context.aco.folder.get(folderId);
+            const permissions = await folderLevelPermissions.getFolderLevelPermissions(folderId);
             await folderLevelPermissions.ensureCanAccessFolderContent({
-                folder,
+                permissions,
                 rwd: "r"
             });
 
@@ -132,9 +82,9 @@ export class CmsEntriesCrudDecorators {
             if (!folderId || folderId === ROOT_FOLDER) {
                 return entry;
             }
-            const folder = await context.aco.folder.get(folderId);
+            const permissions = await folderLevelPermissions.getFolderLevelPermissions(folderId);
             await folderLevelPermissions.ensureCanAccessFolderContent({
-                folder,
+                permissions,
                 rwd: "r"
             });
             return entry;
@@ -148,7 +98,7 @@ export class CmsEntriesCrudDecorators {
 
                 const entries = await decoratee(model, ids);
 
-                return filterEntriesByFolder(model, entries);
+                return filterEntriesByFolder.execute(entries);
             }
         );
 
@@ -159,22 +109,21 @@ export class CmsEntriesCrudDecorators {
                 const [decoratee, model, ids] = allParams;
 
                 const entries = await decoratee(model, ids);
-                return filterEntriesByFolder(model, entries);
+                return filterEntriesByFolder.execute(entries);
             }
         );
 
         decorateIfModelAuthorizationEnabled(context.cms, "createEntry", async (...allParams) => {
             const [decoratee, model, params, options] = allParams;
-
             const folderId = params.wbyAco_location?.folderId || params.location?.folderId;
 
             if (!folderId || folderId === ROOT_FOLDER) {
                 return decoratee(model, params, options);
             }
 
-            const folder = await context.aco.folder.get(folderId);
+            const permissions = await folderLevelPermissions.getFolderLevelPermissions(folderId);
             await folderLevelPermissions.ensureCanAccessFolderContent({
-                folder,
+                permissions,
                 rwd: "w"
             });
 
@@ -196,9 +145,11 @@ export class CmsEntriesCrudDecorators {
                     return decoratee(model, id, input, options);
                 }
 
-                const folder = await context.aco.folder.get(folderId);
+                const permissions = await folderLevelPermissions.getFolderLevelPermissions(
+                    folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "w"
                 });
 
@@ -217,9 +168,9 @@ export class CmsEntriesCrudDecorators {
                 return decoratee(model, id, input, meta, options);
             }
 
-            const folder = await context.aco.folder.get(folderId);
+            const permissions = await folderLevelPermissions.getFolderLevelPermissions(folderId);
             await folderLevelPermissions.ensureCanAccessFolderContent({
-                folder,
+                permissions,
                 rwd: "w"
             });
 
@@ -241,9 +192,9 @@ export class CmsEntriesCrudDecorators {
                 return decoratee(model, id, options);
             }
 
-            const folder = await context.aco.folder.get(folderId);
+            const permissions = await folderLevelPermissions.getFolderLevelPermissions(folderId);
             await folderLevelPermissions.ensureCanAccessFolderContent({
-                folder,
+                permissions,
                 rwd: "d"
             });
 
@@ -265,9 +216,11 @@ export class CmsEntriesCrudDecorators {
                     return decoratee(model, id);
                 }
 
-                const folder = await context.aco.folder.get(folderId);
+                const permissions = await folderLevelPermissions.getFolderLevelPermissions(
+                    folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "d"
                 });
 
@@ -295,9 +248,11 @@ export class CmsEntriesCrudDecorators {
                 /**
                  * If entry current folder is not a root, check for access
                  */
-                const folder = await context.aco.folder.get(folderId);
+                const permissions = await folderLevelPermissions.getFolderLevelPermissions(
+                    folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "w"
                 });
             }
@@ -305,9 +260,11 @@ export class CmsEntriesCrudDecorators {
              * If target folder is not a ROOT_FOLDER, check for access.
              */
             if (targetFolderId !== ROOT_FOLDER) {
-                const folder = await context.aco.folder.get(targetFolderId);
+                const permissions = await folderLevelPermissions.getFolderLevelPermissions(
+                    folderId
+                );
                 await folderLevelPermissions.ensureCanAccessFolderContent({
-                    folder,
+                    permissions,
                     rwd: "w"
                 });
             }

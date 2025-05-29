@@ -1,8 +1,7 @@
 import { Plugin } from "@webiny/plugins";
-import { Context, ITask } from "~/types";
+import type { ITask } from "~/types";
 
 export interface ITaskServiceCreatePluginParams {
-    context: Context;
     getTenant(): string;
     getLocale(): string;
 }

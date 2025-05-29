@@ -6,7 +6,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof CheckboxGroupPrimitive> = {
     title: "Components/Form Primitives/CheckboxGroup",
     component: CheckboxGroupPrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

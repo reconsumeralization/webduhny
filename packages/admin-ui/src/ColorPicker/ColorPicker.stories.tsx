@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ColorPicker } from "./ColorPicker";
 
 const meta: Meta<typeof ColorPicker> = {
     title: "Components/Form/ColorPicker",
     component: ColorPicker,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         disabled: {
@@ -84,6 +83,92 @@ export const FullExample: Story = {
         validation: {
             isValid: false,
             message: "This field is required."
+        }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState(args.value || "");
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setValue(args.value || "");
+        }, [args.value]);
+
+        const handleChange = (newValue: string) => {
+            setValue(newValue);
+
+            // Simple required validation
+            if (args.required && (!newValue || newValue.trim() === "")) {
+                setValidation({ isValid: false, message: "Please select a color" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && (!value || value.trim() === "")) {
+                setValidation({ isValid: false, message: "Please select a color" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, value]);
+
+        return (
+            <ColorPicker
+                {...args}
+                value={value}
+                onChange={handleChange}
+                validation={validation}
+                required={args.required}
+            />
+        );
+    },
+    args: {
+        label: "Brand Color",
+        required: true,
+        disabled: false,
+        description: "Select your primary brand color",
+        note: "Note: Choose a color that aligns with your brand identity",
+        value: "#4285F4",
+        validation: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the color picker",
+            control: "text"
+        },
+        required: {
+            description: "Makes the field required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the color picker when set to true",
+            control: "boolean"
+        },
+        description: {
+            description: "Additional description text below the field",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the field",
+            control: "text"
+        },
+        value: {
+            description: "The selected color value (hex, RGB, or named color)",
+            control: "color"
+        },
+        validation: {
+            description:
+                "Object containing validation state and message. Please refer to the example code for details on usage.",
+            control: "none"
+        },
+        onChange: {
+            description: "Function called when the color changes",
+            control: "none"
         }
     }
 };

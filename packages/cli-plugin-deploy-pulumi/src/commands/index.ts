@@ -489,6 +489,44 @@ export const commands: CliCommandPlugin[] = [
             );
 
             yargs.command(
+                "refresh <folder>",
+                `Refreshes Pulumi state for given project application and environment`,
+                yargs => {
+                    yargs.example("$0 refresh api --env=dev --json", "");
+                    yargs.positional("folder", {
+                        describe: `Project application folder`,
+                        type: "string"
+                    });
+                    yargs
+                        .option("region", {
+                            describe: `Region to target`,
+                            type: "string",
+                            required: false
+                        })
+                        .check(validateRegion);
+                    yargs.option("env", {
+                        required: true,
+                        describe: `Environment`,
+                        type: "string"
+                    });
+                    yargs.option("variant", {
+                        describe: `Variant`,
+                        type: "string",
+                        required: false
+                    });
+                    yargs.option("debug", {
+                        default: false,
+                        describe: `Turn on debug logs`,
+                        type: "boolean"
+                    });
+                },
+                async argv => {
+                    const { refreshCommand } = require("./refresh");
+                    return refreshCommand(argv, context);
+                }
+            );
+
+            yargs.command(
                 "pulumi <folder>",
                 `Runs a Pulumi command in the provided project application folder. Note: make sure to use "--" before the actual Pulumi command.`,
                 () => {
@@ -531,7 +569,7 @@ export const commands: CliCommandPlugin[] = [
 
             yargs.command(
                 "execute-migrations [pattern]",
-                `Execute data migrations Lambda. If pattern is provided, only the matching migrations will be executed.`,
+                `Execute data migrations Lambda. If pattern is provided, only the matching migrations will be executed`,
                 () => {
                     yargs.example("$0 execute-migrations --env dev", "");
                     yargs.example("$0 execute-migrations 5.35.0-001 --env dev", "");

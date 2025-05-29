@@ -96,6 +96,13 @@ export default (options: HandlerGraphQLOptions = {}): Plugin[] => {
             }
             try {
                 const result = await processRequestBody(body, schema, context);
+                /**
+                 * IMPORTANT! Do not send anything if reply was already sent.
+                 */
+                if (reply.sent) {
+                    console.warn("Reply already sent, cannot send the result (handler-graphql).");
+                    return reply;
+                }
                 return reply.status(200).send(result);
             } catch (ex) {
                 console.error(`Error while processing the body request.`);

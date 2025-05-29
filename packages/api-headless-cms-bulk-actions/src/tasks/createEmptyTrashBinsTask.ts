@@ -57,6 +57,9 @@ export const createEmptyTrashBinsTask = () => {
                     return;
                 }
 
+                // Reloading locales for the current tenant to ensure the correct data is available before proceeding.
+                await context.i18n.reloadLocales();
+
                 // Fetch all locales for the tenant.
                 const locales = context.i18n.getLocales();
                 await context.i18n.withEachLocale(locales, async () => {

@@ -5,7 +5,6 @@ import { Skeleton } from "./Skeleton";
 const meta: Meta<typeof Skeleton> = {
     title: "Components/Skeleton",
     component: Skeleton,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },
@@ -99,5 +98,24 @@ export const DoubleExtraLarge: Story = {
 export const TripleExtraLarge: Story = {
     args: {
         size: "3xl"
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        type: "area",
+        size: "lg"
+    },
+    argTypes: {
+        type: {
+            control: "select",
+            description: "The type of skeleton to display",
+            options: ["text", "thumbnail", "area"]
+        },
+        size: {
+            control: "select",
+            description: "The size of the skeleton",
+            options: ["xs", "sm", "md", "lg", "xl", "xxl", "3xl"]
+        }
     }
 };

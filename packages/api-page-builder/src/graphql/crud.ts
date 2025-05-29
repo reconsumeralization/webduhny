@@ -9,7 +9,7 @@ import { createPageElementsCrud } from "./crud/pageElements.crud";
 import { createSettingsCrud } from "./crud/settings.crud";
 import { createSystemCrud } from "./crud/system.crud";
 import { ContextPlugin } from "@webiny/api";
-import { PbContext, PrerenderingHandlers } from "~/graphql/types";
+import { PbContext, PrerenderingHandlers, type SettingsSecurityPermission } from "~/graphql/types";
 import { createTopic } from "@webiny/pubsub";
 import { PageBuilderStorageOperations } from "~/types";
 import WebinyError from "@webiny/error";
@@ -21,6 +21,7 @@ import { PageTemplatesPermissions } from "~/graphql/crud/permissions/PageTemplat
 import { PageBlocksPermissions } from "~/graphql/crud/permissions/PageBlocksPermissions";
 import { GzipContentCompressionPlugin, JsonpackContentCompressionPlugin } from "~/plugins";
 import { createDataSourcesContext } from "~/dataSources/context/createDataSourcesContext";
+import { SettingsPermissions } from "~/graphql/crud/permissions/SettingsPermissions";
 
 export interface CreateCrudParams {
     storageOperations: PageBuilderStorageOperations;
@@ -121,6 +122,13 @@ const setup = (params: CreateCrudParams) => {
             fullAccessPermissionName: "pb.*"
         });
 
+        const settingsPermissions = new SettingsPermissions({
+            getIdentity: () => context.security.getIdentity(),
+            getPermissions: () =>
+                context.security.getPermissions<SettingsSecurityPermission>("pb.settings"),
+            fullAccessPermissionName: "pb.*"
+        });
+
         const system = await createSystemCrud({
             context,
             storageOperations,
@@ -131,7 +139,8 @@ const setup = (params: CreateCrudParams) => {
             context,
             storageOperations,
             getTenantId,
-            getLocaleCode
+            getLocaleCode,
+            settingsPermissions
         });
 
         const menus = createMenuCrud({

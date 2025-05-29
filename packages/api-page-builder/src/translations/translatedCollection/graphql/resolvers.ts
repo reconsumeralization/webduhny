@@ -4,11 +4,19 @@ import type { PbContext } from "~/graphql/types";
 import { GqlTranslatedCollectionMapper } from "~/translations/translatedCollection/graphql/mappers/GqlTranslatedCollectionMapper";
 import { SaveTranslatedCollectionUseCase } from "~/translations/translatedCollection/useCases/SaveTranslatedCollectionUseCase";
 import { GetOrCreateTranslatedCollectionUseCase } from "~/translations/translatedCollection/useCases/GetOrCreateTranslatedCollectionUseCase";
-import { GetTranslatableCollectionUseCase } from "~/translations";
+import {
+    DeleteTranslatedCollectionUseCase,
+    GetTranslatableCollectionUseCase
+} from "~/translations";
 
 interface GetTranslatedCollectionParams {
     collectionId: string;
     languageCode: string;
+}
+
+interface DeleteTranslatedCollectionParams {
+    collectionId: string;
+    languageCode?: string;
 }
 
 interface UpdateTranslatedCollectionParams {
@@ -73,6 +81,18 @@ export const translatedCollectionResolvers: Resolvers<PbContext> = {
                 return new Response(
                     GqlTranslatedCollectionMapper.toDTO(baseCollection, collection)
                 );
+            } catch (err) {
+                return new ErrorResponse(err);
+            }
+        },
+        deleteTranslatedCollection: async (_, args, context) => {
+            const { collectionId, languageCode } = args as DeleteTranslatedCollectionParams;
+
+            try {
+                const useCase = new DeleteTranslatedCollectionUseCase(context);
+                await useCase.execute({ collectionId, languageCode });
+
+                return new Response(true);
             } catch (err) {
                 return new ErrorResponse(err);
             }

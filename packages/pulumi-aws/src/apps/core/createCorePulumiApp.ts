@@ -87,7 +87,7 @@ export interface CoreAppLegacyConfig {
 }
 
 export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams = {}) {
-    const app = createPulumiApp({
+    const baseApp = createPulumiApp({
         name: "core",
         path: "apps/core",
         config: projectAppParams,
@@ -223,8 +223,8 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
         }
     });
 
-    return withServiceManifest(app, manifests => {
-        const dynamoTable = app.resources.dynamoDbTable;
+    const app = withServiceManifest(baseApp, manifests => {
+        const dynamoTable = baseApp.resources.dynamoDbTable;
 
         const table: TableDefinition = {
             tableName: dynamoTable.output.name,
@@ -232,6 +232,26 @@ export function createCorePulumiApp(projectAppParams: CreateCorePulumiAppParams 
             rangeKey: dynamoTable.output.rangeKey
         };
 
-        manifests.forEach(manifest => addServiceManifestTableItem(app, table, manifest));
+        manifests.forEach(manifest => addServiceManifestTableItem(baseApp, table, manifest));
     });
+
+    app.addHandler(() => {
+        app.addServiceManifest({
+            name: "core",
+            manifest: {
+                eventBus: {
+                    arn: baseApp.resources.eventBus.output.arn,
+                    name: baseApp.resources.eventBus.output.name
+                },
+                dynamodbTable: {
+                    arn: baseApp.resources.dynamoDbTable.output.arn,
+                    name: baseApp.resources.dynamoDbTable.output.name,
+                    hashKey: baseApp.resources.dynamoDbTable.output.hashKey,
+                    rangeKey: baseApp.resources.dynamoDbTable.output.rangeKey
+                }
+            }
+        });
+    });
+
+    return app;
 }

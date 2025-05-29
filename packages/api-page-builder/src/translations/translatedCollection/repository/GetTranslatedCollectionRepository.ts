@@ -20,21 +20,21 @@ export class GetTranslatedCollectionRepository {
     async execute(params: GetTranslatedCollectionParams): Promise<TranslatedCollection> {
         const model = await GetModel.byModelId(this.context, "translatedCollection");
 
-        const existingEntry = await this.context.cms.getEntry<TranslatedCollectionDTO>(model, {
-            where: {
-                collectionId: params.collectionId,
-                languageCode: params.languageCode,
-                latest: true
-            }
-        });
+        try {
+            const existingEntry = await this.context.cms.getEntry<TranslatedCollectionDTO>(model, {
+                where: {
+                    collectionId: params.collectionId,
+                    languageCode: params.languageCode,
+                    latest: true
+                }
+            });
 
-        if (!existingEntry) {
+            return TranslatedCollectionMapper.fromDTO(existingEntry.values, existingEntry.entryId);
+        } catch {
             throw new WebinyError({
                 message: `TranslatedCollection "${params.collectionId}" for language "${params.languageCode}" was not found!`,
                 code: "NOT_FOUND"
             });
         }
-
-        return TranslatedCollectionMapper.fromDTO(existingEntry.values, existingEntry.entryId);
     }
 }

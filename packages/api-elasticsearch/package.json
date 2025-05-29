@@ -16,7 +16,6 @@
     "@webiny/api": "0.0.0",
     "@webiny/error": "0.0.0",
     "@webiny/plugins": "0.0.0",
-    "@webiny/utils": "0.0.0",
     "aws-elasticsearch-connector": "patch:aws-elasticsearch-connector@npm%3A9.2.0#~/.yarn/patches/aws-elasticsearch-connector-npm-9.2.0-e1245671b1.patch",
     "elastic-ts": "^0.12.0"
   },

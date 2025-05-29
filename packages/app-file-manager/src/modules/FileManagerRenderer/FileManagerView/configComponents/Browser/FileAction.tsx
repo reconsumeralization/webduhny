@@ -1,5 +1,4 @@
 import React from "react";
-import { CompositionScope } from "@webiny/react-composition";
 import { AcoConfig, RecordActionConfig } from "@webiny/app-aco";
 
 const { Record } = AcoConfig;
@@ -10,11 +9,9 @@ type FileActionProps = React.ComponentProps<typeof AcoConfig.Record.Action>;
 
 const BaseFileAction = (props: FileActionProps) => {
     return (
-        <CompositionScope name={"fm"}>
-            <AcoConfig>
-                <Record.Action {...props} />
-            </AcoConfig>
-        </CompositionScope>
+        <AcoConfig>
+            <Record.Action {...props} />
+        </AcoConfig>
     );
 };
 

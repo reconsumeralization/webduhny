@@ -1,5 +1,7 @@
 import React from "react";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
+import { makeDecoratable, useConfirmationDialog } from "@webiny/app-admin";
+import { Accordion, Tooltip } from "@webiny/admin-ui";
 import { AddTemplateButton } from "./AddTemplate";
 import { TemplateIcon } from "./TemplateIcon";
 import { TemplateProvider } from "./TemplateProvider";
@@ -17,8 +19,6 @@ import {
     ParentValueIndexProvider,
     ModelFieldProvider
 } from "~/admin/components/ModelFieldProvider";
-import { useConfirmationDialog } from "@webiny/app-admin";
-import { Accordion } from "@webiny/admin-ui";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -28,6 +28,50 @@ interface SingleValueDynamicZoneProps {
     contentModel: CmsModel;
     getBind: GetBind;
 }
+
+interface TemplateValue {
+    _templateId: string;
+    [key: string]: any;
+}
+
+export interface SingleValueItemContainerProps {
+    value: TemplateValue;
+    contentModel: CmsModel;
+    onDelete: () => void;
+    title: React.ReactNode;
+    description: string;
+    icon: JSX.Element;
+    actions?: JSX.Element;
+    template: CmsDynamicZoneTemplate;
+    children: React.ReactNode;
+}
+
+export const SingleValueItemContainer = makeDecoratable(
+    "SingleValueItemContainer",
+    (props: SingleValueItemContainerProps) => {
+        const { template, actions, children } = props;
+        return (
+            <Accordion.Item
+                title={template.name}
+                description={template.description}
+                icon={<TemplateIcon icon={template.icon} />}
+                open={true}
+                interactive={false}
+                actions={
+                    <>
+                        {actions ?? null}
+                        <Accordion.Item.Action
+                            icon={<Tooltip trigger={<DeleteIcon />} content={"Delete"} />}
+                            onClick={props.onDelete}
+                        />
+                    </>
+                }
+            >
+                {children}
+            </Accordion.Item>
+        );
+    }
+);
 
 export const SingleValueDynamicZone = ({
     field,
@@ -66,20 +110,14 @@ export const SingleValueDynamicZone = ({
                     <ParentValueIndexProvider index={-1}>
                         <ModelFieldProvider field={field}>
                             <Accordion>
-                                <Accordion.Item
+                                <SingleValueItemContainer
+                                    template={template}
+                                    value={bind.value}
+                                    contentModel={contentModel}
+                                    onDelete={unsetValue}
                                     title={template.name}
                                     description={template.description}
                                     icon={<TemplateIcon icon={template.icon} />}
-                                    open={true}
-                                    interactive={false}
-                                    actions={
-                                        <>
-                                            <Accordion.Item.Action
-                                                icon={<DeleteIcon />}
-                                                onClick={unsetValue}
-                                            />
-                                        </>
-                                    }
                                 >
                                     <TemplateProvider template={template}>
                                         <Fields
@@ -89,7 +127,7 @@ export const SingleValueDynamicZone = ({
                                             Bind={Bind}
                                         />
                                     </TemplateProvider>
-                                </Accordion.Item>
+                                </SingleValueItemContainer>
                             </Accordion>
                         </ModelFieldProvider>
                     </ParentValueIndexProvider>

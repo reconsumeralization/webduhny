@@ -1,11 +1,12 @@
 import { SearchBody } from "@webiny/api-elasticsearch/types";
 import { useHandler } from "~tests/graphql/handler";
 import { createMockPlugins } from "./mocks";
-import { createEntryRawData } from "./mocks/data";
+import { bodies, createEntryRawData } from "./mocks/data";
 import { configurations } from "~/configurations";
 import { CmsModel } from "@webiny/api-headless-cms/types";
 import { get } from "@webiny/db-dynamodb";
 import { createPartitionKey } from "~/operations/entry/keys";
+import { compress } from "~tests/mocks/compressor";
 
 describe("storage field path converters disabled", () => {
     const { elasticsearch, entryEntity } = useHandler();
@@ -55,7 +56,7 @@ describe("storage field path converters disabled", () => {
                     value: expect.any(String)
                 },
                 body: {
-                    compression: "jsonpack",
+                    compression: "gzip",
                     value: expect.any(String)
                 },
                 information: {
@@ -68,7 +69,7 @@ describe("storage field path converters disabled", () => {
                         value: expect.any(String)
                     },
                     subBody: {
-                        compression: "jsonpack",
+                        compression: "gzip",
                         value: expect.any(String)
                     },
                     subInformation: {
@@ -81,7 +82,7 @@ describe("storage field path converters disabled", () => {
                             value: expect.any(String)
                         },
                         subSecondSubBody: {
-                            compression: "jsonpack",
+                            compression: "gzip",
                             value: expect.any(String)
                         }
                     }
@@ -107,7 +108,7 @@ describe("storage field path converters disabled", () => {
                 dateOfBirth: new Date("2020-01-01").toISOString(),
                 description: "Description level 0",
                 body: {
-                    compression: "jsonpack",
+                    compression: "gzip",
                     value: expect.any(String)
                 },
                 information: {
@@ -117,7 +118,7 @@ describe("storage field path converters disabled", () => {
                     subDateOfBirth: new Date("2020-01-02").toISOString(),
                     subDescription: "Description level 1",
                     subBody: {
-                        compression: "jsonpack",
+                        compression: "gzip",
                         value: expect.any(String)
                     },
                     subInformation: {
@@ -127,7 +128,7 @@ describe("storage field path converters disabled", () => {
                         subSecondSubDateOfBirth: new Date("2020-01-03").toISOString(),
                         subSecondSubDescription: "Description level 2",
                         subSecondSubBody: {
-                            compression: "jsonpack",
+                            compression: "gzip",
                             value: expect.any(String)
                         }
                     }
@@ -183,18 +184,18 @@ describe("storage field path converters disabled", () => {
             },
             rawValues: {
                 body: {
-                    compression: "jsonpack",
-                    value: "tag|p|content|Content+level+0^^^@$0|1|2|3]]"
+                    compression: "gzip",
+                    value: await compress(bodies.body)
                 },
                 information: {
                     subBody: {
-                        compression: "jsonpack",
-                        value: "tag|p1|content|Content+level+1^^^@$0|1|2|3]]"
+                        compression: "gzip",
+                        value: await compress(bodies.subBody)
                     },
                     subInformation: {
                         subSecondSubBody: {
-                            compression: "jsonpack",
-                            value: "tag|p2|content|Content+level+2^^^@$0|1|2|3]]"
+                            compression: "gzip",
+                            value: await compress(bodies.subSecondSubBody)
                         }
                     }
                 }
@@ -226,8 +227,8 @@ describe("storage field path converters disabled", () => {
                     value: expect.any(String)
                 },
                 body: {
-                    compression: "jsonpack",
-                    value: "tag|p|content|Content+level+0^^^@$0|1|2|3]]"
+                    compression: "gzip",
+                    value: await compress(bodies.body)
                 },
                 information: {
                     subtitle: "Title level 1",
@@ -239,8 +240,8 @@ describe("storage field path converters disabled", () => {
                         value: expect.any(String)
                     },
                     subBody: {
-                        compression: "jsonpack",
-                        value: "tag|p1|content|Content+level+1^^^@$0|1|2|3]]"
+                        compression: "gzip",
+                        value: await compress(bodies.subBody)
                     },
                     subInformation: {
                         subSecondSubtitle: "Title level 2",
@@ -252,8 +253,8 @@ describe("storage field path converters disabled", () => {
                             value: expect.any(String)
                         },
                         subSecondSubBody: {
-                            compression: "jsonpack",
-                            value: "tag|p2|content|Content+level+2^^^@$0|1|2|3]]"
+                            compression: "gzip",
+                            value: await compress(bodies.subSecondSubBody)
                         }
                     }
                 }

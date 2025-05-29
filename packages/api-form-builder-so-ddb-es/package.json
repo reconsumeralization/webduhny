@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@elastic/elasticsearch": "7.12.0",
+    "@webiny/api": "0.0.0",
     "@webiny/api-elasticsearch": "0.0.0",
     "@webiny/api-elasticsearch-tasks": "0.0.0",
     "@webiny/api-form-builder": "0.0.0",

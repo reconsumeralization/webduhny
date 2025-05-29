@@ -140,3 +140,49 @@ export const SecondaryNegative: Story = {
         variant: "secondary-negative"
     }
 };
+
+export const Documentation: Story = {
+    args: {
+        to: "#",
+        variant: "primary",
+        size: "md",
+        underline: false,
+        disabled: false,
+        children: "This is a link"
+    },
+    argTypes: {
+        to: {
+            description:
+                "The URL or path the link points to. If it’s a relative path, you can pass it as-is—it will automatically resolve based on the parent route. For a full URL, be sure to pass the complete address starting with `https://...`",
+            control: "text",
+            defaultValue: "#"
+        },
+        variant: {
+            description: "Visual style of the link",
+            control: "select",
+            options: ["primary", "secondary", "primary-negative", "secondary-negative"],
+            defaultValue: "primary"
+        },
+        size: {
+            description: "Size of the link text",
+            control: "select",
+            options: ["inherit", "sm", "md", "lg", "xl"],
+            defaultValue: "inherit"
+        },
+        underline: {
+            description: "Whether the link should be underlined by default",
+            control: "boolean",
+            defaultValue: false
+        },
+        disabled: {
+            description: "Whether the link is disabled",
+            control: "boolean",
+            defaultValue: false
+        },
+        children: {
+            description: "The content of the link. It can be any valid React node.",
+            control: "text",
+            defaultValue: "This is a link"
+        }
+    }
+};

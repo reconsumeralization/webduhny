@@ -15,11 +15,13 @@ import { validateSameIdentity } from "~/utils/validateSameIdentity";
 import { NotAuthorizedError } from "@webiny/api-security";
 import type { IKickOutCurrentUserUseCase } from "~/abstractions/IKickOutCurrentUserUseCase";
 import { NotFoundError } from "@webiny/handler-graphql";
+import type { Security } from "@webiny/api-security/types";
 
 export interface IUnlockEntryUseCaseParams {
     readonly getLockRecordUseCase: IGetLockRecordUseCase;
     readonly kickOutCurrentUserUseCase: IKickOutCurrentUserUseCase;
     getManager(): Promise<IRecordLockingModelManager>;
+    getSecurity(): Pick<Security, "withoutAuthorization">;
     getIdentity: IGetIdentity;
     hasRecordLockingAccess: IHasRecordLockingAccessCallable;
 }
@@ -27,7 +29,8 @@ export interface IUnlockEntryUseCaseParams {
 export class UnlockEntryUseCase implements IUnlockEntryUseCase {
     private readonly getLockRecordUseCase: IGetLockRecordUseCase;
     private readonly kickOutCurrentUserUseCase: IKickOutCurrentUserUseCase;
-    private readonly getManager: () => Promise<IRecordLockingModelManager>;
+    private readonly getManager: IUnlockEntryUseCaseParams["getManager"];
+    private readonly getSecurity: IUnlockEntryUseCaseParams["getSecurity"];
     private readonly getIdentity: IGetIdentity;
     private readonly hasRecordLockingAccess: IHasRecordLockingAccessCallable;
 
@@ -35,6 +38,7 @@ export class UnlockEntryUseCase implements IUnlockEntryUseCase {
         this.getLockRecordUseCase = params.getLockRecordUseCase;
         this.kickOutCurrentUserUseCase = params.kickOutCurrentUserUseCase;
         this.getManager = params.getManager;
+        this.getSecurity = params.getSecurity;
         this.getIdentity = params.getIdentity;
         this.hasRecordLockingAccess = params.hasRecordLockingAccess;
     }
@@ -43,12 +47,15 @@ export class UnlockEntryUseCase implements IUnlockEntryUseCase {
         params: IUnlockEntryUseCaseExecuteParams
     ): Promise<IRecordLockingLockRecord> {
         const record = await this.getLockRecordUseCase.execute(params);
-        if (!record) {
+        if (!record || record.isExpired()) {
+            const security = this.getSecurity();
             try {
                 const manager = await this.getManager();
-                await manager.delete(createLockRecordDatabaseId(params.id), {
-                    force: true,
-                    permanently: true
+                await security.withoutAuthorization(async () => {
+                    await manager.delete(createLockRecordDatabaseId(params.id), {
+                        force: true,
+                        permanently: true
+                    });
                 });
             } catch (ex) {
                 if (ex instanceof NotFoundError === false) {
@@ -86,18 +93,21 @@ export class UnlockEntryUseCase implements IUnlockEntryUseCase {
             kickOutCurrentUser = true;
         }
 
+        const security = this.getSecurity();
         try {
             const manager = await this.getManager();
-            await manager.delete(createLockRecordDatabaseId(params.id), {
-                force: true,
-                permanently: true
-            });
+            return await security.withoutAuthorization(async () => {
+                await manager.delete(createLockRecordDatabaseId(params.id), {
+                    force: true,
+                    permanently: true
+                });
 
-            if (!kickOutCurrentUser) {
+                if (!kickOutCurrentUser) {
+                    return record;
+                }
+                await this.kickOutCurrentUserUseCase.execute(record);
                 return record;
-            }
-            await this.kickOutCurrentUserUseCase.execute(record);
-            return record;
+            });
         } catch (ex) {
             throw new WebinyError(
                 `Could not unlock entry: ${ex.message}`,

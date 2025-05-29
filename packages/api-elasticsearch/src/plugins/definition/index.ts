@@ -1,4 +1,3 @@
-export * from "./CompressionPlugin";
 export * from "./ElasticsearchBodyModifierPlugin";
 export * from "./ElasticsearchFieldPlugin";
 export * from "./ElasticsearchIndexPlugin";

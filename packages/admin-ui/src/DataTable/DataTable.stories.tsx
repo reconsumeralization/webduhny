@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { DataTableColumns, DataTable, DataTableDefaultData, DataTableSorting } from "./DataTable";
 import { Avatar } from "~/Avatar";
@@ -7,7 +7,6 @@ import { Text } from "~/Text";
 const meta: Meta<typeof DataTable> = {
     title: "Components/DataTable",
     component: DataTable,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     }
@@ -23,7 +22,6 @@ interface Entry {
     createdBy: string;
     lastModified: string;
     status: string;
-    $selectable?: boolean;
 }
 
 // Define the columns structure for the table.
@@ -43,29 +41,29 @@ const columns: DataTableColumns<Entry> = {
 };
 
 // Define the data to display.
-function generateEntries(count = 20) {
-    const statuses = ["Draft", "Published", "Unpublished"];
-    const randomStatus = () => statuses[Math.floor(Math.random() * statuses.length)];
-    const randomTime = () => {
-        const times = ["1 hour ago", "3 hours ago", "1 day ago", "3 days ago", "1 week ago"];
-        return times[Math.floor(Math.random() * times.length)];
-    };
-
-    const entries = [];
-    for (let i = 1; i <= count; i++) {
-        entries.push({
-            id: `entry-${i}`,
-            name: `Entry ${i}`,
-            createdBy: "John Doe",
-            lastModified: randomTime(),
-            status: randomStatus()
-        });
+const data = [
+    {
+        id: "entry-1",
+        name: "Getting Started Guide",
+        createdBy: "John Doe",
+        lastModified: "1 hour ago",
+        status: "Published"
+    },
+    {
+        id: "entry-2",
+        name: "User Documentation",
+        createdBy: "Jane Smith",
+        lastModified: "3 days ago",
+        status: "Draft"
+    },
+    {
+        id: "entry-3",
+        name: "API Reference",
+        createdBy: "John Doe",
+        lastModified: "1 week ago",
+        status: "Published"
     }
-
-    return entries;
-}
-
-const data = generateEntries();
+];
 
 export const Default: Story<Entry> = {
     args: {
@@ -105,8 +103,22 @@ export const WithSelectableRows: Story<Entry> = {
 
 export const WithLoading: Story<Entry> = {
     args: {
-        ...Default.args,
-        loading: true
+        columns
+    },
+    render: ({ columns }) => {
+        const [loading, setLoading] = useState(true);
+        const [tableData, setTableData] = useState<Entry[]>([]);
+
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                setTableData(data); // your predefined data
+                setLoading(false);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }, []);
+
+        return <DataTable columns={columns} data={tableData} loading={loading} />;
     }
 };
 
@@ -222,5 +234,94 @@ export const WithSorting: Story<Entry> = {
     render: ({ sorting: argsSorting = [], ...args }) => {
         const [sorting, setSorting] = useState<DataTableSorting>(argsSorting);
         return <DataTable {...args} sorting={sorting} onSortingChange={setSorting} />;
+    }
+};
+
+// Add a Documentation story
+export const Documentation: Story<Entry> = {
+    args: {
+        bordered: true,
+        stickyHeader: true,
+        columns: {
+            name: {
+                header: "Title",
+                enableSorting: true
+            },
+            createdBy: {
+                header: "Author"
+            },
+            lastModified: {
+                header: "Last Modified",
+                enableSorting: true
+            },
+            status: {
+                header: "Status"
+            }
+        },
+        data: [
+            {
+                id: "entry-1",
+                name: "Getting Started Guide",
+                createdBy: "John Doe",
+                lastModified: "1 hour ago",
+                status: "Published"
+            },
+            {
+                id: "entry-2",
+                name: "User Documentation",
+                createdBy: "Jane Smith",
+                lastModified: "3 days ago",
+                status: "Draft"
+            },
+            {
+                id: "entry-3",
+                name: "API Reference",
+                createdBy: "John Doe",
+                lastModified: "1 week ago",
+                status: "Published"
+            }
+        ]
+    },
+    render: args => {
+        const [selectedRows, setSelectedRows] = useState<Entry[]>([]);
+        const [sorting, setSorting] = useState<DataTableSorting>([]);
+
+        return (
+            <DataTable
+                {...args}
+                selectedRows={selectedRows}
+                onSelectRow={rows => setSelectedRows(rows)}
+                sorting={sorting}
+                onSortingChange={setSorting}
+            />
+        );
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: "This example shows a DataTable with selectable rows, sorting, and a sticky header."
+            }
+        }
+    },
+    argTypes: {
+        bordered: {
+            description: "Show or hide borders.",
+            control: "boolean",
+            defaultValue: true
+        },
+        stickyHeader: {
+            description: "Enable sticky header.",
+            control: "boolean",
+            defaultValue: true
+        },
+        columns: {
+            description: "Columns definition. Please refer to the code example for details.",
+            control: false
+        },
+        data: {
+            description:
+                "Data to display into DataTable body. Please refer to the code example for details.",
+            control: false
+        }
     }
 };

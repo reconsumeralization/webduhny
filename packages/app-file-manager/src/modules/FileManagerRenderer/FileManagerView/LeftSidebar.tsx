@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Separator } from "@webiny/admin-ui";
-import { FolderTree } from "@webiny/app-aco";
+import { FolderTree, useGetFolderHierarchy } from "@webiny/app-aco";
 
 interface LeftSidebarProps {
-    currentFolder?: string;
+    currentFolder: string;
     onFolderClick: (folderId: string) => void;
     children?: React.ReactNode;
 }
 
 export const LeftSidebar = ({ currentFolder, onFolderClick, children }: LeftSidebarProps) => {
+    const { folders, getFolderHierarchy } = useGetFolderHierarchy();
+
+    useEffect(() => {
+        if (folders.length > 0) {
+            return; // Skip if we already have folders in the cache.
+        }
+
+        getFolderHierarchy(currentFolder);
+    }, [currentFolder]);
+
     return (
         <div className={"wby-p-xs"}>
             <FolderTree

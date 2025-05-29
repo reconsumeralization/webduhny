@@ -51,6 +51,18 @@ export const createGraphQLSchema = (context: Context) => {
             # as a way to tell the Prerendering Service whether the GraphQL query needs to be
             # cached or not.
             directive @ps(cache: Boolean) on QUERY
+
+            type Error {
+                code: String
+                message: String
+                data: JSON
+                stack: String
+            }
+
+            type BooleanResponse {
+                data: Boolean
+                error: Error
+            }
         `
     ];
 

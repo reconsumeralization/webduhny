@@ -1,1 +1,1 @@
-export const ROOT_FOLDER = "root";
+export * from "@webiny/shared-aco/constants";

@@ -8,6 +8,7 @@ import { SettingsStorageOperations } from "~/operations/SettingsStorageOperation
 import { SystemStorageOperations } from "~/operations/SystemStorageOperations";
 import { SettingsAttributePlugin, SystemAttributePlugin } from "./plugins";
 import { AliasesStorageOperations } from "~/operations/AliasesStorageOperations";
+import { CompressorPlugin } from "@webiny/api";
 
 export interface StorageOperationsConfig {
     documentClient: DynamoDBDocument;
@@ -28,7 +29,11 @@ export const createFileManagerStorageOperations = ({
 
     return {
         beforeInit: async context => {
-            const types: string[] = [SettingsAttributePlugin.type, SystemAttributePlugin.type];
+            const types: string[] = [
+                SettingsAttributePlugin.type,
+                SystemAttributePlugin.type,
+                CompressorPlugin.type
+            ];
             for (const type of types) {
                 plugins.mergeByType(context.plugins, type);
             }

@@ -56,7 +56,8 @@ export default (params: RenderParams) => {
             const settings = await storageOperations.getSettings();
 
             for (const args of handlerArgs) {
-                const { tenant, path, locale } = args;
+                const { tenant, path, locale, groupId } = args;
+                console.log("Rendering item", args);
 
                 const bucketRoot = isMultiTenant ? tenant : "";
 
@@ -118,6 +119,7 @@ export default (params: RenderParams) => {
                     tenant,
                     path,
                     locale,
+                    groupId: groupId ?? tenant,
                     tags: args.tags,
                     files: files.map(item => omit(item, ["body"]))
                 };

@@ -120,3 +120,49 @@ export const FullExample: Story = {
         }
     }
 };
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState("");
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        const handleValidation = () => {
+            if (args.required && !value) {
+                setValidation({ isValid: false, message: "This field is required" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        return (
+            <RadioGroup
+                {...args}
+                value={value}
+                validation={validation}
+                onChange={newValue => setValue(newValue)}
+                onBlur={handleValidation}
+            />
+        );
+    },
+    args: {
+        label: "Deployment Option",
+        description: "Choose your preferred deployment method",
+        note: "This setting will determine how your application is deployed",
+        required: true,
+        disabled: false,
+        items: [
+            {
+                label: "Automatic Deployment",
+                value: "automatic"
+            },
+            {
+                label: "Manual Deployment",
+                value: "manual"
+            },
+            {
+                label: "Scheduled Deployment",
+                value: "scheduled"
+            }
+        ]
+    }
+};

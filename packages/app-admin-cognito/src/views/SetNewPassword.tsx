@@ -70,6 +70,7 @@ export const SetNewPassword = () => {
                                         ]}
                                     >
                                         <Input
+                                            autoComplete={"off"}
                                             size={"lg"}
                                             type={"password"}
                                             label={"Retype password"}

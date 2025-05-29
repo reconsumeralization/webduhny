@@ -12,7 +12,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof Accordion> = {
     title: "Components/Accordion",
     component: Accordion,
-    tags: ["autodocs"],
     argTypes: {},
     decorators: [
         Story => (
@@ -336,5 +335,67 @@ export const ContainerVariantWithLightBackground: Story = {
                 />
             </>
         )
+    }
+};
+
+// Add a Documentation story
+export const Documentation: Story = {
+    render: args => {
+        return <Accordion {...args} />;
+    },
+    args: {
+        variant: "underline",
+        background: "base",
+        children: (
+            <>
+                <Accordion.Item
+                    title="Accordion Item 1"
+                    description="This is a description for the first item"
+                    icon={<Accordion.Item.Icon icon={<WarningIcon />} label={"Warning icon"} />}
+                    actions={
+                        <>
+                            <Accordion.Item.Action icon={<EditIcon />} />
+                            <Accordion.Item.Action icon={<TrashIcon />} />
+                        </>
+                    }
+                >
+                    This is the content for the first accordion item. It can contain any React
+                    elements.
+                </Accordion.Item>
+
+                <Accordion.Item
+                    title="Accordion Item 2"
+                    description="This is a description for the second item"
+                    defaultOpen={true}
+                >
+                    This is the content for the second accordion item. It&apos;s open by default.
+                </Accordion.Item>
+
+                <Accordion.Item
+                    title="Disabled Item"
+                    description="This item cannot be interacted with"
+                    disabled={true}
+                >
+                    This content won&apos;t be visible because the item is disabled.
+                </Accordion.Item>
+            </>
+        )
+    },
+    argTypes: {
+        variant: {
+            control: "select",
+            options: ["underline", "container"],
+            description: "The visual style of the accordion"
+        },
+        background: {
+            control: "select",
+            options: ["base", "light", "transparent"],
+            description: "The background color of the accordion"
+        },
+        children: {
+            description:
+                "The content of the accordion. Please refer to the example code for details.",
+            control: "none"
+        }
     }
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +7,6 @@ import { IconPicker } from "~/IconPicker";
 const meta: Meta<typeof IconPicker> = {
     title: "Components/Form/IconPicker",
     component: IconPicker,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         disabled: {
@@ -144,6 +143,103 @@ export const FullExample: Story = {
         validation: {
             isValid: false,
             message: "This field is required."
+        }
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [value, setValue] = useState(args.value || null);
+        const [validation, setValidation] = useState({ isValid: true, message: "" });
+
+        // Update value when args.value changes
+        useEffect(() => {
+            setValue(args.value || null);
+        }, [args.value]);
+
+        const handleChange = (newValue: any) => {
+            setValue(newValue);
+
+            // Simple required validation
+            if (args.required && !newValue) {
+                setValidation({ isValid: false, message: "Please select an icon" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        };
+
+        // Validate on required change or value change
+        useEffect(() => {
+            if (args.required && !value) {
+                setValidation({ isValid: false, message: "Please select an icon" });
+            } else {
+                setValidation({ isValid: true, message: "" });
+            }
+        }, [args.required, value]);
+
+        return (
+            <IconPicker
+                {...args}
+                value={value}
+                onChange={handleChange}
+                validation={validation}
+                required={args.required}
+            />
+        );
+    },
+    args: {
+        label: "Select an Icon",
+        required: true,
+        disabled: false,
+        description: "Choose an icon for your button",
+        note: "Note: The selected icon will be displayed on your button",
+        icons: [
+            { prefix: "fas", name: "trash-restore-alt" },
+            { prefix: "fas", name: "file-pen" },
+            { prefix: "fas", name: "receipt" },
+            { prefix: "fas", name: "user-circle" },
+            { prefix: "fas", name: "circle-user" }
+        ],
+        value: null,
+        validation: undefined
+    },
+    argTypes: {
+        label: {
+            description: "Label text for the icon picker",
+            control: "text"
+        },
+        required: {
+            description: "Makes the field required when set to true",
+            control: "boolean"
+        },
+        disabled: {
+            description: "Disables the icon picker when set to true",
+            control: "boolean"
+        },
+        description: {
+            description: "Additional description text below the field",
+            control: "text"
+        },
+        note: {
+            description: "Additional note text below the field",
+            control: "text"
+        },
+        icons: {
+            description: "Array of available icons with prefix and name properties",
+            control: "object"
+        },
+        value: {
+            description: "The selected icon value (in format 'prefix/name')",
+            control: "none"
+        },
+        validation: {
+            description:
+                "Object containing validation state and message. Please refer to the example code for details on usage.",
+            control: "none"
+        },
+        onChange: {
+            description: "Function called when an icon is selected",
+            control: "none"
         }
     }
 };

@@ -9,7 +9,6 @@ import { Tag } from "~/Tag";
 const meta: Meta<typeof MultiAutoCompletePrimitive> = {
     title: "Components/Form Primitives/Multi Autocomplete",
     component: MultiAutoCompletePrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

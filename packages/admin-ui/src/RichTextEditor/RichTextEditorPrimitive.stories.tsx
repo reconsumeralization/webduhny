@@ -4,7 +4,6 @@ import { RichTextEditorPrimitive } from "./RichTextEditorPrimitive";
 const meta: Meta<typeof RichTextEditorPrimitive> = {
     title: "Components/Form Primitives/RichTextEditor",
     component: RichTextEditorPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         onReady: { action: "onReady" }

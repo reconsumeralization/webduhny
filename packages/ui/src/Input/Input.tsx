@@ -117,6 +117,9 @@ const rmwcProps = [
     "onKeyUp",
     "onFocus",
     "className",
+    "maxLength",
+    "characterCount",
+    "autoComplete",
     "maxLength"
 ];
 

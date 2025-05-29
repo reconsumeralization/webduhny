@@ -9,7 +9,6 @@ import { Icon } from "~/Icon";
 const meta: Meta<typeof InputPrimitive> = {
     title: "Components/Form Primitives/Input",
     component: InputPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         onEnter: { action: "onEnter" },
