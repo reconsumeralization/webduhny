@@ -23,17 +23,32 @@ const tagVariants = cva(
             },
             variant: {
                 "neutral-base": [
+                    "wby-bg-transparent wby-text-neutral-primary",
+                    "hover:wby-bg-neutral-light",
+                    "aria-disabled:wby-bg-transparent aria-disabled:wby-text-neutral-disabled"
+                ],
+                "neutral-base-outline": [
                     "wby-border-sm wby-border-solid wby-px-[calc(theme(padding.xs-plus)-theme(borderWidth.sm))] wby-py-[calc(theme(padding.xxs)-theme(borderWidth.sm))]",
                     "wby-bg-transparent wby-border-neutral-muted wby-text-neutral-primary",
                     "hover:wby-bg-neutral-light",
                     "aria-disabled:wby-bg-transparent aria-disabled:wby-border-neutral-dimmed aria-disabled:wby-text-neutral-disabled"
                 ],
                 "neutral-light": [
+                    "wby-bg-neutral-light wby-text-neutral-primary",
+                    "hover:wby-bg-neutral-muted",
+                    "aria-disabled:wby-bg-neutral-light aria-disabled:wby-text-neutral-muted"
+                ],
+                "neutral-muted": [
                     "wby-bg-neutral-muted wby-text-neutral-primary",
                     "hover:wby-bg-neutral-strong",
                     "aria-disabled:wby-bg-neutral-muted aria-disabled:wby-text-neutral-muted"
                 ],
                 "neutral-strong": [
+                    "wby-bg-neutral-strong wby-text-neutral-light",
+                    "hover:wby-bg-neutral-xstrong",
+                    "aria-disabled:wby-bg-neutral-muted"
+                ],
+                "neutral-xstrong": [
                     "wby-bg-neutral-xstrong wby-text-neutral-light",
                     "hover:wby-bg-neutral-dark",
                     "aria-disabled:wby-bg-neutral-strong"
@@ -48,10 +63,20 @@ const tagVariants = cva(
                     "hover:wby-bg-primary-strong",
                     "aria-disabled:wby-bg-primary-disabled"
                 ],
+                "accent-light": [
+                    "wby-bg-primary-subtle wby-text-neutral-primary",
+                    "hover:wby-bg-primary-muted",
+                    "aria-disabled:wby-bg-primary-subtle aria-disabled:wby-text-neutral-muted"
+                ],
                 success: [
                     "wby-bg-success-default wby-text-neutral-light",
                     "hover:wby-bg-success-strong",
                     "aria-disabled:wby-bg-success-disabled"
+                ],
+                "success-light": [
+                    "wby-bg-success-subtle wby-text-neutral-primary",
+                    "hover:wby-bg-success-muted",
+                    "aria-disabled:wby-bg-success-subtle aria-disabled:wby-text-neutral-muted"
                 ],
                 warning: [
                     "wby-bg-warning-muted wby-text-neutral-primary",
@@ -95,7 +120,14 @@ const DecoratableTag = ({
     const iconVariant = React.useMemo((): VariantProps<typeof iconButtonVariants>["variant"] => {
         if (
             variant &&
-            ["neutral-strong", "neutral-dark", "success", "accent", "destructive"].includes(variant)
+            [
+                "neutral-strong",
+                "neutral-xstrong",
+                "neutral-dark",
+                "success",
+                "accent",
+                "destructive"
+            ].includes(variant)
         ) {
             return "ghost-negative";
         }
