@@ -1,14 +1,11 @@
 import React, { useMemo } from "react";
+import { Text, IconButton } from "@webiny/admin-ui";
 import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { i18n } from "@webiny/app/i18n";
 import { Buttons } from "@webiny/app-admin";
-import { IconButton } from "@webiny/ui/Button";
-import { Typography } from "@webiny/ui/Typography";
 
 import { useFileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 import { useFileManagerView } from "~/modules/FileManagerRenderer/FileManagerViewProvider";
-
-import { BulkActionsContainer, BulkActionsInner, ButtonsContainer } from "./BulkActions.styled";
 
 const t = i18n.ns("app-file-manager/components/bulk-actions");
 
@@ -21,7 +18,7 @@ export const BulkActions = () => {
     const view = useFileManagerView();
 
     const headline = useMemo((): string => {
-        return t`{label} selected:`({
+        return t`{label} selected`({
             label: getFilesLabel(view.selected.length)
         });
     }, [view.selected]);
@@ -31,14 +28,24 @@ export const BulkActions = () => {
     }
 
     return (
-        <BulkActionsContainer>
-            <BulkActionsInner>
-                <ButtonsContainer>
-                    <Typography use={"headline6"}>{headline}</Typography>
+        <div className={"wby-w-full wby-bg-neutral-disabled wby-px-md wby-py-sm"}>
+            <div className={"wby-flex wby-items-center wby-justify-between wby-gap-sm"}>
+                <div className={"wby-flex wby-items-center wby-gap-sm"}>
+                    <Text size={"sm"} className={"wby-text-neutral-strong"}>
+                        {headline}
+                    </Text>
+                </div>
+
+                <div className={"wby-flex wby-items-center wby-gap-sm"}>
                     <Buttons actions={browser.bulkActions} />
-                </ButtonsContainer>
-                <IconButton icon={<Close />} onClick={() => view.setSelected([])} />
-            </BulkActionsInner>
-        </BulkActionsContainer>
+                    <IconButton
+                        variant={"ghost"}
+                        size={"sm"}
+                        icon={<Close />}
+                        onClick={() => view.setSelected([])}
+                    />
+                </div>
+            </div>
+        </div>
     );
 };
