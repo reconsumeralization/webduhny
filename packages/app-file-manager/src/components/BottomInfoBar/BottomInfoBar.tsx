@@ -1,10 +1,9 @@
 import React from "react";
 import mime from "mime/lite";
+import { Separator } from "@webiny/admin-ui";
 
 import SupportedFileTypes, { SupportedFileTypesProps } from "./SupportedFileTypes";
 import ListStatus, { ListStatusProps } from "./ListStatus";
-
-import { BottomInfoBarInner, BottomInfoBarWrapper } from "./styled";
 
 mime.define({ "image/x-icon": ["ico"] }, true);
 mime.define({ "image/jpg": ["jpg"] }, true);
@@ -14,11 +13,16 @@ type BottomInfoBarProps = SupportedFileTypesProps & ListStatusProps;
 
 export const BottomInfoBar = (props: BottomInfoBarProps) => {
     return (
-        <BottomInfoBarWrapper>
-            <BottomInfoBarInner>
+        <div className="wby-sticky wby-bottom-0 wby-z-5 wby-bg-neutral-base wby-w-full wby-transform wby-translate-z-0 wby-overflow-hidden">
+            <Separator />
+            <div
+                className={
+                    "wby-h-xl wby-px-md wby-py-sm wby-flex wby-items-center wby-justify-between"
+                }
+            >
                 <SupportedFileTypes {...props} />
                 <ListStatus {...props} />
-            </BottomInfoBarInner>
-        </BottomInfoBarWrapper>
+            </div>
+        </div>
     );
 };

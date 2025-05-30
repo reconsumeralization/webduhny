@@ -1,8 +1,6 @@
 import React from "react";
 import { i18n } from "@webiny/app/i18n";
-import { CircularProgress } from "@webiny/ui/Progress";
-
-import { CircularProgressHolder, StatusWrapper, UploadingLabel } from "./styled";
+import { Loader, Text } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-admin/file-manager/components/bottom-info-bar/list-status");
 
@@ -16,12 +14,12 @@ const ListStatus = ({ listing }: ListStatusProps) => {
     }
 
     return (
-        <StatusWrapper>
-            <UploadingLabel>{t`Loading more files...`}</UploadingLabel>
-            <CircularProgressHolder>
-                <CircularProgress size={10} spinnerWidth={1} />
-            </CircularProgressHolder>
-        </StatusWrapper>
+        <div className="wby-flex wby-items-center wby-gap-sm">
+            <Text size={"sm"} as={"div"} className={"wby-text-neutral-strong"}>
+                {t`Loading more files...`}
+            </Text>
+            <Loader size={"xs"} />
+        </div>
     );
 };
 
