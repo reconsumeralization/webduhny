@@ -7,21 +7,17 @@ import { positionValues } from "react-custom-scrollbars";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
 import { observer } from "mobx-react-lite";
-import { ReactComponent as UploadIcon } from "@webiny/icons/cloud_upload.svg";
-import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { i18n } from "@webiny/app/i18n";
-import { useCreateDialog } from "@webiny/app-aco";
 import { OverlayLayout, useSnackbar } from "@webiny/app-admin";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
 import { useI18N } from "@webiny/app-i18n";
 import { useTenancy } from "@webiny/app-tenancy";
-import { ButtonIcon, ButtonPrimary, ButtonProps, ButtonSecondary } from "@webiny/ui/Button";
 import { Sorting } from "@webiny/ui/DataTable";
 import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { useFileManagerView } from "~/modules/FileManagerRenderer/FileManagerViewProvider";
 import { outputFileSelectionError } from "./outputFileSelectionError";
 import { LeftSidebar } from "./LeftSidebar";
-import { useFileManagerApi, useFileManagerViewConfig } from "~/index";
+import { useFileManagerViewConfig } from "~/index";
 import { FileItem } from "@webiny/app-admin/types";
 import { BottomInfoBar } from "~/components/BottomInfoBar";
 import { BulkActions } from "~/components/BulkActions";
@@ -29,9 +25,7 @@ import { DropFilesHere } from "~/components/DropFilesHere";
 import { Empty } from "~/components/Empty";
 import { FileDetails } from "~/components/FileDetails";
 import { Grid } from "~/components/Grid";
-import { LayoutSwitch } from "~/components/LayoutSwitch";
 import { Table, TableProps } from "~/components/Table";
-import { Title } from "~/components/Title";
 import { UploadStatus } from "~/components/UploadStatus";
 import { BatchFileUploader } from "~/BatchFileUploader";
 import { SearchWidget } from "./components/SearchWidget";
@@ -39,9 +33,8 @@ import { Filters } from "./components/Filters";
 import { TagsList } from "~/modules/FileManagerRenderer/FileManagerView/components/TagsList";
 import { ListFilesSort, ListFilesSortItem } from "~/modules/FileManagerApiProvider/graphql";
 import { TableItem } from "~/types";
-import { Heading, Icon } from "@webiny/admin-ui";
-import { ReactComponent as FilterIcon } from "@webiny/icons/filter_list.svg";
-import { ReactComponent as CloseFilterIcon } from "@webiny/icons/filter_list_off.svg";
+import { Heading } from "@webiny/admin-ui";
+import { Header } from "~/components/Header";
 
 const t = i18n.ns("app-admin/file-manager/file-manager-view");
 
@@ -53,10 +46,6 @@ const FileListWrapper = styled("div")({
         display: "inline-table"
     }
 });
-
-type BrowseFilesHandler = {
-    browseFiles: FilesRenderChildren["browseFiles"];
-};
 
 type GetFileUploadErrorMessageProps =
     | string
@@ -100,10 +89,8 @@ const useLayoutId = (applicationId: string) => {
 
 const FileManagerView = () => {
     const view = useFileManagerView();
-    const fileManager = useFileManagerApi();
     const { browser } = useFileManagerViewConfig();
     const { showSnackbar } = useSnackbar();
-    const { showDialog: showCreateFolderDialog } = useCreateDialog();
     const [drawerLoading, setDrawerLoading] = useState<string | null>(null);
 
     const uploader = useMemo<BatchFileUploader>(
@@ -190,21 +177,6 @@ const FileManagerView = () => {
         });
     };
 
-    const renderUploadFileAction = useCallback(
-        ({ browseFiles }: BrowseFilesHandler) => {
-            if (!fileManager.canCreate) {
-                return null;
-            }
-            return (
-                <ButtonPrimary flat={true} onClick={browseFiles as ButtonProps["onClick"]}>
-                    <ButtonIcon icon={<UploadIcon />} />
-                    {t`Upload...`}
-                </ButtonPrimary>
-            );
-        },
-        [fileManager.canCreate]
-    );
-
     const filesBeingUploaded = uploader.getJobs().length;
     const progress = uploader.progress;
 
@@ -289,10 +261,6 @@ const FileManagerView = () => {
         [view.meta, view.loadMoreFiles]
     );
 
-    const onCreateFolder = useCallback(() => {
-        showCreateFolderDialog({ currentParentId: view.folderId });
-    }, [view.folderId]);
-
     const updateFile = useCallback(
         async (data: FileItem) => {
             const { id, ...fileData } = data;
@@ -304,14 +272,6 @@ const FileManagerView = () => {
         },
         [view.updateFile]
     );
-
-    const toggleFilters = () => {
-        if (view.showingFilters) {
-            view.hideFilters();
-        } else {
-            view.showFilters();
-        }
-    };
 
     return (
         <>
@@ -362,43 +322,7 @@ const FileManagerView = () => {
                                     </LeftSidebar>
                                 </LeftPanel>
                                 <RightPanel span={10}>
-                                    <>
-                                        {view.hasOnSelectCallback && view.selected.length > 0 ? (
-                                            <ButtonPrimary
-                                                flat={true}
-                                                small={true}
-                                                onClick={() => view.onChange(view.selected)}
-                                            >
-                                                {t`Select`}{" "}
-                                                {view.multiple && `(${view.selected.length})`}
-                                            </ButtonPrimary>
-                                        ) : (
-                                            renderUploadFileAction({
-                                                browseFiles
-                                            } as BrowseFilesHandler)
-                                        )}
-                                        <ButtonSecondary
-                                            data-testid={"file-manager.create-folder-button"}
-                                            onClick={onCreateFolder}
-                                            style={{ margin: "0 8px" }}
-                                        >
-                                            <ButtonIcon icon={<AddIcon />} />
-                                            {t`New Folder`}
-                                        </ButtonSecondary>
-                                        <LayoutSwitch />
-                                        <Icon
-                                            label={"Toggle filters"}
-                                            icon={
-                                                view.showingFilters ? (
-                                                    <CloseFilterIcon />
-                                                ) : (
-                                                    <FilterIcon />
-                                                )
-                                            }
-                                            onClick={toggleFilters}
-                                        />
-                                    </>
-
+                                    <Header browseFiles={browseFiles} />
                                     <FileListWrapper
                                         {...getDropZoneProps({
                                             onDragOver: () => view.setDragging(true),

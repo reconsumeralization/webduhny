@@ -37,6 +37,7 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     hideFilters: () => void;
     isListLoading: boolean;
     isListLoadingMore: boolean;
+    isRootFolder: boolean;
     hasOnSelectCallback: boolean;
     listTitle: string;
     loadMoreFiles: () => void;
@@ -119,7 +120,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     const modifiers = { scope: props.scope, own: props.own, accept: props.accept };
     const fileManager = useFileManagerApi();
     const { folders: originalFolders, loading: foldersLoading } = useListFolders();
-    const { currentFolderId, navigateToFolder } = useNavigateFolder();
+    const { currentFolderId, navigateToFolder, isRootFolder } = useNavigateFolder();
     const tags = useTags(modifiers);
     const [state, setState] = useStateIfMounted(initializeState());
 
@@ -431,6 +432,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
             loading.INIT || foldersLoading.INIT || loading.LIST || foldersLoading.LIST
         ),
         isListLoadingMore: Boolean(loading.LIST_MORE),
+        isRootFolder: Boolean(isRootFolder),
         listTitle,
         loadMoreFiles,
         meta,
