@@ -1,18 +1,6 @@
 import React, { useCallback } from "react";
-import { IconButton } from "@webiny/admin-ui";
-import { ReactComponent as FilterIcon } from "@webiny/icons/filter_list.svg";
-import { ReactComponent as CloseFilterIcon } from "@webiny/icons/filter_list_off.svg";
-
+import { FiltersToggle } from "@webiny/app-admin";
 import { useContentEntriesList } from "~/admin/views/contentEntries/hooks";
-
-interface IconProps {
-    showingFilters?: boolean;
-}
-
-const Icon = ({ showingFilters }: IconProps) => {
-    return showingFilters ? <CloseFilterIcon /> : <FilterIcon />;
-};
-const IconComponent = React.memo(Icon);
 
 export const ButtonFilters = () => {
     const list = useContentEntriesList();
@@ -26,10 +14,9 @@ export const ButtonFilters = () => {
     }, [list.showingFilters]);
 
     return (
-        <IconButton
-            variant={"ghost"}
-            icon={<IconComponent showingFilters={list.showingFilters} />}
-            onClick={toggleFilters}
+        <FiltersToggle
+            onFiltersToggle={toggleFilters}
+            showingFilters={list.showingFilters}
             data-testid="cms.list-entries.toggle-filters"
         />
     );

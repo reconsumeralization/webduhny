@@ -7,34 +7,33 @@ import { positionValues } from "react-custom-scrollbars";
 // @ts-expect-error
 import { useHotkeys } from "react-hotkeyz";
 import { observer } from "mobx-react-lite";
+import { Heading, type DataTableSorting, Scrollbar } from "@webiny/admin-ui";
 import { i18n } from "@webiny/app/i18n";
 import { OverlayLayout, useSnackbar } from "@webiny/app-admin";
 import { LeftPanel, RightPanel, SplitView } from "@webiny/app-admin/components/SplitView";
 import { useI18N } from "@webiny/app-i18n";
 import { useTenancy } from "@webiny/app-tenancy";
-import { Sorting } from "@webiny/ui/DataTable";
-import { Scrollbar } from "@webiny/ui/Scrollbar";
 import { useFileManagerView } from "~/modules/FileManagerRenderer/FileManagerViewProvider";
 import { outputFileSelectionError } from "./outputFileSelectionError";
 import { LeftSidebar } from "./LeftSidebar";
 import { useFileManagerViewConfig } from "~/index";
 import { FileItem } from "@webiny/app-admin/types";
+import { BatchFileUploader } from "~/BatchFileUploader";
+import { ListFilesSort, ListFilesSortItem } from "~/modules/FileManagerApiProvider/graphql";
+import { TableItem } from "~/types";
+
 import { BottomInfoBar } from "~/components/BottomInfoBar";
 import { BulkActions } from "~/components/BulkActions";
 import { DropFilesHere } from "~/components/DropFilesHere";
 import { Empty } from "~/components/Empty";
 import { FileDetails } from "~/components/FileDetails";
+import { Filters } from "~/components/Filters";
 import { Grid } from "~/components/Grid";
-import { Table, TableProps } from "~/components/Table";
-import { UploadStatus } from "~/components/UploadStatus";
-import { BatchFileUploader } from "~/BatchFileUploader";
-import { SearchWidget } from "./components/SearchWidget";
-import { Filters } from "./components/Filters";
-import { TagsList } from "~/modules/FileManagerRenderer/FileManagerView/components/TagsList";
-import { ListFilesSort, ListFilesSortItem } from "~/modules/FileManagerApiProvider/graphql";
-import { TableItem } from "~/types";
-import { Heading } from "@webiny/admin-ui";
 import { Header } from "~/components/Header";
+import { SearchWidget } from "~/components/SearchWidget";
+import { Table, TableProps } from "~/components/Table";
+import { TagsList } from "~/components/TagsList";
+import { UploadStatus } from "~/components/UploadStatus";
 
 const t = i18n.ns("app-admin/file-manager/file-manager-view");
 
@@ -53,7 +52,7 @@ type GetFileUploadErrorMessageProps =
           message: string;
       };
 
-const createSort = (sorting?: Sorting): ListFilesSort | undefined => {
+const createSort = (sorting?: DataTableSorting): ListFilesSort | undefined => {
     if (!sorting?.length) {
         return undefined;
     }
@@ -98,7 +97,7 @@ const FileManagerView = () => {
         [view.folderId]
     );
 
-    const [tableSorting, setTableSorting] = useState<Sorting>([]);
+    const [tableSorting, setTableSorting] = useState<DataTableSorting>([]);
     const [currentFile, setCurrentFile] = useState<FileItem>();
     const layoutId = useLayoutId("fm:file");
 
