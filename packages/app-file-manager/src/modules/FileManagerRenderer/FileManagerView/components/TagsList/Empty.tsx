@@ -1,15 +1,10 @@
 import React from "react";
-import { Typography } from "@webiny/ui/Typography";
-import { EmptyContainer } from "./styled";
+import { Text } from "@webiny/admin-ui";
 
 type EmptyProps = {
     disclaimer?: string;
 };
 
 export const Empty = ({ disclaimer = `No tags found...` }: EmptyProps) => {
-    return (
-        <EmptyContainer>
-            <Typography use={"body2"}>{disclaimer}</Typography>
-        </EmptyContainer>
-    );
+    return <Text className={"wby-text-neutral-muted"}>{disclaimer}</Text>;
 };

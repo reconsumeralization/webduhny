@@ -9,7 +9,7 @@ export const Loader = ({ count = 4 }: LoaderProps) => {
     const lines = Array.from({ length: count });
 
     return (
-        <div className={"wby-p-xs"}>
+        <div className={"wby-my-md wby-p-xs"}>
             {lines.map((_, index) => {
                 return (
                     <div
