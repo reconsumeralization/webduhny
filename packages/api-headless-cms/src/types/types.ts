@@ -1459,6 +1459,7 @@ export type CreateCmsEntryInput<TValues = CmsEntryValues> = TValues & {
 
 export interface CreateCmsEntryOptionsInput {
     skipValidators?: string[];
+    validateReferencedEntries?: boolean;
 }
 
 /**
