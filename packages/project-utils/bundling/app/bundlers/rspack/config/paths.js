@@ -3,7 +3,7 @@
 const path = require("path");
 const fs = require("fs");
 const url = require("url");
-const { allWorkspaces } = require("../../../workspaces");
+const { allWorkspaces } = require("../../../../../workspaces");
 
 const envPublicUrl = process.env.PUBLIC_URL;
 
