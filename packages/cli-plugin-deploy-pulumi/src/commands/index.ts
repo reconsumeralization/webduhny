@@ -252,7 +252,7 @@ export const commands: CliCommandPlugin[] = [
                             type: "number"
                         });
                         yargs.option("increase-handshake-timeout", {
-                            default: 120,
+                            default: 5,
                             describe: `Increase timeout for the initial handshake between a single AWS Lambda invocation and local code execution (passed as number of seconds, used with local AWS Lambda development)`,
                             type: "number"
                         });
