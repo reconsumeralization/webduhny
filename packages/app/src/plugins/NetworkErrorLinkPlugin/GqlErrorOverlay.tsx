@@ -12,34 +12,56 @@ const ENVIRONMENT_VARIABLES_ARTICLE_LINK =
     "https://www.webiny.com/docs/how-to-guides/environment-variables";
 
 interface ErrorOverlayProps {
-    message: React.ReactNode;
-    closeable?: boolean;
+    query: string;
+    networkError: {
+        message: string;
+        result?: {
+            error?: {
+                stack?: string;
+            };
+        };
+    };
 }
-
-const ErrorOverlay = (props: ErrorOverlayProps) => {
-    const { message, closeable } = props;
+const GqlErrorOverlay = (props: ErrorOverlayProps) => {
+    const { query, networkError } = props;
     const [open, setOpen] = useState(true);
+    // Log error in browser's developer console for further inspection.
+    console.error({ networkError });
+
     if (!open) {
         return null;
     }
+
+    const stackTrace = get(networkError, "result.error.stack");
 
     return (
         <OverlayWrapper>
             <div className="inner">
                 <div className="header">
                     <div className="header__title">
-                        <Typography use={"headline4"}>An error occurred</Typography>
+                        <Typography use={"headline4"}>{networkError.message}</Typography>
                     </div>
-                    {closeable !== false && (
-                        <div className="header__action">
-                            <IconButton icon={<CloseIcon />} onClick={() => setOpen(false)} />
-                        </div>
-                    )}
+                    <div className="header__action">
+                        <IconButton icon={<CloseIcon />} onClick={() => setOpen(false)} />
+                    </div>
                 </div>
                 <div className="body">
                     <div className="body__summary">
-                        <Typography use={"subtitle1"}>{message}</Typography>
+                        <Typography
+                            use={"subtitle1"}
+                        >{t`Error occurred while executing operation:`}</Typography>
+                        <Pre>
+                            <code>{query}</code>
+                        </Pre>
                     </div>
+                    {stackTrace && (
+                        <div className="body__description">
+                            <Typography use={"subtitle1"}>{t`Complete stack trace:`}</Typography>
+                            <Pre>
+                                <code>{stackTrace}</code>
+                            </Pre>
+                        </div>
+                    )}
                 </div>
                 <div className="footer">
                     <Typography use={"body2"}>
@@ -66,4 +88,4 @@ const ErrorOverlay = (props: ErrorOverlayProps) => {
     );
 };
 
-export default ErrorOverlay;
+export default GqlErrorOverlay;

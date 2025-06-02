@@ -50,7 +50,7 @@ export const OverlayWrapper = styled("div")(`
 
 export const Pre = styled("pre")(`
     position: relative;
-    display: block;
+    display: inline-block;
     padding: 0.5em;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
