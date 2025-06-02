@@ -12366,6 +12366,7 @@ __metadata:
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/pubsub": "npm:0.0.0"
+    "@webiny/shared-aco": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
@@ -13853,6 +13854,7 @@ __metadata:
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-properties": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
+    "@webiny/shared-aco": "npm:0.0.0"
     "@webiny/ui": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
     "@webiny/validation": "npm:0.0.0"
@@ -16218,6 +16220,15 @@ __metadata:
     ora: "npm:^4.1.1"
     typescript: "npm:5.3.3"
     webpack: "npm:^5.97.0"
+  languageName: unknown
+  linkType: soft
+
+"@webiny/shared-aco@npm:0.0.0, @webiny/shared-aco@workspace:packages/shared-aco":
+  version: 0.0.0-use.local
+  resolution: "@webiny/shared-aco@workspace:packages/shared-aco"
+  dependencies:
+    "@webiny/project-utils": "npm:0.0.0"
+    typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
 

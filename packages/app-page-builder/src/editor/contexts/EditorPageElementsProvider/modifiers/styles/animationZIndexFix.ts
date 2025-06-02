@@ -10,7 +10,7 @@ import { ElementAttributesModifier } from "@webiny/app-page-builder-elements/typ
 export const createAnimationZIndexFix = () => {
     const animation: ElementAttributesModifier = ({ element }) => {
         const animation = element.data.settings?.animation;
-        if (animation) {
+        if (animation && animation.name) {
             return { zIndex: 1 };
         }
         return null;

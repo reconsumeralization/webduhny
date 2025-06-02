@@ -23,6 +23,7 @@ export class GzipCompression extends CompressionPlugin {
     }
 
     public override async compress(data: any): Promise<ICompressedValue> {
+        // This stringifies both regular strings and JSON objects.
         const value = await gzip(JSON.stringify(data));
 
         return {

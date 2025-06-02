@@ -1,0 +1,28 @@
+{
+  "name": "@webiny/shared-aco",
+  "version": "0.0.0",
+  "main": "index.js",
+  "keywords": [
+    "shared-aco:base"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webiny/webiny-js.git",
+    "directory": "packages/shared-aco"
+  },
+  "description": "Shared utilities for the ACO api and admin packages.",
+  "author": "Webiny Ltd.",
+  "license": "MIT",
+  "scripts": {
+    "build": "node ../cli/bin.js run build",
+    "watch": "node ../cli/bin.js run watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "devDependencies": {
+    "@webiny/project-utils": "0.0.0",
+    "typescript": "5.3.3"
+  }
+}
