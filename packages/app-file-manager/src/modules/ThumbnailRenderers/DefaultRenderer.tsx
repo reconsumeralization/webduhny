@@ -1,20 +1,19 @@
 import * as React from "react";
-import { css } from "emotion";
-import { ReactComponent as FileIcon } from "@webiny/icons/description.svg";
+import { Image } from "@webiny/app/components";
+import ImageIcon from "./assets/image.png";
+import { useFile } from "~/hooks/useFile";
 
-const style = {
-    centering: css({
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: 200
-    })
-};
+const width300 = { width: 300 };
 
 export const DefaultRenderer = () => {
+    const { file } = useFile();
+
     return (
-        <div className={style.centering}>
-            <FileIcon />
-        </div>
+        <Image
+            src={ImageIcon}
+            alt={file.name}
+            transform={width300}
+            className={"wby-w-full wby-object-cover"}
+        />
     );
 };

@@ -5,7 +5,7 @@ import { i18n } from "@webiny/app/i18n";
 import { FolderItem } from "@webiny/app-aco/types";
 import { FileItem } from "@webiny/app-admin/types";
 import { FileProvider } from "~/contexts/FileProvider";
-import { Thumbnail } from "./Thumbnail";
+import { Thumbnail } from "../Thumbnail";
 import { File } from "./File";
 
 const t = i18n.ns("app-admin/file-manager/components/grid");

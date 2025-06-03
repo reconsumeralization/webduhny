@@ -68,13 +68,15 @@ const DefaultFileBody = ({ selected, onSelect, children }: DefaultFileBodyProps)
             <LazyLoad
                 height={200}
                 offsetVertical={300}
+                data-testid={"fm-file-wrapper-file-preview"}
                 className={cn([
                     "wby-bg-neutral-muted",
                     "wby-flex wby-items-center wby-justify-center",
-                    "wby-text-neutral-strong wby-text-sm"
+                    "wby-text-neutral-strong wby-text-sm",
+                    "[&_img]:wby-object-contain [&_img]:wby-max-w-full [&_img]:wby-max-h-full"
                 ])}
             >
-                <div data-testid={"fm-file-wrapper-file-preview"}>{children}</div>
+                {children}
             </LazyLoad>
         </div>
     );

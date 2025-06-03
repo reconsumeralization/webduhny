@@ -1,7 +1,6 @@
 import React from "react";
 import { cn, IconButton, Text, TimeAgo } from "@webiny/admin-ui";
-import { ReactComponent as FolderIcon } from "./assets/folder.svg";
-import { ReactComponent as FolderSharedIcon } from "./assets/folder.svg";
+import { FolderIcon, FolderSharedIcon } from "../FolderIcons";
 import { ReactComponent as MoreVerticalIcon } from "@webiny/icons/more_vert.svg";
 import { OptionsMenu } from "@webiny/app-admin";
 import { useAcoConfig } from "~/config";
