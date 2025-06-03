@@ -77,7 +77,7 @@
     "adio": "^1.0.1",
     "axios": "^1.7.9",
     "babel-jest": "29.7.0",
-    "babel-loader": "10.0.0",
+    "babel-loader": "9.2.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "3.1.0",
     "babel-plugin-module-resolver": "^5.0.2",
