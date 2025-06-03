@@ -26,13 +26,14 @@ const DefaultFileControls = ({ onSelect, selected }: DefaultFileControlsProps) =
     const { itemActions } = browser.grid;
 
     return (
-        <div className={"wby-invisible group-hover:wby-visible"}>
+        <>
             {onSelect ? (
                 <div
                     className={cn([
                         "wby-p-xs wby-rounded-md",
                         "wby-bg-neutral-base/30",
-                        "wby-absolute wby-top-sm wby-left-sm"
+                        "wby-absolute wby-top-sm wby-left-sm",
+                        selected ? "wby-visible" : "wby-invisible group-hover:wby-visible"
                     ])}
                 >
                     <CheckboxPrimitive
@@ -44,6 +45,7 @@ const DefaultFileControls = ({ onSelect, selected }: DefaultFileControlsProps) =
             ) : null}
             <div
                 className={cn([
+                    "wby-invisible group-hover:wby-visible",
                     "wby-flex wby-items-center wby-gap-xxs",
                     "wby-p-xs",
                     "wby-absolute wby-top-xs-plus wby-right-xs-plus"
@@ -53,7 +55,7 @@ const DefaultFileControls = ({ onSelect, selected }: DefaultFileControlsProps) =
                     return <Fragment key={action.name}>{action.element}</Fragment>;
                 })}
             </div>
-        </div>
+        </>
     );
 };
 
@@ -102,9 +104,8 @@ export const File = makeDecoratable(
                     "wby-group",
                     "wby-bg-neutral-base wby-rounded-lg",
                     "wby-shadow-sm hover:wby-shadow-lg",
-                    selected
-                        ? "wby-border-md wby-border-solid wby-border-accent-default"
-                        : "wby-border-sm wby-border-solid wby-border-neutral-base hover:wby-border-neutral-dimmed-darker",
+                    "wby-border-sm wby-border-solid wby-border-neutral-base hover:wby-border-neutral-dimmed-darker",
+                    selected && "wby-ring-md wby-ring-primary-strong",
                     "wby-transition-shadow wby-duration-250 wby-ease-in-out",
                     "wby-overflow-hidden"
                 ])}
