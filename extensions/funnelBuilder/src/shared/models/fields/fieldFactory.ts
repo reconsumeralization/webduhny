@@ -8,5 +8,6 @@ export const fieldFromDto = (dto: FunnelFieldDefinitionModelDto<any, any>) => {
     if (!FieldDefinitionClass) {
         throw new Error(`Unknown field: ${dto.type}`);
     }
+
     return new FieldDefinitionClass(dto);
 };
