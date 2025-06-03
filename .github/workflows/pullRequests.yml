@@ -186,7 +186,7 @@ jobs:
         run: yarn eslint
         working-directory: ${{ github.base_ref }}
       - name: Sync Dependencies Verification
-        run: yarn webiny verify-dependencies
+        run: yarn verify-dependencies
         working-directory: ${{ github.base_ref }}
     runs-on: ubuntu-latest
     env:
@@ -219,7 +219,7 @@ jobs:
         run: yarn build:quick
         working-directory: ${{ github.base_ref }}
       - name: Sync Dependencies Verification
-        run: yarn webiny verify-dependencies
+        run: yarn verify-dependencies
         working-directory: ${{ github.base_ref }}
     runs-on: ubuntu-latest
     env:

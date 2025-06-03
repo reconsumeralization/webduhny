@@ -338,7 +338,7 @@ const createPushWorkflow = (branchName: string) => {
                     ...installBuildSteps,
                     {
                         name: "Sync Dependencies Verification",
-                        run: "yarn webiny verify-dependencies",
+                        run: "yarn verify-dependencies",
                         "working-directory": DIR_WEBINY_JS
                     }
                 ]
