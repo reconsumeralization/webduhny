@@ -27,11 +27,13 @@ export interface DeleteFileOptions {
 
 export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> extends PublicState {
     accept: string[];
+    currentFolder: FolderItem | null;
     createFile: (data: TFileItem) => Promise<TFileItem | undefined>;
     deleteFile: (id: string, options?: DeleteFileOptions) => Promise<void>;
     files: FileItem[];
     folderId: string;
     folders: FolderItem[];
+    displaySubFolders: boolean;
     getFile: (id: string) => Promise<TFileItem | undefined>;
     hideFileDetails: () => void;
     hideFilters: () => void;
@@ -50,6 +52,7 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     own: boolean;
     scope?: string;
     setDragging: (state: boolean) => void;
+    setDisplaySubFolders: (state: boolean) => void;
     setFilters: (data: Record<string, any>) => void;
     setFolderId: (folderId: string) => void;
     setListSort: (state: ListSearchRecordsSort) => void;
@@ -413,6 +416,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         deleteFile,
         files,
         folderId: currentFolderId,
+        currentFolder: originalFolders.find(folder => folder.id === currentFolderId) ?? null,
         folders: state.isSearch ? [] : folders,
         getFile,
         hideFileDetails() {
@@ -464,6 +468,12 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
             setState(state => ({
                 ...state,
                 dragging: value
+            }));
+        },
+        setDisplaySubFolders(value: boolean) {
+            setState(state => ({
+                ...state,
+                displaySubFolders: value
             }));
         },
         setFilters(data) {

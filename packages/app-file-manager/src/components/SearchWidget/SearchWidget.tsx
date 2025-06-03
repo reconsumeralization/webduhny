@@ -13,7 +13,7 @@ export const SearchWidget = () => {
                 <Input
                     id={"file-manager__search-input"}
                     value={value}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={value => onChange(value)}
                     placeholder={view.searchLabel || "Search library..."}
                     disabled={!fileManager.canRead}
                     data-testid={"file-manager.search-input"}

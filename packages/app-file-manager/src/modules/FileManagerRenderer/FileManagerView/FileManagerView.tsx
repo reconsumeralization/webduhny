@@ -247,6 +247,7 @@ const FileManagerView = () => {
                 onChange={view.onChange}
                 onClose={view.onClose}
                 hasOnSelectCallback={view.hasOnSelectCallback}
+                displaySubFolders={view.displaySubFolders}
             />
         );
     };

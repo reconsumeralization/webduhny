@@ -6,7 +6,7 @@ import { LabelDescription, LabelHint, LabelRequired, LabelValue } from "./compon
 const labelVariants = cva(
     [
         "wby-inline-flex wby-items-center wby-justify-between wby-w-full wby-text-sm",
-        "wby-text-neutral-primary",
+        "wby-text-neutral-primary wby-whitespace-nowrap",
         "peer-disabled:wby-text-neutral-disabled peer-disabled:wby-cursor-not-allowed"
     ],
     {
