@@ -191,7 +191,7 @@
     "verdaccio:start": "yarn verdaccio -c ./.verdaccio.yaml",
     "verdaccio:start:detached": "yarn pm2 start \"yarn verdaccio:start\"",
     "webiny": "./node_modules/.bin/webiny",
-    "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn webiny verify-dependencies",
+    "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn webiny verify-dependencies --allowed-duplicates=downshift",
     "system:build": "yarn && yarn ghawac build && yarn webiny sync-dependencies && yarn build",
     "wby": "./node_modules/.bin/wby",
     "webiny-ui-build-storybook": "cd packages/ui && cross-env OUT=../../netlify-static yarn build-storybook"
@@ -208,7 +208,7 @@
       "eslint --max-warnings=0 --no-ignore"
     ],
     "**/package.json": [
-      "yarn webiny verify-dependencies"
+      "yarn webiny verify-dependencies --allowed-duplicates=downshift"
     ]
   },
   "yargs": {

@@ -7,10 +7,11 @@ import { green } from "chalk";
 export interface IVerifyDependenciesParams {
     tree: IDependencyTree;
     dirname: string;
+    allowedDuplicates: string[];
 }
 
 export const verifyDependencies = (params: IVerifyDependenciesParams): void => {
-    const { tree, dirname } = params;
+    const { tree, dirname, allowedDuplicates } = params;
 
     const referencesFile = getReferencesFilePath({
         dirname
@@ -49,6 +50,14 @@ export const verifyDependencies = (params: IVerifyDependenciesParams): void => {
         if (JSON.stringify(tree.duplicates) !== JSON.stringify(json)) {
             throw new Error(
                 "Duplicates are not in sync. Please run `yarn webiny sync-dependencies` command."
+            );
+        }
+        for (const duplicate of tree.duplicates) {
+            if (allowedDuplicates.includes(duplicate.name)) {
+                continue;
+            }
+            throw new Error(
+                `Duplicate package "${duplicate.name}" found, but it is not in the allowed duplicates list. Please add it to the allowed duplicates list or fix the reason for it being a duplicate.`
             );
         }
     } else {

@@ -197,13 +197,14 @@ export interface CliContext {
     };
 }
 
+export type Yargs = typeof yargs;
 /**
  * Arguments for CliPlugin.create
  *
  * @category Cli
  */
 export interface CliCommandPluginArgs {
-    yargs: typeof yargs;
+    yargs: Yargs;
     context: CliContext;
 }
 
