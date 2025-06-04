@@ -31,6 +31,8 @@ export * from "./Loader";
 export * from "./MultiAutoComplete";
 export * from "./MultiFilePicker";
 export * from "./Popover";
+export * from "./HeaderBar";
+export * from "./ProgressBar";
 export * from "./Providers";
 export * from "./RadioGroup";
 export * from "./RangeSlider";
