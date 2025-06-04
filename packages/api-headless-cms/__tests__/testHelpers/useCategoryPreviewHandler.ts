@@ -71,7 +71,7 @@ const listCategoriesQuery = (model: CmsModel) => {
     `;
 };
 
-export const useCategoryReadHandler = (params: GraphQLHandlerParams) => {
+export const useCategoryPreviewHandler = (params: GraphQLHandlerParams) => {
     const contentHandler = useGraphQLHandler(params);
 
     const model = getCmsModel("category");

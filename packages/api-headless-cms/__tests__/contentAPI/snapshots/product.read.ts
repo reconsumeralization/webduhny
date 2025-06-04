@@ -457,6 +457,7 @@ export default /* GraphQL */ `
 
     extend type Query {
         getProductApiSingular(where: ProductApiSingularGetWhereInput!): ProductApiSingularResponse
+        getProductApiSingularById(id: ID!): ProductApiSingularResponse
 
         listProductPluralApiName(
             where: ProductApiSingularListWhereInput

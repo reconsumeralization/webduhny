@@ -1,5 +1,6 @@
 import type { CmsFieldTypePlugins, CmsModel } from "~/types";
 import { resolveGet } from "./resolvers/read/resolveGet";
+import { resolveGetById } from "./resolvers/read/resolveGetById";
 import { resolveList } from "./resolvers/read/resolveList";
 import { createFieldResolversFactory } from "./createFieldResolvers";
 
@@ -31,6 +32,7 @@ export const createReadResolvers: CreateReadResolvers = ({ models, model, fieldT
     return {
         Query: {
             [`get${model.singularApiName}`]: resolveGet({ model, fieldTypePlugins }),
+            [`get${model.singularApiName}ById`]: resolveGetById({ model, fieldTypePlugins }),
             [`list${model.pluralApiName}`]: resolveList({ model, fieldTypePlugins })
         },
         [model.singularApiName]: {
