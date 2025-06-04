@@ -150,9 +150,11 @@ const FileManagerView = () => {
 
     const uploadFiles = async (files: File[]) => {
         uploader.addFiles(files);
+        view.setIsUploadProgressIndicatorVisible(true);
 
         uploader.onUploadFinished(({ uploaded, errors }) => {
             uploader.reset();
+            view.setIsUploadProgressIndicatorVisible(true);
 
             if (errors.length > 0) {
                 showSnackbar(
@@ -351,6 +353,8 @@ const FileManagerView = () => {
                                         <UploadStatus
                                             numberOfFiles={filesBeingUploaded}
                                             progress={progress}
+                                            isVisible={view.isUploadProgressIndicatorVisible}
+                                            setIsVisible={view.setIsUploadProgressIndicatorVisible}
                                         />
                                     </FileListWrapper>
                                 </RightPanel>

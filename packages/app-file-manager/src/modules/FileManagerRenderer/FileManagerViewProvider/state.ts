@@ -8,6 +8,7 @@ export interface State {
     dragging: boolean;
     filters: Record<string, any> | undefined;
     isSearch: boolean;
+    isUploadProgressIndicatorVisible: boolean;
     limit: number;
     listSort?: ListFilesSort;
     listTable: boolean;
@@ -41,6 +42,7 @@ export const initializeState = (): State => {
         activeTags: [],
         displaySubFolders: true,
         dragging: false,
+        isUploadProgressIndicatorVisible: true,
         isSearch: false,
         filters: undefined,
         limit: 50,

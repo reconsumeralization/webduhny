@@ -40,6 +40,7 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     isListLoading: boolean;
     isListLoadingMore: boolean;
     isRootFolder: boolean;
+    isUploadProgressIndicatorVisible: boolean;
     hasOnSelectCallback: boolean;
     listTitle: string;
     loadMoreFiles: () => void;
@@ -57,6 +58,7 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     setFolderId: (folderId: string) => void;
     setListSort: (state: ListSearchRecordsSort) => void;
     setListTable: (mode: boolean) => void;
+    setIsUploadProgressIndicatorVisible: (visible: boolean) => void;
     setSearchQuery: (query: string) => void;
     setSelected: (files: TFileItem[]) => void;
     showFileDetails: (id: string) => void;
@@ -492,6 +494,12 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         setFolderId(folderId) {
             resetSearchParameters(folderId);
             navigateToFolder(folderId);
+        },
+        setIsUploadProgressIndicatorVisible(visible: boolean) {
+            setState(state => ({
+                ...state,
+                isUploadProgressIndicatorVisible: visible
+            }));
         },
         setListSort(sort: ListSearchRecordsSort) {
             setState(state => ({
