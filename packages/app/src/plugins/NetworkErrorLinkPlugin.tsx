@@ -25,7 +25,12 @@ export class NetworkErrorLinkPlugin extends ApolloLinkPlugin {
             if (networkError && debug) {
                 if (isLocalAwsLambdaFnInvocationTimeoutError(networkError)) {
                     createErrorOverlay({
-                        element: <ErrorOverlay message={<LocalAwsLambdaTimeoutMessage />} />,
+                        element: (
+                            <ErrorOverlay
+                                message={<LocalAwsLambdaTimeoutMessage />}
+                                closeable={false}
+                            />
+                        ),
                         closeable: false
                     });
                     return;
