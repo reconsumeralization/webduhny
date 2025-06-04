@@ -6,13 +6,13 @@ import {
     ProgressValue
 } from "./components";
 import { useProgressBar } from "./useProgressBar";
-import { cn } from "~/utils";
+import { cn, makeDecoratable } from "~/utils";
 
 interface ProgressBarProps extends ProgressRootProps {
     valuePosition?: "start" | "end" | "both";
 }
 
-function ProgressBar({ valuePosition, className, ...props }: ProgressBarProps) {
+const DecoratableProgressBar = ({ valuePosition, className, ...props }: ProgressBarProps) => {
     const { vm } = useProgressBar(props);
 
     return (
@@ -26,6 +26,8 @@ function ProgressBar({ valuePosition, className, ...props }: ProgressBarProps) {
             {valuePosition && valuePosition !== "start" && <ProgressValue value={vm.textValue} />}
         </div>
     );
-}
+};
+
+const ProgressBar = makeDecoratable("ProgressBar", DecoratableProgressBar);
 
 export { ProgressBar, type ProgressBarProps };

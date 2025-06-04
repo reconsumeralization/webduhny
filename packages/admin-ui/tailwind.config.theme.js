@@ -4,7 +4,8 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-out",
         "collapsible-up": "collapsible-up 0.2s ease-out",
-        "skeleton-pulse": "skeleton-pulse 1400ms ease-in-out infinite"
+        "skeleton-pulse": "skeleton-pulse 1400ms ease-in-out infinite",
+        "fade-in": "fade-in 0.5s ease-out"
     },
     backgroundColor: {
         transparent: "transparent",
@@ -282,6 +283,14 @@ module.exports = {
             },
             "50%": {
                 backgroundColor: "hsl(var(--bg-neutral-muted))"
+            }
+        },
+        "fade-in": {
+            "0%": {
+                opacity: "0"
+            },
+            "100%": {
+                opacity: "1"
             }
         }
     },
