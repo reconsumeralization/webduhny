@@ -300,6 +300,7 @@ export default /* GraphQL */ `
 
     extend type Query {
         getReviewApiModel(where: ReviewApiModelGetWhereInput!): ReviewApiModelResponse
+        getReviewApiModelById(id: ID!): ReviewApiModelResponse
 
         listReviewsApiModel(
             where: ReviewApiModelListWhereInput
