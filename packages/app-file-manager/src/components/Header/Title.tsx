@@ -8,8 +8,14 @@ import { FolderProvider, useAcoConfig } from "@webiny/app-aco";
 import { OptionsMenu } from "@webiny/app-admin";
 
 export const Title = () => {
-    const { isRootFolder, listTitle, displaySubFolders, setDisplaySubFolders, currentFolder } =
-        useFileManagerView();
+    const {
+        isRootFolder,
+        listTitle,
+        displaySubFolders,
+        setDisplaySubFolders,
+        currentFolder,
+        folders
+    } = useFileManagerView();
     const { folder: folderConfig } = useAcoConfig();
 
     const icon = useMemo(() => {
@@ -49,6 +55,7 @@ export const Title = () => {
                             labelPosition={"end"}
                             onChange={setDisplaySubFolders}
                             checked={displaySubFolders}
+                            disabled={folders.length === 0}
                         />
                     </div>
                 </div>
