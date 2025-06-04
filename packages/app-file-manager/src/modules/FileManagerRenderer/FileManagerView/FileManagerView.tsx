@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Files, { FilesRenderChildren } from "react-butterfiles";
-import styled from "@emotion/styled";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
 import { positionValues } from "react-custom-scrollbars";
@@ -36,15 +35,6 @@ import { TagsList } from "~/components/TagsList";
 import { UploadStatus } from "~/components/UploadStatus";
 
 const t = i18n.ns("app-admin/file-manager/file-manager-view");
-
-const FileListWrapper = styled("div")({
-    zIndex: 60,
-    height: "calc(100vh - 94px)",
-    position: "relative",
-    ".mdc-data-table": {
-        display: "inline-table"
-    }
-});
 
 type GetFileUploadErrorMessageProps =
     | string
@@ -325,7 +315,11 @@ const FileManagerView = () => {
                                 </LeftPanel>
                                 <RightPanel span={10}>
                                     <Header browseFiles={browseFiles} />
-                                    <FileListWrapper
+                                    <div
+                                        className={"wby-z-index-50 wby-relative wby-h-full"}
+                                        style={{
+                                            height: "calc(100vh - 134px)"
+                                        }}
                                         {...getDropZoneProps({
                                             onDragOver: () => view.setDragging(true),
                                             onDragLeave: () => view.setDragging(false),
@@ -356,7 +350,7 @@ const FileManagerView = () => {
                                             isVisible={view.isUploadProgressIndicatorVisible}
                                             setIsVisible={view.setIsUploadProgressIndicatorVisible}
                                         />
-                                    </FileListWrapper>
+                                    </div>
                                 </RightPanel>
                             </SplitView>
                         </>
