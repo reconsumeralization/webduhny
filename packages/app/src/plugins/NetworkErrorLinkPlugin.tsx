@@ -3,11 +3,12 @@ import { ApolloLinkPlugin } from "./ApolloLinkPlugin";
 import { onError } from "apollo-link-error";
 import { type ServerError } from "apollo-link-http-common";
 import { print } from "graphql/language";
-import createGqlErrorOverlay from "./NetworkErrorLinkPlugin/createGqlErrorOverlay";
 import createErrorOverlay from "./NetworkErrorLinkPlugin/createErrorOverlay";
 import { LocalAwsLambdaTimeoutMessage } from "./NetworkErrorLinkPlugin/LocalAwsLambdaTimeoutMessage";
 import { boolean } from "boolean";
 import { config as appConfig } from "~/config";
+import ErrorOverlay from "~/plugins/NetworkErrorLinkPlugin/ErrorOverlay";
+import GqlErrorOverlay from "./NetworkErrorLinkPlugin/GqlErrorOverlay";
 
 const isLocalAwsLambdaFnInvocationTimeoutError = (error: any): error is ServerError => {
     return error.result && error.result.code === "LOCAL_AWS_LAMBDA_TIMEOUT";
@@ -23,11 +24,21 @@ export class NetworkErrorLinkPlugin extends ApolloLinkPlugin {
 
             if (networkError && debug) {
                 if (isLocalAwsLambdaFnInvocationTimeoutError(networkError)) {
-                    createErrorOverlay({ message: <LocalAwsLambdaTimeoutMessage />, closeable: false });
+                    createErrorOverlay({
+                        element: <ErrorOverlay message={<LocalAwsLambdaTimeoutMessage />} />,
+                        closeable: false
+                    });
                     return;
                 }
 
-                createGqlErrorOverlay({ query: print(operation.query), networkError });
+                createErrorOverlay({
+                    element: (
+                        <GqlErrorOverlay
+                            query={print(operation.query)}
+                            networkError={networkError}
+                        />
+                    )
+                });
             }
 
             // TODO: also print graphQLErrors

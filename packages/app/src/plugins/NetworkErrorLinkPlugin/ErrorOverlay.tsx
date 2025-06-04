@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import get from "lodash/get";
 import { IconButton } from "@webiny/ui/Button";
 import { Typography } from "@webiny/ui/Typography";
 import { i18n } from "../../i18n";
-import { OverlayWrapper, Pre } from "./StyledComponents";
+import { OverlayWrapper } from "./StyledComponents";
 import { ReactComponent as CloseIcon } from "./assets/close_24px.svg";
 
 const t = i18n.ns("app/graphql/error-overlay");
@@ -11,13 +10,15 @@ const t = i18n.ns("app/graphql/error-overlay");
 const ENVIRONMENT_VARIABLES_ARTICLE_LINK =
     "https://www.webiny.com/docs/how-to-guides/environment-variables";
 
-interface ErrorOverlayProps {
+type ErrorOverlayProps = Partial<{
+    title: React.ReactNode;
     message: React.ReactNode;
+    description: React.ReactNode;
     closeable?: boolean;
-}
+}>;
 
 const ErrorOverlay = (props: ErrorOverlayProps) => {
-    const { message, closeable } = props;
+    const { title = "An error occurred", message, description, closeable } = props;
     const [open, setOpen] = useState(true);
     if (!open) {
         return null;
@@ -28,7 +29,7 @@ const ErrorOverlay = (props: ErrorOverlayProps) => {
             <div className="inner">
                 <div className="header">
                     <div className="header__title">
-                        <Typography use={"headline4"}>An error occurred</Typography>
+                        <Typography use={"headline4"}>{title}</Typography>
                     </div>
                     {closeable !== false && (
                         <div className="header__action">
@@ -37,9 +38,8 @@ const ErrorOverlay = (props: ErrorOverlayProps) => {
                     )}
                 </div>
                 <div className="body">
-                    <div className="body__summary">
-                        <Typography use={"subtitle1"}>{message}</Typography>
-                    </div>
+                    <div className="body__summary">{message}</div>
+                    {description && <div className="body__description">{description}</div>}
                 </div>
                 <div className="footer">
                     <Typography use={"body2"}>

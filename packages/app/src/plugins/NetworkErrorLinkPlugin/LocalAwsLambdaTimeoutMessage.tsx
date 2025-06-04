@@ -10,8 +10,24 @@ const Code = styled.code`
 export const LocalAwsLambdaTimeoutMessage = () => (
     <>
         Local AWS Lambda function execution timed out. Did you maybe stop the&nbsp;
-        <Code>webiny watch</Code> command? If so, please restart the command or deploy your
-        changes via the <Code>webiny deploy</Code> command, for example: <Code>yarn webiny deploy api --env dev</Code>.
+        <a
+            href={"https://www.webiny.com/docs/core-development-concepts/basics/watch-command"}
+            rel={"noreferrer noopener"}
+            target={"_blank"}
+        >
+            <Code>webiny watch</Code>
+        </a>
+        &nbsp;command? If so, please restart the command or deploy your changes via the&nbsp;
+        <a
+            href={"https://www.webiny.com/docs/core-development-concepts/basics/project-deployment"}
+            rel={"noreferrer noopener"}
+            target={"_blank"}
+        >
+            <Code>webiny deploy</Code>
+        </a>
+        &nbsp;command. For example: <Code>yarn webiny deploy api --env dev</Code>.
+        <br />
+        <br />
         Learn more:&nbsp;
         <a
             href={"https://webiny.link/local-aws-lambda-development"}
@@ -20,6 +36,5 @@ export const LocalAwsLambdaTimeoutMessage = () => (
         >
             https://webiny.link/local-aws-lambda-development
         </a>
-        .
     </>
 );
