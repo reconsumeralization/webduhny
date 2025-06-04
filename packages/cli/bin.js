@@ -6,6 +6,9 @@ require("./utils/suppressPunycodeWarnings");
 // Ensure system requirements are met.
 require("@webiny/system-requirements").ensureSystemRequirements();
 
+// Detect different Webiny package versions.
+require("./utils/ensureSameWebinyPackageVersions").ensureSameWebinyPackageVersions();
+
 const yargs = require("yargs");
 
 // Disable help processing until after plugins are imported.

@@ -5,14 +5,19 @@ import {
     InitialOpen,
     MultiBackend,
     NodeModel,
-    Tree
+    Tree,
+    type RenderParams
 } from "@minoru/react-dnd-treeview";
 import { useSnackbar } from "@webiny/app-admin";
 import { DndProvider } from "react-dnd";
 import { Node } from "../Node";
 import { NodePreview } from "../NodePreview";
 import { createInitialOpenList, createTreeData } from "./utils";
-import { useGetFolderLevelPermission, useUpdateFolder } from "~/features";
+import {
+    useGetFolderLevelPermission,
+    useListFoldersByParentIds,
+    useUpdateFolder
+} from "~/features";
 import { ROOT_FOLDER } from "~/constants";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { FolderProvider } from "~/contexts/folder";
@@ -32,6 +37,7 @@ export const List = ({
     hiddenFolderIds,
     enableActions
 }: ListProps) => {
+    const { listFoldersByParentIds, getIsFolderLoading } = useListFoldersByParentIds();
     const { updateFolder } = useUpdateFolder();
     const { getFolderLevelPermission: canManageStructure } =
         useGetFolderLevelPermission("canManageStructure");
@@ -89,8 +95,10 @@ export const List = ({
         []
     );
 
-    const handleChangeOpen = (folderIds: string[]) => {
-        setOpenFolderIds([ROOT_FOLDER, ...folderIds]);
+    const handleChangeOpen = async (folderIds: string[]) => {
+        setOpenFolderIds([...new Set([ROOT_FOLDER, ...folderIds])]);
+        const filteredFolderIds = folderIds.filter(item => item !== ROOT_FOLDER && item !== "0");
+        await listFoldersByParentIds(filteredFolderIds);
     };
 
     const canDrag = useCallback(
@@ -101,43 +109,48 @@ export const List = ({
         [canManageStructure]
     );
 
-    return (
-        <>
-            <DndProvider backend={MultiBackend} options={getBackendOptions()}>
-                <Tree
-                    tree={treeData}
-                    rootId={"0"}
-                    onDrop={handleDrop}
-                    onChangeOpen={ids => handleChangeOpen(ids as string[])}
-                    sort={sort}
-                    canDrag={item => canDrag(item!.id as string)}
-                    render={(node, { depth, isOpen, onToggle }) => {
-                        const folder = folders.find(folder => folder.id === node.id);
+    const renderNode = useCallback(
+        (
+            node: NodeModel<DndFolderItemData>,
+            { depth, isOpen, onToggle, handleRef }: RenderParams
+        ) => {
+            const folder = folders.find(folder => folder.id === node.id);
+            return (
+                <FolderProvider folder={folder}>
+                    <Node
+                        node={node}
+                        depth={depth}
+                        isOpen={isOpen}
+                        onToggle={onToggle}
+                        isLoading={getIsFolderLoading(folder?.id)}
+                        enableActions={enableActions}
+                        onClick={onFolderClick}
+                        handleRef={handleRef}
+                    />
+                </FolderProvider>
+            );
+        },
+        [folders, getIsFolderLoading, enableActions, onFolderClick]
+    );
 
-                        return (
-                            <FolderProvider folder={folder}>
-                                <Node
-                                    node={node}
-                                    depth={depth}
-                                    isOpen={isOpen}
-                                    enableActions={enableActions}
-                                    onToggle={onToggle}
-                                    onClick={data => onFolderClick(data)}
-                                />
-                            </FolderProvider>
-                        );
-                    }}
-                    dragPreviewRender={monitorProps => (
-                        <NodePreview text={monitorProps.item.text} />
-                    )}
-                    classes={{
-                        dropTarget: "wby-bg-neutral-dark/5",
-                        draggingSource: "wby-opacity-50",
-                        placeholder: "wby-relative"
-                    }}
-                    initialOpen={initialOpenList}
-                />
-            </DndProvider>
-        </>
+    return (
+        <DndProvider backend={MultiBackend} options={getBackendOptions()}>
+            <Tree
+                tree={treeData}
+                rootId={"0"}
+                onDrop={handleDrop}
+                onChangeOpen={ids => handleChangeOpen(ids as string[])}
+                sort={sort}
+                canDrag={item => canDrag(item!.id as string)}
+                render={renderNode}
+                dragPreviewRender={monitorProps => <NodePreview text={monitorProps.item.text} />}
+                classes={{
+                    dropTarget: "wby-bg-neutral-dark/5",
+                    draggingSource: "wby-opacity-50",
+                    placeholder: "wby-relative"
+                }}
+                initialOpen={initialOpenList}
+            />
+        </DndProvider>
     );
 };

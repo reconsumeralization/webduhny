@@ -8,7 +8,6 @@ import { Icon } from "~/Icon";
 const meta: Meta<typeof AutoCompletePrimitive> = {
     title: "Components/Form Primitives/Autocomplete",
     component: AutoCompletePrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

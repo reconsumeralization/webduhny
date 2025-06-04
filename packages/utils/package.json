@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@webiny/error": "0.0.0",
+    "@webiny/plugins": "0.0.0",
+    "jsonpack": "^1.1.5",
     "mdbid": "^1.0.0",
     "nanoid": "^3.3.8",
     "nanoid-dictionary": "^4.3.0",

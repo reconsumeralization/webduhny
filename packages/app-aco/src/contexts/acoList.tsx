@@ -12,7 +12,11 @@ import {
     SearchRecordItem
 } from "~/types";
 import { useAcoApp, useNavigateFolder } from "~/hooks";
-import { useGetDescendantFolders, useListFolders } from "~/features";
+import {
+    useGetDescendantFolders,
+    useGetFolderHierarchy,
+    useListFoldersByParentIds
+} from "~/features";
 import { FoldersContext } from "~/contexts/folders";
 import { SearchRecordsContext } from "~/contexts/records";
 import { sortTableItems, validateOrGetDefaultDbSort } from "~/sorting";
@@ -121,8 +125,13 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { identity } = useSecurity();
     const { currentFolderId } = useNavigateFolder();
     const { folderIdPath, folderIdInPath } = useAcoApp();
-    const { folders: originalFolders, loading: foldersLoading } = useListFolders();
+    const {
+        folders: originalFolders,
+        getIsFolderLoading,
+        getFolderHierarchy
+    } = useGetFolderHierarchy();
     const { getDescendantFolders } = useGetDescendantFolders();
+    const { listFoldersByParentIds } = useListFoldersByParentIds();
     const folderContext = useContext(FoldersContext);
     const searchContext = useContext(SearchRecordsContext);
 
@@ -138,18 +147,18 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
     const { records: originalRecords, loading: recordsLoading, listRecords, meta } = searchContext;
 
     /**
-     * On first mount, call `listFolders` and `setState`, which will either issue a network request, or load folders and records from cache.
+     * On first mount, call `getFolderHierarchy` and `setState`, which will either issue a network request, or load folders and records from cache.
      * We don't need to store the result of it to any local state; that is managed by the context provider.
-     *
-     * IMPORTANT: we check if the folders[type] array exists: the hook can be used from multiple components and
-     * fetch the outdated list from Apollo Cache. Since the state is managed locally, we fetch the folders only
-     * at the first mount.
      *
      * We don't call `listRecords` directly, instead we call `setState` making it the only driver to fetch records from the apis.
      */
     useEffect(() => {
-        if (!currentFolderId) {
-            return;
+        // The folders collection is empty, it must be the first render, let's load the full hierarchy.
+        if (folders.length === 0) {
+            getFolderHierarchy(currentFolderId);
+        } else {
+            // Otherwise let's load only the current folder sub-tree
+            listFoldersByParentIds([currentFolderId]);
         }
 
         setState(state => {
@@ -393,7 +402,7 @@ export const AcoListProvider = ({ children, ...props }: AcoListProviderProps) =>
         records,
         listTitle,
         isListLoading: Boolean(
-            recordsLoading.INIT || foldersLoading.INIT || recordsLoading.LIST || foldersLoading.LIST
+            recordsLoading.INIT || recordsLoading.LIST || getIsFolderLoading(currentFolderId)
         ),
         isListLoadingMore: Boolean(recordsLoading.LIST_MORE),
         meta,

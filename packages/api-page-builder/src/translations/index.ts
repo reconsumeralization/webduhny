@@ -3,9 +3,11 @@ export * from "./translatableCollection/useCases/GetTranslatableCollectionUseCas
 export * from "./translatableCollection/useCases/SaveTranslatableCollectionUseCase";
 export * from "./translatableCollection/useCases/GetOrCreateTranslatableCollectionUseCase";
 export * from "./translatableCollection/useCases/CloneTranslatableCollectionUseCase";
+export * from "./translatableCollection/useCases/DeleteTranslatableCollectionUseCase";
 
 // TranslatedCollection
 export * from "./translatedCollection/useCases/GetTranslatedCollectionUseCase";
 export * from "./translatedCollection/useCases/CloneTranslatedCollectionUseCase";
 export * from "./translatedCollection/useCases/SaveTranslatedCollectionUseCase";
 export * from "./translatedCollection/useCases/GetOrCreateTranslatedCollectionUseCase";
+export * from "./translatedCollection/useCases/DeleteTranslatedCollectionUseCase";

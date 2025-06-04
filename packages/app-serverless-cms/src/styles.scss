@@ -11,3 +11,6 @@
 @import "~@webiny/app-admin/components/RichTextEditor/tools/paragraph/styles.scss";
 @import "~@webiny/app-admin/components/RichTextEditor/tools/textColor/styles.scss";
 @import "~@webiny/app-admin/components/RichTextEditor/tools/image/styles.scss";
+
+// Import Lexical theme styles
+@import "~@webiny/lexical-theme/theme.css";

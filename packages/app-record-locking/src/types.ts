@@ -2,6 +2,7 @@ import { EntryTableItem } from "@webiny/app-headless-cms/types";
 import { GenericRecord } from "@webiny/app/types";
 import { IRecordLockingUnlockEntryResult } from "~/domain/abstractions/IRecordLockingUnlockEntry";
 import { SecurityPermission } from "@webiny/app-security/types";
+import type { IRecordLockingUpdateEntryLockResult } from "~/domain/abstractions/IRecordLocking.js";
 
 export interface IRecordLockingIdentity {
     id: string;
@@ -49,7 +50,7 @@ export interface IRecordLockingContext<
     readonly records: IPossiblyRecordLockingRecord[];
     readonly error?: IRecordLockingError | null;
     setRecords(folderId: string, type: string, records: T[]): Promise<void>;
-    updateEntryLock(params: IUpdateEntryLockParams): Promise<void>;
+    updateEntryLock(params: IUpdateEntryLockParams): Promise<IRecordLockingUpdateEntryLockResult>;
     isRecordLocked(params?: IIsRecordLockedParams): boolean;
     getLockRecordEntry(id: string): IRecordLockingRecord | undefined;
     fetchLockRecord(params: IFetchLockRecordParams): Promise<IFetchLockRecordResult>;

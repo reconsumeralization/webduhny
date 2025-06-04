@@ -3,9 +3,12 @@ import { AuditAction } from "~/types";
 import { useHandler } from "./helpers/useHandler";
 import { ActionType } from "~/config";
 import { AUDIT_LOGS_TYPE } from "~/app/contants";
-import { compressor } from "~/utils/compressor";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index";
+import { parseIdentifier } from "@webiny/utils/parseIdentifier";
 
 describe("create audit log", () => {
+    const client = getDocumentClient();
+
     const audit: AuditAction = {
         app: {
             app: "cms",
@@ -37,6 +40,8 @@ describe("create audit log", () => {
     };
 
     it("should create a new audit log", async () => {
+        expect.assertions(3);
+
         const createAuditLog = getAuditConfig(audit);
 
         const { handler } = useHandler();
@@ -66,7 +71,7 @@ describe("create audit log", () => {
                 timestamp: expect.any(Date),
                 entityId,
                 message,
-                data: await compressor.compress(JSON.stringify(data))
+                data: JSON.stringify(data)
             },
             location: {
                 folderId: "root"
@@ -74,9 +79,32 @@ describe("create audit log", () => {
             tags: [],
             type: "AuditLogs"
         });
+
+        // @ts-expect-error
+        const partitionKey = `#CME#wby-aco-${result!.id}`;
+
+        const scanned = await client.scan({
+            TableName: process.env.DB_TABLE
+        });
+
+        for (const item of scanned.Items || []) {
+            if (item.PK.includes(partitionKey) === false) {
+                continue;
+            }
+            expect(item).toMatchObject({
+                PK: expect.stringContaining(partitionKey),
+                values: {
+                    "object@data": {
+                        "text@data": expect.stringMatching(`{"compression":"gzip","value":`)
+                    }
+                }
+            });
+        }
     });
 
     it("should list created logs", async () => {
+        expect.assertions(3);
+
         const createAuditLog = getAuditConfig(audit);
 
         const { handler } = useHandler();
@@ -117,5 +145,25 @@ describe("create audit log", () => {
             tags: [],
             type: "AuditLogs"
         });
+
+        const { id: partitionKey } = parseIdentifier(`${result!.id}`);
+
+        const scanned = await client.scan({
+            TableName: process.env.DB_TABLE
+        });
+
+        for (const item of scanned.Items || []) {
+            if (item.PK.includes(partitionKey) === false) {
+                continue;
+            }
+            expect(item).toMatchObject({
+                PK: expect.stringContaining(partitionKey),
+                values: {
+                    "object@data": {
+                        "text@data": expect.stringMatching(`{"compression":"gzip","value":`)
+                    }
+                }
+            });
+        }
     });
 });

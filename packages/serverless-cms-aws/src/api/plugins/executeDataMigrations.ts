@@ -56,7 +56,8 @@ export const executeDataMigrations = {
         const apiOutput = getStackOutput({
             folder: "apps/api",
             env,
-            variant: inputs.variant || ""
+            variant: inputs.variant || "",
+            skipCache: true
         });
 
         context.info("Executing data migrations AWS Lambda function...");

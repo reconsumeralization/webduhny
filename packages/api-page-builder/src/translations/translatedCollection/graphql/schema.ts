@@ -41,5 +41,7 @@ export const translatedCollectionSchema = /* GraphQL*/ `
             languageCode: String!
             items: [TranslatedItemInput!]!
         ): SaveTranslatedCollectionResponse
+        
+        deleteTranslatedCollection(collectionId: ID!, languageCode: String): BooleanResponse
     }
 `;

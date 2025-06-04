@@ -1,5 +1,11 @@
-import { FileManagerAliasesStorageOperations, FileManagerContext } from "~/types";
-import { createFileManager, FileManagerConfig } from "~/createFileManager";
+import {
+    FileManagerAliasesStorageOperations,
+    type FileManagerContext,
+    FilePermission,
+    type SettingsPermission
+} from "~/types";
+import type { FileManagerConfig } from "~/createFileManager/types";
+import { createFileManager } from "~/createFileManager";
 import { FileStorage } from "~/storage/FileStorage";
 import WebinyError from "@webiny/error";
 import { SecurityPermission } from "@webiny/api-security/types";
@@ -8,6 +14,7 @@ import { CmsFilesStorage } from "~/cmsFileStorage/CmsFilesStorage";
 import { CmsModelModifierPlugin } from "~/modelModifier/CmsModelModifier";
 import { CmsModelPlugin, isHeadlessCmsReady } from "@webiny/api-headless-cms";
 import { FilesPermissions } from "~/createFileManager/permissions/FilesPermissions";
+import { SettingsPermissions } from "~/createFileManager/permissions/SettingsPermissions";
 
 export class FileManagerContextSetup {
     private readonly context: FileManagerContext;
@@ -31,13 +38,21 @@ export class FileManagerContextSetup {
 
         const filesPermissions = new FilesPermissions({
             getIdentity: this.context.security.getIdentity,
-            getPermissions: () => this.context.security.getPermissions("fm.file"),
+            getPermissions: () => this.context.security.getPermissions<FilePermission>("fm.file"),
+            fullAccessPermissionName: "fm.*"
+        });
+
+        const settingsPermissions = new SettingsPermissions({
+            getIdentity: this.context.security.getIdentity,
+            getPermissions: () =>
+                this.context.security.getPermissions<SettingsPermission>("fm.settings"),
             fullAccessPermissionName: "fm.*"
         });
 
         return createFileManager({
             storageOperations,
             filesPermissions,
+            settingsPermissions,
             getTenantId: this.getTenantId.bind(this),
             getLocaleCode: this.getLocaleCode.bind(this),
             getIdentity: this.getIdentity.bind(this),

@@ -1,21 +1,31 @@
 import { NotFoundError } from "@webiny/handler-graphql";
 import { createTopic } from "@webiny/pubsub";
 import WebinyError from "@webiny/error";
-import {
+import type {
     File,
     FileManagerFilesStorageOperationsListParamsWhere,
     FileManagerFilesStorageOperationsTagsParamsWhere,
     FilesCRUD,
     FilesListOpts
 } from "~/types";
-import { FileManagerConfig } from "~/createFileManager/index";
+import { FileManagerConfig } from "~/createFileManager/types";
 import { ROOT_FOLDER } from "~/contants";
 import { NotAuthorizedError } from "@webiny/api-security";
 import { getDate } from "@webiny/api-headless-cms/utils/date";
 import { getIdentity as utilsGetIdentity } from "@webiny/api-headless-cms/utils/identity";
 import { CmsEntryListSort } from "@webiny/api-headless-cms/types";
 
-export const createFilesCrud = (config: FileManagerConfig): FilesCRUD => {
+export const createFilesCrud = (
+    config: Pick<
+        FileManagerConfig,
+        | "storageOperations"
+        | "filesPermissions"
+        | "getLocaleCode"
+        | "getTenantId"
+        | "getIdentity"
+        | "WEBINY_VERSION"
+    >
+): FilesCRUD => {
     const {
         storageOperations,
         filesPermissions,

@@ -5,7 +5,6 @@ import { SwitchPrimitive } from "./SwitchPrimitive";
 const meta: Meta<typeof SwitchPrimitive> = {
     title: "Components/Form Primitives/Switch",
     component: SwitchPrimitive,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },

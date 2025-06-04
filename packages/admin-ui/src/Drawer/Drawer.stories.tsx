@@ -92,7 +92,11 @@ export const ControlledVisibility: Story = {
             </>
         );
     },
-    args: { ...Default.args, trigger: null }
+    args: {
+        ...Default.args,
+        trigger: null,
+        children: <>This drawer&apos;s visibility is controlled by the open state.</>
+    }
 };
 
 export const WithDropdownMenu: Story = {
@@ -102,22 +106,38 @@ export const WithDropdownMenu: Story = {
         return (
             <>
                 <DropdownMenu trigger={<Button variant="primary" text={"Open"} />}>
-                    <DropdownMenu.Item content={"Open Drawer"} onClick={() => setOpen(true)} />
+                    <DropdownMenu.Item
+                        text={"Open Drawer"}
+                        content={"Open Drawer"}
+                        onClick={() => setOpen(true)}
+                    />
                 </DropdownMenu>
 
                 <Drawer {...props} open={open} onOpenChange={() => setOpen(false)} />
             </>
         );
     },
-    args: { ...Default.args, trigger: null }
+    args: {
+        ...Default.args,
+        trigger: null,
+        children: <>This drawer is opened from a dropdown menu item.</>
+    }
 };
 
 export const WithoutCloseButton: Story = {
-    args: { ...Default.args, showCloseButton: false }
+    args: {
+        ...Default.args,
+        showCloseButton: false,
+        children: <>This drawer is opened from a dropdown menu item.</>
+    }
 };
 
 export const CustomWidth: Story = {
-    args: { ...Default.args, width: 1000 }
+    args: {
+        ...Default.args,
+        width: 1000,
+        children: <>This drawer has a custom width of 1000px, making it wider than the default.</>
+    }
 };
 
 export const WithTabs: Story = {
@@ -179,13 +199,129 @@ export const DropdownMenuInDrawer: Story = {
 export const WithIcon: Story = {
     args: {
         ...Default.args,
-        icon: <Drawer.Icon icon={<DoorbellIcon />} label={"Icon label..."} />
+        icon: <Drawer.Icon icon={<DoorbellIcon />} label={"Icon label..."} />,
+        children: <>The icon helps to visually identify the purpose of this drawer.</>
     }
 };
 
 export const AsModal: Story = {
     args: {
         ...Default.args,
-        modal: true
+        modal: true,
+        children: (
+            <>
+                This drawer has modal=true, which means it will show an overlay behind it and
+                prevent interaction with the content underneath.
+            </>
+        )
+    }
+};
+
+export const Documentation: Story = {
+    render: args => {
+        const [open, setOpen] = React.useState(false);
+
+        return (
+            <>
+                <Button variant="primary" text="Open Drawer" onClick={() => setOpen(true)} />
+
+                <Drawer {...args} open={open} onOpenChange={open => setOpen(open)} />
+            </>
+        );
+    },
+    args: {
+        title: "Drawer Title",
+        description: "A short drawer description.",
+        showCloseButton: true,
+        bodyPadding: true,
+        headerSeparator: true,
+        footerSeparator: true,
+        side: "right",
+        modal: false,
+        info: (
+            <>
+                Learn more about this <a href={"#"}>here</a>.
+            </>
+        ),
+        children: (
+            <>
+                <p className={"wby-mb-md, wby-mt-md"}>
+                    This is the drawer content area. You can place any content here including forms,
+                    text, images, or other components.
+                </p>
+                <p className={"wby-mb-md"}>
+                    Drawers are useful for displaying additional information or actions without
+                    navigating away from the current page.
+                </p>
+            </>
+        ),
+        actions: (
+            <>
+                <Drawer.CancelButton />
+                <Drawer.ConfirmButton />
+            </>
+        ),
+        width: undefined
+    },
+    argTypes: {
+        title: {
+            description: "Title displayed in the header",
+            control: "text"
+        },
+        description: {
+            description: "Description displayed below the title",
+            control: "text"
+        },
+        side: {
+            description: "Side from which the drawer appears",
+            control: "select",
+            options: ["left", "right"],
+            defaultValue: "right"
+        },
+        showCloseButton: {
+            description: "Show close button in the top-right corner",
+            control: "boolean",
+            defaultValue: true
+        },
+        modal: {
+            description: "Whether the drawer should behave as a modal",
+            control: "boolean",
+            defaultValue: false
+        },
+        bodyPadding: {
+            description: "Add padding to the drawer body",
+            control: "boolean",
+            defaultValue: true
+        },
+        headerSeparator: {
+            description: "Show separator below the header",
+            control: "boolean",
+            defaultValue: true
+        },
+        footerSeparator: {
+            description: "Show separator above the footer",
+            control: "boolean",
+            defaultValue: true
+        },
+        width: {
+            description:
+                'Width defines the horizontal size of the Drawer and accepts any valid CSS width value. You can pass a number (interpreted as pixels) or a string like "80%", "50vw", "auto", etc., following React.CSSProperties["width"] types.',
+            control: "none"
+        },
+        info: {
+            description:
+                "Additional info displayed below the description, please refer to the example below for details.",
+            control: "none"
+        },
+        children: {
+            description:
+                "Content of the Drawer, please refer to the 'With Dropdown Menu' and ''With Tabs' example below for details.",
+            control: "none"
+        },
+        actions: {
+            description:
+                "Actions displayed in the footer, please refer to the code example for details.",
+            control: "none"
+        }
     }
 };

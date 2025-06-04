@@ -1,44 +1,44 @@
-import { IRecordLocking, IRecordLockingUpdateEntryLockResult } from "./abstractions/IRecordLocking";
+import type {
+    IRecordLocking,
+    IRecordLockingUpdateEntryLockResult
+} from "./abstractions/IRecordLocking";
 import { ApolloClient } from "apollo-client";
 import { RecordLockingGetLockRecord } from "./RecordLockingGetLockRecord";
 import { RecordLockingIsEntryLocked } from "./RecordLockingIsEntryLocked";
 import { RecordLockingListLockRecords } from "./RecordLockingListLockRecords";
 import { RecordLockingLockEntry } from "./RecordLockingLockEntry";
 import { RecordLockingUnlockEntry } from "./RecordLockingUnlockEntry";
-import { RecordLockingUnlockEntryRequest } from "./RecordLockingUnlockEntryRequest";
 import { RecordLockingClient } from "./RecordLockingClient";
-import { IRecordLockingGetLockRecord } from "./abstractions/IRecordLockingGetLockRecord";
-import { IRecordLockingIsEntryLocked } from "./abstractions/IRecordLockingIsEntryLocked";
-import {
+import type { IRecordLockingGetLockRecord } from "./abstractions/IRecordLockingGetLockRecord";
+import type { IRecordLockingIsEntryLocked } from "./abstractions/IRecordLockingIsEntryLocked";
+import type {
     IRecordLockingListLockRecords,
     IRecordLockingListLockRecordsResult
 } from "./abstractions/IRecordLockingListLockRecords";
-import { IRecordLockingLockEntry } from "./abstractions/IRecordLockingLockEntry";
-import {
+import type { IRecordLockingLockEntry } from "./abstractions/IRecordLockingLockEntry";
+import type {
     IRecordLockingUnlockEntry,
     IRecordLockingUnlockEntryResult
 } from "./abstractions/IRecordLockingUnlockEntry";
-import { IRecordLockingUnlockEntryRequest } from "./abstractions/IRecordLockingUnlockEntryRequest";
-import {
+import type {
     IFetchLockedEntryLockRecordParams,
     IFetchLockRecordParams,
     IFetchLockRecordResult,
     IIsRecordLockedParams,
+    IPossiblyRecordLockingRecord,
     IRecordLockingError,
     IRecordLockingLockRecord,
     IRecordLockingRecord,
-    IPossiblyRecordLockingRecord,
     IUnlockEntryParams,
     IUpdateEntryLockParams
 } from "~/types";
-import { IRecordLockingClient } from "./abstractions/IRecordLockingClient";
 import { createRecordLockingError } from "./utils/createRecordLockingError";
 import { parseIdentifier } from "@webiny/utils/parseIdentifier";
 import { createCacheKey } from "~/utils/createCacheKey";
 import { RecordLockingUpdateEntryLock } from "~/domain/RecordLockingUpdateEntryLock";
-import { IRecordLockingUpdateEntryLock } from "~/domain/abstractions/IRecordLockingUpdateEntryLock";
+import type { IRecordLockingUpdateEntryLock } from "~/domain/abstractions/IRecordLockingUpdateEntryLock";
 import { RecordLockingGetLockedEntryLockRecord } from "~/domain/RecordLockingGetLockedEntryLockRecord";
-import { IRecordLockingGetLockedEntryLockRecord } from "./abstractions/IRecordLockingGetLockedEntryLockRecord";
+import type { IRecordLockingGetLockedEntryLockRecord } from "./abstractions/IRecordLockingGetLockedEntryLockRecord";
 
 export interface ICreateRecordLockingParams {
     client: ApolloClient<any>;
@@ -46,7 +46,6 @@ export interface ICreateRecordLockingParams {
 }
 
 export interface IRecordLockingParams {
-    client: IRecordLockingClient;
     setLoading: (loading: boolean) => void;
     getLockRecord: IRecordLockingGetLockRecord;
     getLockedEntryLockRecord: IRecordLockingGetLockedEntryLockRecord;
@@ -54,7 +53,6 @@ export interface IRecordLockingParams {
     listLockRecords: IRecordLockingListLockRecords;
     lockEntry: IRecordLockingLockEntry;
     unlockEntry: IRecordLockingUnlockEntry;
-    unlockEntryRequest: IRecordLockingUnlockEntryRequest;
     updateEntryLock: IRecordLockingUpdateEntryLock;
 }
 
@@ -71,29 +69,20 @@ class RecordLocking<T extends IPossiblyRecordLockingRecord = IPossiblyRecordLock
     private readonly _setLoading: (loading: boolean) => void;
     public loading = false;
     public records: IRecordLockingRecord[] = [];
-
-    private readonly client: IRecordLockingClient;
     private readonly _getLockRecord: IRecordLockingGetLockRecord;
-    private readonly _isEntryLocked: IRecordLockingIsEntryLocked;
     private readonly _getLockedEntryLockRecord: IRecordLockingGetLockedEntryLockRecord;
     private readonly _listLockRecords: IRecordLockingListLockRecords;
-    private readonly _lockEntry: IRecordLockingLockEntry;
     private readonly _unlockEntry: IRecordLockingUnlockEntry;
-    private readonly _unlockEntryRequest: IRecordLockingUnlockEntryRequest;
     private readonly _updateEntryLock: IRecordLockingUpdateEntryLock;
 
     private onErrorCb: IOnErrorCb | null = null;
 
     public constructor(params: IRecordLockingParams) {
-        this.client = params.client;
         this._setLoading = params.setLoading;
         this._getLockRecord = params.getLockRecord;
         this._getLockedEntryLockRecord = params.getLockedEntryLockRecord;
-        this._isEntryLocked = params.isEntryLocked;
         this._listLockRecords = params.listLockRecords;
-        this._lockEntry = params.lockEntry;
         this._unlockEntry = params.unlockEntry;
-        this._unlockEntryRequest = params.unlockEntryRequest;
         this._updateEntryLock = params.updateEntryLock;
     }
 
@@ -221,17 +210,9 @@ class RecordLocking<T extends IPossiblyRecordLockingRecord = IPossiblyRecordLock
             if (!id) {
                 return result;
             }
-            const index = this.records.findIndex(r => r.entryId === id);
-            if (index === -1) {
-                return result;
-            }
-
-            this.records[index] = {
-                ...this.records[index],
-                $locked: undefined,
-                $selectable: true
-            };
-
+            this.removeEntryLock({
+                ...params
+            });
             return result;
         } catch (ex) {
             this.triggerOnError(ex);
@@ -412,16 +393,12 @@ export const createRecordLocking = <T extends IRecordLockingRecord>(
     const unlockEntry = new RecordLockingUnlockEntry({
         client
     });
-    const unlockEntryRequest = new RecordLockingUnlockEntryRequest({
-        client
-    });
 
     const updateEntryLock = new RecordLockingUpdateEntryLock({
         client
     });
 
     return new RecordLocking<T>({
-        client,
         setLoading: config.setLoading,
         getLockRecord,
         getLockedEntryLockRecord,
@@ -429,7 +406,6 @@ export const createRecordLocking = <T extends IRecordLockingRecord>(
         listLockRecords,
         updateEntryLock,
         lockEntry,
-        unlockEntry,
-        unlockEntryRequest
+        unlockEntry
     });
 };

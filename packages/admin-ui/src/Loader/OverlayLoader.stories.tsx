@@ -3,21 +3,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { OverlayLoader } from "./OverlayLoader";
 
 const meta: Meta<typeof OverlayLoader> = {
-    title: "Components/Loader/Overlay Loader",
+    title: "Components/Overlay Loader",
     component: OverlayLoader,
-    tags: ["autodocs"],
     parameters: {
         layout: "padded"
     },
     decorators: [
         Story => (
-            <div className={"wby-relative"}>
+            <div>
                 <Story />
-                <div
-                    className={
-                        "wby-bg-[repeating-linear-gradient(to_bottom,var(--tw-gradient-stops))] wby-from-[#039BE5] wby-from-[length:0_40px] wby-to-[#90CAF9] wby-to-[length:40px_80px] wby-w-full wby-h-[300px] wby-rounded-md"
-                    }
-                />
+                The OverlayLoader component covers its parent container with a semi-transparent
+                overlay, typically used to indicate a loading state while keeping the background
+                content visible but inactive.
             </div>
         )
     ]
@@ -25,6 +22,56 @@ const meta: Meta<typeof OverlayLoader> = {
 
 export default meta;
 type Story = StoryObj<typeof OverlayLoader>;
+
+export const Documentation: Story = {
+    args: {
+        size: "lg",
+        variant: "accent",
+        indeterminate: true,
+        value: 66,
+        min: 0,
+        max: 100,
+        text: "Loading...",
+        className: undefined
+    },
+    argTypes: {
+        size: {
+            description: "Size of the loader",
+            control: "select",
+            options: ["xs", "sm", "md", "lg"]
+        },
+        variant: {
+            description: "Visual style variant of the loader",
+            control: "select",
+            options: ["accent", "subtle", "negative"]
+        },
+        indeterminate: {
+            description: "Whether the loader should show indeterminate progress",
+            control: "boolean"
+        },
+        value: {
+            description: "Current progress value (when not indeterminate)",
+            control: { type: "number", min: 0, max: 100 }
+        },
+        min: {
+            description: "Minimum value for progress calculation",
+            control: "number"
+        },
+        max: {
+            description: "Maximum value for progress calculation",
+            control: "number"
+        },
+        text: {
+            description: "Optional text to display below the loader",
+            control: "text"
+        },
+        className: {
+            description:
+                "Additional CSS class names. You can pass multiple class names, separated by commas or spaces.",
+            control: "none"
+        }
+    }
+};
 
 export const Default: Story = {};
 

@@ -15,15 +15,9 @@ export const MenuActions = () => {
     }
 
     return (
-        <div
-            className={cn([
-                "wby-absolute wby-right-0 wby-right-0",
-                "wby-invisible group-hover:wby-visible",
-                "wby-cursor-pointer0"
-            ])}
-        >
+        <div className={cn("wby-invisible group-hover:wby-visible wby-size-md wby-cursor-pointer")}>
             <OptionsMenu
-                trigger={<IconButton icon={<MoreVerticalIcon />} size={"md"} variant={"ghost"} />}
+                trigger={<IconButton icon={<MoreVerticalIcon />} size={"xs"} variant={"ghost"} />}
                 actions={folderConfig.actions}
                 data-testid={"folder.tree.menu-action"}
             />

@@ -5,8 +5,8 @@ import i18nDynamoDbStorageOperations from "@webiny/api-i18n-ddb";
 import { createFormBuilder } from "@webiny/api-form-builder";
 import { createFormBuilderStorageOperations } from "@webiny/api-form-builder-so-ddb-es";
 import {
-    createPageBuilderGraphQL,
-    createPageBuilderContext
+    createPageBuilderContext,
+    createPageBuilderGraphQL
 } from "@webiny/api-page-builder/graphql";
 import { createStorageOperations as createPageBuilderStorageOperations } from "@webiny/api-page-builder-so-ddb-es";
 import pageBuilderImportExportPlugins from "@webiny/api-page-builder-import-export/graphql";
@@ -15,10 +15,7 @@ import exportCombinePlugins from "@webiny/api-page-builder-import-export/export/
 import dbPlugins from "@webiny/handler-db";
 import { DynamoDbDriver } from "@webiny/db-dynamodb";
 import dynamoDbPlugins from "@webiny/db-dynamodb/plugins";
-import elasticSearch, {
-    createElasticsearchClient,
-    createGzipCompression
-} from "@webiny/api-elasticsearch";
+import elasticSearch, { createElasticsearchClient } from "@webiny/api-elasticsearch";
 import securityPlugins from "./security";
 
 const documentClient = getDocumentClient();
@@ -32,7 +29,6 @@ const debug = process.env.DEBUG === "true";
 export const handler = createHandler({
     plugins: [
         dynamoDbPlugins(),
-        createGzipCompression(),
         elasticSearch(elasticsearchClient),
         dbPlugins({
             table: process.env.DB_TABLE,

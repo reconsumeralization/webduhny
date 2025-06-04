@@ -9,14 +9,18 @@ export interface IGetOutputJsonParams {
     env: string;
     cwd?: string | undefined;
     variant: string | undefined;
+    skipCache?: boolean;
 }
 
-const getOutputJson = ({ folder, env, cwd, variant }: IGetOutputJsonParams) => {
+const getOutputJson = (params: IGetOutputJsonParams) => {
+    const { folder, env, cwd, variant } = params;
     const project = getProject();
 
     const cacheKey = [folder, env, variant].filter(Boolean).join("_");
 
-    if (cache[cacheKey]) {
+    const skipCache = params.skipCache === true;
+
+    if (cache[cacheKey] && !skipCache) {
         return structuredClone(cache[cacheKey]);
     }
 
@@ -57,6 +61,7 @@ export interface IGetStackOutputParams {
     variant: string | undefined;
     cwd?: string;
     map?: Record<string, any>;
+    skipCache?: boolean;
 }
 
 export interface IStackOutput {
@@ -141,7 +146,8 @@ export const getStackOutput = <T extends IStackOutput = IDefaultStackOutput>(
         folder: args.folder,
         env: args.env,
         variant: args.variant,
-        cwd: args.cwd
+        cwd: args.cwd,
+        skipCache: args.skipCache
     });
     if (!output) {
         return output;

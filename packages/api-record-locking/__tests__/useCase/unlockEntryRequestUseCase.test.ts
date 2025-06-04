@@ -1,8 +1,10 @@
 import { UnlockEntryRequestUseCase } from "~/useCases/UnlockRequestUseCase/UnlockEntryRequestUseCase";
 import { IGetLockRecordUseCase } from "~/abstractions/IGetLockRecordUseCase";
 import { getSecurityIdentity } from "~tests/helpers/identity";
-import { IRecordLockingModelManager } from "~/types";
 import { WebinyError } from "@webiny/error";
+import { createConvert } from "~tests/mocks/createConvert";
+import { createGetSecurity } from "~tests/mocks/createGetSecurity";
+import { createGetManager } from "~tests/mocks/createGetManager";
 
 describe("unlock entry request use case", () => {
     it("should throw an error on missing lock record", async () => {
@@ -14,9 +16,9 @@ describe("unlock entry request use case", () => {
                 }
             } as unknown as IGetLockRecordUseCase,
             getIdentity: getSecurityIdentity,
-            getManager: async () => {
-                return {} as unknown as IRecordLockingModelManager;
-            }
+            getManager: createGetManager(),
+            getSecurity: createGetSecurity(),
+            convert: createConvert()
         });
 
         try {
@@ -41,16 +43,22 @@ describe("unlock entry request use case", () => {
                             return {
                                 createdBy: {
                                     id: "other-user-id"
+                                },
+                                isExpired() {
+                                    return false;
                                 }
                             };
+                        },
+                        isExpired() {
+                            return false;
                         }
                     };
                 }
             } as unknown as IGetLockRecordUseCase,
             getIdentity: getSecurityIdentity,
-            getManager: async () => {
-                return {} as unknown as IRecordLockingModelManager;
-            }
+            getManager: createGetManager(),
+            getSecurity: createGetSecurity(),
+            convert: createConvert()
         });
 
         try {
@@ -85,14 +93,17 @@ describe("unlock entry request use case", () => {
                         },
                         getUnlockDenied() {
                             return null;
+                        },
+                        isExpired() {
+                            return false;
                         }
                     };
                 }
             } as unknown as IGetLockRecordUseCase,
             getIdentity: getSecurityIdentity,
-            getManager: async () => {
-                return {} as unknown as IRecordLockingModelManager;
-            }
+            getManager: createGetManager(),
+            getSecurity: createGetSecurity(),
+            convert: createConvert()
         });
 
         const result = await useCase.execute({ id: "aTestIdValue#0001", type: "type" });

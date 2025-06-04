@@ -1,5 +1,6 @@
 import React from "react";
 import { IconButton } from "~/Button";
+import { Tooltip } from "~/Tooltip";
 
 interface AccordionItemActionsProps {
     children: React.ReactNode;
@@ -12,6 +13,7 @@ export const AccordionItemActions = ({ children }: AccordionItemActionsProps) =>
 export interface AccordionItemActionProps {
     icon: JSX.Element;
     onClick: () => void;
+    tooltip?: string;
     disabled?: boolean;
 }
 
@@ -19,8 +21,13 @@ export interface AccordionItemActionProps {
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Accordion.Item.Action` component from the `@webiny/admin-ui` package instead.
  */
-export const AccordionItemAction = ({ icon, onClick, disabled }: AccordionItemActionProps) => {
-    return (
+export const AccordionItemAction = ({
+    icon,
+    onClick,
+    tooltip,
+    disabled
+}: AccordionItemActionProps) => {
+    const iconButton = (
         <IconButton
             disabled={disabled}
             icon={icon}
@@ -29,6 +36,16 @@ export const AccordionItemAction = ({ icon, onClick, disabled }: AccordionItemAc
                 onClick();
             }}
         />
+    );
+
+    if (!tooltip) {
+        return iconButton;
+    }
+
+    return (
+        <Tooltip placement={"bottom"} content={tooltip}>
+            {iconButton}
+        </Tooltip>
     );
 };
 

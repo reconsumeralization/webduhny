@@ -6,7 +6,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof RangeSliderPrimitive> = {
     title: "Components/Form Primitives/RangeSlider",
     component: RangeSliderPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onValuesChange: { action: "onValuesChange" },
         onValuesCommit: { action: "onValuesCommit" }

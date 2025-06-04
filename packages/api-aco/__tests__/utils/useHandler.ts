@@ -12,6 +12,7 @@ import { createIdentity } from "./identity";
 import { getStorageOps } from "@webiny/project-utils/testing/environment";
 import { HeadlessCmsStorageOperations } from "@webiny/api-headless-cms/types";
 import { APIGatewayEvent, LambdaContext } from "@webiny/handler-aws/types";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 
 export interface UseHandlerParams {
     permissions?: SecurityPermission[];
@@ -20,6 +21,7 @@ export interface UseHandlerParams {
 }
 
 export const useHandler = (params: UseHandlerParams = {}) => {
+    const documentClient = getDocumentClient();
     const { permissions, identity, plugins = [] } = params;
 
     const cmsStorage = getStorageOps<HeadlessCmsStorageOperations>("cms");
@@ -37,7 +39,7 @@ export const useHandler = (params: UseHandlerParams = {}) => {
                 storageOperations: cmsStorage.storageOperations
             }),
             createHeadlessCmsGraphQL(),
-            createAco(),
+            createAco({ documentClient }),
             createEventHandler<any, AcoContext, AcoContext>(async ({ context }) => {
                 return context;
             }),

@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { autorun } from "mobx";
 import { useApolloClient } from "@apollo/react-hooks";
-import { ListFoldersCompressedGqlGateway } from "./ListFoldersCompressedGqlGateway";
+import { ListFoldersGqlGateway } from "./ListFoldersGqlGateway";
 import { ListFolders } from "./ListFolders";
 import { FolderDtoMapper } from "./FolderDto";
-import { useFoldersType } from "~/hooks";
+import { useFoldersType, useGetFolderGraphQLSelection } from "~/hooks";
 import { FolderItem } from "~/types";
 
 export const useListFolders = () => {
     const client = useApolloClient();
     const type = useFoldersType();
-    const gateway = new ListFoldersCompressedGqlGateway(client);
+    const fields = useGetFolderGraphQLSelection();
+    const gateway = new ListFoldersGqlGateway(client, fields);
 
     const [vm, setVm] = useState<{
         folders: FolderItem[];
@@ -33,14 +34,6 @@ export const useListFolders = () => {
     const listFolders = useCallback(() => {
         return useCase.execute();
     }, [useCase]);
-
-    useEffect(() => {
-        if (foldersCache.hasItems()) {
-            return; // Skip if we already have folders in the cache.
-        }
-
-        listFolders();
-    }, []);
 
     useEffect(() => {
         return autorun(() => {

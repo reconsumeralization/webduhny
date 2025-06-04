@@ -89,8 +89,6 @@ export const ElementControlHorizontalDropZones = () => {
     const { showSnackbar } = useSnackbar();
     const parentType = meta.parentElement.type;
 
-    const { type } = element;
-
     const canDrop = (item: DragObjectWithTypeWithTarget) => {
         if (!item) {
             return false;
@@ -129,7 +127,7 @@ export const ElementControlHorizontalDropZones = () => {
         );
     };
 
-    if (!isDragging) {
+    if (!isDragging || !element) {
         return null;
     }
 
@@ -142,7 +140,7 @@ export const ElementControlHorizontalDropZones = () => {
             <Droppable
                 isVisible={({ item }) => canDrop(item)}
                 onDrop={source => dropElementAction(source, meta.elementIndex)}
-                type={type}
+                type={element.type}
             >
                 {({ drop, isOver }) => (
                     <WrapperDroppable ref={drop} below={false} zIndex={zIndex}>
@@ -156,7 +154,7 @@ export const ElementControlHorizontalDropZones = () => {
                 <Droppable
                     isVisible={({ item }) => canDrop(item)}
                     onDrop={source => dropElementAction(source, meta.elementIndex + 1)}
-                    type={type}
+                    type={element.type}
                 >
                     {({ drop, isOver }) => (
                         <WrapperDroppable ref={drop} below zIndex={zIndex}>

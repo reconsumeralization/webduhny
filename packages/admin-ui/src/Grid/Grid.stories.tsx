@@ -64,3 +64,64 @@ export const WithOffset: Story = {
         )
     }
 };
+
+export const Documentation: Story = {
+    render: args => {
+        return (
+            <Grid {...args}>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 1
+                </Grid.Column>
+                <Grid.Column
+                    className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm"
+                    span={3}
+                >
+                    Col 2<br />
+                    Span: 3
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 3
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 4
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 5
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 6
+                </Grid.Column>
+                <Grid.Column
+                    className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm"
+                    span={2}
+                >
+                    Col 7<br />
+                    Span: 2
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 8
+                </Grid.Column>
+                <Grid.Column className="wby-bg-primary wby-text-neutral-light wby-p-2 wby-text-md wby-rounded-sm">
+                    Col 9
+                </Grid.Column>
+            </Grid>
+        );
+    },
+    args: {
+        gap: "comfortable",
+        className: "wby-bg-neutral-light wby-p-4"
+    },
+    argTypes: {
+        gap: {
+            description: "Spacing between grid columns",
+            control: "select",
+            options: ["comfortable", "spacious"],
+            defaultValue: "comfortable"
+        },
+        className: {
+            description:
+                "Additional CSS class names. You can pass multiple class names that will be applied to Grid.",
+            control: "text"
+        }
+    }
+};

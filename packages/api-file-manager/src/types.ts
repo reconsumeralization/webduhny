@@ -33,6 +33,10 @@ export interface FilePermission extends SecurityPermission {
     own?: boolean;
 }
 
+export interface SettingsPermission extends SecurityPermission {
+    name: "fm.setting";
+}
+
 export interface FileInput {
     id: string;
 

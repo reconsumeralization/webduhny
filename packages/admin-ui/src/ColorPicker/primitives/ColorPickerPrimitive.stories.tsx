@@ -5,7 +5,6 @@ import { ColorPickerPrimitive } from "./ColorPickerPrimitive";
 const meta: Meta<typeof ColorPickerPrimitive> = {
     title: "Components/Form Primitives/ColorPicker",
     component: ColorPickerPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         onOpenChange: { action: "onOpenChange" }

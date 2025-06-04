@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
-import { FolderTree } from "@webiny/app-aco";
+import { FolderTree, useGetFolderHierarchy } from "@webiny/app-aco";
 
 const Divider = styled.div`
     height: 1px;
@@ -17,12 +17,22 @@ const LeftSidebarContainer = styled.div`
 `;
 
 interface LeftSidebarProps {
-    currentFolder?: string;
+    currentFolder: string;
     onFolderClick: (folderId: string) => void;
     children?: React.ReactNode;
 }
 
 export const LeftSidebar = ({ currentFolder, onFolderClick, children }: LeftSidebarProps) => {
+    const { folders, getFolderHierarchy } = useGetFolderHierarchy();
+
+    useEffect(() => {
+        if (folders.length > 0) {
+            return; // Skip if we already have folders in the cache.
+        }
+
+        getFolderHierarchy(currentFolder);
+    }, [currentFolder]);
+
     return (
         <LeftSidebarContainer>
             <FolderTree

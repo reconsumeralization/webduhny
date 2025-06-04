@@ -7,7 +7,6 @@ import { IconPickerPrimitive } from "./IconPickerPrimitive";
 const meta: Meta<typeof IconPickerPrimitive> = {
     title: "Components/Form Primitives/IconPicker",
     component: IconPickerPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" }
     },

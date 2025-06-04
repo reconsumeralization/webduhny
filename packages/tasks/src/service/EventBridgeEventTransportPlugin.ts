@@ -4,14 +4,13 @@ import {
     ITaskServiceTask,
     TaskServicePlugin
 } from "~/plugins";
-import { Context, ITaskEventInput } from "~/types";
+import type { ITaskEventInput } from "~/types";
 import type { PutEventsCommandOutput } from "@webiny/aws-sdk/client-eventbridge";
 import { EventBridgeClient, PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
 import { WebinyError } from "@webiny/error";
 import { GenericRecord } from "@webiny/api/types";
 
 class EventBridgeService implements ITaskService {
-    protected readonly context: Context;
     protected readonly getTenant: () => string;
     protected readonly getLocale: () => string;
     private readonly client: EventBridgeClient;
@@ -20,7 +19,6 @@ class EventBridgeService implements ITaskService {
         this.client = new EventBridgeClient({
             region: process.env.AWS_REGION
         });
-        this.context = params.context;
         this.getTenant = params.getTenant;
         this.getLocale = params.getLocale;
     }

@@ -21,7 +21,7 @@ import { makeDecoratable } from "@webiny/react-composition";
 import { TemplateProvider } from "~/admin/plugins/fieldRenderers/dynamicZone/TemplateProvider";
 import { ParentValueIndexProvider } from "~/admin/components/ModelFieldProvider";
 import { useConfirmationDialog } from "@webiny/app-admin";
-import { Accordion } from "@webiny/admin-ui";
+import { Accordion, Tooltip } from "@webiny/admin-ui";
 
 type GetBind = CmsModelFieldRendererProps["getBind"];
 
@@ -37,6 +37,7 @@ export interface MultiValueItemContainerProps {
     title: React.ReactNode;
     description: string;
     icon: JSX.Element;
+    actions?: JSX.Element;
     template: CmsDynamicZoneTemplate;
     children: React.ReactNode;
 }
@@ -47,21 +48,25 @@ export const MultiValueItemContainer = makeDecoratable(
         const actions = (
             <>
                 <Accordion.Item.Action
-                    icon={<ArrowUpIcon />}
+                    icon={<Tooltip trigger={<ArrowUpIcon />} content={"Move up"} />}
                     onClick={props.onMoveUp}
                     disabled={props.isFirst}
                 />
                 <Accordion.Item.Action
-                    icon={<ArrowDownIcon />}
+                    icon={<Tooltip trigger={<ArrowDownIcon />} content={"Move down"} />}
                     onClick={props.onMoveDown}
                     disabled={props.isLast}
                 />
                 <Accordion.Item.Action.Separator />
+                {props.actions ? <>{props.actions}</> : null}
                 <Accordion.Item.Action
-                    icon={<CloneIcon />}
+                    icon={<Tooltip trigger={<CloneIcon />} content={"Duplicate"} />}
                     onClick={() => props.onClone(props.value)}
                 />
-                <Accordion.Item.Action icon={<DeleteIcon />} onClick={props.onDelete} />
+                <Accordion.Item.Action
+                    icon={<Tooltip trigger={<DeleteIcon />} content={"Delete"} />}
+                    onClick={props.onDelete}
+                />
             </>
         );
 

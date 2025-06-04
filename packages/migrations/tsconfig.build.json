@@ -9,6 +9,7 @@
     { "path": "../error/tsconfig.build.json" },
     { "path": "../ioc/tsconfig.build.json" },
     { "path": "../logger/tsconfig.build.json" },
+    { "path": "../tasks/tsconfig.build.json" },
     { "path": "../utils/tsconfig.build.json" },
     { "path": "../api-headless-cms/tsconfig.build.json" },
     { "path": "../api-headless-cms-ddb-es/tsconfig.build.json" },

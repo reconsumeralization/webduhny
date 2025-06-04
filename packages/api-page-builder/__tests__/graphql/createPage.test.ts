@@ -18,10 +18,10 @@ describe("CRUD Test", () => {
         });
 
         const page = {
-            id: "67e15c96026bd2000222d698#0001",
+            id: "67e15c96026bd2000222d698#0002",
             pid: "67e15c96026bd2000222d698",
             category: "slug",
-            version: 1,
+            version: 2,
             title: "Welcome to Webiny",
             path: "/welcome-to-webiny",
             content: {
@@ -62,7 +62,7 @@ describe("CRUD Test", () => {
         };
 
         // The V2 of the createPage mutation should allow us to create pages with
-        // predefined `createdOn`, `createdBy`, `id`, and also immediately have the
+        // predefined `createdOn`, `createdBy`, `id`, `version`, and also immediately have the
         // page published.
         await createPageV2({ data: page });
 
@@ -73,13 +73,13 @@ describe("CRUD Test", () => {
                 pageBuilder: {
                     getPage: {
                         data: {
-                            id: "67e15c96026bd2000222d698#0001",
+                            id: "67e15c96026bd2000222d698#0002",
                             pid: "67e15c96026bd2000222d698",
                             editor: "page-builder",
                             category: {
                                 slug: "slug"
                             },
-                            version: 1,
+                            version: 2,
                             title: "Welcome to Webiny",
                             path: "/welcome-to-webiny",
                             url: "https://www.test.com/welcome-to-webiny",
@@ -97,10 +97,10 @@ describe("CRUD Test", () => {
                             publishedOn: "2025-03-24T13:22:30.918Z",
                             revisions: [
                                 {
-                                    id: "67e15c96026bd2000222d698#0001",
+                                    id: "67e15c96026bd2000222d698#0002",
                                     status: "published",
                                     locked: true,
-                                    version: 1
+                                    version: 2
                                 }
                             ],
                             settings: {
@@ -143,13 +143,13 @@ describe("CRUD Test", () => {
                 pageBuilder: {
                     getPublishedPage: {
                         data: {
-                            id: "67e15c96026bd2000222d698#0001",
+                            id: "67e15c96026bd2000222d698#0002",
                             pid: "67e15c96026bd2000222d698",
                             editor: "page-builder",
                             category: {
                                 slug: "slug"
                             },
-                            version: 1,
+                            version: 2,
                             title: "Welcome to Webiny",
                             path: "/welcome-to-webiny",
                             url: "https://www.test.com/welcome-to-webiny",
@@ -167,10 +167,10 @@ describe("CRUD Test", () => {
                             publishedOn: "2025-03-24T13:22:30.918Z",
                             revisions: [
                                 {
-                                    id: "67e15c96026bd2000222d698#0001",
+                                    id: "67e15c96026bd2000222d698#0002",
                                     status: "published",
                                     locked: true,
-                                    version: 1
+                                    version: 2
                                 }
                             ],
                             settings: {

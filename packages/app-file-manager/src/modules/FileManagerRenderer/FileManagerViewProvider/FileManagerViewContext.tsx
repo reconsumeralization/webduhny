@@ -119,7 +119,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     const modifiers = { scope: props.scope, own: props.own, accept: props.accept };
     const fileManager = useFileManagerApi();
     const { folders: originalFolders, loading: foldersLoading } = useListFolders();
-    const { currentFolderId = ROOT_FOLDER, navigateToFolder } = useNavigateFolder();
+    const { currentFolderId, navigateToFolder } = useNavigateFolder();
     const tags = useTags(modifiers);
     const [state, setState] = useStateIfMounted(initializeState());
 
@@ -250,7 +250,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
 
         const meta = {
             location: {
-                folderId: currentFolderId || ROOT_FOLDER
+                folderId: currentFolderId
             }
         };
 
@@ -351,7 +351,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         const tags = props.scope ? [props.scope] : [];
         const meta = {
             location: {
-                folderId: currentFolderId || ROOT_FOLDER
+                folderId: currentFolderId
             }
         };
 

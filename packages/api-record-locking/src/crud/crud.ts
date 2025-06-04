@@ -58,6 +58,10 @@ export const createRecordLockingCrud = async (params: Params): Promise<IRecordLo
         );
     };
 
+    const getSecurity = () => {
+        return context.security;
+    };
+
     const getIdentity: IGetIdentity = () => {
         const identity = context.security.getIdentity();
         if (!identity) {
@@ -128,6 +132,7 @@ export const createRecordLockingCrud = async (params: Params): Promise<IRecordLo
     } = createUseCases({
         getIdentity,
         getManager,
+        getSecurity,
         hasRecordLockingAccess,
         getWebsockets,
         getTimeout

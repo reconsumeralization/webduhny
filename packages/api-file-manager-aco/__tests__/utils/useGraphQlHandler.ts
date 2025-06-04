@@ -23,6 +23,7 @@ import createAdminUsersApp from "@webiny/api-admin-users";
 import { createTestWcpLicense } from "@webiny/wcp/testing/createTestWcpLicense";
 import { createWcpContext } from "@webiny/api-wcp";
 import { AdminUsersStorageOperations } from "@webiny/api-admin-users/types";
+import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb";
 
 export interface UseGQLHandlerParams {
     permissions?: SecurityPermission[];
@@ -50,6 +51,7 @@ const defaultIdentity: SecurityIdentity = {
 export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
     const { permissions, identity, plugins = [] } = params;
 
+    const documentClient = getDocumentClient();
     const i18nStorage = getStorageOps<any[]>("i18n");
     const cmsStorage = getStorageOps<HeadlessCmsStorageOperations>("cms");
     const adminUsersStorage = getStorageOps<AdminUsersStorageOperations>("adminUsers");
@@ -76,7 +78,7 @@ export const useGraphQlHandler = (params: UseGQLHandlerParams = {}) => {
             }),
             createHeadlessCmsContext({ storageOperations: cmsStorage.storageOperations }),
             createHeadlessCmsGraphQL(),
-            createAco(),
+            createAco({ documentClient }),
             plugins
         ],
         debug: false

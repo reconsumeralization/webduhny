@@ -84,6 +84,8 @@ export class Extension extends AbstractExtension {
             }
         }
 
-        throw new Error(`Could not determine the extension type from the downloaded extension.`);
+        throw new Error(
+            `Could not determine the extension type from the downloaded extension (package name: ${loadedPkgJson.name}). Make sure the package.json file contains the "keywords" field with the "webiny-extension-type:<type>" keyword.`
+        );
     }
 }

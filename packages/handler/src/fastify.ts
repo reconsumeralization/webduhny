@@ -268,6 +268,11 @@ export const createHandler = (params: CreateHandlerParams) => {
     app.addHook("preHandler", async (request, reply) => {
         app.webiny.request = request;
         app.webiny.reply = reply;
+        /**
+         * Default code to 200 - so we do not need to set it again.
+         * Usually we set errors manually when we use reply.send.
+         */
+        reply.code(200);
 
         const handlerOnRequestPlugins = app.webiny.plugins.byType<HandlerOnRequestPlugin>(
             HandlerOnRequestPlugin.type
@@ -317,6 +322,13 @@ export const createHandler = (params: CreateHandlerParams) => {
     });
 
     app.setErrorHandler<WebinyError>(async (error, _, reply) => {
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
+        if (reply.sent) {
+            console.warn("Reply already sent, cannot send the result (handler:setErrorHandler).");
+            return reply;
+        }
         return reply
             .status(500)
             .headers({
@@ -347,22 +359,28 @@ export const createHandler = (params: CreateHandlerParams) => {
             console.log(error);
             console.error("Stringify error:", ex);
         }
-
-        reply
-            .status(500)
-            .headers({
-                "Cache-Control": "no-store"
-            })
-            .send(
-                /**
-                 * When we are sending the error in the response, we cannot send the whole error object, as it might contain some sensitive data.
-                 */
-                JSON.stringify({
-                    message: error.message,
-                    code: error.code,
-                    data: error.data
+        /**
+         * IMPORTANT! Do not send anything if reply was already sent.
+         */
+        if (!reply.sent) {
+            reply
+                .status(500)
+                .headers({
+                    "Cache-Control": "no-store"
                 })
-            );
+                .send(
+                    /**
+                     * When we are sending the error in the response, we cannot send the whole error object, as it might contain some sensitive data.
+                     */
+                    JSON.stringify({
+                        message: error.message,
+                        code: error.code,
+                        data: error.data
+                    })
+                );
+        } else {
+            console.warn("Reply already sent, cannot send the result (handler:addHook:onError).");
+        }
 
         const handler = middleware(
             plugins.map(pl => {

@@ -11,7 +11,7 @@ const meta: Meta<typeof HeaderBar> = {
     component: HeaderBar,
     decorators: [
         Story => (
-            <div className="wby-bg-[#f4f4f4] wby-h-[500px] wby-w-[1000px]  wby-rounded-[5px] wby-px-[50px] wby-content-center">
+            <div className="wby-bg-[#f4f4f4] wby-h-[500px] wby-w-[850px]  wby-rounded-[5px] wby-px-[50px] wby-content-center">
                 <Story />
             </div>
         )
@@ -99,5 +99,27 @@ export const MoreStartContent: Story = {
         ),
         middle: <MiddleExample />,
         end: <EndExample />
+    }
+};
+
+export const Documentation: Story = {
+    args: {
+        start: <StartExample />,
+        middle: <MiddleExample />,
+        end: <EndExample />
+    },
+    argTypes: {
+        start: {
+            description: "Content displayed at the start of the header bar",
+            control: "none"
+        },
+        middle: {
+            description: "Content displayed in the middle of the header bar",
+            control: "none"
+        },
+        end: {
+            description: "Content displayed at the end of the header bar",
+            control: "none"
+        }
     }
 };

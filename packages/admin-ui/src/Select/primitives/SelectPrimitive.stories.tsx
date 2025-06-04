@@ -8,7 +8,6 @@ import { Button } from "~/Button";
 const meta: Meta<typeof SelectPrimitive> = {
     title: "Components/Form Primitives/Select",
     component: SelectPrimitive,
-    tags: ["autodocs"],
     argTypes: {
         onChange: { action: "onChange" },
         onOpenChange: { action: "onOpenChange" },

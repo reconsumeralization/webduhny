@@ -22,6 +22,16 @@ const apiKeyModelValidation = zod.object({
         .default([])
 });
 
+const createApiKeyModelValidation = apiKeyModelValidation.extend({
+    id: zod.string().optional(),
+    token: zod
+        .string()
+        .optional()
+        .refine(val => !val || val.startsWith("a"), {
+            message: 'Token must start with letter "a"'
+        })
+});
+
 const generateToken = (tokenLength = 48): string => {
     const token = crypto.randomBytes(Math.ceil(tokenLength / 2)).toString("hex");
 
@@ -126,7 +136,7 @@ export const createApiKeysMethods = ({
                 throw new NotAuthorizedError();
             }
 
-            const validation = apiKeyModelValidation.safeParse(data);
+            const validation = createApiKeyModelValidation.safeParse(data);
             if (!validation.success) {
                 throw createZodError(validation.error);
             }

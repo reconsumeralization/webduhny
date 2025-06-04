@@ -4,5 +4,9 @@ export * from "./translatedCollection/getTranslatedCollection/useTranslatedColle
 export * from "./translatedCollection/saveTranslatedCollection/useSaveTranslatedCollection";
 
 export * from "./ExtractTranslatableValues/ExtractTranslatableValues";
+export type {
+    NewTranslatableItem,
+    CreateTranslatableItems
+} from "./ExtractTranslatableValues/ExtractTranslatableValues";
 export * from "./ListCache";
 export * from "./Loading";

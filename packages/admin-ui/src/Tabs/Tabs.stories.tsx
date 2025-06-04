@@ -208,3 +208,77 @@ export const WithHiddenTab: Story = {
         ]
     }
 };
+
+// Update the Documentation story to properly handle control changes
+export const Documentation: Story = {
+    render: args => {
+        // Force re-render when args change by using a key
+        return <Tabs key={JSON.stringify(args)} {...args} />;
+    },
+    args: {
+        size: "md",
+        spacing: "lg",
+        separator: true,
+        defaultValue: "account",
+        tabs: [
+            <Tabs.Tab
+                key={"account"}
+                value={"account"}
+                trigger={"Account"}
+                content={
+                    "Account content - This tab contains account settings and personal information. Users can update their profile details, change email address, and manage notification preferences."
+                }
+            />,
+            <Tabs.Tab
+                key={"security"}
+                value={"security"}
+                trigger={"Security"}
+                content={
+                    "Security content - This tab contains security settings. Users can change their password, enable two-factor authentication, and review recent account activity."
+                }
+            />,
+            <Tabs.Tab
+                key={"preferences"}
+                value={"preferences"}
+                trigger={"Preferences"}
+                content={
+                    "Preferences content - This tab contains user preferences. Users can customize the interface, set language preferences, and configure other application settings."
+                }
+            />
+        ],
+        value: undefined
+    },
+    argTypes: {
+        size: {
+            description: "Size of the tabs",
+            control: "select",
+            options: ["sm", "md", "lg", "xl"],
+            defaultValue: "md"
+        },
+        spacing: {
+            description: "Spacing around the tabs and content",
+            control: "select",
+            options: ["xs", "sm", "md", "lg", "xl", "xxl"],
+            defaultValue: "lg"
+        },
+        separator: {
+            description:
+                "Whether to show a separator line below the tabs, by default it's `false`.",
+            control: "boolean",
+            defaultValue: false
+        },
+        defaultValue: {
+            description: "The value of the tab that should be active by default",
+            control: "text"
+        },
+        value: {
+            description:
+                "The controlled value of the active tab, please refer to the example code for details.",
+            control: "none"
+        },
+        tabs: {
+            description: "The tabs to render, please refer to the example code for details.",
+            control: "none"
+        }
+    }
+};

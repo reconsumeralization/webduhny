@@ -89,6 +89,7 @@ export interface IRecordLockingLockRecord extends IRecordLockingLockRecordObject
     getUnlockRequested(): IRecordLockingLockRecordRequestedAction | undefined;
     getUnlockApproved(): IRecordLockingLockRecordApprovedAction | undefined;
     getUnlockDenied(): IRecordLockingLockRecordDeniedAction | undefined;
+    isExpired(): boolean;
 }
 
 /**

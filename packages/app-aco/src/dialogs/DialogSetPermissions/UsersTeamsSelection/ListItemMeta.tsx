@@ -6,6 +6,11 @@ import { FolderAccessLevel, FolderLevelPermissionsTarget, FolderPermission } fro
 
 const TARGET_LEVELS = [
     {
+        id: "no-access",
+        label: "No Access",
+        description: "Cannot view or modify content"
+    },
+    {
         id: "viewer",
         label: "Viewer",
         description: "Can view content, but not modify it"
@@ -43,13 +48,19 @@ export const ListItemMeta = ({
         return TARGET_LEVELS.find(level => level.id === permission.level)!;
     }, [permission.level]);
 
-    const disabledReason = useMemo(() => {
+    const { isListDisabled, isRemovePermissionDisabled, tooltipMessage } = useMemo(() => {
+        let message = null;
+        let disabled = false;
+        let removePermissionDisabled = false;
+
         if (permission.inheritedFrom?.startsWith("parent:")) {
-            return "Inherited from parent folder.";
+            message = "Inherited from parent folder.";
+            disabled = false; // Still allow interaction, just inform user
+            removePermissionDisabled = true;
         }
 
         if (identity!.id === target.id) {
-            let message = "You can't change your own permissions.";
+            message = "You can't change your own permissions.";
             if (permission.inheritedFrom?.startsWith("team:")) {
                 const team = targetsList.find(t => t.target === permission.inheritedFrom);
                 message += " Access to this folder is managed by a team";
@@ -58,29 +69,34 @@ export const ListItemMeta = ({
                 }
                 message += ".";
             }
-            return message;
+            disabled = true;
+            removePermissionDisabled = true;
         }
 
-        return null;
-    }, [permission]);
+        return {
+            isListDisabled: disabled,
+            isRemovePermissionDisabled: removePermissionDisabled,
+            tooltipMessage: message
+        };
+    }, [permission, identity, target, targetsList]);
 
     const handle = useMemo(() => {
         let handle = (
             <Button
                 variant={"ghost"}
-                disabled={!!disabledReason}
+                disabled={!!isListDisabled}
                 text={currentLevel.label}
                 icon={<More />}
                 iconPosition={"end"}
             />
         );
 
-        if (disabledReason) {
-            handle = <Tooltip content={disabledReason} trigger={handle} />;
+        if (tooltipMessage) {
+            handle = <Tooltip content={tooltipMessage} trigger={handle} />;
         }
 
         return handle;
-    }, [disabledReason, currentLevel.label]);
+    }, [tooltipMessage, isListDisabled, currentLevel.label]);
 
     return (
         <DropdownMenu
@@ -116,7 +132,8 @@ export const ListItemMeta = ({
             <DropdownMenu.Separator />
             <DropdownMenu.Item
                 onClick={() => onRemoveAccess({ permission })}
-                text={"Remove access"}
+                text={"Remove permission"}
+                disabled={isRemovePermissionDisabled}
             />
         </DropdownMenu>
     );

@@ -7,7 +7,7 @@ export interface PublishedMenuItemData {
     title: string;
     path: string;
     url: string;
-    children: PublishedMenuItemData;
+    children: PublishedMenuItemData[];
 }
 
 export interface PublishedMenuData {
