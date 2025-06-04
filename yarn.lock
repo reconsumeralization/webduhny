@@ -4950,12 +4950,11 @@ __metadata:
   linkType: hard
 
 "@babel/runtime-corejs3@npm:^7.12.5":
-  version: 7.20.13
-  resolution: "@babel/runtime-corejs3@npm:7.20.13"
+  version: 7.27.4
+  resolution: "@babel/runtime-corejs3@npm:7.27.4"
   dependencies:
-    core-js-pure: "npm:^3.25.1"
-    regenerator-runtime: "npm:^0.13.11"
-  checksum: 10/76db446d6239736783c94e1ed91dae4e75c86df18f013763440604c2569bf22c90854f596998c6fa78b32bfd6add73d1011614dcb92633a7ecb07801f39ddb6b
+    core-js-pure: "npm:^3.30.2"
+  checksum: 10/f4a713b3dba9d963c74d97836525133a9fd65f175e899c3ad6db071ccb204e8a1bfae8cfb68e33c2d9bc425b4dedf8b048d28963dba39283a5dd291a8f6163b5
   languageName: node
   linkType: hard
 
@@ -19209,14 +19208,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.0, axios@npm:^1.7.9":
-  version: 1.7.9
-  resolution: "axios@npm:1.7.9"
+"axios@npm:^1.6.0, axios@npm:^1.8.2":
+  version: 1.9.0
+  resolution: "axios@npm:1.9.0"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10/b7a5f660ea53ba9c2a745bf5ad77ad8bf4f1338e13ccc3f9f09f810267d6c638c03dac88b55dae8dc98b79c57d2d6835be651d58d2af97c174f43d289a9fd007
+  checksum: 10/a2f90bba56820883879f32a237e2b9ff25c250365dcafd41cec41b3406a3df334a148f90010182dfdadb4b41dc59f6f0b3e8898ff41b666d1157b5f3f4523497
   languageName: node
   linkType: hard
 
@@ -21513,10 +21512,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-pure@npm:^3.10.2, core-js-pure@npm:^3.23.3, core-js-pure@npm:^3.25.1":
+"core-js-pure@npm:^3.10.2, core-js-pure@npm:^3.23.3":
   version: 3.27.2
   resolution: "core-js-pure@npm:3.27.2"
   checksum: 10/f9ca946385b3ba6c40ef0dc6ece16ab5e7909b327c926aa1b709ab3e8a8cb69115a1572fbe17fd4e9db845a8177e10ccefdbaee193eeb26ae35d975f95e4c5b1
+  languageName: node
+  linkType: hard
+
+"core-js-pure@npm:^3.30.2":
+  version: 3.42.0
+  resolution: "core-js-pure@npm:3.42.0"
+  checksum: 10/d8f16fe1b5e74498a4c896cd17a1cf2c2b5fd2bff8a960f86e132ca5dbdec63ccfa2bdd8700b840a8586e192ebe2da1b4e7bdbd0c34854b1d985e8237e473104
   languageName: node
   linkType: hard
 
@@ -37127,7 +37133,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
     "@typescript-eslint/parser": "npm:^6.21.0"
     adio: "npm:^1.0.1"
-    axios: "npm:^1.7.9"
+    axios: "npm:^1.8.2"
     babel-jest: "npm:^29.7.0"
     babel-loader: "npm:^9.2.1"
     babel-plugin-dynamic-import-node: "npm:2.3.3"
