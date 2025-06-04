@@ -34,7 +34,7 @@ export const FolderGridItem = ({ onClick }: FolderProps) => {
             ])}
             onClick={() => onClick(id)}
         >
-            <div style={{ height: 200 }} className={"wby-relative"}>
+            <div style={{ height: 150 }} className={"wby-relative"}>
                 <div
                     className={cn([
                         "wby-absolute wby-top-0 wby-left-0",

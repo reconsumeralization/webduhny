@@ -66,7 +66,7 @@ const DefaultFileBody = ({ selected, onSelect, children }: DefaultFileBodyProps)
         <div className={"wby-relative"}>
             <DefaultFileControls selected={selected} onSelect={onSelect} />
             <LazyLoad
-                height={200}
+                height={150}
                 offsetVertical={300}
                 data-testid={"fm-file-wrapper-file-preview"}
                 className={cn([
