@@ -19,9 +19,10 @@ import {
     EditFile,
     MoveFile
 } from "~/components/Table";
-import { DefaultRenderer } from "~/modules/ThumbnailRenderers/DefaultRenderer";
-import { ImageRenderer } from "~/modules/ThumbnailRenderers/ImageRenderer";
+import { GridItemDefaultRenderer } from "~/modules/ThumbnailRenderers/GridItemDefaultRenderer";
+import { GridItemImageRenderer } from "~/modules/ThumbnailRenderers/GridItemImageRenderer";
 import { FileActions } from "~/modules/FileManagerRenderer/FileActions";
+import { FilePreviewImageRenderer } from "~/modules/ThumbnailRenderers/FilePreviewImageRenderer";
 
 const { Browser, FileDetails } = FileManagerConfig;
 
@@ -95,10 +96,13 @@ export const FileManagerRendererModule = () => {
                 </Wcp.CanUsePrivateFiles>
                 <FileDetails.GroupFields value={false} />
                 <FileActions />
-                <Browser.Grid.Item.Thumbnail type={"*/*"} element={<DefaultRenderer />} />
-                <Browser.Grid.Item.Thumbnail type={"image/*"} element={<ImageRenderer />} />
-                <FileDetails.Preview.Thumbnail type={"*/*"} element={<DefaultRenderer />} />
-                <FileDetails.Preview.Thumbnail type={"image/*"} element={<ImageRenderer />} />
+                <Browser.Grid.Item.Thumbnail type={"*/*"} element={<GridItemDefaultRenderer />} />
+                <Browser.Grid.Item.Thumbnail type={"image/*"} element={<GridItemImageRenderer />} />
+                <FileDetails.Preview.Thumbnail type={"*/*"} element={<GridItemDefaultRenderer />} />
+                <FileDetails.Preview.Thumbnail
+                    type={"image/*"}
+                    element={<FilePreviewImageRenderer />}
+                />
             </FileManagerConfig>
         </>
     );

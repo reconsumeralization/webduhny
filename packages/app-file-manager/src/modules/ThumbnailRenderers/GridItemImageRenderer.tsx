@@ -4,7 +4,7 @@ import { useFile } from "~/hooks/useFile";
 
 const width300 = { width: 300 };
 
-export const ImageRenderer = () => {
+export const GridItemImageRenderer = () => {
     const { file } = useFile();
     return <Image src={file.src} alt={file.name} transform={width300} />;
 };

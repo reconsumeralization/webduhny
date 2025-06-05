@@ -29,7 +29,7 @@ export const UploadStatus = ({
                 "wby-bg-neutral-dark wby-shadow-lg",
                 "wby-absolute wby-bottom-lg wby-left-2/4 -wby-translate-x-1/2 wby-z-10",
                 "wby-flex wby-items-center wby-gap-sm-extra",
-                "wby-animate-fade-in"
+                "wby-animate-in wby-slide-in-from-top-4 wby-slide-in-from-left-1/2 wby-duration-300"
             ])}
         >
             <Text as={"div"} size={"sm"} className={"wby-text-neutral-disabled wby-shrink-0"}>

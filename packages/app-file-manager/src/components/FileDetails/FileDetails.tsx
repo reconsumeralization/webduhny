@@ -9,10 +9,10 @@ import { Form, FormAPI, FormOnSubmit } from "@webiny/form";
 import { prepareFormData } from "@webiny/app-headless-cms-common";
 import { FileDetailsProvider } from "~/components/FileDetails/FileDetailsProvider";
 import { Preview } from "./components/Preview";
-import { PreviewMeta } from "./components/PreviewMeta";
 import { Actions } from "./components/Actions";
 import { Content } from "./components/Content";
 import { Extensions } from "./components/Extensions";
+import { Description } from "./components/Description";
 import { useFileModel } from "~/hooks/useFileModel";
 import { useFileManagerViewConfig } from "~/index";
 import { FileProvider } from "~/contexts/FileProvider";
@@ -69,10 +69,13 @@ const FileDetailsInner = ({ file, onForm, ...props }: FileDetailsInnerProps) => 
             {() => (
                 <Content>
                     <Content.Panel flex={parseFloat(leftPanel)}>
-                        <div className={"wby-flex wby-flex-col wby-justify-between wby-h-full"}>
+                        <div
+                            className={
+                                "wby-flex wby-flex-col wby-justify-between wby-gap-md wby-h-full wby-px-lg wby-py-md"
+                            }
+                        >
                             <Actions />
                             <Preview />
-                            <PreviewMeta />
                         </div>
                     </Content.Panel>
                     <Content.Panel flex={parseFloat(rightPanel)}>
@@ -162,33 +165,34 @@ export const FileDetails = ({
 
     return (
         <FileDetailsPortal>
-            <Drawer
-                title={"File Details"}
-                width={drawerWidth}
-                open={open}
-                bodyPadding={false}
-                className={"z-50"}
-                headerSeparator={true}
-                footerSeparator={true}
-                onOpenChange={open => {
-                    if (!open) {
-                        onClose();
-                    }
-                }}
-                data-testid={"fm.file-details.drawer"}
-                actions={
-                    <>
-                        <Drawer.CancelButton text={"Cancel"} />
-                        <Drawer.ConfirmButton
-                            text={"Save File"}
-                            onClick={() => formRef.current?.submit()}
-                        />
-                    </>
-                }
-            >
-                {loading && <OverlayLoader text={loading} />}
-                {file && (
-                    <FileProvider file={file}>
+            {file && (
+                <FileProvider file={file}>
+                    <Drawer
+                        title={file.name}
+                        description={<Description />}
+                        width={drawerWidth}
+                        open={open}
+                        modal={true}
+                        bodyPadding={false}
+                        headerSeparator={true}
+                        footerSeparator={true}
+                        onOpenChange={open => {
+                            if (!open) {
+                                onClose();
+                            }
+                        }}
+                        data-testid={"fm.file-details.drawer"}
+                        actions={
+                            <>
+                                <Drawer.CancelButton text={"Cancel"} />
+                                <Drawer.ConfirmButton
+                                    text={"Update"}
+                                    onClick={() => formRef.current?.submit()}
+                                />
+                            </>
+                        }
+                    >
+                        {loading && <OverlayLoader text={loading} />}
                         <FileDetailsProvider hideFileDetails={onClose} onSetFile={onSetFile}>
                             <FileDetailsInner
                                 onForm={form => {
@@ -199,9 +203,9 @@ export const FileDetails = ({
                                 onSubmit={onSave}
                             />
                         </FileDetailsProvider>
-                    </FileProvider>
-                )}
-            </Drawer>
+                    </Drawer>
+                </FileProvider>
+            )}
         </FileDetailsPortal>
     );
 };
