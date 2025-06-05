@@ -27,7 +27,7 @@ export const UploadStatus = ({
             className={cn([
                 "wby-p-md wby-rounded-lg",
                 "wby-bg-neutral-dark wby-shadow-lg",
-                "wby-absolute wby-bottom-xxl wby-left-2/4 -wby-translate-x-1/2 wby-z-10",
+                "wby-absolute wby-bottom-lg wby-left-2/4 -wby-translate-x-1/2 wby-z-10",
                 "wby-flex wby-items-center wby-gap-sm-extra",
                 "wby-animate-fade-in"
             ])}
