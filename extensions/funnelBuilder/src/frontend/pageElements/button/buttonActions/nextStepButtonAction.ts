@@ -4,7 +4,8 @@ export const nextStepButtonAction: ButtonActionDefinition = {
     type: "nextStep",
     name: "Next Step",
     updateButtonLabel: "Next step",
-    description: "Moves to the next step in the funnel. Cannot be added twice or together with the previous step action.",
+    description:
+        "Moves to the next step in the funnel. Cannot be added twice or together with the previous step action.",
     canAdd: ({ element }) => {
         // Can only be added if there are no "nextStep" or "previousStep" actions already present.
         const actions = element.data.actions;

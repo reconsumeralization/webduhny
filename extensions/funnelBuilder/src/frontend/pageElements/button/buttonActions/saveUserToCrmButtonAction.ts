@@ -29,7 +29,8 @@ const mockSaveUserToCrm = async (enteredEmail: string): Promise<void> => {
 export const saveUserToCrmButtonAction: ButtonActionDefinition = {
     type: "saveUserToCrm",
     name: "Save User to CRM",
-    description: "Verifies the user's email and saves their data to the CRM. Must have a field with 'email' field ID present in the form.",
+    description:
+        "Verifies the user's email and saves their data to the CRM. Must have a field with 'email' field ID present in the form.",
     canAdd: ({ element }) => {
         // Can only be added if there are no "saveUserToCrm" actions already present.
         const actions = element.data.actions;
