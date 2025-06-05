@@ -23,7 +23,7 @@ import { TableItem } from "~/types";
 
 import { BottomInfoBar } from "~/components/BottomInfoBar";
 import { BulkActions } from "~/components/BulkActions";
-import { DropFilesHere } from "~/components/DropFilesHere";
+import { FileDropPlaceholder } from "~/components/FileDropPlaceholder";
 import { Empty } from "~/components/Empty";
 import { FileDetails } from "~/components/FileDetails";
 import { Filters } from "~/components/Filters";
@@ -316,7 +316,7 @@ const FileManagerView = () => {
                                 <RightPanel span={10}>
                                     <Header browseFiles={browseFiles} />
                                     <div
-                                        className={"wby-z-index-50 wby-relative wby-h-full"}
+                                        className={"wby-relative wby-h-full"}
                                         style={{
                                             height: "calc(100vh - 134px)"
                                         }}
@@ -327,7 +327,6 @@ const FileManagerView = () => {
                                         })}
                                         data-testid={"fm-list-wrapper"}
                                     >
-                                        {view.dragging && <DropFilesHere />}
                                         <BulkActions />
                                         <Filters />
                                         <Scrollbar
@@ -337,6 +336,7 @@ const FileManagerView = () => {
                                         >
                                             {renderList(browseFiles)}
                                         </Scrollbar>
+                                        {view.dragging && <FileDropPlaceholder />}
                                         <BottomInfoBar
                                             accept={view.accept}
                                             listing={view.isListLoadingMore}
