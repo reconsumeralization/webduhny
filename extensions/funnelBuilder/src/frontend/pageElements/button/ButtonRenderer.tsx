@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "@webiny/form";
-import { createRenderer } from "@webiny/app-page-builder-elements";
+import { createRenderer, useRenderer } from "@webiny/app-page-builder-elements";
 import styled from "@emotion/styled";
 import { useContainer } from "../container/ContainerProvider";
+import { ButtonElementData } from "./types";
+import { registry } from "./buttonActions/registry";
 
-const Wrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-`;
+interface ControlButtonProps {
+    color: string;
+    disabled?: boolean;
+}
 
-const ControlButton = styled.button<{ color: string }>`
+const StyledButton = styled.button<ControlButtonProps>`
     background: ${props => props.color};
     border: none;
     border-radius: 4px;
@@ -18,36 +19,73 @@ const ControlButton = styled.button<{ color: string }>`
     color: white;
     cursor: pointer;
 
+    ${props => (props.disabled ? "opacity: 0.5; cursor: not-allowed;" : "")}
     :hover {
-        opacity: 0.9;
+        ${props => !props.disabled && "opacity: 0.8;"}
     }
 `;
 
-const ControlButtonPlaceholder = styled.div`
-    flex: 1;
-`;
-
 export const ButtonRenderer = createRenderer(() => {
-    const { submit } = useForm();
-    const { funnelSubmissionVm, theme } = useContainer();
+    const { funnelSubmissionVm, funnelVm, theme } = useContainer();
+    const { getElement } = useRenderer();
+    const form = useForm();
+    const [runningActions, setRunningActions] = useState(false);
+
+    const element = getElement<ButtonElementData>();
+
+    const runActions = useCallback(async () => {
+        const callbacks = element.data.actions.map(action => {
+            const actionDefinition = registry.find(a => a.type === action.type);
+
+            if (!actionDefinition) {
+                console.warn(`Action type "${action.type}" not found.`);
+                return () => Promise.resolve();
+            }
+
+            return () => {
+                return actionDefinition.action({
+                    funnelVm,
+                    funnelSubmissionVm,
+                    form
+                });
+            };
+        });
+
+        for (const callback of callbacks) {
+            try {
+                const result = await callback();
+                if (result === false) {
+                    // If the action returned false, we stop executing further actions.
+                    break;
+                }
+            } catch (error) {
+                // This could be improved. We should not use the `alert` way of showing errors.
+                alert(error.message);
+                break;
+            }
+        }
+    }, [element]);
+
+    const onClick = useCallback(async () => {
+        setRunningActions(true);
+
+        return runActions()
+            .then(() => {
+                // Actions completed successfully.
+            })
+            .catch(error => {
+                console.error("Error running actions:", error);
+                // Handle error, e.g., show a notification.
+            })
+            .finally(() => {
+                // Reset running state after actions are done.
+                setRunningActions(false);
+            });
+    }, [runningActions]);
 
     return (
-        <Wrapper>
-            {funnelSubmissionVm.isFirstStep() ? (
-                <ControlButtonPlaceholder />
-            ) : (
-                <ControlButton
-                    color={theme.primaryColor}
-                    onClick={funnelSubmissionVm.activatePreviousStep.bind(funnelSubmissionVm)}
-                >
-                    <div className={"button-body"}>Previous</div>
-                </ControlButton>
-            )}
-            <ControlButton onClick={() => submit()} color={theme.primaryColor}>
-                <div className={"button-body"}>
-                    {funnelSubmissionVm.isFinalStep() ? "Finish" : "Next"}
-                </div>
-            </ControlButton>
-        </Wrapper>
+        <StyledButton color={theme.primaryColor} onClick={onClick} disabled={runningActions}>
+            <div className={"button-body"}>{element.data.label || "No label"}</div>
+        </StyledButton>
     );
 });

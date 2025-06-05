@@ -1,11 +1,16 @@
 import React from "react";
-import { PbEditorPageElementPlugin, PbRenderElementPlugin } from "@webiny/app-page-builder";
+import {
+    PbEditorPageElementAdvancedSettingsPlugin,
+    PbEditorPageElementPlugin,
+    PbRenderElementPlugin
+} from "@webiny/app-page-builder";
 import { ButtonRenderer } from "./ButtonRenderer";
 import { OnCreateActions } from "@webiny/app-page-builder/types";
 import { ELEMENT_TYPE } from "./constants";
 import { FUB_PAGE_ELEMENT_GROUP } from "../fields/utils";
 import { ReactComponent as ButtonIcon } from "@material-design-icons/svg/outlined/swap_horiz.svg";
 import { ElementToolbarPreview } from "../ElementToolbarPreview";
+import { AdvancedSettings } from "./AdvancedSettings";
 
 export const ButtonAdminPlugins = () => (
     <>
@@ -46,10 +51,15 @@ export const ButtonAdminPlugins = () => (
                 return {
                     type: ELEMENT_TYPE,
                     elements: [],
-                    data: { settings: {} },
+                    data: { settings: {}, actions: [], label: "" },
                     ...options
                 };
             }}
+        />
+
+        <PbEditorPageElementAdvancedSettingsPlugin
+            elementType={ELEMENT_TYPE}
+            element={<AdvancedSettings />}
         />
     </>
 );

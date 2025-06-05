@@ -1,163 +1,229 @@
 import React, { useCallback } from "react";
-import { css } from "emotion";
-import startCase from "lodash/startCase";
-import { usePageElements } from "@webiny/app-page-builder-elements/hooks/usePageElements";
-import { PbEditorElement, PbEditorPageElementSettingsRenderComponentProps } from "~/types";
-// Components
-import { IconPicker } from "@webiny/app-admin/components/IconPicker";
-import { ICON_PICKER_SIZE } from "@webiny/app-admin/components/IconPicker/types";
-import Accordion from "../../elementSettings/components/Accordion";
-import { ContentWrapper } from "../../elementSettings/components/StyledComponents";
-import Wrapper from "../../elementSettings/components/Wrapper";
-import InputField from "../../elementSettings/components/InputField";
-import SelectField from "../../elementSettings/components/SelectField";
-import useUpdateHandlers from "../../elementSettings/useUpdateHandlers";
-import { useActiveElement } from "~/editor";
-import { useUpdateIconSettings } from "~/editor/plugins/elementSettings/hooks/useUpdateIconSettings";
+import styled from "@emotion/styled";
+import Wrapper from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Wrapper";
+import { useActiveElement, useUpdateElement } from "@webiny/app-page-builder/editor";
+import useUpdateHandlers from "@webiny/app-page-builder/editor/plugins/elementSettings/useUpdateHandlers";
+import InputField from "@webiny/app-page-builder/editor/plugins/elementSettings/components/InputField";
+import { PbElement } from "@webiny/app-page-builder/types";
+import { ButtonActionDefinition, ButtonActionDto, ButtonElementData } from "./types";
+import { ButtonIcon } from "@webiny/ui/Button";
+import { ButtonDefault } from "@webiny/ui/Button";
+import { ReactComponent as DownButton } from "@material-design-icons/svg/outlined/arrow_drop_down.svg";
+import { Menu, MenuItem } from "@webiny/ui/Menu";
+import { registry } from "./buttonActions/registry";
+import { getRandomId } from "../../../shared/getRandomId";
+import { ActionsListItem } from "./AdvancedSettings/ActionsListItem";
+import Accordion from "@webiny/app-page-builder/editor/plugins/elementSettings/components/Accordion";
+import { Typography } from "@webiny/ui/Typography";
 
-const classes = {
-    gridClass: css({
-        "&.mdc-layout-grid": {
-            padding: 0,
-            margin: 0,
-            marginBottom: 24
-        }
-    }),
-    row: css({
-        display: "flex",
-        "& > div": {
-            width: "50%",
-            background: "beige"
-        },
+// Sorting.
+import {
+    closestCenter,
+    DndContext,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy
+} from "@dnd-kit/sortable";
 
-        "& .icon-picker-handler": {
-            width: "100%",
-            backgroundColor: "var(--webiny-theme-color-background)",
-            "& svg": {
-                width: 24,
-                height: 24
-            }
-        },
-        "& .color-picker-handler": {
-            width: "100%",
-            backgroundColor: "var(--webiny-theme-color-background)",
-            "& > div": {
-                width: "100%"
-            }
-        }
-    }),
-    rightCellStyle: css({
-        justifySelf: "end"
-    })
-};
+const StyledAccordion = styled(Accordion)`
+    overflow: hidden;
 
-const ButtonSettings = ({
-                            defaultAccordionValue
-                        }: PbEditorPageElementSettingsRenderComponentProps) => {
-    const [element] = useActiveElement<PbEditorElement>();
-    const { iconWidth, iconValue, onIconChange, onIconWidthChange, HiddenIconMarkup } =
-        useUpdateIconSettings(element);
+    .accordion-content {
+        padding: 0;
+    }
+`;
 
-    const { theme } = usePageElements();
-    const types = Object.keys(theme.styles.elements.button || {});
-    const typesOptions = types.map(item => ({
-        value: item,
-        label: startCase(item)
-    }));
+const StyledMenuItem = styled(MenuItem)`
+    height: auto !important;
+    padding: 5px 10px;
+`;
 
-    const defaultType = typesOptions[0].value;
-    const { type = defaultType, icon } = element.data || {};
+const AddPageButton = styled(ButtonDefault)`
+    display: block;
+    margin: 20px auto;
+`;
+
+export const AdvancedSettings = () => {
+    const [element] = useActiveElement<PbElement<ButtonElementData>>();
 
     const { getUpdateValue, getUpdatePreview } = useUpdateHandlers({
         element,
         dataNamespace: "data"
     });
 
-    const updateType = useCallback(
-        (value: string) => getUpdateValue("type")(value),
+    const updateLabel = useCallback(
+        (event: React.FocusEvent<HTMLInputElement>) => getUpdateValue("label")(event.target.value),
         [getUpdateValue]
     );
-    const updateIconPosition = useCallback(
-        (value: string) => getUpdateValue("icon.position")(value),
-        [getUpdateValue]
+
+    const updateElement = useUpdateElement();
+
+    const addAction = useCallback(
+        (actionType: ButtonActionDefinition["type"]) => {
+            const actionDef = registry.find(action => action.type === actionType)!;
+            const actions = [
+                ...element.data.actions,
+                {
+                    id: getRandomId(),
+                    type: actionDef.type,
+                    extra: actionDef.extra || {}
+                } as ButtonActionDto
+            ];
+
+            const label = actionDef.updateButtonLabel || element.data.label;
+
+            updateElement(
+                {
+                    ...element,
+                    data: {
+                        ...element.data,
+                        label,
+                        actions
+                    }
+                },
+                { history: true }
+            );
+        },
+        [element.data.actions, updateElement]
     );
-    const updateButtonText = useCallback(
-        (event: React.FocusEvent<HTMLInputElement>) =>
-            getUpdateValue("buttonText")(event.target.value),
-        [getUpdateValue]
-    );
-    const updateButtonTextPreview = useCallback(
-        (value: string) => getUpdatePreview("buttonText")(value),
+
+    const updateLabelPreview = useCallback(
+        (value: string) => getUpdatePreview("label")(value),
         [getUpdatePreview]
     );
 
+    const addButtonActionOptions = registry
+        .filter(action => {
+            return !action.canAdd || action.canAdd({ element });
+        })
+        .map(action => ({
+            label: action.name,
+            value: action.type,
+            description: action.description || ""
+        }));
+
+    const hasActions = element.data.actions.length > 0;
+    const hasAddButtonActionOptions = addButtonActionOptions.length > 0;
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates
+        })
+    );
+
     return (
-        <Accordion title={"Button"} defaultValue={defaultAccordionValue}>
-            <ContentWrapper direction={"column"}>
-                <Wrapper label={"Type"} containerClassName={classes.gridClass}>
-                    <SelectField value={type} onChange={updateType}>
-                        {typesOptions.map(t => (
-                            <option key={t.value} value={t.value}>
-                                {t.label}
-                            </option>
-                        ))}
-                    </SelectField>
-                </Wrapper>
-                <Wrapper
-                    label={"Icon"}
-                    containerClassName={classes.gridClass}
-                    rightCellClassName={classes.rightCellStyle}
-                >
-                    <IconPicker
-                        size={ICON_PICKER_SIZE.SMALL}
-                        value={iconValue}
-                        onChange={onIconChange}
-                        removable
-                    />
-                </Wrapper>
-                <Wrapper
-                    label={"Icon width"}
-                    containerClassName={classes.gridClass}
-                    leftCellSpan={8}
-                    rightCellSpan={4}
-                >
-                    <InputField
-                        placeholder={"Width"}
-                        value={iconWidth}
-                        onChange={onIconWidthChange}
-                    />
-                </Wrapper>
-                <Wrapper
-                    label={"Icon position"}
-                    containerClassName={classes.gridClass}
-                    leftCellSpan={8}
-                    rightCellSpan={4}
-                >
-                    <SelectField value={icon?.position || "left"} onChange={updateIconPosition}>
-                        <option value={"left"}>Left</option>
-                        <option value={"right"}>Right</option>
-                        <option value={"top"}>Top</option>
-                        <option value={"bottom"}>Bottom</option>
-                    </SelectField>
-                </Wrapper>
-                <Wrapper
-                    label={"Label"}
-                    containerClassName={classes.gridClass}
-                    leftCellSpan={4}
-                    rightCellSpan={8}
-                >
+        <>
+            <StyledAccordion title={"Actions"} defaultValue={true}>
+                <>
+                    {hasActions ? (
+                        <>
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={event => {
+                                    const { active, over } = event;
+                                    if (active.id === over?.id) {
+                                        return;
+                                    }
+
+                                    const { actions } = element.data;
+                                    const fromIndex = actions.findIndex(
+                                        action => action.id === active.id
+                                    );
+                                    const toIndex = actions.findIndex(
+                                        action => action.id === over?.id
+                                    );
+
+                                    const elementData = {
+                                        ...element,
+                                        data: {
+                                            ...element.data,
+                                            actions: actions.map((action, index) => {
+                                                if (index === fromIndex) {
+                                                    return actions[toIndex];
+                                                }
+                                                if (index === toIndex) {
+                                                    return actions[fromIndex];
+                                                }
+                                                return action;
+                                            })
+                                        }
+                                    };
+
+                                    updateElement(elementData, { history: true });
+                                }}
+                                modifiers={[restrictToVerticalAxis]}
+                            >
+                                <SortableContext
+                                    items={element.data.actions}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {element.data.actions.map(action => {
+                                        return <ActionsListItem action={action} key={action.id} />;
+                                    })}
+                                </SortableContext>
+                            </DndContext>
+                        </>
+                    ) : (
+                        <div style={{ textAlign: "center", margin: "20px 0" }}>
+                            <p>No actions added yet.</p>
+                        </div>
+                    )}
+
+                    <div style={{ textAlign: "center", position: "relative" }}>
+                        <Menu
+                            handle={
+                                <AddPageButton
+                                    onClick={() => {}}
+                                    disabled={!hasAddButtonActionOptions}
+                                >
+                                    Add action ({addButtonActionOptions.length})
+                                    <ButtonIcon icon={<DownButton />} />
+                                </AddPageButton>
+                            }
+                        >
+                            {hasAddButtonActionOptions ? (
+                                addButtonActionOptions.map(option => (
+                                    <StyledMenuItem
+                                        key={option.value}
+                                        onClick={() => addAction(option.value)}
+                                    >
+                                        <div style={{ maxWidth: 300 }}>
+                                            <div>{option.label}</div>
+                                            <div>
+                                                <Typography use={"caption"}>
+                                                    {option.description}
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    </StyledMenuItem>
+                                ))
+                            ) : (
+                                <MenuItem disabled>No actions available to add.</MenuItem>
+                            )}
+                        </Menu>
+                    </div>
+                </>
+            </StyledAccordion>
+
+            <StyledAccordion title={"Other"} defaultValue={true}>
+                <Wrapper label={"Label"} leftCellSpan={4} rightCellSpan={8}>
                     <InputField
                         placeholder={"Label"}
-                        value={element.data.buttonText}
-                        onChange={updateButtonTextPreview}
-                        onBlur={updateButtonText}
+                        value={element.data.label}
+                        onChange={updateLabelPreview}
+                        onBlur={updateLabel}
                     />
                 </Wrapper>
-                {/* Renders IconPicker.Icon for accessing its HTML without displaying it. */}
-                <HiddenIconMarkup />
-            </ContentWrapper>
-        </Accordion>
+            </StyledAccordion>
+        </>
     );
 };
-
-export default ButtonSettings;
