@@ -88,13 +88,13 @@ const FileDetailsInner = ({ file, onForm, ...props }: FileDetailsInnerProps) => 
                                     <Tabs.Tab
                                         key={"basic-details"}
                                         value={"basic-details"}
-                                        trigger={"Basic Details"}
+                                        trigger={"Basic details"}
                                         content={basicFieldsElement}
                                     />,
                                     <Tabs.Tab
                                         key={"advanced-details"}
                                         value={"advanced-details"}
-                                        trigger={"Advanced Details"}
+                                        trigger={"Advanced details"}
                                         content={extensionFieldsElement}
                                     />
                                 ]}

@@ -10,7 +10,7 @@ export const CopyUrl = () => {
     const { copyFileUrl } = useCopyFile({ file });
 
     return (
-        <FileDetails.Action.IconButton
+        <FileDetails.Action.Button
             label={"Copy URL"}
             onAction={copyFileUrl}
             icon={<CopyContentIcon />}

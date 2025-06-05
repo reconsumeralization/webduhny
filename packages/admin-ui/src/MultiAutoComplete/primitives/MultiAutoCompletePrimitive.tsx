@@ -42,7 +42,7 @@ interface MultiAutoCompletePrimitiveProps {
     /**
      * Accessible label for the command menu. Not shown visibly.
      */
-    label?: string;
+    label?: React.ReactNode;
     /**
      * Indicates if the autocomplete is loading options.
      */
@@ -153,7 +153,7 @@ const DecoratableMultiAutoCompletePrimitive = (props: MultiAutoCompletePrimitive
 
     return (
         <PopoverPrimitive open={vm.optionsListVm.open} onOpenChange={() => setListOpenState(true)}>
-            <Command label={props.label} onKeyDown={handleKeyDown}>
+            <Command label={String(props.label)} onKeyDown={handleKeyDown}>
                 <PopoverPrimitive.Trigger asChild>
                     <span>
                         <MultiAutoCompleteInput

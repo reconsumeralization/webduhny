@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Select } from "@webiny/ui/Select";
+import { Select } from "@webiny/admin-ui";
 import { useFileModel } from "~/index";
 
 interface AccessControlField {

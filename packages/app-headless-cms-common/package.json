@@ -23,7 +23,6 @@
     "@webiny/form": "0.0.0",
     "@webiny/plugins": "0.0.0",
     "@webiny/react-composition": "0.0.0",
-    "@webiny/ui": "0.0.0",
     "@webiny/validation": "0.0.0",
     "dnd-core": "^16.0.1",
     "graphql": "^15.9.0",

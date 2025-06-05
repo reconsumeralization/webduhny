@@ -7,10 +7,9 @@ export const Preview = () => {
         <div className={"wby-h-full wby-w-full"}>
             <div
                 className={cn([
-                    "wby-w-full wby-aspect-square wby-rounded-lg wby-bg-neutral-dimmed",
-                    "wby-overflow-hidden",
                     "wby-flex wby-items-center wby-justify-center",
-                    "[&_img]:wby-w-full"
+                    "wby-w-full wby-aspect-square wby-rounded-lg wby-bg-neutral-dimmed",
+                    "wby-overflow-hidden"
                 ])}
             >
                 <Thumbnail />
