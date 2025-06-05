@@ -31,7 +31,7 @@ export const PbEditorOverridePageElementSettingsPlugin = (
                 return {
                     ...plugin,
                     ...props
-                } as T;
+                };
             });
         };
 
