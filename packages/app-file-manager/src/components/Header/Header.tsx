@@ -18,10 +18,10 @@ export const Header = (props: HeaderProps) => {
         <>
             <div className={"wby-pl-lg wby-pr-md wby-py-sm-extra"}>
                 <Grid>
-                    <Grid.Column span={5}>
+                    <Grid.Column span={6}>
                         <Title />
                     </Grid.Column>
-                    <Grid.Column span={7}>
+                    <Grid.Column span={6}>
                         <Actions browseFiles={props.browseFiles} />
                     </Grid.Column>
                 </Grid>

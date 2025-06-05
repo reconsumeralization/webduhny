@@ -26,7 +26,7 @@ export const Title = () => {
         <>
             {(listTitle && (
                 <div className={"wby-flex wby-gap-xs wby-items-center"}>
-                    <div className={"wby-flex wby-gap-sm wby-items-center"}>
+                    <div className={"wby-flex wby-gap-sm wby-items-center wby-truncate"}>
                         <Icon icon={icon} label={listTitle} size={"md"} color={"neutral-strong"} />
                         <Heading level={4} as={"h1"} className={"wby-truncate"}>
                             {listTitle}
