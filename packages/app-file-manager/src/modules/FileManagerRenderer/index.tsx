@@ -23,6 +23,8 @@ import { GridItemDefaultRenderer } from "~/modules/ThumbnailRenderers/GridItemDe
 import { GridItemImageRenderer } from "~/modules/ThumbnailRenderers/GridItemImageRenderer";
 import { FileActions } from "~/modules/FileManagerRenderer/FileActions";
 import { FilePreviewImageRenderer } from "~/modules/ThumbnailRenderers/FilePreviewImageRenderer";
+import { TableItemDefaultRenderer } from "~/modules/ThumbnailRenderers/TableItemDefaultRenderer";
+import { TableItemImageRenderer } from "~/modules/ThumbnailRenderers/TableItemImageRenderer";
 
 const { Browser, FileDetails } = FileManagerConfig;
 
@@ -98,7 +100,15 @@ export const FileManagerRendererModule = () => {
                 <FileActions />
                 <Browser.Grid.Item.Thumbnail type={"*/*"} element={<GridItemDefaultRenderer />} />
                 <Browser.Grid.Item.Thumbnail type={"image/*"} element={<GridItemImageRenderer />} />
-                <FileDetails.Preview.Thumbnail type={"*/*"} element={<GridItemDefaultRenderer />} />
+                <Browser.Table.Cell.Thumbnail
+                    type={"image/*"}
+                    element={<TableItemImageRenderer />}
+                />
+                <Browser.Table.Cell.Thumbnail type={"*/*"} element={<TableItemDefaultRenderer />} />
+                <FileDetails.Preview.Thumbnail
+                    type={"image/*"}
+                    element={<GridItemImageRenderer />}
+                />
                 <FileDetails.Preview.Thumbnail
                     type={"image/*"}
                     element={<FilePreviewImageRenderer />}

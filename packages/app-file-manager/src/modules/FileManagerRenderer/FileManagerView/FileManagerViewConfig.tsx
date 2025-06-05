@@ -38,6 +38,10 @@ export function useFileManagerViewConfig() {
             getThumbnailRenderer,
             browser: {
                 ...browser,
+                table: {
+                    ...browser.table,
+                    cellThumbnails: [...(browser.table?.cellThumbnails || [])]
+                },
                 grid: {
                     itemActions: [...(browser.grid?.itemActions || [])],
                     itemThumbnails: [...(browser.grid?.itemThumbnails || [])]

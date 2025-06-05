@@ -6,7 +6,7 @@ import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManager
 import { FileTableItem } from "~/types";
 import { FolderTableItem } from "@webiny/app-aco/types";
 import { cn, Text } from "@webiny/admin-ui";
-import { Thumbnail } from "~/components/Thumbnail";
+import { CellThumbnail } from "./CellThumbnail";
 import { FileProvider } from "~/contexts/FileProvider";
 
 interface DefaultProps {
@@ -55,16 +55,12 @@ export const FileCellName = ({ file, onClick }: FileCellNameProps) => {
             onClick={() => onClick(file.id)}
         >
             <FileProvider file={file}>
-                <div className={"wby-size-xl wby-rounded-md wby-overflow-hidden wby-flex-shrink-0"}>
-                    <div
-                        className={cn([
-                            "wby-w-full wby-bg-neutral-muted",
-                            "wby-flex wby-items-center wby-justify-center",
-                            "[&>*]:wby-aspect-square [&>*]:wby-w-full [&>*]:wby-h-full [&>img]:wby-object-cover"
-                        ])}
-                    >
-                        <Thumbnail />
-                    </div>
+                <div
+                    className={
+                        "wby-size-xl wby-aspect-square wby-rounded-md wby-bg-neutral-muted wby-overflow-hidden wby-flex-shrink-0"
+                    }
+                >
+                    <CellThumbnail />
                 </div>
             </FileProvider>
             <Text className={"wby-truncate wby-min-w-0 wby-flex-shrink"}>{file.name}</Text>
