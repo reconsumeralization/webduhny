@@ -22,5 +22,14 @@ export const Empty = ({ browseFiles, isSearchResult }: EmptyViewProps) => {
         return <NoResults />;
     }
 
-    return <FileDropArea empty onClick={() => browseFiles()} />;
+    return (
+        <FileDropArea
+            empty
+            onClick={() => browseFiles()}
+            title={"Drag & Drop files here"}
+            description={
+                "You can also upload files from your computer by clicking the button below"
+            }
+        />
+    );
 };
