@@ -9,7 +9,10 @@ const Code = styled.code`
 
 export const LocalAwsLambdaTimeoutMessage = () => (
     <>
-        Local AWS Lambda function execution timed out. Did you maybe stop the&nbsp;
+        Local AWS Lambda function execution timed out.
+        <br />
+        <br />
+        Did you stop the&nbsp;
         <a
             href={"https://www.webiny.com/docs/core-development-concepts/basics/watch-command"}
             rel={"noreferrer noopener"}
