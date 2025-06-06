@@ -273,7 +273,7 @@ export const pullRequests = createWorkflow({
                         { name: "ESLint", run: "yarn eslint" },
                         {
                             name: "Sync Dependencies Verification",
-                            run: "yarn webiny verify-dependencies"
+                            run: "yarn verify-dependencies"
                         }
                     ],
                     { "working-directory": DIR_WEBINY_JS }
@@ -294,7 +294,7 @@ export const pullRequests = createWorkflow({
                 ...installBuildSteps,
                 {
                     name: "Sync Dependencies Verification",
-                    run: "yarn webiny verify-dependencies",
+                    run: "yarn verify-dependencies",
                     "working-directory": DIR_WEBINY_JS
                 }
             ]

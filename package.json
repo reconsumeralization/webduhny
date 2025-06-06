@@ -28,27 +28,27 @@
     "url": "https://github.com/webiny/webiny-js.git"
   },
   "devDependencies": {
-    "@babel/cli": "^7.26.4",
-    "@babel/code-frame": "^7.26.2",
-    "@babel/compat-data": "7.26.5",
-    "@babel/core": "7.26.7",
-    "@babel/helper-define-polyfill-provider": "^0.6.3",
+    "@babel/cli": "7.27.2",
+    "@babel/code-frame": "7.27.1",
+    "@babel/compat-data": "7.27.5",
+    "@babel/core": "7.27.4",
+    "@babel/helper-define-polyfill-provider": "0.6.4",
     "@babel/helper-environment-visitor": "^7.24.7",
-    "@babel/parser": "7.26.7",
+    "@babel/parser": "7.27.5",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-proposal-throw-expressions": "^7.25.9",
+    "@babel/plugin-proposal-throw-expressions": "7.27.1",
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.26.3",
-    "@babel/plugin-transform-runtime": "^7.25.9",
-    "@babel/preset-env": "7.26.7",
-    "@babel/preset-react": "^7.26.3",
-    "@babel/preset-typescript": "^7.26.0",
-    "@babel/register": "^7.25.9",
-    "@babel/runtime": "7.26.10",
-    "@babel/template": "^7.25.9",
-    "@babel/traverse": "7.26.7",
-    "@babel/types": "7.26.7",
+    "@babel/plugin-transform-modules-commonjs": "7.27.1",
+    "@babel/plugin-transform-runtime": "7.27.4",
+    "@babel/preset-env": "7.27.2",
+    "@babel/preset-react": "7.27.1",
+    "@babel/preset-typescript": "7.27.1",
+    "@babel/register": "7.27.1",
+    "@babel/runtime": "7.27.4",
+    "@babel/template": "7.27.2",
+    "@babel/traverse": "7.27.4",
+    "@babel/types": "7.27.3",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@grpc/grpc-js": "^1.11.1",
@@ -75,8 +75,8 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "adio": "^1.0.1",
-    "axios": "^1.7.9",
-    "babel-jest": "29.7.0",
+    "axios": "^1.8.2",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "3.1.0",
@@ -191,7 +191,8 @@
     "verdaccio:start": "yarn verdaccio -c ./.verdaccio.yaml",
     "verdaccio:start:detached": "yarn pm2 start \"yarn verdaccio:start\"",
     "webiny": "./node_modules/.bin/webiny",
-    "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn webiny verify-dependencies",
+    "verify-dependencies": "yarn webiny verify-dependencies --allowed-duplicates=downshift",
+    "system:verify": "yarn eslint && yarn prettier:check && yarn adio && yarn check-ts-configs && yarn verify-dependencies",
     "system:build": "yarn && yarn ghawac build && yarn webiny sync-dependencies && yarn build",
     "wby": "./node_modules/.bin/wby",
     "webiny-ui-build-storybook": "cd packages/ui && cross-env OUT=../../netlify-static yarn build-storybook"
@@ -208,7 +209,7 @@
       "eslint --max-warnings=0 --no-ignore"
     ],
     "**/package.json": [
-      "yarn webiny verify-dependencies"
+      "yarn verify-dependencies"
     ]
   },
   "yargs": {
@@ -246,7 +247,6 @@
     ]
   },
   "resolutions": {
-    "@babel/runtime": "7.26.10",
     "systeminformation": "^5.23.18",
     "@emotion/react": "11.10.8",
     "@octokit/rest": "^20.0.2",

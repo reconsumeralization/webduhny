@@ -130,7 +130,7 @@ jobs:
         run: yarn build:quick
         working-directory: dev
       - name: Sync Dependencies Verification
-        run: yarn webiny verify-dependencies
+        run: yarn verify-dependencies
         working-directory: dev
     runs-on: ubuntu-latest
     env:
