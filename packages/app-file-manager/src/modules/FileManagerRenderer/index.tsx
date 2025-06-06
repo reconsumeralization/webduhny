@@ -93,7 +93,7 @@ export const FileManagerRendererModule = () => {
                 <FileDetails.Field name={"tags"} element={<Tags />} />
                 <Browser.BulkEditField name={"tags"} element={<Tags />} />
                 <FileDetails.Field name={"aliases"} element={<Aliases />} />
-                <FileDetails.GroupFields value={true} />
+                <FileDetails.GroupFields value={false} />
                 {/* File Details Actions */}
                 <FileActions />
                 {/* Access Control */}

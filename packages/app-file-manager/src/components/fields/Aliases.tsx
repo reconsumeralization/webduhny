@@ -14,7 +14,9 @@ interface HeaderPros {
 const Header = ({ addAlias }: HeaderPros) => {
     return (
         <>
-            <Heading level={6}>{"File Aliases"}</Heading>
+            <Heading level={6} className={"wby-text-neutral-primary"}>
+                {"File Aliases"}
+            </Heading>
             <Text size={"sm"} as={"div"} className={"wby-mt-xs wby-mb-sm-extra"}>
                 To make your file accessible via custom paths, add one or more aliases.
             </Text>
@@ -53,35 +55,37 @@ export const Aliases = () => {
     }, []);
 
     return (
-        <DynamicFieldset value={value || [""]} onChange={onChange}>
-            {({ actions, header, row, empty }) => (
-                <>
-                    {row(({ index }) => (
-                        <div className={"wby-mt-md"}>
-                            <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
-                                {"Enter a file path, e.g., /my/custom/file/path.png"}
-                            </Text>
-                            <div className={"wby-flex wby-items-start wby-gap-sm"}>
-                                <Bind validators={aliasValidator} name={`aliases.${index}`}>
-                                    <Input placeholder={"Alias"} size={"lg"} />
-                                </Bind>
-                                <IconButton
-                                    variant={"ghost"}
-                                    size={"lg"}
-                                    icon={<DeleteIcon />}
-                                    onClick={actions.remove(index)}
-                                />
+        <div className={"wby-my-lg"}>
+            <DynamicFieldset value={value || [""]} onChange={onChange}>
+                {({ actions, header, row, empty }) => (
+                    <>
+                        {row(({ index }) => (
+                            <div className={"wby-mt-md"}>
+                                <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
+                                    {"Enter a file path, e.g., /my/custom/file/path.png"}
+                                </Text>
+                                <div className={"wby-flex wby-items-start wby-gap-sm"}>
+                                    <Bind validators={aliasValidator} name={`aliases.${index}`}>
+                                        <Input placeholder={"Alias"} size={"lg"} />
+                                    </Bind>
+                                    <IconButton
+                                        variant={"ghost"}
+                                        size={"lg"}
+                                        icon={<DeleteIcon />}
+                                        onClick={actions.remove(index)}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                    {header(() => (
-                        <Header addAlias={addAlias} />
-                    ))}
-                    {empty(() => (
-                        <Header addAlias={addAlias} />
-                    ))}
-                </>
-            )}
-        </DynamicFieldset>
+                        ))}
+                        {header(() => (
+                            <Header addAlias={addAlias} />
+                        ))}
+                        {empty(() => (
+                            <Header addAlias={addAlias} />
+                        ))}
+                    </>
+                )}
+            </DynamicFieldset>
+        </div>
     );
 };
