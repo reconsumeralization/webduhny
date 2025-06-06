@@ -1,5 +1,5 @@
 import path from "path";
-import { CliCommandPlugin, CliCommandPluginArgs } from "@webiny/cli/types";
+import { CliCommandPlugin, CliCommandPluginArgs, type Yargs } from "@webiny/cli/types";
 import { createDependencyTree } from "./references";
 import { createReferenceFile } from "./references/createReferenceFile";
 import { verifyDependencies } from "./references/verifyDependencies";
@@ -28,10 +28,28 @@ const createReferenceFileCommandExecutor = ({ context }: Pick<CliCommandPluginAr
     };
 };
 
+interface IVerifyDependenciesFileCommandExecutorParams {
+    allowedDuplicates?: string;
+    ["allowed-duplicates"]?: string;
+}
+
+const getAllowedDuplicates = (params: IVerifyDependenciesFileCommandExecutorParams): string[] => {
+    const allowedDuplicates = params.allowedDuplicates || params["allowed-duplicates"];
+    if (!allowedDuplicates || typeof allowedDuplicates !== "string") {
+        return [];
+    }
+    return allowedDuplicates
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+};
+
 const verifyDependenciesFileCommandExecutor = ({
     context
 }: Pick<CliCommandPluginArgs, "context">) => {
-    return async () => {
+    return async (input: unknown) => {
+        const params = input as IVerifyDependenciesFileCommandExecutorParams;
+
         const dirname = getDirname();
         const tree = createDependencyTree({
             context,
@@ -40,7 +58,8 @@ const verifyDependenciesFileCommandExecutor = ({
 
         verifyDependencies({
             tree,
-            dirname
+            dirname,
+            allowedDuplicates: getAllowedDuplicates(params)
         });
     };
 };
@@ -54,9 +73,7 @@ export default (): CliCommandPlugin[] => {
                 yargs.command(
                     "sync-dependencies",
                     "Sync dependencies for all packages.",
-                    (yargs: Record<string, any>) => {
-                        yargs.example("$0 sync-dependencies");
-                    },
+                    () => {},
                     createReferenceFileCommandExecutor({ context })
                 );
             }
@@ -68,8 +85,12 @@ export default (): CliCommandPlugin[] => {
                 yargs.command(
                     "verify-dependencies",
                     "Verify dependencies for all packages.",
-                    (yargs: Record<string, any>) => {
-                        yargs.example("$0 verify-dependencies");
+                    (yargs: Yargs) => {
+                        yargs.option("max-duplicates", {
+                            describe: `Max allowed duplicates in the dependency tree. If there are more than this number, the command will fail.`,
+                            type: "number",
+                            required: false
+                        });
                     },
                     verifyDependenciesFileCommandExecutor({ context })
                 );
