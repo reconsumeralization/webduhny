@@ -59,7 +59,6 @@ export const initInvocationForwarding = async ({
             return;
         }
 
-
         await client.publish(
             iotEndpointTopic,
             JSON.stringify({
