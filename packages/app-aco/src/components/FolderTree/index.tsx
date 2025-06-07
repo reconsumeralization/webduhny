@@ -64,7 +64,7 @@ export const FolderTree = ({
     }
 
     return (
-        <div className="wby-mt-xs wby-mb-lg">
+        <div className="wby-my-xs">
             <AcoWithConfig>
                 <List
                     folders={localFolders}
@@ -74,7 +74,7 @@ export const FolderTree = ({
                     enableActions={enableActions}
                 />
                 {enableCreate && (
-                    <div className={"wby-m-xs-plus wby-mt-sm-plus wby-pl-sm-extra"}>
+                    <div className={"wby-m-xs-plus wby-mt-sm-plus wby-mb-lg wby-pl-sm-extra"}>
                         {createButton}
                     </div>
                 )}
