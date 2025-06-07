@@ -5,7 +5,7 @@ export const SidebarContent = () => {
     const { navigateToFolder, currentFolderId } = useNavigateFolder();
 
     return (
-        <div className={"wby-p-xs wby-flex-1 wby-overflow-scroll"}>
+        <div className={"wby-p-xs wby-flex-1 wby-overflow-y-scroll"}>
             <FolderTree
                 focusedFolderId={currentFolderId}
                 onFolderClick={data => navigateToFolder(data.id)}
