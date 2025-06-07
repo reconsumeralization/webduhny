@@ -20,7 +20,7 @@ export const LeftSidebar = ({ currentFolder, onFolderClick, children }: LeftSide
     }, [currentFolder]);
 
     return (
-        <div className={"wby-p-xs"}>
+        <div className={"wby-p-xs wby-overflow-auto"} style={{ height: "calc(100vh - 69px)" }}>
             <FolderTree
                 focusedFolderId={currentFolder}
                 onFolderClick={data => onFolderClick(data.id)}

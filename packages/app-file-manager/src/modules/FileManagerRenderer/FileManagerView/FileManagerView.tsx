@@ -285,6 +285,7 @@ const FileManagerView = () => {
             >
                 {({ getDropZoneProps, browseFiles }) => (
                     <OverlayLayout
+                        variant={"strong"}
                         onExited={view.onClose}
                         barLeft={<Heading level={5}>{"File manager"}</Heading>}
                         barMiddle={<SearchWidget />}
