@@ -286,7 +286,7 @@ const FileManagerView = () => {
                 {({ getDropZoneProps, browseFiles }) => (
                     <OverlayLayout
                         onExited={view.onClose}
-                        barLeft={<Heading level={5}>{"File library"}</Heading>}
+                        barLeft={<Heading level={5}>{"File manager"}</Heading>}
                         barMiddle={<SearchWidget />}
                     >
                         <>
@@ -314,41 +314,45 @@ const FileManagerView = () => {
                                     </LeftSidebar>
                                 </LeftPanel>
                                 <RightPanel span={10}>
-                                    <Header browseFiles={browseFiles} />
                                     <div
-                                        className={"wby-relative wby-h-full"}
-                                        style={{
-                                            height: "calc(100vh - 134px)"
-                                        }}
-                                        {...getDropZoneProps({
-                                            onDragOver: () => view.setDragging(true),
-                                            onDragLeave: () => view.setDragging(false),
-                                            onDrop: () => view.setDragging(false)
-                                        })}
-                                        data-testid={"fm-list-wrapper"}
+                                        className={"wby-flex wby-flex-col"}
+                                        style={{ height: "calc(100vh - 69px" }}
                                     >
-                                        <BulkActions />
-                                        <Filters />
-                                        <Scrollbar
-                                            onScrollFrame={scrollFrame =>
-                                                loadMoreOnScroll({ scrollFrame })
-                                            }
+                                        <Header browseFiles={browseFiles} />
+                                        <div
+                                            className={"wby-flex-1"}
+                                            {...getDropZoneProps({
+                                                onDragOver: () => view.setDragging(true),
+                                                onDragLeave: () => view.setDragging(false),
+                                                onDrop: () => view.setDragging(false)
+                                            })}
+                                            data-testid={"fm-list-wrapper"}
                                         >
-                                            {renderList(browseFiles)}
-                                        </Scrollbar>
-                                        {view.dragging && <FileDropPlaceholder />}
+                                            <BulkActions />
+                                            <Filters />
+                                            <Scrollbar
+                                                onScrollFrame={scrollFrame =>
+                                                    loadMoreOnScroll({ scrollFrame })
+                                                }
+                                            >
+                                                {renderList(browseFiles)}
+                                            </Scrollbar>
+                                            {view.dragging && <FileDropPlaceholder />}
+                                            <UploadStatus
+                                                numberOfFiles={filesBeingUploaded}
+                                                progress={progress}
+                                                isVisible={view.isUploadProgressIndicatorVisible}
+                                                setIsVisible={
+                                                    view.setIsUploadProgressIndicatorVisible
+                                                }
+                                            />
+                                        </div>
                                         <BottomInfoBar
                                             accept={view.accept}
                                             listing={view.isListLoadingMore}
                                             loading={view.isListLoading}
                                             totalCount={view.meta?.totalCount ?? 0}
                                             currentCount={view.files.length}
-                                        />
-                                        <UploadStatus
-                                            numberOfFiles={filesBeingUploaded}
-                                            progress={progress}
-                                            isVisible={view.isUploadProgressIndicatorVisible}
-                                            setIsVisible={view.setIsUploadProgressIndicatorVisible}
                                         />
                                     </div>
                                 </RightPanel>

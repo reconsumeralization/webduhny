@@ -15,7 +15,7 @@ export interface HeaderProps {
 
 export const Header = (props: HeaderProps) => {
     return (
-        <>
+        <div>
             <div className={"wby-pl-lg wby-pr-md wby-py-sm-extra"}>
                 <Grid>
                     <Grid.Column span={6}>
@@ -27,6 +27,6 @@ export const Header = (props: HeaderProps) => {
                 </Grid>
             </div>
             <Separator />
-        </>
+        </div>
     );
 };
