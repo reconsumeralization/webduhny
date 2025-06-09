@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import debounce from "lodash/debounce";
 
 import { useRouter } from "@webiny/react-router";
 import { OnSortingChange, Sorting } from "@webiny/ui/DataTable";
-import { useAcoList, createSort } from "@webiny/app-aco";
+import { createSort, useAcoList } from "@webiny/app-aco";
 import { ListMeta, SearchRecordItem } from "@webiny/app-aco/types";
 
 import {
