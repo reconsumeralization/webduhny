@@ -316,7 +316,7 @@ const FileManagerView = () => {
                                 </LeftPanel>
                                 <RightPanel span={10}>
                                     <div
-                                        className={"wby-flex wby-flex-col"}
+                                        className={"wby-flex wby-flex-col wby-relative"}
                                         style={{ height: "calc(100vh - 69px" }}
                                     >
                                         <Header browseFiles={browseFiles} />

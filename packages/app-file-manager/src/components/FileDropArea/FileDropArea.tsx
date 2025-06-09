@@ -12,7 +12,7 @@ const DropAreaContainer = ({ empty, children }: DropAreaContainerProps) => (
     <div
         className={cn([
             "wby-w-full wby-h-full wby-p-lg wby-flex wby-items-center wby-justify-center",
-            empty ? "wby-bg-neutral-base" : "wby-bg-neutral-xstrong/20"
+            empty ? "wby-bg-neutral-base" : "wby-pt-xxl wby-bg-neutral-xstrong/20"
         ])}
     >
         {children}
