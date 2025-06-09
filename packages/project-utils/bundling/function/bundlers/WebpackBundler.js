@@ -72,12 +72,20 @@ class WebpackBundler extends BaseFunctionBundler {
 
     watch() {
         return new Promise(async (resolve, reject) => {
-            console.log("Compiling...");
+            let projectApplication;
+            try {
+                projectApplication = getProjectApplication({ cwd: this.params.cwd });
+            } catch {
+                // No need to do anything.
+            }
 
             const webpackConfig = createWebpackConfig({
                 ...this.params,
-                production: true
+                projectApplication,
+                production: false
             });
+
+            console.log("Compiling...");
 
             return webpack(webpackConfig).watch({}, async (err, stats) => {
                 if (err) {
