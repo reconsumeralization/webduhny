@@ -3,16 +3,9 @@ import gql from "graphql-tag";
 import { useApolloClient } from "@apollo/react-hooks";
 import { i18n } from "@webiny/app/i18n";
 import { AdminInstallationPlugin } from "@webiny/app-admin/types";
-import { Alert } from "@webiny/ui/Alert";
-import { CircularProgress } from "@webiny/ui/Progress";
 import { SimpleForm, SimpleFormContent } from "@webiny/app-admin/components/SimpleForm";
-import styled from "@emotion/styled";
 import { config as appConfig } from "@webiny/app/config";
-
-const SimpleFormPlaceholder = styled.div({
-    minHeight: 300,
-    minWidth: 400
-});
+import { Alert, OverlayLoader } from "@webiny/admin-ui";
 
 const t = i18n.ns("app-file-manager/admin/installation");
 
@@ -75,9 +68,9 @@ const FMInstaller = ({ onInstalled }: FileManagerInstallerProps) => {
 
     return (
         <SimpleForm>
-            <CircularProgress label={label} />
+            <OverlayLoader text={label} />
             <SimpleFormContent>
-                <SimpleFormPlaceholder />
+                <div style={{ minHeight: 300, minWidth: 400 }} />
             </SimpleFormContent>
         </SimpleForm>
     );

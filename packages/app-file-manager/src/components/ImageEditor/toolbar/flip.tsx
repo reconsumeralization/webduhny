@@ -1,11 +1,9 @@
 import React from "react";
-import { ImageEditorTool } from "./types";
+import { Button, IconButton, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as FlipIcon } from "@webiny/icons/flip.svg";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
-
-import { IconButton, ButtonDefault } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
+import { ImageEditorTool } from "./types";
 
 let cropper: Cropper;
 
@@ -13,8 +11,10 @@ const flipped = { x: 1, y: 1 };
 
 const renderForm = () => {
     return (
-        <div style={{ textAlign: "center" }}>
-            <ButtonDefault
+        <div className={"wby-flex wby-justify-center wby-gap-sm"}>
+            <Button
+                text={"FlipX"}
+                variant={"secondary"}
                 onClick={() => {
                     if (!cropper) {
                         return;
@@ -23,10 +23,10 @@ const renderForm = () => {
                     flipped.x = flipped.x === 1 ? -1 : 1;
                     cropper.scaleX(flipped.x);
                 }}
-            >
-                FlipX
-            </ButtonDefault>
-            <ButtonDefault
+            />
+            <Button
+                text={"FlipY"}
+                variant={"secondary"}
                 onClick={() => {
                     if (!cropper) {
                         return;
@@ -35,9 +35,7 @@ const renderForm = () => {
                     flipped.y = flipped.y === 1 ? -1 : 1;
                     cropper.scaleY(flipped.y);
                 }}
-            >
-                FlipY
-            </ButtonDefault>
+            />
         </div>
     );
 };
@@ -46,13 +44,18 @@ const tool: ImageEditorTool = {
     name: "flip",
     icon({ activateTool }) {
         return (
-            <Tooltip placement={"bottom"} content={"Flip"}>
-                <IconButton
-                    icon={<FlipIcon />}
-                    onClick={() => activateTool("flip")}
-                    data-testid={"flip-item"}
-                />
-            </Tooltip>
+            <Tooltip
+                side={"bottom"}
+                content={"Flip"}
+                trigger={
+                    <IconButton
+                        variant={"ghost"}
+                        icon={<FlipIcon />}
+                        onClick={() => activateTool("flip")}
+                        data-testid={"flip-item"}
+                    />
+                }
+            />
         );
     },
     renderForm,

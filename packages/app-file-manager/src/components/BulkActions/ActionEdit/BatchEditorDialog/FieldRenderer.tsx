@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldElement, ModelProvider } from "@webiny/app-headless-cms";
 import { Bind, BindPrefix } from "@webiny/form";
-import { Cell } from "@webiny/ui/Grid";
+import { Grid } from "@webiny/admin-ui";
 import { FieldDTO, OperatorType } from "~/components/BulkActions/ActionEdit/domain";
 import { useFileModel } from "~/hooks/useFileModel";
 import { useFileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
@@ -34,7 +34,7 @@ export const FieldRenderer = (props: FieldRendererProps) => {
 
     return (
         <ModelProvider model={fileModel}>
-            <Cell span={12}>{renderer}</Cell>
+            <Grid.Column span={12}>{renderer}</Grid.Column>
         </ModelProvider>
     );
 };

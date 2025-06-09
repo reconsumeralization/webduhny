@@ -1,9 +1,7 @@
 import React from "react";
+import { IconButton, Slider, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as RotateRight } from "@webiny/icons/rotate_right.svg";
 import { ImageEditorTool } from "./types";
-import { Slider } from "@webiny/ui/Slider";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { IconButton } from "@webiny/ui/Button";
 
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -17,19 +15,17 @@ class RenderForm extends React.Component<any, any> {
 
     public override render() {
         return (
-            <div style={{ width: "100%", margin: "0 auto" }}>
+            <div>
                 <Slider
                     label={"Range Input"}
-                    value={this.state.rangeInput}
+                    value={Number(this.state.rangeInput)}
                     min={0}
                     max={360}
                     step={10}
-                    discrete={true}
-                    displayMarkers={true}
-                    onInput={(value: string) => {
+                    onValueChange={(value: number) => {
                         this.setState({ rangeInput: value }, async () => {
                             if (cropper) {
-                                cropper.rotateTo(parseInt(value, 10));
+                                cropper.rotateTo(parseInt(String(value), 10));
                             }
                         });
                     }}
@@ -43,13 +39,18 @@ const tool: ImageEditorTool = {
     name: "rotate",
     icon({ activateTool }) {
         return (
-            <Tooltip placement={"bottom"} content={"Rotate"}>
-                <IconButton
-                    icon={<RotateRight />}
-                    onClick={() => activateTool("rotate")}
-                    data-testid={"rotate-item"}
-                />
-            </Tooltip>
+            <Tooltip
+                side={"bottom"}
+                content={"Rotate"}
+                trigger={
+                    <IconButton
+                        variant={"ghost"}
+                        icon={<RotateRight />}
+                        onClick={() => activateTool("rotate")}
+                        data-testid={"rotate-item"}
+                    />
+                }
+            />
         );
     },
     renderForm(props) {

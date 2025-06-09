@@ -1,8 +1,7 @@
 import React from "react";
 import { ReactComponent as FileIcon } from "@webiny/icons/file_present.svg";
 import { CmsModelFieldTypePlugin } from "@webiny/app-headless-cms/types";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Switch } from "@webiny/ui/Switch";
+import { Grid, Switch } from "@webiny/admin-ui";
 import { Bind } from "@webiny/form";
 
 export const fileField: CmsModelFieldTypePlugin = {
@@ -30,14 +29,14 @@ export const fileField: CmsModelFieldTypePlugin = {
         renderSettings: () => {
             return (
                 <Grid>
-                    <Cell span={12}>
+                    <Grid.Column span={12}>
                         <Bind name={"settings.imagesOnly"}>
                             <Switch
                                 label={"Images only"}
                                 description={"Allow only images to be selected"}
                             />
                         </Bind>
-                    </Cell>
+                    </Grid.Column>
                 </Grid>
             );
         }

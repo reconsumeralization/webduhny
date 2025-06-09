@@ -1,10 +1,8 @@
 import React from "react";
-
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as GridIcon } from "@webiny/icons/view_module.svg";
 import { ReactComponent as TableIcon } from "@webiny/icons/view_list.svg";
 import { i18n } from "@webiny/app/i18n";
-import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
 
 import { useFileManagerView } from "~/modules/FileManagerRenderer/FileManagerViewProvider";
 
@@ -15,17 +13,16 @@ export const LayoutSwitch = () => {
 
     return (
         <Tooltip
+            side={"bottom"}
+            trigger={
+                <IconButton
+                    icon={view.listTable ? <GridIcon /> : <TableIcon />}
+                    onClick={() => view.setListTable(!view.listTable)}
+                />
+            }
             content={t`{mode} layout`({
                 mode: view.listTable ? "Grid" : "Table"
             })}
-            placement={"bottom"}
-        >
-            <IconButton
-                icon={view.listTable ? <GridIcon /> : <TableIcon />}
-                onClick={() => view.setListTable(!view.listTable)}
-            >
-                {t`Switch`}
-            </IconButton>
-        </Tooltip>
+        />
     );
 };

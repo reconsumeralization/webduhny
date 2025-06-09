@@ -33,7 +33,7 @@ const getDefaultSize = (span: ColumnProps["span"]) => {
 };
 
 interface SplitViewPanelProps extends Omit<PanelProps, "id"> {
-    span: ColumnProps["span"];
+    span?: ColumnProps["span"];
 }
 
 const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {

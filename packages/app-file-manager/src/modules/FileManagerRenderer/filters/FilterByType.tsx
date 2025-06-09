@@ -1,6 +1,6 @@
 import React from "react";
+import { Select } from "@webiny/admin-ui";
 import { useBind } from "@webiny/form";
-import { Select } from "@webiny/ui/Select";
 
 export const FilterByType = () => {
     const bind = useBind({
@@ -18,5 +18,5 @@ export const FilterByType = () => {
         { label: "Documents", value: "application/" }
     ];
 
-    return <Select {...bind} placeholder={"Filter by type"} options={options} size="medium" />;
+    return <Select {...bind} placeholder={"Filter by type"} options={options} size={"md"} />;
 };
