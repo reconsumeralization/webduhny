@@ -8,6 +8,7 @@ import { createLambdaRole, getCommonLambdaEnvVariables } from "../lambdaUtils";
 import { CoreOutput, VpcConfig } from "~/apps";
 import { getAwsAccountId, getAwsRegion } from "../awsUtils";
 import { LAMBDA_RUNTIME } from "~/constants";
+import { hashElement } from "folder-hash";
 
 interface GraphqlParams {
     env: Record<string, any>;
@@ -41,6 +42,9 @@ export const ApiGraphql = createAppModule({
             policy: policy.output
         });
 
+        const sourceCodePath = path.join(app.paths.workspace, "graphql/build");
+        const { hash: sourceCodeHash } = hashElement(sourceCodePath);
+
         const graphql = app.addResource(aws.lambda.Function, {
             name: "graphql",
             config: {
@@ -51,9 +55,7 @@ export const ApiGraphql = createAppModule({
                 timeout: 30,
                 memorySize: 1024,
                 code: new pulumi.asset.AssetArchive({
-                    ".": new pulumi.asset.FileArchive(
-                        path.join(app.paths.workspace, "graphql/build")
-                    )
+                    ".": new pulumi.asset.FileArchive(sourceCodePath)
                 }),
                 environment: {
                     variables: getCommonLambdaEnvVariables().apply(value => ({
