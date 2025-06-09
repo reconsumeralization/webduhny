@@ -5,7 +5,7 @@ import { SidebarFooter } from "~/admin/components/ContentEntries/SidebarFooter/S
 
 export const Sidebar = () => {
     return (
-        <div className={"wby-flex wby-flex-col"} style={{ height: "calc(100vh - 45px" }}>
+        <div className={"wby-flex wby-flex-col wby-h-main-content"}>
             <SidebarHeader />
             <SidebarContent />
             <SidebarFooter />

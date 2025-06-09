@@ -48,13 +48,8 @@ const ContentModels = () => {
     }, []);
 
     return (
-        <div
-            style={{
-                height: "calc(100vh - 45px)"
-            }}
-            className={"wby-container wby-pt-lg"}
-        >
-            <Grid className="wby-h-full">
+        <div className={"wby-container wby-h-main-content"}>
+            <Grid className="wby-h-full wby-pt-lg">
                 <Grid.Column span={10} offset={1}>
                     <div className="wby-h-full wby-border-sm wby-border-b-none wby-border-neutral-dimmed-darker wby-rounded-t-3xl">
                         <ContentModelsDataList

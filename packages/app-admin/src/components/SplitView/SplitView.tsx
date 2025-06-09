@@ -18,7 +18,7 @@ const SplitView = ({ children, className, layoutId, ...props }: SplitViewProps) 
             direction="horizontal"
             id="splitView"
             autoSaveId={layoutId}
-            className={cn("webiny-split-view wby-h-full", className)}
+            className={cn("webiny-split-view", className)}
             {...props}
         >
             {children}
@@ -45,7 +45,7 @@ const LeftPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
                 defaultSize={defaultSize}
                 minSize={10}
                 id="leftPanel"
-                className={cn("webiny-split-view__right-panel wby-h-full", className)}
+                className={cn("webiny-split-view__right-panel", className)}
                 {...props}
             >
                 {children}
@@ -65,7 +65,7 @@ const RightPanel = ({ children, className, ...props }: SplitViewPanelProps) => {
             defaultSize={defaultSize}
             minSize={30}
             id="rightPanel"
-            className={cn("webiny-split-view__right-panel wby-h-full", className)}
+            className={cn("webiny-split-view__right-panel", className)}
             {...props}
         >
             {children}

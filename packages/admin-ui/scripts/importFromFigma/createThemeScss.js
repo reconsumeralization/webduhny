@@ -224,7 +224,11 @@ const createThemeScss = (normalizedFigmaExport, normalizedPrimitivesFigmaExport)
             .map(variable => `--spacing-${variable.variantName}: ${variable.resolvedValue}px;`)
 
             // Custom sidebar-related variables.
-            .concat(`--spacing-sidebar-collapsed: 44px;`, `--spacing-sidebar-expanded: 256px;`);
+            .concat(
+                `--spacing-sidebar-collapsed: 44px;`,
+                `--spacing-sidebar-expanded: 256px;`,
+                `--spacing-main-content: calc(100vh - 45px);`
+            );
 
         stylesScss = stylesScss.replace("{SPACING}", spacing.join("\n"));
     }

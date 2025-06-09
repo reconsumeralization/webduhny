@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeDecoratable } from "@webiny/app-admin";
 import { Prompt } from "@webiny/react-router";
 import { i18n } from "@webiny/app/i18n";
@@ -30,6 +30,15 @@ interface OnChangeParams {
 export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
     const { data, setData, isPristine, contentModel } = useModelEditor();
 
+    // Add a class to <body> to trigger global styles while this component is active
+    useEffect(() => {
+        document.body.classList.add("wby-overflow-hidden");
+
+        return () => {
+            document.body.classList.remove("wby-overflow-hidden");
+        };
+    }, []);
+
     const [activeTab, setActiveTab] = useState<string>("edit");
 
     const onChange = ({ fields, layout }: OnChangeParams) => {
@@ -46,8 +55,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
         <div className={"content-model-editor wby-flex-1"}>
             <Prompt when={!isPristine} message={prompt} />
             <Header />
-            {/*TODO: remove the height in favour of a TW variable for the height (h-main-section)*/}
-            <div className={"wby-w-full wby-overflow-y-scroll wby-h-[calc(100vh-45px)]"}>
+            <div className={"wby-w-full wby-overflow-y-auto wby-h-main-content"}>
                 <SplitView>
                     <LeftPanel span={4} className={"wby-bg-neutral-light"}>
                         <div className={"wby-px-lg wby-py-md"}>
@@ -63,7 +71,7 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                         <Separator />
                         <div
                             className={
-                                "wby-px-lg wby-py-md wby-h-[calc(100vh-98px)] wby-overflow-y-auto"
+                                "wby-px-lg wby-py-md wby-h-[calc(100vh-98px)] wby-overflow-y-scroll"
                             }
                         >
                             <FieldsSidebar
@@ -74,62 +82,64 @@ export const ContentModelEditor = makeDecoratable("ContentModelEditor", () => {
                         </div>
                     </LeftPanel>
                     <RightPanel span={8} className={"wby-bg-neutral-base"}>
-                        {contentModel && (
-                            <div className={"wby-px-xl wby-pt-lg wby-pb-md-extra"}>
-                                <Heading level={4}>{contentModel.name}</Heading>
-                                <Text size={"sm"} className={"wby-text-neutral-muted"}>
-                                    {`Created by ${contentModel.createdBy.displayName}. Last modified: `}
-                                    <TimeAgo datetime={contentModel.savedOn} />.
-                                </Text>
-                            </div>
-                        )}
-                        <Tabs
-                            size={"md"}
-                            spacing={"xl"}
-                            separator={true}
-                            value={String(activeTab)}
-                            onValueChange={setActiveTab}
-                            tabs={[
-                                <Tabs.Tab
-                                    key={"edit"}
-                                    value={"edit"}
-                                    trigger={"Edit"}
-                                    icon={<EditIcon />}
-                                    data-testid={"cms.editor.tab.edit"}
-                                    content={
-                                        <div className={"wby-relative wby-mb-lg"}>
-                                            <FieldEditor
-                                                fields={data.fields}
-                                                layout={data.layout || []}
-                                                onChange={onChange}
-                                            />
-                                        </div>
-                                    }
-                                />,
-                                <Tabs.Tab
-                                    key={"preview"}
-                                    value={"preview"}
-                                    trigger={"Preview"}
-                                    icon={<PreviewIcon />}
-                                    data-testid={"cms.editor.tab.preview"}
-                                    content={
-                                        <ContentEntryEditorWithConfig>
-                                            <ContentEntriesProvider contentModel={data}>
-                                                <ContentEntryProvider readonly={true}>
-                                                    <PreviewTab
-                                                        activeTab={activeTab === "preview"}
-                                                    />
-                                                </ContentEntryProvider>
-                                            </ContentEntriesProvider>
-                                        </ContentEntryEditorWithConfig>
-                                    }
-                                />
-                            ]}
-                        />
+                        <div className={"wby-h-full wby-overflow-y-scroll"}>
+                            {contentModel && (
+                                <div className={"wby-px-xl wby-pt-lg wby-pb-md-extra"}>
+                                    <Heading level={4}>{contentModel.name}</Heading>
+                                    <Text size={"sm"} className={"wby-text-neutral-muted"}>
+                                        {`Created by ${contentModel.createdBy.displayName}. Last modified: `}
+                                        <TimeAgo datetime={contentModel.savedOn} />.
+                                    </Text>
+                                </div>
+                            )}
+                            <Tabs
+                                size={"md"}
+                                spacing={"xl"}
+                                separator={true}
+                                value={String(activeTab)}
+                                onValueChange={setActiveTab}
+                                tabs={[
+                                    <Tabs.Tab
+                                        key={"edit"}
+                                        value={"edit"}
+                                        trigger={"Edit"}
+                                        icon={<EditIcon />}
+                                        data-testid={"cms.editor.tab.edit"}
+                                        content={
+                                            <div className={"wby-relative wby-mb-lg"}>
+                                                <FieldEditor
+                                                    fields={data.fields}
+                                                    layout={data.layout || []}
+                                                    onChange={onChange}
+                                                />
+                                            </div>
+                                        }
+                                    />,
+                                    <Tabs.Tab
+                                        key={"preview"}
+                                        value={"preview"}
+                                        trigger={"Preview"}
+                                        icon={<PreviewIcon />}
+                                        data-testid={"cms.editor.tab.preview"}
+                                        content={
+                                            <ContentEntryEditorWithConfig>
+                                                <ContentEntriesProvider contentModel={data}>
+                                                    <ContentEntryProvider readonly={true}>
+                                                        <PreviewTab
+                                                            activeTab={activeTab === "preview"}
+                                                        />
+                                                    </ContentEntryProvider>
+                                                </ContentEntriesProvider>
+                                            </ContentEntryEditorWithConfig>
+                                        }
+                                    />
+                                ]}
+                            />
+                        </div>
                     </RightPanel>
                 </SplitView>
+                <DragPreview />
             </div>
-            <DragPreview />
         </div>
     );
 });

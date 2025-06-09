@@ -66,4 +66,14 @@
     // Styles all links that were not rendered via the Link component.
     @apply wby-text-accent-primary hover:wby-underline focus-visible:wby-outline-none focus-visible:wby-ring-lg focus-visible:wby-ring-primary-dimmed wby-rounded-xs;
   }
+
+    b,
+    strong {
+      @apply wby-font-semibold;
+    }
+
+    i,
+    em {
+      @apply wby-italic;
+    }
 }
