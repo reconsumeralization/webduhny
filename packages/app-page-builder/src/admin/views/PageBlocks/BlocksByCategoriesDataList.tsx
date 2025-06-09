@@ -228,7 +228,7 @@ const BlocksByCategoriesDataList = ({
             </DataList>
             <Dialog
                 open={isDialogOpen}
-                onOpenChange={open => !open && setIsDialogOpen(false)}
+                onClose={() => setIsDialogOpen(false)}
                 title={"Please select a block category"}
                 actions={
                     <>

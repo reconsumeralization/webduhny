@@ -115,15 +115,8 @@ export const Dialog = ({
             bodyPadding={false}
             dismissible={preventOutsideDismiss === true ? false : true}
             showCloseButton={showCloseButton}
-            onOpenChange={opened => {
-                if (!opened && onClose) {
-                    onClose();
-                }
-
-                if (opened && onOpened) {
-                    onOpened();
-                }
-            }}
+            onClose={onClose}
+            onOpen={onOpened}
             {...rest}
         >
             {children}

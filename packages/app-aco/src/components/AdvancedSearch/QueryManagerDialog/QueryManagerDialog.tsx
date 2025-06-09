@@ -32,11 +32,7 @@ export const QueryManagerDialog = ({ vm, ...props }: QueryManagerDialogProps) =>
     return (
         <Dialog
             open={vm.isOpen}
-            onOpenChange={open => {
-                if (!open) {
-                    props.onClose();
-                }
-            }}
+            onClose={props.onClose}
             title={"Advanced search filter"}
             actions={
                 <>

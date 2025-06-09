@@ -50,7 +50,7 @@ export const DialogContainer = () => {
     return (
         <Dialog
             open={!!message}
-            onOpenChange={open => !open && hideDialog()}
+            onClose={hideDialog}
             data-testid={dataTestId}
             style={style}
             showCloseButton={showCloseButton}

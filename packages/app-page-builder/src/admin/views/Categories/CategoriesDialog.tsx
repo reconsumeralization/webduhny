@@ -18,11 +18,7 @@ const CategoriesDialog = ({ open, onClose, onSelect, children }: CategoriesDialo
     return (
         <Dialog
             open={open}
-            onOpenChange={(open: boolean) => {
-                if (!open) {
-                    onClose();
-                }
-            }}
+            onClose={onClose}
             data-testid="pb-new-page-category-modal"
             title="Select a category"
             info={

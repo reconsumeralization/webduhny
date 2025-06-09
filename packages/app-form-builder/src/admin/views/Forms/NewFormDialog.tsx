@@ -66,7 +66,7 @@ const NewFormDialog = ({ open, onClose }: NewFormDialogProps) => {
             {({ Bind, submit }) => (
                 <Dialog
                     open={open}
-                    onOpenChange={open => !open && onClose()}
+                    onClose={onClose}
                     title={t`New form`}
                     data-testid="fb-new-form-modal"
                     actions={

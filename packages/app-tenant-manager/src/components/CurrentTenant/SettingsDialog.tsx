@@ -17,7 +17,7 @@ export const SettingsDialog = ({ open, onClose }: Props) => {
             {({ submit }) => (
                 <Dialog
                     open={open}
-                    onOpenChange={open => !open && onClose()}
+                    onClose={onClose}
                     title={"Tenant settings"}
                     actions={
                         <>
