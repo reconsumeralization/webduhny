@@ -51,8 +51,13 @@ export class Handler implements IHandler {
     public async flush(): Promise<void> {
         const entries = this.createEventBusEntries();
         if (entries.length === 0) {
+            console.log("No commands to flush to Sync System EventBridge.");
             return;
         }
+        console.log(
+            `Flushing ${entries.length} commands to Sync System EventBridge for system "${this.system.name}".`
+        );
+        console.log(JSON.stringify({ entries }));
 
         const input: PutEventsCommandInput = {
             Entries: entries,
