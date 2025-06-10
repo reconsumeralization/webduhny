@@ -246,7 +246,7 @@ describe("richTextField", () => {
 
         const category = await createCategory();
 
-        const { createProduct, updateProduct } = useProductManageHandler({
+        const { createProduct, updateProduct, getProduct } = useProductManageHandler({
             ...manageOpts
         });
 
@@ -322,6 +322,24 @@ describe("richTextField", () => {
                 }
             }
         });
+
+        const product = createProductResponse.data.createProduct.data;
+
+        const [getAfterCreateResult] = await getProduct({
+            revision: product.id
+        });
+
+        expect(getAfterCreateResult).toMatchObject({
+            data: {
+                getProduct: {
+                    data: {
+                        id: product.id,
+                        ...productData
+                    },
+                    error: null
+                }
+            }
+        });
         /**
          * We now update the rich text field with some value.
          */
@@ -342,6 +360,23 @@ describe("richTextField", () => {
                         ...expectedCreatedProduct,
                         richText: richTextMock,
                         modifiedOn: expect.toBeDateString()
+                    },
+                    error: null
+                }
+            }
+        });
+
+        const [getAfterUpdateResult] = await getProduct({
+            revision: product.id
+        });
+
+        expect(getAfterUpdateResult).toMatchObject({
+            data: {
+                getProduct: {
+                    data: {
+                        id: product.id,
+                        ...productData,
+                        richText: richTextMock
                     },
                     error: null
                 }
