@@ -13,36 +13,13 @@ const iconVariants = cva("wby-shrink-0", {
         color: {
             inherit: "wby-fill-inherit",
             accent: "wby-fill-accent-default",
-            neutral: "wby-fill-neutral-base",
             "neutral-light": "wby-fill-neutral-strong",
-            "neutral-strong": "wby-fill-neutral-xstrong"
-        },
-        disabled: {
-            true: "wby-fill-inherit"
+            "neutral-strong": "wby-fill-neutral-xstrong",
+            "neutral-strong-transparent": "wby-fill-neutral-xstrong/30",
+            "neutral-base": "wby-fill-neutral-base",
+            "neutral-negative": "wby-fill-neutral-base/50"
         }
     },
-    compoundVariants: [
-        {
-            color: "accent",
-            disabled: true,
-            className: "wby-fill-accent-default/25"
-        },
-        {
-            color: "neutral",
-            disabled: true,
-            className: "wby-fill-neutral-disabled"
-        },
-        {
-            color: "neutral-light",
-            disabled: true,
-            className: "wby-fill-neutral-disabled"
-        },
-        {
-            color: "neutral-strong",
-            disabled: true,
-            className: "wby-fill-neutral-disabled"
-        }
-    ],
     defaultVariants: {
         size: "md",
         color: "inherit"
@@ -57,13 +34,13 @@ interface IconProps
 }
 
 const IconBase = (props: IconProps) => {
-    const { label, icon, color, size, className, disabled, ...rest } = props;
+    const { label, icon, color, size, className, ...rest } = props;
     return (
         <AccessibleIcon.Root label={label}>
             {/* @ts-expect-error */}
             {React.cloneElement(icon, {
                 ...rest,
-                className: cn(iconVariants({ color, disabled, size }), className)
+                className: cn(iconVariants({ color, size }), className)
             })}
         </AccessibleIcon.Root>
     );

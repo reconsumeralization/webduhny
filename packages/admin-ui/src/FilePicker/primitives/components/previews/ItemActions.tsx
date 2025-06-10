@@ -39,7 +39,6 @@ const ItemActions = ({
                             label={"Replace"}
                             size={"md"}
                             color={"neutral-light"}
-                            disabled={disabled}
                         />
                     }
                     variant={"ghost"}
@@ -58,7 +57,6 @@ const ItemActions = ({
                             label={"Edit"}
                             size={"md"}
                             color={"neutral-light"}
-                            disabled={disabled}
                         />
                     }
                     variant={"ghost"}
@@ -77,7 +75,6 @@ const ItemActions = ({
                             label={"Remove"}
                             size={"md"}
                             color={"neutral-light"}
-                            disabled={disabled}
                         />
                     }
                     variant={"ghost"}

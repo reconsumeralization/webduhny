@@ -22,47 +22,20 @@ export const Default: Story = {
     argTypes: {
         size: {
             control: "select",
-            options: ["sm", "md", "lg"]
+            options: ["xs", "sm", "md", "lg"]
         },
         color: {
             control: "select",
-            options: ["accent", "neutral", "neutral-strong", "neutral-light", "inherit"]
+            options: [
+                "accent",
+                "neutral-light",
+                "neutral-strong",
+                "neutral-strong-transparent",
+                "neutral-base",
+                "neutral-negative",
+                "inherit"
+            ]
         }
-    }
-};
-
-export const ColorAccent: Story = {
-    args: {
-        ...Default.args,
-        color: "accent"
-    }
-};
-
-export const ColorNeutral: Story = {
-    decorators: [
-        Story => (
-            <div className="wby-bg-[#25292e] wby-p-[300px] wby-rounded-[5px]">
-                <Story />
-            </div>
-        )
-    ],
-    args: {
-        ...Default.args,
-        color: "neutral"
-    }
-};
-
-export const ColorNeutralStrong: Story = {
-    args: {
-        ...Default.args,
-        color: "neutral-strong"
-    }
-};
-
-export const ColorNeutralXStrong: Story = {
-    args: {
-        ...Default.args,
-        color: "neutral-strong"
     }
 };
 
@@ -77,6 +50,69 @@ export const ColorInherit: Story = {
     args: {
         ...Default.args,
         color: "inherit"
+    }
+};
+
+export const ColorAccent: Story = {
+    args: {
+        ...Default.args,
+        color: "accent"
+    }
+};
+
+export const ColorNeutralLight: Story = {
+    args: {
+        ...Default.args,
+        color: "neutral-light"
+    }
+};
+
+export const ColorNeutralStrong: Story = {
+    args: {
+        ...Default.args,
+        color: "neutral-strong"
+    }
+};
+
+export const ColorNeutralStrongTransparent: Story = {
+    decorators: [
+        Story => (
+            <div className="wby-bg-neutral-disabled wby-p-3xl wby-rounded-md">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Default.args,
+        color: "neutral-strong-transparent"
+    }
+};
+
+export const ColorNeutralBase: Story = {
+    decorators: [
+        Story => (
+            <div className="wby-bg-neutral-dark wby-p-3xl wby-rounded-md">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Default.args,
+        color: "neutral-base"
+    }
+};
+
+export const ColorNeutralNegative: Story = {
+    decorators: [
+        Story => (
+            <div className="wby-bg-neutral-dark wby-p-3xl wby-rounded-md">
+                <Story />
+            </div>
+        )
+    ],
+    args: {
+        ...Default.args,
+        color: "neutral-negative"
     }
 };
 
@@ -108,20 +144,12 @@ export const SizeLg: Story = {
     }
 };
 
-export const Disabled: Story = {
-    args: {
-        ...Default.args,
-        disabled: true
-    }
-};
-
 export const Documentation: Story = {
     args: {
         icon: <XIcon />,
         label: "Close icon",
         size: "md",
         color: "accent",
-        disabled: false,
         className: ""
     },
     argTypes: {
@@ -142,11 +170,15 @@ export const Documentation: Story = {
         color: {
             description: "The color of the icon",
             control: "select",
-            options: ["inherit", "accent", "neutral", "neutral-light", "neutral-strong"]
-        },
-        disabled: {
-            description: "Whether the icon should appear disabled",
-            control: "boolean"
+            options: [
+                "inherit",
+                "accent",
+                "neutral-base",
+                "neutral-light",
+                "neutral-strong",
+                "neutral-strong-transparent",
+                "neutral-negative"
+            ]
         },
         className: {
             description:

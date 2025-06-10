@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactComponent as Close } from "@webiny/icons/close.svg";
 import { cn, cva, makeDecoratable, type VariantProps } from "~/utils";
-import { Icon } from "~/Icon";
+import { Icon, type IconProps } from "~/Icon";
 import { IconButton, iconButtonVariants } from "~/Button";
 
 const tagVariants = cva(
@@ -117,7 +117,9 @@ const DecoratableTag = ({
     disabled,
     ...props
 }: TagProps) => {
-    const iconVariant = React.useMemo((): VariantProps<typeof iconButtonVariants>["variant"] => {
+    const dismissButtonVariant = React.useMemo((): VariantProps<
+        typeof iconButtonVariants
+    >["variant"] => {
         if (
             variant &&
             [
@@ -133,6 +135,28 @@ const DecoratableTag = ({
         }
 
         return "ghost";
+    }, [variant]);
+
+    const dismissIconColor: IconProps["color"] = React.useMemo(() => {
+        if (
+            variant &&
+            [
+                "neutral-strong",
+                "neutral-xstrong",
+                "neutral-dark",
+                "accent",
+                "success",
+                "destructive"
+            ].includes(variant)
+        ) {
+            return "neutral-negative";
+        }
+
+        if (variant && ["warning"].includes(variant)) {
+            return "neutral-strong";
+        }
+
+        return "neutral-strong-transparent";
     }, [variant]);
 
     return (
@@ -155,9 +179,16 @@ const DecoratableTag = ({
             </span>
             {onDismiss && (
                 <IconButton
-                    icon={<Icon icon={dismissIconElement} label={dismissIconLabel} size={"sm"} />}
+                    icon={
+                        <Icon
+                            icon={dismissIconElement}
+                            label={dismissIconLabel}
+                            color={dismissIconColor}
+                            size={"sm"}
+                        />
+                    }
                     size={"xxs"}
-                    variant={iconVariant}
+                    variant={dismissButtonVariant}
                     disabled={disabled}
                     onClick={event => {
                         event.stopPropagation();
