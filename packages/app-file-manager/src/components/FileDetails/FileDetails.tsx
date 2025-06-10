@@ -150,7 +150,7 @@ export const FileDetails = ({
     onSetFile = noop
 }: FileDetailsProps) => {
     useHotkeys({
-        zIndex: 55,
+        zIndex: 50,
         disabled: !open,
         keys: {
             esc: onClose

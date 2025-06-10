@@ -93,7 +93,7 @@ export const EditImage = () => {
                     dispatch({ type: "setDataUrl", dataUrl });
                 }}
             />
-            <Hotkeys zIndex={60} disabled={!state.dataUrl}>
+            <Hotkeys zIndex={100} disabled={!state.dataUrl}>
                 <ImageEditorDialog
                     data-testid={"fm-image-editor-dialog"}
                     dialogZIndex={100}

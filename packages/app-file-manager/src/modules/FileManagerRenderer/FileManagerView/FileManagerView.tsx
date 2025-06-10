@@ -132,7 +132,7 @@ const FileManagerView = () => {
     }, []);
 
     useHotkeys({
-        zIndex: 50,
+        zIndex: 20,
         keys: {
             esc: view.onClose
         }
