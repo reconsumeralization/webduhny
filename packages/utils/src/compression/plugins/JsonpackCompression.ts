@@ -17,7 +17,7 @@ export class JsonpackCompression extends CompressionPlugin {
     }
 
     public override async compress(data: any): Promise<ICompressedValue> {
-        if (!data) {
+        if (data === null || data === undefined) {
             return data;
         }
         const value = await compress(data);
@@ -42,6 +42,8 @@ export class JsonpackCompression extends CompressionPlugin {
     public override async decompress(data: ICompressedValue): Promise<any> {
         if (!data) {
             return data;
+        } else if (!data.value) {
+            return null;
         }
         try {
             return await decompress(data.value);
