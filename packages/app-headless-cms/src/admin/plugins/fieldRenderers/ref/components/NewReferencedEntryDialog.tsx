@@ -212,7 +212,7 @@ const ContentEntryProviderWithCurrentFolderId = ({
         >
             <Drawer
                 open={true}
-                onOpenChange={open => !open && onClose()}
+                onClose={onClose}
                 width={1000}
                 modal={true}
                 headerSeparator={true}

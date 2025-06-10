@@ -73,7 +73,7 @@ const DialogBase = (props: DialogProps) => {
             ...contentProps
         } = props;
 
-        // Handles dialog open state changes, calling original and onClose callbacks as needed
+        // Handles dialog open state changes, calling original and onClose / onOpen callbacks as needed
         const onOpenChange = (open: boolean) => {
             originalOnOpenChange && originalOnOpenChange(open);
 

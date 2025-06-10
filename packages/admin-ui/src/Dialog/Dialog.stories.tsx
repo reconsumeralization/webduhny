@@ -76,7 +76,7 @@ export const ControlledVisibility: Story = {
     args: { ...Default.args, trigger: null }
 };
 
-export const ControlledVisibilityWithOpenCloseEventHandler: Story = {
+export const WithOpenCloseEventHandler: Story = {
     args: {
         ...Default.args,
         onClose: () => {

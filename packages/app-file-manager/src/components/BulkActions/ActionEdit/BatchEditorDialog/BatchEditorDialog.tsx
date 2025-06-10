@@ -46,11 +46,7 @@ export const BatchEditorDialog = observer((props: BatchEditorDialogProps) => {
     return (
         <Drawer
             open={props.vm.isOpen}
-            onOpenChange={open => {
-                if (!open) {
-                    props.onClose();
-                }
-            }}
+            onClose={props.onClose}
             modal={true}
             width={800}
             headerSeparator={true}

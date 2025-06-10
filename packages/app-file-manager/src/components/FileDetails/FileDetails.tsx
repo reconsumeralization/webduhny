@@ -176,11 +176,7 @@ export const FileDetails = ({
                         bodyPadding={false}
                         headerSeparator={true}
                         footerSeparator={true}
-                        onOpenChange={open => {
-                            if (!open) {
-                                onClose();
-                            }
-                        }}
+                        onClose={onClose}
                         data-testid={"fm.file-details.drawer"}
                         actions={
                             <>

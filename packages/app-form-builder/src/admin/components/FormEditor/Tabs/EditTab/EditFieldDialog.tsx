@@ -106,11 +106,7 @@ const EditFieldDrawer = ({
                     width={800}
                     bodyPadding={false}
                     footerSeparator={true}
-                    onOpenChange={open => {
-                        if (!open) {
-                            onClose();
-                        }
-                    }}
+                    onClose={onClose}
                     actions={
                         <>
                             <Drawer.CancelButton />
