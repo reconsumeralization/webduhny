@@ -14,6 +14,7 @@ import { TaskDataStatus, TaskLogItemType } from "~/types";
 import { NotFoundError } from "@webiny/handler-graphql";
 import { createService } from "~/service";
 import { IStepFunctionServiceFetchResult } from "~/service/StepFunctionServicePlugin";
+import { convertDateToString } from "~/utils/convertDateToString";
 
 const MAX_DELAY_DAYS = 355;
 const MAX_DELAY_SECONDS = MAX_DELAY_DAYS * 24 * 60 * 60;
@@ -107,7 +108,7 @@ export const createServiceCrud = (context: Context): ITasksContextServiceObject 
                 throw ex;
             }
             return await context.tasks.updateTask<T, O>(task.id, {
-                eventResponse: result
+                eventResponse: convertDateToString(result)
             });
         },
         fetchServiceInfo: async (
