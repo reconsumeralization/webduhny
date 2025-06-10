@@ -322,13 +322,14 @@ function getDynamoDbToElasticLambdaPolicy(
                         Sid: "PermissionForDynamoDbLog",
                         Effect: "Allow",
                         Action: [
+                            "dynamodb:GetItem",
+                            "dynamodb:PutItem",
+                            "dynamodb:UpdateItem",
+                            "dynamodb:DeleteItem",
                             "dynamodb:BatchGetItem",
                             "dynamodb:BatchWriteItem",
-                            "dynamodb:PutItem",
-                            "dynamodb:GetItem",
-                            "dynamodb:DeleteItem",
-                            "dynamodb:Query",
-                            "dynamodb:UpdateItem"
+                            "dynamodb:Scan",
+                            "dynamodb:Query"
                         ],
                         Resource: [
                             pulumi.interpolate`${logDynamoDbTable.output.arn}`,
