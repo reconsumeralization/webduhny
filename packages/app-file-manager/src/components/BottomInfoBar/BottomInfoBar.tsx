@@ -13,7 +13,7 @@ type BottomInfoBarProps = SupportedFileTypesProps & ListStatusProps;
 
 export const BottomInfoBar = (props: BottomInfoBarProps) => {
     return (
-        <div className="wby-bg-neutral-base wby-w-full wby-overflow-hidden">
+        <div className="wby-bg-neutral-base wby-w-full wby-overflow-hidden wby-z-5">
             <Separator />
             <div
                 className={
