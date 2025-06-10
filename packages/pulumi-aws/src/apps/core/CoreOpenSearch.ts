@@ -10,9 +10,9 @@ import * as random from "@pulumi/random";
 import {
     createAppModule,
     PulumiApp,
+    PulumiAppRemoteResource,
     PulumiAppResource,
-    PulumiAppResourceConstructor,
-    PulumiAppRemoteResource
+    PulumiAppResourceConstructor
 } from "@webiny/pulumi";
 
 import { getAwsAccountId } from "../awsUtils";
@@ -294,6 +294,8 @@ function getDynamoDbToElasticLambdaPolicy(
     app: PulumiApp,
     domain: pulumi.Output<aws.opensearch.Domain | aws.opensearch.GetDomainResult>
 ) {
+    const logDynamoDbTable = app.getModule(LogDynamo);
+
     return app.addResource(aws.iam.Policy, {
         name: "DynamoDbToElasticLambdaPolicy-updated",
         config: {
@@ -309,7 +311,17 @@ function getDynamoDbToElasticLambdaPolicy(
                             "es:ESHttpDelete",
                             "es:ESHttpPatch",
                             "es:ESHttpPost",
-                            "es:ESHttpPut",
+                            "es:ESHttpPut"
+                        ],
+                        Resource: [
+                            pulumi.interpolate`${domain.arn}`,
+                            pulumi.interpolate`${domain.arn}/*`
+                        ]
+                    },
+                    {
+                        Sid: "PermissionForDynamoDbLog",
+                        Effect: "Allow",
+                        Action: [
                             "dynamodb:BatchGetItem",
                             "dynamodb:BatchWriteItem",
                             "dynamodb:PutItem",
@@ -319,8 +331,8 @@ function getDynamoDbToElasticLambdaPolicy(
                             "dynamodb:UpdateItem"
                         ],
                         Resource: [
-                            pulumi.interpolate`${domain.arn}`,
-                            pulumi.interpolate`${domain.arn}/*`
+                            pulumi.interpolate`${logDynamoDbTable.output.arn}`,
+                            pulumi.interpolate`${logDynamoDbTable.output.arn}/*`
                         ]
                     }
                 ]
