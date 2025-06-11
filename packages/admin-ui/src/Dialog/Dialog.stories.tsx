@@ -54,6 +54,20 @@ export const Default: Story = {
     argTypes: {}
 };
 
+export const SizeSmall: Story = {
+    args: {
+        ...Default.args,
+        size: "sm"
+    }
+};
+
+export const SizeMedium: Story = {
+    args: {
+        ...Default.args,
+        size: "md"
+    }
+};
+
 export const ControlledVisibility: Story = {
     render: props => {
         const [open, setOpen] = React.useState(false);
@@ -294,6 +308,11 @@ export const Documentation: Story = {
         description: {
             description: "Description displayed below the title",
             control: "text"
+        },
+        size: {
+            description: "Controls the size of the dialog",
+            control: "select",
+            options: ["sm", "md"]
         },
         showCloseButton: {
             description:
