@@ -103,6 +103,7 @@ const createSchema = (plugins: PluginsContainer): IGraphQLSchemaPlugin<CmsContex
 
             input CreateCmsEntryOptionsInput {
                 skipValidators: [SkipValidatorEnum!]
+                validateReferencedEntries: Boolean
             }
 
             input CreateRevisionCmsEntryOptionsInput {

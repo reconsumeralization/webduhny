@@ -14,9 +14,6 @@ export const LIST_USERS: any = gql`
                     id
                     firstName
                     lastName
-                    group {
-                        name
-                    }
                 }
                 error {
                     ${ERROR_FIELDS}

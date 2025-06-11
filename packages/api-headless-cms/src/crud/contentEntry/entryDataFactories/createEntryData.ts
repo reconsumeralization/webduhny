@@ -58,7 +58,7 @@ export const createEntryData = async ({
         context,
         model,
         input: initialInput,
-        validateEntries: true
+        validateEntries: options?.validateReferencedEntries !== false
     });
 
     const locale = getLocale();

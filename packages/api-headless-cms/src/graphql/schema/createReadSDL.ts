@@ -1,4 +1,4 @@
-import { CmsModel, CmsFieldTypePlugins, ApiEndpoint } from "~/types";
+import { ApiEndpoint, CmsFieldTypePlugins, CmsModel } from "~/types";
 import { renderListFilterFields } from "~/utils/renderListFilterFields";
 import { renderSortEnum } from "~/utils/renderSortEnum";
 import { renderFields } from "~/utils/renderFields";
@@ -109,6 +109,7 @@ export const createReadSDL: CreateReadSDL = ({
         
         extend type Query {
             get${singularName}(where: ${singularName}GetWhereInput!): ${singularName}Response
+            get${singularName}ById(id: ID!): ${singularName}Response
 
             list${pluralName}(
                 where: ${singularName}ListWhereInput

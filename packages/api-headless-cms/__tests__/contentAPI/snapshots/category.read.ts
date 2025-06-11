@@ -292,6 +292,9 @@ export default /* GraphQL */ `
         getCategoryApiNameWhichIsABitDifferentThanModelId(
             where: CategoryApiNameWhichIsABitDifferentThanModelIdGetWhereInput!
         ): CategoryApiNameWhichIsABitDifferentThanModelIdResponse
+        getCategoryApiNameWhichIsABitDifferentThanModelIdById(
+            id: ID!
+        ): CategoryApiNameWhichIsABitDifferentThanModelIdResponse
 
         listCategoriesApiModel(
             where: CategoryApiNameWhichIsABitDifferentThanModelIdListWhereInput

@@ -26,6 +26,7 @@ import { getEnvVariableWebinyVariant } from "~/env/variant";
 import { getEnvVariableWebinyEnv } from "~/env/env";
 import { getEnvVariableWebinyProjectName } from "~/env/projectName";
 import { getEnvVariableAwsRegion } from "~/env/awsRegion";
+import { getAwsAccountId } from "~/apps/awsUtils";
 
 export type ApiPulumiApp = ReturnType<typeof createApiPulumiApp>;
 
@@ -260,6 +261,7 @@ export const createApiPulumiApp = (projectAppParams: CreateApiPulumiAppParams = 
             }
 
             app.addOutputs({
+                awsAccountId: getAwsAccountId(app),
                 region: aws.config.region,
                 cognitoUserPoolId: core.cognitoUserPoolId,
                 cognitoAppClientId: core.cognitoAppClientId,

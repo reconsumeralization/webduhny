@@ -62,7 +62,8 @@ const getInfo = async params => {
         output.push(
             `‣ Environment name: ${blue(env)}`,
             `‣ Environment variant name: ${variant ? blue(variant) : "-"}`,
-            `‣ AWS region: ${api?.region}`,
+            `‣ AWS account: ${api?.awsAccountId ?? "-"}`,
+            `‣ AWS region: ${api?.region ?? "-"}`,
             `‣ Main GraphQL API: ${api.apiUrl + "/graphql"}`,
             `‣ Headless CMS GraphQL API:`,
             `   · Manage API: ${api.apiUrl + "/cms/manage/{LOCALE_CODE}"}`,
