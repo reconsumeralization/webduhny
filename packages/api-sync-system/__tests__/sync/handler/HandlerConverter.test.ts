@@ -8,16 +8,16 @@ describe("HandlerConverter", () => {
         // @ts-expect-error
         def.__test = true;
         const handlerConverter = createHandlerConverter({
-            default: def
+            defaultValue: def
         });
 
         expect(handlerConverter).toBeInstanceOf(HandlerConverter);
         // @ts-expect-error
         expect(handlerConverter.converters).toHaveLength(0);
         // @ts-expect-error
-        expect(handlerConverter._default).toBeInstanceOf(NullCommandValue);
+        expect(handlerConverter.defaultValue).toBeInstanceOf(NullCommandValue);
         // @ts-expect-error
-        expect(handlerConverter._default.__test).toBeTrue();
+        expect(handlerConverter.defaultValue.__test).toBeTrue();
     });
 
     it("should return null command value as no command converters are present in handler converter", async () => {
@@ -25,7 +25,7 @@ describe("HandlerConverter", () => {
         // @ts-expect-error
         def.__test = true;
         const handlerConverter = createHandlerConverter({
-            default: def
+            defaultValue: def
         });
 
         const result = handlerConverter.convert(

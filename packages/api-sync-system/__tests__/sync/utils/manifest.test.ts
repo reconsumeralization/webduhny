@@ -17,19 +17,9 @@ describe("manifest", () => {
         });
 
         expect(result.data).toBeUndefined();
-        expect(result.error.message).toEqual("Validation failed.");
-        expect(result.error.data).toEqual({
-            invalidFields: {
-                sync: {
-                    code: "invalid_type",
-                    data: {
-                        fatal: undefined,
-                        path: ["sync"]
-                    },
-                    message: "Required"
-                }
-            }
-        });
+        expect(result.error.message).toEqual(
+            "Sync System Manifest not found. Probably Sync System is not turned on."
+        );
     });
 
     it("should return error because sync is missing in manifest", async () => {

@@ -6,15 +6,15 @@ import type {
 } from "../types.js";
 
 export interface IHandlerConverterParams {
-    default: ICommandValue;
+    defaultValue: ICommandValue;
 }
 
 export class HandlerConverter implements IHandlerConverter {
-    private readonly _default: ICommandValue;
+    private readonly defaultValue: ICommandValue;
     private readonly converters: ICommandConverter[] = [];
 
     public constructor(params: IHandlerConverterParams) {
-        this._default = params.default;
+        this.defaultValue = params.defaultValue;
     }
 
     public register(input: ICommandConverter | ICommandConverter[]): void {
@@ -46,7 +46,7 @@ export class HandlerConverter implements IHandlerConverter {
             }
         }
 
-        return this._default;
+        return this.defaultValue;
     }
 }
 

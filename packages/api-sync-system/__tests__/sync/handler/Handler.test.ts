@@ -5,6 +5,8 @@ import {
     DeleteCommand,
     GetCommand,
     PutCommand,
+    QueryCommand,
+    ScanCommand,
     UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
 import { createMockSyncHandler } from "~tests/mocks/syncHandler.js";
@@ -79,8 +81,30 @@ describe("Handler", () => {
             })
         );
 
+        handler.add(
+            new QueryCommand({
+                TableName: "MyTable",
+                KeyConditionExpression: "pk = :pkValue",
+                ExpressionAttributeValues: {
+                    ":pkValue": {
+                        S: "user#123"
+                    }
+                },
+                FilterExpression: "status = :statusVal",
+                ScanIndexForward: true,
+                Limit: 10
+            })
+        );
+
+        handler.add(
+            new ScanCommand({
+                TableName: "MyTable",
+                Limit: 10
+            })
+        );
+
         // @ts-expect-error
-        expect(handler.commands).toHaveLength(4);
+        expect(handler.commands).toHaveLength(6);
 
         await handler.flush();
         // @ts-expect-error

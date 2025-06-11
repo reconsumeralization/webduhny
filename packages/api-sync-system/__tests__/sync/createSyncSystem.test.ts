@@ -1,4 +1,4 @@
-import { createSyncSystem } from "~/sync/createSyncSystem.js";
+import { createSyncSystem } from "~/index.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 import { ServiceDiscovery } from "@webiny/api";

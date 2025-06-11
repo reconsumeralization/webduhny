@@ -1,13 +1,15 @@
 import type { NonEmptyArray } from "@webiny/api/types";
-import {
-    type BatchGetCommand,
-    type BatchWriteCommand,
-    type DeleteCommand,
-    type GetCommand,
-    type PutCommand,
-    type UpdateCommand
+import type {
+    BatchGetCommand,
+    BatchWriteCommand,
+    DeleteCommand,
+    GetCommand,
+    PutCommand,
+    QueryCommand,
+    ScanCommand,
+    UpdateCommand
 } from "@webiny/aws-sdk/client-dynamodb";
-import type { AllCommandType, ExtendedCommandType, DynamoDBTableType } from "~/types.js";
+import type { AllCommandType, DynamoDBTableType, ExtendedCommandType } from "~/types.js";
 
 export interface IManifestData {
     region: string;
@@ -21,6 +23,8 @@ export interface IManifest {
 
 export type IDynamoDbCommand =
     | PutCommand
+    | QueryCommand
+    | ScanCommand
     | DeleteCommand
     | BatchWriteCommand
     | BatchGetCommand

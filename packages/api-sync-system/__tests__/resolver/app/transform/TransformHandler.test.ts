@@ -1,6 +1,6 @@
 import { PluginsContainer } from "@webiny/plugins";
 import { TransformHandler } from "~/resolver/app/transform/TransformHandler.js";
-import { TransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin.js";
+import { createTransformRecordPlugin } from "~/resolver/plugins/TransformRecordPlugin.js";
 import { createRegularMockTable } from "~tests/mocks/table.js";
 import {
     createMockSourceDeployment,
@@ -31,7 +31,7 @@ const targetDeployment = createMockTargetDeployment({
 });
 
 const plugins = new PluginsContainer([
-    new TransformRecordPlugin({
+    createTransformRecordPlugin({
         canTransform: ({ from }) => {
             return from.version.minor === 40;
         },
@@ -39,7 +39,7 @@ const plugins = new PluginsContainer([
             throw new Error("Should never be called.");
         }
     }),
-    new TransformRecordPlugin({
+    createTransformRecordPlugin({
         canTransform: ({ from, to }) => {
             if (from.version.minor !== 42) {
                 return false;
@@ -69,7 +69,7 @@ describe("TransformHandler", () => {
         };
         const handler = new TransformHandler({
             plugins: new PluginsContainer([
-                new TransformRecordPlugin({
+                createTransformRecordPlugin({
                     canTransform,
                     transform: async (_, next) => {
                         return {
@@ -79,7 +79,7 @@ describe("TransformHandler", () => {
                         };
                     }
                 }),
-                new TransformRecordPlugin({
+                createTransformRecordPlugin({
                     canTransform,
                     transform: async (_, next) => {
                         return {
@@ -89,7 +89,7 @@ describe("TransformHandler", () => {
                         };
                     }
                 }),
-                new TransformRecordPlugin({
+                createTransformRecordPlugin({
                     canTransform,
                     transform: async (_, next) => {
                         return {
@@ -99,7 +99,7 @@ describe("TransformHandler", () => {
                         };
                     }
                 }),
-                new TransformRecordPlugin({
+                createTransformRecordPlugin({
                     canTransform,
                     transform: async (_, next) => {
                         return {

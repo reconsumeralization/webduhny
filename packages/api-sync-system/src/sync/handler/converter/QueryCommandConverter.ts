@@ -6,7 +6,7 @@ export class QueryCommandConverter implements ICommandConverter {
     public readonly name: string = "query";
 
     public can(input: IDynamoDbCommand): boolean {
-        return input instanceof QueryCommand;
+        return input instanceof QueryCommand || input.constructor?.name === "QueryCommand";
     }
 
     public convert() {

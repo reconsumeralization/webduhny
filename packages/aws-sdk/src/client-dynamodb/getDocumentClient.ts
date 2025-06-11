@@ -34,18 +34,10 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
     };
     const key = createCacheKey(config);
     if (documentClients[key]) {
-        console.log({
-            existingKey: key
-        });
         return applyDecoration(documentClients[key]);
     }
     const client = new DynamoDBClient(config);
-
     const documentClient = DynamoDBDocument.from(client, documentClientConfig);
-    console.log({
-        newKey: key
-    });
-
     return (documentClients[key] = applyDecoration(documentClient));
 };
 /**
