@@ -75,7 +75,6 @@ describe("createSendDataToEventBridgeOnRequestEnd", () => {
         expect(send).toHaveBeenCalledTimes(1);
     });
 
-    // TODO does not work
     it("should trigger flush on request end and get an unspecified error", async () => {
         const { request } = createMockRequest();
         const { reply } = createMockReply();

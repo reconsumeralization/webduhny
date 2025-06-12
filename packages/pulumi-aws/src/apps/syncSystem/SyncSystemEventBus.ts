@@ -24,7 +24,7 @@ export const SyncSystemEventBus = createAppModule({
         });
 
         const eventBusRuleConfig: EventRuleArgs = {
-            eventBusName: eventBus.output.arn,
+            eventBusName: eventBus.output.name,
             eventPattern: JSON.stringify({
                 "detail-type": ["synchronization-input"]
             })
@@ -56,7 +56,7 @@ export const SyncSystemEventBus = createAppModule({
         const eventBusPolicy = app.addResource(aws.sqs.QueuePolicy, {
             name: createSyncResourceName("queuePolicy"),
             config: {
-                queueUrl: sqs.output.id,
+                queueUrl: sqs.output.url,
                 policy: sqs.output.arn.apply(arn => {
                     return JSON.stringify({
                         Version: "2012-10-17",
@@ -65,7 +65,7 @@ export const SyncSystemEventBus = createAppModule({
                                 Effect: "Allow",
                                 Principal: aws.iam.Principals.EventsPrincipal,
                                 Action: "sqs:SendMessage",
-                                Resource: arn,
+                                Resource: [arn, `${arn}/*`],
                                 Condition: {
                                     ArnEquals: {
                                         "aws:SourceArn": eventBusRule.output.arn

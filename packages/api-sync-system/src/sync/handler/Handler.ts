@@ -60,11 +60,11 @@ export class Handler implements IHandler {
         console.log(JSON.stringify({ entries }));
 
         const input: PutEventsCommandInput = {
-            Entries: entries,
+            Entries: entries
             /**
              * If we get to the global event bus usage, we will need to set the EndpointId
              */
-            EndpointId: undefined
+            // EndpointId: undefined
         };
         const command = new PutEventsCommand(input);
 
