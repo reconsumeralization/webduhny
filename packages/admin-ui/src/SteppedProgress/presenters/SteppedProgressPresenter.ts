@@ -1,0 +1,39 @@
+import { makeAutoObservable } from "mobx";
+import {
+    ProgressItem,
+    type ProgressItemParams,
+    ProgressItemFormatter,
+    type ProgressItemFormatted
+} from "../domains";
+import type { SteppedProgressProps } from "../SteppedProgress";
+
+interface SteppedProgressPresenterParams {
+    items: ProgressItemParams[];
+}
+
+interface ISteppedProgressPresenter {
+    vm: {
+        items: ProgressItemFormatted[];
+    };
+    init: (props: SteppedProgressProps) => void;
+}
+
+class SteppedProgressPresenter implements ISteppedProgressPresenter {
+    private items: ProgressItem[] = [];
+
+    constructor() {
+        makeAutoObservable(this);
+    }
+
+    public init(props: SteppedProgressProps) {
+        this.items = props.items.map(item => ProgressItem.create(item));
+    }
+
+    get vm() {
+        return {
+            items: this.items.map(item => ProgressItemFormatter.format(item))
+        };
+    }
+}
+
+export { SteppedProgressPresenter, type SteppedProgressPresenterParams };
