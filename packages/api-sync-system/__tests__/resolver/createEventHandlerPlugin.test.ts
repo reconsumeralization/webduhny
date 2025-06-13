@@ -12,6 +12,7 @@ import type {
 } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { createMockSystem } from "~tests/mocks/system.js";
 import { DYNAMODB_REGULAR } from "~tests/mocks/constants.js";
+import { generateAlphaNumericId } from "@webiny/utils/generateId.js";
 
 describe("createEventHandlerPlugin", () => {
     const tableName = process.env.DB_TABLE as string;
@@ -94,6 +95,7 @@ describe("createEventHandlerPlugin", () => {
                         region: "eu-central-1",
                         resources: [],
                         detail: JSON.stringify({
+                            id: generateAlphaNumericId(),
                             items: [
                                 {
                                     tableName,

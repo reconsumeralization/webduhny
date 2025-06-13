@@ -30,12 +30,15 @@ export const createSyncSystemHandlerOnRequestPlugin = (
             return;
         }
 
+        let client = params.client;
+        if (!client) {
+            client = createEventBridgeClient({
+                region: manifest.sync.region
+            });
+        }
+
         const { handler } = createHandler({
-            client:
-                params.client ||
-                createEventBridgeClient({
-                    region: manifest.sync.region
-                }),
+            client,
             system: params.system,
             manifest,
             commandConverters: params.commandConverters

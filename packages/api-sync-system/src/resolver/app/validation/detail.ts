@@ -33,6 +33,7 @@ export const createDetailValidation = () => {
             .transform(values => {
                 return convert(values);
             }),
-        source: createSystemValidation()
+        source: createSystemValidation(),
+        id: zod.string()
     });
 };

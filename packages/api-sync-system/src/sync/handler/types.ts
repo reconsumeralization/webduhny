@@ -16,4 +16,5 @@ export interface IDetailItem {
 export interface IDetail {
     items: NonEmptyArray<IDetailItem>;
     source: ISystem;
+    id: string;
 }

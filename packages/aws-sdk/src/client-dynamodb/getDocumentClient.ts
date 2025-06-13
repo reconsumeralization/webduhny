@@ -45,10 +45,8 @@ export const getDocumentClient = (input?: DynamoDBClientConfig): DynamoDBDocumen
  */
 const applyDecoration = (client: DynamoDBDocument): DynamoDBDocument => {
     if (!decorateDocumentClientCallable) {
-        console.log("No decoration function provided.");
         return client;
     }
-    console.log("applying decoration");
 
     // @ts-expect-error
     client.__decoratedByWebiny = true;

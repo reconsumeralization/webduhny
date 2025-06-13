@@ -1,4 +1,5 @@
 import * as aws from "@pulumi/aws";
+import * as pulumi from "@pulumi/pulumi";
 import type { PulumiApp } from "@webiny/pulumi";
 import { createAppModule } from "@webiny/pulumi";
 import { createSyncResourceName } from "./createSyncResourceName.js";
@@ -10,7 +11,7 @@ import type { EventTargetArgs } from "@pulumi/aws/cloudwatch/eventTarget.js";
 export const SyncSystemEventBus = createAppModule({
     name: "SyncSystemEventBus",
     config: (app: PulumiApp) => {
-        const sqs = app.getModule(SyncSystemSQS);
+        const { sqsQueue } = app.getModule(SyncSystemSQS);
 
         const eventBusName = createSyncResourceName("eventBus");
 
@@ -38,14 +39,10 @@ export const SyncSystemEventBus = createAppModule({
         const eventBusTargetConfig: EventTargetArgs = {
             rule: eventBusRule.output.name,
             eventBusName: eventBus.output.name,
-            arn: sqs.output.arn,
+            arn: sqsQueue.output.arn,
             sqsTarget: {
                 messageGroupId: "default"
             }
-            // TODO add dead letter queue
-            // deadLetterConfig: {
-            //    arn: deadLetterQueue.output.arn
-            // }
         };
 
         const eventBusTarget = app.addResource(aws.cloudwatch.EventTarget, {
@@ -56,25 +53,27 @@ export const SyncSystemEventBus = createAppModule({
         const eventBusPolicy = app.addResource(aws.sqs.QueuePolicy, {
             name: createSyncResourceName("queuePolicy"),
             config: {
-                queueUrl: sqs.output.url,
-                policy: sqs.output.arn.apply(arn => {
-                    return JSON.stringify({
-                        Version: "2012-10-17",
-                        Statement: [
-                            {
-                                Effect: "Allow",
-                                Principal: aws.iam.Principals.EventsPrincipal,
-                                Action: "sqs:SendMessage",
-                                Resource: [arn, `${arn}/*`],
-                                Condition: {
-                                    ArnEquals: {
-                                        "aws:SourceArn": eventBusRule.output.arn
+                queueUrl: sqsQueue.output.url,
+                policy: pulumi
+                    .all([sqsQueue.output.arn, eventBus.output.arn])
+                    .apply(([sqsArn, eventBusArn]) => {
+                        return JSON.stringify({
+                            Version: "2012-10-17",
+                            Statement: [
+                                {
+                                    Effect: "Allow",
+                                    Principal: aws.iam.Principals.EventsPrincipal,
+                                    Action: ["sqs:SendMessage"],
+                                    Resource: [sqsArn, `${sqsArn}/*`],
+                                    Condition: {
+                                        ArnEquals: {
+                                            "aws:SourceArn": eventBusArn
+                                        }
                                     }
                                 }
-                            }
-                        ]
-                    });
-                })
+                            ]
+                        });
+                    })
             }
         });
 

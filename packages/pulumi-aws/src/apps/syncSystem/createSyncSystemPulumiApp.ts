@@ -94,7 +94,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
             /**
              * Sync System services.
              */
-            const sqs = regionApp.addModule(SyncSystemSQS);
+            const { sqsQueue } = regionApp.addModule(SyncSystemSQS);
             const dynamoDb = regionApp.addModule(SyncSystemDynamoDb);
 
             const lambda = regionApp.addModule(SyncSystemLambda);
@@ -109,9 +109,9 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
                 /**
                  * SyncSystemSQS
                  */
-                sqsUrl: sqs.output.url,
-                sqsArn: sqs.output.arn,
-                sqsName: sqs.output.name,
+                sqsUrl: sqsQueue.output.url,
+                sqsArn: sqsQueue.output.arn,
+                sqsName: sqsQueue.output.name,
                 /**
                  * DynamoDB
                  */
@@ -152,7 +152,7 @@ export function createSyncSystemPulumiApp(projectAppParams: CreateSyncSystemPulu
             app.addOutputs(output);
 
             return {
-                sqs: sqs.output,
+                sqs: sqsQueue.output,
                 dynamoDb: dynamoDb.output,
                 eventBus: eventBus.output,
                 eventBusRule: eventBusRule.output,

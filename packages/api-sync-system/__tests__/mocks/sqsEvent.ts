@@ -1,6 +1,7 @@
 import type { SQSMessageAttributes, SQSRecord, SQSRecordAttributes } from "@webiny/aws-sdk/types";
 import { SQSEvent } from "@webiny/aws-sdk/types/index.js";
 import { createMockSystem } from "~tests/mocks/system.js";
+import { generateAlphaNumericId } from "@webiny/utils/generateId.js";
 
 export const createMockSQSEventRecord = (input: Partial<SQSRecord> = {}): SQSRecord => {
     const attributes: SQSRecordAttributes = {
@@ -47,6 +48,7 @@ export const createMockSQSEvent = (): SQSEvent => {
                     region: "eu-central-1",
                     resources: [],
                     detail: JSON.stringify({
+                        id: generateAlphaNumericId(),
                         items: [
                             {
                                 tableName: process.env.DB_TABLE,

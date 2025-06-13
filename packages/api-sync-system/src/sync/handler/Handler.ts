@@ -1,20 +1,17 @@
 import type {
     ICommandValue,
+    ICommandValueItem,
     IDynamoDbCommand,
     IHandler,
     IHandlerConverter,
     ISystem
 } from "../types.js";
-import type {
-    EventBridgeClient,
-    PutEventsCommandInput,
-    PutEventsRequestEntry
-} from "@webiny/aws-sdk/client-eventbridge";
+import type { EventBridgeClient, PutEventsCommandInput } from "@webiny/aws-sdk/client-eventbridge";
 import { PutEventsCommand } from "@webiny/aws-sdk/client-eventbridge";
 import { convertException } from "@webiny/utils";
-import type { IDetail } from "./types.js";
-import { SQS_EVENT_NAME } from "~/constants.js";
 import { generateAlphaNumericId } from "@webiny/utils/generateId.js";
+import type { IDetail } from "~/sync/handler/types.js";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 
 export interface IHandlerEventBus {
     name: string;
@@ -49,64 +46,80 @@ export class Handler implements IHandler {
     }
 
     public async flush(): Promise<void> {
-        const entries = this.createEventBusEntries();
-        if (entries.length === 0) {
+        const items = this.createEventBusEvent();
+        if (!items?.length) {
             console.log("No commands to flush to Sync System EventBridge.");
             return;
         }
-        console.log(
-            `Flushing ${entries.length} commands to Sync System EventBridge for system "${this.system.name}".`
-        );
-        console.log(JSON.stringify({ entries }));
+
+        const detail: IDetail = {
+            /**
+             * We need a random ID because there can be multiple commands with same items sent - but that does not mean they are duplicates.
+             */
+            id: generateAlphaNumericId(),
+            items,
+            source: this.system
+        };
 
         const input: PutEventsCommandInput = {
-            Entries: entries
-            /**
-             * If we get to the global event bus usage, we will need to set the EndpointId
-             */
-            // EndpointId: undefined
+            Entries: [
+                {
+                    DetailType: "synchronization-input",
+                    Detail: JSON.stringify(detail),
+                    Source: `webiny:${this.system.name}`,
+                    EventBusName: this.eventBus.name
+                }
+            ]
         };
         const command = new PutEventsCommand(input);
 
+        console.log(
+            JSON.stringify({
+                sending: input
+            })
+        );
+
         try {
-            await this.client.send(command);
+            const result = await this.client.send(command);
+            console.log("trying to send command", JSON.stringify({ command }));
+            console.log(
+                JSON.stringify({
+                    input,
+                    result
+                })
+            );
         } catch (ex) {
             console.log("Could not send events to Sync System EventBridge.");
             console.error(ex.message);
             console.error(convertException(ex, ["message"]));
             console.log(
                 JSON.stringify({
-                    entries: entries.map(entry => entry.Detail)
+                    event: items
                 })
             );
             throw ex;
         }
+        console.log("end sending command", JSON.stringify({ command }));
     }
 
-    private createEventBusEntries(): PutEventsRequestEntry[] {
-        const result = this.commands
-            .map((cmd): PutEventsRequestEntry | null => {
-                const items = cmd.getItems();
-                if (!items?.length) {
-                    return null;
-                }
-                const detail: IDetail = {
-                    items,
-                    source: this.system
-                };
-                return {
-                    DetailType: SQS_EVENT_NAME,
-                    Detail: JSON.stringify(detail),
-                    Source: `webiny:${this.system.name}`,
-                    EventBusName: this.eventBus.arn
-                };
-            })
-            .filter((item): item is PutEventsRequestEntry => !!item);
+    private createEventBusEvent(): NonEmptyArray<ICommandValueItem> | null {
+        const commands = Array.from(this.commands);
         /**
          * Remove all existing commands so we can start fresh.
          */
         this.commands = [];
-        return result;
+        const everything = commands.reduce<ICommandValueItem[]>((items, cmd) => {
+            const commandItems = cmd.getItems();
+            if (!commandItems?.length) {
+                return items;
+            }
+
+            items.push(...commandItems);
+
+            return items;
+        }, []);
+
+        return everything.length === 0 ? null : (everything as NonEmptyArray<ICommandValueItem>);
     }
 }
 

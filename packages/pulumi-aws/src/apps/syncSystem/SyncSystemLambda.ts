@@ -8,13 +8,15 @@ import { createSyncSystemInputLambdaPolicy } from "./lambda/createSyncSystemInpu
 import { createSyncResourceName } from "./createSyncResourceName.js";
 import { createAssetArchive } from "~/utils/createAssetArchive.js";
 import { SyncSystemSQS } from "./SyncSystemSQS.js";
+import { SyncSystemDynamoDb } from "~/apps/syncSystem/SyncSystemDynamoDb.js";
 
 export type SyncSystemLambda = PulumiAppModule<typeof SyncSystemLambda>;
 
 export const SyncSystemLambda = createAppModule({
     name: "SyncSystemLambda",
     config(app: PulumiApp) {
-        const sqs = app.getModule(SyncSystemSQS);
+        const { sqsQueue } = app.getModule(SyncSystemSQS);
+        const dynamoDb = app.getModule(SyncSystemDynamoDb);
 
         const roleName = createSyncResourceName("input-lambda-role");
         const policy = createSyncSystemInputLambdaPolicy({
@@ -37,6 +39,7 @@ export const SyncSystemLambda = createAppModule({
                 code: createAssetArchive(path.join(app.paths.workspace, "resolver/build")),
                 environment: {
                     variables: {
+                        DB_TABLE: dynamoDb.output.name,
                         DEBUG: String(process.env.DEBUG),
                         PULUMI_APPS: "true",
                         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -48,7 +51,7 @@ export const SyncSystemLambda = createAppModule({
         const eventSourceMapping = app.addResource(aws.lambda.EventSourceMapping, {
             name: createSyncResourceName("sqs-to-lambda"),
             config: {
-                eventSourceArn: sqs.output.arn,
+                eventSourceArn: sqsQueue.output.arn,
                 functionName: lambda.output.arn,
                 batchSize: 10
                 // maximumBatchingWindowInSeconds: 2

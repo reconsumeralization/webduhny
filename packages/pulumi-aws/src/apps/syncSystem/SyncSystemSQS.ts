@@ -8,6 +8,12 @@ export const SyncSystemSQS = createAppModule({
     name: "SyncSystemSQS",
     config: (app: PulumiApp) => {
         const config: QueueArgs = {
+            /**
+             * We must name the SQS queue with a ".fifo" suffix to enable FIFO functionality.
+             * If we add .fifo to a resource name, it will fail because pulumi adds some random generated id + .fifo to the end of the name.
+             * ... and there cannot be two .fifo in the name.
+             */
+            name: `${createSyncResourceName("sqs")}.fifo`,
             delaySeconds: 0,
             /**
              * 5 minutes should be enough for the message to be processed.
@@ -37,9 +43,14 @@ export const SyncSystemSQS = createAppModule({
              */
             contentBasedDeduplication: true
         };
-        return app.addResource(aws.sqs.Queue, {
-            name: createSyncResourceName("sqs"),
+
+        const sqsQueue = app.addResource(aws.sqs.Queue, {
+            name: `${createSyncResourceName("sqs")}`,
             config
         });
+
+        return {
+            sqsQueue
+        };
     }
 });

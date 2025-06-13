@@ -10,7 +10,7 @@ interface ICreateSyncSystemLambdaPolicyParams {
 
 export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambdaPolicyParams) {
     const { app } = params;
-    const sqs = app.getModule(SyncSystemSQS);
+    const { sqsQueue } = app.getModule(SyncSystemSQS);
     const dynamoDb = app.getModule(SyncSystemDynamoDb);
 
     const policy: aws.iam.PolicyDocument = {
@@ -29,10 +29,9 @@ export function createSyncSystemInputLambdaPolicy(params: ICreateSyncSystemLambd
                     "sqs:ChangeMessageVisibilityBatch",
                     "sqs:GetQueueAttributes"
                 ],
-                Resource: [
-                    sqs.output.arn.apply(arn => `${arn}`),
-                    sqs.output.arn.apply(arn => `${arn}/*`)
-                ]
+                Resource: sqsQueue.output.arn.apply(arn => {
+                    return [`${arn}`, `${arn}/*`];
+                })
             },
             {
                 Sid: "PermissionForDynamoDb",
