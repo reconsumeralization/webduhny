@@ -83,7 +83,7 @@ const HorizontalAlignFlexSettings = ({
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${config.displayMode}`}>
-                    {config.icon}
+                    <Accordion.Icon icon={config.icon} label={"Horizontal align"} />
                 </Tooltip>
             }
         >

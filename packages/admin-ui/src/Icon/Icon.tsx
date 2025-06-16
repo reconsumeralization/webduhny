@@ -38,7 +38,7 @@ const IconBase = (props: IconProps) => {
     return (
         <AccessibleIcon.Root label={label}>
             {/* @ts-expect-error */}
-            {React.cloneElement(icon, {
+            {icon && React.cloneElement(icon, {
                 ...rest,
                 className: cn(iconVariants({ color, size }), className)
             })}

@@ -87,7 +87,6 @@ export type GridProps = RmwcGridProps & {
 };
 
 /**
- * Use Grid component to display a list of choices, once the handler is triggered.
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Grid` component from the `@webiny/admin-ui` package instead.
  */

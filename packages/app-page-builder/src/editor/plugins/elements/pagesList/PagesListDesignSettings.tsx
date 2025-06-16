@@ -48,13 +48,13 @@ const PagesListDesignSettings = ({ Bind, submit }: PagesListDesignSettingsProps)
                                 value={value}
                                 onChange={onChange}
                                 description={"Select a component to render the list"}
-                            >
-                                {components.map(cmp => (
-                                    <option key={cmp.name} value={cmp.componentName}>
-                                        {cmp.title}
-                                    </option>
-                                ))}
-                            </SelectField>
+                                options={
+                                    components.map(cmp => ({
+                                        label: cmp.title,
+                                        value: cmp.componentName
+                                    })) || []
+                                }
+                            />
                         )}
                     </Bind>
                 </Wrapper>

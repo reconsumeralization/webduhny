@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from "react";
-import { css } from "emotion";
 import { useRecoilValue } from "recoil";
 import merge from "lodash/merge";
 import set from "lodash/set";
@@ -28,22 +27,6 @@ import Wrapper from "../../elementSettings/components/Wrapper";
 import useUpdateHandlers from "../../elementSettings/useUpdateHandlers";
 import InputField from "../components/InputField";
 import { ContentWrapper } from "../components/StyledComponents";
-
-const classes = {
-    grid: css({
-        "&.mdc-layout-grid": {
-            padding: 0,
-            margin: "0px 0px 16px"
-        }
-    }),
-    rightCellStyle: css({
-        justifySelf: "end",
-        alignSelf: "center"
-    }),
-    leftCellStyle: css({
-        alignSelf: "center"
-    })
-};
 
 const DATA_NAMESPACE = "data.settings.property";
 
@@ -77,6 +60,7 @@ interface UseVisibilitySettingResult {
     element: PbEditorElement;
     updateVisibility: (value: boolean) => void;
 }
+
 export const useVisibilitySetting = (elementId: string): UseVisibilitySettingResult => {
     const { displayMode } = useRecoilValue(uiAtom);
     const element = useRecoilValue(elementWithChildrenByIdSelector(elementId)) as PbEditorElement;
@@ -164,7 +148,7 @@ const PropertySettings = ({ defaultAccordionValue }: PropertySettingsProps) => {
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Property"} />
                 </Tooltip>
             }
         >
@@ -180,21 +164,14 @@ const PropertySettings = ({ defaultAccordionValue }: PropertySettingsProps) => {
                 {({ Bind }) => {
                     return (
                         <ContentWrapper direction={"column"}>
-                            <Wrapper
-                                containerClassName={classes.grid}
-                                label={"Hide element"}
-                                leftCellSpan={8}
-                                rightCellSpan={4}
-                                leftCellClassName={classes.leftCellStyle}
-                                rightCellClassName={classes.rightCellStyle}
-                            >
+                            <Wrapper label={"Hide element"} leftCellSpan={8} rightCellSpan={4}>
                                 <Bind name={"hidden"}>
                                     {({ value, onChange }) => (
                                         <Switch value={value} onChange={onChange} />
                                     )}
                                 </Bind>
                             </Wrapper>
-                            <Wrapper label={"Element ID"} containerClassName={classes.grid}>
+                            <Wrapper label={"Element ID"}>
                                 <Bind name={"id"} validators={validateId}>
                                     {({ value, onChange, validation }) => (
                                         <InputField
@@ -205,7 +182,7 @@ const PropertySettings = ({ defaultAccordionValue }: PropertySettingsProps) => {
                                     )}
                                 </Bind>
                             </Wrapper>
-                            <Wrapper label={"CSS class"} containerClassName={classes.grid}>
+                            <Wrapper label={"CSS class"}>
                                 <Bind name={"className"} validators={validateClassName}>
                                     {({ value, onChange, validation }) => (
                                         <InputField

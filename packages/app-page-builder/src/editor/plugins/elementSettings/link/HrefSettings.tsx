@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import { merge } from "dot-prop-immutable";
 import { Switch } from "@webiny/ui/Switch";
 import { Form } from "@webiny/form";
@@ -8,23 +7,12 @@ import { withActiveElement } from "~/editor/components";
 import { DelayedOnChange } from "@webiny/ui/DelayedOnChange";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { UpdateElementActionEvent } from "~/editor/recoil/actions";
-import { PbEditorPageElementSettingsRenderComponentProps, PbEditorElement } from "~/types";
+import { PbEditorElement, PbEditorPageElementSettingsRenderComponentProps } from "~/types";
 // Components
 import Accordion from "../components/Accordion";
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
-
-const classes = {
-    gridClass: css({
-        "&.mdc-layout-grid": {
-            padding: 0,
-            marginBottom: 24
-        }
-    }),
-    gridCellClass: css({
-        justifySelf: "end"
-    })
-};
+import {ContentWrapper} from "~/editor/plugins/elementSettings/components/StyledComponents";
 
 interface LinkSettingsFormData {
     newTab?: boolean;
@@ -66,8 +54,8 @@ const LinkSettingsComponent = ({ element, defaultAccordionValue }: LinkSettingsC
         <Accordion title={"Link"} defaultValue={defaultAccordionValue}>
             <Form data={{ href, newTab }} onChange={updateSettings}>
                 {({ Bind }) => (
-                    <>
-                        <Wrapper label={"URL"} containerClassName={classes.gridClass}>
+                    <ContentWrapper direction={"column"}>
+                        <Wrapper label={"URL"}>
                             <Bind
                                 name={"href"}
                                 validators={validation.create("url:allowRelative:allowHref")}
@@ -84,16 +72,12 @@ const LinkSettingsComponent = ({ element, defaultAccordionValue }: LinkSettingsC
                                 </DelayedOnChange>
                             </Bind>
                         </Wrapper>
-                        <Wrapper
-                            label={"New tab"}
-                            containerClassName={classes.gridClass}
-                            rightCellClassName={classes.gridCellClass}
-                        >
+                        <Wrapper label={"New tab"} rightCellClassName={"wby-justify-self-end"}>
                             <Bind name={"newTab"}>
                                 <Switch />
                             </Bind>
                         </Wrapper>
-                    </>
+                    </ContentWrapper>
                 )}
             </Form>
         </Accordion>

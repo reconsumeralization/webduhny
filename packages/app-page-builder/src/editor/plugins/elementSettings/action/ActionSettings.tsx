@@ -71,13 +71,14 @@ const ActionSettingsComponent = ({ element, defaultAccordionValue }: ActionSetti
                                         label={"Action Type"}
                                         containerClassName={classes.gridClass}
                                     >
-                                        <SelectField value={value} onChange={onChange}>
-                                            {actionTypes.map(item => (
-                                                <option key={item.name} value={item.name}>
-                                                    {item.label}
-                                                </option>
-                                            ))}
-                                        </SelectField>
+                                        <SelectField
+                                            value={value}
+                                            onChange={onChange}
+                                            options={actionTypes.map(item => ({
+                                                value: item.name,
+                                                label: item.label
+                                            }))}
+                                        />
                                     </Wrapper>
                                 )}
                             </Bind>

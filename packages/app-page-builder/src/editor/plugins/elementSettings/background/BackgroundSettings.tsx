@@ -6,7 +6,6 @@ import set from "lodash/set";
 import merge from "lodash/merge";
 import { Tooltip } from "@webiny/ui/Tooltip";
 import { plugins } from "@webiny/plugins";
-import { Cell, Grid } from "@webiny/ui/Grid";
 import SingleImageUpload from "@webiny/app-admin/components/SingleImageUpload";
 import { FileManagerFileItem } from "@webiny/app-admin";
 import {
@@ -49,6 +48,7 @@ interface SettingsPropsType extends PbEditorPageElementSettingsRenderComponentPr
         [key: string]: any;
     };
 }
+
 const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsType) => {
     const { displayMode } = useDisplayMode();
     const [element] = useActiveElement();
@@ -120,23 +120,21 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Background"} />
                 </Tooltip>
             }
         >
             <ContentWrapper direction={"column"}>
-                <Grid className={classes.simpleGrid}>
-                    <Cell span={12}>
-                        <ColorPicker
-                            label={"Color"}
-                            value={backgroundColor}
-                            updatePreview={onColorChange}
-                            updateValue={setColor}
-                        />
-                    </Cell>
-                </Grid>
+                <Wrapper label={"Color"}>
+                    <ColorPicker
+                        value={backgroundColor}
+                        updatePreview={onColorChange}
+                        updateValue={setColor}
+                    />
+                </Wrapper>
+
                 {options.image !== false && (
-                    <React.Fragment>
+                    <>
                         <Wrapper label={"Image"} containerClassName={classes.simpleGrid}>
                             <SingleImageUpload
                                 className={imageSelect}
@@ -149,29 +147,28 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
                                 disabled={!backgroundImageSrc}
                                 value={backgroundImageScaling}
                                 onChange={setScaling}
-                            >
-                                <option value="cover">Cover</option>
-                                <option value="contain">Contain</option>
-                                <option value="originalSize">Original size</option>
-                                <option value="tile">Tile</option>
-                                <option value="tileHorizontally">Tile Horizontally</option>
-                                <option value="tileVertically">Tile Vertically</option>
-                            </SelectField>
+                                options={[
+                                    { value: "cover", label: "Cover" },
+                                    { value: "contain", label: "Contain" },
+                                    { value: "originalSize", label: "Original size" },
+                                    { value: "tile", label: "Tile" },
+                                    { value: "tileHorizontally", label: "Tile Horizontally" },
+                                    { value: "tileVertically", label: "Tile Vertically" }
+                                ]}
+                            />
                         </Wrapper>
                         <Wrapper label={"Position"} containerClassName={classes.simpleGrid}>
                             <SelectField
                                 value={backgroundImagePosition}
                                 onChange={setPosition}
                                 disabled={!backgroundImageSrc}
-                            >
-                                {positions.map(position => (
-                                    <option key={position} value={position}>
-                                        {startCase(position)}
-                                    </option>
-                                ))}
-                            </SelectField>
+                                options={positions.map(position => ({
+                                    value: position,
+                                    label: startCase(position)
+                                }))}
+                            />
                         </Wrapper>
-                    </React.Fragment>
+                    </>
                 )}
             </ContentWrapper>
         </Accordion>

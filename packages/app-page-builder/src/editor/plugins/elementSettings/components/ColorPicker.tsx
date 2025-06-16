@@ -23,7 +23,7 @@ const extrapolateActiveElementValue = (
 };
 
 interface ColorPickerProps {
-    label: string;
+    label?: string;
     value?: string;
     valueKey?: string;
     defaultValue?: string;
@@ -63,6 +63,7 @@ const ColorPicker = ({
 export default React.memo(ColorPicker);
 
 type BaseColorPickerComponent = Omit<ColorPickerProps, "label">;
+
 export const BaseColorPickerComponent = ({
     value,
     valueKey,

@@ -101,11 +101,12 @@ const TextSettings = ({ defaultAccordionValue, options }: TextSettingsProps) => 
             }
         }
 
-        return allTypographyVariants.map(variant => (
-            <option value={variant.id} key={variant.id}>
-                {variant.name}
-            </option>
-        ));
+        return allTypographyVariants.map(variant => {
+            return {
+                value: variant.id,
+                label: variant.name
+            };
+        });
     }, [themePlugins, element]);
 
     const { getUpdateValue, getUpdatePreview } = useUpdateHandlers({
@@ -180,7 +181,7 @@ const TextSettings = ({ defaultAccordionValue, options }: TextSettingsProps) => 
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Text"} />
                 </Tooltip>
             }
         >
@@ -199,13 +200,12 @@ const TextSettings = ({ defaultAccordionValue, options }: TextSettingsProps) => 
                         leftCellSpan={5}
                         rightCellSpan={7}
                     >
-                        <SelectField value={text.tag} onChange={updateTag}>
-                            {options.tags.map(tag => (
-                                <option value={tag} key={tag}>
-                                    {tag.toUpperCase()}
-                                </option>
-                            ))}
-                        </SelectField>
+                        <SelectField value={text.tag} onChange={updateTag} options={options.tags.map(
+                            tag => ({
+                                value: tag,
+                                label: tag.toUpperCase()
+                            })
+                        )}/>
                     </Wrapper>
                 )}
                 <Wrapper
@@ -218,9 +218,8 @@ const TextSettings = ({ defaultAccordionValue, options }: TextSettingsProps) => 
                         value={text.typography}
                         onChange={updateTypography}
                         disabled={themeTypographyOptions.length === 0}
-                    >
-                        {themeTypographyOptions}
-                    </SelectField>
+                        options={themeTypographyOptions}
+                    />
                 </Wrapper>
                 <Wrapper
                     containerClassName={classes.grid}

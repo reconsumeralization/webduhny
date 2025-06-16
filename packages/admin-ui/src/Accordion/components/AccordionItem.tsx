@@ -12,6 +12,7 @@ interface AccordionItemProps extends Omit<AccordionRootProps, "title"> {
     description?: React.ReactNode;
     icon?: React.ReactNode;
     handle?: React.ReactNode;
+    padding?: "collapsed";
     interactive?: boolean;
     actions?: React.ReactNode;
     children: React.ReactNode;
@@ -30,6 +31,7 @@ const AccordionItemBase = (props: AccordionItemProps) => {
 
             // Content props.
             children,
+            padding,
 
             // Trigger props.
             ...triggerProps
@@ -47,7 +49,12 @@ const AccordionItemBase = (props: AccordionItemProps) => {
                 ...triggerProps,
                 interactive
             },
-            contentProps: { children, withIcon: !!props.icon, withHandle: !!props.handle }
+            contentProps: {
+                children,
+                withIcon: !!props.icon,
+                withHandle: !!props.handle,
+                padding
+            }
         };
     }, [props]);
 

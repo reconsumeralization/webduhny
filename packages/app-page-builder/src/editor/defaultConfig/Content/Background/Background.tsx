@@ -1,14 +1,5 @@
 import React, { useCallback } from "react";
-import { css } from "emotion";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
-
-const backgroundStyle = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-`;
 
 export const Background = () => {
     const [activeElement, setActiveElement] = useActiveElement();
@@ -20,5 +11,10 @@ export const Background = () => {
         setActiveElement(null);
     }, [activeElement]);
 
-    return <div className={backgroundStyle} onClick={deactivateElement} />;
+    return (
+        <div
+            className={"wby-fixed wby-top-0 wby-left-0 wby-w-full wby-h-min-full"}
+            onClick={deactivateElement}
+        />
+    );
 };

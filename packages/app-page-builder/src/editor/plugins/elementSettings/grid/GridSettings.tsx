@@ -124,7 +124,7 @@ export const GridSettings = ({
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${config.displayMode}`}>
-                    {config.icon}
+                    <Accordion.Icon icon={config.icon} label={"Grid Settings"} />
                 </Tooltip>
             }
         >
@@ -139,10 +139,17 @@ export const GridSettings = ({
                         disabled={false}
                         value={columnWrap}
                         onChange={value => onFlexDirectionChange(value)}
-                    >
-                        <option value="row">No wrap</option>
-                        <option value="column">Wrap</option>
-                    </SelectField>
+                        options={[
+                            {
+                                value: "row",
+                                label: "No wrap"
+                            },
+                            {
+                                value: "column",
+                                label: "Wrap"
+                            }
+                        ]}
+                    />
                 </Wrapper>
                 <Wrapper
                     label={"Wrap direction"}
@@ -154,10 +161,17 @@ export const GridSettings = ({
                         value={flexDirection}
                         onChange={value => onFlexDirectionChange(value)}
                         disabled={flexDirection === "row"}
-                    >
-                        <option value="column">Regular</option>
-                        <option value="column-reverse">Reverse</option>
-                    </SelectField>
+                        options={[
+                            {
+                                value: "column",
+                                label: "Regular"
+                            },
+                            {
+                                value: "column-reverse",
+                                label: "Reverse"
+                            }
+                        ]}
+                    />
                 </Wrapper>
                 <Wrapper
                     label={"Column height"}
@@ -168,10 +182,17 @@ export const GridSettings = ({
                     <SelectField
                         value={columnHeight}
                         onChange={value => onColumnHeightChange(value)}
-                    >
-                        <option value="auto">Match content size</option>
-                        <option value="full-height">Match grid height</option>
-                    </SelectField>
+                        options={[
+                            {
+                                value: "auto",
+                                label: "Auto"
+                            },
+                            {
+                                value: "full-height",
+                                label: "Full height"
+                            }
+                        ]}
+                    />
                 </Wrapper>
                 <Wrapper
                     containerClassName={classes.simpleGrid}

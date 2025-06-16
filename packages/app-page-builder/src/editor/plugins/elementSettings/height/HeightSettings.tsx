@@ -149,7 +149,7 @@ const Settings = ({ defaultAccordionValue }: PbEditorPageElementSettingsRenderCo
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${activeDisplayModeConfig.displayMode}`}>
-                    {activeDisplayModeConfig.icon}
+                    <Accordion.Icon icon={activeDisplayModeConfig.icon} label={"Height"} />
                 </Tooltip>
             }
         >

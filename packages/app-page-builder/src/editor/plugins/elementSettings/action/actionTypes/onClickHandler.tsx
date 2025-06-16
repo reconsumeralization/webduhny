@@ -58,13 +58,13 @@ const OnClickHandlerForm = () => {
                     value={clickHandlerBind.value}
                     onChange={clickHandlerBind.onChange}
                     placeholder={"Select handler..."}
-                >
-                    {clickHandlers.map(item => (
-                        <option key={item.name} value={item.name}>
-                            {item.title}
-                        </option>
-                    ))}
-                </SelectField>
+                    options={
+                        clickHandlers.map(item => ({
+                            label: item.title,
+                            value: item.name
+                        })) || []
+                    }
+                />
             </Wrapper>
 
             <Wrapper label={"Variables"} containerClassName={classes.gridClass}>

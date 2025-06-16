@@ -25,7 +25,7 @@ const Settings = () => {
 
     return (
         <Accordion title={"Shadow"}>
-            <ContentWrapper direction={"column"}>
+            <ContentWrapper>
                 <Wrapper label={"Color"} containerClassName={classes.simpleGrid}>
                     <BaseColorPickerComponent
                         // @ts-refactor label does not exist on BaseColorPicker nor are props passed on
@@ -42,6 +42,7 @@ const Settings = () => {
                     rightCellSpan={4}
                 >
                     <InputField
+                        placeholder={"px"}
                         value={get(element, DATA_NAMESPACE + ".horizontal", 0)}
                         onChange={getUpdateValue("horizontal")}
                     />
@@ -54,6 +55,7 @@ const Settings = () => {
                     rightCellSpan={4}
                 >
                     <InputField
+                        placeholder={"px"}
                         value={get(element, DATA_NAMESPACE + ".vertical", 0)}
                         onChange={getUpdateValue("vertical")}
                     />
@@ -66,6 +68,7 @@ const Settings = () => {
                     rightCellSpan={4}
                 >
                     <InputField
+                        placeholder={"px"}
                         value={get(element, DATA_NAMESPACE + ".blur", 0)}
                         onChange={getUpdateValue("blur")}
                     />
@@ -78,6 +81,7 @@ const Settings = () => {
                     rightCellSpan={4}
                 >
                     <InputField
+                        placeholder={"px"}
                         value={get(element, DATA_NAMESPACE + ".spread", 0)}
                         onChange={getUpdateValue("spread")}
                     />

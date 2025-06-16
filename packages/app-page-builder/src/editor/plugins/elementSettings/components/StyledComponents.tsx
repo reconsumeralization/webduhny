@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "emotion";
+import { cn } from "@webiny/admin-ui";
 
 export const classes = {
     simpleGrid: css({
@@ -44,14 +46,34 @@ export const InputContainer = styled.div<InputContainerProps>(props => ({
     }
 }));
 
-type ContentWrapperProps = {
+interface ContentWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
     direction?: "row" | "row-reverse" | "column" | "column-reverse";
-};
+}
 
-export const ContentWrapper = styled.div<ContentWrapperProps>(props => ({
-    display: "flex",
-    flexDirection: props.direction || "row"
-}));
+export const ContentWrapper = ({
+    className,
+    direction = "column",
+    children,
+    ...props
+}: ContentWrapperProps) => {
+    return (
+        <div
+            {...props}
+            className={cn(
+                "wby-flex wby-gap-sm",
+                {
+                    "wby-flex-row": direction === "row",
+                    "wby-flex-row-reverse": direction === "row-reverse",
+                    "wby-flex-col": direction === "column",
+                    "wby-flex-col-reverse": direction === "column-reverse"
+                },
+                className
+            )}
+        >
+            {children}
+        </div>
+    );
+};
 
 export const COLORS = {
     lightGray: "hsla(0, 0%, 97%, 1)",

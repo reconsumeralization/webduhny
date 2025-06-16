@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useMemo, useState } from "react";
-import { Tabs as AdminTabs } from "@webiny/admin-ui";
+import { Tabs as AdminTabs, TabsProps as AdminTabsProps } from "@webiny/admin-ui";
 import { TabProps } from "./Tab";
 
 const VALUE_PREFIX = "tab-";
@@ -29,6 +29,10 @@ export type TabsProps = PropsWithChildren<{
      * Tab ID for the testing.
      */
     "data-testid"?: string;
+
+    size?: AdminTabsProps["size"];
+
+    spacing?: AdminTabsProps["spacing"];
 }>;
 
 interface TabItem extends TabProps {
@@ -113,9 +117,9 @@ export const Tabs = ({ value, onActivate, ...props }: TabsProps) => {
                 value={`${VALUE_PREFIX}${activeIndex}`}
                 onValueChange={onValueChange}
                 tabs={newTabs}
-                size={"md"}
+                size={props.size || 'md'}
                 separator={true}
-                spacing={"lg"}
+                spacing={props.spacing || 'lg'}
             />
             <DeprecatedTabsContext.Provider value={context}>
                 {props.children}

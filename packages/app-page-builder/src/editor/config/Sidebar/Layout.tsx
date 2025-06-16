@@ -1,37 +1,29 @@
 import React from "react";
-import { css } from "emotion";
 import { makeDecoratable } from "@webiny/app-admin";
-import { Elevation } from "@webiny/ui/Elevation";
 import { Tabs } from "@webiny/ui/Tabs";
 import { Sidebar } from "./Sidebar";
 import { SidebarHighlight } from "./SidebarHighlight";
-
-const rightSideBar = css({
-    boxShadow: "1px 0px 5px 0px rgba(128,128,128,1)",
-    position: "fixed",
-    right: 0,
-    top: 65,
-    height: "100%",
-    width: 300,
-    zIndex: 1
-});
+import { cn } from "@webiny/admin-ui";
 
 export interface LayoutProps {
     className?: string;
 }
 
-export const Layout = makeDecoratable(
-    "SidebarLayout",
-    ({ className = rightSideBar }: LayoutProps) => {
-        const { activeGroup, setActiveGroup } = Sidebar.useActiveGroup();
+export const Layout = makeDecoratable("SidebarLayout", ({ className }: LayoutProps) => {
+    const { activeGroup, setActiveGroup } = Sidebar.useActiveGroup();
 
-        return (
-            <Elevation z={1} className={className} data-role={"sidebar-layout"}>
-                <Tabs value={activeGroup} onActivate={setActiveGroup}>
-                    <Sidebar.Elements group="groups" />
-                </Tabs>
-                <SidebarHighlight />
-            </Elevation>
-        );
-    }
-);
+    return (
+        <div
+            className={cn(
+                "wby-fixed wby-top-headerbar wby-right-0 wby-h-[calc(100vh-theme(height.headerbar))] wby-bg-neutral-base wby-w-[300px]",
+                className
+            )}
+            data-role={"sidebar-layout"}
+        >
+            <Tabs value={activeGroup} onActivate={setActiveGroup} spacing={"md"}>
+                <Sidebar.Elements group="groups" />
+            </Tabs>
+            <SidebarHighlight />
+        </div>
+    );
+});

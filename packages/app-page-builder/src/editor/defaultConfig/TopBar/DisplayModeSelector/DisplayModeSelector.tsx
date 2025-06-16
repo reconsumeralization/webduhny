@@ -1,84 +1,9 @@
 import React, { useMemo } from "react";
-import { css } from "emotion";
 import classNames from "classnames";
 import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { Typography } from "@webiny/ui/Typography";
+import { Heading, Tooltip, Icon } from "@webiny/admin-ui";
 import { DisplayMode } from "~/types";
 import { useDisplayMode } from "~/editor";
-
-const classes = {
-    wrapper: css({
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-
-        "& .action-wrapper": {
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRight: "1px solid var(--mdc-theme-background)",
-            "&:first-child": {
-                borderLeft: "1px solid var(--mdc-theme-background)"
-            },
-            "&.active": {
-                backgroundColor: "var(--mdc-theme-background)",
-                "& .mdc-icon-button": {
-                    color: "var(--mdc-theme-text-primary-on-background)"
-                }
-            }
-        }
-    }),
-    dimensionIndicator: css({
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        padding: "0px 16px",
-        borderRight: "1px solid var(--mdc-theme-background)",
-
-        "& span": {
-            color: "var(--mdc-theme-text-primary-on-background)"
-        },
-        "& .width": {
-            marginRight: 8,
-            "& span:last-child": {
-                marginLeft: 4
-            }
-        },
-        "& .height": {
-            "& span:last-child": {
-                marginLeft: 4
-            }
-        }
-    }),
-    tooltip: css({
-        textAlign: "left",
-        textTransform: "initial",
-        "& .tooltip__title": {
-            "& span": {
-                fontWeight: 900
-            }
-        },
-        "& .tooltip__info": {
-            display: "flex",
-            "& span": {
-                fontWeight: 600
-            },
-            "& svg": {
-                fill: "var(--mdc-theme-surface)",
-                marginRight: 4
-            }
-        },
-        "& .tooltip__body": {
-            marginTop: 4,
-            "& span": {
-                fontWeight: 600
-            }
-        }
-    })
-};
 
 export const DisplayModeSelector = () => {
     const { displayMode, displayModes, setDisplayMode } = useDisplayMode();
@@ -88,30 +13,38 @@ export const DisplayModeSelector = () => {
             return (
                 <Tooltip
                     key={mode}
+                    trigger={
+                        <IconButton
+                            icon={icon}
+                            onClick={() => setDisplayMode(mode as DisplayMode)}
+                        />
+                    }
                     content={
-                        <div className={classes.tooltip}>
-                            <div className={"tooltip__title"}>
-                                <Typography use={"subtitle1"}>{tooltip.title}</Typography>
+                        <div className={'wby-flex wby-flex-col wby-gap-xs'}>
+                            <Heading level={6}>{tooltip.title}</Heading>
+                            <div className={"wby-font-semibold wby-flex wby-items-center"}>
+                                {tooltip.subTitleIcon && (
+                                    <Icon
+                                        icon={tooltip.subTitleIcon}
+                                        size={'xs'}
+                                        label={tooltip.subTitle}
+                                        color={"neutral-light"}
+                                    />
+                                )}
+
+                                {tooltip.subTitle}
                             </div>
-                            <div className={"tooltip__info"}>
-                                {tooltip.subTitleIcon}
-                                <Typography use={"body2"}>{tooltip.subTitle}</Typography>
-                            </div>
-                            <div className={"tooltip__body"}>
-                                <Typography use={"body2"}>{tooltip.body}</Typography>
-                            </div>
+                            {tooltip.body}
                         </div>
                     }
-                    placement={"bottom"}
+                    side={"bottom"}
                     className={classNames("action-wrapper", {
                         active: mode === displayMode
                     })}
-                >
-                    <IconButton icon={icon} onClick={() => setDisplayMode(mode as DisplayMode)} />
-                </Tooltip>
+                />
             );
         });
     }, [setDisplayMode, displayMode]);
 
-    return <div className={classes.wrapper}>{responsiveBarContent}</div>;
+    return <div>{responsiveBarContent}</div>;
 };

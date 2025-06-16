@@ -91,11 +91,11 @@ export default (args: PbEditorElementPluginArgs = {}) => {
                             >
                                 <Bind defaultValue="small" name={"source.size"}>
                                     {({ value, onChange }) => (
-                                        <SelectField value={value} onChange={onChange}>
-                                            <option value="small">Small</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="large">Large</option>
-                                        </SelectField>
+                                        <SelectField value={value} onChange={onChange} options={[
+                                            { label: "Small", value: "small" },
+                                            { label: "Medium", value: "medium" },
+                                            { label: "Large", value: "large" }
+                                        ]}/>
                                     )}
                                 </Bind>
                             </Wrapper>

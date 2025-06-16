@@ -68,7 +68,7 @@ const BorderSettings = ({
             defaultValue={defaultAccordionValue}
             icon={
                 <Tooltip content={`Changes will apply for ${config.displayMode}`}>
-                    {config.icon}
+                    <Accordion.Icon icon={config.icon} label={"Border"} />
                 </Tooltip>
             }
         >
@@ -77,13 +77,13 @@ const BorderSettings = ({
                     <SelectField
                         value={borderStyle}
                         onChange={getUpdateValue(`${displayMode}.style`)}
-                    >
-                        {options.map(option => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </SelectField>
+                        options={
+                            options.map(option => ({
+                                label: option.charAt(0).toUpperCase() + option.slice(1),
+                                value: option
+                            })) || []
+                        }
+                    />
                 </Wrapper>
                 <ColorPicker
                     className={classes.simpleGrid}

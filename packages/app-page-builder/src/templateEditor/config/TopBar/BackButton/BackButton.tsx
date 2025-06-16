@@ -1,13 +1,8 @@
 import React, { useCallback } from "react";
-import { css } from "emotion";
 import { useNavigate } from "@webiny/react-router";
-import { IconButton } from "@webiny/ui/Button";
+import { IconButton } from "@webiny/admin-ui";
 import { ReactComponent as BackIcon } from "@webiny/icons/arrow_back.svg";
 import { TopBar } from "~/editor/config/TopBar/TopBar";
-
-const backStyles = css({
-    marginLeft: -10
-});
 
 export function BackButton() {
     const navigate = useNavigate();
@@ -19,8 +14,8 @@ export function BackButton() {
     return (
         <>
             <IconButton
+                className={"mr-sm-plus"}
                 data-testid="pb-editor-back-button"
-                className={backStyles}
                 onClick={onClick}
                 icon={<BackIcon />}
             />

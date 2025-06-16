@@ -1,20 +1,10 @@
 import React, { useState, useCallback, SyntheticEvent } from "react";
 import { useSnackbar } from "@webiny/app-admin/hooks/useSnackbar";
-import { Input } from "@webiny/ui/Input";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import { Typography } from "@webiny/ui/Typography";
-import {
-    PageMeta,
-    PageTitle,
-    pageTitleWrapper,
-    PageVersion,
-    TitleInputWrapper,
-    TitleWrapper
-} from "./Styled";
 import { useEventActionHandler } from "~/editor/hooks/useEventActionHandler";
 import { usePage } from "~/pageEditor/hooks/usePage";
 import { PageAtomType } from "~/pageEditor/state";
 import { UpdateDocumentActionEvent } from "~/editor/recoil/actions";
+import { Heading, Input, Tooltip } from "@webiny/admin-ui";
 
 declare global {
     interface Window {
@@ -41,7 +31,7 @@ export const Title = () => {
     const handler = useEventActionHandler();
     const [page] = usePage();
     const { showSnackbar } = useSnackbar();
-    const { pageTitle, pageVersion, pageLocked } = extractPageInfo(page);
+    const { pageTitle, pageVersion } = extractPageInfo(page);
     const [editTitle, setEdit] = useState<boolean>(false);
     const [stateTitle, setTitle] = useState<string | null>(null);
     let title = stateTitle === null ? pageTitle : stateTitle;
@@ -102,35 +92,35 @@ export const Title = () => {
     const autoFocus = !window.Cypress;
 
     return editTitle ? (
-        <TitleInputWrapper data-testid="pb-editor-page-title">
+        <div data-testid="pb-editor-page-title">
             <Input
+                size={"md"}
                 autoFocus={autoFocus}
-                fullwidth
                 value={title}
                 onChange={setTitle}
                 onKeyDown={onKeyDown}
                 onBlur={onBlur}
             />
-        </TitleInputWrapper>
+        </div>
     ) : (
-        <TitleWrapper>
-            <PageMeta>
-                <Typography use={"overline"}>
-                    {`(status: ${pageLocked ? "published" : "draft"})`}
-                </Typography>
-            </PageMeta>
-            <div style={{ width: "100%", display: "flex" }}>
-                <Tooltip
-                    className={pageTitleWrapper}
-                    placement={"bottom"}
-                    content={<span>Rename</span>}
-                >
-                    <PageTitle data-testid="pb-editor-page-title" onClick={enableEdit}>
+        <div className={"wby-flex wby-items-center wby-gap-xs wby-w-full"}>
+            <Tooltip
+                side={"bottom"}
+                content={"Rename"}
+                trigger={
+                    <Heading
+                        level={5}
+                        className={
+                            "wby-border-sm wby-border-transparent hover:wby-border-neutral-muted"
+                        }
+                        data-testid="pb-editor-page-title"
+                        onClick={enableEdit}
+                    >
                         {title}
-                    </PageTitle>
-                </Tooltip>
-                <PageVersion>{`(v${pageVersion})`}</PageVersion>
-            </div>
-        </TitleWrapper>
+                    </Heading>
+                }
+            />
+            <div className={"wby-text-neutral-muted"}>(v{pageVersion})</div>
+        </div>
     );
 };

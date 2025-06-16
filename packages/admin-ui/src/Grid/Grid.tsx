@@ -62,7 +62,8 @@ const gridVariants = cva("wby-grid", {
     variants: {
         gap: {
             comfortable: "wby-gap-lg",
-            spacious: "wby-gap-xl"
+            spacious: "wby-gap-xl",
+            "none": "wby-gap-0",
         }
     },
     defaultVariants: {
