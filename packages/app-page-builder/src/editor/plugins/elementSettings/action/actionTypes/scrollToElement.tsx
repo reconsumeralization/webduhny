@@ -39,13 +39,15 @@ const ScrollToElementForm = withActiveElement()(({ element }: { element: PbEdito
             <Bind name={"scrollToElement"}>
                 {({ value, onChange }) => (
                     <Wrapper label={"Element ID"} containerClassName={classes.gridClass}>
-                        <SelectField value={value} onChange={onChange} placeholder={"None"}>
-                            {elementIds.map((item, index) => (
-                                <option key={index} value={item}>
-                                    {item}
-                                </option>
-                            ))}
-                        </SelectField>
+                        <SelectField
+                            value={value}
+                            onChange={onChange}
+                            placeholder={"None"}
+                            options={elementIds.map(item => ({
+                                label: item,
+                                value: item
+                            }))}
+                        />
                     </Wrapper>
                 )}
             </Bind>

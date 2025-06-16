@@ -184,7 +184,7 @@ const ColorPicker = ({ value, onChange, onChangeComplete, compact = false }: Col
             <div className={"wby-flex wby-justify-end"}>
                 <Menu
                     anchor={"bottomLeft"}
-                    handle={<AdminUiColorPickerPrimitive value={actualSelectedColor} />}
+                    handle={<AdminUiColorPickerPrimitive value={actualSelectedColor} size={'md'}/>}
                 >
                     <div className={"wby-flex wby-max-w-[210px] wby-pt-xs"}>{colorPicker}</div>
                 </Menu>

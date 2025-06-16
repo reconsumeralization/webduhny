@@ -40,6 +40,7 @@ interface PagesListFilterSettingsProps {
     Bind: BindComponent;
     submit: (event: React.MouseEvent) => void;
 }
+
 const PagesListFilterSettings = ({ Bind, submit }: PagesListFilterSettingsProps) => {
     return (
         <Accordion title={"Filter"} defaultValue={true}>
@@ -52,20 +53,28 @@ const PagesListFilterSettings = ({ Bind, submit }: PagesListFilterSettingsProps)
                 <Wrapper label={"Sort By"} containerClassName={classes.simpleGrid}>
                     <Bind name={"sortBy"} defaultValue={"publishedOn"}>
                         {({ value, onChange }) => (
-                            <SelectField value={value} onChange={onChange}>
-                                <option value={"publishedOn"}>Publishing date</option>
-                                <option value={"title"}>Title</option>
-                            </SelectField>
+                            <SelectField
+                                value={value}
+                                onChange={onChange}
+                                options={[
+                                    { label: "Publishing date", value: "publishedOn" },
+                                    { label: "Title", value: "title" }
+                                ]}
+                            />
                         )}
                     </Bind>
                 </Wrapper>
                 <Wrapper label={"Sort Direction"} containerClassName={classes.simpleGrid}>
                     <Bind name={"sortDirection"} defaultValue={"desc"}>
                         {({ value, onChange }) => (
-                            <SelectField value={value} onChange={onChange}>
-                                <option value={"desc"}>Descending</option>
-                                <option value={"asc"}>Ascending</option>
-                            </SelectField>
+                            <SelectField
+                                value={value}
+                                onChange={onChange}
+                                options={[
+                                    { label: "Descending", value: "desc" },
+                                    { label: "Ascending", value: "asc" }
+                                ]}
+                            />
                         )}
                     </Bind>
                 </Wrapper>
@@ -86,10 +95,14 @@ const PagesListFilterSettings = ({ Bind, submit }: PagesListFilterSettingsProps)
                 >
                     <Bind name={"tagsRule"} defaultValue={"all"}>
                         {({ value, onChange }) => (
-                            <SelectField value={value} onChange={onChange}>
-                                <option value={"all"}>Page must include all tags</option>
-                                <option value={"any"}>Page must include any of the tags</option>
-                            </SelectField>
+                            <SelectField
+                                value={value}
+                                onChange={onChange}
+                                options={[
+                                    { label: "Page must include all tags", value: "all" },
+                                    { label: "Page must include any of the tags", value: "any" }
+                                ]}
+                            />
                         )}
                     </Bind>
                 </Wrapper>

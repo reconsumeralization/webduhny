@@ -87,13 +87,14 @@ const ButtonSettings = ({
         <Accordion title={"Button"} defaultValue={defaultAccordionValue}>
             <ContentWrapper direction={"column"}>
                 <Wrapper label={"Type"} containerClassName={classes.gridClass}>
-                    <SelectField value={type} onChange={updateType}>
-                        {typesOptions.map(t => (
-                            <option key={t.value} value={t.value}>
-                                {t.label}
-                            </option>
-                        ))}
-                    </SelectField>
+                    <SelectField
+                        value={type}
+                        onChange={updateType}
+                        options={typesOptions.map(t => ({
+                            value: t.value,
+                            label: t.label
+                        }))}
+                    />
                 </Wrapper>
                 <Wrapper label={"Icon"} containerClassName={classes.gridClass}>
                     <IconPicker
@@ -121,12 +122,16 @@ const ButtonSettings = ({
                     leftCellSpan={8}
                     rightCellSpan={4}
                 >
-                    <SelectField value={icon?.position || "left"} onChange={updateIconPosition}>
-                        <option value={"left"}>Left</option>
-                        <option value={"right"}>Right</option>
-                        <option value={"top"}>Top</option>
-                        <option value={"bottom"}>Bottom</option>
-                    </SelectField>
+                    <SelectField
+                        value={icon?.position || "left"}
+                        onChange={updateIconPosition}
+                        options={[
+                            { value: "left", label: "Left" },
+                            { value: "right", label: "Right" },
+                            { value: "top", label: "Top" },
+                            { value: "bottom", label: "Bottom" }
+                        ]}
+                    />
                 </Wrapper>
                 {/* Renders IconPicker.Icon for accessing its HTML without displaying it. */}
                 <HiddenIconMarkup />

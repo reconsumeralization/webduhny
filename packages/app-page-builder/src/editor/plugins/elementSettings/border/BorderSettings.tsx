@@ -77,13 +77,13 @@ const BorderSettings = ({
                     <SelectField
                         value={borderStyle}
                         onChange={getUpdateValue(`${displayMode}.style`)}
-                    >
-                        {options.map(option => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </SelectField>
+                        options={
+                            options.map(option => ({
+                                label: option.charAt(0).toUpperCase() + option.slice(1),
+                                value: option
+                            })) || []
+                        }
+                    />
                 </Wrapper>
                 <ColorPicker
                     className={classes.simpleGrid}

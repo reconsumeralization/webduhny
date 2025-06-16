@@ -147,27 +147,26 @@ const BackgroundSettings = ({ options, defaultAccordionValue }: SettingsPropsTyp
                                 disabled={!backgroundImageSrc}
                                 value={backgroundImageScaling}
                                 onChange={setScaling}
-                            >
-                                <option value="cover">Cover</option>
-                                <option value="contain">Contain</option>
-                                <option value="originalSize">Original size</option>
-                                <option value="tile">Tile</option>
-                                <option value="tileHorizontally">Tile Horizontally</option>
-                                <option value="tileVertically">Tile Vertically</option>
-                            </SelectField>
+                                options={[
+                                    { value: "cover", label: "Cover" },
+                                    { value: "contain", label: "Contain" },
+                                    { value: "originalSize", label: "Original size" },
+                                    { value: "tile", label: "Tile" },
+                                    { value: "tileHorizontally", label: "Tile Horizontally" },
+                                    { value: "tileVertically", label: "Tile Vertically" }
+                                ]}
+                            />
                         </Wrapper>
                         <Wrapper label={"Position"} containerClassName={classes.simpleGrid}>
                             <SelectField
                                 value={backgroundImagePosition}
                                 onChange={setPosition}
                                 disabled={!backgroundImageSrc}
-                            >
-                                {positions.map(position => (
-                                    <option key={position} value={position}>
-                                        {startCase(position)}
-                                    </option>
-                                ))}
-                            </SelectField>
+                                options={positions.map(position => ({
+                                    value: position,
+                                    label: startCase(position)
+                                }))}
+                            />
                         </Wrapper>
                     </>
                 )}

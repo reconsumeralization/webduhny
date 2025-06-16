@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { Cell, Grid } from "@webiny/ui/Grid";
 import { PbEditorElement, PbEditorPageElementSettingsRenderComponentProps } from "~/types";
 import useUpdateHandlers from "../useUpdateHandlers";
+
 // Components
 import DurationInput from "../components/SliderWithInput";
 import SelectField from "../components/SelectField";
@@ -11,6 +12,7 @@ import { ContentWrapper } from "../components/StyledComponents";
 import Accordion from "../components/Accordion";
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
+
 // Icon
 import { ReactComponent as TimerIcon } from "./icons/round-av_timer-24px.svg";
 import { useActiveElement } from "~/editor/hooks/useActiveElement";
@@ -38,6 +40,7 @@ const classes = {
 const STEP = 50;
 const MAX_VALUE = 3000;
 const DATA_NAMESPACE = "data.settings.animation";
+
 const Settings = ({ defaultAccordionValue }: PbEditorPageElementSettingsRenderComponentProps) => {
     const [element] = useActiveElement<PbEditorElement>();
 
@@ -72,32 +75,45 @@ const Settings = ({ defaultAccordionValue }: PbEditorPageElementSettingsRenderCo
                             <SelectField
                                 value={get(element, DATA_NAMESPACE + ".name", "")}
                                 onChange={getUpdateValue("name")}
-                            >
-                                <option value="">No animation</option>
-                                <optgroup label="Fade">
-                                    <option value="fade">Fade</option>
-                                    <option value="fade-up">Fade Up</option>
-                                    <option value="fade-down">Fade Down</option>
-                                    <option value="fade-left">Fade Left</option>
-                                    <option value="fade-right">Fade Right</option>
-                                    <option value="fade-up-right">Fade Up Right</option>
-                                    <option value="fade-up-left">Fade Up Left</option>
-                                    <option value="fade-down-right">Fade Down Right</option>
-                                    <option value="fade-down-left">Fade Down Left</option>
-                                </optgroup>
-                                <optgroup label="Flip">
-                                    <option value="flip-up">Flip Up</option>
-                                    <option value="flip-down">Flip Down</option>
-                                    <option value="flip-left">Flip Left</option>
-                                    <option value="flip-right">Flip Right</option>
-                                </optgroup>
-                                <optgroup label="Slide">
-                                    <option value="slide-up">Slide Up</option>
-                                    <option value="slide-down">Slide Down</option>
-                                    <option value="slide-left">Slide Left</option>
-                                    <option value="slide-right">Slide Right</option>
-                                </optgroup>
-                            </SelectField>
+                                options={[
+                                    {
+                                        label: "No animation",
+                                        value: ""
+                                    },
+                                    {
+                                        label: "Fade",
+                                        options: [
+                                            { label: "Fade", value: "fade" },
+                                            { label: "Fade Up", value: "fade-up" },
+                                            { label: "Fade Down", value: "fade-down" },
+                                            { label: "Fade Left", value: "fade-left" },
+                                            { label: "Fade Right", value: "fade-right" },
+                                            { label: "Fade Up Right", value: "fade-up-right" },
+                                            { label: "Fade Up Left", value: "fade-up-left" },
+                                            { label: "Fade Down Right", value: "fade-down-right" },
+                                            { label: "Fade Down Left", value: "fade-down-left" }
+                                        ]
+                                    },
+                                    {
+                                        label: "Flip",
+                                        options: [
+                                            { label: "Flip Up", value: "flip-up" },
+                                            { label: "Flip Down", value: "flip-down" },
+                                            { label: "Flip Left", value: "flip-left" },
+                                            { label: "Flip Right", value: "flip-right" }
+                                        ]
+                                    },
+                                    {
+                                        label: "Slide",
+                                        options: [
+                                            { label: "Slide Up", value: "slide-up" },
+                                            { label: "Slide Down", value: "slide-down" },
+                                            { label: "Slide Left", value: "slide-left" },
+                                            { label: "Slide Right", value: "slide-right" }
+                                        ]
+                                    }
+                                ]}
+                            />
                         </Wrapper>
                     </Cell>
                     <Cell span={12}>
@@ -138,29 +154,33 @@ const Settings = ({ defaultAccordionValue }: PbEditorPageElementSettingsRenderCo
                             <SelectField
                                 value={get(element, DATA_NAMESPACE + ".easing", "")}
                                 onChange={getUpdateValue("easing")}
-                            >
-                                <option value="">Default</option>
-                                <option value="linear">Linear</option>
-                                <option value="ease">Ase</option>
-                                <option value="ease-in">Ase in</option>
-                                <option value="ease-out">Out</option>
-                                <option value="ease-in-out">In out</option>
-                                <option value="ease-in-back">In back</option>
-                                <option value="ease-out-back">Out back</option>
-                                <option value="ease-in-out-back">In out-back</option>
-                                <option value="ease-in-sine">In sine</option>
-                                <option value="ease-out-sine">Out sine</option>
-                                <option value="ease-in-out-sine">In out-sine</option>
-                                <option value="ease-in-quad">In quad</option>
-                                <option value="ease-out-quad">Out quad</option>
-                                <option value="ease-in-out-quad">In out-quad</option>
-                                <option value="ease-in-cubic">In cubic</option>
-                                <option value="ease-out-cubic">Out cubic</option>
-                                <option value="ease-in-out-cubic">In out-cubic</option>
-                                <option value="ease-in-quart">In quart</option>
-                                <option value="ease-out-quart">Out quart</option>
-                                <option value="ease-in-out-quart">In out-quart</option>
-                            </SelectField>
+                                options={[
+                                    { label: "Default", value: "" },
+                                    { label: "Linear", value: "linear" },
+                                    { label: "Ase", value: "ease" },
+                                    { label: "Ase in", value: "ease-in" },
+                                    { label: "Out", value: "ease-out" },
+                                    { label: "In out", value: "ease-in-out" },
+                                    { label: "In back", value: "ease-in-back" },
+                                    { label: "Out back", value: "ease-out-back" },
+                                    { label: "In out-back", value: "ease-in-out-back" },
+                                    { label: "In sine", value: "ease-in-sine" },
+                                    { label: "Out sine", value: "ease-out-sine" },
+                                    { label: "In out-sine", value: "ease-in-out-sine" },
+                                    { label: "In quad", value: "ease-in-quad" },
+                                    { label: "Out quad", value: "ease-out-quad" },
+                                    { label: "In out-quad", value: "ease-in-out-quad" },
+                                    { label: "In cubic", value: "ease-in-cubic" },
+                                    { label: "Out cubic", value: "ease-out-cubic" },
+                                    { label: "In out-cubic", value: "ease-in-out-cubic" },
+                                    { label: "In quart", value: "ease-in-quart" },
+                                    { label: "Out quart", value: "ease-out-quart" },
+                                    {
+                                        label: "In out-quart",
+                                        value: "ease-in-out-quart"
+                                    }
+                                ]}
+                            />
                         </Wrapper>
                     </Cell>
                 </Grid>
