@@ -55,8 +55,8 @@ export const SyncSystemEventBus = createAppModule({
             config: {
                 queueUrl: sqsQueue.output.url,
                 policy: pulumi
-                    .all([sqsQueue.output.arn, eventBus.output.arn])
-                    .apply(([sqsArn, eventBusArn]) => {
+                    .all([sqsQueue.output.arn, eventBusRule.output.arn])
+                    .apply(([sqsArn, eventBusRuleArn]) => {
                         return JSON.stringify({
                             Version: "2012-10-17",
                             Statement: [
@@ -67,7 +67,10 @@ export const SyncSystemEventBus = createAppModule({
                                     Resource: [sqsArn, `${sqsArn}/*`],
                                     Condition: {
                                         ArnEquals: {
-                                            "aws:SourceArn": eventBusArn
+                                            /**
+                                             * Not a mistake, source is the rule, not the bus.
+                                             */
+                                            "aws:SourceArn": eventBusRuleArn
                                         }
                                     }
                                 }

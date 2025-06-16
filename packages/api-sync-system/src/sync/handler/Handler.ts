@@ -12,6 +12,7 @@ import { convertException } from "@webiny/utils";
 import { generateAlphaNumericId } from "@webiny/utils/generateId.js";
 import type { IDetail } from "~/sync/handler/types.js";
 import type { NonEmptyArray } from "@webiny/api/types.js";
+import type { FilterOutRecord } from "~/sync/FilterOutRecord.js";
 
 export interface IHandlerEventBus {
     name: string;
@@ -23,6 +24,7 @@ export interface IHandlerParams {
     converter: IHandlerConverter;
     eventBus: IHandlerEventBus;
     system: ISystem;
+    filterOutRecord: FilterOutRecord;
 }
 
 export class Handler implements IHandler {
@@ -32,12 +34,14 @@ export class Handler implements IHandler {
     private commands: ICommandValue[] = [];
     private readonly converter: IHandlerConverter;
     private readonly eventBus: IHandlerEventBus;
+    private readonly filterOutRecord: FilterOutRecord;
 
     public constructor(params: IHandlerParams) {
         this.client = params.client;
         this.system = params.system;
         this.converter = params.converter;
         this.eventBus = params.eventBus;
+        this.filterOutRecord = params.filterOutRecord;
     }
 
     public add(input: IDynamoDbCommand): void {
@@ -112,6 +116,13 @@ export class Handler implements IHandler {
             const commandItems = cmd.getItems();
             if (!commandItems?.length) {
                 return items;
+            }
+
+            for (const item of commandItems) {
+                if (this.filterOutRecord.filterOut(item)) {
+                    continue;
+                }
+                items.push(item);
             }
 
             items.push(...commandItems);

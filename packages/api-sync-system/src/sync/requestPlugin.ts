@@ -41,7 +41,10 @@ export const createSyncSystemHandlerOnRequestPlugin = (
             client,
             system: params.system,
             manifest,
-            commandConverters: params.commandConverters
+            commandConverters: params.commandConverters,
+            getPlugins: () => {
+                return context.plugins;
+            }
         });
 
         attachToDynamoDbDocument({

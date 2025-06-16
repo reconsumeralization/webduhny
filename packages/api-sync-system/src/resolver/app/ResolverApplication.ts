@@ -27,6 +27,9 @@ export class ResolverApplication implements IResolverApplication {
         const validation = createRecordsValidation();
 
         const result = await validation.validate(params.records);
+        console.log({
+            validationResult: JSON.stringify(result)
+        });
         if (result.error) {
             throw result.error;
         }
@@ -44,6 +47,12 @@ export class ResolverApplication implements IResolverApplication {
             records: result.records
         });
 
+        console.log({
+            ingestorResult: JSON.stringify(data)
+        });
+        if (data) {
+            return;
+        }
         try {
             await this.recordHandler.handle({
                 data

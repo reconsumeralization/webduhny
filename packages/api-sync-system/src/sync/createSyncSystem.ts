@@ -1,13 +1,18 @@
-import type { Plugin } from "@webiny/plugins";
+import type { Plugin } from "@webiny/plugins/types.js";
 import type { ISystem } from "./types.js";
 import { validateSystemInput } from "./utils/validateSystemInput.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import type { PossiblyUndefinedProperties } from "@webiny/api/types";
 import { createSyncSystemHandlerOnRequestPlugin } from "./requestPlugin.js";
+import type { FilterOutRecordPlugin } from "./plugins/FilterOutRecordPlugin.js";
+import { createDefaultFilterRecordPlugins } from "./filter/index.js";
+
+export type IAllowedPlugins = FilterOutRecordPlugin;
 
 export interface ICreateSyncSystemParams {
     documentClient: Pick<DynamoDBDocument, "send">;
     system: PossiblyUndefinedProperties<Omit<ISystem, "name">>;
+    plugins?: IAllowedPlugins[];
 }
 
 export interface ICreateSyncSystemResponse {
@@ -36,6 +41,8 @@ export const createSyncSystem = (params: ICreateSyncSystemParams): ICreateSyncSy
     return {
         plugins: () => {
             return [
+                ...(params.plugins || []),
+                ...createDefaultFilterRecordPlugins(),
                 createSyncSystemHandlerOnRequestPlugin({
                     documentClient: params.documentClient,
                     system

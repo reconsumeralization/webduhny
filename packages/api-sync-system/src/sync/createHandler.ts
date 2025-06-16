@@ -11,16 +11,27 @@ import { createBatchGetCommandConverter } from "./handler/converter/BatchGetComm
 import { createQueryCommandConverter } from "./handler/converter/QueryCommandConverter.js";
 import { createScanCommandConverter } from "~/sync/handler/converter/ScanCommandConverter.js";
 import { createGetCommandConverter } from "./handler/converter/GetCommandConverter.js";
+import type { PluginsContainer } from "@webiny/plugins/PluginsContainer.js";
+import { FilterOutRecordPlugin } from "~/sync/plugins/FilterOutRecordPlugin.js";
+import { createFilterOutRecord } from "~/sync/FilterOutRecord.js";
 
 export interface ICreateHandlerParams {
     client: Pick<EventBridgeClient, "send">;
     commandConverters?: ICommandConverter[];
     system: ISystem;
     manifest: IManifest;
+    getPlugins: () => PluginsContainer;
 }
 
 export const createHandler = (params: ICreateHandlerParams) => {
-    const { manifest, commandConverters, system, client } = params;
+    const { manifest, commandConverters, system, client, getPlugins } = params;
+
+    const filterOutRecordPlugins = getPlugins().byType<FilterOutRecordPlugin>(
+        FilterOutRecordPlugin.type
+    );
+
+    const filterOutRecord = createFilterOutRecord(filterOutRecordPlugins);
+
     const converter = createHandlerConverter({
         defaultValue: new NullCommandValue()
     });
@@ -45,7 +56,8 @@ export const createHandler = (params: ICreateHandlerParams) => {
             arn: manifest.sync.eventBusArn,
             name: manifest.sync.eventBusName
         },
-        converter
+        converter,
+        filterOutRecord
     });
     return {
         handler,

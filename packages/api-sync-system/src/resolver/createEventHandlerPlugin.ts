@@ -32,19 +32,6 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
                 message: "Table name variable is not set."
             });
         }
-        console.log("Resolver handler started.");
-        console.log(
-            JSON.stringify({
-                event
-            })
-        );
-        /**
-         * Just end
-         * TODO: remove when figured out the issue with passing the events.
-         */
-        if (event.Records && process.env.NODE_ENV !== "test") {
-            return;
-        }
         try {
             const fetcher = createFetcher({
                 maxRetries: 10,

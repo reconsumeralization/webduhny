@@ -61,7 +61,8 @@ const syncSystem = createSyncSystem({
         variant: process.env.WEBINY_ENV_VARIANT,
         region: process.env.AWS_REGION,
         version: process.env.WEBINY_VERSION
-    }
+    },
+    plugins: []
 });
 /**
  * ####
