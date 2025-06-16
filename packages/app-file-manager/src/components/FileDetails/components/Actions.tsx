@@ -5,11 +5,9 @@ export const Actions = () => {
     const { fileDetails } = useFileManagerViewConfig();
 
     return (
-        <div className={"wby-flex wby-justify-center wby-p-sm"}>
+        <div className={"wby-flex wby-justify-start wby-gap-xs"}>
             {fileDetails.actions.map(action => (
-                <div className={"wby-mx-xs"} key={action.name}>
-                    {action.element}
-                </div>
+                <React.Fragment key={action.name}>{action.element}</React.Fragment>
             ))}
         </div>
     );

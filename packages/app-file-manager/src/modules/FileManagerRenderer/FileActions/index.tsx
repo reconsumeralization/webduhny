@@ -1,5 +1,6 @@
 import React from "react";
 import { FileManagerViewConfig } from "~/index";
+import { Delete as GridDelete } from "./Grid/Delete";
 import { Download as GridDownload } from "./Grid/Download";
 import { MoveToFolder as GridMoveToFolder } from "./Grid/MoveToFolder";
 import { Settings as GridSettings } from "./Grid/Settings";
@@ -15,9 +16,10 @@ export const FileActions = () => {
     return (
         <>
             {/* Grid actions. */}
+            <Browser.Grid.Item.Action name={"settings"} element={<GridSettings />} />
             <Browser.Grid.Item.Action name={"download"} element={<GridDownload />} />
             <Browser.Grid.Item.Action name={"move"} element={<GridMoveToFolder />} />
-            <Browser.Grid.Item.Action name={"settings"} element={<GridSettings />} />
+            <Browser.Grid.Item.Action name={"delete"} element={<GridDelete />} />
             {/* File details actions. */}
             <FileDetails.Action name={"download"} element={<FileDetailsDownload />} />
             <FileDetails.Action name={"moveToFolder"} element={<FileDetailsMoveToFolder />} />

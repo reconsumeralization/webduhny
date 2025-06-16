@@ -9,7 +9,6 @@
     { "path": "../form" },
     { "path": "../plugins" },
     { "path": "../react-composition" },
-    { "path": "../ui" },
     { "path": "../validation" }
   ],
   "compilerOptions": {
@@ -33,8 +32,6 @@
       "@webiny/plugins": ["../plugins/src"],
       "@webiny/react-composition/*": ["../react-composition/src/*"],
       "@webiny/react-composition": ["../react-composition/src"],
-      "@webiny/ui/*": ["../ui/src/*"],
-      "@webiny/ui": ["../ui/src"],
       "@webiny/validation/*": ["../validation/src/*"],
       "@webiny/validation": ["../validation/src"]
     },

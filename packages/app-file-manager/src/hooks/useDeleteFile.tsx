@@ -1,10 +1,9 @@
 import React, { useCallback } from "react";
-import styled from "@emotion/styled";
 import { i18n } from "@webiny/app/i18n";
+import { OverlayLoader, Text } from "@webiny/admin-ui";
 import { useConfirmationDialog, useSnackbar } from "@webiny/app-admin";
 import { FileItem } from "@webiny/app-admin/types";
 import { useFileManagerView } from "~/index";
-import { CircularProgress } from "@webiny/ui/Progress";
 
 const t = i18n.ns("app-admin/file-manager/hooks/use-delete-file");
 
@@ -13,25 +12,20 @@ interface UseDeleteFileParams {
     onDelete?: () => void;
 }
 
-const Filename = styled("span")`
-    font-weight: bold;
-`;
-
 export const useDeleteFile = ({ onDelete, file }: UseDeleteFileParams) => {
     const { deleteFile } = useFileManagerView();
     const { showSnackbar } = useSnackbar();
 
     const { showConfirmation } = useConfirmationDialog({
         title: t`Delete file`,
-        loading: <CircularProgress label={"Deleting file..."} />,
+        loading: <OverlayLoader text={"Deleting file..."} />,
         message: file && (
             <>
-                <p>
-                    {t`You are about to delete file {name}`({
-                        name: <Filename>{file.name}</Filename>
+                <Text>
+                    {t`You are about to delete file {name}. Are you sure you want to continue?`({
+                        name: <strong>{file.name}</strong>
                     })}
-                </p>
-                <p>{t`Are you sure you want to continue?`}</p>
+                </Text>
             </>
         ),
         style: { zIndex: 100 },

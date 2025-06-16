@@ -45,11 +45,7 @@ export const QuerySaverDialog = ({ filter, ...props }: QuerySaverDialogProps) =>
                 return (
                     <Dialog
                         open={props.vm.isOpen}
-                        onOpenChange={open => {
-                            if (!open) {
-                                props.onClose();
-                            }
-                        }}
+                        onClose={props.onClose}
                         title={"Save search filter"}
                         actions={
                             <>

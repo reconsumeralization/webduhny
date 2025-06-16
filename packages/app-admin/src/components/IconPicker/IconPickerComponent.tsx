@@ -73,6 +73,7 @@ export const IconPickerComponent = observer(
                     </PopoverPrimitive.Trigger>
                     <PopoverPrimitive.Content
                         style={{ width: size === ICON_PICKER_SIZE.SMALL ? "248px" : "328px" }}
+                        className={"wby-z-15"}
                     >
                         <IconPickerContent
                             loading={isLoading}

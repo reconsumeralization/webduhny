@@ -1,7 +1,8 @@
-import React from "react";
-import { MultiAutoComplete } from "@webiny/ui/AutoComplete";
+import React, { useMemo } from "react";
+import { Label, MultiAutoComplete } from "@webiny/admin-ui";
 import { useBind } from "@webiny/form";
 import { useFileManagerApi, useFileManagerView } from "~/index";
+import { THREAT_SCAN } from "~/modules/Enterprise/constants";
 import { useFileOrUndefined } from "./useFileOrUndefined";
 
 export const Tags = () => {
@@ -13,16 +14,23 @@ export const Tags = () => {
         name: "tags"
     });
 
+    const values = useMemo(() => {
+        return (bind.value || []).filter((tag: string) => {
+            return !tag.startsWith("mime:") || tag !== THREAT_SCAN.IN_PROGRESS;
+        });
+    }, [bind.value]);
+
     return (
         <MultiAutoComplete
             {...bind}
-            value={(bind.value || []).filter((tag: string) => !tag.startsWith("mime:"))}
+            values={values}
+            onValuesChange={bind.onChange}
             options={tags.allTags.map(tagItem => tagItem.tag)}
-            label={"Tags"}
-            description={"Type in a new tag or select an existing one."}
-            unique={true}
+            label={
+                <Label text={"Tags"} hint={"Type to add a new tag or select from suggestions."} />
+            }
+            uniqueValues={true}
             allowFreeInput={true}
-            useSimpleValues={true}
             disabled={file ? !canEdit(file) : false}
         />
     );

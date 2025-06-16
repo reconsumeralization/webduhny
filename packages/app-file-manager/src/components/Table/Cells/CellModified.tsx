@@ -1,5 +1,5 @@
 import React from "react";
-import { TimeAgo } from "@webiny/ui/TimeAgo";
+import { TimeAgo } from "@webiny/admin-ui";
 import { FileManagerViewConfig } from "~/modules/FileManagerRenderer/FileManagerView/FileManagerViewConfig";
 
 export const CellModified = () => {

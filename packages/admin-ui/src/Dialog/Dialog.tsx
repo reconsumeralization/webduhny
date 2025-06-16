@@ -26,6 +26,8 @@ interface DialogProps
     children: React.ReactNode;
     actions?: React.ReactNode;
     info?: React.ReactNode;
+    onClose?: () => void;
+    onOpen?: () => void;
 }
 
 const DialogBase = (props: DialogProps) => {
@@ -42,7 +44,9 @@ const DialogBase = (props: DialogProps) => {
             // Root props.
             defaultOpen,
             open,
-            onOpenChange,
+            onOpenChange: originalOnOpenChange,
+            onClose,
+            onOpen,
             modal,
             dir,
 
@@ -68,6 +72,19 @@ const DialogBase = (props: DialogProps) => {
             // Content props.
             ...contentProps
         } = props;
+
+        // Handles dialog open state changes, calling original and onClose / onOpen callbacks as needed
+        const onOpenChange = (open: boolean) => {
+            originalOnOpenChange && originalOnOpenChange(open);
+
+            if (onClose && !open) {
+                onClose();
+            }
+
+            if (onOpen && open) {
+                onOpen();
+            }
+        };
 
         return {
             rootProps: {

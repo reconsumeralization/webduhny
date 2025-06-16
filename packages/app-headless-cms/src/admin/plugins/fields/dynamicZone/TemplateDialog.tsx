@@ -95,7 +95,7 @@ export const TemplateDialog = (props: TemplateDialogProps) => {
             {({ Bind, submit, form }) => (
                 <Dialog
                     open={true}
-                    onOpenChange={open => !open && props.onClose()}
+                    onClose={props.onClose}
                     title={dialogTitle}
                     actions={
                         <>

@@ -31,13 +31,11 @@ export const EditFormStepDialog = ({
                 {({ Bind, submit }) => (
                     <Dialog
                         open={isEditStep.isOpened}
-                        onOpenChange={open => {
-                            if (!open) {
-                                setIsEditStep({
-                                    isOpened: false,
-                                    id: null
-                                });
-                            }
+                        onClose={() => {
+                            setIsEditStep({
+                                isOpened: false,
+                                id: null
+                            });
                         }}
                         title={"Change step title"}
                         actions={

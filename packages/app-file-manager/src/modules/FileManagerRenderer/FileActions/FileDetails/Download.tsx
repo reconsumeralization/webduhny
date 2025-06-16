@@ -9,7 +9,7 @@ export const Download = () => {
 
     return (
         <a rel="noreferrer" target={"_blank"} href={`${file.src}?original`}>
-            <FileDetails.Action.IconButton
+            <FileDetails.Action.Button
                 label={"Download"}
                 icon={<DownloadIcon />}
                 onAction={() => {

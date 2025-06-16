@@ -31,12 +31,14 @@ type NodeProps = {
 interface FolderProps extends React.HTMLAttributes<HTMLDivElement> {
     text: string;
     isRoot: boolean;
+    isActive: boolean;
     hasNonInheritedPermissions?: boolean;
     canManagePermissions?: boolean;
 }
 
 export const FolderNode = ({
     isRoot,
+    isActive,
     hasNonInheritedPermissions,
     canManagePermissions,
     text,
@@ -58,7 +60,7 @@ export const FolderNode = ({
             {...props}
             className={cn("wby-flex wby-items-center wby-w-full wby-gap-sm wby-pr-xxl", className)}
         >
-            <TreeItemIcon label={"Folder"} element={icon} />
+            <TreeItemIcon label={"Folder"} element={icon} active={isActive} />
             <Text as={"div"} className={"wby-truncate"}>
                 {text}
             </Text>
@@ -78,9 +80,11 @@ export const Node = ({
 }: NodeProps) => {
     const { folder } = useFolder();
     const isRoot = folder.id === ROOT_FOLDER;
-    // Move the placeholder line to the left based on the element depth within the tree.
-    // Let's add some pixels so that the element is detached from the container but takes up the whole length while it's highlighted during dnd.
-    const indent = depth === 1 ? 8 : (depth - 1) * 20 + 8;
+
+    // Indentation logic:
+    // Depth 0 and 1 share the same base padding of 8px.
+    // From depth 2 onward, increase padding by 24px per level, starting from 32px.
+    const indent = depth <= 1 ? 8 : (depth - 2) * 24 + 32;
 
     const dragOverProps = useDragOver(folder.id, isOpen, onToggle);
 
@@ -123,6 +127,7 @@ export const Node = ({
             <TreeItemContent onClick={handleClick} className={`aco-folder-${id}`}>
                 <FolderNode
                     isRoot={isRoot}
+                    isActive={!!node.data?.isFocused}
                     text={node.text}
                     hasNonInheritedPermissions={hasNonInheritedPermissions}
                     canManagePermissions={canManagePermissions}

@@ -83,7 +83,8 @@ export const EditImage = () => {
 
     return (
         <>
-            <FileDetails.Action.IconButton
+            <FileDetails.Action.Button
+                className={"wby-order-last wby-ml-auto"}
                 label={"Edit image"}
                 data-testid={"fm-edit-image-button"}
                 icon={<EditIcon />}
@@ -92,7 +93,7 @@ export const EditImage = () => {
                     dispatch({ type: "setDataUrl", dataUrl });
                 }}
             />
-            <Hotkeys zIndex={60} disabled={!state.dataUrl}>
+            <Hotkeys zIndex={100} disabled={!state.dataUrl}>
                 <ImageEditorDialog
                     data-testid={"fm-image-editor-dialog"}
                     dialogZIndex={100}

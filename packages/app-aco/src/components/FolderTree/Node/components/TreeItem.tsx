@@ -24,7 +24,7 @@ type TreeItemProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof 
 
 const TreeItem = ({ children, className, active, ...props }: TreeItemProps) => {
     return (
-        <div className={"wby-mb-xs"}>
+        <div className={"wby-mb-xs wby-px-xs-plus"}>
             <div {...props} className={cn(treeItemVariants({ active }), className)}>
                 {children}
             </div>

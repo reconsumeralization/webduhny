@@ -7,17 +7,9 @@ import { DrawerHeader as AdminUiDrawerHeader } from "@webiny/admin-ui/Drawer/com
  * @deprecated This component is deprecated and will be removed in future releases.
  * Please use the `Drawer` component from the `@webiny/admin-ui` package instead.
  */
-const Drawer = ({ onClose, children, ...props }: DrawerProps) => {
+const Drawer = ({ children, ...props }: DrawerProps) => {
     return (
-        <AdminUiDrawer
-            side={"left"}
-            onOpenChange={opened => {
-                if (!opened && onClose) {
-                    onClose();
-                }
-            }}
-            {...props}
-        >
+        <AdminUiDrawer side={"left"} {...props}>
             {children}
         </AdminUiDrawer>
     );

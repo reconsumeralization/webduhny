@@ -211,7 +211,9 @@ const createTailwindConfigTheme = normalizedFigmaExport => {
             {
                 // Custom sidebar-related variables.
                 "sidebar-collapsed": "var(--spacing-sidebar-collapsed)",
-                "sidebar-expanded": "var(--spacing-sidebar-expanded)"
+                "sidebar-expanded": "var(--spacing-sidebar-expanded)",
+                // Custom main content-related variables.
+                "main-content": "var(--spacing-main-content)"
             }
         ),
         textColor: normalizedFigmaExport.reduce(

@@ -1,8 +1,7 @@
 import React from "react";
 import { ImageEditorTool } from "./types";
+import { IconButton, Tooltip } from "@webiny/admin-ui";
 import { ReactComponent as CropIcon } from "@webiny/icons/crop.svg";
-import { IconButton } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 
@@ -20,13 +19,18 @@ const tool: ImageEditorTool = {
     name: "crop",
     icon({ activateTool }) {
         return (
-            <Tooltip placement={"bottom"} content={"Crop"}>
-                <IconButton
-                    icon={<CropIcon />}
-                    onClick={() => activateTool("crop")}
-                    data-testid={"crop-item"}
-                />
-            </Tooltip>
+            <Tooltip
+                side={"bottom"}
+                content={"Crop"}
+                trigger={
+                    <IconButton
+                        variant={"ghost"}
+                        icon={<CropIcon />}
+                        onClick={() => activateTool("crop")}
+                        data-testid={"crop-item"}
+                    />
+                }
+            />
         );
     },
     renderForm,

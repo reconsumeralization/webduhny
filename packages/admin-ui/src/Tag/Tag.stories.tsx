@@ -60,6 +60,20 @@ export const NeutralBaseDisabled: Story = {
     }
 };
 
+export const NeutralBaseOutline: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        variant: "neutral-base-outline"
+    }
+};
+
+export const NeutralBaseOutlineDisabled: Story = {
+    args: {
+        ...NeutralBaseOutline.args,
+        disabled: true
+    }
+};
+
 export const NeutralLight: Story = {
     args: {
         ...WithOnDismissCallback.args,
@@ -74,6 +88,20 @@ export const NeutralLightDisabled: Story = {
     }
 };
 
+export const NeutralMuted: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        variant: "neutral-muted"
+    }
+};
+
+export const NeutralMutedDisabled: Story = {
+    args: {
+        ...NeutralMuted.args,
+        disabled: true
+    }
+};
+
 export const NeutralStrong: Story = {
     args: {
         ...WithOnDismissCallback.args,
@@ -84,6 +112,20 @@ export const NeutralStrong: Story = {
 export const NeutralStrongDisabled: Story = {
     args: {
         ...NeutralStrong.args,
+        disabled: true
+    }
+};
+
+export const NeutralXStrong: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        variant: "neutral-xstrong"
+    }
+};
+
+export const NeutralXStrongDisabled: Story = {
+    args: {
+        ...NeutralXStrong.args,
         disabled: true
     }
 };
@@ -116,6 +158,20 @@ export const AccentDisabled: Story = {
     }
 };
 
+export const AccentLight: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        variant: "accent-light"
+    }
+};
+
+export const AccentLightDisabled: Story = {
+    args: {
+        ...AccentLight.args,
+        disabled: true
+    }
+};
+
 export const Success: Story = {
     args: {
         ...WithOnDismissCallback.args,
@@ -126,6 +182,20 @@ export const Success: Story = {
 export const SuccessDisabled: Story = {
     args: {
         ...Success.args,
+        disabled: true
+    }
+};
+
+export const SuccessLight: Story = {
+    args: {
+        ...WithOnDismissCallback.args,
+        variant: "success-light"
+    }
+};
+
+export const SuccessLightDisabled: Story = {
+    args: {
+        ...SuccessLight.args,
         disabled: true
     }
 };
@@ -164,13 +234,18 @@ export const FullExample: Story = {
         return (
             <div className={"wby-flex wby-gap-sm"}>
                 <Tag {...args} content={"Neutral base"} variant={"neutral-base"} />
+                <Tag {...args} content={"Neutral base outline"} variant={"neutral-base-outline"} />
                 <Tag {...args} content={"Neutral light"} variant={"neutral-light"} />
+                <Tag {...args} content={"Neutral muted"} variant={"neutral-muted"} />
                 <Tag {...args} content={"Neutral strong"} variant={"neutral-strong"} />
+                <Tag {...args} content={"Neutral xstrong"} variant={"neutral-xstrong"} />
                 <Tag {...args} content={"Neutral dark"} variant={"neutral-dark"} />
                 <Tag {...args} content={"Success"} variant={"success"} />
+                <Tag {...args} content={"Success light"} variant={"success-light"} />
                 <Tag {...args} content={"Warning"} variant={"warning"} />
                 <Tag {...args} content={"Destructive"} variant={"destructive"} />
                 <Tag {...args} content={"Accent"} variant={"accent"} />
+                <Tag {...args} content={"Accent light"} variant={"accent-light"} />
             </div>
         );
     }
@@ -195,13 +270,18 @@ export const Documentation: Story = {
             control: "select",
             options: [
                 "neutral-base",
+                "neutral-base-outline",
                 "neutral-light",
+                "neutral-muted",
                 "neutral-strong",
+                "neutral-xstrong",
                 "neutral-dark",
                 "success",
+                "success-light",
                 "warning",
                 "destructive",
-                "accent"
+                "accent",
+                "accent-light"
             ]
         },
         disabled: {

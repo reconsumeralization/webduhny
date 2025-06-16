@@ -27,7 +27,9 @@ const ContentModelGroups = () => {
                 <ContentModelGroupsDataList canCreate={canCreate} />
             </LeftPanel>
             <RightPanel span={8}>
-                <ContentModelGroupsForm canCreate={canCreate} />
+                <div className={"wby-w-full wby-overflow-y-auto wby-h-main-content"}>
+                    <ContentModelGroupsForm canCreate={canCreate} />
+                </div>
             </RightPanel>
         </SplitView>
     );

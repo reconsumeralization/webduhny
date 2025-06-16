@@ -1,18 +1,35 @@
-import React, { Fragment, useMemo } from "react";
+import React, { useMemo } from "react";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 import { ReactComponent as DeleteIcon } from "@webiny/icons/delete.svg";
 import { validation } from "@webiny/validation";
 import { Bind, useBind } from "@webiny/form";
-import { Button, cn, DynamicFieldset, IconButton, Input, Label, Text } from "@webiny/admin-ui";
-
-const Header = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-    return (
-        <div className={cn("wby-flex wby-justify-between", className)} {...props}>
-            {children}
-        </div>
-    );
-};
+import { Button, DynamicFieldset, Heading, IconButton, Input, Text } from "@webiny/admin-ui";
 
 const PATHNAME_REGEX = /^\/[/.a-zA-Z0-9-_]+$/;
+
+interface HeaderPros {
+    addAlias: () => void;
+}
+
+const Header = ({ addAlias }: HeaderPros) => {
+    return (
+        <>
+            <Heading level={6} className={"wby-text-neutral-primary"}>
+                {"File Aliases"}
+            </Heading>
+            <Text size={"sm"} as={"div"} className={"wby-mt-xs wby-mb-sm-extra"}>
+                To make your file accessible via custom paths, add one or more aliases.
+            </Text>
+            <Button
+                onClick={addAlias}
+                text="Add Alias"
+                variant={"secondary"}
+                size={"sm"}
+                icon={<AddIcon />}
+            />
+        </>
+    );
+};
 
 export const Aliases = () => {
     const { value, onChange } = useBind({ name: "aliases" });
@@ -38,57 +55,37 @@ export const Aliases = () => {
     }, []);
 
     return (
-        <DynamicFieldset value={value || [""]} onChange={onChange}>
-            {({ actions, header, row, empty }) => (
-                <>
-                    {row(({ index }) => (
-                        <div className={"wby-mt-md"}>
-                            <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
-                                {"Enter a file path, e.g., /my/custom/file/path.png"}
-                            </Text>
-                            <div className={"wby-flex wby-items-start wby-gap-sm"}>
-                                <Bind validators={aliasValidator} name={`aliases.${index}`}>
-                                    <Input placeholder={"Alias"} size={"lg"} />
-                                </Bind>
-                                <IconButton
-                                    variant={"ghost"}
-                                    size={"lg"}
-                                    icon={<DeleteIcon />}
-                                    onClick={actions.remove(index)}
-                                />
+        <div className={"wby-my-lg"}>
+            <DynamicFieldset value={value || [""]} onChange={onChange}>
+                {({ actions, header, row, empty }) => (
+                    <>
+                        {row(({ index }) => (
+                            <div className={"wby-mt-md"}>
+                                <Text size={"sm"} as={"div"} className={"wby-mb-sm"}>
+                                    {"Enter a file path, e.g., /my/custom/file/path.png"}
+                                </Text>
+                                <div className={"wby-flex wby-items-start wby-gap-sm"}>
+                                    <Bind validators={aliasValidator} name={`aliases.${index}`}>
+                                        <Input placeholder={"Alias"} size={"lg"} />
+                                    </Bind>
+                                    <IconButton
+                                        variant={"ghost"}
+                                        size={"lg"}
+                                        icon={<DeleteIcon />}
+                                        onClick={actions.remove(index)}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                    {empty(() => (
-                        <Fragment>
-                            <Header>
-                                <Label text={"File Aliases"} />
-                                <Button
-                                    onClick={addAlias}
-                                    text="Add alias"
-                                    variant={"secondary"}
-                                    size={"sm"}
-                                />
-                            </Header>
-                            <Text size={"sm"} as={"div"} className={"wby-mt-sm"}>
-                                To make your file accessible via custom paths, add one or more
-                                aliases.
-                            </Text>
-                        </Fragment>
-                    ))}
-                    {header(() => (
-                        <Header>
-                            <Label text={"File Aliases"} />
-                            <Button
-                                onClick={addAlias}
-                                text="Add alias"
-                                variant={"secondary"}
-                                size={"sm"}
-                            />
-                        </Header>
-                    ))}
-                </>
-            )}
-        </DynamicFieldset>
+                        ))}
+                        {header(() => (
+                            <Header addAlias={addAlias} />
+                        ))}
+                        {empty(() => (
+                            <Header addAlias={addAlias} />
+                        ))}
+                    </>
+                )}
+            </DynamicFieldset>
+        </div>
     );
 };

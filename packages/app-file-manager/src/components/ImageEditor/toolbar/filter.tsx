@@ -4,12 +4,9 @@
  */
 import React from "react";
 import { ReactComponent as FilterIcon } from "@webiny/icons/tune.svg";
-import { Slider } from "@webiny/ui/Slider";
-import { ImageEditorTool } from "./types";
-import { IconButton, ButtonDefault } from "@webiny/ui/Button";
-import { Tooltip } from "@webiny/ui/Tooltip";
 import debounce from "lodash/debounce";
-import styled from "@emotion/styled";
+import { Button, Grid, IconButton, Slider, Tooltip } from "@webiny/admin-ui";
+import { ImageEditorTool } from "./types";
 
 interface RenderFormState {
     values: Record<string, any>;
@@ -20,20 +17,6 @@ interface RenderFormProps {
     canvas: any;
     renderApplyCancel?: () => void;
 }
-
-const Wrapper = styled("div")({
-    ul: {
-        textAlign: "center",
-        li: {
-            display: "inline-block",
-            width: 180,
-            padding: 10
-        }
-    },
-    ".buttons": {
-        textAlign: "center"
-    }
-});
 
 const sliders = [
     {
@@ -135,16 +118,16 @@ class RenderForm extends React.Component<RenderFormProps, RenderFormState> {
 
     public override render() {
         return (
-            <Wrapper>
-                <ul>
+            <Grid>
+                <>
                     {sliders.map(props => (
-                        <li key={props.key}>
+                        <Grid.Column span={4} key={props.key}>
                             <Slider
-                                value={this.state.values[props.key]}
+                                value={Number(this.state.values[props.key])}
                                 min={0}
                                 max={100}
                                 disabled={this.state.processing}
-                                onInput={(value: string) => {
+                                onValueChange={(value: number) => {
                                     this.setState(state => {
                                         const values = { ...state.values };
                                         values[props.key] = value;
@@ -154,12 +137,13 @@ class RenderForm extends React.Component<RenderFormProps, RenderFormState> {
                                 }}
                                 {...props}
                             />
-                        </li>
+                        </Grid.Column>
                     ))}
-                </ul>
-
-                <div style={{ textAlign: "center" }}>
-                    <ButtonDefault
+                </>
+                <Grid.Column span={12} className={"wby-text-center"}>
+                    <Button
+                        text={"Reset filters"}
+                        variant={"secondary"}
                         onClick={() => {
                             this.setState({ processing: true }, () => {
                                 this.resetFiltersValues();
@@ -167,11 +151,9 @@ class RenderForm extends React.Component<RenderFormProps, RenderFormState> {
                                 this.setState({ processing: false });
                             });
                         }}
-                    >
-                        Reset filters
-                    </ButtonDefault>
-                </div>
-            </Wrapper>
+                    />
+                </Grid.Column>
+            </Grid>
         );
     }
 }
@@ -180,13 +162,17 @@ const tool: ImageEditorTool = {
     name: "filter",
     icon({ activateTool }) {
         return (
-            <Tooltip placement={"bottom"} content={"Filter"}>
-                <IconButton
-                    icon={<FilterIcon />}
-                    onClick={() => activateTool("filter")}
-                    data-testid={"filter-item"}
-                />
-            </Tooltip>
+            <Tooltip
+                trigger={
+                    <IconButton
+                        variant={"ghost"}
+                        icon={<FilterIcon />}
+                        onClick={() => activateTool("filter")}
+                        data-testid={"filter-item"}
+                    />
+                }
+                content={"Filter"}
+            />
         );
     },
     renderForm(props) {

@@ -99,11 +99,7 @@ export const ListItemMeta = ({
     }, [tooltipMessage, isListDisabled, currentLevel.label]);
 
     return (
-        <DropdownMenu
-            trigger={handle}
-            // This is needed because the z-index value is set in `packages/app-admin/src/components/Dialogs/styled.tsx`
-            // portalZIndex={101}
-        >
+        <DropdownMenu trigger={handle}>
             {TARGET_LEVELS.map(level => (
                 <DropdownMenu.CheckboxItem
                     key={level.id}

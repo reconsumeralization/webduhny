@@ -1,9 +1,8 @@
 import React from "react";
 
 import { observer } from "mobx-react-lite";
+import { Grid, Select } from "@webiny/admin-ui";
 import { Bind } from "@webiny/form";
-import { Cell, Grid } from "@webiny/ui/Grid";
-import { Select } from "@webiny/ui/Select";
 
 import { FieldRenderer } from "~/components/BulkActions/ActionEdit/BatchEditorDialog/FieldRenderer";
 import { OperationFormData } from "~/components/BulkActions/ActionEdit/BatchEditorDialog/BatchEditorDialogPresenter";
@@ -18,7 +17,7 @@ export interface OperationProps {
 export const Operation = observer((props: OperationProps) => {
     return (
         <Grid>
-            <Cell span={6}>
+            <Grid.Column span={6}>
                 <Bind name={`${props.name}.field`}>
                     {({ value, validation }) => (
                         <Select
@@ -30,8 +29,8 @@ export const Operation = observer((props: OperationProps) => {
                         />
                     )}
                 </Bind>
-            </Cell>
-            <Cell span={6}>
+            </Grid.Column>
+            <Grid.Column span={6}>
                 {props.operation.field && (
                     <Bind name={`${props.name}.operator`}>
                         {({ value, onChange, validation }) => (
@@ -45,14 +44,16 @@ export const Operation = observer((props: OperationProps) => {
                         )}
                     </Bind>
                 )}
-            </Cell>
-            {props.operation.selectedField ? (
-                <FieldRenderer
-                    operator={props.operation.operator}
-                    field={props.operation.selectedField}
-                    name={`${props.name}.value`}
-                />
-            ) : null}
+            </Grid.Column>
+            <>
+                {props.operation.selectedField ? (
+                    <FieldRenderer
+                        operator={props.operation.operator}
+                        field={props.operation.selectedField}
+                        name={`${props.name}.value`}
+                    />
+                ) : null}
+            </>
         </Grid>
     );
 });

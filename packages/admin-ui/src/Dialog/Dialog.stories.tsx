@@ -76,6 +76,18 @@ export const ControlledVisibility: Story = {
     args: { ...Default.args, trigger: null }
 };
 
+export const WithOpenCloseEventHandler: Story = {
+    args: {
+        ...Default.args,
+        onClose: () => {
+            console.log("onClose triggered");
+        },
+        onOpen: () => {
+            console.log("onOpen triggered");
+        }
+    }
+};
+
 export const WithDropdownMenu: Story = {
     render: props => {
         const [open, setOpen] = React.useState(false);

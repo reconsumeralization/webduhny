@@ -1,20 +1,6 @@
 import React, { useEffect } from "react";
-import styled from "@emotion/styled";
+import { Separator } from "@webiny/admin-ui";
 import { FolderTree, useGetFolderHierarchy } from "@webiny/app-aco";
-
-const Divider = styled.div`
-    height: 1px;
-    background-color: var(--mdc-theme-on-background);
-    margin: 12px 8px;
-`;
-
-const LeftSidebarContainer = styled.div`
-    padding: 8px;
-    height: calc(100vh - 45px);
-    background-color: var(--mdc-theme-surface);
-    border-right: 1px solid var(--mdc-theme-on-background);
-    overflow-y: scroll;
-`;
 
 interface LeftSidebarProps {
     currentFolder: string;
@@ -34,15 +20,15 @@ export const LeftSidebar = ({ currentFolder, onFolderClick, children }: LeftSide
     }, [currentFolder]);
 
     return (
-        <LeftSidebarContainer>
+        <div className={"wby-p-xs wby-overflow-auto"} style={{ height: "calc(100vh - 69px)" }}>
             <FolderTree
                 focusedFolderId={currentFolder}
                 onFolderClick={data => onFolderClick(data.id)}
                 enableActions={true}
                 enableCreate={true}
             />
-            {children ? <Divider /> : null}
+            {children ? <Separator /> : null}
             {children}
-        </LeftSidebarContainer>
+        </div>
     );
 };

@@ -47,7 +47,7 @@ export const Content = ({
     ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
     return (
-        <div className={cn("wby-overflow-y-scroll wby-h-[calc(100vh-45px)]", className)} {...props}>
+        <div className={cn("wby-overflow-y-auto wby-h-main-content", className)} {...props}>
             {children}
         </div>
     );

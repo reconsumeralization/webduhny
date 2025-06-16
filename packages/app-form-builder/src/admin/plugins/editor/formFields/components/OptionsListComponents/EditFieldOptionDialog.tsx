@@ -42,7 +42,7 @@ const EditFieldOptionDialog = (props: EditFieldOptionDialogProps) => {
                 {({ Bind, submit }) => (
                     <Dialog
                         open={open}
-                        onOpenChange={open => !open && onClose()}
+                        onClose={onClose}
                         title={t`Edit option`}
                         actions={
                             <>

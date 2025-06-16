@@ -1,11 +1,6 @@
 import React from "react";
-
-import { ButtonDefault } from "@webiny/ui/Button";
-
-import {
-    AddOperationInner,
-    ButtonIcon
-} from "~/components/BulkActions/ActionEdit/ActionEdit.styled";
+import { Button } from "@webiny/admin-ui";
+import { ReactComponent as AddIcon } from "@webiny/icons/add.svg";
 
 interface AddOperationProps {
     disabled: boolean;
@@ -14,10 +9,14 @@ interface AddOperationProps {
 
 export const AddOperation = ({ disabled, onClick }: AddOperationProps) => {
     return (
-        <AddOperationInner>
-            <ButtonDefault disabled={disabled} onClick={onClick}>
-                <ButtonIcon disabled={disabled} /> {"Add new operation"}
-            </ButtonDefault>
-        </AddOperationInner>
+        <div className={"wby-mt-lg wby-text-center"}>
+            <Button
+                onClick={onClick}
+                text={"Add new operation"}
+                icon={<AddIcon />}
+                variant={"secondary"}
+                disabled={disabled}
+            />
+        </div>
     );
 };

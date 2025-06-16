@@ -65,24 +65,16 @@ const FileType = ({ mimeType = "", name }: FileTypeProps) => {
     );
 };
 
-type PlaceholderProps = Pick<FileItemFormatted, "name"> & {
-    disabled?: boolean;
-};
+type PlaceholderProps = Pick<FileItemFormatted, "name">;
 
-const Placeholder = ({ name, disabled }: PlaceholderProps) => {
+const Placeholder = ({ name }: PlaceholderProps) => {
     return (
         <div
             className={
                 "wby-size-full wby-flex wby-justify-center wby-items-center wby-bg-transparent"
             }
         >
-            <Icon
-                icon={<PlaceholderIcon />}
-                label={name}
-                size={"lg"}
-                color={"neutral-light"}
-                disabled={disabled}
-            />
+            <Icon icon={<PlaceholderIcon />} label={name} size={"lg"} color={"neutral-light"} />
         </div>
     );
 };
@@ -108,7 +100,7 @@ const RichItemThumbnail = ({
             {preview === "thumbnail" || isImage ? (
                 <Thumbnail url={url} name={name} />
             ) : preview === "placeholder" ? (
-                <Placeholder name={name} disabled={disabled} />
+                <Placeholder name={name} />
             ) : (
                 <FileType mimeType={mimeType} name={name} />
             )}

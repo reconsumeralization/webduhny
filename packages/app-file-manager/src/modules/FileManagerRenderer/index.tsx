@@ -19,9 +19,13 @@ import {
     EditFile,
     MoveFile
 } from "~/components/Table";
-import { DefaultRenderer } from "~/modules/ThumbnailRenderers/DefaultRenderer";
-import { ImageRenderer } from "~/modules/ThumbnailRenderers/ImageRenderer";
+import { GridItemDefaultRenderer } from "~/modules/ThumbnailRenderers/GridItemDefaultRenderer";
+import { GridItemImageRenderer } from "~/modules/ThumbnailRenderers/GridItemImageRenderer";
 import { FileActions } from "~/modules/FileManagerRenderer/FileActions";
+import { FilePreviewImageRenderer } from "~/modules/ThumbnailRenderers/FilePreviewImageRenderer";
+import { TableItemDefaultRenderer } from "~/modules/ThumbnailRenderers/TableItemDefaultRenderer";
+import { TableItemImageRenderer } from "~/modules/ThumbnailRenderers/TableItemImageRenderer";
+import { FilePreviewDefaultRenderer } from "~/modules/ThumbnailRenderers/FilePreviewDefaultRenderer";
 
 const { Browser, FileDetails } = FileManagerConfig;
 
@@ -30,18 +34,23 @@ export const FileManagerRendererModule = () => {
         <>
             <FileManagerRenderer />
             <FileManagerConfig>
+                {/* Filters */}
                 <Browser.FilterByTags />
                 <Browser.Filter name={"type"} element={<FilterByType />} />
+                {/* Bulk Actions */}
                 <Browser.BulkAction name={"edit"} element={<ActionEdit />} />
                 <Browser.BulkAction name={"move"} element={<ActionMove />} />
                 <Browser.BulkAction name={"delete"} element={<ActionDelete />} />
+                {/* Folder Actions */}
                 <Browser.FolderAction name={"edit"} element={<EditFolder />} />
                 <Browser.FolderAction name={"permissions"} element={<SetFolderPermissions />} />
                 <Browser.FolderAction name={"delete"} element={<DeleteFolder />} />
+                {/* File Actions */}
                 <Browser.FileAction name={"copy"} element={<CopyFile />} />
                 <Browser.FileAction name={"edit"} element={<EditFile />} />
                 <Browser.FileAction name={"move"} element={<MoveFile />} />
                 <Browser.FileAction name={"delete"} element={<DeleteFile />} />
+                {/* Table Columns */}
                 <Browser.Table.Column
                     name={"name"}
                     header={"Name"}
@@ -74,31 +83,49 @@ export const FileManagerRendererModule = () => {
                     name={"actions"}
                     header={" "}
                     cell={<CellActions />}
-                    size={80}
-                    className={"rmwc-data-table__cell--align-end"}
+                    size={56}
+                    className={"wby-text-right"}
                     hideable={false}
                     resizable={false}
                 />
+                {/* File Details Fields */}
                 <FileDetails.Field name={"name"} element={<Name />} />
                 <FileDetails.Field name={"tags"} element={<Tags />} />
                 <Browser.BulkEditField name={"tags"} element={<Tags />} />
                 <FileDetails.Field name={"aliases"} element={<Aliases />} />
+                <FileDetails.GroupFields value={false} />
+                {/* File Details Actions */}
+                <FileActions />
+                {/* Access Control */}
                 <Wcp.CanUsePrivateFiles>
                     <FileDetails.Field
                         name={"accessControl"}
                         element={<AccessControl defaultValue={"public"} />}
+                        after={"tags"}
                     />
                     <Browser.BulkEditField
                         name={"accessControl"}
                         element={<AccessControl placeholder={"Select privacy settings"} />}
                     />
                 </Wcp.CanUsePrivateFiles>
-                <FileDetails.GroupFields value={false} />
-                <FileActions />
-                <Browser.Grid.Item.Thumbnail type={"*/*"} element={<DefaultRenderer />} />
-                <Browser.Grid.Item.Thumbnail type={"image/*"} element={<ImageRenderer />} />
-                <FileDetails.Preview.Thumbnail type={"*/*"} element={<DefaultRenderer />} />
-                <FileDetails.Preview.Thumbnail type={"image/*"} element={<ImageRenderer />} />
+                {/* Grid Thumbnail */}
+                <Browser.Grid.Item.Thumbnail type={"*/*"} element={<GridItemDefaultRenderer />} />
+                <Browser.Grid.Item.Thumbnail type={"image/*"} element={<GridItemImageRenderer />} />
+                {/* Table Thumbnail */}
+                <Browser.Table.Cell.Thumbnail
+                    type={"image/*"}
+                    element={<TableItemImageRenderer />}
+                />
+                <Browser.Table.Cell.Thumbnail type={"*/*"} element={<TableItemDefaultRenderer />} />
+                {/* File Details Thumbnail */}
+                <FileDetails.Preview.Thumbnail
+                    type={"*/*"}
+                    element={<FilePreviewDefaultRenderer />}
+                />
+                <FileDetails.Preview.Thumbnail
+                    type={"image/*"}
+                    element={<FilePreviewImageRenderer />}
+                />
             </FileManagerConfig>
         </>
     );

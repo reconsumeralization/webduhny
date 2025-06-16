@@ -28,11 +28,7 @@ const SelectFieldDialog = ({ currentField, open, onClose, onSelect }: SelectFiel
         <Dialog
             title={"Field settings"}
             open={open}
-            onOpenChange={open => {
-                if (!open) {
-                    onClose();
-                }
-            }}
+            onClose={onClose}
             actions={<Dialog.CancelButton />}
         >
             <Grid>
@@ -110,11 +106,7 @@ const EditFieldDrawer = ({
                     width={800}
                     bodyPadding={false}
                     footerSeparator={true}
-                    onOpenChange={open => {
-                        if (!open) {
-                            onClose();
-                        }
-                    }}
+                    onClose={onClose}
                     actions={
                         <>
                             <Drawer.CancelButton />

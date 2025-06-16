@@ -4,9 +4,11 @@ import { Settings } from "~/types";
 
 export interface State {
     activeTags: string[];
+    displaySubFolders: boolean;
     dragging: boolean;
     filters: Record<string, any> | undefined;
     isSearch: boolean;
+    isUploadProgressIndicatorVisible: boolean;
     limit: number;
     listSort?: ListFilesSort;
     listTable: boolean;
@@ -38,7 +40,9 @@ export const getScopeWhereParams = (scope: string | undefined) => {
 export const initializeState = (): State => {
     return {
         activeTags: [],
+        displaySubFolders: true,
         dragging: false,
+        isUploadProgressIndicatorVisible: true,
         isSearch: false,
         filters: undefined,
         limit: 50,

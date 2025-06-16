@@ -28,6 +28,8 @@ interface DrawerProps
     actions?: React.ReactNode;
     info?: React.ReactNode;
     width?: React.CSSProperties["width"];
+    onClose?: () => void;
+    onOpen?: () => void;
 }
 
 const DrawerBase = (props: DrawerProps) => {
@@ -37,7 +39,9 @@ const DrawerBase = (props: DrawerProps) => {
                 // Root props.
                 defaultOpen,
                 open,
-                onOpenChange,
+                onOpenChange: originalOnOpenChange,
+                onClose,
+                onOpen,
 
                 // We want the drawer to always allow interaction with the outside elements.
                 modal = false,
@@ -65,6 +69,19 @@ const DrawerBase = (props: DrawerProps) => {
                 // Content props.
                 ...rest
             } = props;
+
+            // Handles dialog open state changes, calling original and onClose / onOpen callbacks as needed
+            const onOpenChange = (open: boolean) => {
+                originalOnOpenChange && originalOnOpenChange(open);
+
+                if (onClose && !open) {
+                    onClose();
+                }
+
+                if (onOpen && open) {
+                    onOpen();
+                }
+            };
 
             return {
                 rootProps: {

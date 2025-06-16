@@ -1,9 +1,8 @@
 import React, { useMemo, useEffect, useRef } from "react";
 
+import { Drawer } from "@webiny/admin-ui";
 import { observer } from "mobx-react-lite";
 import { FormAPI } from "@webiny/form";
-import { ButtonPrimary } from "@webiny/ui/Button";
-import { Dialog, DialogActions, DialogCancel, DialogContent, DialogTitle } from "@webiny/ui/Dialog";
 
 import { BatchEditorDialogPresenter, BatchEditorFormData } from "./BatchEditorDialogPresenter";
 import { BatchEditor } from "~/components/BulkActions/ActionEdit/BatchEditorDialog/BatchEditor";
@@ -45,29 +44,32 @@ export const BatchEditorDialog = observer((props: BatchEditorDialogProps) => {
     };
 
     return (
-        <Dialog open={props.vm.isOpen} onClose={props.onClose} preventOutsideDismiss={true}>
-            {props.vm.isOpen ? (
+        <Drawer
+            open={props.vm.isOpen}
+            onClose={props.onClose}
+            modal={true}
+            width={800}
+            headerSeparator={true}
+            footerSeparator={true}
+            title={"Edit items"}
+            actions={
                 <>
-                    <DialogTitle>{"Edit items"}</DialogTitle>
-                    <DialogContent>
-                        <BatchEditor
-                            onForm={form => (ref.current = form)}
-                            onChange={data => onChange(data)}
-                            onSubmit={onApply}
-                            onDelete={operationIndex => presenter.deleteOperation(operationIndex)}
-                            onAdd={() => presenter.addOperation()}
-                            onSetOperationFieldData={(operationIndex, data) =>
-                                presenter.setOperationFieldData(operationIndex, data)
-                            }
-                            vm={presenter.vm}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <DialogCancel onClick={props.onClose}>{"Cancel"}</DialogCancel>
-                        <ButtonPrimary onClick={onApply}>{"Submit"}</ButtonPrimary>
-                    </DialogActions>
+                    <Drawer.CancelButton text={"Cancel"} onClick={props.onClose} />
+                    <Drawer.ConfirmButton onClick={onApply} text={"Submit"} />
                 </>
-            ) : null}
-        </Dialog>
+            }
+        >
+            <BatchEditor
+                onForm={form => (ref.current = form)}
+                onChange={data => onChange(data)}
+                onSubmit={onApply}
+                onDelete={operationIndex => presenter.deleteOperation(operationIndex)}
+                onAdd={() => presenter.addOperation()}
+                onSetOperationFieldData={(operationIndex, data) =>
+                    presenter.setOperationFieldData(operationIndex, data)
+                }
+                vm={presenter.vm}
+            />
+        </Drawer>
     );
 });

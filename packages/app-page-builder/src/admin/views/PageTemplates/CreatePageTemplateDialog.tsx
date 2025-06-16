@@ -46,7 +46,7 @@ export const CreatePageTemplateDialog = makeDecoratable(
                     <>
                         <Dialog
                             open={open}
-                            onOpenChange={open => !open && onClose()}
+                            onClose={onClose}
                             title={"Create page template"}
                             actions={
                                 <>

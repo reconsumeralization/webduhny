@@ -48,10 +48,15 @@ const SidebarMenuRootButton = ({
         onClick
     };
 
+    const chevron = action ? (
+        <div className="wby-flex wby-absolute wby-right-sm-plus">{action}</div>
+    ) : null;
+
     const content = to ? (
         <Link {...sharedProps} to={to} {...linkProps}>
             {icon}
             {text}
+            {chevron}
         </Link>
     ) : (
         <DivButton
@@ -61,17 +66,11 @@ const SidebarMenuRootButton = ({
         >
             {icon}
             {text}
+            {chevron}
         </DivButton>
     );
 
-    // We can't use the default button element here because the content of the button
-    // can also contain a button, which is not allowed in HTML.
-    return (
-        <div className={cn("wby-flex wby-items-center wby-w-full", className)}>
-            {content}
-            <div className={"wby-flex wby-absolute wby-right-[10px]"}>{action}</div>
-        </div>
-    );
+    return <div className={cn("wby-flex wby-items-center wby-w-full", className)}>{content}</div>;
 };
 
 export { SidebarMenuRootButton };

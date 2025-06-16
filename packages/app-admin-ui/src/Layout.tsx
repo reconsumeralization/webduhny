@@ -35,10 +35,7 @@ export const Layout = LayoutRenderer.createDecorator(() => {
                             </div>
                         }
                     />
-                    <main
-                        style={{ height: "calc(100vh - 45px)" }}
-                        className={"wby-relative wby-overflow-y-scroll"}
-                    >
+                    <main className={"wby-relative wby-overflow-y-auto wby-h-main-content"}>
                         {children}
                     </main>
                 </div>

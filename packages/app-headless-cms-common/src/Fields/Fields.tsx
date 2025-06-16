@@ -1,5 +1,5 @@
 import React from "react";
-import { Cell, Grid } from "@webiny/ui/Grid";
+import { Grid, type ColumnProps } from "@webiny/admin-ui";
 import { FieldElement } from "./FieldElement";
 import { FieldElementError } from "./FieldElementError";
 import type {
@@ -30,7 +30,10 @@ export const Fields = ({ Bind, fields, layout, contentModel, gridClassName }: Fi
                         const field = getFieldById(fields, id) as CmsModelField;
 
                         return (
-                            <Cell span={Math.floor(12 / row.length)} key={id}>
+                            <Grid.Column
+                                span={Math.floor(12 / row.length) as ColumnProps["span"]}
+                                key={id}
+                            >
                                 {field ? (
                                     <FieldElement
                                         field={field}
@@ -45,7 +48,7 @@ export const Fields = ({ Bind, fields, layout, contentModel, gridClassName }: Fi
                                         }
                                     />
                                 )}
-                            </Cell>
+                            </Grid.Column>
                         );
                     })}
                 </React.Fragment>

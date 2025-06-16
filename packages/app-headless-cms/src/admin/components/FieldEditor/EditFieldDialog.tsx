@@ -89,11 +89,7 @@ const EditFieldDialog = (props: EditFieldDialogProps) => {
                         title={headerTitle}
                         open={true}
                         modal={true}
-                        onOpenChange={open => {
-                            if (!open) {
-                                props.onClose();
-                            }
-                        }}
+                        onClose={props.onClose}
                         bodyPadding={false}
                         actions={
                             <>

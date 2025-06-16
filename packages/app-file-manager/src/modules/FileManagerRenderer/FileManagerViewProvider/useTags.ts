@@ -3,6 +3,7 @@ import { useSecurity } from "@webiny/app-security";
 import { useFileManagerApi } from "~/modules/FileManagerApiProvider/FileManagerApiContext";
 import { DEFAULT_SCOPE } from "~/constants";
 import { FileTag } from "~/types";
+import { THREAT_SCAN } from "~/modules/Enterprise/constants";
 
 const sortTags = (tags: FileTag[]) => {
     return tags.sort((a, b) => a.tag.localeCompare(b.tag));
@@ -64,6 +65,7 @@ export const useTags = ({ scope, own }: UseTagsParams) => {
             return tags
                 .filter(({ tag }) => tag !== scope)
                 .filter(({ tag }) => !tag.startsWith("mime:"))
+                .filter(({ tag }) => tag !== THREAT_SCAN.IN_PROGRESS)
                 .map(item => {
                     const tagName = scope ? item.tag.replace(`${scope}:`, "") : item.tag;
                     return {

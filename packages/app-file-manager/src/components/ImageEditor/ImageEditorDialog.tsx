@@ -1,18 +1,10 @@
 import React, { useState } from "react";
 import { ImageEditor } from "./ImageEditor";
-import { Tooltip } from "@webiny/ui/Tooltip";
-import {
-    Dialog,
-    DialogCancel,
-    DialogActions,
-    DialogContent,
-    DialogOnClose
-} from "@webiny/ui/Dialog";
-import { ButtonPrimary } from "@webiny/ui/Button";
+import { Dialog, OverlayLoader } from "@webiny/admin-ui";
 
 interface ImageEditorDialogProps {
     dialogZIndex?: number;
-    onClose?: DialogOnClose;
+    onClose?: () => void;
     open?: boolean;
     /**
      * We would need to drill down a lot to give correct options.
@@ -25,7 +17,7 @@ interface ImageEditorDialogProps {
 }
 
 export const ImageEditorDialog = (props: ImageEditorDialogProps) => {
-    const { src, options, onAccept, open, dialogZIndex, ...dialogProps } = props;
+    const { src, options, onAccept, onClose, open, dialogZIndex, ...dialogProps } = props;
     const imageEditor = React.createRef<ImageEditor>();
     const [isSaving, setIsSaving] = useState(false);
 
@@ -42,35 +34,27 @@ export const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     };
 
     return (
-        <Dialog style={{ zIndex: dialogZIndex }} open={open} {...dialogProps}>
-            {open && (
-                <ImageEditor ref={imageEditor} src={src} options={options}>
-                    {({ render, activeTool }) => (
-                        <>
-                            <DialogContent>{render()}</DialogContent>
-                            <DialogActions>
-                                <DialogCancel>Cancel</DialogCancel>
-                                {activeTool ? (
-                                    <Tooltip
-                                        content={"Please close currently active tool."}
-                                        placement={"top"}
-                                    >
-                                        <ButtonPrimary disabled>Save</ButtonPrimary>
-                                    </Tooltip>
-                                ) : (
-                                    <ButtonPrimary
-                                        data-testid="dialog-accept"
-                                        onClick={onSave}
-                                        disabled={isSaving}
-                                    >
-                                        {isSaving ? "Saving..." : "Save"}
-                                    </ButtonPrimary>
-                                )}
-                            </DialogActions>
-                        </>
-                    )}
-                </ImageEditor>
-            )}
+        <Dialog
+            style={{ zIndex: dialogZIndex }}
+            open={open}
+            onClose={onClose}
+            {...dialogProps}
+            actions={
+                <>
+                    <Dialog.CancelButton />
+                    <Dialog.ConfirmButton
+                        text={"Save"}
+                        data-testid="dialog-accept"
+                        onClick={onSave}
+                        disabled={isSaving}
+                    />
+                </>
+            }
+        >
+            {isSaving && <OverlayLoader text={"Creating a new version of the image"} />}
+            <ImageEditor ref={imageEditor} src={src} options={options}>
+                {({ render }) => render()}
+            </ImageEditor>
         </Dialog>
     );
 };

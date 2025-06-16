@@ -4,6 +4,7 @@ import { ROOT_FOLDER } from "~/constants";
 
 export interface NavigateFolderContext {
     currentFolderId: string;
+    isRootFolder: boolean;
     setFolderToStorage: (folderId?: string) => void;
     navigateToListHome: () => void;
     navigateToFolder: (folder?: string) => void;
@@ -81,6 +82,7 @@ export const NavigateFolderProvider = ({
 
     const context: NavigateFolderContext = {
         currentFolderId: currentFolderId || getFolderFromStorage() || ROOT_FOLDER,
+        isRootFolder: currentFolderId === ROOT_FOLDER,
         setFolderToStorage,
         navigateToListHome,
         navigateToFolder,

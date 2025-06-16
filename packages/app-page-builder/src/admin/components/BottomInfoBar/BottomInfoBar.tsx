@@ -11,7 +11,7 @@ interface BottomInfoBarProps {
 export const BottomInfoBar = (props: BottomInfoBarProps) => {
     return (
         <div className="wby-sticky wby-bottom-0 wby-z-5 wby-bg-neutral-base wby-w-full wby-transform wby-translate-z-0 wby-overflow-hidden">
-            <Separator margin={"none"} variant={"subtle"} />
+            <Separator />
             <div className={"wby-h-xl wby-px-md wby-py-sm"}>
                 <ListMeta
                     loading={props.loading}

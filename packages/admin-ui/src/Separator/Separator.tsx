@@ -18,9 +18,9 @@ const separatorVariants = cva("wby-shrink-0", {
         },
         variant: {
             transparent: "wby-transparent",
-            white: "wby-bg-white",
-            subtle: "wby-bg-neutral-dimmed",
-            dimmed: "wby-bg-neutral-muted",
+            base: "wby-bg-white",
+            dimmed: "wby-bg-neutral-dimmed",
+            muted: "wby-bg-neutral-muted",
             strong: "wby-bg-neutral-strong"
         }
     },

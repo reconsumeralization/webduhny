@@ -27,16 +27,20 @@ export interface DeleteFileOptions {
 
 export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> extends PublicState {
     accept: string[];
+    currentFolder: FolderItem | null;
     createFile: (data: TFileItem) => Promise<TFileItem | undefined>;
     deleteFile: (id: string, options?: DeleteFileOptions) => Promise<void>;
     files: FileItem[];
     folderId: string;
     folders: FolderItem[];
+    displaySubFolders: boolean;
     getFile: (id: string) => Promise<TFileItem | undefined>;
     hideFileDetails: () => void;
     hideFilters: () => void;
     isListLoading: boolean;
     isListLoadingMore: boolean;
+    isRootFolder: boolean;
+    isUploadProgressIndicatorVisible: boolean;
     hasOnSelectCallback: boolean;
     listTitle: string;
     loadMoreFiles: () => void;
@@ -49,10 +53,12 @@ export interface FileManagerViewContext<TFileItem extends FileItem = FileItem> e
     own: boolean;
     scope?: string;
     setDragging: (state: boolean) => void;
+    setDisplaySubFolders: (state: boolean) => void;
     setFilters: (data: Record<string, any>) => void;
     setFolderId: (folderId: string) => void;
     setListSort: (state: ListSearchRecordsSort) => void;
     setListTable: (mode: boolean) => void;
+    setIsUploadProgressIndicatorVisible: (visible: boolean) => void;
     setSearchQuery: (query: string) => void;
     setSelected: (files: TFileItem[]) => void;
     showFileDetails: (id: string) => void;
@@ -119,7 +125,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
     const modifiers = { scope: props.scope, own: props.own, accept: props.accept };
     const fileManager = useFileManagerApi();
     const { folders: originalFolders, loading: foldersLoading } = useListFolders();
-    const { currentFolderId, navigateToFolder } = useNavigateFolder();
+    const { currentFolderId, navigateToFolder, isRootFolder } = useNavigateFolder();
     const tags = useTags(modifiers);
     const [state, setState] = useStateIfMounted(initializeState());
 
@@ -412,6 +418,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         deleteFile,
         files,
         folderId: currentFolderId,
+        currentFolder: originalFolders.find(folder => folder.id === currentFolderId) ?? null,
         folders: state.isSearch ? [] : folders,
         getFile,
         hideFileDetails() {
@@ -431,6 +438,7 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
             loading.INIT || foldersLoading.INIT || loading.LIST || foldersLoading.LIST
         ),
         isListLoadingMore: Boolean(loading.LIST_MORE),
+        isRootFolder: Boolean(isRootFolder),
         listTitle,
         loadMoreFiles,
         meta,
@@ -464,6 +472,12 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
                 dragging: value
             }));
         },
+        setDisplaySubFolders(value: boolean) {
+            setState(state => ({
+                ...state,
+                displaySubFolders: value
+            }));
+        },
         setFilters(data) {
             // Create filters object excluding entries with `undefined` values
             const filters = Object.fromEntries(
@@ -480,6 +494,12 @@ export const FileManagerViewProvider = ({ children, ...props }: FileManagerViewP
         setFolderId(folderId) {
             resetSearchParameters(folderId);
             navigateToFolder(folderId);
+        },
+        setIsUploadProgressIndicatorVisible(visible: boolean) {
+            setState(state => ({
+                ...state,
+                isUploadProgressIndicatorVisible: visible
+            }));
         },
         setListSort(sort: ListSearchRecordsSort) {
             setState(state => ({

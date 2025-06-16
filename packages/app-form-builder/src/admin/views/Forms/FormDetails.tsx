@@ -110,7 +110,7 @@ const FormDetails = ({ onCreateForm }: FormDetailsProps) => {
             : getRevisions.data.formBuilder.revisions.data;
 
     return (
-        <div style={{ height: "calc(100vh - 45px)" }} className={"wby-relative"}>
+        <div className={"wby-relative wby-overflow-y-auto wby-h-main-content"}>
             {getForm.loading && <OverlayLoader text={"Loading details..."} />}
             {form && (
                 <Tabs

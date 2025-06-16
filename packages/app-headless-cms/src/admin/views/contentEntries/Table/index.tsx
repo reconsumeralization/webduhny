@@ -38,7 +38,7 @@ const View = () => {
     return (
         <SplitView layoutId={layoutId}>
             <LeftPanel span={2}>
-                <Sidebar folderId={currentFolderId} />
+                <Sidebar />
             </LeftPanel>
             <RightPanel span={10}>
                 <ContentEntryProvider currentFolderId={currentFolderId}>

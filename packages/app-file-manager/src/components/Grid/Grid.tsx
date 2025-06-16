@@ -1,13 +1,12 @@
 import React, { useMemo } from "react";
-import { FolderGrid } from "@webiny/app-aco";
+import { cn, OverlayLoader } from "@webiny/admin-ui";
+import { FolderGridItem, FolderProvider } from "@webiny/app-aco";
 import { i18n } from "@webiny/app/i18n";
-import { CircularProgress } from "@webiny/ui/Progress";
-import { File } from "./File";
-import { FileList, FolderList } from "./styled";
 import { FolderItem } from "@webiny/app-aco/types";
 import { FileItem } from "@webiny/app-admin/types";
-import { Thumbnail } from "./Thumbnail";
 import { FileProvider } from "~/contexts/FileProvider";
+import { Thumbnail } from "../Thumbnail";
+import { File } from "./File";
 
 const t = i18n.ns("app-admin/file-manager/components/grid");
 
@@ -23,6 +22,7 @@ interface GridProps {
     onChange?: (file: FileItem) => void;
     onClose?: () => void;
     hasOnSelectCallback: boolean;
+    displaySubFolders?: boolean;
 }
 
 export const Grid = ({
@@ -36,10 +36,15 @@ export const Grid = ({
     toggleSelected,
     deselectAll,
     multiple,
-    hasOnSelectCallback
+    hasOnSelectCallback,
+    displaySubFolders = true
 }: GridProps) => {
     if (loading) {
-        return <CircularProgress label={t`Loading Files...`} style={{ opacity: 1 }} />;
+        return (
+            <div className={"wby-relative wby-size-full"}>
+                <OverlayLoader text={t`Loading files...`} size={"lg"} />
+            </div>
+        );
     }
 
     const onSelect = useMemo(() => {
@@ -63,11 +68,20 @@ export const Grid = ({
     }, [onChange]);
 
     return (
-        <>
-            <FolderList>
-                <FolderGrid folders={folders} onFolderClick={onFolderClick} />
-            </FolderList>
-            <FileList onClick={deselectAll}>
+        <div
+            className={cn(["wby-p-lg", "wby-grid wby-gap-md wby-grid"])}
+            style={{
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))"
+            }}
+            onClick={deselectAll}
+        >
+            <>
+                {displaySubFolders &&
+                    folders.map(folder => (
+                        <FolderProvider folder={folder} key={folder.id}>
+                            <FolderGridItem onClick={onFolderClick} />
+                        </FolderProvider>
+                    ))}
                 {records.map(record => (
                     <FileProvider file={record} key={record.id}>
                         <File
@@ -80,7 +94,7 @@ export const Grid = ({
                         </File>
                     </FileProvider>
                 ))}
-            </FileList>
-        </>
+            </>
+        </div>
     );
 };

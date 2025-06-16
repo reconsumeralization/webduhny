@@ -92,7 +92,7 @@ const PageTemplatesDialog = ({ onClose, onSelect, isLoading }: PageTemplatesDial
                                         )}
                                     </DelayedOnChange>
                                 </div>
-                                <Separator variant={"subtle"} />
+                                <Separator />
                             </div>
                             <List data-testid={"pb-new-page-dialog-templates-list"}>
                                 {filteredPageTemplates.map(template => (
@@ -109,7 +109,7 @@ const PageTemplatesDialog = ({ onClose, onSelect, isLoading }: PageTemplatesDial
                             </List>
                         </div>
                         <div>
-                            <Separator variant={"subtle"} />
+                            <Separator />
                             <div className={"wby-py-md wby-px-lg wby-flex"}>
                                 <Button
                                     variant={"primary"}

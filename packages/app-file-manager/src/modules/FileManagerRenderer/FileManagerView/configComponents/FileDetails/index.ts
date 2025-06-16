@@ -15,7 +15,7 @@ export interface FileDetailsConfig {
 }
 
 export const FileDetails = {
-    Action: Object.assign(Action, { IconButton: ActionButton }),
+    Action: Object.assign(Action, { Button: ActionButton }),
     Preview: {
         Thumbnail
     },
