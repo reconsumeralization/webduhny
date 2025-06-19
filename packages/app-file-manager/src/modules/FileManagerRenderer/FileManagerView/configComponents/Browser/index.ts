@@ -13,6 +13,7 @@ import { GridConfig } from "./Grid";
 import { ActionButton } from "~/components/Grid/ActionButton";
 import { File } from "~/components/Grid/File";
 import { shouldDecorateFolderField } from "./FolderFieldDecorator";
+import { FolderDropConfirmation } from "./FolderDropConfirmation";
 
 export interface BrowserConfig {
     bulkActions: BulkActionConfig[];
@@ -45,7 +46,8 @@ export const Browser = {
                 shouldDecorate: shouldDecorateFolderField
             })
         },
-        Action: FolderAction
+        Action: FolderAction,
+        DropConfirmation: FolderDropConfirmation
     },
     /**
      * @deprecated

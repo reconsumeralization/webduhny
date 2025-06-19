@@ -21,6 +21,8 @@ import {
 import { ROOT_FOLDER } from "~/constants";
 import { DndFolderItemData, FolderItem } from "~/types";
 import { FolderProvider } from "~/contexts/folder";
+import { useAcoConfig } from "~/config";
+import { useConfirmMoveFolderDialog } from "~/dialogs";
 
 interface ListProps {
     folders: FolderItem[];
@@ -45,6 +47,8 @@ export const List = ({
     const [treeData, setTreeData] = useState<NodeModel<DndFolderItemData>[]>([]);
     const [initialOpenList, setInitialOpenList] = useState<undefined | InitialOpen>();
     const [openFolderIds, setOpenFolderIds] = useState<string[]>([ROOT_FOLDER]);
+    const { showDialog: showConfirmMoveFolderDialog } = useConfirmMoveFolderDialog();
+    const { folder: folderConfigs } = useAcoConfig();
 
     useEffect(() => {
         if (folders) {
@@ -62,6 +66,35 @@ export const List = ({
     useEffect(() => {
         setInitialOpenList(memoCreateInitialOpenList(focusedFolderId));
     }, [focusedFolderId]);
+
+    const onDrop = useCallback(
+        async (newTree: NodeModel<DndFolderItemData>[], options: DropOptions) => {
+            const { dragSourceId, dropTargetId } = options;
+            const folder = folders.find(f => f.id === dragSourceId);
+            const targetFolder = folders.find(f => f.id === dropTargetId);
+
+            // Abort if either folder is not found
+            if (!folder || !targetFolder) {
+                return;
+            }
+
+            // Function to execute the drop logic
+            const runDrop = () => handleDrop(newTree, options);
+
+            // If drop confirmation is enabled, show dialog before proceeding
+            if (folderConfigs.dropConfirmation) {
+                showConfirmMoveFolderDialog({
+                    folder,
+                    targetFolder,
+                    onAccept: runDrop
+                });
+            } else {
+                // Otherwise, perform the drop immediately
+                await runDrop();
+            }
+        },
+        [folders, folderConfigs.dropConfirmation, showConfirmMoveFolderDialog]
+    );
 
     const handleDrop = async (
         newTree: NodeModel<DndFolderItemData>[],
@@ -139,7 +172,7 @@ export const List = ({
                 <Tree
                     tree={treeData}
                     rootId={"0"}
-                    onDrop={handleDrop}
+                    onDrop={onDrop}
                     onChangeOpen={ids => handleChangeOpen(ids as string[])}
                     sort={sort}
                     canDrag={item => canDrag(item!.id as string)}

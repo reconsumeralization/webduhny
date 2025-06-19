@@ -4,6 +4,7 @@ import { FolderAction, FolderActionConfig } from "./FolderAction";
 import { PageAction, PageActionConfig } from "./PageAction";
 import { Table, TableConfig } from "./Table";
 import { shouldDecorateFolderField } from "./FolderFieldDecorator";
+import { FolderDropConfirmation } from "./FolderDropConfirmation";
 
 export interface BrowserConfig {
     bulkActions: BulkActionConfig[];
@@ -23,7 +24,8 @@ export const Browser = {
                 shouldDecorate: shouldDecorateFolderField
             })
         },
-        Action: FolderAction
+        Action: FolderAction,
+        DropConfirmation: FolderDropConfirmation
     },
     /**
      * @deprecated
