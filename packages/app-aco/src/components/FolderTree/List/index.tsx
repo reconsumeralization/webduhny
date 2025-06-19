@@ -69,20 +69,20 @@ export const List = ({
 
     const onDrop = useCallback(
         async (newTree: NodeModel<DndFolderItemData>[], options: DropOptions) => {
-            const { dragSourceId, dropTargetId } = options;
-            const folder = folders.find(f => f.id === dragSourceId);
-            const targetFolder = folders.find(f => f.id === dropTargetId);
-
-            // Abort if either folder is not found
-            if (!folder || !targetFolder) {
-                return;
-            }
-
             // Function to execute the drop logic
             const runDrop = () => handleDrop(newTree, options);
 
             // If drop confirmation is enabled, show dialog before proceeding
             if (folderConfigs.dropConfirmation) {
+                const { dragSourceId, dropTargetId } = options;
+                const folder = folders.find(f => f.id === dragSourceId);
+                const targetFolder = folders.find(f => f.id === dropTargetId);
+
+                // Abort if either folder is not found
+                if (!folder || !targetFolder) {
+                    return;
+                }
+
                 showConfirmMoveFolderDialog({
                     folder,
                     targetFolder,
