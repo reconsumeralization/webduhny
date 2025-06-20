@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`manifest render test should be able to render a simple manifest file 1`] = `
+{
+  "theme": [
+    {
+      "name": "default",
+      "path": "/themes/default",
+    },
+  ],
+  "website.publicAsset": [
+    {
+      "path": "/a/b/c.txt",
+    },
+    {
+      "path": "/a/b/d.txt",
+    },
+  ],
+}
+`;

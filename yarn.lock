@@ -11861,6 +11861,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/debounce@npm:^1.2.0":
+  version: 1.2.4
+  resolution: "@types/debounce@npm:1.2.4"
+  checksum: 10/decef3eee65d681556d50f7fac346f1b33134f6b21f806d41326f9dfb362fa66b0282ff0640ae6791b690694c9dc3dad4e146e909e707e6f96650f3aa325b9da
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.7":
   version: 3.7.7
   resolution: "@types/eslint-scope@npm:3.7.7"
@@ -16719,6 +16726,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/extensions@workspace:packages/extensions":
+  version: 0.0.0-use.local
+  resolution: "@webiny/extensions@workspace:packages/extensions"
+  dependencies:
+    "@webiny/project": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
+    jest: "npm:^29.7.0"
+    react: "npm:18.2.0"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/feature-flags@npm:0.0.0, @webiny/feature-flags@workspace:packages/feature-flags":
   version: 0.0.0-use.local
   resolution: "@webiny/feature-flags@workspace:packages/feature-flags"
@@ -17160,6 +17180,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@webiny/project@npm:0.0.0, @webiny/project@workspace:packages/project":
+  version: 0.0.0-use.local
+  resolution: "@webiny/project@workspace:packages/project"
+  dependencies:
+    "@types/lodash": "npm:^4.17.13"
+    "@webiny/project-utils": "npm:0.0.0"
+    isnumeric: "npm:^0.3.3"
+    jest: "npm:^29.7.0"
+    lodash: "npm:^4.17.21"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
+  languageName: unknown
+  linkType: soft
+
 "@webiny/pubsub@npm:0.0.0, @webiny/pubsub@workspace:packages/pubsub":
   version: 0.0.0-use.local
   resolution: "@webiny/pubsub@workspace:packages/pubsub"
@@ -17575,6 +17609,23 @@ __metadata:
     isnumeric: "npm:^0.3.3"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:5.3.3"
+  languageName: unknown
+  linkType: soft
+
+"@webiny/wc@workspace:packages/wc":
+  version: 0.0.0-use.local
+  resolution: "@webiny/wc@workspace:packages/wc"
+  dependencies:
+    "@types/debounce": "npm:^1.2.0"
+    "@types/jsdom": "npm:^21.1.6"
+    "@webiny/project": "npm:0.0.0"
+    "@webiny/project-utils": "npm:0.0.0"
+    debounce: "npm:^1.2.0"
+    jest: "npm:^29.7.0"
+    jsdom: "npm:^25.0.1"
+    react: "npm:18.2.0"
     rimraf: "npm:^6.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
@@ -22460,6 +22511,13 @@ __metadata:
   version: 1.8.36
   resolution: "dayjs@npm:1.8.36"
   checksum: 10/f9f9343472eba0fc3cb4dbd3acc83c9de93d6aaff122f73699d3bdd02939601e36850d240080e26bf042b703aaf9a45b6cd130959902f6936fbbb7e1fc54c239
+  languageName: node
+  linkType: hard
+
+"debounce@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "debounce@npm:1.2.1"
+  checksum: 10/0b95b2a9d80ed69117d890f8dab8c0f2d6066f8d20edd1d810ae51f8f366a6d4c8b1d56e97dcb9304e93d57de4d5db440d34a03def7dad50403fc3f22bf16808
   languageName: node
   linkType: hard
 
