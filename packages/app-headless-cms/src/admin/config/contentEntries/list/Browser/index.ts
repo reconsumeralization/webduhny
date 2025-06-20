@@ -7,6 +7,7 @@ import { FiltersToWhere, FiltersToWhereConverter } from "./FiltersToWhere";
 import { FolderAction, FolderActionConfig } from "./FolderAction";
 import { Table, TableConfig } from "./Table";
 import { shouldDecorateFolderField } from "./FolderFieldDecorator";
+import { FolderDropConfirmation } from "./FolderDropConfirmation";
 
 export interface BrowserConfig {
     advancedSearch: AdvancedSearchConfig;
@@ -31,7 +32,8 @@ export const Browser = {
                 shouldDecorate: shouldDecorateFolderField
             })
         },
-        Action: FolderAction
+        Action: FolderAction,
+        DropConfirmation: FolderDropConfirmation
     },
     Table,
     /**

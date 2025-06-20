@@ -1,3 +1,4 @@
+export * from "./useConfirmMoveFolderDialog";
 export * from "./useCreateDialog";
 export * from "./useDeleteDialog";
 export * from "./useEditDialog";
