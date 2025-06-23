@@ -20,7 +20,7 @@ export interface IHandlerEventBus {
 }
 
 export interface IHandlerParams {
-    client: Pick<EventBridgeClient, "send">;
+    getEventBridgeClient(): Pick<EventBridgeClient, "send">;
     converter: IHandlerConverter;
     eventBus: IHandlerEventBus;
     system: ISystem;
@@ -30,14 +30,14 @@ export interface IHandlerParams {
 export class Handler implements IHandler {
     public readonly id = generateAlphaNumericId();
     private readonly system: ISystem;
-    private readonly client: Pick<EventBridgeClient, "send">;
+    private readonly getEventBridgeClient: () => Pick<EventBridgeClient, "send">;
     private commands: ICommandValue[] = [];
     private readonly converter: IHandlerConverter;
     private readonly eventBus: IHandlerEventBus;
     private readonly filterOutRecord: FilterOutRecord;
 
     public constructor(params: IHandlerParams) {
-        this.client = params.client;
+        this.getEventBridgeClient = params.getEventBridgeClient;
         this.system = params.system;
         this.converter = params.converter;
         this.eventBus = params.eventBus;
@@ -49,10 +49,9 @@ export class Handler implements IHandler {
         this.commands.push(cmd);
     }
 
-    public async flush(): Promise<void> {
+    public async flush(): Promise<unknown> {
         const items = this.createEventBusEvent();
         if (!items?.length) {
-            console.log("No commands to flush to Sync System EventBridge.");
             return;
         }
 
@@ -84,14 +83,8 @@ export class Handler implements IHandler {
         );
 
         try {
-            const result = await this.client.send(command);
-            console.log("trying to send command", JSON.stringify({ command }));
-            console.log(
-                JSON.stringify({
-                    input,
-                    result
-                })
-            );
+            const eventBridgeClient = this.getEventBridgeClient();
+            return await eventBridgeClient.send(command);
         } catch (ex) {
             console.log("Could not send events to Sync System EventBridge.");
             console.error(ex.message);
@@ -103,7 +96,6 @@ export class Handler implements IHandler {
             );
             throw ex;
         }
-        console.log("end sending command", JSON.stringify({ command }));
     }
 
     private createEventBusEvent(): NonEmptyArray<ICommandValueItem> | null {
@@ -124,8 +116,6 @@ export class Handler implements IHandler {
                 }
                 items.push(item);
             }
-
-            items.push(...commandItems);
 
             return items;
         }, []);

@@ -2,7 +2,7 @@ import { Plugin } from "@webiny/plugins";
 import type { Reply as FastifyReply, Request as FastifyRequest } from "~/types.js";
 
 export interface IOnRequestResponsePluginCallable {
-    (request: FastifyRequest, reply: FastifyReply): Promise<void>;
+    (request: FastifyRequest, reply: FastifyReply): Promise<unknown>;
 }
 
 export class OnRequestResponsePlugin extends Plugin {
@@ -15,8 +15,8 @@ export class OnRequestResponsePlugin extends Plugin {
         this.cb = cb;
     }
 
-    public async exec(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-        return this.cb(request, reply);
+    public async exec(request: FastifyRequest, reply: FastifyReply): Promise<unknown> {
+        return await this.cb(request, reply);
     }
 }
 

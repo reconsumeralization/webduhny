@@ -34,6 +34,7 @@ import { IfOptionsRequest } from "./PreHandler/IfOptionsRequest";
 import { SendEarlyOptionsResponse } from "./PreHandler/SendEarlyOptionsResponse";
 import { OnRequestResponsePlugin } from "~/plugins/OnRequestResponsePlugin.js";
 import { OnRequestTimeoutPlugin } from "~/plugins/OnRequestTimeoutPlugin.js";
+import { OnRequestResponseSendPlugin } from "~/plugins/OnRequestResponseSendPlugin.js";
 
 const modifyResponseHeaders = (app: FastifyInstance, request: Request, reply: Reply) => {
     const modifyHeaders = app.webiny.plugins.byType<ModifyResponseHeadersPlugin>(
@@ -399,9 +400,15 @@ export const createHandler = (params: CreateHandlerParams) => {
     /**
      * Apply response headers modifier plugins.
      */
-    app.addHook("onSend", async (request, reply, payload) => {
+    app.addHook("onSend", async (request, reply, input) => {
         modifyResponseHeaders(app, request, reply);
-
+        const plugins = app.webiny.plugins.byType<OnRequestResponseSendPlugin>(
+            OnRequestResponseSendPlugin.type
+        );
+        let payload = input;
+        for (const plugin of plugins) {
+            payload = await plugin.exec(request, reply, payload);
+        }
         return payload;
     });
 

@@ -94,12 +94,13 @@ export const createEventHandlerPlugin = (params: ICreateEventHandlerPluginParams
             await app.resolve({
                 records: event.Records
             });
-            return reply.send({
+            reply.send({
                 ok: true
             });
         } catch (ex) {
             console.error(convertException(ex));
-            return reply.send(ex);
+            reply.send(ex);
         }
+        return reply;
     });
 };

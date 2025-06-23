@@ -1,10 +1,7 @@
 import zod from "zod";
-import { createJsonTransform } from "./createJsonTransform.js";
 import { createDetailValidation } from "./detail.js";
 import { SQS_EVENT_NAME } from "~/constants.js";
 import { createNumericStringValidation } from "~/resolver/app/validation/numericString.js";
-
-const detailTransform = createJsonTransform("Detail");
 
 const detailValidation = createDetailValidation();
 
@@ -36,7 +33,6 @@ export const createBodyValidation = () => {
         time: zod.string().transform(value => new Date(value)),
         region: zod.string(),
         resources: zod.array(zod.string()),
-        detail: detailTransform.pipe(detailValidation),
-        eventBusName: zod.string()
+        detail: detailValidation
     });
 };

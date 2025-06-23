@@ -1,16 +1,17 @@
 import type { Plugin } from "@webiny/plugins/types.js";
-import type { ISystem } from "./types.js";
+import type { IGetEventBridgeCallable, ISystem } from "./types.js";
 import { validateSystemInput } from "./utils/validateSystemInput.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import type { PossiblyUndefinedProperties } from "@webiny/api/types";
 import { createSyncSystemHandlerOnRequestPlugin } from "./requestPlugin.js";
 import type { FilterOutRecordPlugin } from "./plugins/FilterOutRecordPlugin.js";
-import { createDefaultFilterRecordPlugins } from "./filter/index.js";
+import { createDefaultFilterOutRecordPlugins } from "./filter/index.js";
 
 export type IAllowedPlugins = FilterOutRecordPlugin;
 
 export interface ICreateSyncSystemParams {
-    documentClient: Pick<DynamoDBDocument, "send">;
+    getDocumentClient(): Pick<DynamoDBDocument, "send">;
+    getEventBridgeClient: IGetEventBridgeCallable;
     system: PossiblyUndefinedProperties<Omit<ISystem, "name">>;
     plugins?: IAllowedPlugins[];
 }
@@ -42,9 +43,10 @@ export const createSyncSystem = (params: ICreateSyncSystemParams): ICreateSyncSy
         plugins: () => {
             return [
                 ...(params.plugins || []),
-                ...createDefaultFilterRecordPlugins(),
+                ...createDefaultFilterOutRecordPlugins(),
                 createSyncSystemHandlerOnRequestPlugin({
-                    documentClient: params.documentClient,
+                    getDocumentClient: params.getDocumentClient,
+                    getEventBridgeClient: params.getEventBridgeClient,
                     system
                 })
             ];

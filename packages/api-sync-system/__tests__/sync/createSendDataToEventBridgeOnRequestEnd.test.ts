@@ -26,7 +26,7 @@ describe("createSendDataToEventBridgeOnRequestEnd", () => {
             send
         });
         const handler = createMockSyncHandler({
-            client,
+            eventBridgeClient: client,
             converter: "all"
         });
 
@@ -55,7 +55,7 @@ describe("createSendDataToEventBridgeOnRequestEnd", () => {
             send
         });
         const handler = createMockSyncHandler({
-            client,
+            eventBridgeClient: client,
             converter: "all"
         });
 
@@ -87,7 +87,7 @@ describe("createSendDataToEventBridgeOnRequestEnd", () => {
             send
         });
         const handler = createMockSyncHandler({
-            client,
+            eventBridgeClient: client,
             converter: "all"
         });
 

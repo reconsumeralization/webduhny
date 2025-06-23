@@ -12,12 +12,13 @@ const validateManifest = zod.object({
 });
 
 export interface IGetManifestParams {
-    documentClient: Pick<DynamoDBDocument, "send">;
+    getDocumentClient(): Pick<DynamoDBDocument, "send">;
 }
 
 export const getManifest = async (params: IGetManifestParams) => {
+    const documentClient = params.getDocumentClient();
     try {
-        ServiceDiscovery.setDocumentClient(params.documentClient);
+        ServiceDiscovery.setDocumentClient(documentClient);
         const manifest = await ServiceDiscovery.load();
         if (!manifest?.sync) {
             return {

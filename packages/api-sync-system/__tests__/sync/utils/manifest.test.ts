@@ -13,7 +13,7 @@ describe("manifest", () => {
 
     it("should return error because no manifest is provided", async () => {
         const result = await getManifest({
-            documentClient: client
+            getDocumentClient: () => client
         });
 
         expect(result.data).toBeUndefined();
@@ -37,7 +37,7 @@ describe("manifest", () => {
             }
         });
         const result = await getManifest({
-            documentClient: client
+            getDocumentClient: () => client
         });
         expect(result.data).toBeUndefined();
         expect(result.error.message).toEqual("Validation failed.");
@@ -93,7 +93,7 @@ describe("manifest", () => {
             }
         });
         const result = await getManifest({
-            documentClient: client
+            getDocumentClient: () => client
         });
 
         expect(result.error).toBeUndefined();
@@ -114,7 +114,7 @@ describe("manifest", () => {
         });
 
         const result = await getManifest({
-            documentClient: client
+            getDocumentClient: () => client
         });
 
         expect(result.data).toBeUndefined();

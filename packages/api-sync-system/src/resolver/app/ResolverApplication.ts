@@ -28,6 +28,7 @@ export class ResolverApplication implements IResolverApplication {
 
         const result = await validation.validate(params.records);
         console.log({
+            records: params.records,
             validationResult: JSON.stringify(result)
         });
         if (result.error) {

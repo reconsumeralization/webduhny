@@ -24,7 +24,6 @@ export interface IResolverSQSRecordBody {
     region: string;
     resources: unknown[];
     detail: IDetail;
-    eventBusName: string;
 }
 
 export interface IResolverSQSRecordAttributes {

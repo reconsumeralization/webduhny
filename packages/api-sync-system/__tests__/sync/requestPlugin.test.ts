@@ -8,6 +8,7 @@ import { OnRequestTimeoutPlugin } from "@webiny/handler/plugins/OnRequestTimeout
 import { createMockManifest, createMockManifestInDynamoDb } from "~tests/mocks/manifest.js";
 import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js";
 import { ServiceDiscovery } from "@webiny/api";
+import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
 
 describe("requestPlugin", () => {
     let client: DynamoDBDocument;
@@ -20,7 +21,10 @@ describe("requestPlugin", () => {
     it("should not have any plugins registered if no manifest is provided", async () => {
         const result = createSyncSystemHandlerOnRequestPlugin({
             system: createMockSystem(),
-            documentClient: client
+            getDocumentClient: () => client,
+            getEventBridgeClient: () => {
+                return createMockEventBridgeClient();
+            }
         });
 
         expect(result).toBeInstanceOf(HandlerOnRequestPlugin);
@@ -41,7 +45,10 @@ describe("requestPlugin", () => {
 
         const result = createSyncSystemHandlerOnRequestPlugin({
             system: createMockSystem(),
-            documentClient: client
+            getDocumentClient: () => client,
+            getEventBridgeClient: () => {
+                return createMockEventBridgeClient();
+            }
         });
 
         expect(result).toBeInstanceOf(HandlerOnRequestPlugin);

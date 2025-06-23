@@ -16,7 +16,7 @@ import { FilterOutRecordPlugin } from "~/sync/plugins/FilterOutRecordPlugin.js";
 import { createFilterOutRecord } from "~/sync/FilterOutRecord.js";
 
 export interface ICreateHandlerParams {
-    client: Pick<EventBridgeClient, "send">;
+    getEventBridgeClient(): Pick<EventBridgeClient, "send">;
     commandConverters?: ICommandConverter[];
     system: ISystem;
     manifest: IManifest;
@@ -24,7 +24,7 @@ export interface ICreateHandlerParams {
 }
 
 export const createHandler = (params: ICreateHandlerParams) => {
-    const { manifest, commandConverters, system, client, getPlugins } = params;
+    const { manifest, commandConverters, system, getEventBridgeClient, getPlugins } = params;
 
     const filterOutRecordPlugins = getPlugins().byType<FilterOutRecordPlugin>(
         FilterOutRecordPlugin.type
@@ -51,7 +51,27 @@ export const createHandler = (params: ICreateHandlerParams) => {
 
     const handler = createSyncHandler({
         system,
-        client,
+        getEventBridgeClient: () => {
+            const client = getEventBridgeClient();
+            return {
+                send: async command => {
+                    console.log(
+                        JSON.stringify({
+                            command
+                        })
+                    );
+                    const result = await client.send(command);
+                    console.log(
+                        JSON.stringify({
+                            sent: true,
+                            command,
+                            result
+                        })
+                    );
+                    return result;
+                }
+            };
+        },
         eventBus: {
             arn: manifest.sync.eventBusArn,
             name: manifest.sync.eventBusName

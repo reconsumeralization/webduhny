@@ -3,6 +3,7 @@ import type { DynamoDBDocument } from "@webiny/aws-sdk/client-dynamodb/index.js"
 import { getDocumentClient } from "@webiny/project-utils/testing/dynamodb/index.js";
 import { ServiceDiscovery } from "@webiny/api";
 import { createMockSystem } from "~tests/mocks/system.js";
+import { createMockEventBridgeClient } from "~tests/mocks/eventBridgeClient.js";
 
 describe("createSyncSystem", () => {
     let client: DynamoDBDocument;
@@ -24,7 +25,10 @@ describe("createSyncSystem", () => {
                 region: undefined,
                 variant: undefined
             },
-            documentClient: client
+            getDocumentClient: () => client,
+            getEventBridgeClient: () => {
+                return createMockEventBridgeClient();
+            }
         });
 
         expect(syncSystem.plugins()).toHaveLength(0);
@@ -38,7 +42,10 @@ describe("createSyncSystem", () => {
     it("should create a sync system plugins", async () => {
         const syncSystem = createSyncSystem({
             system: createMockSystem(),
-            documentClient: client
+            getDocumentClient: () => client,
+            getEventBridgeClient: () => {
+                return createMockEventBridgeClient();
+            }
         });
 
         expect(syncSystem.plugins()).toHaveLength(1);

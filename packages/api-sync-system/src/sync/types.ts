@@ -1,4 +1,4 @@
-import type { NonEmptyArray } from "@webiny/api/types";
+import type { NonEmptyArray } from "@webiny/api/types.js";
 import type {
     BatchGetCommand,
     BatchWriteCommand,
@@ -8,7 +8,11 @@ import type {
     QueryCommand,
     ScanCommand,
     UpdateCommand
-} from "@webiny/aws-sdk/client-dynamodb";
+} from "@webiny/aws-sdk/client-dynamodb/index.js";
+import type {
+    EventBridgeClient,
+    EventBridgeClientConfig
+} from "@webiny/aws-sdk/client-eventbridge/index.js";
 import type { AllCommandType, DynamoDBTableType, ExtendedCommandType } from "~/types.js";
 
 export interface IManifestData {
@@ -66,7 +70,7 @@ export interface ISystem {
 
 export interface IHandler {
     readonly id: string;
-    flush(): Promise<void>;
+    flush(): Promise<unknown>;
     add(input: IDynamoDbCommand): void;
 }
 
@@ -79,4 +83,13 @@ export interface ICommandConverter<Result extends ICommandValue = ICommandValue>
 export interface IHandlerConverter {
     register(input: ICommandConverter | ICommandConverter[]): void;
     convert(input: IDynamoDbCommand): ICommandValue;
+}
+
+export interface IGetEventBridgeCallableParams
+    extends Omit<Partial<EventBridgeClientConfig>, "region"> {
+    region: string;
+}
+
+export interface IGetEventBridgeCallable {
+    (params: IGetEventBridgeCallableParams): Pick<EventBridgeClient, "send">;
 }

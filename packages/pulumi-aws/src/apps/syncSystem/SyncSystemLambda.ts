@@ -51,6 +51,7 @@ export const SyncSystemLambda = createAppModule({
         const eventSourceMapping = app.addResource(aws.lambda.EventSourceMapping, {
             name: createSyncResourceName("sqs-to-lambda"),
             config: {
+                enabled: true,
                 eventSourceArn: sqsQueue.output.arn,
                 functionName: lambda.output.arn,
                 batchSize: 10
