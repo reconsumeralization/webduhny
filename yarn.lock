@@ -13580,10 +13580,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/aos@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "@types/aos@npm:3.0.4"
-  checksum: 55c54865df6e0758a32c8ab9a617b63318e0d8a7f7f0b6d02747aa541aa2638e3fd57a8d6f3a4277fcf9a0bffabf9d4e8c95b1d7b54f88859a85fbbd7e10bf2a
+"@types/aos@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "@types/aos@npm:3.0.7"
+  checksum: 388954646768c9bb48fcf624808b3baa5b381925424e74f19579b31c742b16fa786757c350c6acda6402fc132a53be33d87d5ea556f62667334d1e5aabd33eda
   languageName: node
   linkType: hard
 
@@ -17870,7 +17870,7 @@ __metadata:
     "@fortawesome/react-fontawesome": ^0.1.17
     "@material-design-icons/svg": ^0.14.3
     "@svgr/webpack": ^6.1.1
-    "@types/aos": ^3.0.4
+    "@types/aos": ^3.0.7
     "@types/is-hotkey": ^0.1.7
     "@types/medium-editor": ^5.0.3
     "@types/pako": ^2.0.3
