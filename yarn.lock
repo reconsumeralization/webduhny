@@ -13598,10 +13598,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/accept-language-parser@npm:^1.5.3":
-  version: 1.5.3
-  resolution: "@types/accept-language-parser@npm:1.5.3"
-  checksum: ceecd89b2f5ce85c44fa2dd8b8b729c6871ed068b5137afbcaca5469eb7cfea0bc87ad2204ad89cbcc5df3abe2b7c005cf5f29b75150aa9086a52e097a53d944
+"@types/accept-language-parser@npm:^1.5.8":
+  version: 1.5.8
+  resolution: "@types/accept-language-parser@npm:1.5.8"
+  checksum: b14c159fe342131e87908d11e4c75e51b0f61ac1efecd2dcbc79b23dbd107a22a2ba51e8782fa69b1dcfe485752ae7685d507c4933610d22527279dd3dff6fb2
   languageName: node
   linkType: hard
 
@@ -16218,7 +16218,7 @@ __metadata:
     "@babel/preset-env": ^7.24.0
     "@babel/preset-typescript": ^7.23.3
     "@babel/runtime": ^7.24.0
-    "@types/accept-language-parser": ^1.5.3
+    "@types/accept-language-parser": ^1.5.8
     "@webiny/api": 0.0.0
     "@webiny/api-security": 0.0.0
     "@webiny/api-tenancy": 0.0.0
