@@ -13809,12 +13809,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/execa@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@types/execa@npm:2.0.0"
+"@types/execa@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@types/execa@npm:2.0.2"
   dependencies:
     execa: "*"
-  checksum: 7c01bd5b0dfd87055548a9cd5290620b11853d385b0adfbf12674edd3322016d6198fde4c80bd0047f2b93424de4e4e299a93bcbe9ec227379d4bc4e906ebdd0
+  checksum: ac296fad85ad1634b4b28798b0797bc628cc2574a8c71cf028b24b9d41e3dd1fa4b8b2a5453e569ed3e69ab4ebd85f4d85cdd7c84503916a6de3a8ee61a38ba0
   languageName: node
   linkType: hard
 
@@ -19457,7 +19457,7 @@ __metadata:
   resolution: "@webiny/migrations@workspace:packages/migrations"
   dependencies:
     "@elastic/elasticsearch": 7.12.0
-    "@types/execa": ^2.0.0
+    "@types/execa": ^2.0.2
     "@webiny/api-elasticsearch": 0.0.0
     "@webiny/api-headless-cms": 0.0.0
     "@webiny/api-headless-cms-ddb-es": 0.0.0
