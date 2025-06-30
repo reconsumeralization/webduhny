@@ -13432,15 +13432,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/cypress@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "@testing-library/cypress@npm:10.0.1"
+"@testing-library/cypress@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "@testing-library/cypress@npm:10.0.3"
   dependencies:
     "@babel/runtime": ^7.14.6
-    "@testing-library/dom": ^9.0.0
+    "@testing-library/dom": ^10.1.0
   peerDependencies:
-    cypress: ^12.0.0 || ^13.0.0
-  checksum: 737e16563844851e830786da1862ea2c29d9f67155d8d2ea4d5178c98b77621c67c89e47a91a633d36c0528adfff9592f7228a5f19666af9882c837eeacbd08e
+    cypress: ^12.0.0 || ^13.0.0 || ^14.0.0
+  checksum: fb1c1fa35a4fb41f2da719a040b5e20e2841474fe015be2382307c0f9fc352ec251e778118b935e95b5fca96ac6211282478c9bd7077769d774bbaa974e5a0e1
   languageName: node
   linkType: hard
 
@@ -13460,19 +13460,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:^9.0.0":
-  version: 9.3.3
-  resolution: "@testing-library/dom@npm:9.3.3"
+"@testing-library/dom@npm:^10.1.0":
+  version: 10.4.0
+  resolution: "@testing-library/dom@npm:10.4.0"
   dependencies:
     "@babel/code-frame": ^7.10.4
     "@babel/runtime": ^7.12.5
     "@types/aria-query": ^5.0.1
-    aria-query: 5.1.3
+    aria-query: 5.3.0
     chalk: ^4.1.0
     dom-accessibility-api: ^0.5.9
     lz-string: ^1.5.0
     pretty-format: ^27.0.2
-  checksum: 34e0a564da7beb92aa9cc44a9080221e2412b1a132eb37be3d513fe6c58027674868deb9f86195756d98d15ba969a30fe00632a4e26e25df2a5a4f6ac0686e37
+  checksum: bb128b90be0c8cd78c5f5e67aa45f53de614cc048a2b50b230e736ec710805ac6c73375af354b83c74d710b3928d52b83a273a4cb89de4eb3efe49e91e706837
   languageName: node
   linkType: hard
 
@@ -21182,15 +21182,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aria-query@npm:5.1.3":
-  version: 5.1.3
-  resolution: "aria-query@npm:5.1.3"
-  dependencies:
-    deep-equal: ^2.0.5
-  checksum: 929ff95f02857b650fb4cbcd2f41072eee2f46159a6605ea03bf63aa572e35ffdff43d69e815ddc462e16e07de8faba3978afc2813650b4448ee18c9895d982b
-  languageName: node
-  linkType: hard
-
 "aria-query@npm:5.3.0":
   version: 5.3.0
   resolution: "aria-query@npm:5.3.0"
@@ -24565,7 +24556,7 @@ __metadata:
   resolution: "cypress-tests@workspace:cypress-tests"
   dependencies:
     "@4tw/cypress-drag-drop": ^1.4.0
-    "@testing-library/cypress": ^10.0.0
+    "@testing-library/cypress": ^10.0.3
     "@webiny/project-utils": 0.0.0
     "@webiny/utils": 0.0.0
     amazon-cognito-identity-js: ^4.5.3
@@ -24942,31 +24933,6 @@ __metadata:
   version: 1.4.2
   resolution: "deep-copy@npm:1.4.2"
   checksum: 24ba7db4a9d44800c68659dae0068b681c43be0512c75e700710c3d18776e4c41f7dbd83eed6370bcfc1594c60f84d8798f4058f965ab457ea0232db821f0a4e
-  languageName: node
-  linkType: hard
-
-"deep-equal@npm:^2.0.5":
-  version: 2.2.0
-  resolution: "deep-equal@npm:2.2.0"
-  dependencies:
-    call-bind: ^1.0.2
-    es-get-iterator: ^1.1.2
-    get-intrinsic: ^1.1.3
-    is-arguments: ^1.1.1
-    is-array-buffer: ^3.0.1
-    is-date-object: ^1.0.5
-    is-regex: ^1.1.4
-    is-shared-array-buffer: ^1.0.2
-    isarray: ^2.0.5
-    object-is: ^1.1.5
-    object-keys: ^1.1.1
-    object.assign: ^4.1.4
-    regexp.prototype.flags: ^1.4.3
-    side-channel: ^1.0.4
-    which-boxed-primitive: ^1.0.2
-    which-collection: ^1.0.1
-    which-typed-array: ^1.1.9
-  checksum: 46a34509d2766d6c6dc5aec4756089cf0cc137e46787e91f08f1ee0bb570d874f19f0493146907df0cf18aed4a7b4b50f6f62c899240a76c323f057528b122e3
   languageName: node
   linkType: hard
 
@@ -26135,7 +26101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-get-iterator@npm:^1.1.2, es-get-iterator@npm:^1.1.3":
+"es-get-iterator@npm:^1.1.3":
   version: 1.1.3
   resolution: "es-get-iterator@npm:1.1.3"
   dependencies:
