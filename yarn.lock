@@ -13716,10 +13716,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bytes@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@types/bytes@npm:3.1.1"
-  checksum: 29c543019d810fbb4465662cd5eec4dc0fd1e1d5466abe256edf75e47575721b398df82676d550e29be02de55c487f7fb4d870d4262b22e33433d5bab2077fa2
+"@types/bytes@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "@types/bytes@npm:3.1.5"
+  checksum: 4e9d8131494a3fd52931c1b092b7e873eb7f8689cb44d0634afcada044fe1c6e6da5452ebefed1b838a6dbabb97ed2520684175c6a044975ac06fe47f728227f
   languageName: node
   linkType: hard
 
@@ -17266,7 +17266,7 @@ __metadata:
     "@emotion/styled": ^11.10.6
     "@material-design-icons/svg": ^0.14.3
     "@svgr/webpack": ^6.1.1
-    "@types/bytes": ^3.1.1
+    "@types/bytes": ^3.1.5
     "@types/graphlib": ^2.1.8
     "@types/is-hotkey": ^0.1.7
     "@types/mime": ^2.0.3
