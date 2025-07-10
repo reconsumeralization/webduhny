@@ -208,7 +208,9 @@ export const createSubmissionsCrud = (params: CreateSubmissionsCrudParams): Subm
                     if (validationResponse.success) {
                         responseIsValid = true;
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.error("Error parsing reCAPTCHA validation response:", e);
+                }
 
                 if (!responseIsValid) {
                     throw new Error("reCAPTCHA verification failed.");

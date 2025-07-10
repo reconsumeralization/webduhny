@@ -130,24 +130,26 @@ export const DelayedOnChange = <TValue = any>({
     const realOnKeyDown = props.onKeyDown || emptyFunction;
     const realOnBlur = props.onBlur || emptyFunction;
 
+    // Helper to coerce input value to TValue
+    function coerceValue<T>(value: any): T {
+        return value as T;
+    }
+
     // Need to apply value if input lost focus
     const onBlur: OnBlurCallable = ev => {
         if (!ev["persist"]) {
             return;
         }
         ev.persist();
-        applyValue((ev.target as HTMLInputElement).value as any as TValue);
+        applyValue(coerceValue<TValue>((ev.target as HTMLInputElement).value));
         realOnBlur(ev);
     };
 
     // Need to listen for TAB key to apply new value immediately, without delay. Otherwise validation will be triggered with old value.
     const onKeyDown: OnKeyDownCallable = ev => {
         ev.persist();
-        if (ev.key === "Tab") {
-            applyValue((ev.target as HTMLInputElement).value as any as TValue);
-            realOnKeyDown(ev);
-        } else if (ev.key === "Enter") {
-            applyValue((ev.target as HTMLInputElement).value as any as TValue);
+        if (ev.key === "Tab" || ev.key === "Enter") {
+            applyValue(coerceValue<TValue>((ev.target as HTMLInputElement).value));
             realOnKeyDown(ev);
         } else {
             realOnKeyDown(ev);
