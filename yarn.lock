@@ -13735,10 +13735,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/center-align@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@types/center-align@npm:1.0.0"
-  checksum: 1295a25c4c09dfac48868ab56a99eac42bf05f42e3be67ee17f31f29b8d30c302176d4b32b9d08cba6e97920afabf43a34e57bcfb9cb0ce7d44228cc1e5a2bdc
+"@types/center-align@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@types/center-align@npm:1.0.2"
+  checksum: 80a67790b6069647d6c9ef60a1aa5d447ba004cdf26522e4fdccb4a17162008847fd07a8482d7793014b499f00c7db72c6e69c75c89d9f5ea2d9be60799f5b2a
   languageName: node
   linkType: hard
 
@@ -18980,7 +18980,7 @@ __metadata:
     "@babel/preset-env": ^7.24.0
     "@babel/runtime": ^7.24.0
     "@elastic/elasticsearch": 7.12.0
-    "@types/center-align": ^1.0.0
+    "@types/center-align": ^1.0.2
     "@types/pino": ^7.0.5
     "@types/semver": ^7.3.4
     "@webiny/aws-sdk": 0.0.0
