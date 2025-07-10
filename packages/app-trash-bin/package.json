@@ -32,7 +32,7 @@
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
-    "@babel/runtime": "^7.24.0",
+    "@babel/runtime": "^7.26.10",
     "@types/react": "18.2.79",
     "@webiny/cli": "0.0.0",
     "@webiny/project-utils": "0.0.0",
