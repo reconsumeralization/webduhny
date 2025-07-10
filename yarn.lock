@@ -13619,12 +13619,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/archiver@npm:^5.3.1":
-  version: 5.3.1
-  resolution: "@types/archiver@npm:5.3.1"
+"@types/archiver@npm:^5.3.4":
+  version: 5.3.4
+  resolution: "@types/archiver@npm:5.3.4"
   dependencies:
-    "@types/glob": "*"
-  checksum: 1c6babc7f50acf5bf7fa3d5fa76bb68702e4463e6a412d259cdddff611dbbb9832ea4b2f41d675fd95ac1aa8b087daa882423073e41db9e296f14d41f2ea88e6
+    "@types/readdir-glob": "*"
+  checksum: 4ef27b99091ada9b8f13017d5b9e6d42a439e35a7858b30e040c408e081d98d8db6307b0762500288b5da38cab9823c4756b6abae1fdd2658d42bfb09eb7c5fb
   languageName: node
   linkType: hard
 
@@ -14516,6 +14516,15 @@ __metadata:
     "@types/node": "*"
     safe-buffer: ~5.1.1
   checksum: 1822760640a032064a98a1adb9d46e0ca74754394cb78e7cbec4e5f7900576e615b7fc374753addb80cbb75907ac9c21d955b7f20d29a7698a0d83525d87bb41
+  languageName: node
+  linkType: hard
+
+"@types/readdir-glob@npm:*":
+  version: 1.1.5
+  resolution: "@types/readdir-glob@npm:1.1.5"
+  dependencies:
+    "@types/node": "*"
+  checksum: 58625586589a2cbcf19d7bff5a9b61e961b42e438e5a4f537633785efdcacfad15d3b32df3d27926696b36b43eb86eeb790fce9373fa357ab87720c64f86618b
   languageName: node
   linkType: hard
 
@@ -16352,7 +16361,7 @@ __metadata:
     "@babel/runtime": ^7.24.0
     "@commodo/fields": beta
     "@smithy/node-http-handler": ^2.1.6
-    "@types/archiver": ^5.3.1
+    "@types/archiver": ^5.3.4
     "@types/node-fetch": ^2.6.1
     "@types/yauzl": ^2.9.2
     "@webiny/api": 0.0.0
