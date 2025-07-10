@@ -256,67 +256,42 @@ async function validateReferencedEntries({
 }: ValidateReferencedEntriesParams) {
     const referencesByModel = new Map<string, string[]>();
 
-    /**
-     * Group references by modelId.
-     */
+    // Group references by modelId.
     for (const path of referenceFieldPaths) {
         const ref = dotProp.get(output, path) as ReferenceObject | any;
-
         const { id, modelId } = getReferenceFieldValue(ref);
-
         if (!id || !modelId) {
             continue;
         }
-
         if (!referencesByModel.has(modelId)) {
             referencesByModel.set(modelId, []);
         }
-
         referencesByModel.get(modelId)?.push(id);
     }
-
     if (!referencesByModel.size) {
         return;
     }
-
-    /**
-     * Load all models and use only those that are used in reference.
-     */
-    const models = await context.security.withoutAuthorization(async () => {
-        return (await context.cms.listModels()).filter(model => {
-            const entries = referencesByModel.get(model.modelId);
-            if (!Array.isArray(entries) || entries.length === 0) {
-                return false;
-            }
-            return true;
-        });
-    });
-
+    // Load only the models that are referenced, using a Set for O(1) lookup.
+    const referencedModelIds = new Set(referencesByModel.keys());
+    const allModels = await context.security.withoutAuthorization(async () => context.cms.listModels());
+    const models = allModels.filter(model => referencedModelIds.has(model.modelId));
     if (!models.length) {
         return;
     }
-
-    /**
-     * Load all the entries by their IDs.
-     */
-    const promises = await context.security.withoutAuthorization(async () => {
-        return models.map(model => {
-            return context.cms.getEntriesByIds(model, referencesByModel.get(model.modelId) || []);
-        });
-    });
-
-    const allEntries = await Promise.all(promises).then(res => res.flat());
-    const entriesByModel = allEntries.reduce<Record<string, string[]>>((acc, entry) => {
-        return { ...acc, [entry.modelId]: [...(acc[entry.modelId] || []), entry.id] };
+    // Batch load all entries by their IDs in a single call per model.
+    const allEntries = await Promise.all(
+        models.map(model => context.cms.getEntriesByIds(model, referencesByModel.get(model.modelId) || []))
+    ).then(res => res.flat());
+    const entriesByModel = allEntries.reduce<Record<string, Set<string>>>((acc, entry) => {
+        if (!acc[entry.modelId]) acc[entry.modelId] = new Set();
+        acc[entry.modelId].add(entry.id);
+        return acc;
     }, {});
-
-    /**
-     * Verify that all entries exist.
-     */
+    // Verify that all entries exist.
     referencesByModel.forEach((ids, modelId) => {
         const modelEntriesInDb = entriesByModel[modelId];
         for (const id of ids) {
-            if (!modelEntriesInDb || !modelEntriesInDb.includes(id)) {
+            if (!modelEntriesInDb || !modelEntriesInDb.has(id)) {
                 throw new WebinyError(
                     `Missing referenced entry with id "${id}" in model "${modelId}".`,
                     "ENTRY_NOT_FOUND",

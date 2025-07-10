@@ -21,7 +21,7 @@ export default defineConfig({
         AWS_COGNITO_USER_POOL_ID: "{AWS_COGNITO_USER_POOL_ID}",
         AWS_COGNITO_CLIENT_ID: "{AWS_COGNITO_CLIENT_ID}",
         DEFAULT_ADMIN_USER_USERNAME: "admin@webiny.com",
-        DEFAULT_ADMIN_USER_PASSWORD: "12345678",
+        DEFAULT_ADMIN_USER_PASSWORD: process.env.DEFAULT_ADMIN_USER_PASSWORD || "<set-in-env>",
         DEFAULT_ADMIN_USER_FIRST_NAME: "admin-first-name",
         DEFAULT_ADMIN_USER_LAST_NAME: "admin-last-name",
 

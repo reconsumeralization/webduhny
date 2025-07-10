@@ -152,8 +152,11 @@ export class TaskManagerStore<
         if (options?.save === false) {
             return;
         }
-
-        await this.save();
+        try {
+            await this.save();
+        } catch (err) {
+            console.error("Failed to save info log:", err);
+        }
     }
     /**
      * Currently the methods throws an error if something goes wrong during the database update.
@@ -183,7 +186,11 @@ export class TaskManagerStore<
         if (options?.save === false) {
             return;
         }
-        await this.save();
+        try {
+            await this.save();
+        } catch (err) {
+            console.error("Failed to save error log:", err);
+        }
     }
 
     public async save(): Promise<void> {

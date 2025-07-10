@@ -113,6 +113,12 @@ export class TaskManager<T = ITaskDataInput> implements ITaskManager<T> {
         try {
             const input = structuredClone(this.store.getInput());
             /**
+             * Set the identity to the task creator before running the task logic.
+             */
+            if (this.store.getTask().createdBy) {
+                this.context.security.setIdentity(this.store.getTask().createdBy);
+            }
+            /**
              * We always run the task without authorization because we are running a task without a user - nothing to authorize against.
              */
             result = await this.context.security.withoutAuthorization(async () => {
