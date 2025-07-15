@@ -230,6 +230,6 @@
   },
   "packageManager": "yarn@3.6.4",
   "dependencies": {
-    "@types/hoist-non-react-statics": "^3.3.5"
+    "@types/hoist-non-react-statics": "^3.3.6"
   }
 }
