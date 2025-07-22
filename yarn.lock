@@ -13947,13 +13947,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hoist-non-react-statics@npm:^3.3.5":
-  version: 3.3.5
-  resolution: "@types/hoist-non-react-statics@npm:3.3.5"
+"@types/hoist-non-react-statics@npm:^3.3.7":
+  version: 3.3.7
+  resolution: "@types/hoist-non-react-statics@npm:3.3.7"
   dependencies:
-    "@types/react": "*"
     hoist-non-react-statics: ^3.3.0
-  checksum: b645b062a20cce6ab1245ada8274051d8e2e0b2ee5c6bd58215281d0ec6dae2f26631af4e2e7c8abe238cdcee73fcaededc429eef569e70908f82d0cc0ea31d7
+  peerDependencies:
+    "@types/react": "*"
+  checksum: 13f610572c073970b3f43cc446396974fed786fee6eac2d6fd4b0ca5c985f13e79d4a0de58af4e5b4c68470d808567c3a14108d98edb7d526d4d46c8ec851ed1
   languageName: node
   linkType: hard
 
@@ -38893,7 +38894,7 @@ __metadata:
     "@commitlint/config-conventional": ^11.0.0
     "@octokit/rest": ^20.0.2
     "@types/fs-extra": ^11.0.4
-    "@types/hoist-non-react-statics": ^3.3.5
+    "@types/hoist-non-react-statics": ^3.3.7
     "@types/jest": ^29.5.11
     "@types/node": ^18.0.0
     "@types/prettier": ^2.7.3
