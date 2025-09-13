@@ -13933,10 +13933,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/graphlib@npm:^2.1.8":
-  version: 2.1.8
-  resolution: "@types/graphlib@npm:2.1.8"
-  checksum: ca0285c30e76626c7d63942057e21d45a6c85a4f1b7add5ed892b6a02bad12ce3c7e927c7d56fbb7daf3ff286eae2dcc8e0f475a6c6104b99ae49b888d2fa883
+"@types/graphlib@npm:^2.1.12":
+  version: 2.1.12
+  resolution: "@types/graphlib@npm:2.1.12"
+  checksum: 009195aaf7d7c33068c93ece23e8fe11449663ba0ae6494f8028ffabebd7090a8a2daa86db73c65816a2e97d32d66db4a922c5003c2824ae4d4b4a169d77587d
   languageName: node
   linkType: hard
 
@@ -17275,7 +17275,7 @@ __metadata:
     "@material-design-icons/svg": ^0.14.3
     "@svgr/webpack": ^6.1.1
     "@types/bytes": ^3.1.5
-    "@types/graphlib": ^2.1.8
+    "@types/graphlib": ^2.1.12
     "@types/is-hotkey": ^0.1.7
     "@types/mime": ^2.0.3
     "@types/react": 18.2.79
