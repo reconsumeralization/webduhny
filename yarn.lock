@@ -14011,10 +14011,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/is-number@npm:^7.0.2":
-  version: 7.0.3
-  resolution: "@types/is-number@npm:7.0.3"
-  checksum: 04e9a1c4b6747dc2c7225521e1f0e613f3fbf692665401079aceb8e99c132e181f3c2455a69c6e1fed9145f901b83398014bc8391adc368e1ae5e9b946e4a37b
+"@types/is-number@npm:^7.0.5":
+  version: 7.0.5
+  resolution: "@types/is-number@npm:7.0.5"
+  checksum: 6286c8eaec7655feb534f1d2e23f06d6709302848bc57e3384f298bb377c4a159d212fe6068c1df2f3ed8ae94849aa92087863af63bd0c27b5277e32aab52cc0
   languageName: node
   linkType: hard
 
@@ -19018,7 +19018,7 @@ __metadata:
   dependencies:
     "@babel/cli": ^7.23.9
     "@babel/core": ^7.24.0
-    "@types/is-number": ^7.0.2
+    "@types/is-number": ^7.0.5
     "@webiny/api": 0.0.0
     "@webiny/aws-sdk": 0.0.0
     "@webiny/cli": 0.0.0
