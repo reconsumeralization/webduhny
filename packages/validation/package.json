@@ -14,7 +14,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.24.0",
+    "@babel/runtime": "^7.26.10",
     "isnumeric": "^0.3.3",
     "lodash": "^4.17.21"
   },

@@ -12,7 +12,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.24.0",
+    "@babel/runtime": "^7.26.10",
     "@fastify/compress": "6.2.0",
     "@fastify/cookie": "8.3.0",
     "@webiny/api": "0.0.0",

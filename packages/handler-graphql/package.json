@@ -14,7 +14,7 @@
     "Adrian Smijulj <adrian@webiny.com>"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.24.0",
+    "@babel/runtime": "^7.26.10",
     "@graphql-tools/schema": "^7.0.0",
     "@webiny/api": "0.0.0",
     "@webiny/error": "0.0.0",
