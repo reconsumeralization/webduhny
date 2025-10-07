@@ -16280,7 +16280,7 @@ __metadata:
     jest: ^29.7.0
     jest-dynalite: ^3.6.1
     lodash: ^4.17.21
-    nodemailer: ^6.9.12
+    nodemailer: ^7.0.9
     rimraf: ^5.0.5
     ttypescript: ^1.5.12
     typescript: 4.7.4
@@ -33957,10 +33957,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.12":
-  version: 6.9.13
-  resolution: "nodemailer@npm:6.9.13"
-  checksum: 1b591ef480be2ff69480127cbff819e6593b1ef263b6f920e1a4e83e40280582daf7a14a809ef92f9828e2a70bdb3ce22b11924e209f2afe4975f9ff37e08e9d
+"nodemailer@npm:^7.0.9":
+  version: 7.0.9
+  resolution: "nodemailer@npm:7.0.9"
+  checksum: b912ad8bafcf6c58ccc5b158a5794f13e6178d8473d167078412ec2a6d90dac52125c9cc9c4722d6f05c91c7f20303ce885af4aa37b4ca10c99e763a58b9feb5
   languageName: node
   linkType: hard
 
