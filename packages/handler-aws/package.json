@@ -20,7 +20,7 @@
     "@webiny/handler-client": "0.0.0",
     "@webiny/plugins": "0.0.0",
     "@webiny/utils": "0.0.0",
-    "fastify": "4.11.0"
+    "fastify": "5.7.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.9",
