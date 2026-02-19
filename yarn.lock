@@ -18031,7 +18031,7 @@ __metadata:
     rimraf: ^5.0.5
     slugify: ^1.2.9
     store: ^2.0.12
-    swiper: ^9.3.2
+    swiper: ^9.4.1
     ttypescript: ^1.5.12
     typescript: 4.7.4
     uniqid: ^5.0.3
@@ -40724,12 +40724,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^9.3.2":
-  version: 9.3.2
-  resolution: "swiper@npm:9.3.2"
+"swiper@npm:^9.4.1":
+  version: 9.4.1
+  resolution: "swiper@npm:9.4.1"
   dependencies:
     ssr-window: ^4.0.2
-  checksum: 9ccb6a0ef67d71ac780d7d1f3b2c2daf6f1846d3df8810aff6dcb8501c87b7769540a869cdd83eb902e5278396e5379cb32d9ed397234f7700ef55f0209f4592
+  checksum: 1180b3b766f25cbe636fafbb56adbddf8a240077c504a335a62d1773f4452df1bd9ca09bccfe86478c3b9401879c4e8f7ed3824e74299f8b48953e8fc7f08bc3
   languageName: node
   linkType: hard
 
