@@ -18031,7 +18031,7 @@ __metadata:
     rimraf: ^5.0.5
     slugify: ^1.2.9
     store: ^2.0.12
-    swiper: ^9.3.2
+    swiper: ^12.1.2
     ttypescript: ^1.5.12
     typescript: 4.7.4
     uniqid: ^5.0.3
@@ -40127,13 +40127,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ssr-window@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "ssr-window@npm:4.0.2"
-  checksum: df182600927f4f3225224cf8c02338ea637c9750519505bbfb9a9236741a2a7ec088386fb948bca7b447b8303d9109e7dc7672e3de041c79ac2a0e03665af7d2
-  languageName: node
-  linkType: hard
-
 "ssri@npm:^10.0.0, ssri@npm:^10.0.1":
   version: 10.0.5
   resolution: "ssri@npm:10.0.5"
@@ -40724,12 +40717,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^9.3.2":
-  version: 9.3.2
-  resolution: "swiper@npm:9.3.2"
-  dependencies:
-    ssr-window: ^4.0.2
-  checksum: 9ccb6a0ef67d71ac780d7d1f3b2c2daf6f1846d3df8810aff6dcb8501c87b7769540a869cdd83eb902e5278396e5379cb32d9ed397234f7700ef55f0209f4592
+"swiper@npm:^12.1.2":
+  version: 12.1.2
+  resolution: "swiper@npm:12.1.2"
+  checksum: 1b7fcc647573f7c58cb67a48265ad7a1667e991b66a9859295bf9ab8696c7427f39b34ba2b5e043bf828389b0f363bca1cba0bfbf10d5f459d26a7329352675a
   languageName: node
   linkType: hard
 
