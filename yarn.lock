@@ -8275,10 +8275,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:^8.4.1":
-  version: 8.4.1
-  resolution: "@faker-js/faker@npm:8.4.1"
-  checksum: d802d531f8929562715adc279cfec763c9a4bc596ec67b0ce43fd0ae61b285d2b0eec6f1f4aa852452a63721a842fe7e81926dce7bd92acca94b01e2a1f55f5a
+"@faker-js/faker@npm:^10.6.0":
+  version: 10.6.0
+  resolution: "@faker-js/faker@npm:10.6.0"
+  checksum: 36ddfdbb34dbd262c7aeb3cb918b8ed3456b0d7a9dc4b0a61050bf731c37f17a236b316d40af29cc281019cd1870004008609ecb8161c4346f5d61836ed7c07b
   languageName: node
   linkType: hard
 
@@ -16065,7 +16065,7 @@ __metadata:
     "@babel/cli": ^7.22.6
     "@babel/core": ^7.22.8
     "@babel/preset-env": ^7.22.7
-    "@faker-js/faker": ^8.4.1
+    "@faker-js/faker": ^10.6.0
     "@webiny/api": 0.0.0
     "@webiny/api-elasticsearch": 0.0.0
     "@webiny/api-headless-cms": 0.0.0
