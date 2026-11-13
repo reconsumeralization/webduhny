@@ -13879,10 +13879,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/folder-hash@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "@types/folder-hash@npm:4.0.2"
-  checksum: 5ce73a1ea59300469d14df4ca82e4b5605883d945fb344a12aebd1acce3f1936f63cd153c22f99e06c190992159c42421681a9a95e6cfd1858cd69b76db90f18
+"@types/folder-hash@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "@types/folder-hash@npm:4.0.5"
+  checksum: ff8a8a87c3b3e637d83c458207b04f21fbdf0487ebcbe071985f96e9ec7400db4f376b21f18aa2f3785589b4b1a5f500124095db6254b1a20a80075a60848846
   languageName: node
   linkType: hard
 
@@ -15289,7 +15289,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny-scripts/build-packages@workspace:scripts/buildPackages"
   dependencies:
-    "@types/folder-hash": ^4.0.2
+    "@types/folder-hash": ^4.0.5
     "@types/yargs": ^17.0.8
     chalk: ^4.1.0
     execa: ^5.1.1
